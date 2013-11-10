@@ -1,0 +1,9 @@
+{
+  "name": "postbird",
+  "main": "index.html",
+  "window": {
+    "show": true,
+    "title": "Postbird",
+    "toolbar": true
+  }
+}

@@ -1,0 +1,83 @@
+/* reset
+= reset-box-model
+  :margin 0
+  :padding 0
+  :border 0
+
+= reset
+  +reset-box-model
+  :font
+    :weight inherit
+    :style inherit
+    :size 100%
+    :family inherit
+  :vertical-align baseline
+
+= reset-quotation
+  +reset
+  :quotes "" ""
+  &:before,
+  &:after
+    :content ""
+
+= reset-table-cell
+  +reset
+  :text-align left
+  :font-weight normal
+  :vertical-align middle
+
+= reset-table
+  +reset
+  :border-collapse separate
+  :border-spacing 0
+  :vertical-align middle
+  
+= reset-link
+  :text
+    :decoration none
+  :cursor pointer
+  *
+    :cursor pointer
+  img
+    :border 0
+
+= reset-list
+  :list-style-type none
+
+= nested-reset
+  div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+  pre, a, abbr, acronym, address, code, del, dfn, em, img,
+  dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr
+    +reset
+  body
+    :line-height 1.5
+  h1, h2, h3, h4, h5, h6
+    :font-weight normal
+  blockquote, q
+    +reset-quotation
+  th, td, caption
+    +reset-table-cell
+  table
+    +reset-table
+  li
+    +reset-list
+  a
+    +reset-link
+  textarea
+    :resize none
+  *
+    :outline none
+  footer, header, aside, nav, menu, video, audio, time, progress, section, article
+    +reset
+    :display block
+  aside
+    :text
+      :align left
+  input[type="file"]
+    +opacity(1)
+    :cursor pointer
+
+= global-reset
+  html, body
+    +reset
+  +nested-reset

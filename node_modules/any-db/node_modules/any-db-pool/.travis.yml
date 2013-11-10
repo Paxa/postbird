@@ -1,0 +1,7 @@
+language: node_js
+node_js: [ 0.6, 0.8 ]
+# We don't use this database, but need it to exist for the default connection
+# parameters to work.
+before_script:
+  - psql -c 'create database any_db_test' -Upostgres
+  - mysql -e 'create database any_db_test' -uroot

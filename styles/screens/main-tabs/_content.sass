@@ -1,0 +1,14 @@
+.window-content.content
+  @extend .window-content.structure
+  tr
+    th
+      :max-width 200px
+      +truncate
+    td
+      +truncate
+      :max-width 200px
+      span.text
+        :min-width 100px
+      time
+        +inline-block
+        :min-width 75px

@@ -1,0 +1,18 @@
+table
+  thead
+    tr
+      th Role name
+      th List of roles
+      th Member of
+      th
+  tbody
+    each user in rows
+      tr
+        td= user.rolname
+        td= user.roles.join(', ')
+        td= user.memberof
+        td
+          a Edit
+
+button.createUserBtn Create new user
+button.createRoleBtn Create new role

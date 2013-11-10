@@ -1,0 +1,27 @@
+.main-screen
+  .sidebar
+    .databases
+      label Select database
+      select
+        option Select database...
+    .tables
+      label Tables
+      ul
+    ul.extras
+      li.users(tab='users') Users
+      li.extensions(tab='extensions') Extensions
+      li.procedures(tab='procedures') Procedures
+    .resize-handler
+  .main
+    .window-tabs
+      .tab.structure(tab='structure') Structure
+      .tab.content(tab='content') Content
+      .tab.query(tab='query') Query
+      .tab.triggers(tab='triggers') Triggers
+
+    .window-content.structure
+    .window-content.content
+    .window-content.query
+    .window-content.triggers
+    .window-content.users
+    .window-content.extensions

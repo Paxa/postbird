@@ -1,0 +1,27 @@
+.main-screen
+  :height 100%
+  +clear
+  > *
+    :float left
+    +box-sizing(border-box)
+    :height 100%
+
+  > .main
+    :width 70%
+    :padding-left 5px
+    :overflow-y auto
+    .window-tabs
+      +children-inline
+      :padding 3px 0
+      :margin-bottom 8px
+      > *
+        :padding 0 5px
+        :margin-right 5px
+        :background rgba(#000, 0.1)
+        +system-text
+        &.active
+          :background rgba(#038, 0.15)
+    .window-content
+      :display none
+      &.active
+        :display block

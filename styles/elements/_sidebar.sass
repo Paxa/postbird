@@ -1,0 +1,59 @@
+.main-screen > .sidebar
+  :width 30%
+  :padding
+    :top 5px
+    :right 8px
+    :left 5px
+    :bottom 5px
+  :position relative
+  :overflow-y auto
+  > .resize-handler
+    :position absolute
+    :top 0
+    :right 0
+    :bottom 0
+    :background #999
+    :width 2px
+    :cursor move
+  > .databases
+    :margin-bottom 5px
+    label
+      :display block
+      +unselectable
+  > .tables
+    :border-top 1px solid #ccc
+    :padding-top 5px
+    > ul
+      > li
+        > span
+          :display block
+          :background rgba(#000, 0.1)
+          :font-weight bold
+        > ul
+          :display none
+          li
+            :padding-left 5px
+            &:hover
+              :background rgba(#000, 0.1)
+            &.selected
+              :background rgba(#038, 0.15)
+        &.open
+          > ul
+            :display block
+  > ul.extras
+    :border-top 1px solid #ccc
+    :margin-top 5px
+    li
+      :padding 2px 0
+      +system-text
+      &:hover
+        :background rgba(#000, 0.1)
+      &.active
+        +gradient(rgba(#038, 0.15), rgba(#05a, 0.15))
+
+  > .tables, > ul.extras
+    :display none
+  &.database-selected
+    > .tables, > ul.extras
+      :display block
+    

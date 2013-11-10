@@ -1,0 +1,40 @@
+/*
+Syntax error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.
+        on line 54 of style.sass
+
+49: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'
+50: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'
+51: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'
+52: *\/
+53: body:before {
+54:   white-space: pre;
+55:   font-family: monospace;
+56:   content: "Syntax error: Invalid CSS after \"0\": expected expression (e.g. 1px, bold), was \";\"\A         on line 3 of style.css\A \A 1: /* reset *\/\A 2: html, body {\A 3:   margin: 0;\A 4:   padding: 0;\A 5:   border: 0;\A 6:   font-weight: inherit;\A 7:   font-style: inherit;\A 8:   font-size: 100%;"; }
+
+Backtrace:
+style.sass:54
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:424:in `block in tabulate'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `each'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `each_with_index'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `tabulate'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:345:in `_to_tree'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:315:in `_render'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:262:in `render'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:362:in `update_stylesheet'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:203:in `block in update_stylesheets'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:201:in `each'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:201:in `update_stylesheets'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:235:in `watch'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin.rb:107:in `method_missing'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:463:in `watch_or_update'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:326:in `process_result'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:41:in `parse'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:21:in `parse!'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'
+/Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.\A         on line 54 of style.sass\A \A 49: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'\A 50: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'\A 51: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'\A 52: */\A 53: body:before {\A 54:   white-space: pre;\A 55:   font-family: monospace;\A 56:   content: \"Syntax error: Invalid CSS after \\"0\\": expected expression (e.g. 1px, bold), was \\";\\"\A         on line 3 of style.css\A \A 1: /* reset */\A 2: html, body {\A 3:   margin: 0;\A 4:   padding: 0;\A 5:   border: 0;\A 6:   font-weight: inherit;\A 7:   font-style: inherit;\A 8:   font-size: 100%;\"; }"; }

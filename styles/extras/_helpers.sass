@@ -1,0 +1,211 @@
+= bordered
+  :border 1px solid $borderColor
+
+= bordered-right
+  :border-right 1px solid $borderColor
+
+= bordered-left
+  :border-left 1px solid $borderColor
+
+= bordered-top
+  :border-top 1px solid $borderColor
+
+= bordered-bottom
+  :border-bottom 1px solid $borderColor
+
+%button-30px
+  :border 0
+  :color white
+  :padding 0 15px
+  :height 30px
+  :font-size 13px
+  :-webkit-appearance none
+  :-moz-appearance none
+
+= button($color: false)
+  @extend %button-30px
+  @if $color
+    :background-color $color
+    &:hover
+      :background-color lighten($color, 4%)
+      :text-shadow 0 0 1px rgba(0, 0, 0, 0.3)
+    &:active
+      :background-color darken($color, 5%)
+
+%green-link-button
+  +inline-block
+  +button(#3ab54a)
+  :line-height 30px
+  :text-decoration none
+
+%danger-link-button
+  +inline-block
+  +button(#e74c3c)
+  :line-height 30px
+  :text-decoration none
+
+%full-width-input
+  +bordered
+  :width 100%
+  :line-height 18px
+  :height 30px
+  :font-size 12px
+  :padding 5px 10px
+  +box-sizing(border-box)
+  :color #666
+  :margin-bottom 3px
+
+%blue-ok-checkbox
+  :background #4cade2
+  :border 0
+  :-webkit-appearance none
+  :-moz-appearance none
+  :-o-appearance none
+  :appearance none
+  :width 14px
+  :height 14px
+  :position relative
+  :margin 0
+  +opacity(0)
+  :z-index 15
+  + i
+    +inline-block(middle)
+    :position relative
+    :width 12px
+    :height 12px
+    :border 1px solid #4cade2
+    :margin-left -14px
+    :background #fff
+  &:checked
+    + i
+      :border-color #fff
+      :background #4cade2
+      &:before
+        :position absolute
+        :display block
+        @extend %icon
+        @extend .icon-ok:before
+        :font-size 11px
+        :line-height 14px
+        :left -1px
+        :right 0px
+        :top -1px
+        :bottom 0px
+        :color white
+        :text-align center
+  &:disabled
+    + i
+      :border 1px solid #cccccc
+      :opacity 0.8
+    &:checked
+      + i
+        :border 1px solid #cccccc
+        background: #cccccc
+        &:before
+          :color lighten(#cccccc, 10%)
+
+
+
+
+%fake-blue-ok-checkbox
+  +inline-block(middle)
+  :position relative
+  :width 12px
+  :height 12px
+  :border 1px solid #4cade2
+  :margin-left 10px
+  :background #fff
+  &.checked
+    :border-color #fff
+    :background #4cade2
+    &:before
+      :position absolute
+      :display block
+      @extend %icon
+      @extend .icon-ok:before
+      :font-size 11px
+      :line-height 14px
+      :left -1px
+      :right 0px
+      :top -1px
+      :bottom 0px
+      :color white
+      :text-align center
+
+%blue-ok-checkbox-without-white-border
+  @extend %blue-ok-checkbox
+  &:checked + i
+    :border-color #4cade2
+
+a.small-plus-button
+  :background #38b64b
+  +inline-block(middle)
+  :position relative
+  :color #fff
+  :width 15px
+  :text-align center
+  :height 15px
+  :line-height 18px
+  > i
+    +inline-block
+    :line-height 18px
+    :color white
+    &:before
+      +absoluted
+
+%has-top-left-pimp
+  &:before
+    content: ''
+    display: inline-block
+    border-left: 7px solid transparent
+    border-right: 7px solid transparent
+    border-bottom: 7px solid #ccc
+    border-bottom-color: rgba(0, 0, 0, 0.2)
+    position: absolute
+    top: -7px
+    left: 8px
+  &:after
+    content: ''
+    display: inline-block
+    border-left: 6px solid transparent
+    border-right: 6px solid transparent
+    border-bottom: 6px solid #ffffff
+    position: absolute
+    top: -6px
+    left: 9px
+
+= has-top-custom-centered-pimp($left: 9)
+  &:before
+    content: ''
+    display: inline-block
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-bottom: 8px solid #ccc
+    border-bottom-color: rgba(0, 0, 0, 0.2)
+    position: absolute
+    top: -8px
+    left: #{$left - 1}px
+  &:after
+    content: ''
+    display: inline-block
+    border-left: 7px solid transparent
+    border-right: 7px solid transparent
+    border-bottom: 7px solid #ffffff
+    position: absolute
+    top: -7px
+    left: #{$left}px
+
+.spinner-box
+  :height 16px
+
+.is-loading
+  :position relative
+  &:after
+    :display block
+    :content ''
+    +absoluted
+    :background-color rgba(255, 255, 255, 0.3)
+    :background
+      :image url('/assets/loader.gif')
+      :repeat no-repeat
+      :position center 30%

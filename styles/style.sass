@@ -1,0 +1,64 @@
+@import "extras/reset"
+@import "extras/mixins"
+
+= system-text
+  +unselectable
+  :cursor default
+
++global-reset
+
+@import "extras/global"
+
+@import "elements/tabs"
+
+#content
+  :overflow hidden
+  .tabContent
+    :height 100%
+
+@import "screens/login"
+@import "screens/main"
+@import "elements/sidebar"
+
+@import "elements/alertify.core"
+@import "elements/alertify.default"
+
+@import "screens/main-tabs/structure"
+@import "screens/main-tabs/extensions"
+@import "screens/main-tabs/content"
+@import "screens/main-tabs/users"
+
+.custom-window
+  .alertify-dialog
+    :padding-top 38px
+  h3.window-title
+    :position absolute
+    :padding-top 5px
+    :top 0
+    :left 0
+    :right 0
+    :height 31px
+    :font-size 20px
+    :background #f5f7f9
+    +gradient(#f5f7f9, #f0f1f2)
+    :border-radius 8px 8px 0 0
+  p.buttons
+    :margin
+      :top 11px
+      :bottom -5px
+    button
+      @extend .alertify-button
+    button.ok
+      @extend .alertify-button-ok
+    button.cancel
+      :border-color #ADA6A6
+      :background-color #B8B8B8
+      &:hover, &:focus
+        :background-color #B8B8B8
+        :border-color #ADA6A6
+
+  .alertify-buttons
+    :display none
+    :padding
+      :top 5px
+      :bottom 5px

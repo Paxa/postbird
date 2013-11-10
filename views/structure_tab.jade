@@ -1,0 +1,18 @@
+table
+  thead
+    tr
+      th column
+      th type
+      th max length
+      th default
+      th primary key
+      th Null
+  tbody
+    each column in rows
+      tr
+        td= column.column_name
+        td= column.udt_name
+        td= column.character_maximum_length
+        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
+        td= column.is_primary_key ? 'yes' : ''
+        td= column.is_nullable == 'YES' ? 'yes' : 'no'

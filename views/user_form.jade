@@ -1,0 +1,17 @@
+form
+  p
+    label Name
+    input(name="username")
+  p
+    label Password
+    input(name="password")
+  p
+    label Password (again)
+    input(name="password_again")
+  p
+    label
+      input(type="checkbox" name="admin" value="1")
+      = "Admin?"
+  p.buttons
+    button.ok Create user
+    button.cancel cancel
