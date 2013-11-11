@@ -17,6 +17,16 @@ global.DbScreen = jClass.extend({
     return this.connection.query(sql, callback);
   },
 
+  omit: function (event) {
+    if (event == 'user.created' && this.view.currentTab == 'users') {
+      this.usersTabActivate();
+    }
+  },
+
+  listen: function (event, callback) {
+    
+  },
+
   fetchDbList: function (callback) {
     this.connection.listDatabases(function(databases) {
       this.view.renderDbList(databases);
@@ -77,10 +87,26 @@ global.DbScreen = jClass.extend({
 
   usersTabActivate: function() {
     this.connection.getUsers(function(rows) {
-      this.view.renderUsersTab(rows);
+      this.view.users.renderTab(rows);
+    }.bind(this));
+  },
+
+  createUser: function(data, callback) {
+    if (data.admin == '1') {
+      delete data.admin;
+      data.superuser = true;
+    }
+
+    this.connection.createUser(data, function(data, error) {
+      if (!error) {
+        this.omit('user.created')
+      }
+      callback(data, error);
     }.bind(this));
   }
 });
+
+global.Panes = {};
 
 /*
 

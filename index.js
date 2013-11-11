@@ -9,16 +9,20 @@ require('./app/view_helpers');
 require('./app/db_screen');
 require('./app/login_screen');
 require('./app/views/db_screen');
+require('./app/views/pane');
+require('./app/views/panes/users');
+require('./app/views/dialog');
+require('./app/views/dialogs/new_user');
 
 //var anyDB = require('any-db');
 
-/*
+
 process.on("uncaughtException", function(err) {
   console.error('error: ', err);
   console.log(err.stack);
   window.alert(err);
 });
-*/
+
 //var appRoot = process.mainModule.filename.replace(/\/index.html/, '');
 
 global.$u = Zepto;
@@ -28,6 +32,8 @@ global.$ = function (selector) {
 };
 
 global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
+
+require('./app/utils');
 
 var gui = require('nw.gui');
 global.gui = gui;

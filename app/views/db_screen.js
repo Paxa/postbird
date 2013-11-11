@@ -1,12 +1,3 @@
-var formValues = function (selector_or_el) {
-  var paramObj = {};
-  $u.each($u(selector_or_el).serializeArray(), function(_, kv) {
-    paramObj[kv.name] = kv.value;
-  });
-
-  return paramObj;
-}
-
 global.DbScreenView = jClass.extend({
   init: function (handler) {
     this.handler = handler;
@@ -27,6 +18,8 @@ global.DbScreenView = jClass.extend({
       }.bind(this));
     }.bind(this));
 
+    this.initializePanes();
+
     this.databaseSelect.bind('change', function(e) {
       if (('' + this.databaseSelect.val()) == '') {
         this.content.find('.sidebar').removeClass('database-selected');
@@ -34,6 +27,12 @@ global.DbScreenView = jClass.extend({
         this.content.find('.sidebar').addClass('database-selected');
       }
     }.bind(this));
+  },
+
+  initializePanes: function () {
+    ['Users'].forEach(function(paneName) {
+      this[paneName.toLowerCase()] = new global.Panes[paneName](this);
+    }.bind(this))
   },
 
   renderDbList: function (databases) {
@@ -116,53 +115,5 @@ global.DbScreenView = jClass.extend({
   renderContentTab: function (data) {
     var node = App.renderView('content_tab', {data: data});
     this.setTabContent('content', node);
-  },
-
-  renderUsersTab: function(rows) {
-
-    rows.forEach(function(row) {
-      row.roles = [];
-      if (row.rolsuper) row.roles.push("Superuser");
-      if (row.rolcreaterole) row.roles.push("Create role");
-      if (row.rolcreatedb) row.roles.push("Create DB");
-      if (row.rolreplication) row.roles.push("Replication");
-    });
-
-    var node = App.renderView('users_tab', {rows: rows});
-    this.setTabContent('users', node);
-    this.tabContent('users').find('.createUserBtn').bind('click', this.newUserWindow.bind(this));
-  },
-
-  openExtraWindow: function (title, nodes) {
-    var el = $u('<div>').append(nodes);
-
-    var titleHtml = $u('<h3>').addClass('window-title').text(title)[0].outerHTML;
-    var windowHtml = titleHtml + el.html();
-
-    var a = window.alertify.alert(windowHtml, undefined, 'custom-window');
-    return $u('#alertify .alertify-inner');
-  },
-
-  closeExtraWindow: function () {
-    window.alertify.hide();
-  },
-
-  newUserWindow: function () {
-    var nodes = App.renderView('user_form');
-
-    var content = this.openExtraWindow('Create user', nodes);
-
-    console.log(content.find('button.ok'));
-    content.find('button.ok').bind('click', function(e) {
-      e && e.preventDefault();
-      console.log( formValues(content.find('form')) );
-
-      this.closeExtraWindow();
-    }.bind(this));
-
-    content.find('button.cancel').bind('click', function(e) {
-      e && e.preventDefault()
-      this.closeExtraWindow();
-    }.bind(this));
   }
 });

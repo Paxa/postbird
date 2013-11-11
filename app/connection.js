@@ -136,10 +136,21 @@ global.Connection = jClass.extend({
 
     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
-    console.log(sql);
     this.q(sql, function(data) {
-      console.log(data);
       callback(data.rows);
+    });
+  },
+
+  createUser: function (data, callback) {
+    var sql = 'CREATE USER "' + data.username + '"';
+
+    if (data.password) sql += " WITH PASSWORD '" + data.password + "'";
+    sql += ';'
+    if (data.superuser) sql += 'ALTER USER "' + data.username + '" WITH SUPERUSER;';
+
+    console.log(sql);
+    this.q(sql, function(data, error) {
+      callback(data, error);
     });
   }
 });

@@ -5,5 +5,7 @@
     "show": true,
     "title": "Postbird",
     "toolbar": true
-  }
+  },
+  "js-flags": "--harmony",
+  "chromium-args" : "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
 }

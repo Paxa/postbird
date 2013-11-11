@@ -1,40 +1,628 @@
+/* reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline; }
+
+div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+pre, a, abbr, acronym, address, code, del, dfn, em, img,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline; }
+
+body {
+  line-height: 1.5; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal; }
+
+blockquote, q {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+  quotes: "" ""; }
+  blockquote:before, blockquote:after, q:before, q:after {
+    content: ""; }
+
+th, td, caption {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle; }
+
+table {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle; }
+
+li {
+  list-style-type: none; }
+
+a {
+  text-decoration: none;
+  cursor: pointer; }
+  a * {
+    cursor: pointer; }
+  a img {
+    border: 0; }
+
+textarea {
+  resize: none; }
+
+* {
+  outline: none; }
+
+footer, header, aside, nav, menu, video, audio, time, progress, section, article {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+  display: block; }
+
+aside {
+  text-align: left; }
+
+input[type="file"] {
+  opacity: 1;
+  -moz-opacity: 1;
+  cursor: pointer; }
+
+html, body {
+  background: white;
+  height: 100%;
+  font-family: sans-serif;
+  font-size: 13px; }
+
+a {
+  color: #4eade3;
+  color: #358bae; }
+  a:hover {
+    text-decoration: underline; }
+
+h1 {
+  font-size: 2.75em;
+  line-height: 1.2em; }
+
+h2 {
+  font-size: 2.25em;
+  line-height: 1.25em; }
+
+h3 {
+  font-size: 1.75em;
+  line-height: 1.3em; }
+
+h4 {
+  font-size: 1.25em;
+  line-height: 1.35em; }
+
+.pseudo-hidden {
+  position: absolute;
+  left: -200px;
+  top: -200px; }
+
+#tabs {
+  padding: 5px 5px 0 5px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden; }
+  #tabs > * {
+    zoom: 1;
+    display: inline;
+    display: -moz-inline-box;
+    display: inline-block;
+    *display: inline;
+    vertical-align: top; }
+  #tabs .tab {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px 4px 0 0;
+    margin-right: 4px;
+    margin-bottom: -1px;
+    line-height: 23px;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 5px 1px 13px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.3); }
+    #tabs .tab, #tabs .tab > * {
+      -webkit-user-select: none;
+      user-select: none;
+      cursor: default; }
+    #tabs .tab:hover {
+      background: rgba(0, 68, 34, 0.15); }
+    #tabs .tab.active {
+      background-color: #c9e2f0;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9e2f0', endColorstr='#e1eff7');
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9e2f0', endColorstr='#e1eff7')";
+      background: -webkit-gradient(linear, left top, left bottom, from(#c9e2f0), to(#e1eff7));
+      background: -moz-linear-gradient(top, #c9e2f0, #e1eff7);
+      background: linear-gradient(top, #c9e2f0, #e1eff7);
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3); }
+    #tabs .tab .close {
+      margin-left: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.4);
+      zoom: 1;
+      display: inline;
+      display: -moz-inline-box;
+      display: inline-block;
+      *display: inline;
+      vertical-align: top;
+      text-align: center;
+      width: 16px;
+      line-height: 16px;
+      margin-top: 4px;
+      border-radius: 3px; }
+      #tabs .tab .close:hover {
+        color: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.2); }
+  #tabs .inspector {
+    float: right; }
+  #tabs .reload {
+    float: right; }
+
+#content {
+  overflow: hidden; }
+  #content .tabContent {
+    height: 100%; }
+
+.home-screen {
+  margin: 10px auto;
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 10px; }
+  .home-screen label {
+    margin-right: 5px; }
+
+.main-screen {
+  height: 100%;
+  zoom: 1;
+  *display: block;
+  overflow: visible !important; }
+  .main-screen:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+  .main-screen > * {
+    float: left;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%; }
+  .main-screen > .main {
+    width: 70%;
+    padding-left: 5px;
+    overflow-y: auto; }
+    .main-screen > .main .window-tabs {
+      padding: 3px 0;
+      margin-bottom: 8px; }
+      .main-screen > .main .window-tabs > * {
+        zoom: 1;
+        display: inline;
+        display: -moz-inline-box;
+        display: inline-block;
+        *display: inline;
+        vertical-align: top; }
+      .main-screen > .main .window-tabs > * {
+        padding: 0 5px;
+        margin-right: 5px;
+        background: rgba(0, 0, 0, 0.1);
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default; }
+        .main-screen > .main .window-tabs > *.active {
+          background: rgba(0, 51, 136, 0.15); }
+    .main-screen > .main .window-content {
+      display: none; }
+      .main-screen > .main .window-content.active {
+        display: block; }
+
+.main-screen > .sidebar {
+  width: 30%;
+  padding-top: 5px;
+  padding-right: 8px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  position: relative;
+  overflow-y: auto; }
+  .main-screen > .sidebar > .resize-handler {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #999999;
+    width: 2px;
+    cursor: move; }
+  .main-screen > .sidebar > .databases {
+    margin-bottom: 5px; }
+    .main-screen > .sidebar > .databases label {
+      display: block;
+      -webkit-user-select: none;
+      user-select: none; }
+  .main-screen > .sidebar > .tables {
+    border-top: 1px solid #cccccc;
+    padding-top: 5px; }
+    .main-screen > .sidebar > .tables > ul > li > span {
+      display: block;
+      background: rgba(0, 0, 0, 0.1);
+      font-weight: bold; }
+    .main-screen > .sidebar > .tables > ul > li > ul {
+      display: none; }
+      .main-screen > .sidebar > .tables > ul > li > ul li {
+        padding-left: 5px; }
+        .main-screen > .sidebar > .tables > ul > li > ul li:hover {
+          background: rgba(0, 0, 0, 0.1); }
+        .main-screen > .sidebar > .tables > ul > li > ul li.selected {
+          background: rgba(0, 51, 136, 0.15); }
+    .main-screen > .sidebar > .tables > ul > li.open > ul {
+      display: block; }
+  .main-screen > .sidebar > ul.extras {
+    border-top: 1px solid #cccccc;
+    margin-top: 5px; }
+    .main-screen > .sidebar > ul.extras li {
+      padding: 2px 0;
+      -webkit-user-select: none;
+      user-select: none;
+      cursor: default; }
+      .main-screen > .sidebar > ul.extras li:hover {
+        background: rgba(0, 0, 0, 0.1); }
+      .main-screen > .sidebar > ul.extras li.active {
+        background-color: rgba(0, 51, 136, 0.15);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(0, 51, 136, 0.15)', endColorstr='rgba(0, 85, 170, 0.15)');
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(0, 51, 136, 0.15)', endColorstr='rgba(0, 85, 170, 0.15)')";
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 51, 136, 0.15)), to(rgba(0, 85, 170, 0.15)));
+        background: -moz-linear-gradient(top, rgba(0, 51, 136, 0.15), rgba(0, 85, 170, 0.15));
+        background: linear-gradient(top, rgba(0, 51, 136, 0.15), rgba(0, 85, 170, 0.15)); }
+  .main-screen > .sidebar > .tables, .main-screen > .sidebar > ul.extras {
+    display: none; }
+  .main-screen > .sidebar.database-selected > .tables, .main-screen > .sidebar.database-selected > ul.extras {
+    display: block; }
+
+.alertify, .alertify-show, .alertify-log {
+  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -moz-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -ms-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -o-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* easeOutBack */ }
+
+.alertify-hide {
+  -webkit-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -moz-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -ms-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -o-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  /* easeInBack */ }
+
+.alertify-log-hide {
+  -webkit-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -moz-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -ms-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  -o-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  /* easeInBack */ }
+
+.alertify-cover {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  filter: alpha(opacity=0);
+  opacity: 0; }
+
+.alertify-cover-hidden {
+  display: none; }
+
+.alertify {
+  position: fixed;
+  z-index: 99999;
+  top: 50px;
+  left: 50%;
+  width: 550px;
+  margin-left: -275px;
+  opacity: 1; }
+
+.alertify-hidden {
+  -webkit-transform: translate(0, -150px);
+  -moz-transform: translate(0, -150px);
+  -ms-transform: translate(0, -150px);
+  -o-transform: translate(0, -150px);
+  transform: translate(0, -150px);
+  opacity: 0;
+  display: none; }
+
+/* overwrite display: none; for everything except IE6-8 */
+:root * > .alertify-hidden {
+  display: block;
+  visibility: hidden; }
+
+.alertify-logs {
+  position: fixed;
+  z-index: 5000;
+  bottom: 10px;
+  right: 10px;
+  width: 300px; }
+
+.alertify-logs-hidden {
+  display: none; }
+
+.alertify-log {
+  display: block;
+  margin-top: 10px;
+  position: relative;
+  right: -300px;
+  opacity: 0; }
+
+.alertify-log-show {
+  right: 0;
+  opacity: 1; }
+
+.alertify-log-hide {
+  -webkit-transform: translate(300px, 0);
+  -moz-transform: translate(300px, 0);
+  -ms-transform: translate(300px, 0);
+  -o-transform: translate(300px, 0);
+  transform: translate(300px, 0);
+  opacity: 0; }
+
+.alertify-dialog {
+  padding: 25px; }
+
+.alertify-resetFocus {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+
+.alertify-inner {
+  text-align: center; }
+
+.alertify-text {
+  margin-bottom: 15px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 100%; }
+
+.alertify-button, .custom-window p.buttons button {
+  background: none;
+  text-decoration: none;
+  border: none;
+  /* line-height and font-size for input button */
+  line-height: 1.5;
+  font-size: 100%;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px; }
+  .alertify-button:hover, .custom-window p.buttons button:hover, .alertify-button:active, .custom-window p.buttons button:active, .alertify-button:visited, .custom-window p.buttons button:visited {
+    background: none;
+    text-decoration: none;
+    border: none;
+    /* line-height and font-size for input button */
+    line-height: 1.5;
+    font-size: 100%;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 5px; }
+
+.alertify-isHidden {
+  display: none; }
+
+@media only screen and (max-width: 680px) {
+  .alertify, .alertify-logs {
+    width: 90%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+
+  .alertify {
+    left: 5%;
+    margin: 0; } }
 /*
-Syntax error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.
-        on line 54 of style.sass
+ * Default Look and Feel */
+.alertify, .alertify-log {
+  font-family: sans-serif; }
 
-49: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'
-50: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'
-51: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'
-52: *\/
-53: body:before {
-54:   white-space: pre;
-55:   font-family: monospace;
-56:   content: "Syntax error: Invalid CSS after \"0\": expected expression (e.g. 1px, bold), was \";\"\A         on line 3 of style.css\A \A 1: /* reset *\/\A 2: html, body {\A 3:   margin: 0;\A 4:   padding: 0;\A 5:   border: 0;\A 6:   font-weight: inherit;\A 7:   font-style: inherit;\A 8:   font-size: 100%;"; }
+.alertify {
+  background: white;
+  border: 2px solid #333333;
+  /* browsers that don't support rgba */
+  border: 1px solid #999999;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  margin-left: -200px;
+  -webkit-background-clip: padding;
+  /* Safari 4? Chrome 6? */
+  -moz-background-clip: padding;
+  /* Firefox 3.6 */
+  background-clip: padding-box;
+  /* Firefox 4, Safari 5, Opera 10, IE 9 */ }
 
-Backtrace:
-style.sass:54
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:424:in `block in tabulate'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `each'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `each_with_index'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:382:in `tabulate'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:345:in `_to_tree'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:315:in `_render'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/engine.rb:262:in `render'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:362:in `update_stylesheet'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:203:in `block in update_stylesheets'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:201:in `each'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:201:in `update_stylesheets'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin/compiler.rb:235:in `watch'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/plugin.rb:107:in `method_missing'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:463:in `watch_or_update'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:326:in `process_result'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:41:in `parse'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/lib/sass/exec.rb:21:in `parse!'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'
-/Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.\A         on line 54 of style.sass\A \A 49: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/gems/sass-3.2.12/bin/sass:9:in `<top (required)>'\A 50: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `load'\A 51: /Users/pavel/.rvm/gems/ruby-2.0.0-p247/bin/sass:23:in `<main>'\A 52: */\A 53: body:before {\A 54:   white-space: pre;\A 55:   font-family: monospace;\A 56:   content: \"Syntax error: Invalid CSS after \\"0\\": expected expression (e.g. 1px, bold), was \\";\\"\A         on line 3 of style.css\A \A 1: /* reset */\A 2: html, body {\A 3:   margin: 0;\A 4:   padding: 0;\A 5:   border: 0;\A 6:   font-weight: inherit;\A 7:   font-style: inherit;\A 8:   font-size: 100%;\"; }"; }
+.alertify-message {
+  margin-bottom: 10px; }
+
+.alertify-buttons {
+  margin-bottom: -5px; }
+
+.alertify-text {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  border-radius: 4px; }
+
+.alertify-button, .custom-window p.buttons button {
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  padding: 6px 15px;
+  text-decoration: none;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background-image: linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); }
+  .alertify-button:hover, .custom-window p.buttons button:hover {
+    outline: none;
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)); }
+  .alertify-button:focus, .custom-window p.buttons button:focus {
+    outline: none;
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    box-shadow: 0 0 5px #2b72d5; }
+  .alertify-button:active, .custom-window p.buttons button:active {
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
+
+.alertify-button-cancel {
+  background-color: #fe1a00;
+  border: 1px solid #d83526; }
+  .alertify-button-cancel:hover, .alertify-button-cancel:focus {
+    background-color: #fe1a00;
+    border: 1px solid #d83526; }
+
+.alertify-button-ok, .custom-window p.buttons button.ok {
+  background-color: #5cb811;
+  border: 1px solid #3b7808; }
+  .alertify-button-ok:hover, .custom-window p.buttons button.ok:hover, .alertify-button-ok:focus, .custom-window p.buttons button.ok:focus {
+    background-color: #5cb811;
+    border: 1px solid #3b7808; }
+
+.alertify-log {
+  background: #1f1f1f;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 15px;
+  border-radius: 4px;
+  color: white;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5); }
+
+.alertify-log-error {
+  background: #fe1a00;
+  background: rgba(254, 26, 0, 0.9); }
+
+.alertify-log-success {
+  background: #5cb811;
+  background: rgba(92, 184, 17, 0.9); }
+
+.window-content.structure table, .window-content.extensions table, .window-content.content table, .window-content.users table {
+  border: 1px solid #cccccc; }
+  .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.users table th {
+    font-weight: bold; }
+  .window-content.structure table td, .window-content.extensions table td, .window-content.content table td, .window-content.users table td, .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.users table th {
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    padding: 2px 4px; }
+
+.window-content.content tr th {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }
+.window-content.content tr td {
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 200px; }
+  .window-content.content tr td span.text {
+    min-width: 100px; }
+  .window-content.content tr td time {
+    zoom: 1;
+    display: inline;
+    display: -moz-inline-box;
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    min-width: 75px; }
+
+.custom-window .alertify-dialog {
+  padding-top: 38px; }
+.custom-window h3.window-title {
+  position: absolute;
+  padding-top: 5px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 31px;
+  font-size: 20px;
+  background: #f5f7f9;
+  background-color: #f5f7f9;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2')";
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f7f9), to(#f0f1f2));
+  background: -moz-linear-gradient(top, #f5f7f9, #f0f1f2);
+  background: linear-gradient(top, #f5f7f9, #f0f1f2);
+  border-radius: 8px 8px 0 0; }
+.custom-window p.buttons {
+  margin-top: 11px;
+  margin-bottom: -5px; }
+  .custom-window p.buttons button.cancel {
+    border-color: #ada6a6;
+    background-color: #b8b8b8; }
+    .custom-window p.buttons button.cancel:hover, .custom-window p.buttons button.cancel:focus {
+      background-color: #b8b8b8;
+      border-color: #ada6a6; }
+.custom-window .alertify-buttons {
+  display: none;
+  padding-top: 5px;
+  padding-bottom: 5px; }

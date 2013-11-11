@@ -12,7 +12,8 @@ table
         td= user.roles.join(', ')
         td= user.memberof
         td
-          a Edit
+          a(exec="editUser('" + user.rolname + "')") Edit
+          a(exec="deleteUser('" + user.rolname + "')") Delete
 
-button.createUserBtn Create new user
-button.createRoleBtn Create new role
+button.createUserBtn(exec="newUserDialog") Create new user
+button.createRoleBtn(exec="newRole") Create new role
