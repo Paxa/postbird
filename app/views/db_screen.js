@@ -30,7 +30,7 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users'].forEach(function(paneName) {
+    ['Users', 'Extensions'].forEach(function(paneName) {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
     }.bind(this))
   },
@@ -105,11 +105,6 @@ global.DbScreenView = jClass.extend({
   renderTableStructureTab: function(rows) {
     var node = App.renderView('structure_tab', {rows: rows});
     this.setTabContent('structure', node);
-  },
-
-  renderExtensionsTab: function (rows) {
-    var node = App.renderView('extensions_tab', {rows: rows});
-    this.setTabContent('extensions', node);
   },
 
   renderContentTab: function (data) {

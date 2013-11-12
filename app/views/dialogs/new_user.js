@@ -1,4 +1,5 @@
 global.Dialog.NewUser = global.Dialog.extend({
+  title: "Create user",
 
   init: function (handler) {
     this.handler = handler;
@@ -8,7 +9,7 @@ global.Dialog.NewUser = global.Dialog.extend({
   showWindow: function () {
     var nodes = App.renderView('user_form');
 
-    this.content = this.renderWindow('Create user', nodes);
+    this.content = this.renderWindow(this.title, nodes);
 
     this.content.find('button.ok').bind('click', function(e) {
       e && e.preventDefault();
@@ -24,13 +25,17 @@ global.Dialog.NewUser = global.Dialog.extend({
   onSubmit: function () {
     var data = $u.formValues(this.content.find('form'));
     if (this.validate(data)) {
-      this.handler.createUser(data, function(data, error) {
-        if (error)
-          window.alert(error.message);
-        else
-          this.close();
-      }.bind(this));
+      this.processData(data);
     }
+  },
+
+  processData: function (data) {
+    this.handler.createUser(data, function(data, error) {
+      if (error)
+        window.alert(error.message);
+      else
+        this.close();
+    }.bind(this));
   },
 
   validate: function (data) {

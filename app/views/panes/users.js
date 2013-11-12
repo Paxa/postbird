@@ -14,7 +14,19 @@ global.Panes.Users = global.Pane.extend({
     this.initEvents(this.view.tabContent('users'));
   },
 
-  openNewUserDialog: function () {
-    Dialog.NewUser.render(this.handler);
+  editUser: function (username) {
+    new Dialog.EditUser(this.handler, username);
+  },
+
+  newUserDialog: function () {
+    new Dialog.NewUser(this.handler);
+  },
+
+  deleteUser: function (username) {
+    window.alertify.confirm('Do you want to delete user "' + username + '"?', function(res) {
+      if (res) {
+        this.handler.deleteUser(username);
+      }
+    }.bind(this));
   }
 });

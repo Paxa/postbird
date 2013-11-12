@@ -13,6 +13,7 @@ table
         td= user.memberof
         td
           a(exec="editUser('" + user.rolname + "')") Edit
+          = " "
           a(exec="deleteUser('" + user.rolname + "')") Delete
 
 button.createUserBtn(exec="newUserDialog") Create new user

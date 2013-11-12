@@ -18,8 +18,12 @@ global.DbScreen = jClass.extend({
   },
 
   omit: function (event) {
-    if (event == 'user.created' && this.view.currentTab == 'users') {
+    if (this.view.currentTab == 'users' && (event == 'user.created' || event == 'user.deleted')) {
       this.usersTabActivate();
+    }
+
+    if (this.view.currentTab == 'extensions' && (event == 'extension.installed' || event == 'extension.uninstalled')) {
+      this.extensionsTabActivate();
     }
   },
 
@@ -68,7 +72,21 @@ global.DbScreen = jClass.extend({
 
   extensionsTabActivate: function () {
     this.connection.getExtensions(function(rows) {
-      this.view.renderExtensionsTab(rows);
+      this.view.extensions.renderTab(rows);
+    }.bind(this));
+  },
+
+  installExtension: function (extension, callback) {
+    this.connection.installExtension(extension, function (data, error) {
+      if (!error) this.omit('extension.installed');
+      callback(data, error);
+    }.bind(this));
+  },
+
+  uninstallExtension: function (extension, callback) {
+    this.connection.uninstallExtension(extension, function (data, error) {
+      if (!error) this.omit('extension.uninstalled');
+      callback(data, error);
     }.bind(this));
   },
 
@@ -102,6 +120,15 @@ global.DbScreen = jClass.extend({
         this.omit('user.created')
       }
       callback(data, error);
+    }.bind(this));
+  },
+
+  deleteUser: function(username, callback) {
+    this.connection.deleteUser(username, function(data, error) {
+      if (!error) {
+        this.omit('user.deleted')
+      }
+      callback && callback(data, error);
     }.bind(this));
   }
 });

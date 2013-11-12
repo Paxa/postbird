@@ -109,7 +109,8 @@ global.Connection = jClass.extend({
   },
 
   getExtensions: function(callback) {
-    this.q('select * from pg_available_extensions;', function(data) {
+    // 'select * from pg_available_extensions order by (installed_version is null), name;'
+    this.q('select * from pg_available_extensions order by name;', function(data) {
       callback(data.rows);
     });
   },
@@ -142,15 +143,26 @@ global.Connection = jClass.extend({
   },
 
   createUser: function (data, callback) {
-    var sql = 'CREATE USER "' + data.username + '"';
+    var sql = sprintf('CREATE USER "%s"', data.username);
 
-    if (data.password) sql += " WITH PASSWORD '" + data.password + "'";
+    if (data.password) sql += sprintf(" WITH PASSWORD '%s'", data.password);
     sql += ';'
-    if (data.superuser) sql += 'ALTER USER "' + data.username + '" WITH SUPERUSER;';
+    if (data.superuser) sql += sprintf('ALTER USER "%s" WITH SUPERUSER;', data.username);
 
-    console.log(sql);
     this.q(sql, function(data, error) {
       callback(data, error);
     });
+  },
+
+  deleteUser: function (username, callback) {
+    this.q('DROP USER "%s"', username, callback);
+  },
+
+  installExtension: function (extension, callback) {
+    this.q('CREATE EXTENSION "%s"', extension, callback);
+  },
+
+  uninstallExtension: function (extension, callback) {
+    this.q('DROP EXTENSION "%s"', extension, callback);
   }
 });

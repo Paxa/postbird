@@ -4,7 +4,7 @@ table
       th name
       th default version
       th installed_version
-      th 
+      th
   tbody
     each column in rows
       tr
@@ -13,6 +13,7 @@ table
         td
           if column.installed_version
             strong= column.installed_version
+            button(exec="uninstall('" + column.name + "')") Uninstall
           else
-            button Install
+            button(exec="install('" + column.name + "')") Install
         td= column.comment
