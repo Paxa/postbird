@@ -1,1 +1,25 @@
 textarea.editor
+  | SELECT p1.PLAYERID,
+  |        f1.PLAYERNAME,
+  |        p2.PLAYERID,
+  |        f2.PLAYERNAME
+  | FROM   PLAYER f1,
+  |        PLAYER f2,
+  |        PLAYS p1
+  |        FULL OUTER JOIN PLAYS p2
+  |                     ON p1.PLAYERID < p2.PLAYERID
+  |                        AND p1.TEAMID = p2.TEAMID
+  | Where `f1`.name = 123456 && f2.name = 'dfas asdf asdfasd' and
+  |       table.column = "asdadadada"
+  | GROUP  BY p1.PLAYERID,
+  |           f1.PLAYERID,
+  |           p2.PLAYERID,
+  |           f2.PLAYERID
+  | HAVING Count(p1.PLAYERID) = Count(*)
+  |        AND Count(p2.PLAYERID) = Count(*)
+  |        AND p1.PLAYERID = f1.PLAYERID
+  |        AND p2.PLAYERID = f2.PLAYERID;
+  |
+  | -- sdfdsfsfsdfs
+  | -- sdfdsf asdf asdfas
+  | -- asdfas fad as

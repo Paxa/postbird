@@ -595,9 +595,11 @@ h4 {
     vertical-align: top;
     min-width: 75px; }
 
-.window-content.query textarea {
-  width: 90%;
-  min-height: 300px; }
+.window-content.query {
+  height: 90%; }
+  .window-content.query textarea {
+    width: 90%;
+    min-height: 500px; }
 
 .custom-window .alertify-dialog {
   padding-top: 38px; }
@@ -630,3 +632,37 @@ h4 {
   display: none;
   padding-top: 5px;
   padding-bottom: 5px; }
+
+.cm-s-mac-classic.CodeMirror {
+  color: black;
+  background: white;
+  height: 100%;
+  font-family: "Monaco", monospace;
+  font-size: 12px;
+  line-height: 18px; }
+.cm-s-mac-classic .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.07); }
+.cm-s-mac-classic .CodeMirror-selected {
+  background: rgba(77, 151, 255, 0.33); }
+.cm-s-mac-classic .cm-cursor {
+  color: black; }
+.cm-s-mac-classic .cm-keyword {
+  font-weight: bold;
+  color: blue; }
+.cm-s-mac-classic .cm-variable {
+  color: #318495; }
+.cm-s-mac-classic .cm-variable-2 {
+  color: #318495; }
+.cm-s-mac-classic .cm-builtin {
+  font-weight: bold;
+  color: #585cf6; }
+.cm-s-mac-classic .cm-comment {
+  font-style: italic;
+  color: #4387ec; }
+.cm-s-mac-classic .cm-string {
+  color: #910a2a; }
+.cm-s-mac-classic .cm-number {
+  color: mediumblue; }
+.cm-s-mac-classic .cm-error, .cm-s-mac-classic .cm-invalidchar {
+  background: #990000;
+  color: white; }
