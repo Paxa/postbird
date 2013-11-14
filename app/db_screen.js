@@ -103,10 +103,14 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
-  usersTabActivate: function() {
+  usersTabActivate: function () {
     this.connection.getUsers(function(rows) {
       this.view.users.renderTab(rows);
     }.bind(this));
+  },
+
+  queryTabActivate: function () {
+    this.view.query.renderTab();
   },
 
   createUser: function(data, callback) {

@@ -9,9 +9,7 @@ global.Panes.Users = global.Pane.extend({
       if (row.rolreplication) row.roles.push("Replication");
     });
 
-    var node = App.renderView('users_tab', {rows: rows});
-    this.view.setTabContent('users', node);
-    this.initEvents(this.view.tabContent('users'));
+    this.renderViewToPane('users', 'users_tab', {rows: rows});
   },
 
   editUser: function (username) {

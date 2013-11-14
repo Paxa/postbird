@@ -12,6 +12,7 @@ require('./app/views/db_screen');
 require('./app/views/pane');
 require('./app/views/panes/users');
 require('./app/views/panes/extensions');
+require('./app/views/panes/query');
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/edit_user');
@@ -74,3 +75,8 @@ Zepto(document).ready(function() {
   //i.submenu.append(new gui.MenuItem({ label: 'Item B' }));
   appMenu.append(i);
 });
+
+
+//require('./lib/codemirror/codemirror.js');
+//require('./lib/codemirror/sql-hint.js');
+//require('./lib/codemirror/sql/sql.js');

@@ -10,6 +10,7 @@ global.Pane = jClass.extend({
     $u(content).find('a[exec], button[exec], input[type=submit][exec]').each(function(i, el) {
       $u(el).bind('click', function(e) {
         $u.stopEvent(e);
+        $this.lastEvent = e;
         with($this) {
           var exec = el.getAttribute('exec');
           if (!exec.match(/\(.*\)/)) exec = exec + '()'
@@ -17,6 +18,13 @@ global.Pane = jClass.extend({
         }
       });
     });
+  },
+
+  renderViewToPane: function(pane, view_file, options) {
+    node = App.renderView(view_file, options);
+    this.view.setTabContent(pane, node);
+    this.content = this.view.tabContent(pane);
+    this.initEvents(this.content);
   }
 });
 

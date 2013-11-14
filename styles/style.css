@@ -595,6 +595,10 @@ h4 {
     vertical-align: top;
     min-width: 75px; }
 
+.window-content.query textarea {
+  width: 90%;
+  min-height: 300px; }
+
 .custom-window .alertify-dialog {
   padding-top: 38px; }
 .custom-window h3.window-title {

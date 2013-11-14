@@ -5,10 +5,12 @@ var sprintf = require("sprintf-js").sprintf,
 
 global.Connection = jClass.extend({
   defaultDatabaseName: 'template1',
+  history: [],
 
   init: function(options, callback) {
     this.options = options;
     this.connection = null;
+    global.Connection.instances.push(this);
     this.connectToServer(options, callback);
   },
 
@@ -36,8 +38,15 @@ global.Connection = jClass.extend({
 
   query: function (sql, callback) {
     process.stdout.write("SQL: " + sql + "\n");
+    var historyRecord = {
+      sql: sql,
+      date: (new Date())
+    };
+
+    this.history.push(historyRecord);
     this.connection.query(sql, function (error, result) {
       if (error) {
+        historyRecord.error = error;
         console.error(error);
         if (callback) callback(result, error);
       } else {
@@ -166,3 +175,5 @@ global.Connection = jClass.extend({
     this.q('DROP EXTENSION "%s"', extension, callback);
   }
 });
+
+global.Connection.instances = [];
