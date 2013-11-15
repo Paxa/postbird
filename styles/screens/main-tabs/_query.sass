@@ -1,5 +1,13 @@
 .window-content.query
   :height 90%
-  textarea
-    :width 90%
-    :min-height 500px
+  .editing
+    :height 50%
+    textarea
+      :width 90%
+      :min-height 90%
+    .CodeMirror
+      :height 90%
+  .result
+    :height 50%
+    :border-top 1px solid #ccc
+    @extend .window-content.content

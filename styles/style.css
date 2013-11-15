@@ -561,32 +561,32 @@ h4 {
   background: #5cb811;
   background: rgba(92, 184, 17, 0.9); }
 
-.window-content.structure table, .window-content.extensions table, .window-content.content table, .window-content.users table {
+.window-content.structure table, .window-content.extensions table, .window-content.content table, .window-content.query .result table, .window-content.users table {
   border: 1px solid #cccccc; }
-  .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.users table th {
+  .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.query .result table th, .window-content.users table th {
     font-weight: bold; }
-  .window-content.structure table td, .window-content.extensions table td, .window-content.content table td, .window-content.users table td, .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.users table th {
+  .window-content.structure table td, .window-content.extensions table td, .window-content.content table td, .window-content.query .result table td, .window-content.users table td, .window-content.structure table th, .window-content.extensions table th, .window-content.content table th, .window-content.query .result table th, .window-content.users table th {
     border-bottom: 1px solid #cccccc;
     border-right: 1px solid #cccccc;
     padding: 2px 4px; }
 
-.window-content.content tr th {
+.window-content.content tr th, .window-content.query .result tr th {
   max-width: 200px;
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   -ms-text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap; }
-.window-content.content tr td {
+.window-content.content tr td, .window-content.query .result tr td {
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   -ms-text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   max-width: 200px; }
-  .window-content.content tr td span.text {
+  .window-content.content tr td span.text, .window-content.query .result tr td span.text {
     min-width: 100px; }
-  .window-content.content tr td time {
+  .window-content.content tr td time, .window-content.query .result tr td time {
     zoom: 1;
     display: inline;
     display: -moz-inline-box;
@@ -597,9 +597,16 @@ h4 {
 
 .window-content.query {
   height: 90%; }
-  .window-content.query textarea {
-    width: 90%;
-    min-height: 500px; }
+  .window-content.query .editing {
+    height: 50%; }
+    .window-content.query .editing textarea {
+      width: 90%;
+      min-height: 90%; }
+    .window-content.query .editing .CodeMirror {
+      height: 90%; }
+  .window-content.query .result {
+    height: 50%;
+    border-top: 1px solid #cccccc; }
 
 .custom-window .alertify-dialog {
   padding-top: 38px; }
@@ -636,7 +643,6 @@ h4 {
 .cm-s-mac-classic.CodeMirror {
   color: black;
   background: white;
-  height: 100%;
   font-family: "Monaco", monospace;
   font-size: 12px;
   line-height: 18px; }

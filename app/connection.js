@@ -44,12 +44,15 @@ global.Connection = jClass.extend({
     };
 
     this.history.push(historyRecord);
+    var time = Date.now();
     this.connection.query(sql, function (error, result) {
+      historyRecord.time = Date.now() - time;
       if (error) {
         historyRecord.error = error;
         console.error(error);
         if (callback) callback(result, error);
       } else {
+        result.time = historyRecord.time;
         //console.log(result);
         if (callback) callback(result);
       }
