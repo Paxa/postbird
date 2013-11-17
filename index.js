@@ -16,6 +16,7 @@ require('./app/views/panes/query');
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/edit_user');
+require('./app/views/dialogs/new_database');
 
 //var anyDB = require('any-db');
 

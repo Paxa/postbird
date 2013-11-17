@@ -16,7 +16,7 @@ global.App = {
     /* auto connect, for development */
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {
-        this.activeTabObj().instance.view.databaseSelect.val('postgres').change();
+        //this.activeTabObj().instance.view.databaseSelect.val('postgres').change();
       }.bind(this), 50);/* auto connect, for development */
     }.bind(this));
     /* --- auto connect */

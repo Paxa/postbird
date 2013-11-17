@@ -4,7 +4,10 @@
   "window": {
     "show": true,
     "title": "Postbird",
-    "toolbar": true
+    "toolbar": true,
+    "icon": "gisto.icns",
+    "width": 850,
+    "height": 500
   },
   "js-flags": "--harmony",
   "chromium-args" : "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"

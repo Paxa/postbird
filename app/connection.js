@@ -77,6 +77,33 @@ global.Connection = jClass.extend({
     });
   },
 
+  databaseTemplatesList: function (callback) {
+    var databases = [];
+    this.query('SELECT datname FROM pg_database WHERE datistemplate = true;', function (rows) {
+      rows.rows.forEach(function(dbrow) {
+        databases.push(dbrow.datname);
+      });
+      callback(databases);
+    });
+  },
+
+  avaliableEncodings: function (callback) {
+    var encodings = [];
+    this.query('select pg_encoding_to_char(i) as encoding from generate_series(0,100) i', function(rows) {
+      rows.rows.forEach(function(dbrow) {
+        if (dbrow.encoding != '') encodings.push(dbrow.encoding);
+      });
+      callback(encodings);
+    });
+  },
+
+  getVariable: function(variable, callback) {
+    this.q('show %s', variable, function (data, error) {
+      var vname = Object.keys(data.rows[0])[0];
+      callback(data.rows[0][vname]);
+    });
+  },
+
   tablesAndSchemas: function(callback) {
     var data = {};
     this.query("SELECT * FROM information_schema.tables order by table_schema != 'public';", function(rows) {

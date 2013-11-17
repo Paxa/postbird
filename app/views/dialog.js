@@ -20,5 +20,20 @@ global.Dialog = jClass.extend({
 
   close: function () {
     window.alertify.hide();
+  },
+
+  bindFormSubmitting: function () {
+    var handler = function (e) {
+      e && e.preventDefault();
+      var data = $u.formValues(this.content.find('form'));
+      this.onSubmit(data);
+    }.bind(this);
+
+    this.content.find('button.ok').bind('click', handler);
+    this.content.find('form').bind('submit', handler);
+  },
+
+  onSubmit: function (data) {
+    console.log('onSubmit', data)
   }
 });

@@ -7,23 +7,13 @@ global.Dialog.NewUser = global.Dialog.extend({
   },
 
   showWindow: function () {
-    var nodes = App.renderView('user_form');
+    var nodes = App.renderView('dialogs/user_form');
 
     this.content = this.renderWindow(this.title, nodes);
-
-    this.content.find('button.ok').bind('click', function(e) {
-      e && e.preventDefault();
-      this.onSubmit();
-    }.bind(this));
-
-    this.content.find('form').bind('submit', function(e) {
-      e && e.preventDefault();
-      this.onSubmit();
-    }.bind(this));
+    this.bindFormSubmitting();
   },
 
-  onSubmit: function () {
-    var data = $u.formValues(this.content.find('form'));
+  onSubmit: function (data) {
     if (this.validate(data)) {
       this.processData(data);
     }

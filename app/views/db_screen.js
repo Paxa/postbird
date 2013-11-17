@@ -6,10 +6,16 @@ global.DbScreenView = jClass.extend({
 
     this.databaseSelect = this.content.find('.databases select');
     this.tablesList = this.content.find('.sidebar .tables ul');
+    this.sidebar = this.content.find('.sidebar');
 
     this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li');
     this.tabContents = this.content.find('.main > .window-content');
 
+    this.initializePanes();
+    this.initEvents();
+  },
+
+  initEvents: function() {
     this.topTabs.each(function(i, el) {
       $u(el).bind('click', function(e) {
         var tabName = $u(e.target).attr('tab');
@@ -18,13 +24,22 @@ global.DbScreenView = jClass.extend({
       }.bind(this));
     }.bind(this));
 
-    this.initializePanes();
+    this.databaseSelect.bind('change', function (e) {
+      var value = '' + $u(e.target).val();
+      console.log('change', value);
 
-    this.databaseSelect.bind('change', function(e) {
-      if (('' + this.databaseSelect.val()) == '') {
-        this.content.find('.sidebar').removeClass('database-selected');
+      if (value == '' || value == '**create-db**') {
+        this.sidebar.removeClass('database-selected');
       } else {
-        this.content.find('.sidebar').addClass('database-selected');
+        this.sidebar.addClass('database-selected');
+      }
+
+      if (value == '**create-db**') {
+        e.preventDefault();
+        new Dialog.NewDatabase(this.handler);
+        $u(e.target).val('');
+      } else if (value != '') {
+        this.handler.selectDatabase(value);
       }
     }.bind(this));
   },
@@ -41,6 +56,14 @@ global.DbScreenView = jClass.extend({
         ['option', {value: dbname}, dbname]
       ));
     }.bind(this));
+
+    this.databaseSelect.append($dom(
+      ['option', {disabled: true}, '-----']
+    ));
+
+    this.databaseSelect.append($dom(
+      ['option', {value: '**create-db**'}, 'Create database']
+    ));
   },
 
   renderTablesAndSchemas: function (data) {
@@ -73,10 +96,6 @@ global.DbScreenView = jClass.extend({
 
       this.tablesList.append(schemaTree[0]);
     }
-  },
-
-  getSelectedDatabase: function () {
-    return this.databaseSelect.val();
   },
 
   showTab: function(name) {

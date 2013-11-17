@@ -1,0 +1,15 @@
+form
+  p
+    label Database
+    input(type="text" name="dbname")
+  p
+    label Template
+    select.template(name="template")
+  p
+    label Encoding
+    select.encoding(name="encoding")
+
+    input.pseudo-hidden(type="submit")
+  p.buttons
+    button.ok Create database
+    button.cancel cancel

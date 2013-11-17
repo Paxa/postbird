@@ -1,15 +1,9 @@
 global.DbScreen = jClass.extend({
+
   init: function(connection, callback) {
     this.connection = connection;
-
     this.view = new DbScreenView(this);
-
     this.fetchDbList();
-    this.initEvent();
-  },
-
-  initEvent: function() {
-    this.view.databaseSelect.bind('change', this.databseSelected.bind(this));
   },
 
   // short cut
@@ -36,11 +30,6 @@ global.DbScreen = jClass.extend({
       this.view.renderDbList(databases);
       callback && callback();
     }.bind(this));
-  },
-
-  databseSelected: function(e){
-    e && e.preventDefault();
-    this.selectDatabase(this.view.getSelectedDatabase());
   },
 
   selectDatabase: function (database) {
@@ -134,6 +123,10 @@ global.DbScreen = jClass.extend({
       }
       callback && callback(data, error);
     }.bind(this));
+  },
+
+  createDatabase: function (dbname) {
+    
   }
 });
 
