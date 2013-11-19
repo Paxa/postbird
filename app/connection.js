@@ -203,7 +203,14 @@ global.Connection = jClass.extend({
 
   uninstallExtension: function (extension, callback) {
     this.q('DROP EXTENSION "%s"', extension, callback);
-  }
+  },
+
+  createDatabase: function(dbname, template, encoding, callback) {
+    var sql = "CREATE DATABASE %s";
+    if (encoding) sql += " ENCODING '" + encoding + "'";
+    if (template) sql += " TEMPLATE " + template;
+    this.q(sql, dbname, callback);
+  },
 });
 
 global.Connection.instances = [];

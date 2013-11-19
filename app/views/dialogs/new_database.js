@@ -3,16 +3,12 @@ global.Dialog.NewDatabase = global.Dialog.extend({
 
   init: function (handler) {
     this.handler = handler;
-    this.prepareData(function () {
-      this.showWindow();
-    }.bind(this));
+    this.prepareData(this.showWindow.bind(this));
   },
 
   showWindow: function () {
     var nodes = App.renderView('dialogs/new_database');
     this.content = this.renderWindow(this.title, nodes);
-
-    console.log(this);
 
     this.templateSelect = this.content.find('select.template');
     this.templateSelect.append( $u.buildOption('') );
@@ -41,7 +37,17 @@ global.Dialog.NewDatabase = global.Dialog.extend({
   },
 
   onSubmit: function (data) {
-    console.log('onSubmit', data);
+    if (!data.dbname || data.dbname == '') {
+      alert('Please fill database name');
+      return;
+    }
+
+    this.handler.createDatabase(data, function (data, error) {
+      if (error)
+        window.alert(error.message);
+      else
+        this.close();
+    }.bind(this));
   },
 
   prepareData: function (callback) {

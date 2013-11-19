@@ -125,8 +125,16 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
-  createDatabase: function (dbname) {
-    
+  createDatabase: function (data, callback) {
+    this.connection.createDatabase(data.dbname, data.template, data.encoding, function (res, error) {
+      if (!error) {
+        this.fetchDbList(function() {
+          this.view.databaseSelect.val(data.dbname)
+          this.selectDatabase(data.dbname);
+        }.bind(this));
+      }
+      callback(res, error);
+    }.bind(this));
   }
 });
 
@@ -140,7 +148,6 @@ function renderMainScreen () {
     var list = element.find('ul.databases');
     query('SELECT datname FROM pg_database WHERE datistemplate = false;', function(rows) {
       rows.rows.forEach(function(dbrow) {
-        console.log(dbrow);
         var tree = DOMinate([
           'li', ['a', dbrow.datname]
         ]);

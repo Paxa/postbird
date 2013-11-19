@@ -26,7 +26,6 @@ global.DbScreenView = jClass.extend({
 
     this.databaseSelect.bind('change', function (e) {
       var value = '' + $u(e.target).val();
-      console.log('change', value);
 
       if (value == '' || value == '**create-db**') {
         this.sidebar.removeClass('database-selected');
@@ -51,6 +50,7 @@ global.DbScreenView = jClass.extend({
   },
 
   renderDbList: function (databases) {
+    this.databaseSelect.empty();
     databases.forEach(function(dbname) {
       this.databaseSelect.append($dom(
         ['option', {value: dbname}, dbname]
