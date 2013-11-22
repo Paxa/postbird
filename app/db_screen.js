@@ -129,8 +129,8 @@ global.DbScreen = jClass.extend({
     this.connection.createDatabase(data.dbname, data.template, data.encoding, function (res, error) {
       if (!error) {
         this.fetchDbList(function() {
-          this.view.databaseSelect.val(data.dbname)
-          this.selectDatabase(data.dbname);
+          this.view.databaseSelect.val(data.dbname).change();
+          //this.selectDatabase(data.dbname);
         }.bind(this));
       }
       callback(res, error);
