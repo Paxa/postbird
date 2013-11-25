@@ -1,17 +1,22 @@
 .home-screen
+  .sidebar
+    h4 Saved connections
+    ul.connections
+
   form
     p
-      label Host
-      input(name='host', value='localhost')
+      label(for="login_host") Host
+      input#login_host(name='host', value='localhost')
     p
-      label Port
-      input(name='port', value='5432')
+      label(for="login_port") Port
+      input#login_port(name='port', value='5432')
     p
-      label Username
-      input(name='user', value='pavel')
+      label(for="login_username") Username
+      input#login_username(name='user', value='pavel')
     p
-      label Password
-      input(name='password', type='password', value='')
+      label(for="login_password") Password
+      input#login_password(name='password', type='password', value='')
 
-    p
-      input(type="submit") Connect
+    p.buttons
+      input(type="submit", value="Connect")
+      button#save-and-connect Save & connect

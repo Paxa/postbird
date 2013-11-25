@@ -51,6 +51,8 @@ global.DbScreenView = jClass.extend({
 
   renderDbList: function (databases) {
     this.databaseSelect.empty();
+    this.databaseSelect.append($u('<option>'))
+
     databases.forEach(function(dbname) {
       this.databaseSelect.append($dom(
         ['option', {value: dbname}, dbname]
@@ -79,10 +81,21 @@ global.DbScreenView = jClass.extend({
         t.find('span').bind('click', function() {
           t.toggleClass('open');
         });
+
       }($u(schemaTree[0]));
 
       data[schema].forEach(function(table) {
         var tableNode = $dom(['li', table.table_name]);
+
+        $u.contextMenu(tableNode, {
+          'View': function () {},
+          'separator': 'separator',
+          'Rename': function () {},
+          'Truncate table' : function () {},
+          'Drop table': function () {},
+          'Show table SQL': function () {}
+        });
+
         $u(schemaTree.list).append(tableNode);
 
         !function (schema) {
@@ -129,5 +142,10 @@ global.DbScreenView = jClass.extend({
   renderContentTab: function (data) {
     var node = App.renderView('content_tab', {data: data});
     this.setTabContent('content', node);
+    var content = this.tabContent('content');
+    content.find('span.text').bind('dblclick', function(e) {
+      $u.stopEvent(e);
+      $u(e.target.parentNode).toggleClass('expanded');
+    });
   }
 });

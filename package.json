@@ -1,13 +1,15 @@
 {
-  "name": "postbird",
+  "name": "Postbird",
   "main": "index.html",
   "window": {
-    "show": true,
+    "show": false,
     "title": "Postbird",
     "toolbar": true,
     "icon": "gisto.icns",
     "width": 850,
-    "height": 500
+    "height": 500,
+    "min_width": 572,
+    "min_height": 260
   },
   "js-flags": "--harmony",
   "chromium-args" : "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"

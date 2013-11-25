@@ -25,10 +25,12 @@
     :padding-top 5px
     > ul
       > li
+        +system-text
         > span
           :display block
           :background rgba(#000, 0.1)
           :font-weight bold
+          +system-text
         > ul
           :display none
           li
@@ -56,4 +58,3 @@
   &.database-selected
     > .tables, > ul.extras
       :display block
-    

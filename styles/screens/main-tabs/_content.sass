@@ -1,13 +1,19 @@
 .window-content.content
   @extend .window-content.structure
+  table
+    :min-width 90%
+    :max-width 95%
   tr
     th
       :max-width 200px
       +truncate
     td
-      +truncate
-      :max-width 200px
+      &:not(.expanded)
+        +truncate
+      :min-width 40px
+      :max-width 250px
       span.text
+        :width 100%
         :min-width 100px
       time
         +inline-block

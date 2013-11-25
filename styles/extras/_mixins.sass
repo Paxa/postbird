@@ -10,10 +10,13 @@
   > *
     +inline-block($align)
 
-= box-shadow($value)
-  :box-shadow $value
-  :-moz-box-shadow $value
-  :-webkit-box-shadow $value
+= box-shadow($value, $extra: false)
+  @if $extra
+    :-webkit-box-shadow $value, $extra
+  @else
+    :box-shadow $value
+    :-moz-box-shadow $value
+    :-webkit-box-shadow $value
 
 $base_transition: all .1s ease-out !default
 

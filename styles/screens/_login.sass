@@ -1,8 +1,65 @@
 .home-screen
-  :margin 10px auto
-  :width 100%
-  :max-width 500px
-  :background #fff
-  :padding 10px
-  label
-    :margin-right 5px
+  :background darken(#e5f1f8, 1%)
+  :background #e1eff7
+  :height 100%
+  :margin 0
+  :padding
+    :left 140px
+  :position relative
+  :overflow hidden
+  form
+    :font-size 13px
+    :width 320px
+    :margin 45px auto 0
+    :background #fff
+    :padding 20px
+    +border-radius(6px)
+    +box-shadow(inset 0px 0px 10px rgba(0, 0, 0, 0.15))
+    :border 1px solid darken(#e5f1f8, 4%)
+    p
+      :margin 3px 0
+      &.buttons
+        :padding
+          :left 131px
+          :top 5px
+    input
+      :font-size 12px
+      :line-height 16px
+      :padding
+        :left 4px
+        :right 4px
+    label
+      :line-height 22px
+      :margin-right 8px
+      +inline-block
+      :width 124px
+      :text-align right
+
+  .sidebar
+    :position absolute
+    :left 0
+    :top 0
+    :bottom 0
+    :width 150px
+    :padding 10px 0
+    :background rgba(50, 70, 90, 0.05)
+    h4
+      :font
+        :size 13px
+        :weight bold
+      :color #666
+      :margin-bottom 7px
+      :padding 0 10px 8px
+      text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px
+      :border-bottom 1px dotted #abc
+      +system-text
+    ul
+      :padding 0 10px
+      li
+        :margin 4px -5px
+        :padding 1px 5px
+        :cursor pointer
+        +system-text
+        &:hover
+          :background rgba(0, 70, 100, 0.1)
+

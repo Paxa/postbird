@@ -12,12 +12,12 @@ echo "This script requires node-webkit.app in your applications folder"
     cp -r . ~/postbird.app/Contents/Resources/app.nw
 
     # copy icon and plist file
-    cp ./gisto.icns ~/postbird.app/Contents/Resources
+    cp ./pg.icns ~/postbird.app/Contents/Resources
     cp ./info.plist ~/postbird.app/Contents
 
-    # mv gisto.app ../../bin/
+    # mv postbird.app ../../bin/
 
-    echo -e "\ngisto.app copied to home directory"
+    echo -e "\npostbird.app copied to home directory"
 #else
 #  echo -e "\nPlease place node-webkit.app in your applications folder and run the script again"
 #fi

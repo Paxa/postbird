@@ -1,43 +1,76 @@
 #tabs
   +children-inline
   :padding 5px 5px 0 5px
-  :background rgba(#000, 0.1)
+  //:background rgba(#000, 0.2)
+  :background #b1b1b1
   :overflow hidden
-  //:margin-bottom 10px
+  //:border-bottom 1px solid #686868
+  :position relative
+  &:after
+    :content ''
+    :display block
+    :position absolute
+    :left 0
+    :right 0
+    :bottom 0
+    :height 1px
+    :background #838383
   .tab
-    :background rgba(#000, 0.15)
+    //:background rgba(#000, 0.15)
+    :background #c0c0c0
+    :color #323232
     :border-radius 4px 4px 0 0
     :margin
       :right 4px
-      :bottom -1px
+      :bottom 0px
     :line-height 23px
     :font
       :size 13px
       :weight bold
-    :padding 0 5px 1px 13px
-    :text-shadow 0 1px 1px rgba(#fff, 0.4)
-    +box-shadow(0px 2px 3px rgba(#fff, 0.3))
+    :padding 0 27px 1px 27px
+    :text-shadow 0 1px 0px rgba(255, 255, 255, 0.4)
+    +box-shadow(inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.3))
+    :border 1px solid #838383
+    :border-bottom none
+    :position relative
+    .close
+      :position absolute
+      :top 5px
+      :right 5px
+      :text-decoration none
+      :font-weight bold
+      :color #e0e0e0
+      :text-shadow 0 0px 1px rgba(0, 0, 0, 0.2)
+      +inline-block
+      :text-align center
+      :width 11px
+      :font-size 12px
+      :line-height 11px
+      :border-radius 2px
+      :border 1px solid #828282
+      :display none
+      :background #a3a3a3
+      &:hover
+        :color #dfdfdf
+        +gradient(#838383, #939393)
+        //:background #9f9f9f
+        :text-shadow 0 0px 1px rgba(0, 0, 0, 0.4)
+        :border-color #6f6f6f
+        //:background rgba(#000, 0.2)
+
     &, > *
       +system-text
     &:hover
-      :background rgba(#042, 0.15)
+      //:background rgba(#042, 0.15)
+      .close
+        :display inline-block
     &.active
       +gradient(darken(#e5f1f8, 7%), darken(#e5f1f8, 1%))
       +box-shadow(0px 1px 4px rgba(#000, 0.3))
-    .close
-      :margin-left 5px
-      :text-decoration none
-      :font-weight bold
-      :color rgba(#000, 0.4)
-      +inline-block
-      :text-align center
-      :width 16px
-      :line-height 16px
-      :margin-top 4px
-      :border-radius 3px
-      &:hover
-        :color rgba(#000, 0.6)
-        :background rgba(#000, 0.2)
+      :position relative
+      :z-index 5
+      :border-color #999
+
 
   .inspector
     :float right

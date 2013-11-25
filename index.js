@@ -52,6 +52,7 @@ Zepto(document).ready(function() {
   var menu = new gui.Menu();
 
   // Add some items
+  /*
   var a = new gui.MenuItem({ label: 'Item A' })
   a.submenu 
   menu.append(a);
@@ -75,6 +76,40 @@ Zepto(document).ready(function() {
   //i.submenu = new gui.Menu({ type: 'menubar' });
   //i.submenu.append(new gui.MenuItem({ label: 'Item B' }));
   appMenu.append(i);
+  */
+
+  // Reference to window and tray
+  var win = gui.Window.get();
+  var tray;
+
+  win.show();
+
+  // Get the minimize event
+  win.on('minimize', function() {
+    // Hide window
+    this.hide();
+
+    // Show tray
+    tray = new gui.Tray({ icon: './tray.png' });
+
+    var menu = new gui.Menu();
+    menu.append(new gui.MenuItem({ label: 'Restore', click: function() {
+      win.restore();
+      win.show();
+      tray.remove();
+      tray = null;
+    }}));
+    tray.menu = menu;
+
+    // Show window and remove tray when clicked
+    tray.on('click', function() {
+      console.log('on', 'click');
+      win.restore();
+      win.show();
+      this.remove();
+      tray = null;
+    });
+  });
 });
 
 

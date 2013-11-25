@@ -14,11 +14,13 @@ global.App = {
     this.activateTab(0);
 
     /* auto connect, for development */
+
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {
-        //this.activeTabObj().instance.view.databaseSelect.val('postgres').change();
-      }.bind(this), 50);/* auto connect, for development */
+        this.activeTabObj().instance.view.databaseSelect.val('postgres').change();
+      }.bind(this), 50);
     }.bind(this));
+
     /* --- auto connect */
 
     this.setSizes();
@@ -157,5 +159,20 @@ global.App = {
     var height = $u(window).height();
     var topOffset = $u('body > #tabs').height();
     $u('body > #content').css('height', height - topOffset);
+  },
+
+  savedConnections: function () {
+    if (window.localStorage.savedConnections) {
+      return JSON.parse(window.localStorage.savedConnections);
+    } else {
+      return {};
+    }
+  },
+
+  saveConnection: function (name, options) {
+    console.log(name, options);
+    var newData = this.savedConnections();
+    newData[name] = options;
+    window.localStorage.savedConnections = JSON.stringify(newData);
   }
 };
