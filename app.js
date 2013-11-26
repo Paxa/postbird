@@ -30,6 +30,11 @@ global.App = {
       gui.Window.get().showDevTools();
     });
     $u(this.tabsContainer).prepend(i);
+
+    var n = $u($dom(['a.inspector', '!!!'])).bind('click', function() {
+      Notificator.show("Notification test");
+    });
+    $u(this.tabsContainer).prepend(n);
   },
 
   addTab: function (name, contentHtml, instance) {
@@ -125,9 +130,11 @@ global.App = {
     return this.addTab('Connection', this.loginScreen.content, this.loginScreen);
   },
 
-  addDbScreen: function(connection, do_activate) {
+  addDbScreen: function(connection, connectionName, do_activate) {
+    console.log(connectionName, do_activate);
+    if (connectionName == '') connectionName = false;
     var dbs = new DbScreen(connection);
-    return this.addTab('DB', dbs.view.content, dbs);
+    return this.addTab(connectionName || 'DB', dbs.view.content, dbs);
   },
 
   renderView: function (file, options, callback) {
@@ -170,9 +177,23 @@ global.App = {
   },
 
   saveConnection: function (name, options) {
-    console.log(name, options);
     var newData = this.savedConnections();
     newData[name] = options;
     window.localStorage.savedConnections = JSON.stringify(newData);
-  }
+  },
+
+  renameConnection: function (oldName, newName) {
+    var data = this.savedConnections();
+    data[newName] = data[oldName];
+    delete data[oldName];
+    window.localStorage.savedConnections = JSON.stringify(data);
+    return true;
+  },
+
+  removeConnection: function (name) {
+    var data = this.savedConnections();
+    delete data[name];
+    window.localStorage.savedConnections = JSON.stringify(data);
+    return true;
+  },
 };

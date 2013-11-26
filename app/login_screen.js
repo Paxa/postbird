@@ -9,15 +9,16 @@ global.LoginScreen = jClass.extend({
   },
 
   fillSavedConnections: function () {
+    this.connections.empty();
     var data = App.savedConnections();
     for (var name in data) {
       var _this = this, line = $dom(['li', name]);
 
       !function (params) {
         $u.contextMenu(line, {
-          "Fill form with ...": _this.fillForm.bind(_this, params),
+          "Fill form with ...": _this.fillForm.bind(_this, name, params),
           "Connect": function () {
-            _this.fillForm(params);
+            _this.fillForm(params, name);
             _this.onFormSubmit();
           },
           'separator': 'separator',
@@ -26,28 +27,40 @@ global.LoginScreen = jClass.extend({
         });
 
 
-        $u(line).bind('click', function () {
-          _this.fillForm(params);
-        });
-      }(data[name])
+        $u(line).bind('click', _this.fillForm.bind(_this, name, params));
+      }(data[name], name)
 
       this.connections.append(line)
     }
   },
 
-  fillForm: function (params) {
+  fillForm: function (name, params) {
     var v;
+    this.connectionName = name;
+    console.log(this.connectionName);
     for (var k in params) { v = params[k];
       this.form.find('input[name=' + k + ']').val(v);
     }
   },
 
   renameConnection: function (name) {
-    
+    window.alertify.prompt("Rename connection?", function (confirm, newName) {
+      if (confirm) {
+        App.renameConnection(name, newName);
+        this.fillSavedConnections();
+      }
+    }.bind(this), name);
   },
 
   deleteConnection: function (name) {
-    
+    window.alertify.labels.ok = "Remove";
+    window.alertify.confirm("Remove connection " + name + "?", function (res) {
+      window.alertify.labels.ok = "OK";
+      if (res) {
+        App.removeConnection(name);
+        this.fillSavedConnections();
+      }
+    }.bind(this));
   },
 
   saveAndConnect: function (e) {
@@ -77,7 +90,7 @@ global.LoginScreen = jClass.extend({
 
     var conn = new Connection(options, function (status, message) {
       if (status) {
-        App.addDbScreen(conn).activate();
+        App.addDbScreen(conn, this.connectionName).activate();
         //App.lastAddedTab().activate();
         if (callback) callback();
       } else {
@@ -85,7 +98,7 @@ global.LoginScreen = jClass.extend({
         //window.alert('' + message);
         window.alertify.alert('' + message);
       }
-    });
+    }.bind(this));
     global.conn = conn; // TODO: clean
   }
 });
