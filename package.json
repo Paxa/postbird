@@ -2,7 +2,7 @@
   "name": "Postbird",
   "main": "index.html",
   "window": {
-    "show": false,
+    "show": true,
     "title": "Postbird",
     "toolbar": true,
     "icon": "gisto.icns",

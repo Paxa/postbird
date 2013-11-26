@@ -18,6 +18,8 @@ require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/edit_user');
 require('./app/views/dialogs/new_database');
 
+require('./app/notificator');
+
 //var anyDB = require('any-db');
 
 
@@ -81,8 +83,6 @@ Zepto(document).ready(function() {
   // Reference to window and tray
   var win = gui.Window.get();
   var tray;
-
-  win.show();
 
   // Get the minimize event
   win.on('minimize', function() {

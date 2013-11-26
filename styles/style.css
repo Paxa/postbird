@@ -223,9 +223,8 @@ h4 {
       z-index: 5;
       border-color: #999999; }
   #tabs .inspector {
-    float: right; }
-  #tabs .reload {
-    float: right; }
+    float: right;
+    margin-left: 5px; }
 
 #content {
   overflow: hidden; }
