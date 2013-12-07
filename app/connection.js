@@ -115,6 +115,17 @@ global.Connection = jClass.extend({
     });
   },
 
+  tableSchemas: function (callback) {
+    var sql = "select table_schema from information_schema.tables group by table_schema " +
+              "order by table_schema != 'public'";
+    this.query(sql, function (rows) {
+      var data = rows.rows.map(function(dbrow) {
+        return dbrow.table_schema;
+      });
+      callback(data);
+    })
+  },
+
   tableStructure: function(schema, table, callback) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
     this.q(sql, schema, table, function(data) {
@@ -210,6 +221,19 @@ global.Connection = jClass.extend({
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     this.q(sql, dbname, callback);
+  },
+
+  createTable: function (tableName, schema, callback) {
+    sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY)";
+    if (schema != '' && schema != 'public') {
+      sql += sprintf(" TABLESPACE %s", schema);
+    }
+
+    this.q(sql, tableName, callback);
+  },
+
+  dropTable: function (schema, table, callback) {
+    this.q("DROP TABLE %s", table, callback);
   },
 });
 

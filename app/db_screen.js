@@ -19,6 +19,10 @@ global.DbScreen = jClass.extend({
     if (this.view.currentTab == 'extensions' && (event == 'extension.installed' || event == 'extension.uninstalled')) {
       this.extensionsTabActivate();
     }
+
+    if (event == 'table.created') {
+      //
+    }
   },
 
   listen: function (event, callback) {
@@ -34,10 +38,15 @@ global.DbScreen = jClass.extend({
 
   selectDatabase: function (database) {
     this.database = database;
-    this.connection.switchDb(this.database, function () {
-      this.connection.tablesAndSchemas(function(data) {
-        this.view.renderTablesAndSchemas(data);
-      }.bind(this));
+    this.connection.switchDb(this.database, function() {
+      this.fetchTablesAndSchemas();
+    }.bind(this));
+  },
+
+  fetchTablesAndSchemas: function (callback) {
+    this.connection.tablesAndSchemas(function(data) {
+      this.view.renderTablesAndSchemas(data);
+      callback && callback(data);
     }.bind(this));
   },
 
@@ -135,7 +144,29 @@ global.DbScreen = jClass.extend({
       }
       callback(res, error);
     }.bind(this));
-  }
+  },
+
+  createTable: function (data, callback) {
+    this.connection.createTable(data.name, data.tablespace, function (res, error) {
+      if (!error) {
+        this.omit('table.created');
+        this.fetchTablesAndSchemas(function(tables) {
+          var tableElement = this.view.sidebar.find('[schema-name=' + data.tablespace + '] ' +
+                                                      '[table-name=' + data.name + ']')[0];
+          this.tableSelected(data.tablespace, data.name, tableElement);
+        }.bind(this));
+      }
+      callback(res, error);
+    }.bind(this));
+  },
+
+  dropTable: function (schema, table, callback) {
+    this.connection.dropTable(schema, table, function (res, error) {
+      this.omit('table.deleted');
+      this.fetchTablesAndSchemas();
+      callback && callback(res, error);
+    }.bind(this));
+  },
 });
 
 global.Panes = {};

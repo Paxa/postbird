@@ -1,0 +1,14 @@
+form
+  p
+    label Table name
+    input(name="name")
+
+  p
+    label Tablespace
+    select(name="tablespace")
+
+  input.pseudo-hidden(type="submit")
+
+  p.buttons
+    button.ok Create table
+    button.cancel cancel

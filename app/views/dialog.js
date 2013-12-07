@@ -18,6 +18,13 @@ global.Dialog = jClass.extend({
     return windowContent;
   },
 
+  setAutofocus: function () {
+    setTimeout(function() {
+      var inputs = this.content.find('input[autofocus], input[type=text], input:not([type=hidden]), input[type=password]');
+      inputs[0] && inputs[0].focus();
+    }.bind(this), 300);
+  },
+
   close: function () {
     window.alertify.hide();
   },
@@ -35,5 +42,13 @@ global.Dialog = jClass.extend({
 
   onSubmit: function (data) {
     console.log('onSubmit', data)
+  },
+
+  defaultServerResponse: function (data, error) {
+    console.log(data, error);
+    if (error)
+      window.alert(error.message);
+    else
+      this.close();
   }
 });

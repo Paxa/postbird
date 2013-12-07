@@ -8,7 +8,7 @@ global.DbScreenView = jClass.extend({
     this.tablesList = this.content.find('.sidebar .tables ul');
     this.sidebar = this.content.find('.sidebar');
 
-    this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li');
+    this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li:not(.bottom)');
     this.tabContents = this.content.find('.main > .window-content');
 
     this.initializePanes();
@@ -23,6 +23,8 @@ global.DbScreenView = jClass.extend({
         this.showTab(tabName);
       }.bind(this));
     }.bind(this));
+
+    this.sidebar.find('a.addTable').bind('click', this.newTableDialog.bind(this));
 
     this.databaseSelect.bind('change', function (e) {
       var value = '' + $u(e.target).val();
@@ -74,7 +76,7 @@ global.DbScreenView = jClass.extend({
     var schema;
     for (schema in data) {
       var tables = data[schema];
-      var schemaTree = DOMinate(['li', ['span', schema], ['ul$list']]);
+      var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
       if (schema == 'public') $u(schemaTree[0]).addClass('open');
 
       !function (t) {
@@ -85,14 +87,16 @@ global.DbScreenView = jClass.extend({
       }($u(schemaTree[0]));
 
       data[schema].forEach(function(table) {
-        var tableNode = $dom(['li', table.table_name]);
+        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
 
         $u.contextMenu(tableNode, {
           'View': function () {},
           'separator': 'separator',
           'Rename': function () {},
           'Truncate table' : function () {},
-          'Drop table': function () {},
+          'Drop table': function() {
+            _this.handler.dropTable(schema, table.table_name);
+          },
           'Show table SQL': function () {}
         });
 
@@ -147,5 +151,9 @@ global.DbScreenView = jClass.extend({
       $u.stopEvent(e);
       $u(e.target.parentNode).toggleClass('expanded');
     });
+  },
+
+  newTableDialog: function () {
+    new Dialog.NewTable(this.handler);
   }
 });

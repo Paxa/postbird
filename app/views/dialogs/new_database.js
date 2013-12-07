@@ -30,10 +30,7 @@ global.Dialog.NewDatabase = global.Dialog.extend({
     }.bind(this));
 
     this.bindFormSubmitting();
-
-    setTimeout(function() {
-      this.content.find('input[type=text], input[type=password]')[0].focus();
-    }.bind(this), 300);
+    this.setAutofocus();
   },
 
   onSubmit: function (data) {

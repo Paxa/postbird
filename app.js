@@ -31,10 +31,12 @@ global.App = {
     });
     $u(this.tabsContainer).prepend(i);
 
+    /*
     var n = $u($dom(['a.inspector', '!!!'])).bind('click', function() {
       Notificator.show("Notification test");
     });
     $u(this.tabsContainer).prepend(n);
+    */
   },
 
   addTab: function (name, contentHtml, instance) {

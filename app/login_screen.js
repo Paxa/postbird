@@ -74,6 +74,7 @@ global.LoginScreen = jClass.extend({
     }
 
     App.saveConnection(name, $u.formValues(this.form));
+    this.fillSavedConnections();
     this.onFormSubmit();
   },
 
