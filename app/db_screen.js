@@ -58,13 +58,12 @@ global.DbScreen = jClass.extend({
     this.currentTableNode = $u(node);
     this.currentTableNode.addClass('selected');
 
-    this.fetchTableStructure(schema, tableName);
     this.view.showTab('structure');
   },
 
-  fetchTableStructure: function(schema, table) {
+  fetchTableStructure: function(schema, table, callback) {
     this.connection.tableStructure(schema, table, function (data) {
-      this.view.renderTableStructureTab(data.rows);
+      callback(data.rows);
     }.bind(this));
   },
 
@@ -167,6 +166,12 @@ global.DbScreen = jClass.extend({
       callback && callback(res, error);
     }.bind(this));
   },
+
+  structureTabActivate: function () {
+    this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
+      this.view.structure.renderTab(rows);
+    }.bind(this));
+  }
 });
 
 global.Panes = {};

@@ -114,8 +114,8 @@ global.App = {
     if (!this.tabs[idx]) throw "There is no tab with index " + idx;
 
     if (this.activeTab !== null) {
-      this.tabs[this.activeTab].tabHandler.removeClass('active');
-      this.tabs[this.activeTab].content.hide();
+      this.currentTab.tabHandler.removeClass('active');
+      this.currentTab.content.hide();
     }
 
     this.activeTab = idx;
@@ -199,3 +199,21 @@ global.App = {
     return true;
   },
 };
+
+Object.defineProperty(App, "currentTab", {
+  get: function () {
+    return this.activeTabObj();
+  },
+
+  set: function (tab_or_id) {
+    if (typeof tab_or_id == 'number') {
+      this.activateTab(tab_or_id);
+    } else {
+      if (this.tabs.indexOf(tab_or_id) != -1) {
+        this.activateTab(this.tabs.indexOf(tab_or_id));
+      } else {
+        throw "object is not in App.tabs";
+      }
+    }
+  }
+});

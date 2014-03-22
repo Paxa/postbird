@@ -7,6 +7,7 @@ table
       th default
       th primary key
       th Null
+      th
   tbody
     each column in rows
       tr
@@ -16,3 +17,10 @@ table
         td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
         td= column.is_primary_key ? 'yes' : ''
         td= column.is_nullable == 'YES' ? 'yes' : 'no'
+        td
+          a(exec="editColumn") Edit
+          &nbsp;
+          a(exec="deleteColumn") Delete
+
+footer
+  button(exec="addColumn") Add column

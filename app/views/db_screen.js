@@ -46,7 +46,7 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users', 'Extensions', 'Query'].forEach(function(paneName) {
+    ['Users', 'Extensions', 'Query', 'Structure'].forEach(function(paneName) {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
     }.bind(this))
   },
@@ -92,7 +92,9 @@ global.DbScreenView = jClass.extend({
         $u.contextMenu(tableNode, {
           'View': function () {},
           'separator': 'separator',
-          'Rename': function () {},
+          'Rename': function () {
+            
+          },
           'Truncate table' : function () {},
           'Drop table': function() {
             _this.handler.dropTable(schema, table.table_name);
@@ -136,11 +138,6 @@ global.DbScreenView = jClass.extend({
 
   tabContent: function (tabName) {
     return this.tabContents.filter('.' + tabName);
-  },
-
-  renderTableStructureTab: function(rows) {
-    var node = App.renderView('structure_tab', {rows: rows});
-    this.setTabContent('structure', node);
   },
 
   renderContentTab: function (data) {
