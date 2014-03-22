@@ -23,11 +23,11 @@ fi
     #cp -r . ~/postbird.app/Contents/Resources/app.nw
 
     rm ${APP_TARGET_DIR}/build.sh
+    rm ${APP_TARGET_DIR}/run
     rm ${APP_TARGET_DIR}/pg.icns
     rm ${APP_TARGET_DIR}/pg.png
     rm ${APP_TARGET_DIR}/info.plist
     rm -rf ${APP_TARGET_DIR}/notifier.app
-    
 
     # copy icon and plist file
     cp ./pg.icns ${TARGET_DIR}/Contents/Resources

@@ -62,8 +62,8 @@ global.DbScreen = jClass.extend({
   },
 
   fetchTableStructure: function(schema, table, callback) {
-    this.connection.tableStructure(schema, table, function (data) {
-      callback(data.rows);
+    Model.Table(schema, table).getStructure(function (data) {
+      callback(data);
     }.bind(this));
   },
 
@@ -89,9 +89,9 @@ global.DbScreen = jClass.extend({
 
   contentTabActivate: function() {
     this.connection.getTableContent(this.currentSchema, this.currentTable, function(data) {
-      this.connection.tableStructure(this.currentSchema, this.currentTable, function (sdata) {
+      Model.Table(this.currentSchema, this.currentTable).getStructure(function (sdata) {
         data.fields.forEach(function(feild) {
-          sdata.rows.forEach(function(r) {
+          sdata.forEach(function(r) {
             if (r.column_name == feild.name) feild.real_format = r.udt_name;
           });
         });
@@ -146,7 +146,7 @@ global.DbScreen = jClass.extend({
   },
 
   createTable: function (data, callback) {
-    this.connection.createTable(data.name, data.tablespace, function (res, error) {
+    Model.Table.create(data.name, data.tablespace, function (res, error) {
       if (!error) {
         this.omit('table.created');
         this.fetchTablesAndSchemas(function(tables) {
@@ -160,7 +160,7 @@ global.DbScreen = jClass.extend({
   },
 
   dropTable: function (schema, table, callback) {
-    this.connection.dropTable(schema, table, function (res, error) {
+    Model.Table(schema, table).remove(function (res, error) {
       this.omit('table.deleted');
       this.fetchTablesAndSchemas();
       callback && callback(res, error);

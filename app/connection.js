@@ -49,6 +49,7 @@ global.Connection = jClass.extend({
       historyRecord.time = Date.now() - time;
       if (error) {
         historyRecord.error = error;
+        console.error("SQL failed", sql);
         console.error(error);
         if (callback) callback(result, error);
       } else {
@@ -126,38 +127,6 @@ global.Connection = jClass.extend({
     })
   },
 
-  tableStructure: function(schema, table, callback) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
-    this.q(sql, schema, table, function(data) {
-      this.getPrimaryKey(schema, table, function(rows, error) {
-        if (!error) {
-          var keys = rows.map(function(r) {
-            return r.attname;
-          });
-
-          data.rows.forEach(function(row) {
-            row.is_primary_key = keys.indexOf(row.column_name) != -1;
-          });
-        }
-        callback(data);
-      });
-    }.bind(this));
-  },
-
-  getPrimaryKey: function (schema, table, callback) {
-    var sql = "SELECT pg_attribute.attname \
-    FROM pg_index, pg_class, pg_attribute \
-    WHERE \
-      pg_class.oid = '%s'::regclass AND \
-      indrelid = pg_class.oid AND \
-      pg_attribute.attrelid = pg_class.oid AND \
-      pg_attribute.attnum = any(pg_index.indkey) \
-      AND indisprimary;";
-    this.q(sql, table, function(data, error) {
-      callback((data || {}).rows, error);
-    });
-  },
-
   getExtensions: function(callback) {
     // 'select * from pg_available_extensions order by (installed_version is null), name;'
     this.q('select * from pg_available_extensions order by name;', function(data) {
@@ -221,20 +190,7 @@ global.Connection = jClass.extend({
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     this.q(sql, dbname, callback);
-  },
-
-  createTable: function (tableName, schema, callback) {
-    sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY)";
-    if (schema != '' && schema != 'public') {
-      sql += sprintf(" TABLESPACE %s", schema);
-    }
-
-    this.q(sql, tableName, callback);
-  },
-
-  dropTable: function (schema, table, callback) {
-    this.q("DROP TABLE %s", table, callback);
-  },
+  }
 });
 
 global.Connection.instances = [];

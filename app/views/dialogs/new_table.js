@@ -8,7 +8,7 @@ global.Dialog.NewTable = global.Dialog.extend({
 
   showWindow: function () {
     this.handler.connection.tableSchemas(function(schemas) {
-      console.log(schemas);
+      //console.log(schemas);
       var nodes = App.renderView('dialogs/new_table');
       this.content = this.renderWindow(this.title, nodes);
 
