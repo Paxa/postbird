@@ -12,6 +12,11 @@ if [ -e "$TARGET_DIR" ]; then
   rm -rf $TARGET_DIR
 fi
 
+if [ -e "$HOME/postbird.nw" ]; then
+  echo "Removing existing nw build"
+  rm -rf $HOME/postbird.nw
+fi
+
 #read -p "Is node-webkit.app in your applications folder (y/n)? " -n 1 -r
 #if [[ $REPLY =~ ^[Yy]$ ]]
 #then
@@ -38,6 +43,10 @@ fi
     # mv postbird.app ../../bin/
 
     echo -e "\npostbird.app copied to home directory"
+    tmp_dir=`pwd`
+    cd ${APP_TARGET_DIR}
+    zip -r -q ~/postbird.nw *
+    cd $tmp_dir
 #else
 #  echo -e "\nPlease place node-webkit.app in your applications folder and run the script again"
 #fi
