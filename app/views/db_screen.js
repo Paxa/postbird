@@ -48,7 +48,7 @@ global.DbScreenView = jClass.extend({
   initializePanes: function () {
     ['Users', 'Extensions', 'Query', 'Structure'].forEach(function(paneName) {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
-    }.bind(this))
+    }.bind(this));
   },
 
   renderDbList: function (databases) {
@@ -73,27 +73,32 @@ global.DbScreenView = jClass.extend({
   renderTablesAndSchemas: function (data) {
     this.tablesList.empty();
     var _this = this;
-    var schema;
-    for (schema in data) {
-      var tables = data[schema];
+    $u.each(data, function (schema, tables) {
       var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
       if (schema == 'public') $u(schemaTree[0]).addClass('open');
 
-      !function (t) {
-        t.find('span').bind('click', function() {
-          t.toggleClass('open');
-        });
-
-      }($u(schemaTree[0]));
+      $u(schemaTree[0]).find('span').bind('click', function() {
+        $u(schemaTree[0]).toggleClass('open');
+      });
 
       data[schema].forEach(function(table) {
         var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
 
+        $u(tableNode).single_double_click(function(e) {
+          e.preventDefault();
+          _this.handler.tableSelected(schema, table.table_name, tableNode);
+        }, function(e) {
+          e.preventDefault();
+          _this.renameTable(tableNode, table.table_name);
+        });
+
         $u.contextMenu(tableNode, {
-          'View': function () {},
+          'View': function () {
+            _this.handler.tableSelected(schema, table.table_name, tableNode);
+          },
           'separator': 'separator',
           'Rename': function () {
-            
+            _this.renameTable(tableNode, table.table_name);
           },
           'Truncate table' : function () {},
           'Drop table': function() {
@@ -103,18 +108,27 @@ global.DbScreenView = jClass.extend({
         });
 
         $u(schemaTree.list).append(tableNode);
-
-        !function (schema) {
-          $u(tableNode).bind('click', function(e) {
-            e && e.preventDefault();
-            _this.handler.tableSelected(schema, table.table_name, e.target);
-          });
-        }(schema);
-
       });
 
-      this.tablesList.append(schemaTree[0]);
-    }
+      _this.tablesList.append(schemaTree[0]);
+    });
+  },
+
+  renameTable: function (node, tableName) {
+    node = $u(node);
+    node.html('<input value="' + tableName + '" type=text>');
+    var input = node.find('input');
+    input.focus();
+    setTimeout(function() {
+      input[0].selectionStart = input[0].selectionEnd;
+    }, 20)
+    input.bind('keypress', function(e) {
+      if (e.keyCode == 13) {
+        var newValue = e.target.value;
+        node.html(e.target.value);
+        // Enter pressed... do anything here...
+      }
+    });
   },
 
   showTab: function(name) {

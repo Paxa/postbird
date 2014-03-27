@@ -24,7 +24,7 @@ global.App = {
     /* --- auto connect */
 
     this.setSizes();
-
+    /*
     var i = $dom(['a.inspector', '@']);
     $u(i).bind('click', function() {
       gui.Window.get().showDevTools();
@@ -148,22 +148,10 @@ global.App = {
     }
 
     var html = jade.renderFile(App.root + '/views/' + file + '.jade', new_options);
-
-    //  if (err) throw err;
-      // App.setContent(html);
-      // if (callback) {
-      //   callback(App.container);
-      //   callback(html);
-      // }
-    //});
-
     var node = $u('<div>').html(html).children();
     return $u(node);
   },
 
-  //setContent: function (html) {
-  //  App.container.innerHTML = html;
-  //},
   setSizes: function() {
     var height = $u(window).height();
     var topOffset = $u('body > #tabs').height();

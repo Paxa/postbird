@@ -25,19 +25,13 @@ require('./app/models/table');
 
 require('./app/notificator');
 
-//var anyDB = require('any-db');
-
-
 process.on("uncaughtException", function(err) {
   console.error('error: ', err);
   console.log(err.stack);
   window.alert(err);
 });
 
-//var appRoot = process.mainModule.filename.replace(/\/index.html/, '');
-
 global.$u = Zepto;
-//var connection = null;
 global.$ = function (selector) {
   return document.querySelector(selector);
 };
@@ -116,8 +110,3 @@ Zepto(document).ready(function() {
     });
   });
 });
-
-
-//require('./lib/codemirror/codemirror.js');
-//require('./lib/codemirror/sql-hint.js');
-//require('./lib/codemirror/sql/sql.js');
