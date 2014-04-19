@@ -182,7 +182,12 @@ global.DbScreen = jClass.extend({
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
       this.view.structure.renderTab(rows);
     }.bind(this));
-  }
+  },
+
+  addColumn: function (data, callback) {
+    var t = Model.Table(this.currentSchema, this.currentTable);
+    t.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, callback);
+  },
 });
 
 global.Panes = {};

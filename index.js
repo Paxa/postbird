@@ -20,9 +20,11 @@ require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/new_table');
 require('./app/views/dialogs/edit_user');
 require('./app/views/dialogs/new_database');
+require('./app/views/dialogs/new_column');
 
 require('./app/models/base');
 require('./app/models/table');
+require('./app/models/column');
 
 require('./app/notificator');
 

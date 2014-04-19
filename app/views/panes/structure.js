@@ -4,6 +4,10 @@ global.Panes.Structure = global.Pane.extend({
     //console.log('global.Panes.Structure#renderTab');
     //console.log(rows);
     this.renderViewToPane('structure', 'structure_tab', {rows: rows});
+  },
+
+  addColumnForm: function () {
+    new Dialog.NewColumn(this.handler);
   }
 
 });

@@ -42,7 +42,19 @@ global.Model.Table = Model.base.extend({
     this.q(sql, this.table, function(data, error) {
       callback((data || {}).rows, error);
     });
-  }
+  },
+
+  // ALTER TABLE mytable ADD COLUMN mycolumn character varying(50) NOT NULL DEFAULT 'foo';
+  // TODO: Somewhere here is wrong
+  addColumn: function (name, type, max_length, default_value, is_null, callback) {
+    var type_with_length = max_length ? type + "(" + max_length + ")" : type;
+    var null_sql = is_null ? "NULL" : "NOT NULL";
+    var default_sql = default_value === undefined ? '' : 'DEFAULT ' + JSON.stringify(default_value);
+    sql = "ALTER TABLE %s ADD %s %s %s %s;"
+    this.q(sql, this.table, name, type_with_length, default_sql, null_sql, function(data, error) {
+      callback();
+    });
+  },
 });
 
 Model.Table.create = function create (tableName, schema, callback) {
