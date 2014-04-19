@@ -5,7 +5,7 @@ global.Model.Table = Model.base.extend({
   },
 
   rename: function (new_name, callback) {
-    
+    this.q(sql = "ALTER INDEX %s RENAME TO  %s", this.table, new_name, callback);
   },
 
   remove: function(callback) {
@@ -45,13 +45,16 @@ global.Model.Table = Model.base.extend({
   }
 });
 
-Model.Table.create = function (tableName, schema, callback) {
+Model.Table.create = function create (tableName, schema, callback) {
+                           Arg.assert('string', 'string', 'function');
+
   sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY)";
   if (schema != '' && schema != 'public') {
     sql += sprintf(" TABLESPACE %s", schema);
   }
 
-  Model.base.connection().q(sql, tableName, callback);
+  console.log(sql, tableName);
+  Model.base.q(sql, tableName, callback);
 };
 
 Model.Table.l = function (schema, table_name) {

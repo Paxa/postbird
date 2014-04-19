@@ -45,7 +45,7 @@ global.DbScreen = jClass.extend({
 
   fetchTablesAndSchemas: function (callback) {
     this.connection.tablesAndSchemas(function(data) {
-      this.view.renderTablesAndSchemas(data);
+      this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
       callback && callback(data);
     }.bind(this));
   },
@@ -162,6 +162,17 @@ global.DbScreen = jClass.extend({
   dropTable: function (schema, table, callback) {
     Model.Table(schema, table).remove(function (res, error) {
       this.omit('table.deleted');
+      this.fetchTablesAndSchemas();
+      callback && callback(res, error);
+    }.bind(this));
+  },
+
+  renameTable: function (schema, tableName, newName, callback) {
+    Model.Table(schema, tableName).rename(newName, function (res, error) {
+      if (this.currentTable == tableName) {
+        this.currentTable = newName;
+      }
+      this.omit('table.renamed');
       this.fetchTablesAndSchemas();
       callback && callback(res, error);
     }.bind(this));

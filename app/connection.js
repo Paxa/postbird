@@ -4,6 +4,7 @@ var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
 global.Connection = jClass.extend({
+  className: 'Connection',
   defaultDatabaseName: 'template1',
   history: [],
 
@@ -63,7 +64,7 @@ global.Connection = jClass.extend({
   q: function(sql) {
     var params = [], i;
     var callback = arguments[arguments.length - 1];
-    for (i = 1; i < arguments.length - 1; i ++) params.push(arguments[i]);
+    for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
 
     this.query(vsprintf(sql, params), callback);
   },

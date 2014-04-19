@@ -2,6 +2,7 @@
 require('./lib/dominate');
 require('./lib/jquery.class');
 require('./lib/alertify');
+require('./lib/arg');
 
 require('./app');
 require('./app/connection');

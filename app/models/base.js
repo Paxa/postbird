@@ -1,6 +1,8 @@
 global.Model = {};
 
 global.Model.base = jClass.extend({
+  className: 'Model.base',
+
   init: function(data) {
     this.data = data;
   },
@@ -24,4 +26,9 @@ Model.base.connection = function() {
   } else {
     throw "Current tab is not connected yet";
   }
+};
+
+Model.base.q = function () {
+  var connection = Model.base.connection();
+  return connection.q.apply(connection, arguments);
 };

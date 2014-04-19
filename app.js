@@ -5,8 +5,6 @@ var colors = require('colors');
 
 global.log = require('./app/logger').make('info');
 
-log.info("test logger");
-
 require('./sugar/sugar');
 
 global.App = {

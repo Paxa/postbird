@@ -70,7 +70,7 @@ global.DbScreenView = jClass.extend({
     ));
   },
 
-  renderTablesAndSchemas: function (data) {
+  renderTablesAndSchemas: function (data, currentSchema, currentTable) {
     this.tablesList.empty();
     var _this = this;
     $u.each(data, function (schema, tables) {
@@ -81,6 +81,11 @@ global.DbScreenView = jClass.extend({
         $u(schemaTree[0]).toggleClass('open');
       });
 
+      // open if selected
+      if (currentSchema == schema) {
+        $u(schemaTree[0]).addClass('open');
+      }
+
       data[schema].forEach(function(table) {
         var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
 
@@ -89,7 +94,7 @@ global.DbScreenView = jClass.extend({
           _this.handler.tableSelected(schema, table.table_name, tableNode);
         }, function(e) {
           e.preventDefault();
-          _this.renameTable(tableNode, table.table_name);
+          _this.renameTable(tableNode, schema, table.table_name);
         });
 
         $u.contextMenu(tableNode, {
@@ -98,7 +103,7 @@ global.DbScreenView = jClass.extend({
           },
           'separator': 'separator',
           'Rename': function () {
-            _this.renameTable(tableNode, table.table_name);
+            _this.renameTable(tableNode, schema, table.table_name);
           },
           'Truncate table' : function () {},
           'Drop table': function() {
@@ -108,13 +113,17 @@ global.DbScreenView = jClass.extend({
         });
 
         $u(schemaTree.list).append(tableNode);
+
+        if (currentSchema == schema && table.table_name == currentTable) {
+          $u(tableNode).addClass('selected');
+        }
       });
 
       _this.tablesList.append(schemaTree[0]);
     });
   },
 
-  renameTable: function (node, tableName) {
+  renameTable: function (node, schema, tableName) {
     node = $u(node);
     node.html('<input value="' + tableName + '" type=text>');
     var input = node.find('input');
@@ -126,9 +135,10 @@ global.DbScreenView = jClass.extend({
       if (e.keyCode == 13) {
         var newValue = e.target.value;
         node.html(e.target.value);
+        this.handler.renameTable(schema, tableName, newValue);
         // Enter pressed... do anything here...
       }
-    });
+    }.bind(this));
   },
 
   showTab: function(name) {
