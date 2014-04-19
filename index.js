@@ -26,8 +26,8 @@ require('./app/models/table');
 require('./app/notificator');
 
 process.on("uncaughtException", function(err) {
-  console.error('error: ', err);
-  console.log(err.stack);
+  log.error('error: ', err.red);
+  log.info(err.stack);
   window.alert(err);
 });
 

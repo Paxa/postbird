@@ -1,5 +1,13 @@
 var jade = require('jade');
-//var fs = require('fs');
+var fs = require('fs');
+
+var colors = require('colors');
+
+global.log = require('./app/logger').make('info');
+
+log.info("test logger");
+
+require('./sugar/sugar');
 
 global.App = {
   root: process.mainModule.filename.replace(/\/index.html/, ''),
@@ -70,7 +78,7 @@ global.App = {
 
     tabData.activate = function () {
       if (App.tabs.indexOf(tabData) == -1) {
-        console.log('Try to activate removed tab', tabData);
+        log.info('Try to activate removed tab', tabData);
       }
       App.activateTab(App.tabs.indexOf(tabData));
     };
@@ -133,7 +141,7 @@ global.App = {
   },
 
   addDbScreen: function(connection, connectionName, do_activate) {
-    console.log(connectionName, do_activate);
+    log.info(connectionName, do_activate);
     if (connectionName == '') connectionName = false;
     var dbs = new DbScreen(connection);
     return this.addTab(connectionName || 'DB', dbs.view.content, dbs);

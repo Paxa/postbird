@@ -19,7 +19,7 @@ global.Connection = jClass.extend({
     var connectString = 'postgres://' + options.user + ':' + 
       options.password + '@' + options.host + ':' + 
       options.port + '/' + database;
-    console.log('Connecting to', connectString);
+    log.info('Connecting to', connectString);
 
     this.connection = anyDB.createConnection(connectString, function (error) {
       if (error) {
@@ -37,7 +37,7 @@ global.Connection = jClass.extend({
   },
 
   query: function (sql, callback) {
-    process.stdout.write("SQL: " + sql + "\n");
+    process.stdout.write("SQL: " + sql.green + "\n");
     var historyRecord = {
       sql: sql,
       date: (new Date())
