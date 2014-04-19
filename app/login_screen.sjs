@@ -44,12 +44,12 @@ global.LoginScreen = jClass.extend({
   },
 
   renameConnection: function (name) {
-    window.alertify.prompt("Rename connection?", function (confirm, newName) {
+    window.alertify.prompt("Rename connection?", lambda (confirm, newName) {
       if (confirm) {
         App.renameConnection(name, newName);
         this.fillSavedConnections();
       }
-    }.bind(this), name);
+    }, name);
   },
 
   deleteConnection: function (name) {
@@ -89,7 +89,7 @@ global.LoginScreen = jClass.extend({
       database: this.defaultDatabaseName
     };
 
-    var conn = new Connection(options, function (status, message) {
+    var conn = new Connection(options, lambda (status, message) {
       if (status) {
         App.addDbScreen(conn, this.connectionName).activate();
         //App.lastAddedTab().activate();
@@ -99,7 +99,7 @@ global.LoginScreen = jClass.extend({
         //window.alert('' + message);
         window.alertify.alert('' + message);
       }
-    }.bind(this));
+    });
     global.conn = conn; // TODO: clean
   }
 });
