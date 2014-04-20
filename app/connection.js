@@ -16,6 +16,10 @@ global.Connection = jClass.extend({
   },
 
   connectToServer: function (options, callback) {
+    // set defaults
+    if (options.port == undefined) options.port = '5432';
+    if (options.host == undefined) options.host = 'localhost';
+
     var database = options.database || this.defaultDatabaseName;
     var connectString = 'postgres://' + options.user + ':' + 
       options.password + '@' + options.host + ':' + 
