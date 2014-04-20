@@ -1,3 +1,5 @@
+var sprintf = require("sprintf-js").sprintf;
+
 global.Model.Table = Model.base.extend({
   init: function (schema, table_name) {
     this.schema = schema;
@@ -10,6 +12,10 @@ global.Model.Table = Model.base.extend({
 
   remove: function(callback) {
     this.q("DROP TABLE %s", this.table, callback);
+  },
+
+  drop: function (callback) {
+    this.remove(callback);
   },
 
   getStructure: function (callback) {
@@ -49,15 +55,66 @@ global.Model.Table = Model.base.extend({
   addColumn: function (name, type, max_length, default_value, is_null, callback) {
     var type_with_length = max_length ? type + "(" + max_length + ")" : type;
     var null_sql = is_null ? "NULL" : "NOT NULL";
-    var default_sql = default_value === undefined ? '' : 'DEFAULT ' + JSON.stringify(default_value);
+    var default_sql = this.default_sql(default_value);
     sql = "ALTER TABLE %s ADD %s %s %s %s;"
     this.q(sql, this.table, name, type_with_length, default_sql, null_sql, function(data, error) {
       callback();
     });
   },
+
+  default_sql: function (default_value) {
+    if (default_value !== undefined && default_value !== '') {
+      return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'")
+    } else {
+      return '';
+    }
+  },
+
+  decribe: function () {
+    var sql_find_oid = (function () { /*
+      SELECT c.oid,
+        n.nspname,
+        c.relname
+      FROM pg_catalog.pg_class c
+           LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+      WHERE c.relname ~ '^(%s)$'
+        AND pg_catalog.pg_table_is_visible(c.oid)
+      ORDER BY 2, 3
+    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+
+    var sql_find_types = (function () { /*
+      SELECT a.attname,
+        pg_catalog.format_type(a.atttypid, a.atttypmod),
+        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+         FROM pg_catalog.pg_attrdef d
+         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef),
+        a.attnotnull, a.attnum,
+        (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t
+         WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation,
+        NULL AS indexdef,
+        NULL AS attfdwoptions
+      FROM pg_catalog.pg_attribute a
+      WHERE a.attrelid = '%d' AND a.attnum > 0 AND NOT a.attisdropped
+      ORDER BY a.attnum;
+    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+
+    var sql_find_index = (function () { /*
+      SELECT c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid, pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
+        pg_catalog.pg_get_constraintdef(con.oid, true), contype, condeferrable, condeferred, c2.reltablespace
+      FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
+        LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
+      WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
+      ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;
+    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+
+    var _this = this;
+    this.q(sql_find_oid, this.table, function (oid_data) {
+      
+    });
+  },
 });
 
-Model.Table.create = function create (tableName, schema, callback) {
+Model.Table.create = function create (schema, tableName, callback) {
                            Arg.assert('string', 'string', 'function');
 
   sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY)";
@@ -65,8 +122,9 @@ Model.Table.create = function create (tableName, schema, callback) {
     sql += sprintf(" TABLESPACE %s", schema);
   }
 
-  console.log(sql, tableName);
-  Model.base.q(sql, tableName, callback);
+  Model.base.q(sql, tableName, function (res, error) {
+    callback(Model.Table(schema, tableName), res, error);
+  });
 };
 
 Model.Table.l = function (schema, table_name) {

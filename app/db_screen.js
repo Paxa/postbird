@@ -146,7 +146,7 @@ global.DbScreen = jClass.extend({
   },
 
   createTable: function (data, callback) {
-    Model.Table.create(data.name, data.tablespace, function (res, error) {
+    Model.Table.create(data.tablespace, data.name, function (table, res, error) {
       if (!error) {
         this.omit('table.created');
         this.fetchTablesAndSchemas(function(tables) {
@@ -186,7 +186,10 @@ global.DbScreen = jClass.extend({
 
   addColumn: function (data, callback) {
     var t = Model.Table(this.currentSchema, this.currentTable);
-    t.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, callback);
+    t.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
+      this.structureTabActivate();
+      callback();
+    }.bind(this));
   },
 });
 

@@ -18,9 +18,9 @@ table
         td= column.is_primary_key ? 'yes' : ''
         td= column.is_nullable == 'YES' ? 'yes' : 'no'
         td
-          a(exec="editColumn") Edit
+          a(exec="editColumn('" + column.column_name + "')") Edit
           &nbsp;
-          a(exec="deleteColumn") Delete
+          a(exec="deleteColumn('" + column.column_name + "')") Delete
 
 footer
   button(exec="addColumnForm") Add column

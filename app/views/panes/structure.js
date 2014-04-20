@@ -8,6 +8,9 @@ global.Panes.Structure = global.Pane.extend({
 
   addColumnForm: function () {
     new Dialog.NewColumn(this.handler);
-  }
+  },
 
+  editColumn: function (column_name) {
+    
+  },
 });

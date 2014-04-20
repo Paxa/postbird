@@ -7,13 +7,14 @@ form
   p
     label Type
     select(name="type")
+      option
       each types, group in groupedTypes
         optgroup(label = group)
         each type in types
           if type
             option(value = type.name, title = type.description)= type.name
   p
-    = "See"
+    = "See "
     a(href="http://www.postgresql.org/docs/8.4/static/datatype.html", target="new") documentation for datatypes
 
     p
