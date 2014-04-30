@@ -1,8 +1,10 @@
 module.exports = function(grunt) {
     var path = require("path");
+    var exec = require("child_process").exec;
 
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mocha-test');
 
     var moduleCache = {};
@@ -63,6 +65,14 @@ module.exports = function(grunt) {
                 dest: "browser/scripts/src/"
             },
 
+            // for source maps support when using debug.js
+            nodeSrc: {
+                expand: true,
+                flatten: true,
+                src: "src/*",
+                dest: "build/lib/src/"
+            },
+
             dist: {
                 expand: true,
                 flatten: true,
@@ -76,8 +86,11 @@ module.exports = function(grunt) {
                 cwd: "test/",
                 src: "fixtures/**",
                 dest: "build/"
+            },
+            testUnit: {
+                src: "test/test_expander_units.js",
+                dest: "build/test_expander_units.js"
             }
-
         },
         mochaTest: {
             test: {
@@ -97,6 +110,12 @@ module.exports = function(grunt) {
                 filter: function(name) {
                     return /.*test_es6.*/.test(name);
                 }
+            },
+            unit: {
+                options:{
+                    colors: !grunt.option('no-color')
+                },
+                src: ["build/test_expander_units.js"]
             }
         },
         jshint: {
@@ -109,8 +128,48 @@ module.exports = function(grunt) {
                 loopfunc: true
             },
             all: ["build/lib/*.js"]
+        },
+        pandoc: {
+            options: {
+                pandocOptions: ["--to=html5",  
+                                "--standalone", 
+                                "--toc", 
+                                "--number-sections", 
+                                "--include-in-header=doc/main/style/main.css"]
+            },
+            files: {
+                expand: true,
+                flatten: true,
+                src: "doc/main/*.md",
+                dest: "doc/main/",
+                ext: ".html"
+            }
+        },
+        watch: {
+            docs: {
+                files: ["doc/**/*.md", "doc/**/*.css"],
+                tasks: ["pandoc"]
+            },
+            sweetjs: {
+                files: ["src/*.js", "test/**/*.js", "macros/*"],
+                tasks: ["default"]
+            }
         }
     });
+
+    grunt.registerMultiTask("pandoc", function() {
+        var cb = this.async();
+        var options = this.options({});
+        var pandocOpts = options.pandocOptions.join(" ");
+        this.files.forEach(function(f) {
+
+            f.src.forEach(function(file) {
+                var args = ["-o " + f.dest].concat(pandocOpts.slice())
+                                          .concat(file);
+                exec("pandoc " + args.join(" "), cb);
+            })
+        })
+    })
 
 
     grunt.registerMultiTask("build", function() {
@@ -164,10 +223,18 @@ module.exports = function(grunt) {
                                 "copy:testFixtures",
                                 "mochaTest:test"]);
 
+    grunt.registerTask("unit", ["build:sweetjs", 
+                                "copy:scopedEval",
+                                "copy:buildMacros",
+                                "copy:nodeSrc",
+                                "copy:testUnit", 
+                                "mochaTest:unit"]);
+
     grunt.registerTask("default", ["copy:scopedEval",
                                    "copy:buildMacros",
                                    "build",
                                    "copy:browserSrc",
+                                   "copy:nodeSrc",
                                    "copy:browserMacros",
                                    "copy:scopedEvalBrowser",
                                    "copy:testFixtures",
@@ -175,6 +242,7 @@ module.exports = function(grunt) {
                                    "jshint"]);
 
     grunt.registerTask("full", ["default", "mochaTest:es6"]);
+    grunt.registerTask("docs", ["pandoc"]);
 
     function readModule(mod) {
         var path = require.resolve(mod);

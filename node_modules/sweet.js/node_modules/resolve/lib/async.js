@@ -85,6 +85,9 @@ module.exports = function resolve (x, opts, cb) {
                 }
                 
                 if (pkg.main) {
+                    if (pkg.main === '.' || pkg.main === './'){
+                        pkg.main = 'index'
+                    }
                     loadAsFile(path.resolve(x, pkg.main), pkg, function (err, m, pkg) {
                         if (err) return cb(err);
                         if (m) return cb(null, m, pkg);
