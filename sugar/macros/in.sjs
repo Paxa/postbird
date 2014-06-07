@@ -9,4 +9,4 @@ macro (in?) {
   }
 }
 
-export in?;
+export (in?);

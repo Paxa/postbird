@@ -11,4 +11,4 @@ macro (::) {
   }
 }
 
-export ::;
+export (::);
