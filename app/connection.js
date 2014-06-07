@@ -7,6 +7,7 @@ global.Connection = jClass.extend({
   className: 'Connection',
   defaultDatabaseName: 'template1',
   history: [],
+  logging: true,
 
   init: function(options, callback) {
     this.options = options;
@@ -42,7 +43,7 @@ global.Connection = jClass.extend({
   },
 
   query: function (sql, callback) {
-    process.stdout.write("SQL: " + sql.green + "\n");
+    if (this.logging) process.stdout.write("SQL: " + sql.green + "\n");
     var historyRecord = {
       sql: sql,
       date: (new Date())
@@ -107,6 +108,12 @@ global.Connection = jClass.extend({
     this.q('show %s', variable, function (data, error) {
       var vname = Object.keys(data.rows[0])[0];
       callback(data.rows[0][vname]);
+    });
+  },
+
+  publicTables: function(callback) {
+    this.query("SELECT * FROM information_schema.tables where table_schema = 'public';", function(rows, error) {
+      callback(rows.rows, error);
     });
   },
 

@@ -7,7 +7,10 @@ global.Model.Table = Model.base.extend({
   },
 
   rename: function (new_name, callback) {
-    this.q(sql = "ALTER INDEX %s RENAME TO  %s", this.table, new_name, callback);
+    this.q(sql = "ALTER INDEX %s RENAME TO  %s", this.table, new_name, function(data, error) {
+      this.table = new_name;
+      callback(error);
+    }.bind(this));
   },
 
   remove: function(callback) {
@@ -70,7 +73,8 @@ global.Model.Table = Model.base.extend({
     }
   },
 
-  decribe: function () {
+  // find indexes
+  describe: function (callback) {
     var sql_find_oid = (function () { /*
       SELECT c.oid,
         n.nspname,
@@ -108,22 +112,39 @@ global.Model.Table = Model.base.extend({
     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
     var _this = this;
-    this.q(sql_find_oid, this.table, function (oid_data) {
-      
-    });
+    this.q(sql_find_oid, this.table, function (oid_data, error) {
+      var oid = oid_data.rows[0].oid;
+      this.q(sql_find_types, oid, function(types_data, error) {
+        this.q(sql_find_index, oid, function(indexes_rows, error) {
+          callback(indexes_rows.rows);
+        }.bind(this));
+      }.bind(this));
+    }.bind(this));
   },
 });
 
 Model.Table.create = function create (schema, tableName, callback) {
                            Arg.assert('string', 'string', 'function');
 
-  sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY)";
+  sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY);";
   if (schema != '' && schema != 'public') {
     sql += sprintf(" TABLESPACE %s", schema);
   }
 
   Model.base.q(sql, tableName, function (res, error) {
     callback(Model.Table(schema, tableName), res, error);
+  });
+};
+
+Model.Table.publicTables = function publicTables (callback) {
+  Model.base.connection().publicTables(function(tables, error) {
+
+    var data = [];
+    tables.forEach(function(e) {
+      data.push('' + e.table_name);
+    });
+
+    callback(data);
   });
 };
 
