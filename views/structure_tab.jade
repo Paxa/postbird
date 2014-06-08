@@ -24,3 +24,26 @@ table
 
 footer
   button(exec="addColumnForm") Add column
+
+h4 Indexes
+table
+  thead
+    tr
+      th name
+      th p. key
+      th uniq
+      th columns
+      th
+    each index in indexes
+      tr
+        td= index.relname
+        td= index.indisprimary ? 'Yes' : 'No'
+        td= index.indisunique ? 'Yes' : 'No'
+        td= index.pg_get_constraintdef
+        td
+          a(exec="editIndex('" + index.relname + "')") Edit
+          &nbsp;
+          a(exec="deleteIndex('" + index.relname + "')") Delete
+
+footer
+  button(exec="addIndexForm") Add index

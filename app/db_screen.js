@@ -180,7 +180,9 @@ global.DbScreen = jClass.extend({
 
   structureTabActivate: function () {
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
-      this.view.structure.renderTab(rows);
+      Model.Table(this.currentSchema, this.currentTable).describe(function(indexes) {
+        this.view.structure.renderTab(rows, indexes);
+      }.bind(this));
     }.bind(this));
   },
 

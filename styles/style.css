@@ -621,18 +621,18 @@ h4 {
   background-image: linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); }
   .alertify-button:hover, .custom-window p.buttons button:hover {
     outline: none;
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)); }
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), transparent); }
   .alertify-button:focus, .custom-window p.buttons button:focus {
     outline: none;
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
     box-shadow: 0 0 5px #2b72d5; }
   .alertify-button:active, .custom-window p.buttons button:active {
     position: relative;
@@ -752,6 +752,9 @@ h4 {
   display: none;
   padding-top: 5px;
   padding-bottom: 5px; }
+
+footer + h4 {
+  margin-top: 15px; }
 
 .cm-s-mac-classic.CodeMirror {
   color: black;
