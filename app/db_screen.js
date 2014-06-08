@@ -180,19 +180,30 @@ global.DbScreen = jClass.extend({
 
   structureTabActivate: function () {
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
-      Model.Table(this.currentSchema, this.currentTable).describe(function(indexes) {
+      this.tableObj().describe(function(indexes) {
         this.view.structure.renderTab(rows, indexes);
       }.bind(this));
     }.bind(this));
   },
 
   addColumn: function (data, callback) {
-    var t = Model.Table(this.currentSchema, this.currentTable);
-    t.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
+    this.tableObj().addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
       this.structureTabActivate();
       callback();
     }.bind(this));
   },
+
+  addIndex: function (data, callback) {
+    this.tableObj().addIndex(data.name, data.uniq, data.columns, function() {
+      this.structureTabActivate();
+      callback();
+    }.bind(this));
+  },
+
+  // TODO: add caching
+  tableObj: function() {
+    return Model.Table(this.currentSchema, this.currentTable);
+  }
 });
 
 global.Panes = {};

@@ -1,0 +1,22 @@
+
+form
+  p
+    label Name
+    input(name="name")
+
+  p
+    label Columns
+    ul.columns-names
+      each column in columns
+        li
+          label
+            input(type="checkbox", name="columns[" + column.column_name + "]", value= column.column_name)
+            = column.column_name
+  p
+    label Uniq
+    input(type="checkbox", name="uniq", value="1")
+
+  input.pseudo-hidden(type="submit")
+  p.buttons
+    button.ok Add index
+    button.cancel cancel

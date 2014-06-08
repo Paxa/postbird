@@ -39,6 +39,13 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
+  getColumns: function (callback) {
+    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
+    this.q(sql, this.schema, this.table, function(rows) {
+      callback(rows.rows);
+    });
+  },
+
   getPrimaryKey: function (callback) {
     var sql = "SELECT pg_attribute.attname \
     FROM pg_index, pg_class, pg_attribute \
@@ -61,6 +68,16 @@ global.Model.Table = Model.base.extend({
     var default_sql = this.default_sql(default_value);
     sql = "ALTER TABLE %s ADD %s %s %s %s;"
     this.q(sql, this.table, name, type_with_length, default_sql, null_sql, function(data, error) {
+      callback();
+    });
+  },
+
+  addIndex: function (name, uniq, columns, callback) {
+    console.log(name, columns, uniq);
+    var sql = "CREATE %s INDEX %s ON %s(%s);"
+    var uniq_sql = uniq ? 'UNIQUE' : '';
+    var columns_sql = columns.join(', ');
+    this.q(sql, uniq_sql, name, this.table, columns_sql, function(data, error) {
       callback();
     });
   },

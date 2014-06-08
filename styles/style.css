@@ -756,6 +756,14 @@ h4 {
 footer + h4 {
   margin-top: 15px; }
 
+ul.columns-names {
+  margin: 3px auto 10px;
+  text-align: left;
+  width: 70%;
+  border: 1px solid #cccccc; }
+  ul.columns-names li + li {
+    border-top: 1px solid #cccccc; }
+
 .cm-s-mac-classic.CodeMirror {
   color: black;
   background: white;
