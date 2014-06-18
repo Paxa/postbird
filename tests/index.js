@@ -51,6 +51,7 @@ global.assert_true = function assert_true (value) {
 }
 
 require('./spec/table_spec');
+require('./spec/column_spec');
 
 connection.publicTables(function(data) {
   var queue = async.queue(function (fn, callback) {

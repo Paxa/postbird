@@ -16,6 +16,6 @@ global.Panes.Structure = global.Pane.extend({
   },
 
   editColumn: function (column_name) {
-    
+    new Dialog.EditColumn(this.handler, column_name);
   },
 });

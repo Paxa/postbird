@@ -1,8 +1,9 @@
+- data = data || {}
 
 form
   p
     label Name
-    input(name="name")
+    input(name="name", value = data.column_name)
 
   p
     label Type
@@ -12,22 +13,22 @@ form
         optgroup(label = group)
         each type in types
           if type
-            option(value = type.name, title = type.description)= type.name
+            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name
   p
     = "See "
     a(href="http://www.postgresql.org/docs/8.4/static/datatype.html", target="new") documentation for datatypes
 
     p
     label Default value
-    input(name="default_value")
+    input(name="default_value", value = data.column_default)
 
   p
     label Max length
-    input(name="max_length")
+    input(name="max_length", value = data.character_maximum_length)
 
   p
     label
-      input(type="checkbox" name="allow_null" value="1")
+      input(type="checkbox" name="allow_null" value="1", checked = (data.is_nullable == 'YES'))
       = "Allow null"
 
   input.pseudo-hidden(type="submit")

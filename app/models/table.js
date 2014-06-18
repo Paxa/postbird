@@ -39,10 +39,24 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
-  getColumns: function (callback) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
-    this.q(sql, this.schema, this.table, function(rows) {
+  getColumns: function (name, callback) {
+    if (callback == undefined) {
+      callback = name;
+      name = undefined;
+    }
+
+    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;"
+    var cond = name ? " and column_name = '" + name + "'" : '';
+    this.q(sql, this.schema, this.table, cond, function(rows) {
       callback(rows.rows);
+    });
+  },
+
+  getColumnNames: function (callback) {
+    this.getColumns(function (rows) {
+      var names = [];
+      rows.forEach(function(c) { names.push(c.column_name); });
+      callback(names);
     });
   },
 
@@ -72,8 +86,22 @@ global.Model.Table = Model.base.extend({
     });
   },
 
+  getColumnObj: function (name, callback) {
+    this.getColumns(name, function(data) {
+      var row = new Model.Column(data[0].column_name, data[0]);
+      row.table = this;
+      callback(row);
+    }.bind(this));
+  },
+
+  addColumnObj: function (columnObj, callback) {
+    this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, function() {
+      columnObj.table = this;
+      callback(columnObj);
+    }.bind(this));
+  },
+
   addIndex: function (name, uniq, columns, callback) {
-    console.log(name, columns, uniq);
     var sql = "CREATE %s INDEX %s ON %s(%s);"
     var uniq_sql = uniq ? 'UNIQUE' : '';
     var columns_sql = columns.join(', ');
