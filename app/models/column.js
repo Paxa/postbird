@@ -7,9 +7,12 @@ global.Model.Column = Model.base.extend({
       }.bind(this));
 
       // set defaults
-      if (this.default_value == undefined) {
+      if (this.default_value === undefined) {
         this.default_value = null;
       }
+
+      // reset changes on initialization
+      this.changes = {};
 
     } else {
       this._super(data);
@@ -40,13 +43,41 @@ global.Model.Column = Model.base.extend({
     // TODO: finish here
   },
 
-  drop: function (callback) {
-    if (!this.table) {
-      throw "Column should be attached to table. column.table property should be set.";
+  save: function(callback) {
+    this.shouldHaveTable();
+    this.save_renameColumn(function() {
+      callback()
+    }.bind(this));
+    // ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
+    // ALTER TABLE tbl_name RENAME COLUMN col_name TO new_col_name;
+  },
+
+  save_renameColumn: function (callback) {
+    if (this.changes['name']) {
+      var oldName = this.changes['name'][0];
+      var newName = this.changes['name'][1];
+      this.q('ALTER TABLE %s RENAME COLUMN %s TO %s;', this.table.table, oldName, newName, function (rows, error) {
+        if (!error) {
+          delete this.changes['name'];
+        }
+        callback();
+      }.bind(this));
+    } else {
+      callback();
     }
+  },
+
+  drop: function (callback) {
+    this.shouldHaveTable();
     this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, function(data, error) {
       callback();
     });
+  },
+
+  shouldHaveTable: function() {
+    if (!this.table) {
+      throw "Column should be attached to table. column.table property should be set.";
+    }
   }
 });
 
@@ -65,7 +96,12 @@ Object.keys(Model.Column.attributesAliases).forEach(function(attr) {
     },
 
     set: function (value) {
-      return this.data[data_attr] = value;
+      if (this.data[data_attr] != value) {
+        this.changes = this.changes || {};
+        this.changes[attr] = [this.data[data_attr], value];
+        this.data[data_attr] = value;
+      }
+      return this.data[data_attr];
     }
   });
 });

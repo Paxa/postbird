@@ -38,7 +38,8 @@ global.assert = function assert (var1, var2) {
   if (typeof var2 == 'object') var2 = JSON.stringify(var2);
 
   if (var1 !== var2) {
-    throw "'asset' failed: " + String(var1) + " is not " + String(var2);
+    bdd.onError(new Error("'asset' failed: " + String(var1) + " is not " + String(var2)));
+    //throw "'asset' failed: " + String(var1) + " is not " + String(var2);
   }
 };
 
@@ -46,9 +47,14 @@ global.assert_true = function assert_true (value) {
   if (!value) {
     //var stack = new Error().stack;
     //console.log(stack.join("\n"));
-    throw "'assert_true' failed: expected true, got " + String(value);
+    bdd.onError(new Error("'assert_true' failed: expected true, got " + String(value)));
+    //throw "'assert_true' failed: expected true, got " + String(value);
   }
 }
+
+process.on("uncaughtException", function(err) {
+  bdd.onError(err);
+});
 
 require('./spec/table_spec');
 require('./spec/column_spec');

@@ -44,7 +44,6 @@ describe('Model.Table', do
         assert(data[0].indisprimary, true)
         assert(data[0].indisunique, true)
         assert(data[0].pg_get_indexdef, 'CREATE UNIQUE INDEX test_table_pkey ON test_table USING btree (id)')
-        //console.log(data);
         table.drop(done)
       end)
     end)
