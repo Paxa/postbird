@@ -21,32 +21,23 @@ global.Model.Column = Model.base.extend({
     //this.is_primary_key = this. //
   },
 
-  update: function(formData) {
-    var formLikeData = {
-      name: this.data.column_name,
-      type: this.data.data_type,
-      max_length: this.data.character_maximum_length,
-      default_value: this.data.column_default,
-      allow_null: this.data.is_nullable == 'YES'
-    };
-
-    var diff = {};
-    for (var k in formLikeData) {
-      if (data.hasOwnProperty(k)) {
-        if (formLikeData[k] != formData[k]) {
-          diff[k] = formData[k];
-        }
-      }
+  update: function(formData, callback) {
+    for (var attr in formData) {
+      this[attr] = formData;
     }
 
+    this.save(callback);
     console.log(diff);
+    
     // TODO: finish here
   },
 
   save: function(callback) {
     this.shouldHaveTable();
     this.save_renameColumn(function() {
-      callback()
+      this.save_alterType(function() {
+        callback();
+      });
     }.bind(this));
     // ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
     // ALTER TABLE tbl_name RENAME COLUMN col_name TO new_col_name;
@@ -67,6 +58,25 @@ global.Model.Column = Model.base.extend({
     }
   },
 
+  save_alterType: function (callback) {
+    if (this.changes['type'] || this.changes['max_length']) {
+      this.shouldHaveTable();
+      var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
+      var null_sql = this.is_null ? "NULL" : "NOT NULL";
+      null_sql = '';
+      var default_sql = this._default_sql(this.default_value);
+      sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s %s %s USING %s::%s;"
+      this.q(sql, this.table.table, this.name, type_with_length, null_sql, default_sql, this.name, this.type, function(data, error) {
+        if (error) {
+          console.log(error);
+        }
+        callback(error);
+      });
+    } else {
+      callback();
+    }
+  },
+
   drop: function (callback) {
     this.shouldHaveTable();
     this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, function(data, error) {
@@ -77,6 +87,14 @@ global.Model.Column = Model.base.extend({
   shouldHaveTable: function() {
     if (!this.table) {
       throw "Column should be attached to table. column.table property should be set.";
+    }
+  },
+
+  _default_sql: function (default_value) {
+    if (default_value !== undefined && default_value !== '') {
+      return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'")
+    } else {
+      return '';
     }
   }
 });

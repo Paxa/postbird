@@ -42,7 +42,7 @@ global.Dialog.NewColumn = global.Dialog.extend({
 
   groups: {
     "Number": ['bigint', 'integer', 'real', 'smallint', 'double precision'],
-    "Text": ['text', 'character varying', 'character'],
+    "Text": ['text', 'character varying', 'character', 'name'],
     "ID column": ['uuid', 'bigserial', 'serial'],
     "Date": ['date', 'timestamp without time zone', 'timestamp with time zone', 'time without time zone', 'time with time zone'],
     "Boolean": ['boolean'],

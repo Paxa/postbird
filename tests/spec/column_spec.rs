@@ -81,12 +81,22 @@ describe('Model.Column', do
       var column = Model.Column({ name: 'some_column', type: 'integer' })
       table.addColumnObj(column, do |column|
         column.name = 'some_column2'
-        assert(column.changes, {name: ['some_column', 'some_column2']})
+        column.type = 'character varying'
+        column.max_length = 30
+        assert(column.changes, {
+          name: ["some_column", "some_column2"],
+          type: ["integer", "character varying"],
+          max_length: [null, 30]
+        })
         column.save(do
           table.getColumnNames(do |names|
             assert(names, ['id', 'some_column2'])
-            // TODO: check updatin data type and other columns
-            table.drop(done)
+            table.getColumnObj('some_column2', do |column2|
+              assert(column2.type, 'character varying')
+              assert(column2.max_length, 30)
+              // TODO: check updatin data type and other attributes
+              table.drop(done)
+            end)
           end)
         end)
       end)
