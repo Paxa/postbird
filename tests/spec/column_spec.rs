@@ -78,14 +78,18 @@ describe('Model.Column', do
 
   it('should update column attributes', do |done|
     Model.Table.create('public', 'test_table', do |table, res, error|
-      var column = Model.Column({ name: 'some_column', type: 'integer' })
+      var column = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
       table.addColumnObj(column, do |column|
         column.name = 'some_column2'
+        column.allow_null = true
         column.type = 'character varying'
+        column.default_value = "Foo"
         column.max_length = 30
         assert(column.changes, {
           name: ["some_column", "some_column2"],
+          allow_null: [false, true],
           type: ["integer", "character varying"],
+          default_value: [null, "Foo"],
           max_length: [null, 30]
         })
         column.save(do
@@ -94,11 +98,27 @@ describe('Model.Column', do
             table.getColumnObj('some_column2', do |column2|
               assert(column2.type, 'character varying')
               assert(column2.max_length, 30)
-              // TODO: check updatin data type and other attributes
+              // here is little magic with default value, it comes with type in postgres
+              assert(column2.default_value, "'Foo'::character varying")
+              assert(column2.allow_null, true)
               table.drop(done)
             end)
           end)
         end)
+      end)
+    end)
+  end)
+
+  it('should have getter "attributes"', do |done|
+    Model.Table.create('public', 'test_table', do |table, res, error|
+      var column = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+      table.addColumnObj(column, do |column|
+        assert(column.attributes, {
+          name: 'some_column',
+          type: 'integer',
+          allow_null: false
+        })
+        table.drop(done)
       end)
     end)
   end)

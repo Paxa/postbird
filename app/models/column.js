@@ -23,24 +23,31 @@ global.Model.Column = Model.base.extend({
 
   update: function(formData, callback) {
     for (var attr in formData) {
-      this[attr] = formData;
+      this[attr] = formData[attr];
     }
 
     this.save(callback);
-    console.log(diff);
-    
     // TODO: finish here
   },
 
   save: function(callback) {
     this.shouldHaveTable();
-    this.save_renameColumn(function() {
-      this.save_alterType(function() {
-        callback();
+    if (!this.changes || Object.keys(this.changes).length == 0) {
+      //console.log("no changes");
+      callback();
+      return;
+    }
+    var _this = this;
+    _this.save_renameColumn(function() {
+      _this.save_alterType(function() {
+        _this.save_alterNullable(function() {
+          _this.save_alterDefault(function() {
+            delete this.changes;
+            callback();
+          });
+        });
       });
     }.bind(this));
-    // ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
-    // ALTER TABLE tbl_name RENAME COLUMN col_name TO new_col_name;
   },
 
   save_renameColumn: function (callback) {
@@ -58,18 +65,37 @@ global.Model.Column = Model.base.extend({
     }
   },
 
+  // TODO: http://www.postgresql.org/docs/9.1/static/sql-altertable.html
   save_alterType: function (callback) {
     if (this.changes['type'] || this.changes['max_length']) {
       this.shouldHaveTable();
       var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
-      var null_sql = this.is_null ? "NULL" : "NOT NULL";
-      null_sql = '';
+      sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s USING %s::%s;"
+      this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, function(data, error) {
+        callback(error);
+      });
+    } else {
+      callback();
+    }
+  },
+
+  save_alterNullable: function(callback) {
+    if (this.changes['allow_null']) {
+      var null_sql = this.allow_null ? "DROP NOT NULL" : "SET NOT NULL";
+      sql = "ALTER TABLE %s ALTER COLUMN %s %s;"
+      this.q(sql, this.table.table, this.name, null_sql, function(data, error) {
+        callback(error);
+      });
+    } else {
+      callback();
+    }
+  },
+
+  save_alterDefault: function(callback) {
+    if (this.changes['default_value']) {
       var default_sql = this._default_sql(this.default_value);
-      sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s %s %s USING %s::%s;"
-      this.q(sql, this.table.table, this.name, type_with_length, null_sql, default_sql, this.name, this.type, function(data, error) {
-        if (error) {
-          console.log(error);
-        }
+      sql = "ALTER TABLE %s ALTER COLUMN %s SET %s;"
+      this.q(sql, this.table.table, this.name, default_sql, function(data, error) {
         callback(error);
       });
     } else {
@@ -114,6 +140,10 @@ Object.keys(Model.Column.attributesAliases).forEach(function(attr) {
     },
 
     set: function (value) {
+      if (attr == 'max_length') {
+        value = parseInt(value, 10);
+        if (isNaN(value)) value = null;
+      }
       if (this.data[data_attr] != value) {
         this.changes = this.changes || {};
         this.changes[attr] = [this.data[data_attr], value];
@@ -124,13 +154,37 @@ Object.keys(Model.Column.attributesAliases).forEach(function(attr) {
   });
 });
 
+// accept and return true/false
+// handle inside "YES" and "FALSE"
+
 Object.defineProperty(Model.Column.prototype, "allow_null", {
   get: function () {
     return (this.data.is_nullable == 'YES');
   },
 
   set: function (value) {
-    return this.data.is_nullable = value ? 'YES' : 'NO';
+    // convert pseudo true (1, "1", "true") => true
+    value = [true, "true", 1, "1", "yes"].indexOf(value) != -1;
+    var newValue = value ? "YES" : "NO";
+    if (newValue != this.data.is_nullable) {
+      this.changes = this.changes || {};
+      this.changes['allow_null'] = [this.allow_null, value];
+      this.data.is_nullable = newValue;
+    }
+
+    return this.data.is_nullable == "YES";
+  }
+});
+
+Object.defineProperty(Model.Column.prototype, "attributes", {
+  get: function () {
+    return {
+      name: this.name,
+      type: this.type,
+      default_value: this.default_value,
+      max_length: this.max_length,
+      allow_null: this.allow_null
+    };
   }
 });
 

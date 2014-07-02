@@ -28,10 +28,14 @@ form
 
   p
     label
+      input(type="hidden", name="allow_null" value="0")
       input(type="checkbox" name="allow_null" value="1", checked = (data.is_nullable == 'YES'))
       = "Allow null"
 
   input.pseudo-hidden(type="submit")
   p.buttons
-    button.ok Add column
+    if action == "edit"
+        button.ok Update column
+    else
+        button.ok Add column
     button.cancel cancel

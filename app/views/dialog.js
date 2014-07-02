@@ -45,7 +45,6 @@ global.Dialog = jClass.extend({
   },
 
   defaultServerResponse: function (data, error) {
-    console.log(data, error);
     if (error)
       window.alert(error.message);
     else

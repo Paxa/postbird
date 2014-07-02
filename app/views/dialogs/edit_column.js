@@ -12,7 +12,7 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
       var groupedTypes = this.groupTypes(types);
       this.handler.tableObj().getColumnObj(this.columnName, function(column) {
         this.columnObj = column;
-        var nodes = App.renderView('dialogs/column_form', {groupedTypes: groupedTypes, data: column.data});
+        var nodes = App.renderView('dialogs/column_form', {groupedTypes: groupedTypes, data: column.data, action: "edit"});
         this.content = this.renderWindow(this.title, nodes);
         this.bindFormSubmitting();
       }.bind(this));
@@ -20,7 +20,6 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
   },
 
   onSubmit: function(data) {
-    this.columnObj.update(data);
-    //ALTER TABLE tbl_name ALTER COLUMN col_name TYPE varchar (11);
+    this.handler.editColumn(this.columnObj, data, this.defaultServerResponse.bind(this));
   }
 });

@@ -193,6 +193,13 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  editColumn: function (columnObj, data, callback) {
+    columnObj.update(data, function() {
+      this.structureTabActivate();
+      callback();
+    }.bind(this));
+  },
+
   addIndex: function (data, callback) {
     this.tableObj().addIndex(data.name, data.uniq, data.columns, function() {
       this.structureTabActivate();
