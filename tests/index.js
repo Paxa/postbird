@@ -56,6 +56,8 @@ process.on("uncaughtException", function(err) {
   bdd.onError(err);
 });
 
+require('./helpers');
+
 require('./spec/table_spec');
 require('./spec/column_spec');
 
