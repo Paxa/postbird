@@ -88,6 +88,7 @@ global.DbScreen = jClass.extend({
   },
 
   contentTabActivate: function() {
+    if (!this.currentTable) return;
     this.connection.getTableContent(this.currentSchema, this.currentTable, function(data) {
       Model.Table(this.currentSchema, this.currentTable).getStructure(function (sdata) {
         data.fields.forEach(function(feild) {
@@ -179,6 +180,7 @@ global.DbScreen = jClass.extend({
   },
 
   structureTabActivate: function () {
+    if (!this.currentTable) return;
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
       this.tableObj().describe(function(indexes) {
         this.view.structure.renderTab(rows, indexes);

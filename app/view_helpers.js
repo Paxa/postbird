@@ -27,5 +27,19 @@ var helpers = global.ViewHelpers = {
     } else {
       return str;
     }
+  },
+
+  tag_options: function (options) {
+    var attrs = [];
+    Object.keys(options).forEach(function(key) {
+      attrs.push(key + '="' + options[key] + '"');
+    });
+    return attrs.join(" ");
+  },
+
+  link_to: function (text, url, options) {
+    options = options || {}
+    options.href = url;
+    return "<a " + this.tag_options(options) + '>' + text + '</a>';
   }
 };

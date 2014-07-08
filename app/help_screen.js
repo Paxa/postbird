@@ -7,7 +7,11 @@ global.HelpScreen = jClass.extend({
       this.activatePage(link.attr('page'));
     }.bind(this));
 
-    this.content.find('.page a').attr("target", "_blank");
+    this.content.find('.page a.external').bind('click', function(e) {
+      $u.stopEvent(e);
+      var url = e.target.href;
+      gui.Shell.openExternal(url);
+    });
   },
 
   activatePage: function (pageName) {
@@ -22,6 +26,15 @@ global.HelpScreen = jClass.extend({
 
 HelpScreen.open = function (e) {
   $u.stopEvent(e);
-  App.addHelpScreen().activate();
+  if (!App.helpScreen) {
+    App.addHelpScreen();
+  }
+
+  App.tabs.forEach(function(tab) {
+    if (tab.instance === App.helpScreen) {
+      tab.activate();
+    }
+  });
+
   return App.helpScreen;
 };
