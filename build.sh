@@ -29,16 +29,18 @@ fi
 
     rm ${APP_TARGET_DIR}/build.sh
     rm ${APP_TARGET_DIR}/run
-    rm ${APP_TARGET_DIR}/pg.icns
-    rm ${APP_TARGET_DIR}/pg.png
+    rm ${APP_TARGET_DIR}/icon.icns
+    rm ${APP_TARGET_DIR}/icon.png
     rm ${APP_TARGET_DIR}/info.plist
+    rm ${APP_TARGET_DIR}/node_modules/fibers
+    rm ${APP_TARGET_DIR}/node_modules/tests
     rm -rf ${APP_TARGET_DIR}/notifier.app
 
     # copy icon and plist file
-    cp ./pg.icns ${TARGET_DIR}/Contents/Resources
+    cp ./icon.icns ${TARGET_DIR}/Contents/Resources
     cp ./info.plist ${TARGET_DIR}/Contents
 
-    cp ./pg.icns ${TARGET_DIR}/Contents/Resources
+    cp ./icon.icns ${TARGET_DIR}/Contents/Resources
 
     # mv postbird.app ../../bin/
 
