@@ -67,6 +67,10 @@ Monocle.watchPaths({
 });
 ```
 
+### Force to use fs.watch
+
+You can use the USE_FS_WATCH env variable set to true, to force this behavior regardless of platform.
+
 ## Why not just use fs.watch ?
 
   - file watching is really bad cross platforms in node

@@ -1,7 +1,7 @@
 var path        = require('path');
 var fs          = require('fs');
 var readdirp    = require('readdirp');
-var is_windows  = process.platform === 'win32';
+var use_fs_watch  = process.platform === 'win32' || process.env.USE_FS_WATCH;
 
 module.exports = function() {
   var watched_files       = {};
@@ -50,7 +50,7 @@ module.exports = function() {
   }
 
   function unwatchAll() {
-    if (is_windows) {
+    if (use_fs_watch) {
       Object.keys(watched_files).forEach(function(key) {
         watched_files[key].close();
       });
@@ -100,7 +100,7 @@ module.exports = function() {
     setAbsolutePath(file);
     storeDirectory(file);
     if (!watched_files[file.fullPath]) {
-      if (is_windows) {
+      if (use_fs_watch) {
         (function() {
           watched_files[file.fullPath] = fs.watch(file.fullPath, function() {
             typeof cb === "function" && cb(file);

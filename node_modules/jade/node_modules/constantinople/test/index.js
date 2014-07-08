@@ -19,6 +19,9 @@ describe('isConstant(src)', function () {
   it('handles "Math.random("', function () {
     assert(constaninople.isConstant('Math.random(') === false)
   })
+  it('handles "Math.floor(10.5)" with {Math: Math} as constants', function () {
+    assert(constaninople.isConstant('Math.floor(10.5)', {Math: Math}) === true)
+  })
 })
 
 
@@ -47,5 +50,8 @@ describe('toConstant(src)', function () {
       return
     }
     assert(false, 'Math.random( should result in an error')
+  })
+  it('handles "Math.floor(10.5)" with {Math: Math} as constants', function () {
+    assert(constaninople.toConstant('Math.floor(10.5)', {Math: Math}) === 10)
   })
 })
