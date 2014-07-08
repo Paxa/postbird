@@ -2,7 +2,7 @@
 
 echo "This script requires node-webkit.app in your applications folder"
 
-TARGET_DIR="${HOME}/postbird.app"
+TARGET_DIR="${HOME}/Postbird.app"
 APP_TARGET_DIR="${TARGET_DIR}/Contents/Resources/app.nw"
 echo $TARGET_DIR
 
@@ -14,7 +14,7 @@ fi
 
 if [ -e "$HOME/postbird.nw" ]; then
   echo "Removing existing nw build"
-  rm -rf $HOME/postbird.nw
+  rm -rf $HOME/Postbird.nw
 fi
 
 #read -p "Is node-webkit.app in your applications folder (y/n)? " -n 1 -r
@@ -31,7 +31,6 @@ fi
     rm ${APP_TARGET_DIR}/run
     rm ${APP_TARGET_DIR}/run_tests
     rm ${APP_TARGET_DIR}/icon.icns
-    rm ${APP_TARGET_DIR}/icon.png
     rm ${APP_TARGET_DIR}/info.plist
     rm -rf ${APP_TARGET_DIR}/node_modules/fibers
     rm -rf ${APP_TARGET_DIR}/tests

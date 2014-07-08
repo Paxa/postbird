@@ -4,16 +4,13 @@
   "window": {
     "show": true,
     "title": "Postbird",
-    "toolbar": true,
-    "icon": "gisto.icns",
+    "toolbar": false,
+    "icon": "icon.icns",
     "width": 850,
     "height": 500,
     "min_width": 572,
     "min_height": 260
   },
   "js-flags": "--harmony",
-  "chromium-args": "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery",
-  "devDependencies": {
-    "should": "~3.3.1"
-  }
+  "chromium-args": "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
 }
