@@ -1,0 +1,48 @@
+.help-screen
+  .sidebar
+    ul
+      li
+        a(page="about-postbird") About Postbird
+      li
+        a(page="get-postgres") Get Postgres
+      li
+        a(page="sql-casics") SQL basics
+
+  .content
+    .page.intro
+      h2 Help center
+
+    .page.get-postgres
+      h2 Get Postgres
+
+      article
+        h5 Postgres.app
+        p
+          = "Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer."
+          = "Open the app, and you have a PostgreSQL server ready and awaiting new connections."
+          = "Close the app, and the server shuts down."
+        a.download(href="http://postgresapp.com/") Download
+
+      article
+        h5 Postgres Graphical installer
+        p
+          = "An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and"
+          = "the StackBuilder utility for installation of additional packages."
+        a.download(href="http://www.enterprisedb.com/products-services-training/pgdownload#osx") Download
+
+      article
+        h5 Using Homebrew or MacPorts or Fink
+
+        p
+          strong For Homebrew:
+          code brew isntall postgresql
+        p
+          strong For MacPorts:
+          code
+            = "sudo port install postgresql93-server\n"
+            = "sudo port select --set postgresql postgresql93"
+          a(href="http://chriskief.com/2013/11/17/mavericks-macports-postgresql-9-tomcat-6-and-postgresql-studio/") Manual
+        p
+          strong For Fink:
+          span &nbsp;
+          a(href="http://pdb.finkproject.org/pdb/browse.php?summary=postgresql") find it here

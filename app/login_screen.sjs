@@ -6,6 +6,11 @@ global.LoginScreen = jClass.extend({
     this.form.bind('submit', this.onFormSubmit.bind(this));
     this.form.find('#save-and-connect').bind('click', this.saveAndConnect.bind(this));
     this.fillSavedConnections();
+
+    this.content.find('a.go-to-help').bind('click', function() {
+      var help = HelpScreen.open();
+      help.activatePage("get-postgres");
+    });
   },
 
   fillSavedConnections: function () {
@@ -37,7 +42,6 @@ global.LoginScreen = jClass.extend({
   fillForm: function (name, params) {
     var v;
     this.connectionName = name;
-    console.log(this.connectionName);
     for (var k in params) { v = params[k];
       this.form.find('input[name=' + k + ']').val(v);
     }
@@ -97,9 +101,15 @@ global.LoginScreen = jClass.extend({
       } else {
         // TODO: window.alert cause application crush
         //window.alert('' + message);
-        window.alertify.alert('' + message);
+        window.alertify.alert(this.humanErrorMessage(message));
       }
-    });
+    }.bind(this));
     global.conn = conn; // TODO: clean
-  }
+  },
+
+  humanErrorMessage: function (error) {
+    if (error == "connect ECONNREFUSED") {
+      return "Connection refused.<br>Make sure postgres is running";
+    }
+  },
 });

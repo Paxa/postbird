@@ -9,6 +9,7 @@ require('./app/connection');
 require('./app/view_helpers');
 require('./app/db_screen');
 require('./app/login_screen');
+require('./app/help_screen');
 require('./app/views/db_screen');
 require('./app/views/pane');
 require('./app/views/panes/users');
@@ -31,8 +32,8 @@ require('./app/models/column');
 require('./app/notificator');
 
 process.on("uncaughtException", function(err) {
-  log.error('error: ', err.red);
-  log.info(err.stack);
+  global.log.error('error: ', err.red);
+  global.log.info(err.stack);
   window.alert(err);
 });
 

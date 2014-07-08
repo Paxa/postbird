@@ -306,6 +306,10 @@ h4 {
         cursor: default; }
         .home-screen .sidebar ul li:hover {
           background: rgba(0, 70, 100, 0.1); }
+  .home-screen footer {
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 4%; }
 
 .main-screen {
   height: 100%;
@@ -357,6 +361,75 @@ h4 {
       display: none; }
       .main-screen > .main .window-content.active {
         display: block; }
+
+.help-screen {
+  background: #e1eff7;
+  background: #e1eff7;
+  height: 100%;
+  margin: 0;
+  padding-left: 173px;
+  position: relative;
+  overflow: hidden; }
+  .help-screen > .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    padding: 10px 0;
+    background: rgba(50, 70, 90, 0.05); }
+    .help-screen > .sidebar ul {
+      padding: 0 10px 0 15px; }
+      .help-screen > .sidebar ul li {
+        margin: 4px -5px;
+        padding: 1px 5px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default; }
+        .help-screen > .sidebar ul li:hover {
+          background: rgba(0, 70, 100, 0.1); }
+        .help-screen > .sidebar ul li.current {
+          background: rgba(114, 160, 197, 0.15);
+          font-weight: bold; }
+          .help-screen > .sidebar ul li.current a {
+            cursor: default;
+            text-decoration: none; }
+  .help-screen > .content {
+    padding: 10px 0 10px 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-height: 100%; }
+    .help-screen > .content .page {
+      display: none; }
+      .help-screen > .content .page.intro {
+        display: block; }
+      .help-screen > .content .page > h2 {
+        font-size: 20px;
+        margin: 4px 0; }
+      .help-screen > .content .page article {
+        margin-top: 17px; }
+        .help-screen > .content .page article ~ article {
+          margin-top: 20px; }
+        .help-screen > .content .page article > h5 {
+          font-size: 16px;
+          font-weight: bold;
+          margin: 0 0 10px 0; }
+        .help-screen > .content .page article p + p {
+          margin-top: 10px; }
+        .help-screen > .content .page article a.download {
+          margin-top: 4px;
+          text-decoration: underline; }
+        .help-screen > .content .page article code {
+          display: block;
+          font-family: Monaco, monospace;
+          border: 1px solid rgba(114, 160, 197, 0.5);
+          padding: 3px 5px;
+          background: rgba(114, 160, 197, 0.15);
+          white-space: pre-line;
+          margin: 4px 0; }
 
 .main-screen > .sidebar {
   width: 30%;

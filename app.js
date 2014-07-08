@@ -145,6 +145,11 @@ global.App = {
     return this.addTab(connectionName || 'DB', dbs.view.content, dbs);
   },
 
+  addHelpScreen: function() {
+    this.helpScreen = new HelpScreen();
+    return this.addTab('Help', this.helpScreen.content, this.helpScreen);
+  },
+
   renderView: function (file, options, callback) {
     var new_options = {};
     var i;
