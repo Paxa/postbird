@@ -29,11 +29,12 @@ fi
 
     rm ${APP_TARGET_DIR}/build.sh
     rm ${APP_TARGET_DIR}/run
+    rm ${APP_TARGET_DIR}/run_tests
     rm ${APP_TARGET_DIR}/icon.icns
     rm ${APP_TARGET_DIR}/icon.png
     rm ${APP_TARGET_DIR}/info.plist
-    rm ${APP_TARGET_DIR}/node_modules/fibers
-    rm ${APP_TARGET_DIR}/node_modules/tests
+    rm -rf ${APP_TARGET_DIR}/node_modules/fibers
+    rm -rf ${APP_TARGET_DIR}/tests
     rm -rf ${APP_TARGET_DIR}/notifier.app
 
     # copy icon and plist file
