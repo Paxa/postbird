@@ -12,3 +12,24 @@ Postbird is postgresql client for Mac.
 
 [Postgres.app](https://github.com/Paxa/postbird/releases/download/0.2/Postbird.app.zip) - For Mac: 32bit, 10.7+
 
+
+#### Development
+
+Pull requests and suggestions are welcome
+
+To run newest version, simply:
+
+    git clone git@github.com:Paxa/postbird.git
+    cd postbird
+    ./run
+
+To make a release, run:
+
+    ./build
+
+New release will be at: `~/Postbird.app`
+
+My todo:
+
+* Content tab reload
+* Reload tables if running query with "Drop table" or "Create table"
