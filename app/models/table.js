@@ -14,7 +14,7 @@ global.Model.Table = Model.base.extend({
   },
 
   remove: function(callback) {
-    this.q("DROP TABLE %s", this.table, callback);
+    this.q("DROP TABLE \"%s\"", this.table, callback);
   },
 
   drop: function (callback) {
