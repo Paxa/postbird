@@ -8,7 +8,7 @@ global.DbScreenView = jClass.extend({
     this.tablesList = this.content.find('.sidebar .tables ul');
     this.sidebar = this.content.find('.sidebar');
 
-    this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li:not(.bottom)');
+    this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li[tab]');
     this.tabContents = this.content.find('.main > .window-content');
 
     this.initializePanes();
@@ -18,13 +18,14 @@ global.DbScreenView = jClass.extend({
   initEvents: function() {
     this.topTabs.each(function(i, el) {
       $u(el).bind('click', function(e) {
-        var tabName = $u(e.target).attr('tab');
+        var tabName = el.getAttribute('tab');
         e.preventDefault();
         this.showTab(tabName);
       }.bind(this));
     }.bind(this));
 
     this.sidebar.find('a.addTable').bind('click', this.newTableDialog.bind(this));
+    this.sidebar.find('a.reloadStructure').bind('click', this.reloadStructure.bind(this));
 
     this.databaseSelect.bind('change', function (e) {
       var value = '' + $u(e.target).val();
@@ -121,6 +122,10 @@ global.DbScreenView = jClass.extend({
 
       _this.tablesList.append(schemaTree[0]);
     });
+  },
+
+  reloadStructure: function() {
+    this.handler.fetchTablesAndSchemas();
   },
 
   renameTable: function (node, schema, tableName) {

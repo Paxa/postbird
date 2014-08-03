@@ -1,4 +1,5 @@
 var strftime = require('strftime');
+var sprintf = require("sprintf-js").sprintf;
 
 var helpers = global.ViewHelpers = {
   formatCell: function (value, format) {
@@ -41,5 +42,10 @@ var helpers = global.ViewHelpers = {
     options = options || {}
     options.href = url;
     return "<a " + this.tag_options(options) + '>' + text + '</a>';
+  },
+
+  icon: function(name, title) {
+    title = title === undefined ? name.replace(/[\-_]/g, ' ') : title;
+    return sprintf('<img src="./assets/icons/%s.png" width="24" height="24" class="app-icon" title="%s"/>', name, title);
   }
 };

@@ -7,12 +7,15 @@
     .tables
       label Tables
       ul
+
     ul.extras
-      li.users(tab='users') Users
-      li.extensions(tab='extensions') Extensions
-      li.procedures(tab='procedures') Procedures
-      li.bottom
-        a.addTable Add Table
+      li.reload
+        a.reloadStructure!= icon('reload')
+      li.add-table
+        a.addTable!= icon('add-table')
+      li.users(tab='users')!= icon('users')
+      li.extensions(tab='extensions')!= icon('extensions')
+      li.procedures(tab='procedures')!= icon('procedures')
     .resize-handler
   .main
     .window-tabs

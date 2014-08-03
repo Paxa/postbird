@@ -1,12 +1,15 @@
+$sidebar-footer-height: 30px
+
 .main-screen > .sidebar
   :width 30%
   :padding
-    :top 5px
+    :top 48px
     :right 8px
     :left 5px
-    :bottom 5px
+    :bottom $sidebar-footer-height + 1px
+  max-height: 100%
   :position relative
-  :overflow-y auto
+  :overflow-y hidden
   > .resize-handler
     :position absolute
     :top 0
@@ -16,13 +19,22 @@
     :width 2px
     :cursor move
   > .databases
-    :margin-bottom 5px
+    position: absolute
+    top: 0
+    left: 0
+    box-sizing: border-box
+    padding: 2px 5px
+    width: 100%
+    :border-bottom 1px solid #d1d1d1
     label
       :display block
       +unselectable
   > .tables
-    :border-top 1px solid #ccc
-    :padding-top 5px
+    height: auto
+    max-height: 100%
+    overflow: auto
+    > *:last-child
+      margin-bottom: 3px
     > ul
       > li
         +system-text
@@ -43,11 +55,26 @@
           > ul
             :display block
   > ul.extras
+    :position absolute
+    bottom: 0
+    left: 0px
+    background: #f5f5f5
+    width: 100%
+    height: $sidebar-footer-height
     :border-top 1px solid #ccc
-    :margin-top 5px
+    box-sizing: border-box
+    padding: 0 5px
+    width: 100%
     li
       :padding 2px 0
       +system-text
+      display: inline-block
+      width: $sidebar-footer-height
+      text-align: center
+      cursor: pointer
+      a
+        display: inline-block
+        width: 100%
       &:hover
         :background rgba(#000, 0.1)
       &.active
