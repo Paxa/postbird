@@ -5,6 +5,8 @@
 
   form
     p
+      != link_to("Login with heroku", '#', {interaction: 'ligin-heroku'})
+    p
       label(for="login_host") Host
       input#login_host(name='host', value='localhost')
     p

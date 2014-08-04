@@ -33,3 +33,21 @@ My todo:
 
 * Content tab reload
 * Reload tables if running query with "Drop table" or "Create table"
+
+
+Your API client has been registered.
+Name
+Postbird
+Callback URL
+http://localhost:12001/heroku_auth
+ID
+da22247b-a5b0-498e-8110-5812d65f74c3
+Secret
+76358182-8fbc-40c7-81b8-9f5d3a6c6673
+Use the following code to add your client to your app.
+
+heroku config:add \
+  HEROKU_OAUTH_ID=da22247b-a5b0-498e-8110-5812d65f74c3 \
+  HEROKU_OAUTH_SECRET=76358182-8fbc-40c7-81b8-9f5d3a6c6673
+
+https://id.heroku.com/oauth/authorize?client_id=da22247b-a5b0-498e-8110-5812d65f74c3&response_type=code&scope=global&state=1111

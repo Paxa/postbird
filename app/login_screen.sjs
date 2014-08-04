@@ -11,6 +11,18 @@ global.LoginScreen = jClass.extend({
       var help = HelpScreen.open();
       help.activatePage("get-postgres");
     });
+
+    this.content.find("[interaction='ligin-heroku']").bind('click', function (e) {
+      console.log(e);
+      e.preventDefault();
+      this.openHerokuLoginWindow(e.target);
+    }.bind(this));
+  },
+
+  openHerokuLoginWindow: function(link) {
+    HerokuClient.auth(function() {
+      console.log("authenticated");
+    });
   },
 
   fillSavedConnections: function () {

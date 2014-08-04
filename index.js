@@ -29,7 +29,7 @@ require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
 
-require('./app/notificator');
+require('./app/heroku_catcher');
 
 process.on("uncaughtException", function(err) {
   global.log.error('error: ', err.red);
@@ -56,7 +56,9 @@ Zepto(document).ready(function() {
     global.App.setSizes();
   });
 
-  var menu = new gui.Menu();
+  var mb = new gui.Menu({type:"menubar"});
+  mb.createMacBuiltin("Postbird");
+  gui.Window.get().menu = mb;
 
   // Add some items
   /*
@@ -85,6 +87,7 @@ Zepto(document).ready(function() {
   appMenu.append(i);
   */
 
+/*
   // Reference to window and tray
   var win = gui.Window.get();
   var tray;
@@ -115,4 +118,5 @@ Zepto(document).ready(function() {
       tray = null;
     });
   });
+*/
 });
