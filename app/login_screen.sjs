@@ -13,7 +13,6 @@ global.LoginScreen = jClass.extend({
     });
 
     this.content.find("[interaction='ligin-heroku']").bind('click', function (e) {
-      console.log(e);
       e.preventDefault();
       this.openHerokuLoginWindow(e.target);
     }.bind(this));
@@ -104,15 +103,18 @@ global.LoginScreen = jClass.extend({
       password: this.form.find('[name=password]').val(),
       database: this.defaultDatabaseName
     };
+    this.makeConnection(options, callback);
+  },
+
+  makeConnection: function (options, connectionName, callback) {
+    if (callback === undefined) callback = connectionName;
 
     var conn = new Connection(options, lambda (status, message) {
       if (status) {
-        App.addDbScreen(conn, this.connectionName).activate();
+        App.addDbScreen(conn, connectionName || this.connectionName).activate();
         //App.lastAddedTab().activate();
         if (callback) callback();
       } else {
-        // TODO: window.alert cause application crush
-        //window.alert('' + message);
         window.alertify.alert(this.humanErrorMessage(message));
       }
     }.bind(this));
@@ -122,6 +124,8 @@ global.LoginScreen = jClass.extend({
   humanErrorMessage: function (error) {
     if (error == "connect ECONNREFUSED") {
       return "Connection refused.<br>Make sure postgres is running";
+    } else {
+      return error;
     }
   },
 });

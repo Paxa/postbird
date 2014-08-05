@@ -57,7 +57,7 @@ Zepto(document).ready(function() {
   });
 
   var mb = new gui.Menu({type:"menubar"});
-  mb.createMacBuiltin("Postbird");
+  mb.createMacBuiltin && mb.createMacBuiltin("Postbird");
   gui.Window.get().menu = mb;
 
   // Add some items

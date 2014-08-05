@@ -1,3 +1,5 @@
+process.env.PGSSLMODE = 'prefer';
+
 var pg = require('pg');
 var anyDB = require('any-db');
 var sprintf = require("sprintf-js").sprintf,
@@ -17,14 +19,21 @@ global.Connection = jClass.extend({
   },
 
   connectToServer: function (options, callback) {
-    // set defaults
-    if (options.port == undefined) options.port = '5432';
-    if (options.host == undefined) options.host = 'localhost';
+    var connectString;
 
-    var database = options.database || this.defaultDatabaseName;
-    var connectString = 'postgres://' + options.user + ':' + 
-      options.password + '@' + options.host + ':' + 
-      options.port + '/' + database;
+    if (typeof options == 'object') {
+      // set defaults
+      if (options.port == undefined) options.port = '5432';
+      if (options.host == undefined) options.host = 'localhost';
+
+      var database = options.database || this.defaultDatabaseName;
+      var connectString = 'postgres://' + options.user + ':' + 
+        options.password + '@' + options.host + ':' + 
+        options.port + '/' + database;
+    } else {
+      connectString = options;
+    }
+
     log.info('Connecting to', connectString);
 
     this.connection = anyDB.createConnection(connectString, function (error) {

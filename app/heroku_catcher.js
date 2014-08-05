@@ -1,13 +1,23 @@
-var spawn = require('child_process').spawn;
-var http = require('http');
-var url = require('url');
-var querystring = require('querystring');
+var libs = {};
+var loadedModules = {};
+
+['child_process', 'http', 'https', 'url', 'querystring', 'needle'].forEach(function(lib) {
+  Object.defineProperty(libs, lib, {
+    get: function() {
+      if (!loadedModules[lib]) {
+        loadedModules[lib] = require(lib);
+      }
+      return loadedModules[lib];
+    }
+  });
+});
 
 global.HerokuClient = {
-  secret: 'da22247b-a5b0-498e-8110-5812d65f74c3',
+  app_id: 'da22247b-a5b0-498e-8110-5812d65f74c3',
+  secret: '76358182-8fbc-40c7-81b8-9f5d3a6c6673',
+  apiUrl: 'https://api.heroku.com',
 
   setRequestToken: function (value) {
-    console.log('setting heroku key ' + value);
     window.localStorage.herokuKey = value;
   },
 
@@ -15,12 +25,28 @@ global.HerokuClient = {
     return window.localStorage.herokuKey;
   },
 
+  clearRequestToken: function () {
+    delete window.localStorage.herokuKey;
+  },
+
   makeAuthUrl: function () {
-    var url = 'https://id.heroku.com/oauth/authorize?client_id={secret}&response_type=code&scope=global&state={rand}';
-    return url.replace('{secret}', this.secret).replace('{rand}', new Date().getTime().toString());
+    var url = 'https://id.heroku.com/oauth/authorize?client_id={app_id}&response_type=code&scope=global&state={rand}';
+    return url.replace('{app_id}', this.app_id).replace('{rand}', new Date().getTime().toString());
   },
 
   auth: function (callback) {
+    var _this = this;
+    console.log('auth started');
+    _this.fetchRequestToken(function() {
+      console.log('got request token ' + _this.getRequestToken());
+      _this.fetchAccessToken(function() {
+        console.log(_this.getAccessToken());
+        callback();
+      });
+    });
+  },
+
+  fetchRequestToken: function(callback) {
     if (this.getRequestToken()) {
       callback();
     } else {
@@ -29,14 +55,89 @@ global.HerokuClient = {
       this.catcher = new HerokuCatcher(callback);
       this.catcher.start();
       console.log("Opening url " + url);
-      spawn('open', [url]);
+      libs.child_process.spawn('open', [url]);
     }
   },
 
   getAccessToken: function () {
-    // https://id.heroku.com/oauth/token \
-    // -d "grant_type=authorization_code&code=01234567-89ab-cdef-0123-456789abcdef&client_secret=01234567-89ab-cdef-0123-456789abcdef"
-  }
+    if (window.localStorage.herokuAccessToken) {
+      return JSON.parse(window.localStorage.herokuAccessToken);
+    } else {
+      return false;
+    }
+  },
+
+  setAccessToken: function (accessToken) {
+    return window.localStorage.herokuAccessToken = JSON.stringify(accessToken);
+  },
+
+  fetchAccessToken: function (callback) {
+    if (this.getAccessToken()) {
+      callback();
+    } else {
+      var params = {
+        grant_type: 'authorization_code',
+        code: this.getRequestToken(),
+        client_secret: this.secret
+      };
+
+      var options = { ssl: true, timeout: 30 * 1000 };
+      console.log("POST", 'https://id.heroku.com/oauth/token', libs.querystring.stringify(params));
+
+      libs.needle.post('https://id.heroku.com/oauth/token', params, options, function (err, resp) {
+        console.log(err, resp);
+        if (resp.body.id == "unauthorized") {
+          this.clearRequestToken();
+          this.auth(function() {
+            this.fetchAccessToken(callback);
+          }.bind(this));
+        } else {
+          this.setAccessToken(resp.body);
+          callback();
+        }
+      }.bind(this));
+    }
+  },
+
+  getApps: function (callback) {
+    this.getApiData('/apps', callback);
+  },
+
+  getAddons: function (app_id, callback) {
+    this.getApiData('/apps/' + app_id + '/addons', callback);
+  },
+
+  getConfigVars: function (app_id, callback) {
+    this.getApiData('/apps/' + app_id + '/config-vars', callback);
+  },
+
+  getDatabaseUrl: function(app_id, callback) {
+    this.getConfigVars(app_id, function(data) {
+      callback(data['DATABASE_URL']);
+    });
+  },
+
+  getApiData: function (uri, callback) {
+    var token = this.getAccessToken();
+    var options = {
+      ssl: true,
+      timeout: 30 * 1000,
+      headers: {
+        'Authorization': [token.token_type, token.access_token].join(" "),
+        'Accept': 'application/vnd.heroku+json; version=3'
+      }
+    };
+    var url = this.apiUrl + uri;
+    console.log("GET " + url, options);
+    libs.needle.get(url, options, function (err, resp) {
+      console.log(err, resp);
+      if (resp) {
+        callback(resp.body);
+      } else {
+        callback();
+      }
+    });
+  },
 };
 
 global.HerokuCatcher = jClass.extend({
@@ -45,11 +146,11 @@ global.HerokuCatcher = jClass.extend({
   init: function (doneCallback) {
     this.doneCallback = doneCallback;
     var _this = this;
-    this.server = http.createServer(function (request, response) {
+    this.server = libs.http.createServer(function (request, response) {
       console.dir(request);
 
-      var parsed = url.parse(request.url);
-      var query = querystring.parse(parsed.query);
+      var parsed = libs.url.parse(request.url);
+      var query = libs.querystring.parse(parsed.query);
       //console.log(query.code);
       HerokuClient.setRequestToken(query.code);
       _this.doneCallback();
