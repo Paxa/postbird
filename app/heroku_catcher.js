@@ -18,15 +18,15 @@ global.HerokuClient = {
   apiUrl: 'https://api.heroku.com',
 
   setRequestToken: function (value) {
-    window.localStorage.herokuKey = value;
+    window.localStorage.herokuRequestToken = value;
   },
 
   getRequestToken: function () {
-    return window.localStorage.herokuKey;
+    return window.localStorage.herokuRequestToken;
   },
 
   clearRequestToken: function () {
-    delete window.localStorage.herokuKey;
+    delete window.localStorage.herokuRequestToken;
   },
 
   makeAuthUrl: function () {
@@ -34,16 +34,44 @@ global.HerokuClient = {
     return url.replace('{app_id}', this.app_id).replace('{rand}', new Date().getTime().toString());
   },
 
-  auth: function (callback) {
+  auth: function (callback, options) {
     var _this = this;
-    console.log('auth started');
+    if (!options) options = {};
+    //console.log('auth started');
+    options.onAccessTokenStart && options.onAccessTokenStart();
     _this.fetchRequestToken(function() {
-      console.log('got request token ' + _this.getRequestToken());
+      options.onAccessTokenDone && options.onAccessTokenDone()
+      options.onRequestTokenStart && options.onRequestTokenStart()
+      //console.log('got request token ' + _this.getRequestToken());
       _this.fetchAccessToken(function() {
+        options.onRequestTokenDone && options.onRequestTokenDone()
         console.log(_this.getAccessToken());
         callback();
-      });
-    });
+      }, options);
+    }, options);
+  },
+
+  authAndGetApps: function(callback, options) {
+    this.auth(function() {
+      options.onGetAppsStarted && options.onGetAppsStarted();
+      this.getApps(function(apps) {
+        if (apps.id == 'unauthorized') {
+          if (options.retry) {
+            callback([]);
+            return;
+          }
+          options.retry = true;
+          this.clearRequestToken();
+          this.clearAccessToken();
+          this.auth(function() {
+            this.authAndGetApps(callback, options);
+          }.bind(this), options);
+        } else {
+          options.onGetAppsDone && options.onGetAppsDone();
+          callback(apps)
+        }
+      }.bind(this));
+    }.bind(this), options);
   },
 
   fetchRequestToken: function(callback) {
@@ -71,7 +99,11 @@ global.HerokuClient = {
     return window.localStorage.herokuAccessToken = JSON.stringify(accessToken);
   },
 
-  fetchAccessToken: function (callback) {
+  clearAccessToken: function () {
+    delete window.localStorage.herokuAccessToken;
+  },
+
+  fetchAccessToken: function (callback, callbackOoptions) {
     if (this.getAccessToken()) {
       callback();
     } else {
@@ -90,7 +122,7 @@ global.HerokuClient = {
           this.clearRequestToken();
           this.auth(function() {
             this.fetchAccessToken(callback);
-          }.bind(this));
+          }.bind(this), callbackOoptions);
         } else {
           this.setAccessToken(resp.body);
           callback();
@@ -130,11 +162,11 @@ global.HerokuClient = {
     var url = this.apiUrl + uri;
     console.log("GET " + url, options);
     libs.needle.get(url, options, function (err, resp) {
-      console.log(err, resp);
+      console.log('response', err, resp);
       if (resp) {
-        callback(resp.body);
+        callback ? callback(resp.body) : console.log(resp.body);
       } else {
-        callback();
+        callback && callback();
       }
     });
   },

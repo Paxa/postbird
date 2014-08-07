@@ -239,7 +239,7 @@ h4 {
   padding-left: 140px;
   position: relative;
   overflow: hidden; }
-  .home-screen form {
+  .home-screen .middle-window {
     font-size: 13px;
     width: 320px;
     margin: 45px auto 0;
@@ -255,17 +255,17 @@ h4 {
     -moz-box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.15);
     -webkit-box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.15);
     border: 1px solid #d5e8f4; }
-    .home-screen form p {
+    .home-screen .middle-window p {
       margin: 3px 0; }
-      .home-screen form p.buttons {
+      .home-screen .middle-window p.buttons {
         padding-left: 131px;
         padding-top: 5px; }
-    .home-screen form input {
+    .home-screen .middle-window input {
       font-size: 12px;
       line-height: 16px;
       padding-left: 4px;
       padding-right: 4px; }
-    .home-screen form label {
+    .home-screen .middle-window label {
       line-height: 22px;
       margin-right: 8px;
       zoom: 1;
@@ -276,6 +276,28 @@ h4 {
       vertical-align: top;
       width: 124px;
       text-align: right; }
+  .home-screen .middle-window {
+    display: none; }
+    .home-screen .middle-window.plain {
+      display: block; }
+  .home-screen .heroku-oauth ul.steps {
+    padding-left: 13px; }
+    .home-screen .heroku-oauth ul.steps li {
+      position: relative;
+      line-height: 24px; }
+      .home-screen .heroku-oauth ul.steps li:before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: #999999;
+        left: -12px;
+        top: 9px; }
+      .home-screen .heroku-oauth ul.steps li.started:before {
+        background: orange; }
+      .home-screen .heroku-oauth ul.steps li.done:before {
+        background: green; }
   .home-screen .sidebar {
     position: absolute;
     left: 0;
@@ -308,8 +330,9 @@ h4 {
           background: rgba(0, 70, 100, 0.1); }
   .home-screen footer {
     text-align: center;
-    text-decoration: underline;
     margin-top: 4%; }
+    .home-screen footer a {
+      text-decoration: underline; }
 
 .main-screen {
   height: 100%;

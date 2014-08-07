@@ -12,10 +12,50 @@ global.LoginScreen = jClass.extend({
       help.activatePage("get-postgres");
     });
 
-    this.content.find("[interaction='ligin-heroku']").bind('click', function (e) {
-      e.preventDefault();
-      this.openHerokuLoginWindow(e.target);
-    }.bind(this));
+    this.initEvents(this.content);
+  },
+
+  showPart: function (name) {
+    this.content.find('.middle-window').hide();
+    this.content.find('.middle-window.' + name).show();
+  },
+
+  showPlainPane: function() {
+    this.showPart('plain');
+  },
+
+  showHerokuPane1: function () {
+    this.showPart('heroku-1');
+  },
+
+  showHerokuOAuthPane: function () {
+    this.showPart('heroku-oauth');
+  },
+
+  showHerokuCLPane: function () {
+    this.showPart('heroku-cl');
+  },
+
+  startHerokuOAuth: function () {
+    this.showHerokuOAuthPane();
+    var steps = this.content.find('.heroku-oauth ul.steps');
+    var options = {
+      onAccessTokenStart:  function() { steps.find('.access-token').addClass('started'); },
+      onAccessTokenDone:   function() { steps.find('.access-token').addClass('done'); },
+      onRequestTokenStart: function() { steps.find('.request-token').addClass('started'); },
+      onRequestTokenDone:  function() { steps.find('.request-token').addClass('done'); },
+      onGetAppsStarted:    function() { steps.find('.get-apps').addClass('started'); },
+      onGetAppsDone:       function() { steps.find('.get-apps').addClass('done'); }
+    };
+
+    var appsList = this.content.find('ul.apps');
+    HerokuClient.authAndGetApps(function(apps) {
+      apps.forEach(function(app) {
+        var appEl = $dom(['li', ['span', app.name], ['a.button', 'Connect'], {'app-name': app.name}]);
+        appsList.append(appEl);
+      });
+      console.log("authenticated", apps);
+    }.bind(this), options);
   },
 
   openHerokuLoginWindow: function(link) {
@@ -129,3 +169,5 @@ global.LoginScreen = jClass.extend({
     }
   },
 });
+
+LoginScreen.prototype.initEvents = Pane.prototype.initEvents;

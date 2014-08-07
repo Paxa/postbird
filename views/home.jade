@@ -3,9 +3,7 @@
     h4 Saved connections
     ul.connections
 
-  form
-    p
-      != link_to("Login with heroku", '#', {interaction: 'ligin-heroku'})
+  form.middle-window.plain
     p
       label(for="login_host") Host
       input#login_host(name='host', value='localhost')
@@ -23,5 +21,28 @@
       input(type="submit", value="Connect")
       button#save-and-connect Save & connect
 
+  .middle-window.heroku-1
+    h5 Heroku login
+
+    p!= link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})
+    p!= link_to('Access with "$ heroku" command line tool', '#')
+
+  .middle-window.heroku-oauth
+    ul.steps
+      li.access-token Grand access
+      li.request-token Request Token
+      li.get-apps Get applications list
+    ul.apps
+    ul.steps
+      li.database-url Database URL
+      li.connect-db Connect to DB
+
+  .middle-window.heroku-cl
+    ul
+      li Detect command line utilite
+      li Get applications list
+
   footer
+    != link_to("Login with heroku", '#', {exec: 'showHerokuPane1'})
+    br
     a.go-to-help Get Postgres

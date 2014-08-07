@@ -7,7 +7,7 @@
     :left 140px
   :position relative
   :overflow hidden
-  form
+  .middle-window
     :font-size 13px
     :width 320px
     :margin 45px auto 0
@@ -34,6 +34,31 @@
       +inline-block
       :width 124px
       :text-align right
+
+  .middle-window
+    display: none
+    &.plain
+      display: block
+
+  .heroku-oauth
+    ul.steps
+      padding-left: 13px
+      li
+        position: relative
+        line-height:  24px
+        &:before
+          content: ''
+          position: absolute
+          width: 6px
+          height: 6px
+          border-radius: 6px
+          background: #999
+          left: -12px
+          top: 9px
+        &.started:before
+          background: orange
+        &.done:before
+          background: green
 
   .sidebar
     :position absolute
@@ -65,5 +90,6 @@
 
   footer
     text-align: center
-    text-decoration: underline
     margin-top: 4%
+    a
+      text-decoration: underline
