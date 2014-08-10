@@ -487,6 +487,8 @@ h4 {
       display: block;
       -webkit-user-select: none;
       user-select: none; }
+    .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
+      display: block; }
   .main-screen > .sidebar > .tables {
     height: auto;
     max-height: 100%;

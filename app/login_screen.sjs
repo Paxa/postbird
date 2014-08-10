@@ -53,9 +53,30 @@ global.LoginScreen = jClass.extend({
       apps.forEach(function(app) {
         var appEl = $dom(['li', ['span', app.name], ['a.button', 'Connect'], {'app-name': app.name}]);
         appsList.append(appEl);
-      });
+        $u(appEl).bind('click', function (event) {
+          event.preventDefault();
+          this.connectToHeroku(app);
+        }.bind(this));
+      }.bind(this));
       console.log("authenticated", apps);
     }.bind(this), options);
+  },
+
+  connectToHeroku: function (heroku_app) {
+    HerokuClient.getDatabaseUrl(heroku_app.id, function(db_url) {
+      if (!db_url) {
+        window.alertify.alert("Seems like app " + heroku_app.name + " don't have database");
+        return;
+      }
+      db_url = db_url + "?ssl=true";
+      console.log('connecting to', db_url);
+      this.makeConnection(db_url, heroku_app.name, function(tab) {
+        if (tab) {
+          tab.instance.switchToHerokuMode(heroku_app.name, db_url);
+        }
+        console.log('connected to heroku');
+      });
+    }.bind(this));
   },
 
   openHerokuLoginWindow: function(link) {
@@ -151,9 +172,9 @@ global.LoginScreen = jClass.extend({
 
     var conn = new Connection(options, lambda (status, message) {
       if (status) {
-        App.addDbScreen(conn, connectionName || this.connectionName).activate();
-        //App.lastAddedTab().activate();
-        if (callback) callback();
+        var tab = App.addDbScreen(conn, connectionName || this.connectionName)
+        tab.activate();
+        if (callback) callback(tab);
       } else {
         window.alertify.alert(this.humanErrorMessage(message));
       }

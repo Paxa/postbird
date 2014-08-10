@@ -31,9 +31,9 @@ global.DbScreenView = jClass.extend({
       var value = '' + $u(e.target).val();
 
       if (value == '' || value == '**create-db**') {
-        this.sidebar.removeClass('database-selected');
+        this.hideDatabaseContent();
       } else {
-        this.sidebar.addClass('database-selected');
+        this.showDatabaseContent();
       }
 
       if (value == '**create-db**') {
@@ -44,6 +44,14 @@ global.DbScreenView = jClass.extend({
         this.handler.selectDatabase(value);
       }
     }.bind(this));
+  },
+
+  showDatabaseContent: function () {
+    this.sidebar.addClass('database-selected');
+  },
+
+  hideDatabaseContent: function() {
+    this.sidebar.removeClass('database-selected');
   },
 
   initializePanes: function () {
@@ -181,5 +189,19 @@ global.DbScreenView = jClass.extend({
 
   newTableDialog: function () {
     new Dialog.NewTable(this.handler);
+  },
+
+  switchToHerokuMode: function (name, databseUrl) {
+    this.content.find('.databases > *').hide();
+    var herokuHeader = DOMinate(['div.heroku-mode',
+      ['span', "Heroku app:"],
+      ['a$name', name]
+    ]);
+
+    $u(herokuHeader.name).bind('click', function() {
+      window.alertify.alert(databseUrl);
+    });
+
+    this.content.find('.databases').append(herokuHeader[0]);
   }
 });

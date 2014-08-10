@@ -33,7 +33,7 @@ My todo:
 
 * Content tab reload
 * Reload tables if running query with "Drop table" or "Create table"
-
+* auto load tables if database selected when connecting to db
 
 Your API client has been registered.
 Name

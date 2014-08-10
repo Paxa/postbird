@@ -212,6 +212,14 @@ global.DbScreen = jClass.extend({
   // TODO: add caching
   tableObj: function() {
     return Model.Table(this.currentSchema, this.currentTable);
+  },
+
+  switchToHerokuMode: function (appName, dbUrl) {
+    this.view.switchToHerokuMode(appName, dbUrl);
+    this.database = this.connection.options.database;
+    this.fetchTablesAndSchemas(function() {
+      this.view.showDatabaseContent();
+    }.bind(this));
   }
 });
 

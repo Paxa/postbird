@@ -18,6 +18,21 @@ global.Connection = jClass.extend({
     this.connectToServer(options, callback);
   },
 
+  parseConnectionString: function (postgresUrl) {
+    var step1 = postgresUrl.match(/^(postgres:\/\/)([\w\d_]+)(:([^@]+))?@/); // protocol, user, [password]
+    var step2 = postgresUrl.match(/@([^\/:]+)(:(\d+))?(\/([^\/\?]+))/); // host, [port], db name
+    var step3 = postgresUrl.match(/\?(.+)$/); // query string
+
+    return {
+      user: step1[2],
+      password: step1[4],
+      host: step2[1],
+      port: (step2[3] || '5432').toString(),
+      database: step2[5] || this.defaultDatabaseName,
+      query: step3 && step3[1]
+    };
+  },
+
   connectToServer: function (options, callback) {
     var connectString;
 
@@ -32,6 +47,8 @@ global.Connection = jClass.extend({
         options.port + '/' + database;
     } else {
       connectString = options;
+      options = this.parseConnectionString(connectString);
+      this.options = options;
     }
 
     log.info('Connecting to', connectString);
@@ -43,7 +60,7 @@ global.Connection = jClass.extend({
       } else {
         callback && callback(true);
       }
-    });
+    }.bind(this));
   },
 
   switchDb: function(database, callback) {
