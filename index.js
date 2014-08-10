@@ -48,6 +48,13 @@ global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
 
 require('./app/utils');
 
+function reloadCss() {
+  var queryString = '?reload=' + new Date().getTime();
+  global.$u('link[rel="stylesheet"]').each(function () {
+    this.href = this.href.replace(/\?.*|$/, queryString);
+  });
+}
+
 var gui = require('nw.gui');
 global.gui = gui;
 

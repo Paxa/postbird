@@ -64,6 +64,9 @@ global.DbScreen = jClass.extend({
   },
 
   tableSelected: function(schema, tableName, node) {
+    if (this.currentSchema == schema && this.currentTable == tableName) {
+      return;
+    }
     this.currentSchema = schema;
     this.currentTable = tableName;
 
@@ -182,6 +185,12 @@ global.DbScreen = jClass.extend({
   },
 
   renameTable: function (schema, tableName, newName, callback) {
+    if (tableName == newName) {
+      console.log("Try rename table '" + tableName + "' -> '" + newName + "', canceled, same value");
+      callback && callback();
+      return;
+    }
+
     Model.Table(schema, tableName).rename(newName, function (res, error) {
       if (this.currentTable == tableName) {
         this.currentTable = newName;

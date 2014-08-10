@@ -44,6 +44,16 @@ global.DbScreenView = jClass.extend({
         this.handler.selectDatabase(value);
       }
     }.bind(this));
+
+    var tablesBlock = this.content.find('.sidebar .tables');
+    this.content.find('.show-system-tables input').bind('change', function(e) {
+      var checkbox = e.target;
+      if (checkbox.checked) {
+        tablesBlock.removeClass('without-system-tables');
+      } else {
+        tablesBlock.addClass('without-system-tables');
+      }
+    });
   },
 
   showDatabaseContent: function () {
@@ -104,7 +114,7 @@ global.DbScreenView = jClass.extend({
         }, function(e) {
           e.preventDefault();
           _this.renameTable(tableNode, schema, table.table_name);
-        });
+        }, 170);
 
         $u.contextMenu(tableNode, {
           'View': function () {
@@ -144,12 +154,19 @@ global.DbScreenView = jClass.extend({
     setTimeout(function() {
       input[0].selectionStart = input[0].selectionEnd;
     }, 20)
+
+    input.bind('keyup', function(e) {
+      if (e.keyCode == 27) {
+        node.html(tableName);
+      }
+    });
+
     input.bind('keypress', function(e) {
       if (e.keyCode == 13) {
+        // Enter key pressed
         var newValue = e.target.value;
         node.html(e.target.value);
         this.handler.renameTable(schema, tableName, newValue);
-        // Enter pressed... do anything here...
       }
     }.bind(this));
   },

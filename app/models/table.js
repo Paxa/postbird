@@ -127,7 +127,7 @@ global.Model.Table = Model.base.extend({
       FROM pg_catalog.pg_class c
            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
       WHERE c.relname ~ '^(%s)$'
-        AND pg_catalog.pg_table_is_visible(c.oid)
+--        AND pg_catalog.pg_table_is_visible(c.oid)
       ORDER BY 2, 3
     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 

@@ -496,32 +496,78 @@ h4 {
     .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
       display: block; }
   .main-screen > .sidebar > .tables {
-    height: auto;
+    height: 100%;
     max-height: 100%;
-    overflow: auto; }
-    .main-screen > .sidebar > .tables > *:last-child {
-      margin-bottom: 3px; }
-    .main-screen > .sidebar > .tables > ul > li {
-      -webkit-user-select: none;
-      user-select: none;
-      cursor: default; }
-      .main-screen > .sidebar > .tables > ul > li > span {
-        display: block;
-        background: rgba(0, 0, 0, 0.1);
-        font-weight: bold;
+    overflow: auto;
+    position: relative; }
+    .main-screen > .sidebar > .tables div.show-system-tables {
+      position: relative;
+      height: 0; }
+      .main-screen > .sidebar > .tables div.show-system-tables label {
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+        position: absolute;
+        top: -24px; }
+    .main-screen > .sidebar > .tables.without-system-tables > ul > li {
+      display: none; }
+    .main-screen > .sidebar > .tables.without-system-tables > ul > li[schema-name="public"] {
+      display: block; }
+      .main-screen > .sidebar > .tables.without-system-tables > ul > li[schema-name="public"] > span {
+        display: none; }
+    .main-screen > .sidebar > .tables > ul {
+      min-height: 100%;
+      padding-bottom: 32px;
+      box-sizing: border-box; }
+      .main-screen > .sidebar > .tables > ul > li {
         -webkit-user-select: none;
         user-select: none;
         cursor: default; }
-      .main-screen > .sidebar > .tables > ul > li > ul {
-        display: none; }
-        .main-screen > .sidebar > .tables > ul > li > ul li {
-          padding-left: 5px; }
-          .main-screen > .sidebar > .tables > ul > li > ul li:hover {
-            background: rgba(0, 0, 0, 0.1); }
-          .main-screen > .sidebar > .tables > ul > li > ul li.selected {
-            background: rgba(0, 51, 136, 0.15); }
-      .main-screen > .sidebar > .tables > ul > li.open > ul {
-        display: block; }
+        .main-screen > .sidebar > .tables > ul > li > span {
+          display: block;
+          background: rgba(0, 0, 0, 0.1);
+          font-weight: bold;
+          -webkit-user-select: none;
+          user-select: none;
+          cursor: default;
+          padding: 2px 0 2px 24px;
+          position: relative; }
+          .main-screen > .sidebar > .tables > ul > li > span:before {
+            display: block;
+            content: "";
+            background: url("../icons/orange_database.png") no-repeat;
+            background-size: 15px 15px;
+            width: 15px;
+            height: 15px;
+            left: 3px;
+            top: 4px;
+            position: absolute; }
+        .main-screen > .sidebar > .tables > ul > li > ul {
+          display: none; }
+          .main-screen > .sidebar > .tables > ul > li > ul li {
+            padding: 2px 0 2px 24px;
+            position: relative; }
+            .main-screen > .sidebar > .tables > ul > li > ul li:before {
+              display: block;
+              content: "";
+              background: url("../icons/table.png") no-repeat;
+              background-size: 15px 15px;
+              width: 15px;
+              height: 15px;
+              left: 3px;
+              top: 4px;
+              position: absolute; }
+            .main-screen > .sidebar > .tables > ul > li > ul li:hover {
+              background: rgba(0, 0, 0, 0.1); }
+            .main-screen > .sidebar > .tables > ul > li > ul li.selected {
+              background: rgba(0, 51, 136, 0.15);
+              background-image: url("../selected_bg.png");
+              background-size: 1px 100%;
+              background-repeat: repeat-x;
+              color: white;
+              text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.37); }
+        .main-screen > .sidebar > .tables > ul > li.open > ul {
+          display: block; }
   .main-screen > .sidebar > ul.extras {
     position: absolute;
     bottom: 0;

@@ -33,12 +33,30 @@ $sidebar-footer-height: 30px
       span, a
         display: block
   > .tables
-    height: auto
+    height: 100%
     max-height: 100%
     overflow: auto
-    > *:last-child
-      margin-bottom: 3px
+    position: relative
+    div.show-system-tables
+      position: relative
+      height: 0
+      label
+        +system-text
+        position: absolute
+        top: -24px
+    &.without-system-tables
+      > ul
+        > li
+          display: none
+        > li[schema-name="public"]
+          display: block
+          > span
+            display: none
+
     > ul
+      min-height: 100%
+      padding-bottom: 32px
+      box-sizing: border-box
       > li
         +system-text
         > span
@@ -46,14 +64,42 @@ $sidebar-footer-height: 30px
           :background rgba(#000, 0.1)
           :font-weight bold
           +system-text
+          :padding 2px 0 2px 24px
+          :position relative
+          &:before
+            display: block
+            content: ''
+            background: url("../icons/orange_database.png") no-repeat
+            background-size: 15px 15px
+            width: 15px
+            height: 15px
+            left: 3px
+            top: 4px
+            position: absolute
         > ul
           :display none
           li
-            :padding-left 5px
+            :padding 2px 0 2px 24px
+            :position relative
+            &:before
+              display: block
+              content: ''
+              background: url("../icons/table.png") no-repeat
+              background-size: 15px 15px
+              width: 15px
+              height: 15px
+              left: 3px
+              top: 4px
+              position: absolute
             &:hover
               :background rgba(#000, 0.1)
             &.selected
               :background rgba(#038, 0.15)
+              :background-image url("../selected_bg.png")
+              :background-size 1px 100%
+              :background-repeat repeat-x
+              color: white
+              text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.37)
         &.open
           > ul
             :display block

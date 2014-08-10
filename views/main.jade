@@ -4,12 +4,12 @@
       label Select database
       select
         option Select database...
-    .tables
-      label Tables
+    .tables.without-system-tables
       ul
-      label.show-system-tables
-        input(type="checkbox")
-        = "Show system tables"
+      .show-system-tables
+        label
+          input(type="checkbox")
+          = "Show system tables"
 
     ul.extras
       li.reload

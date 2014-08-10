@@ -6,8 +6,8 @@
     "title": "Postbird",
     "toolbar": true,
     "icon": "icon.icns",
-    "width": 850,
-    "height": 500,
+    "width": 1160,
+    "height": 640,
     "min_width": 572,
     "min_height": 260
   },
