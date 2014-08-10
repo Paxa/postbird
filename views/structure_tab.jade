@@ -19,7 +19,7 @@ table
         td= column.is_nullable == 'YES' ? 'yes' : 'no'
         td
           a(exec="editColumn('" + column.column_name + "')") Edit
-          &nbsp;
+          != "&nbsp;"
           a(exec="deleteColumn('" + column.column_name + "')") Delete
 
 footer
@@ -42,7 +42,7 @@ table
         td= index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)$/)[1]
         td
           a(exec="editIndex('" + index.relname + "')") Edit
-          &nbsp;
+          != "&nbsp;"
           a(exec="deleteIndex('" + index.relname + "')") Delete
 
 footer

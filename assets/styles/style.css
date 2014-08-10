@@ -226,6 +226,10 @@ h4 {
     float: right;
     margin-left: 5px; }
 
+.tab-loader {
+  padding: 20px;
+  color: #666666; }
+
 #content {
   overflow: hidden; }
   #content .tabContent {
@@ -587,6 +591,32 @@ h4 {
 .cm-s-mac-classic .cm-error, .cm-s-mac-classic .cm-invalidchar {
   background: #990000;
   color: white; }
+
+.app-loader {
+  position: absolute;
+  width: 300px;
+  height: 79px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  top: 50%;
+  border-radius: 20px;
+  margin-left: -150px;
+  margin-top: -50px;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out; }
+  .app-loader span {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block; }
+  .app-loader small {
+    font-size: 13px; }
+  .app-loader.appear {
+    opacity: 1; }
 
 .alertify, .alertify-show, .alertify-log {
   -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);

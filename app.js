@@ -199,7 +199,28 @@ global.App = {
   },
 
   startLoading: function (message) {
-    
+    if (this.loader) this.loader.hide();
+    this.stopLoading();
+
+    this.loader = this.renderView('_loader', {message: message});
+    $u(window.document.body).append(this.loader);
+
+    this.loaderTimeout = setTimeout(function() {
+      delete this.loaderTimeout;
+      this.loader.addClass('appear');
+    }.bind(this), 300);
+  },
+
+  stopLoading: function () {
+    if (this.loader) {
+      if (this.loaderTimeout) clearTimeout(this.loaderTimeout);
+      var loader = this.loader;
+      delete this.loader;
+      loader.removeClass('appear');
+      setTimeout(function() {
+        loader.remove();
+      }, 250);
+    }
   },
 };
 

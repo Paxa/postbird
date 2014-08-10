@@ -20,6 +20,10 @@ global.Pane = jClass.extend({
     });
   },
 
+  setUnchangable: function () {
+    this.content.attr('unchangable', true);
+  },
+
   renderViewToPane: function(pane, view_file, options) {
     var node = App.renderView(view_file, options);
     this.view.setTabContent(pane, node);

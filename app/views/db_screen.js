@@ -163,6 +163,11 @@ global.DbScreenView = jClass.extend({
     this.topTabs.filter('.' + name).addClass('active');
     this.tabContents.filter('.' + name).addClass('active');
     this.currentTab = name;
+    var currentTabEl = this.tabContents.filter('.' + this.currentTab);
+
+    if (!currentTabEl.attr('unchangable')) {
+      currentTabEl.empty().html('<span class="tab-loader">Getting data ...</span>');
+    }
 
     console.log(name + 'TabActivate', typeof this.handler[name + 'TabActivate']);
     if (this.handler[name + 'TabActivate']) this.handler[name + 'TabActivate']();

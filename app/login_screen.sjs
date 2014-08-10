@@ -66,6 +66,7 @@ global.LoginScreen = jClass.extend({
   },
 
   connectToHeroku: function (heroku_app) {
+    App.startLoading("Fetching config...");
     HerokuClient.getDatabaseUrl(heroku_app.id, function(db_url) {
       if (!db_url) {
         window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
@@ -171,12 +172,15 @@ global.LoginScreen = jClass.extend({
   },
 
   makeConnection: function (connectionOptions, options, callback) {
+    App.startLoading("Connecting...");
+
     if (typeof callback == 'undefined' && typeof options == 'function') {
       callback = options;
       options = {};
     }
 
     var conn = new Connection(connectionOptions, lambda (status, message) {
+      App.stopLoading();
       if (status) {
         var tab = App.addDbScreen(conn, options.name || this.connectionName, options);
         tab.activate();

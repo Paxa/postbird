@@ -2,7 +2,6 @@ global.Panes.Query = global.Pane.extend({
   renderTab: function(rows) {
     if (this.content) return;
 
-
     window.CodeMirror.commands.autocomplete = function(cm) {
       window.CodeMirror.showHint(cm, window.CodeMirror.hint.sql);
     };
@@ -25,6 +24,7 @@ global.Panes.Query = global.Pane.extend({
       extraKeys: {"Esc": "autocomplete"}
     });
 
+    this.setUnchangable();
     this.statusLine = this.content.find('.result .status');
   },
 
