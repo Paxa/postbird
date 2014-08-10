@@ -1,9 +1,23 @@
 global.DbScreen = jClass.extend({
+  options: {
+    fetchDbList: true
+  },
 
-  init: function(connection, callback) {
+  init: function(connection, options) {
+    node.util._extend(this.options, options);
+
     this.connection = connection;
     this.view = new DbScreenView(this);
-    this.fetchDbList();
+
+    if (this.options.fetchDbList) this.fetchDbList();
+
+    console.log(this.connection.options.database, this.connection.defaultDatabaseName);
+    if (this.connection.options.database != this.connection.defaultDatabaseName) {
+      this.database = this.connection.options.database;
+      this.fetchTablesAndSchemas(function() {
+        this.view.showDatabaseContent();
+      }.bind(this));
+    }
   },
 
   // short cut
@@ -216,10 +230,6 @@ global.DbScreen = jClass.extend({
 
   switchToHerokuMode: function (appName, dbUrl) {
     this.view.switchToHerokuMode(appName, dbUrl);
-    this.database = this.connection.options.database;
-    this.fetchTablesAndSchemas(function() {
-      this.view.showDatabaseContent();
-    }.bind(this));
   }
 });
 

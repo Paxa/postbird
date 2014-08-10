@@ -17,6 +17,11 @@ global.HerokuClient = {
   secret: '76358182-8fbc-40c7-81b8-9f5d3a6c6673',
   apiUrl: 'https://api.heroku.com',
 
+  makeAuthUrl: function () {
+    var url = 'https://id.heroku.com/oauth/authorize?client_id={app_id}&response_type=code&scope=global&state={rand}';
+    return url.replace('{app_id}', this.app_id).replace('{rand}', new Date().getTime().toString());
+  },
+
   setRequestToken: function (value) {
     window.localStorage.herokuRequestToken = value;
   },
@@ -29,9 +34,30 @@ global.HerokuClient = {
     delete window.localStorage.herokuRequestToken;
   },
 
-  makeAuthUrl: function () {
-    var url = 'https://id.heroku.com/oauth/authorize?client_id={app_id}&response_type=code&scope=global&state={rand}';
-    return url.replace('{app_id}', this.app_id).replace('{rand}', new Date().getTime().toString());
+  getAccessToken: function () {
+    if (window.localStorage.herokuAccessToken) {
+      var token = JSON.parse(window.localStorage.herokuAccessToken);
+
+      // check if token expired
+      var expiresAt = new Date(Date.parse(token.createdAt) + token.expires_in * 1000);
+      if (new Date() > expiresAt) {
+        this.clearAccessToken();
+        return false;
+      }
+
+      return token;
+    } else {
+      return false;
+    }
+  },
+
+  setAccessToken: function (accessToken) {
+    accessToken.createdAt = new Date;
+    return window.localStorage.herokuAccessToken = JSON.stringify(accessToken);
+  },
+
+  clearAccessToken: function () {
+    delete window.localStorage.herokuAccessToken;
   },
 
   auth: function (callback, options) {
@@ -85,22 +111,6 @@ global.HerokuClient = {
       console.log("Opening url " + url);
       libs.child_process.spawn('open', [url]);
     }
-  },
-
-  getAccessToken: function () {
-    if (window.localStorage.herokuAccessToken) {
-      return JSON.parse(window.localStorage.herokuAccessToken);
-    } else {
-      return false;
-    }
-  },
-
-  setAccessToken: function (accessToken) {
-    return window.localStorage.herokuAccessToken = JSON.stringify(accessToken);
-  },
-
-  clearAccessToken: function () {
-    delete window.localStorage.herokuAccessToken;
   },
 
   fetchAccessToken: function (callback, callbackOoptions) {

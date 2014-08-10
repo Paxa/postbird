@@ -138,10 +138,10 @@ global.App = {
     return this.addTab('Connection', this.loginScreen.content, this.loginScreen);
   },
 
-  addDbScreen: function(connection, connectionName, do_activate) {
+  addDbScreen: function(connection, connectionName, options, do_activate) {
     log.info(connectionName, do_activate);
     if (connectionName == '') connectionName = false;
-    var dbs = new DbScreen(connection);
+    var dbs = new DbScreen(connection, options);
     return this.addTab(connectionName || 'DB', dbs.view.content, dbs);
   },
 
@@ -196,6 +196,10 @@ global.App = {
     delete data[name];
     window.localStorage.savedConnections = JSON.stringify(data);
     return true;
+  },
+
+  startLoading: function (message) {
+    
   },
 };
 

@@ -21,7 +21,7 @@ global.Pane = jClass.extend({
   },
 
   renderViewToPane: function(pane, view_file, options) {
-    node = App.renderView(view_file, options);
+    var node = App.renderView(view_file, options);
     this.view.setTabContent(pane, node);
     this.content = this.view.tabContent(pane);
     this.initEvents(this.content);

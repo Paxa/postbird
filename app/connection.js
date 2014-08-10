@@ -41,10 +41,11 @@ global.Connection = jClass.extend({
       if (options.port == undefined) options.port = '5432';
       if (options.host == undefined) options.host = 'localhost';
 
-      var database = options.database || this.defaultDatabaseName;
+      if (!options.database) options.database = this.defaultDatabaseName;
+
       var connectString = 'postgres://' + options.user + ':' + 
         options.password + '@' + options.host + ':' + 
-        options.port + '/' + database;
+        options.port + '/' + options.database;
     } else {
       connectString = options;
       options = this.parseConnectionString(connectString);

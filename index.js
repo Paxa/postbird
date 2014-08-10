@@ -3,6 +3,7 @@ require('./lib/dominate');
 require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
+require('./lib/node_lib');
 
 require('./app');
 require('./app/views/pane');
@@ -29,12 +30,13 @@ require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
 
-require('./app/heroku_catcher');
+require('./app/heroku_client');
 
 process.on("uncaughtException", function(err) {
   global.log.error('error: ', err.red);
   global.log.info(err.stack);
   window.alert(err);
+  return false;
 });
 
 global.$u = Zepto;

@@ -17,6 +17,10 @@
       label(for="login_password") Password
       input#login_password(name='password', type='password', value='')
 
+    p
+      label(for="login_database") Database
+      input#login_database(name='database', type='text', value='')
+
     p.buttons
       input(type="submit", value="Connect")
       button#save-and-connect Save & connect
@@ -43,6 +47,7 @@
       li Get applications list
 
   footer
-    != link_to("Login with heroku", '#', {exec: 'showHerokuPane1'})
+    != link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})
+    != link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})
     br
     a.go-to-help Get Postgres

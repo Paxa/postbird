@@ -21,10 +21,14 @@ global.LoginScreen = jClass.extend({
   },
 
   showPlainPane: function() {
+    this.content.find('.login-with-password').hide();
+    this.content.find('.login-with-heroku').show();
     this.showPart('plain');
   },
 
   showHerokuPane1: function () {
+    this.content.find('.login-with-password').show();
+    this.content.find('.login-with-heroku').hide();
     this.showPart('heroku-1');
   },
 
@@ -58,19 +62,18 @@ global.LoginScreen = jClass.extend({
           this.connectToHeroku(app);
         }.bind(this));
       }.bind(this));
-      console.log("authenticated", apps);
     }.bind(this), options);
   },
 
   connectToHeroku: function (heroku_app) {
     HerokuClient.getDatabaseUrl(heroku_app.id, function(db_url) {
       if (!db_url) {
-        window.alertify.alert("Seems like app " + heroku_app.name + " don't have database");
+        window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
         return;
       }
       db_url = db_url + "?ssl=true";
       console.log('connecting to', db_url);
-      this.makeConnection(db_url, heroku_app.name, function(tab) {
+      this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, function(tab) {
         if (tab) {
           tab.instance.switchToHerokuMode(heroku_app.name, db_url);
         }
@@ -162,17 +165,20 @@ global.LoginScreen = jClass.extend({
       port: this.form.find('[name=port]').val(),
       user: this.form.find('[name=user]').val(),
       password: this.form.find('[name=password]').val(),
-      database: this.defaultDatabaseName
+      database: this.form.find('[name=database]').val()
     };
-    this.makeConnection(options, callback);
+    this.makeConnection(options, {}, callback);
   },
 
-  makeConnection: function (options, connectionName, callback) {
-    if (callback === undefined) callback = connectionName;
+  makeConnection: function (connectionOptions, options, callback) {
+    if (typeof callback == 'undefined' && typeof options == 'function') {
+      callback = options;
+      options = {};
+    }
 
-    var conn = new Connection(options, lambda (status, message) {
+    var conn = new Connection(connectionOptions, lambda (status, message) {
       if (status) {
-        var tab = App.addDbScreen(conn, connectionName || this.connectionName)
+        var tab = App.addDbScreen(conn, options.name || this.connectionName, options);
         tab.activate();
         if (callback) callback(tab);
       } else {

@@ -333,6 +333,8 @@ h4 {
     margin-top: 4%; }
     .home-screen footer a {
       text-decoration: underline; }
+    .home-screen footer .login-with-password {
+      display: none; }
 
 .main-screen {
   height: 100%;
