@@ -13,12 +13,12 @@
 
     ul.extras
       li.reload
-        a.reloadStructure!= icon('reload')
+        a.reloadStructure!= icon('reload', 'Reload tables')
       li.add-table
-        a.addTable!= icon('add-table')
-      li.users(tab='users')!= icon('users')
-      li.extensions(tab='extensions')!= icon('extensions')
-      li.procedures(tab='procedures')!= icon('procedures')
+        a.addTable!= icon('add-table', 'Add table')
+      li.users(tab='users')!= icon('users', 'Users')
+      li.extensions(tab='extensions')!= icon('extensions', "Postgres extensions")
+      li.procedures(tab='procedures')!= icon('procedures', "Procedures")
     .resize-handler
   .main
     .window-tabs

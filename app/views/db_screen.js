@@ -54,6 +54,8 @@ global.DbScreenView = jClass.extend({
         tablesBlock.addClass('without-system-tables');
       }
     });
+
+    new SidebarResize(this.content.find('.resize-handler'));
   },
 
   showDatabaseContent: function () {

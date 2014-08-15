@@ -1,23 +1,33 @@
-$sidebar-footer-height: 30px
+$sidebar-footer-height: 27px
 
 .main-screen > .sidebar
   :width 30%
   :padding
     :top 48px
-    :right 8px
-    :left 5px
+    :right 0px
+    :left 0px
     :bottom $sidebar-footer-height + 1px
   max-height: 100%
   :position relative
   :overflow-y hidden
+  background: #DEE2E8
   > .resize-handler
     :position absolute
     :top 0
-    :right 0
+    :right 0px
     :bottom 0
-    :background #999
-    :width 2px
-    :cursor move
+    :width 1px
+    border-left: 4px solid transparent
+    :cursor ew-resize
+    &:before
+      content: ''
+      position: absolute
+      display: block
+      background: #B4B4B4
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
   > .databases
     position: absolute
     top: 0
@@ -38,6 +48,7 @@ $sidebar-footer-height: 30px
     overflow: auto
     position: relative
     div.show-system-tables
+      padding-left: 5px
       position: relative
       height: 0
       label
@@ -50,6 +61,8 @@ $sidebar-footer-height: 30px
           display: none
         > li[schema-name="public"]
           display: block
+          > ul
+            padding-top: 3px
           > span
             display: none
 
@@ -64,7 +77,7 @@ $sidebar-footer-height: 30px
           :background rgba(#000, 0.1)
           :font-weight bold
           +system-text
-          :padding 2px 0 2px 24px
+          :padding 2px 8px 2px 35px
           :position relative
           &:before
             display: block
@@ -73,13 +86,13 @@ $sidebar-footer-height: 30px
             background-size: 15px 15px
             width: 15px
             height: 15px
-            left: 3px
+            left: 13px
             top: 4px
             position: absolute
         > ul
           :display none
           li
-            :padding 2px 0 2px 24px
+            :padding 2px 8px 2px 35px
             :position relative
             &:before
               display: block
@@ -88,7 +101,7 @@ $sidebar-footer-height: 30px
               background-size: 15px 15px
               width: 15px
               height: 15px
-              left: 3px
+              left: 13px
               top: 4px
               position: absolute
             &:hover
@@ -99,7 +112,7 @@ $sidebar-footer-height: 30px
               :background-size 1px 100%
               :background-repeat repeat-x
               color: white
-              text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.37)
+              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44)
         &.open
           > ul
             :display block
@@ -108,6 +121,10 @@ $sidebar-footer-height: 30px
     bottom: 0
     left: 0px
     background: #f5f5f5
+    background:
+      image: url("../footer_bg.png")
+      size: 1px 100%
+      repeat: repeat-x
     width: 100%
     height: $sidebar-footer-height
     :border-top 1px solid #ccc
@@ -115,12 +132,13 @@ $sidebar-footer-height: 30px
     padding: 0 5px
     width: 100%
     li
-      :padding 2px 0
+      :padding 2px 2px
       +system-text
       display: inline-block
       width: $sidebar-footer-height
       text-align: center
       cursor: pointer
+      border-right: 1px solid #C6C6C6
       a
         display: inline-block
         width: 100%

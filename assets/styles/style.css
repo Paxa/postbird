@@ -342,28 +342,24 @@ h4 {
 
 .main-screen {
   height: 100%;
-  zoom: 1;
-  *display: block;
-  overflow: visible !important; }
-  .main-screen:after {
-    content: "";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
+  position: relative; }
   .main-screen > * {
-    float: left;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     height: 100%; }
   .main-screen > .main {
-    width: 70%;
+    margin-left: 30%;
     padding-left: 9px;
     padding-top: 33px;
     padding-right: 5px;
     overflow-y: auto;
-    position: relative; }
+    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
     .main-screen > .main .window-tabs {
       position: absolute;
       top: 0;
@@ -390,6 +386,12 @@ h4 {
       display: none; }
       .main-screen > .main .window-content.active {
         display: block; }
+
+body.sidebar-resizing {
+  cursor: ew-resize; }
+  body.sidebar-resizing * {
+    -webkit-user-select: none;
+    user-select: none; }
 
 .help-screen {
   background: #e1eff7;
@@ -467,20 +469,30 @@ h4 {
 .main-screen > .sidebar {
   width: 30%;
   padding-top: 48px;
-  padding-right: 8px;
-  padding-left: 5px;
-  padding-bottom: 31px;
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-bottom: 28px;
   max-height: 100%;
   position: relative;
-  overflow-y: hidden; }
+  overflow-y: hidden;
+  background: #dee2e8; }
   .main-screen > .sidebar > .resize-handler {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 0px;
     bottom: 0;
-    background: #999999;
-    width: 2px;
-    cursor: move; }
+    width: 1px;
+    border-left: 4px solid transparent;
+    cursor: ew-resize; }
+    .main-screen > .sidebar > .resize-handler:before {
+      content: "";
+      position: absolute;
+      display: block;
+      background: #b4b4b4;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; }
   .main-screen > .sidebar > .databases {
     position: absolute;
     top: 0;
@@ -501,6 +513,7 @@ h4 {
     overflow: auto;
     position: relative; }
     .main-screen > .sidebar > .tables div.show-system-tables {
+      padding-left: 5px;
       position: relative;
       height: 0; }
       .main-screen > .sidebar > .tables div.show-system-tables label {
@@ -513,6 +526,8 @@ h4 {
       display: none; }
     .main-screen > .sidebar > .tables.without-system-tables > ul > li[schema-name="public"] {
       display: block; }
+      .main-screen > .sidebar > .tables.without-system-tables > ul > li[schema-name="public"] > ul {
+        padding-top: 3px; }
       .main-screen > .sidebar > .tables.without-system-tables > ul > li[schema-name="public"] > span {
         display: none; }
     .main-screen > .sidebar > .tables > ul {
@@ -530,7 +545,7 @@ h4 {
           -webkit-user-select: none;
           user-select: none;
           cursor: default;
-          padding: 2px 0 2px 24px;
+          padding: 2px 8px 2px 35px;
           position: relative; }
           .main-screen > .sidebar > .tables > ul > li > span:before {
             display: block;
@@ -539,13 +554,13 @@ h4 {
             background-size: 15px 15px;
             width: 15px;
             height: 15px;
-            left: 3px;
+            left: 13px;
             top: 4px;
             position: absolute; }
         .main-screen > .sidebar > .tables > ul > li > ul {
           display: none; }
           .main-screen > .sidebar > .tables > ul > li > ul li {
-            padding: 2px 0 2px 24px;
+            padding: 2px 8px 2px 35px;
             position: relative; }
             .main-screen > .sidebar > .tables > ul > li > ul li:before {
               display: block;
@@ -554,7 +569,7 @@ h4 {
               background-size: 15px 15px;
               width: 15px;
               height: 15px;
-              left: 3px;
+              left: 13px;
               top: 4px;
               position: absolute; }
             .main-screen > .sidebar > .tables > ul > li > ul li:hover {
@@ -565,7 +580,7 @@ h4 {
               background-size: 1px 100%;
               background-repeat: repeat-x;
               color: white;
-              text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.37); }
+              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
         .main-screen > .sidebar > .tables > ul > li.open > ul {
           display: block; }
   .main-screen > .sidebar > ul.extras {
@@ -573,21 +588,25 @@ h4 {
     bottom: 0;
     left: 0px;
     background: whitesmoke;
+    background-image: url("../footer_bg.png");
+    background-size: 1px 100%;
+    background-repeat: repeat-x;
     width: 100%;
-    height: 30px;
+    height: 27px;
     border-top: 1px solid #cccccc;
     box-sizing: border-box;
     padding: 0 5px;
     width: 100%; }
     .main-screen > .sidebar > ul.extras li {
-      padding: 2px 0;
+      padding: 2px 2px;
       -webkit-user-select: none;
       user-select: none;
       cursor: default;
       display: inline-block;
-      width: 30px;
+      width: 27px;
       text-align: center;
-      cursor: pointer; }
+      cursor: pointer;
+      border-right: 1px solid #c6c6c6; }
       .main-screen > .sidebar > ul.extras li a {
         display: inline-block;
         width: 100%; }

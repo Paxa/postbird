@@ -1,19 +1,23 @@
 .main-screen
   :height 100%
-  +clear
+  position: relative
   > *
-    :float left
     +box-sizing(border-box)
     :height 100%
 
   > .main
-    :width 70%
+    :margin-left 30%
     :padding
       :left 9px
       :top 33px
       :right 5px
     :overflow-y auto
     :position relative
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
     .window-tabs
       :position absolute
       :top 0
@@ -32,3 +36,8 @@
       :display none
       &.active
         :display block
+
+body.sidebar-resizing
+  cursor: ew-resize
+  *
+    +unselectable

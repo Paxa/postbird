@@ -4,6 +4,7 @@ require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
+require('./lib/sidebar_resize');
 
 require('./app');
 require('./app/views/pane');
