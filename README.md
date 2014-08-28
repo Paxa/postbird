@@ -33,3 +33,6 @@ My todo:
 
 * Content tab reload
 * Reload tables if running query with "Drop table" or "Create table"
+* Add index window is disappearing
+* Allow reside columns only in header
+* Work on content tab: filters, sticky header, pagination, increase limit, sortings
