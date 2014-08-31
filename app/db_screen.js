@@ -151,14 +151,16 @@ global.DbScreen = jClass.extend({
   },
 
   createDatabase: function (data, callback) {
-    this.connection.createDatabase(data.dbname, data.template, data.encoding, function (res, error) {
-      if (!error) {
-        this.fetchDbList(function() {
-          this.view.databaseSelect.val(data.dbname).change();
-          //this.selectDatabase(data.dbname);
-        }.bind(this));
-      }
-      callback(res, error);
+    this.connection.switchDb(this.connection.defaultDatabaseName, function () {
+      this.connection.createDatabase(data.dbname, data.template, data.encoding, function (res, error) {
+        if (!error) {
+          this.fetchDbList(function() {
+            this.view.databaseSelect.val(data.dbname).change();
+            //this.selectDatabase(data.dbname);
+          }.bind(this));
+        }
+        callback(res, error);
+      }.bind(this));
     }.bind(this));
   },
 

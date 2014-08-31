@@ -2,6 +2,7 @@ process.env.PGSSLMODE = 'prefer';
 
 var pg = require('pg');
 var anyDB = require('any-db');
+
 var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
@@ -54,6 +55,7 @@ global.Connection = jClass.extend({
 
     log.info('Connecting to', connectString);
 
+    if (this.connection) this.connection.end();
     this.connection = anyDB.createConnection(connectString, function (error) {
       if (error) {
         console.log(error);
@@ -229,6 +231,14 @@ global.Connection = jClass.extend({
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     this.q(sql, dbname, callback);
+  },
+
+  close: function (callback) {
+    if (this.connection) {
+      this.connection.end(callback);
+    } else {
+      callback();
+    }
   }
 });
 
