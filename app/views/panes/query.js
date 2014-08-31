@@ -40,6 +40,7 @@ global.Panes.Query = global.Pane.extend({
         var node = App.renderView('content_tab', {data: data})[0];
         this.content.find('.result table').replaceWith(node);
         this.statusLine.text("Found rows: " + data.rowCount + ' in ' + data.time + 'ms.');
+        this.initTables();
       }
     }.bind(this));
   }

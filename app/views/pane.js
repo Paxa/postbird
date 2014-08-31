@@ -29,7 +29,17 @@ global.Pane = jClass.extend({
     this.view.setTabContent(pane, node);
     this.content = this.view.tabContent(pane);
     this.initEvents(this.content);
-  }
+  },
+
+  initTables: function () {
+    this.content.find('table.native-view').forEach(function (table) {
+      if (!table.hasAttribute('native-table-init')) {
+        $u(table).colResizable();
+        new GenericTable(table);
+        table.setAttribute('native-table-init', true);
+      }
+    });
+  },
 });
 
 /*

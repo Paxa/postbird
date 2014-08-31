@@ -5,7 +5,7 @@ global.Panes.Structure = global.Pane.extend({
     //console.log(rows);
     //console.log(indexes);
     this.renderViewToPane('structure', 'structure_tab', {rows: rows, indexes: indexes});
-    $u(this.content.find('table')).colResizable();
+    this.initTables();
   },
 
   addColumnForm: function () {

@@ -209,6 +209,8 @@ global.DbScreenView = jClass.extend({
       $u.stopEvent(e);
       $u(e.target.parentNode).toggleClass('expanded');
     });
+    $u(this.content.find('table')).colResizable();
+    GenericTable.init(this.content);
   },
 
   newTableDialog: function () {

@@ -2,6 +2,7 @@ global.Panes.Extensions = global.Pane.extend({
 
   renderTab: function (rows) {
     this.renderViewToPane('extensions', 'extensions_tab', {rows: rows});
+    this.initTables();
   },
 
   install: function (extension) {

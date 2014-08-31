@@ -10,6 +10,7 @@ global.Panes.Users = global.Pane.extend({
     });
 
     this.renderViewToPane('users', 'users_tab', {rows: rows});
+    this.initTables();
   },
 
   editUser: function (username) {

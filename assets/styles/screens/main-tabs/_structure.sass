@@ -8,7 +8,7 @@
       :border-right 1px solid #ccc
       :padding 2px 4px
 
-.window-content.structure
+.window-content.structure, .window-content
   table.native-view
     border: 1px solid #ccc
     border-top: 1px solid #a8a8a8
@@ -20,6 +20,7 @@
       background-repeat: repeat-x
       border-bottom: 1px solid #b6b6b6
       position: relative
+      font-weight: normal
       & + th
         &:before
           content: ''
@@ -33,4 +34,9 @@
 
     tr:nth-child(odd) td
       background: #f3f6fa
-
+    tr.selected td
+      background: #3c6bdd
+      color: white
+    td, th
+      padding: 1px 8px 1px 3px
+    

@@ -934,18 +934,19 @@ body.sidebar-resizing {
     border-right: 1px solid #cccccc;
     padding: 2px 4px; }
 
-.window-content.structure table.native-view {
+.window-content.structure table.native-view, .window-content table.native-view {
   border: 1px solid #cccccc;
   border-top: 1px solid #a8a8a8; }
-  .window-content.structure table.native-view th, .window-content.structure table.native-view td {
+  .window-content.structure table.native-view th, .window-content.structure table.native-view td, .window-content table.native-view th, .window-content table.native-view td {
     border: 0; }
-  .window-content.structure table.native-view th {
+  .window-content.structure table.native-view th, .window-content table.native-view th {
     background-image: url("../table_top_bg.png");
     background-size: 1px 100%;
     background-repeat: repeat-x;
     border-bottom: 1px solid #b6b6b6;
-    position: relative; }
-    .window-content.structure table.native-view th + th:before {
+    position: relative;
+    font-weight: normal; }
+    .window-content.structure table.native-view th + th:before, .window-content table.native-view th + th:before {
       content: "";
       display: block;
       width: 1px;
@@ -954,8 +955,13 @@ body.sidebar-resizing {
       top: 2px;
       bottom: 2px;
       left: 0px; }
-  .window-content.structure table.native-view tr:nth-child(odd) td {
+  .window-content.structure table.native-view tr:nth-child(odd) td, .window-content table.native-view tr:nth-child(odd) td {
     background: #f3f6fa; }
+  .window-content.structure table.native-view tr.selected td, .window-content table.native-view tr.selected td {
+    background: #3c6bdd;
+    color: white; }
+  .window-content.structure table.native-view td, .window-content.structure table.native-view th, .window-content table.native-view td, .window-content table.native-view th {
+    padding: 1px 8px 1px 3px; }
 
 .window-content.content table {
   min-width: 90%;

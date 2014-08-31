@@ -5,6 +5,7 @@ require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
 require('./lib/sidebar_resize');
+require('./lib/widgets/generic_table');
 
 require('./app');
 require('./app/views/pane');
