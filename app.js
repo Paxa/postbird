@@ -158,7 +158,13 @@ global.App = {
       for (i in options) new_options[i] = options[i];
     }
 
-    var html = jade.renderFile(App.root + '/views/' + file + '.jade', new_options);
+    var html;
+    try {
+      html = jade.renderFile(App.root + '/views/' + file + '.jade', new_options);
+    } catch (error) {
+      console.log("Error compiling '" + App.root + '/views/' + file + '.jade');
+      throw error;
+    }
     var node = $u('<div>').html(html).children();
     return $u(node);
   },
