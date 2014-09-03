@@ -1,10 +1,11 @@
-table.native-view
-  thead
-    tr
-      each column in data.fields
-        th(class= 'format-' + column.real_format)= column.name
-  tbody
-    each row in data.rows
+.big-data-table
+  table.native-view
+    thead
       tr
         each column in data.fields
-          td!= formatCell(row[column.name], column.real_format)
+          th(class= 'format-' + column.real_format)= column.name
+    tbody
+      each row in data.rows
+        tr
+          each column in data.fields
+            td!= formatCell(row[column.name], column.real_format)
