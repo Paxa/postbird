@@ -19,7 +19,7 @@ global.App = {
     this.addConnectionTab();
     this.activateTab(0);
 
-    /* auto connect, for development *\/
+    /* auto connect, for development */
 
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {

@@ -1,20 +1,27 @@
 .window-content.content
+  max-height: 100%
+  overflow: auto
   //@extend .window-content.structure
   table
-    :min-width 90%
-    :max-width 95%
-  tr
-    th
-      :max-width 200px
-      +truncate
-    td
-      &:not(.expanded)
+    tr
+      th
+        :max-width 200px
         +truncate
-      :min-width 40px
-      :max-width 250px
-      span.text
-        :width 100%
-        :min-width 100px
-      time
-        +inline-block
-        :min-width 75px
+      td
+        &:not(.expanded)
+          +truncate
+        :min-width 20px
+        :max-width 250px
+        span.text
+          :width 100%
+          :min-width 100px
+        time
+          +inline-block
+          :min-width 55px
+
+  .summary-and-pages
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    border-top-color: #dfdfdf
