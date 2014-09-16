@@ -9,16 +9,21 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   renderData: function (data) {
+    var sTime = Date.now();
     this.renderViewToPane('content', 'content_tab', {data: data, types: this.columnTypes});
+
+    //console.log("Rendered " + (Date.now() - sTime) + "ms");
 
     this.content.find('span.text').bind('dblclick', function(e) {
       $u.stopEvent(e);
       $u(e.target.parentNode).toggleClass('expanded');
     });
 
-    this.footer = this.content.find('.summary-and-pages');
+    //console.log("Expanders " + (Date.now() - sTime) + "ms");
 
     this.initTables();
+
+    this.footer = this.content.find('.summary-and-pages');
 
     this.totals(function(count) {
       var begin = this.offset;

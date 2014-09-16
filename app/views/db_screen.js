@@ -194,7 +194,8 @@ global.DbScreenView = jClass.extend({
 
   setTabContent: function (tabName, content) {
     var container = this.tabContents.filter('.' + tabName);
-    container.empty().append(content);
+    //container.empty().append(content);
+    container.removeChildren().fasterAppend(content);
   },
 
   tabContent: function (tabName) {

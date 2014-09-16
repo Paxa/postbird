@@ -196,19 +196,32 @@ global.App = {
       this.jadeFn[file] = jade.compileClient(content, {filename: filepath, pretty: true, compileDebug: true});
       eval("App.jadeFn['" + file + "'] = " + this.jadeFn[file].replace('locals', 'jade, locals'));
       this.jadeFn[file].content = content;
+      this.triggerSaveCache();
     }
     return this.jadeFn[file];
   },
 
+  triggerSaveCache: function() {
+    if (this.jadeCacheTimeout) {
+      clearTimeout(this.jadeCacheTimeout);
+    }
+    this.jadeCacheTimeout = setTimeout(function() {
+      clearTimeout(this.jadeCacheTimeout);
+      delete this.jadeCacheTimeout;
+      this.jadeCacheSave();
+    }.bind(this), 1000);
+  },
+
   jadeCacheSave: function () {
     result = "";
-    Object.keys(this.jadeFn).forEach(function(key) {
+    Object.keys(this.jadeFn).sort().forEach(function(key) {
       var fn = this.jadeFn[key];
       result += 'exports["' + key + '"] = ' + fn.toString() + ";\n";
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
     }.bind(this));
 
     node.fs.writeFileSync('./views/cache.js', result, 'utf8');
+    console.log("Jade cache saved!");
   },
 
   jadeCacheLoad: function() {
