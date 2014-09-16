@@ -46,7 +46,7 @@ function addWith(obj, src, exclude) {
 
   src = '(function (' + vars.join(', ') + ') {' +
     src +
-    '}(' + inputVars.join(',') + '))'
+    '}.call(this' + inputVars.map(function (v) { return ',' + v; }).join('') + '))'
 
   return ';' + declareLocal + ';' + unwrapReturns(src, result) + ';'
 }
@@ -77,12 +77,17 @@ function unwrapReturns(src, result) {
   var originalSource = src
   var hasReturn = false
   var ast = uglify.parse(src)
+  var ref
   src = src.split('')
 
-  if (ast.body.length !== 1 || ast.body[0].TYPE !== 'SimpleStatement' ||
-      ast.body[0].body.TYPE !== 'Call' || ast.body[0].body.expression.TYPE !== 'Function')
+  // get a reference to the function that was inserted to add an inner context
+  if ((ref = ast.body).length !== 1
+   || (ref = ref[0]).TYPE !== 'SimpleStatement'
+   || (ref = ref.body).TYPE !== 'Call'
+   || (ref = ref.expression).TYPE !== 'Dot' || ref.property !== 'call'
+   || (ref = ref.expression).TYPE !== 'Function')
     throw new Error('AST does not seem to represent a self-calling function')
-  var fn = ast.body[0].body.expression
+  var fn = ref
 
   var walker = new uglify.TreeWalker(visitor)
   function visitor(node, descend) {

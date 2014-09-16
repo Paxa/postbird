@@ -36,5 +36,19 @@ function detect(src) {
     .map(function (node, name) {
       return name
     })
+  
+  // Walk the AST tree in search for `this`
+  // Add a fake "this" global when found
+  var has_this = false;
+  var walker = new uglify.TreeWalker(function(node) {
+    if (node instanceof uglify.AST_This) {
+      has_this = true;
+    }
+  });
+  ast.walk(walker);
+  if (has_this) {
+    globals.push('this')
+  }
+  
   return globals
 }

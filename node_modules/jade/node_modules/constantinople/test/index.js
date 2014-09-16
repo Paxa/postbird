@@ -22,6 +22,9 @@ describe('isConstant(src)', function () {
   it('handles "Math.floor(10.5)" with {Math: Math} as constants', function () {
     assert(constaninople.isConstant('Math.floor(10.5)', {Math: Math}) === true)
   })
+  it('handles "this.myVar"', function () {
+    assert(constaninople.isConstant('this.myVar') === false)
+  })
 })
 
 
