@@ -124,7 +124,7 @@ global.LoginScreen = jClass.extend({
   },
 
   renameConnection: function (name) {
-    window.alertify.prompt("Rename connection?", lambda (confirm, newName) {
+    window.alertify.prompt("Rename connection?", function (confirm, newName) {
       if (confirm) {
         App.renameConnection(name, newName);
         this.fillSavedConnections();
@@ -179,7 +179,7 @@ global.LoginScreen = jClass.extend({
       options = {};
     }
 
-    var conn = new Connection(connectionOptions, lambda (status, message) {
+    var conn = new Connection(connectionOptions, function (status, message) {
       App.stopLoading();
       if (status) {
         var tab = App.addDbScreen(conn, options.name || this.connectionName, options);

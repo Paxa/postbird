@@ -1,11 +1,11 @@
-var jade = require('jade');
-var fs = require('fs');
+var jade;
+var jadeRuntime = require('jade/runtime');
 
 var colors = require('colors');
 
 global.log = require('./app/logger').make('info');
 
-require('./sugar/sugar');
+//require('./sugar/sugar');
 
 global.App = {
   root: process.mainModule.filename.replace(/\/index.html/, ''),
@@ -13,12 +13,14 @@ global.App = {
   tabs: [], // {name, content, is_active}
 
   init: function () {
+    this.jadeCacheLoad();
     this.container = $('#content');
     this.tabsContainer = $('#tabs');
     // skip first page
     this.addConnectionTab();
     this.activateTab(0);
 
+    log.info('Loaded in ' + (Date.now() - window.ApplicationStart) + 'ms');
     /* auto connect, for development */
 
     this.loginScreen.onFormSubmit(false, function() {
@@ -150,23 +152,73 @@ global.App = {
     return this.addTab('Help', this.helpScreen.content, this.helpScreen);
   },
 
+  jadeFn: {},
+
   renderView: function (file, options, callback) {
+    //var renderStart = Date.now();
     var new_options = {};
     var i;
     for (i in ViewHelpers) new_options[i] = ViewHelpers[i].bind(ViewHelpers);
     if (options) {
       for (i in options) new_options[i] = options[i];
     }
-
     var html;
     try {
-      html = jade.renderFile(App.root + '/views/' + file + '.jade', new_options);
+      //var st = Date.now();
+      html = this.compileJade(file)(jadeRuntime, new_options);
+      //console.log('jade render ' + file + ' in ' + (Date.now() - st) + 'ms');
     } catch (error) {
       console.log("Error compiling '" + App.root + '/views/' + file + '.jade');
       throw error;
     }
-    var node = $u('<div>').html(html).children();
-    return $u(node);
+    //var st = Date.now();
+    var res = $u.html2collection(html);
+    //console.log('jade dom manipulate for ' + file + ' in ' + (Date.now() - st) + 'ms');
+    //console.log("jade render " + file + " in " + (Date.now() - renderStart) + 'ms');
+
+    return res;
+  },
+
+  compileJade: function (file) {
+    var filepath = App.root + '/views/' + file + '.jade';
+    var content = node.fs.readFileSync(filepath, 'utf-8');
+
+    if (this.jadeFn[file] && this.jadeFn[file].content != content) {
+      console.log('remove template cache for: ' + file);
+      delete this.jadeFn[file];
+    }
+
+    if (!this.jadeFn[file]) {
+      if (!jade) {
+        log.info('loading jade....');
+        jade = require('jade');
+      }
+      this.jadeFn[file] = jade.compileClient(content, {filename: filepath, pretty: true, compileDebug: true});
+      eval("App.jadeFn['" + file + "'] = " + this.jadeFn[file].replace('locals', 'jade, locals'));
+      this.jadeFn[file].content = content;
+    }
+    return this.jadeFn[file];
+  },
+
+  jadeCacheSave: function () {
+    result = "";
+    Object.keys(this.jadeFn).forEach(function(key) {
+      var fn = this.jadeFn[key];
+      result += 'exports["' + key + '"] = ' + fn.toString() + ";\n";
+      result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
+    }.bind(this));
+
+    node.fs.writeFileSync('./views/cache.js', result, 'utf8');
+  },
+
+  jadeCacheLoad: function() {
+    if (node.fs.existsSync('./views/cache.js')) {
+      var cache = require('./views/cache');
+      if (cache) {
+        this.jadeFn = cache;
+        //console.log("Loaded templates cache " + Object.keys(this.jadeFn));
+      }
+    }
   },
 
   setSizes: function() {

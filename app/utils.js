@@ -58,3 +58,26 @@ $u.fn.single_double_click = function(single_click_callback, double_click_callbac
     });
   });
 }
+
+$u.fn.removeChildren = function () {
+  for (var i = 0; i < this.length; i++) {
+    while (this[i].firstChild) {
+      this[i].removeChild(this[i].firstChild);
+    }
+  }
+  return this;
+};
+
+$u.fn.fasterAppend = function (nodes) {
+  if (nodes.tagName) nodes = [nodes];
+  for (var i = 0; i < nodes.length; i++) {
+    this[0].appendChild(nodes[i]);
+  }
+  return this;
+};
+
+$u.html2collection = function html2collection (html) {
+  var div = window.document.createElement('DIV');
+  div.innerHTML = html;
+  return $u(div).children();
+};
