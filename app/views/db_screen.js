@@ -67,7 +67,7 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users', 'Extensions', 'Query', 'Structure'].forEach(function(paneName) {
+    ['Users', 'Extensions', 'Query', 'Structure', 'Contents'].forEach(function(paneName) {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
     }.bind(this));
   },
@@ -199,18 +199,6 @@ global.DbScreenView = jClass.extend({
 
   tabContent: function (tabName) {
     return this.tabContents.filter('.' + tabName);
-  },
-
-  renderContentTab: function (data) {
-    var node = App.renderView('content_tab', {data: data});
-    this.setTabContent('content', node);
-    var content = this.tabContent('content');
-    content.find('span.text').bind('dblclick', function(e) {
-      $u.stopEvent(e);
-      $u(e.target.parentNode).toggleClass('expanded');
-    });
-    $u(this.content.find('table')).colResizable();
-    GenericTable.init(this.content);
   },
 
   newTableDialog: function () {

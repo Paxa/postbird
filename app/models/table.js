@@ -39,6 +39,18 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
+  getColumnTypes: function (callback) {
+    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
+    this.q(sql, this.schema, this.table, function(data) {
+      var types = {};
+      data.rows.forEach(function(row) {
+        types[row.column_name] = row;
+        types[row.column_name].real_format = row.udt_name;
+      });
+      callback(types);
+    });
+  },
+
   getColumns: function (name, callback) {
     if (callback == undefined) {
       callback = name;
@@ -165,6 +177,26 @@ global.Model.Table = Model.base.extend({
         }.bind(this));
       }.bind(this));
     }.bind(this));
+  },
+
+  getRows: function (offset, limit, callback) {
+    if (!offset) offset = 0;
+    if (!limit) limit = 100;
+
+    var sql = 'select * from "%s"."%s" limit %d offset %d';
+    this.q(sql, this.schema, this.table, limit, offset, function(data) {
+      data.limit = limit;
+      data.offset = offset;
+      callback(data);
+    });
+  },
+
+  getTotalRows: function (callback) {
+    var sql = 'select count(*) as rows_count from "%s"."%s"';
+    this.q(sql, this.schema, this.table, function(data) {
+      var count = parseInt(data.rows[0].rows_count, 10);
+      callback ? callback(count) : console.log("Table rows count: " + this.table + " " + count);
+    });
   },
 });
 

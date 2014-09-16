@@ -19,6 +19,7 @@ require('./app/views/panes/users');
 require('./app/views/panes/extensions');
 require('./app/views/panes/query');
 require('./app/views/panes/structure');
+require('./app/views/panes/contents');
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/new_table');

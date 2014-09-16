@@ -175,12 +175,6 @@ global.Connection = jClass.extend({
     });
   },
 
-  getTableContent: function (schema, table, callback) {
-    this.q('select * from "%s"."%s" limit 100', schema, table, function(data) {
-      callback(data);
-    });
-  },
-
   getUsers: function(callback) {
     sql = (function () { /*
 

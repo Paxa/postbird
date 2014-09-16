@@ -12,5 +12,5 @@
     "min_height": 260
   },
   "js-flags": "--harmony",
-  "chromium-args": "--disable-accelerated-video --disable-webgl --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
+  "chromium-args": "--disable-accelerated-video --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
 }

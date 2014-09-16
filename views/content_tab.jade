@@ -3,11 +3,22 @@
     thead
       tr
         each column in data.fields
-          th(class= 'format-' + column.real_format)= column.name
+          th(class= 'format-' + types[column.name].real_format)= column.name
     tbody
       each row in data.rows
         tr
           each column in data.fields
-            td!= formatCell(row[column.name], column.real_format)
+            td!= formatCell(row[column.name], types[column.name].real_format)
 
 .summary-and-pages.native-footer-bar
+  ul
+    li
+      a Add
+    li
+      a Remove
+    li
+      a Duplicate
+    li.info
+
+    li.pages
+      a(exec="nextPage") Next

@@ -23,7 +23,7 @@ global.App = {
 
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {
-        this.activeTabObj().instance.view.databaseSelect.val('postgres').change();
+        this.activeTabObj().instance.view.databaseSelect.val('binlist').change();
       }.bind(this), 50);
     }.bind(this));
 
@@ -244,6 +244,14 @@ Object.defineProperty(App, "currentTab", {
       } else {
         throw "object is not in App.tabs";
       }
+    }
+  }
+});
+
+Object.defineProperty(App, "currentTable", {
+  get: function () {
+    if (this.currentTab && this.currentTab.instance) {
+      return this.currentTab.instance.table;
     }
   }
 });

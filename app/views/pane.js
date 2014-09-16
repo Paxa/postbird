@@ -41,19 +41,3 @@ global.Pane = jClass.extend({
     });
   },
 });
-
-/*
-$u(el).bind('click', function (e) {
-  
-}.bind(this));
-
-// --- 
-
-$u(el).bind('click', lambda (e) {
-  
-});
-
-$u(el).bind('click') -> {|e|
-  
-};
-*/

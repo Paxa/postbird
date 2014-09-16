@@ -70,6 +70,8 @@ global.DbScreen = jClass.extend({
     this.currentSchema = schema;
     this.currentTable = tableName;
 
+    this.table = Model.Table(this.currentSchema, this.currentTable);
+
     if (this.currentTableNode) this.currentTableNode.removeClass('selected');
     this.currentTableNode = $u(node);
     this.currentTableNode.addClass('selected');
@@ -103,16 +105,13 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  contentTabLimit: 300,
+
   contentTabActivate: function() {
     if (!this.currentTable) return;
-    this.connection.getTableContent(this.currentSchema, this.currentTable, function(data) {
-      Model.Table(this.currentSchema, this.currentTable).getStructure(function (sdata) {
-        data.fields.forEach(function(feild) {
-          sdata.forEach(function(r) {
-            if (r.column_name == feild.name) feild.real_format = r.udt_name;
-          });
-        });
-        this.view.renderContentTab(data);
+    this.table.getRows(0, this.contentTabLimit, function (data) {
+      this.table.getColumnTypes(function(columnTypes) {
+        this.view.contents.renderTab(data, columnTypes);
       }.bind(this));
     }.bind(this));
   },
@@ -206,14 +205,14 @@ global.DbScreen = jClass.extend({
   structureTabActivate: function () {
     if (!this.currentTable) return;
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
-      this.tableObj().describe(function(indexes) {
+      this.table.describe(function(indexes) {
         this.view.structure.renderTab(rows, indexes);
       }.bind(this));
     }.bind(this));
   },
 
   addColumn: function (data, callback) {
-    this.tableObj().addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
+    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
       this.structureTabActivate();
       callback();
     }.bind(this));
@@ -227,7 +226,7 @@ global.DbScreen = jClass.extend({
   },
 
   addIndex: function (data, callback) {
-    this.tableObj().addIndex(data.name, data.uniq, data.columns, function() {
+    this.table.addIndex(data.name, data.uniq, data.columns, function() {
       this.structureTabActivate();
       callback();
     }.bind(this));

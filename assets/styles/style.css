@@ -835,7 +835,7 @@ body.sidebar-resizing {
   .alertify {
     left: 5%;
     margin: 0; } }
-/*
+/**
  * Default Look and Feel */
 .alertify, .alertify-log {
   font-family: sans-serif; }
