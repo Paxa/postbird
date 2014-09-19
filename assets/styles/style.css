@@ -484,6 +484,8 @@ body.sidebar-resizing {
     cursor: default;
     display: inline-block;
     border-right: 1px solid #C6C6C6; }
+  .native-footer-bar li.right, .main-screen > .sidebar > ul.extras li.right {
+    text-align: right; }
 
 .main-screen > .sidebar {
   width: 30%;

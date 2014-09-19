@@ -42,5 +42,9 @@ global.Pane = jClass.extend({
         }
       });
     }.bind(this), 10);
-  }
+  },
+
+  scrollToTop: function () {
+    this.content[0].scrollTop = 0;
+  },
 });

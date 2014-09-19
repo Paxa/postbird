@@ -269,12 +269,14 @@ global.App = {
     return true;
   },
 
-  startLoading: function (message) {
+  startLoading: function (message, timeout) {
     if (this.loader) this.loader.hide();
     this.stopLoading();
 
     this.loader = this.renderView('_loader', {message: message});
     $u(window.document.body).append(this.loader);
+
+    if (timeout === undefined) timeout = 300;
 
     this.loaderTimeout = setTimeout(function() {
       delete this.loaderTimeout;

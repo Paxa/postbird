@@ -46,10 +46,13 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   nextPage: function(attribute) {
+    App.startLoading("Getting next page...", 100);
     this.handler.table.getRows(this.offset + this.limit, this.handler.contentTabLimit, function (data) {
       this.limit = data.limit;
       this.offset = data.offset;
       this.renderData(data);
+      this.scrollToTop();
+      App.stopLoading();
     }.bind(this));
   }
 

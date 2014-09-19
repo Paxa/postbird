@@ -283,7 +283,7 @@ jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
 jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n    <li class=\"pages\">");
+buf.push("\n    <li class=\"pages right\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 24, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 buf.push("<a exec=\"nextPage\">");
@@ -305,10 +305,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages\n      a(exec=\"nextPage\") Next");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next");
 }
 };
-exports["content_tab"].content = ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages\n      a(exec=\"nextPage\") Next";
+exports["content_tab"].content = ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" }];
 try {
