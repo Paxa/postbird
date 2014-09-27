@@ -10,7 +10,7 @@ Postbird is postgresql client for Mac.
 
 [Postgres.nw](https://github.com/Paxa/postbird/releases/download/0.3/Postbird.nw) - requires node-webkit.app
 
-[Postgres.app](https://github.com/Paxa/postbird/releases/download/0.3/Postbird-0.3.dmg) - For Mac: 64bit, 10.7+
+[Postgres-0.3.dmg](https://github.com/Paxa/postbird/releases/download/0.3/Postbird-0.3.dmg) - For Mac: 64bit, 10.7+
 
 
 #### Development
