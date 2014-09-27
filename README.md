@@ -25,7 +25,7 @@ To run newest version, simply:
 
 To make a release, run:
 
-    ./build
+    rake build
 
 New release will be at: `~/Postbird.app`
 
