@@ -27,27 +27,21 @@ fi
     git checkout-index -a --prefix="${APP_TARGET_DIR}/"
     #cp -r . ~/postbird.app/Contents/Resources/app.nw
 
-    rm ${APP_TARGET_DIR}/build.sh
     rm ${APP_TARGET_DIR}/run
     rm ${APP_TARGET_DIR}/run_tests
-    rm ${APP_TARGET_DIR}/icon.icns
-    rm ${APP_TARGET_DIR}/info.plist
+    rm -rf ${APP_TARGET_DIR}/build_files
     rm -rf ${APP_TARGET_DIR}/node_modules/fibers
     rm -rf ${APP_TARGET_DIR}/tests
-    rm -rf ${APP_TARGET_DIR}/notifier.app
 
     # copy icon and plist file
-    cp ./icon.icns ${TARGET_DIR}/Contents/Resources
-    cp ./info.plist ${TARGET_DIR}/Contents
+    cp ./build_files/icon.icns  ${TARGET_DIR}/Contents/Resources
+    cp ./build_files/info.plist ${TARGET_DIR}/Contents
+    cp ./build_files/Credits.html ${TARGET_DIR}/Contents/Resources
 
-    cp ./icon.icns ${TARGET_DIR}/Contents/Resources
-
-    # mv postbird.app ../../bin/
-
-    echo -e "\npostbird.app copied to home directory"
+    echo -e "\nPostbird.app copied to home directory"
     tmp_dir=`pwd`
     cd ${APP_TARGET_DIR}
-    zip -r -q ~/postbird.nw *
+    zip -r -q ~/Postbird.nw *
     cd $tmp_dir
 #else
 #  echo -e "\nPlease place node-webkit.app in your applications folder and run the script again"

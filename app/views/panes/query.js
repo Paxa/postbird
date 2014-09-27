@@ -35,7 +35,9 @@ global.Panes.Query = global.Pane.extend({
     var sql = this.textarea.val();
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
-        this.statusLine.text(error.message);
+        var message = error.message;
+        if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
+        this.statusLine.text(message);
       } else {
         var node = App.renderView('db_rows_table', {data: data})[0];
         this.content.find('.result table').replaceWith(node);

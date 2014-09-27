@@ -21,7 +21,7 @@ global.App = {
     this.activateTab(0);
 
     log.info('Loaded in ' + (Date.now() - window.ApplicationStart) + 'ms');
-    /* auto connect, for development */
+    /* auto connect, for development *\/
 
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {

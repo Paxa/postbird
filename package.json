@@ -4,13 +4,14 @@
   "window": {
     "show": true,
     "title": "Postbird",
-    "toolbar": true,
+    "toolbar": false,
     "icon": "icon.icns",
     "width": 1160,
     "height": 640,
     "min_width": 572,
     "min_height": 260
   },
+  "version": "0.3",
   "js-flags": "--harmony",
   "chromium-args": "--disable-accelerated-video --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
 }
