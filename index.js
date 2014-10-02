@@ -61,6 +61,14 @@ function reloadCss() {
 var gui = require('nw.gui');
 global.gui = gui;
 
+function objMethods (obj) {
+  var methods = []
+  for(var key in obj) {
+    if (typeof obj[key] == 'function') methods.push(key);
+  }
+  return methods;
+};
+
 Zepto(document).ready(function() {
   global.App.init();
   //renderHome();
@@ -68,9 +76,93 @@ Zepto(document).ready(function() {
     global.App.setSizes();
   });
 
-  var mb = new gui.Menu({type:"menubar"});
-  mb.createMacBuiltin && mb.createMacBuiltin("Postbird");
-  gui.Window.get().menu = mb;
+  var nativeMenuBar = new gui.Menu({type:"menubar"});
+  nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("Postbird");
+
+  var menu = {
+    '': {
+      
+    },
+    'Connection': {
+      
+    },
+    'Table': {
+      
+    },
+    'Window': {
+      'separator': 'separator',
+      Inspector: {
+        click: function () {
+          var win = gui.Window.get();
+          if (win.isDevToolsOpen()) {
+            win.closeDevTools();
+          } else {
+            win.showDevTools();
+          }
+        },
+        key: 'i'
+      },
+      Reload: function () {
+        gui.Window.get().reload();
+      },
+      Help: {
+        click: function() {
+          var help = global.HelpScreen.open();
+          help.activatePage("get-postgres");
+        },
+        key: "?",
+      }
+    }
+  };
+
+  //gui.Window.get().menu = nativeMenuBar;
+
+  Object.forEach(menu, function (submenuName, submenu) {
+    var nativeSubmenu;
+    nativeMenuBar.items.forEach(function(es) {
+      if (es.label == submenuName) nativeSubmenu = es.submenu;
+    });
+    if (!nativeSubmenu) {
+      nativeSubmenu = new gui.Menu();
+      var position = nativeMenuBar.items.length - 1;
+      nativeMenuBar.insert(new gui.MenuItem({label: submenuName, submenu: nativeSubmenu}), position);
+    }
+    Object.forEach(submenu, function (itemName, callback) {
+      if (typeof callback == 'string') {
+        nativeSubmenu.append(new gui.MenuItem({ type: callback }));
+      } else {
+        var menuItem;
+        if (typeof callback == 'object') {
+          var options = {label: itemName};
+          Object.forEach(callback, function (key, value) {
+            options[key] = value;
+          });
+          menuItem = new gui.MenuItem(options);
+        } else {
+          menuItem = new gui.MenuItem({label: itemName});
+          menuItem.click = callback;
+        }
+        nativeSubmenu.append(menuItem);
+      }
+    });
+  });
+
+  gui.Window.get().menu = nativeMenuBar;
+
+  /*
+  var shortcut = new gui.Shortcut({
+    key: "Cmd+?",
+    active : function() {
+      console.log("Global desktop keyboard shortcut: " + this.key + " active."); 
+    },
+    failed : function(msg) {
+      // :(, fail to register the |key| or couldn't parse the |key|.
+      console.log(msg);
+    }
+  });
+
+  gui.App.registerGlobalHotKey(shortcut);
+  */
 
   // Add some items
   /*

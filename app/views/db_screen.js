@@ -93,6 +93,11 @@ global.DbScreenView = jClass.extend({
 
   renderTablesAndSchemas: function (data, currentSchema, currentTable) {
     this.tablesList.empty();
+    $u.contextMenu(this.tablesList, {
+      "Create Table": this.newTableDialog.bind(this),
+      "Refresh Tables": this.reloadStructure.bind(this)
+    });
+
     var _this = this;
     $u.each(data, function (schema, tables) {
       var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
@@ -137,6 +142,7 @@ global.DbScreenView = jClass.extend({
 
         if (currentSchema == schema && table.table_name == currentTable) {
           $u(tableNode).addClass('selected');
+          _this.handler.currentTableNode = $u(tableNode);
         }
       });
 

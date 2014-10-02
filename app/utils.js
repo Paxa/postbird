@@ -24,6 +24,8 @@ $u.buildOption = function (label, value, options) {
 };
 
 $u.contextMenu = function (element, options) {
+  if (element.is === $u.fn.is) element = element[0];
+
   element.addEventListener('contextmenu', function(ev) {
     if (!element.contextmenu) {
       var menu = element.contextmenu = new gui.Menu();
@@ -81,3 +83,11 @@ $u.html2collection = function html2collection (html) {
   div.innerHTML = html;
   return $u(div).children();
 };
+
+Object.forEach = function Object_forEach (object, callback) {
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) callback(key, object[key]);
+  }
+};
+
+window.Object.forEach = global.Object.forEach = Object.forEach;
