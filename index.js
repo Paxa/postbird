@@ -4,6 +4,7 @@ require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
+//require('./lib/mousetrap');
 require('./lib/sidebar_resize');
 require('./lib/widgets/generic_table');
 
@@ -109,8 +110,7 @@ Zepto(document).ready(function() {
         click: function() {
           var help = global.HelpScreen.open();
           help.activatePage("get-postgres");
-        },
-        key: "?",
+        }
       }
     }
   };
@@ -149,20 +149,21 @@ Zepto(document).ready(function() {
 
   gui.Window.get().menu = nativeMenuBar;
 
-  /*
-  var shortcut = new gui.Shortcut({
-    key: "Cmd+?",
-    active : function() {
-      console.log("Global desktop keyboard shortcut: " + this.key + " active."); 
-    },
-    failed : function(msg) {
-      // :(, fail to register the |key| or couldn't parse the |key|.
-      console.log(msg);
-    }
-  });
+  var callMenuItem = function (menuName, itemName) {
+    var menu = gui.Window.get().menu;
+    nativeMenuBar.items.forEach(function(es) {
+      if (es.label == menuName) {
+        es.submenu.items.forEach(function(item) {
+          if (item.label == itemName) item.click();
+        });
+      }
+    });
+  };
 
-  gui.App.registerGlobalHotKey(shortcut);
-  */
+  window.Mousetrap.bind("command+shift+/", function () {
+    callMenuItem('Window', 'Help');
+    return false;
+  });
 
   // Add some items
   /*
