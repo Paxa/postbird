@@ -4,6 +4,7 @@ require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
+require('./lib/app_menu');
 //require('./lib/mousetrap');
 require('./lib/sidebar_resize');
 require('./lib/widgets/generic_table');
@@ -117,51 +118,12 @@ Zepto(document).ready(function() {
 
   //gui.Window.get().menu = nativeMenuBar;
 
-  Object.forEach(menu, function (submenuName, submenu) {
-    var nativeSubmenu;
-    nativeMenuBar.items.forEach(function(es) {
-      if (es.label == submenuName) nativeSubmenu = es.submenu;
-    });
-    if (!nativeSubmenu) {
-      nativeSubmenu = new gui.Menu();
-      var position = nativeMenuBar.items.length - 1;
-      nativeMenuBar.insert(new gui.MenuItem({label: submenuName, submenu: nativeSubmenu}), position);
-    }
-    Object.forEach(submenu, function (itemName, callback) {
-      if (typeof callback == 'string') {
-        nativeSubmenu.append(new gui.MenuItem({ type: callback }));
-      } else {
-        var menuItem;
-        if (typeof callback == 'object') {
-          var options = {label: itemName};
-          Object.forEach(callback, function (key, value) {
-            options[key] = value;
-          });
-          menuItem = new gui.MenuItem(options);
-        } else {
-          menuItem = new gui.MenuItem({label: itemName});
-          menuItem.click = callback;
-        }
-        nativeSubmenu.append(menuItem);
-      }
-    });
-  });
+  AppMenu.extend(nativeMenuBar, menu);
 
   gui.Window.get().menu = nativeMenuBar;
 
-  var callMenuItem = function (menuName, itemName) {
-    var menu = gui.Window.get().menu;
-    nativeMenuBar.items.forEach(function(es) {
-      if (es.label == menuName) {
-        es.submenu.items.forEach(function(item) {
-          if (item.label == itemName) item.click();
-        });
-      }
-    });
-  };
-
   window.Mousetrap.bind("command+shift+/", function () {
-    callMenuItem('Window', 'Help');
+    AppMenu.callMenuItem('Window', 'Help');
     return false;
   });
 
