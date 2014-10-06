@@ -6,6 +6,7 @@ require('../lib/arg');
 
 require('../app/connection');
 require('../app');
+require('../sugar/redscript-loader');
 
 App.tabs = [{
   instance: {
@@ -52,14 +53,14 @@ global.assert_true = function assert_true (value) {
   }
 }
 
-process.on("uncaughtException", function(err) {
-  bdd.onError(err);
-});
-
 require('./helpers');
 
 require('./spec/table_spec');
 require('./spec/column_spec');
+
+process.on("uncaughtException", function(err) {
+  bdd.onError(err);
+});
 
 connection.publicTables(function(data) {
   var queue = async.queue(function (fn, callback) {
