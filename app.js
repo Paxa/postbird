@@ -1,5 +1,6 @@
 var jade;
 var jadeRuntime = require('jade/runtime');
+require('classy/object_extras').extendGlobal();
 
 var colors = require('colors');
 

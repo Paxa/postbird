@@ -116,9 +116,11 @@ global.DbScreenView = jClass.extend({
         var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
 
         $u(tableNode).single_double_click(function(e) {
+          if (e.target.tagName == "INPUT") return;
           e.preventDefault();
           _this.handler.tableSelected(schema, table.table_name, tableNode);
         }, function(e) {
+          if (e.target.tagName == "INPUT") return;
           e.preventDefault();
           _this.renameTable(tableNode, schema, table.table_name);
         }, 170);
@@ -168,6 +170,17 @@ global.DbScreenView = jClass.extend({
         node.html(tableName);
       }
     });
+
+    $u.listenClickOutside(input, function (action) {
+      if (action == 'click') {
+        var newValue = input.val();
+        if (newValue != tableName) {
+          this.handler.renameTable(schema, tableName, newValue);
+          tableName = newValue;
+        }
+      }
+      node.html(tableName);
+    }.bind(this));
 
     input.bind('keypress', function(e) {
       if (e.keyCode == 13) {

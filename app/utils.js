@@ -84,10 +84,46 @@ $u.html2collection = function html2collection (html) {
   return $u(div).children();
 };
 
-Object.forEach = function Object_forEach (object, callback) {
-  for (var key in object) {
-    if (object.hasOwnProperty(key)) callback(key, object[key]);
-  }
-};
+window.Object.forEach     = global.Object.forEach;
+window.Object.values      = global.Object.values;
+window.Object.ancestors   = global.Object.ancestors;
+window.Object.properties  = global.Object.properties;
 
-window.Object.forEach = global.Object.forEach = Object.forEach;
+$u.listenClickOutside = function listenClickOutside (element, options, callback) {
+  element = $u(element);
+  if (callback === undefined) callback = options;
+  options = typeof options == 'object' ? options : {};
+
+  var carcher = window.document.body;
+
+  // listen click outside
+  setTimeout(function() {
+    var closer = function closer (e) {
+      if (options.condition) {
+        if (!options.condition()) {
+          $u('#wrapper').unbind('click', closer);
+          return;
+        }
+      }
+
+      var matched;
+      if (e.target == element[0]) matched = true;
+      $u(e.target).parents().each(function(i, parent) {
+        if (parent == element[0]) matched = true;
+      });
+
+      if (matched) return;
+
+      callback(e.escpeKey ? 'escape' : 'click');
+      $u(carcher).unbind('click', closer);
+    };
+
+    $u(carcher).bind('click', closer);
+
+    window.Mousetrap.bind('esc', function () {
+      closer({target: window.document.body, escpeKey: true});
+      window.Mousetrap.unbind('esc');
+    });
+
+  }, 50);
+}
