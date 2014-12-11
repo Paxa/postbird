@@ -22,6 +22,7 @@ require('./app/views/panes/extensions');
 require('./app/views/panes/query');
 require('./app/views/panes/structure');
 require('./app/views/panes/contents');
+
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
 require('./app/views/dialogs/new_table');
@@ -30,10 +31,13 @@ require('./app/views/dialogs/new_database');
 require('./app/views/dialogs/new_column');
 require('./app/views/dialogs/edit_column');
 require('./app/views/dialogs/new_index');
+require('./app/views/dialogs/import_file');
 
 require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
+
+require('./app/controllers/import_controller');
 
 require('./app/heroku_client');
 
@@ -44,7 +48,7 @@ process.on("uncaughtException", function(err) {
   return false;
 });
 
-global.$u = Zepto;
+global.$u = window.$u = Zepto;
 global.$ = function (selector) {
   return document.querySelector(selector);
 };
@@ -85,6 +89,16 @@ Zepto(document).ready(function() {
     '': {
       
     },
+    'File': {
+      'Import .sql file': {
+        click: function () {
+          (new global.ImportController).doImport();
+        },
+        key: 'i',
+        modifiers: 'cmd+shift'
+      }
+    },
+    'Edit': { },
     'Connection': {
       
     },
@@ -93,7 +107,7 @@ Zepto(document).ready(function() {
     },
     'Window': {
       'separator': 'separator',
-      Inspector: {
+      'Inspector': {
         click: function () {
           var win = gui.Window.get();
           if (win.isDevToolsOpen()) {
@@ -126,6 +140,28 @@ Zepto(document).ready(function() {
     AppMenu.callMenuItem('Window', 'Help');
     return false;
   });
+
+  $u.makeDroppable(document.body, function (path) {
+    var importer = new global.ImportController();
+    importer.filename = path;
+    importer.showImportDialog();
+  });
+
+  /*
+  window.addEventListener('dragover', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    console.log('dragover', e);
+  });
+
+
+  window.addEventListener('drop', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(event);
+  });
+  */
 
   // Add some items
   /*

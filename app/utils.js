@@ -126,4 +126,53 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
     });
 
   }, 50);
-}
+};
+
+// <input type="file" accept=".doc,.docx,.xml,application/msword">
+
+$u.openFileDialog = function (fileExt, callback) {
+  if (typeof fileExt == 'function' && callback === undefined) {
+    callback = fileExt;
+    fileExt = undefined;
+  }
+  var input = $u('<input>').attr('type', 'file');
+  if (fileExt) {
+    input.attr('accept', fileExt);
+  }
+  input.change(function(evt) {
+    callback(this.value);
+    //console.log(evt, this.value);
+  });
+  input.trigger('click');
+};
+
+// Make an area droppable
+// from here https://github.com/micc83/Nuwk/blob/master/js/controllers.js
+$u.makeDroppable = function (target, callback) {
+  var holder = $u(target)[0];
+  window.ondragover = function(e) {
+    holder.className = 'hover';
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    return false;
+  };
+  window.ondrop = function(e) {
+    holder.className = '';
+    e.preventDefault();
+    return false;
+  };
+  window.ondragleave = function () {
+    holder.className = '';
+    return false;
+  };
+  holder.ondrop = function (e) {
+    this.className = '';
+    e.preventDefault();
+
+    for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+      // Return the path
+      callback(e.dataTransfer.files[i].path);
+    }
+    return false;
+  };
+};

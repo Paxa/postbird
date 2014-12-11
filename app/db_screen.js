@@ -1,4 +1,6 @@
 global.DbScreen = jClass.extend({
+  type: "db_screen",
+
   options: {
     fetchDbList: true
   },
@@ -49,11 +51,21 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
-  selectDatabase: function (database) {
+  listDatabases: function(callback){
+    this.connection.listDatabases(callback);
+  },
+
+  selectDatabase: function (database, callback) {
     this.database = database;
     this.connection.switchDb(this.database, function() {
       this.fetchTablesAndSchemas();
+      if (typeof callback == 'function') callback();
     }.bind(this));
+  },
+
+  // Public API
+  setDatabase: function (database, callback) {
+    this.view.setDtabase(database, callback);
   },
 
   fetchTablesAndSchemas: function (callback) {

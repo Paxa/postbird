@@ -1,0 +1,4 @@
+sass --watch \
+     --cache-location assets/styles/.sass-cache \
+     --load-path assets/styles \
+     assets/styles/style.sass:assets/styles/style.css

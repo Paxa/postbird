@@ -58,6 +58,13 @@ global.DbScreenView = jClass.extend({
     new SidebarResize(this.content.find('.resize-handler'));
   },
 
+  // Public API
+  setDtabase: function (database, callback) {
+    this.databaseSelect.val(database);
+    this.showDatabaseContent();
+    this.handler.selectDatabase(database, callback);
+  },
+
   showDatabaseContent: function () {
     this.sidebar.addClass('database-selected');
   },

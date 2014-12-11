@@ -500,6 +500,188 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 }
 };
 exports["db_rows_table"].content = "table.native-view\n  thead\n    tr\n      each column in data.fields\n        th(class= 'format-text')= column.name\n  tbody\n    each row in data.rows\n      tr\n        each column in data.fields\n          td!= formatCell(row[column.name], 'text')\n";
+exports["dialogs/import_file"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, filename, databases, currentDb) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n<header class=\"importing-file\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("Importing file:");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("<code>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push(jade.escape(null == (jade_interp = filename) ? "" : jade_interp));
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</code>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</header>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n<form>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n  <p>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
+buf.push("Database");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <select name=\"database\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+// iterate databases
+;(function(){
+  var $$obj = databases;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var database = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n      <option" + (jade.attr("value", database, true, false)) + (jade.attr("selected", (database == currentDb), true, false)) + ">" + (jade.escape(null == (jade_interp = database) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var database = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n      <option" + (jade.attr("value", database, true, false)) + (jade.attr("selected", (database == currentDb), true, false)) + ">" + (jade.escape(null == (jade_interp = database) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n      <option disabled=\"disabled\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: jade_debug[0].filename });
+buf.push("-----");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n      <option value=\"**create-db**\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
+buf.push("Create database");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n  <p class=\"new-database-input is-hidden\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 17, filename: jade_debug[0].filename });
+buf.push("New database");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <input name=\"new_database_name\"/>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("<code class=\"result\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</code>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 24, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n  <p class=\"buttons\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 25, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <button class=\"ok\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 25, filename: jade_debug[0].filename });
+buf.push("Import file");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 26, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
+buf.push("cancel");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 27, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n  <p class=\"buttons close-btn is-hidden\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/dialogs/import_file.jade" });
+buf.push("\n    <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 28, filename: jade_debug[0].filename });
+buf.push("Close");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</form>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"filename" in locals_for_with?locals_for_with.filename:typeof filename!=="undefined"?filename:undefined,"databases" in locals_for_with?locals_for_with.databases:typeof databases!=="undefined"?databases:undefined,"currentDb" in locals_for_with?locals_for_with.currentDb:typeof currentDb!=="undefined"?currentDb:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "header.importing-file\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close");
+}
+};
+exports["dialogs/import_file"].content = "header.importing-file\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
 exports["dialogs/new_database"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/new_database.jade" }];
 try {

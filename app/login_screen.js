@@ -1,4 +1,6 @@
 global.LoginScreen = jClass.extend({
+  type: "login_screen",
+
   init: function () {
     this.content = App.renderView('home');
     this.form = this.content.find('form');

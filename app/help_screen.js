@@ -1,4 +1,6 @@
 global.HelpScreen = jClass.extend({
+  type: "login_screen",
+
   init: function () {
     this.content = App.renderView('help');
     this.content.find(".sidebar a[page]").bind('click', function (e) {
