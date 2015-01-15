@@ -1027,37 +1027,40 @@ body.sidebar-resizing {
     height: 50%;
     border-top: 1px solid #ccc; }
 
-.custom-window .alertify-dialog {
-  padding-top: 38px; }
-.custom-window h3.window-title {
-  position: absolute;
-  padding-top: 5px;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 31px;
-  font-size: 20px;
-  background: #f5f7f9;
-  background-color: #f5f7f9;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2');
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2')";
-  background: -webkit-gradient(linear, left top, left bottom, from(#f5f7f9), to(#f0f1f2));
-  background: -moz-linear-gradient(top, #f5f7f9, #f0f1f2);
-  background: linear-gradient(top, #f5f7f9, #f0f1f2);
-  border-radius: 8px 8px 0 0; }
-.custom-window p.buttons {
-  margin-top: 11px;
-  margin-bottom: -5px; }
-  .custom-window p.buttons button.cancel {
-    border-color: #ADA6A6;
-    background-color: #B8B8B8; }
-    .custom-window p.buttons button.cancel:hover, .custom-window p.buttons button.cancel:focus {
-      background-color: #B8B8B8;
-      border-color: #ADA6A6; }
-.custom-window .alertify-buttons {
-  display: none;
-  padding-top: 5px;
-  padding-bottom: 5px; }
+.custom-window {
+  max-height: 500px;
+  overflow: auto; }
+  .custom-window .alertify-dialog {
+    padding-top: 38px; }
+  .custom-window h3.window-title {
+    position: absolute;
+    padding-top: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 31px;
+    font-size: 20px;
+    background: #f5f7f9;
+    background-color: #f5f7f9;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2')";
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5f7f9), to(#f0f1f2));
+    background: -moz-linear-gradient(top, #f5f7f9, #f0f1f2);
+    background: linear-gradient(top, #f5f7f9, #f0f1f2);
+    border-radius: 8px 8px 0 0; }
+  .custom-window p.buttons {
+    margin-top: 11px;
+    margin-bottom: -5px; }
+    .custom-window p.buttons button.cancel {
+      border-color: #ADA6A6;
+      background-color: #B8B8B8; }
+      .custom-window p.buttons button.cancel:hover, .custom-window p.buttons button.cancel:focus {
+        background-color: #B8B8B8;
+        border-color: #ADA6A6; }
+  .custom-window .alertify-buttons {
+    display: none;
+    padding-top: 5px;
+    padding-bottom: 5px; }
 
 footer + h4 {
   margin-top: 15px; }
