@@ -65,8 +65,15 @@ global.loadBddBase = function () {
 global.loadTestCases = function (path) {
   var testFiles = node.fs.readdirSync(node.path.resolve(__dirname, path));
 
-  if (process.argv.length > 2) {
-    var pattern = process.argv[2];
+  var args;
+  if (global.GUI) {
+    args = global.GUI.App.argv;
+  } else {
+    args = process.argv.slice(2);
+  }
+
+  if (args.length > 0) {
+    var pattern = args[0];
     testFiles = testFiles.filter(function(file) {
       return file.indexOf(pattern) != -1;
     });
