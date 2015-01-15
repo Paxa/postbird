@@ -49,22 +49,19 @@ global.ImportController = jClass.extend({
   },
 
   loadSqlFile: function() {
-    this.dialog.addMessage("Reading file ... ");
-    node.fs.readFile(this.filename, {encoding: 'utf8'}, function (error, data) {
-      if (error) console.error(error);
-      this.dialog.addMessage("" + data.length + " bytes\n");
-      this.dialog.addMessage("Running sql queries ... ");
+    this.dialog.addMessage("Importing " + this.filename + " ...");
+    var importer = new SqlImporter(this.filename);
 
-      this.handler.connection.query(data, function (result, error) {
-        if (error) {
-          window.alert(error);
-          console.log(error);
-          window.EEEE = error;
-        }
+    importer.onMessage(function (message, is_good) {
+      this.dialog.addMessage(message);
+    }.bind(this));
+
+    importer.doImport(this.handler.connection, function(success) {
+      if (success) {
         this.dialog.addMessage("OK");
-        this.dialog.showCloseButton();
-        this.handler.fetchTablesAndSchemas();
-      }.bind(this));
+      }
+      this.dialog.showCloseButton();
+      this.handler.fetchTablesAndSchemas();
     }.bind(this));
   },
 

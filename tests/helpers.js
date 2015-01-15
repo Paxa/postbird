@@ -1,4 +1,4 @@
-// global.Fiber = require('fibers');
+global.Fiber = require('fibers');
 
 global.waiting = function(runner) {
   var newValue;
