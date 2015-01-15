@@ -21,6 +21,10 @@ global.Model.Table = Model.base.extend({
     this.remove(callback);
   },
 
+  safeDrop: function (callback) {
+    this.q('DROP TABLE IF EXISTS "%s" CASCADE', this.table, callback);
+  },
+
   getStructure: function (callback) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
     this.q(sql, this.schema, this.table, function(data) {

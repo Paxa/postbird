@@ -38,6 +38,7 @@ Connection.instances.forEach(function(c) {
 });
 
 var connection = Connection.instances[0];
+GLOBAL.connection = connection;
 
 App.activeTab = 0;
 
@@ -64,8 +65,18 @@ connection.publicTables(function(data) {
   data.forEach(function(table) {
     if (table.table_schema != 'pg_catalog' && table.table_schema != 'information_schema') {
       queue.push(function(callback) {
-        console.log('Deleting ' + table.table_type + ' ' + table.table_name);
-        Model.Table(table.table_schema, table.table_name).drop(callback);
+        bdd.reporter.puts('Deleting ' + table.table_type + ' ' + table.table_name + "\n", "yellow");
+
+        Model.Table(table.table_schema, table.table_name).safeDrop(function (result, error) {
+          if (error) {
+            var msg = "Drop table error: " + error + "\n";
+            bdd.reporter.puts(msg, "red");
+            if (error.detail) bdd.reporter.puts(error.detail + "\n");
+            if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
+            process.exit(1);
+          }
+          callback();
+        });
       });
     }
   });

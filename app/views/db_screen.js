@@ -142,7 +142,14 @@ global.DbScreenView = jClass.extend({
           },
           'Truncate table' : function () {},
           'Drop table': function() {
-            _this.handler.dropTable(schema, table.table_name);
+            _this.handler.dropTable(schema, table.table_name, function (res, error) {
+              if (error) {
+                var errorMsg = "" + error.toString();
+                if (error.detail) errorMsg += "\n----\n" + error.detail;
+                if (error.hint) errorMsg += "\n----\n" + error.hint;
+                window.alert(errorMsg);
+              }
+            });
           },
           'Show table SQL': function () {}
         });
