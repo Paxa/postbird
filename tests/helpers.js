@@ -1,4 +1,4 @@
-global.Fiber = require('fibers');
+// global.Fiber = require('fibers');
 
 global.waiting = function(runner) {
   var newValue;
@@ -44,4 +44,35 @@ Object.prototype.wrapSync = function(methodName) {
     Fiber.yield();
     return newValue;
   };
+};
+
+global.loadBddBase = function () {
+  global.bdd = require('../lib/bdd/bdd');
+  var asserts = require('../lib/bdd/bdd_assert');
+
+  global.describe = bdd.describe;
+
+  global.assert = asserts.assert;
+  global.assert_true = asserts.assert_true;
+  global.assert_match = asserts.assert_match;
+  global.assert_contain = asserts.assert_contain;
+
+  process.on("uncaughtException", function(err) {
+    bdd.onError(err);
+  });
+};
+
+global.loadTestCases = function (path) {
+  var testFiles = node.fs.readdirSync(node.path.resolve(__dirname, path));
+
+  if (process.argv.length > 2) {
+    var pattern = process.argv[2];
+    testFiles = testFiles.filter(function(file) {
+      return file.indexOf(pattern) != -1;
+    });
+  }
+
+  testFiles.forEach(function (file) {
+    require(node.path.resolve(__dirname, path, file));
+  });
 };

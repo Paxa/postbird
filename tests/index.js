@@ -1,11 +1,19 @@
+if (!global.window) global.window = {};
+
 var async = require('async');
 
 require('../sugar/redscript-loader');
+
 require('../lib/jquery.class');
+require('../lib/node_lib');
 require('../lib/arg');
+require('../lib/sql_splitter');
 
 require('../app/connection');
+require("../app/models/base");
+require("../app/models/table");
 require('../app');
+
 require('../sugar/redscript-loader');
 
 App.tabs = [{
@@ -14,7 +22,14 @@ App.tabs = [{
       user: 'pavel',
       password: '',
       database: 'postbird_testing'
-    }, function() {})
+    }, function(success, error) {
+      if (!success) {
+        process.stdout.write(("ERROR: " + error).red + "\n");
+        process.stdout.write("Can not connect to server. Please check if server running.");
+        process.stdout.write("\n");
+        process.exit(0);
+      }
+    })
   }
 }];
 
@@ -29,38 +44,17 @@ App.activeTab = 0;
 console.error = function () {};
 App.testing = true;
 
-var should = require('should');
-var bdd = require('../lib/bdd');
-
-global.should = should;
-global.describe = bdd.describe;
-global.assert = function assert (var1, var2) {
-  if (typeof var1 == 'object') var1 = JSON.stringify(var1);
-  if (typeof var2 == 'object') var2 = JSON.stringify(var2);
-
-  if (var1 !== var2) {
-    bdd.onError(new Error("'asset' failed: " + String(var1) + " is not " + String(var2)));
-    //throw "'asset' failed: " + String(var1) + " is not " + String(var2);
-  }
-};
-
-global.assert_true = function assert_true (value) {
-  if (!value) {
-    //var stack = new Error().stack;
-    //console.log(stack.join("\n"));
-    bdd.onError(new Error("'assert_true' failed: expected true, got " + String(value)));
-    //throw "'assert_true' failed: expected true, got " + String(value);
-  }
-}
-
 require('./helpers');
 
+loadBddBase();
+loadTestCases("./spec");
+
+/*
 require('./spec/table_spec');
 require('./spec/column_spec');
-
-process.on("uncaughtException", function(err) {
-  bdd.onError(err);
-});
+require('./spec/connection_spec');
+require('./spec/sql_splitter_spec');
+*/
 
 connection.publicTables(function(data) {
   var queue = async.queue(function (fn, callback) {

@@ -58,8 +58,8 @@ global.Connection = jClass.extend({
     if (this.connection) this.connection.end();
     this.connection = anyDB.createConnection(connectString, function (error) {
       if (error) {
-        console.log(error);
         callback && callback(false, error.message);
+        console.log(error);
       } else {
         callback && callback(true);
       }

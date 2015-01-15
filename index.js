@@ -8,6 +8,7 @@ require('./lib/app_menu');
 //require('./lib/mousetrap');
 require('./lib/sidebar_resize');
 require('./lib/widgets/generic_table');
+require('./lib/sql_splitter');
 
 require('./app');
 require('./app/views/pane');
