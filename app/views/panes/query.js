@@ -8,6 +8,8 @@ global.Panes.Query = global.Pane.extend({
 
     this.renderViewToPane('query', 'query_tab');
 
+    this.button = this.content.find('button');
+
     this.mime = 'text/x-mariadb';
     this.textarea = this.content.find('textarea.editor');
 
@@ -24,8 +26,22 @@ global.Panes.Query = global.Pane.extend({
       extraKeys: {"Esc": "autocomplete"}
     });
 
+    this.editor.on("cursorActivity", this.toggleButtonText.bind(this));
+
     this.setUnchangable();
     this.statusLine = this.content.find('.result .status');
+  },
+
+  toggleButtonText: function () {
+    var runLabel = "Run query";
+    var selectedLabel = "Run selection";
+
+    var selectedText = this.editor.getSelection();
+    if (selectedText && selectedText != "") {
+      this.button.text(selectedLabel);
+    } else {
+      this.button.text(runLabel);
+    }
   },
 
   runQuery: function () {
