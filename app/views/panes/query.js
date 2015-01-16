@@ -32,7 +32,10 @@ global.Panes.Query = global.Pane.extend({
     this.editor.save();
     this.statusLine.text('');
 
-    var sql = this.textarea.val();
+    var selectedText = this.editor.getSelection();
+
+    var sql = selectedText || this.textarea.val();
+
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
         var message = error.message;
