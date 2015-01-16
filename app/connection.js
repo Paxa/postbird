@@ -84,6 +84,7 @@ global.Connection = jClass.extend({
       historyRecord.time = Date.now() - time;
       if (error) {
         historyRecord.error = error;
+        error.query = sql;
         console.error("SQL failed", sql);
         console.error(error);
         if (callback) callback(result, error);
@@ -225,6 +226,36 @@ global.Connection = jClass.extend({
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     this.q(sql, dbname, callback);
+  },
+
+  dropUserFunctions: function (namespace, callback) {
+    if (typeof callback == 'undefined' && typeof namespace == 'function') {
+      callback = namespace;
+      namespace = undefined;
+    }
+    if (!namespace) namespace = 'public';
+
+      sql = "SELECT 'DROP ' || (CASE WHEN proisagg THEN 'AGGREGATE' ELSE 'FUNCTION' END) || ' IF EXISTS ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');' as cmd " +
+          "FROM pg_proc INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid) " +
+          "WHERE ns.nspname = '%s'  order by proname;"
+
+    this.q(sql, namespace, function (result, error) {
+      if (error) {
+        callback(result, error);
+      } else {
+        if (result.rows.length) {
+          var dropSql = [];
+          result.rows.forEach(function(row) {
+            dropSql.push(row.cmd);
+            this.q(dropSql.join("\n"), function (drop_result, drop_error) {
+              callback(drop_result, drop_error);
+            });
+          }.bind(this));
+        } else {
+          callback(result);
+        }
+      }
+    }.bind(this));
   },
 
   close: function (callback) {
