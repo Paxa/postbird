@@ -96,6 +96,21 @@ connection.publicTables(function(data) {
     });
   });
 
+  queue.push(function (callback) {
+    connection.dropAllSequesnces(function(result, error) {
+      if (error) {
+        //console.log(error);
+        var msg = "Drop sequesnce error: " + error + "\n";
+        bdd.reporter.puts(msg, "red");
+        bdd.reporter.puts(error.query + "\n");
+        if (error.detail) bdd.reporter.puts(error.detail + "\n");
+        if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
+        process.exit(1);
+      }
+      callback();
+    });
+  });
+
   queue.push(function(callback) {
     bdd.runAllCases(function() {
      global.GUI && GUI.App.quit();

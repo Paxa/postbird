@@ -228,6 +228,32 @@ global.Connection = jClass.extend({
     this.q(sql, dbname, callback);
   },
 
+  queryMultiple: function(queries, callback) {
+    var leftQueries = queries.slice();
+    var conn = this;
+
+    var lastResult;
+
+    var runner = function () {
+      if (leftQueries.length == 0) {
+        callback(lastResult);
+        return;
+      }
+
+      var sql = leftQueries.shift();
+      conn.query(sql, function (reuslt, error) {
+        if (error) {
+          callback(reuslt, error);
+        } else {
+          lastResult = reuslt;
+          runner();
+        }
+      });
+    };
+
+    runner();
+  },
+
   dropUserFunctions: function (namespace, callback) {
     if (typeof callback == 'undefined' && typeof namespace == 'function') {
       callback = namespace;
@@ -247,10 +273,28 @@ global.Connection = jClass.extend({
           var dropSql = [];
           result.rows.forEach(function(row) {
             dropSql.push(row.cmd);
-            this.q(dropSql.join("\n"), function (drop_result, drop_error) {
-              callback(drop_result, drop_error);
-            });
-          }.bind(this));
+          });
+          this.queryMultiple(dropSql, callback);
+        } else {
+          callback(result);
+        }
+      }
+    }.bind(this));
+  },
+
+  dropAllSequesnces: function (callback) {
+    var sql = "SELECT 'drop sequence ' || c.relname || ';' as cmd FROM pg_class c WHERE (c.relkind = 'S');";
+
+    this.q(sql, function (result, error) {
+      if (error) {
+        callback(result, error);
+      } else {
+        if (result.rows.length) {
+          var dropSql = [];
+          result.rows.forEach(function(row) {
+            dropSql.push(row.cmd);
+          });
+          this.queryMultiple(dropSql, callback);
         } else {
           callback(result);
         }
