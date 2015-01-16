@@ -268,6 +268,7 @@ CREATE FUNCTION "me" () RETURNS text AS '
 -- Name: "display_cust" (integer) Type: FUNCTION Owner: example
 --
 
+/*
 CREATE FUNCTION "display_cust" (integer) RETURNS text AS '
  DECLARE
    -- declares an alias name for input
@@ -286,6 +287,7 @@ CREATE FUNCTION "display_cust" (integer) RETURNS text AS '
    return cust_info.lastname;
  END;
  ' LANGUAGE 'plpgsql';
+*/
 
 --
 -- TOC Entry ID 65 (OID 3001151)
@@ -1280,7 +1282,7 @@ CREATE VIEW "recent_shipments" as SELECT count(*) AS num_shipped, max(shipments.
 
 
 COPY "publishers"  FROM stdin;
-150	Kids Can Press	Kids Can Press, 29 Birch Ave. Toronto, ON  M4V 1E2
+150	Kids Can Press	Kids Can Press, 29 Birch Ave. Toronto, ON  M4V 1E2
 91	Henry Holt & Company, Inc.	Henry Holt & Company, Inc. 115 West 18th Street New York, NY 10011
 113	O'Reilly & Associates	O'Reilly & Associates, Inc. 101 Morris St, Sebastopol, CA 95472
 62	Watson-Guptill Publications	1515 Boradway, New York, NY 10036
@@ -1413,7 +1415,7 @@ COPY "daily_inventory"  FROM stdin;
 
 
 COPY "money_example"  FROM stdin;
-$12.24	12.24
+12.24	12.24
 \.
 --
 -- Data for TOC Entry ID 120 (OID 3391184)

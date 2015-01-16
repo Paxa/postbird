@@ -36,4 +36,4 @@ My todo:
 * Add index window is disappearing
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
-* Make it works with https://github.com/KellyChan/Dell-DVD-Store
+* Remove database
