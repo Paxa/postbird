@@ -1,7 +1,6 @@
 global.ImportController = jClass.extend({
   init: function () {
     // TODO: Detect connected tab
-    console.log("App.currentTab.instance.type", App.currentTab.instance.type);
     if (App.currentTab.instance.type != "db_screen") {
       throw new Error("Please connecto to database");
     }
@@ -17,12 +16,12 @@ global.ImportController = jClass.extend({
     $u.openFileDialog('.sql', function (filepath) {
       this.filename = filepath;
       this.showImportDialog();
-    }.bind(this))
+    }.bind(this));
   },
 
   showImportDialog: function () {
-    this.dialog = Dialog.ImportFile(this.handler, this.filename, function (data) {
-      console.log('form', data);
+    var shorterName = this.filename.replace(new RegExp("^" + process.env['HOME']), '~');
+    this.dialog = Dialog.ImportFile(this.handler, shorterName, function (data) {
       this.setOrCreateDatabase(data);
     }.bind(this));
   },
@@ -34,22 +33,23 @@ global.ImportController = jClass.extend({
         return;
       }
 
-      this.dialog.addMessage("Creating database '" + data.new_database_name + "' ...");
+      this.dialog.addMessage("Creating database '" + data.new_database_name + "'\n");
       this.handler.createDatabase({dbname: data.new_database_name}, function (error, result) {
-        this.dialog.addMessage("OK\n");
+        //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
       }.bind(this));
     } else {
-      this.dialog.addMessage("Select database '" + data.database + "' ...");
+      this.dialog.addMessage("Select database '" + data.database + "'\n");
       this.handler.setDatabase(data.database, function (error, relust) {
-        this.dialog.addMessage("OK\n");
+        //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
       }.bind(this));
     }
   },
 
   loadSqlFile: function() {
-    this.dialog.addMessage("Importing " + this.filename + " ...");
+    this.dialog.startImporting();
+    //this.dialog.addMessage("Importing " + this.filename + " ...");
     var importer = new SqlImporter(this.filename);
 
     importer.onMessage(function (message, is_good) {
@@ -57,9 +57,8 @@ global.ImportController = jClass.extend({
     }.bind(this));
 
     importer.doImport(this.handler.connection, function(success) {
-      if (success) {
-        this.dialog.addMessage("OK");
-      }
+      console.log("Import finish: " + (success ? "SUCCESS" : "FAILURE") + " File: " + this.filename);
+      this.dialog.addMessage(success ? "SUCCESS" : "FAILURE");
       this.dialog.showCloseButton();
       this.handler.fetchTablesAndSchemas();
     }.bind(this));
@@ -67,5 +66,5 @@ global.ImportController = jClass.extend({
 
   currentTab: function () {
     return App.currentTab.instance;
-  },
+  }
 });

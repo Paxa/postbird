@@ -1,11 +1,11 @@
 global.Dialog.ImportFile = global.Dialog.extend({
   title: "Import options",
+  dialogClass: "import-file-dialog",
 
   init: function (handler, filename, onSubmit) {
-    this.handler = handler;
     this.filename = filename;
     this.onSubmitCallback = onSubmit;
-
+    this.handler = handler;
     this.showWindow();
   },
 
@@ -31,6 +31,10 @@ global.Dialog.ImportFile = global.Dialog.extend({
       });
       this.bindFormSubmitting();
     }.bind(this));
+  },
+
+  startImporting: function () {
+    this.addClass('importing');
   },
 
   onSubmit: function (data) {
