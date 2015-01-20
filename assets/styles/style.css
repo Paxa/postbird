@@ -80,9 +80,6 @@ a {
 textarea {
   resize: none; }
 
-* {
-  outline: none; }
-
 footer, header, aside, nav, menu, video, audio, time, progress, section, article {
   margin: 0;
   padding: 0;
@@ -247,28 +244,34 @@ h4 {
     font-size: 13px;
     width: 320px;
     margin: 45px auto 0;
-    background: #fff;
-    padding: 20px;
-    -moz-border-radius: 6px;
-    -o-border-radius: 6px;
-    -ms-border-radius: 6px;
-    -khtml-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.15);
+    background: #EDEDED;
+    padding: 16px 20px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
     border: 1px solid #d5e8f4; }
     .home-screen .middle-window p {
-      margin: 3px 0; }
+      margin: 12px 0; }
       .home-screen .middle-window p.buttons {
-        padding-left: 131px;
-        padding-top: 5px; }
-    .home-screen .middle-window input {
+        text-align: right;
+        margin-bottom: 1px;
+        padding-right: 23px;
+        padding-top: 3px; }
+        .home-screen .middle-window p.buttons button {
+          display: none; }
+    .home-screen .middle-window input[type=text], .home-screen .middle-window input[type=password], .home-screen .middle-window input[type=email], .home-screen .middle-window input[type=number], .home-screen .middle-window input[type=url] {
       font-size: 12px;
       line-height: 16px;
-      padding-left: 4px;
-      padding-right: 4px; }
+      padding: 1px 4px;
+      width: 186px; }
+    .home-screen .middle-window button {
+      height: 21px; }
     .home-screen .middle-window label {
       line-height: 22px;
       margin-right: 8px;
@@ -278,7 +281,7 @@ h4 {
       display: inline-block;
       *display: inline;
       vertical-align: top;
-      width: 124px;
+      width: 88px;
       text-align: right; }
   .home-screen .middle-window {
     display: none; }
@@ -302,6 +305,21 @@ h4 {
         background: orange; }
       .home-screen .heroku-oauth ul.steps li.done:before {
         background: green; }
+  .home-screen .heroku-oauth ul.apps {
+    margin: 10px 0;
+    border-top: 1px solid #ccc; }
+    .home-screen .heroku-oauth ul.apps li {
+      padding: 3px 10px;
+      border-bottom: 1px solid #ccc; }
+      .home-screen .heroku-oauth ul.apps li button {
+        margin-left: 11px;
+        height: 20px;
+        line-height: 16px; }
+      .home-screen .heroku-oauth ul.apps li span {
+        line-height: 24px;
+        font-weight: bold; }
+      .home-screen .heroku-oauth ul.apps li:hover {
+        background: rgba(255, 255, 255, 0.4); }
   .home-screen .sidebar {
     position: absolute;
     left: 0;
@@ -334,7 +352,7 @@ h4 {
           background: rgba(0, 70, 100, 0.1); }
   .home-screen footer {
     text-align: center;
-    margin-top: 4%; }
+    margin-top: 3%; }
     .home-screen footer a {
       text-decoration: underline; }
     .home-screen footer .login-with-password {
@@ -1080,6 +1098,34 @@ img.app-icon {
 
 .alertify-dialog form p {
   margin: 5px 0; }
+
+.native-look {
+  padding: 0 9px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  border: 1px solid #9A9A9A;
+  border-radius: 4px;
+  height: 21px;
+  line-height: 19px;
+  font-size: 11px;
+  color: #000;
+  background-color: #EDEDED;
+  background-image: url("../button-bg.png");
+  background-repeat: repeat-x;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1); }
+  .native-look:focus {
+    outline-color: #5b9dd9;
+    outline-offset: -2px;
+    outline-radius: 16px;
+    outline-style: auto;
+    outline-width: 4.75; }
+  .native-look:active {
+    border-top-color: #5645B1;
+    border-bottom-color: #484175;
+    border-left-color: #4C418C;
+    border-right-color: #4C418C;
+    background-image: url("../button-bg-active.png");
+    outline: none; }
 
 .import-file-dialog header {
   margin-bottom: 15px; }

@@ -109,6 +109,25 @@ Zepto(document).ready(function() {
     },
     'Window': {
       'separator': 'separator',
+      'Zoom in': {
+        click: function () {
+          gui.Window.get().zoomLevel += 0.5;
+        },
+        key: '+'
+      },
+      'Zoom out': {
+        click: function () {
+          gui.Window.get().zoomLevel -= 0.5;
+        },
+        key: '-'
+      },
+      'Zoom to noraml': {
+        click: function () {
+          gui.Window.get().zoomLevel = 0;
+        },
+        key: '0'
+      },
+      'separator2': 'separator',
       'Inspector': {
         click: function () {
           var win = gui.Window.get();
@@ -140,6 +159,16 @@ Zepto(document).ready(function() {
 
   window.Mousetrap.bind("command+shift+/", function () {
     AppMenu.callMenuItem('Window', 'Help');
+    return false;
+  });
+
+  window.Mousetrap.bind("command++/", function () {
+    console.log("Zoom up");
+    return false;
+  });
+
+  window.Mousetrap.bind("command+-/", function () {
+    console.log("Zoom down");
     return false;
   });
 

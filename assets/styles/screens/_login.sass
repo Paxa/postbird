@@ -11,28 +11,33 @@
     :font-size 13px
     :width 320px
     :margin 45px auto 0
-    :background #fff
-    :padding 20px
-    +border-radius(6px)
-    +box-shadow(inset 0px 0px 10px rgba(0, 0, 0, 0.15))
+    :background #EDEDED
+    :padding 16px 20px
+    +border-radius(5px)
+    +box-shadow(inset 0px 1.6px 2px rgba(0, 0, 0, 0.15))
     :border 1px solid darken(#e5f1f8, 4%)
     p
-      :margin 3px 0
+      :margin 12px 0
       &.buttons
+        text-align: right
+        margin-bottom: 1px
         :padding
-          :left 131px
-          :top 5px
-    input
+          :right 23px
+          :top 3px
+        button
+          display: none
+    input[type=text], input[type=password], input[type=email], input[type=number], input[type=url]
       :font-size 12px
       :line-height 16px
-      :padding
-        :left 4px
-        :right 4px
+      padding: 1px 4px
+      width: 186px
+    button
+      height: 21px
     label
       :line-height 22px
       :margin-right 8px
       +inline-block
-      :width 124px
+      :width 88px
       :text-align right
 
   .middle-window
@@ -59,6 +64,21 @@
           background: orange
         &.done:before
           background: green
+    ul.apps
+      margin: 10px 0
+      border-top: 1px solid #ccc
+      li
+        padding: 3px 10px
+        border-bottom: 1px solid #ccc
+        button
+          margin-left: 11px
+          height: 20px
+          line-height: 16px
+        span
+          line-height: 24px
+          font-weight: bold
+        &:hover
+          background: rgba(255, 255, 255, 0.4)
 
   .sidebar
     :position absolute
@@ -90,7 +110,7 @@
 
   footer
     text-align: center
-    margin-top: 4%
+    margin-top: 3%
     a
       text-decoration: underline
     .login-with-password

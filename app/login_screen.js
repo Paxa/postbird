@@ -57,9 +57,9 @@ global.LoginScreen = jClass.extend({
     var appsList = this.content.find('ul.apps');
     HerokuClient.authAndGetApps(function(apps) {
       apps.forEach(function(app) {
-        var appEl = $dom(['li', ['span', app.name], ['a.button', 'Connect'], {'app-name': app.name}]);
+        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
         appsList.append(appEl);
-        $u(appEl).bind('click', function (event) {
+        $u(appEl).find('button').bind('click', function (event) {
           event.preventDefault();
           this.connectToHeroku(app);
         }.bind(this));
