@@ -72,6 +72,7 @@ global.LoginScreen = jClass.extend({
     HerokuClient.getDatabaseUrl(heroku_app.id, function(db_url) {
       if (!db_url) {
         window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
+        App.stopLoading();
         return;
       }
       db_url = db_url + "?ssl=true";
