@@ -241,6 +241,7 @@ global.App = {
     $u('body > #content').css('height', height - topOffset);
   },
 
+  // TODO: Saving function have to be in a model
   savedConnections: function () {
     if (window.localStorage.savedConnections) {
       return JSON.parse(window.localStorage.savedConnections);
