@@ -85,13 +85,15 @@ describe('Model.Column', do
         column.type = 'character varying'
         column.default_value = "Foo"
         column.max_length = 30
+
         assert(column.changes, {
           name: ["some_column", "some_column2"],
           allow_null: [false, true],
           type: ["integer", "character varying"],
-          default_value: [null, "Foo"],
-          max_length: [null, 30]
+          default_value: [undefined, "Foo"],
+          max_length: [undefined, 30]
         })
+
         column.save(do
           table.getColumnNames(do |names|
             assert(names, ['id', 'some_column2'])
@@ -116,6 +118,8 @@ describe('Model.Column', do
         assert(column.attributes, {
           name: 'some_column',
           type: 'integer',
+          default_value: undefined,
+          max_length: undefined,
           allow_null: false
         })
         table.drop(done)
@@ -136,6 +140,8 @@ describe('Model.Column', do
       assert(column.attributes, {
         name: 'some_column',
         type: 'integer',
+        default_value: undefined,
+        max_length: undefined,
         allow_null: false
       })
 

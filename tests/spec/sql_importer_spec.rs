@@ -28,10 +28,7 @@ describe('PsqlRunner', do
         var tables = Model.Table.wrapSync('publicTables')();
         assert(tables.sort(), ['city', 'country', 'countrylanguage'].sort());
 
-        tables.forEach(do |table|
-          Model.Table("", table).runSync("safeDrop");
-        end)
-
+        DbCleaner(connection).fibRecreateSchema();
         done();
       end).run()
     end);
@@ -69,10 +66,7 @@ describe('PsqlRunner', do
                               'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
                               ].sort());
 
-        tables.forEach(do |table|
-          Model.Table("", table).runSync("safeDrop");
-        end)
-
+        DbCleaner(connection).fibRecreateSchema();
         done();
       end).run()
     end);

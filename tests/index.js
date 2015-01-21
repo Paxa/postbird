@@ -57,6 +57,13 @@ require('./spec/connection_spec');
 require('./spec/sql_splitter_spec');
 */
 
+global.puts = function (obj, color) {
+  if (typeof obj != 'string') {
+    obj = node.util.inspect(obj, undefined, 3);
+  }
+  bdd.reporter.puts(obj + "\n", color);
+};
+
 connection.publicTables(function(data) {
   var queue = async.queue(function (fn, callback) {
     fn(callback);
@@ -83,30 +90,14 @@ connection.publicTables(function(data) {
 
   queue.push(function (callback) {
     connection.dropUserFunctions(function(result, error) {
-      if (error) {
-        //console.log(error);
-        var msg = "Drop procedure error: " + error + "\n";
-        bdd.reporter.puts(msg, "red");
-        bdd.reporter.puts(error.query + "\n");
-        if (error.detail) bdd.reporter.puts(error.detail + "\n");
-        if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
-        process.exit(1);
-      }
+      checkDbError("Drop procedures", error);
       callback();
     });
   });
 
   queue.push(function (callback) {
     connection.dropAllSequesnces(function(result, error) {
-      if (error) {
-        //console.log(error);
-        var msg = "Drop sequesnce error: " + error + "\n";
-        bdd.reporter.puts(msg, "red");
-        bdd.reporter.puts(error.query + "\n");
-        if (error.detail) bdd.reporter.puts(error.detail + "\n");
-        if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
-        process.exit(1);
-      }
+      checkDbError("Drop sequesnces", error);
       callback();
     });
   });

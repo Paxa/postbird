@@ -58,6 +58,14 @@ global.loadBddBase = function () {
   global.assert_contain = asserts.assert_contain;
 
   process.on("uncaughtException", function(err) {
+    /*
+    if (err == null) {
+      var err1 = new Error();
+      //newErr.stack;
+      //puts(newErr.stack)
+    }
+    */
+
     bdd.onError(err);
   });
 };
@@ -83,3 +91,39 @@ global.loadTestCases = function (path) {
     require(node.path.resolve(__dirname, path, file));
   });
 };
+
+// checkDbError("Drop procedure", error);
+
+global.checkDbError = function (operation, error) {
+  if (error) {
+    //console.log(error);
+    var msg = operation + " error: " + error + "\n";
+    bdd.reporter.puts(msg, "red");
+    bdd.reporter.puts(error.query + "\n");
+    if (error.detail) bdd.reporter.puts(error.detail + "\n");
+    if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
+    process.exit(1);
+  }
+};
+
+global.DbCleaner = jClass.extend({
+  init: function(connection){
+    this.connection = connection;
+  },
+
+  recreateSchema: function (callback) {
+    var sql = "drop schema public cascade; create schema public;";
+    this.connection.query(sql, function (result, error) {
+      checkDbError("Recreate schema", error);
+      callback();
+    })
+  },
+
+  fibRecreateSchema: function () {
+    var fiber = Fiber.current;
+    this.recreateSchema(function () {
+      fiber.run();
+    })
+    Fiber.yield();
+  }
+})
