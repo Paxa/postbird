@@ -26,7 +26,7 @@ describe('PsqlRunner', do
 
       Fiber(do
         var tables = Model.Table.wrapSync('publicTables')();
-        assert(tables.sort(), ['city', 'country', 'countrylanguage'].sort());
+        assert(tables, ['city', 'country', 'countrylanguage']);
 
         DbCleaner(connection).fibRecreateSchema();
         done();
@@ -58,13 +58,13 @@ describe('PsqlRunner', do
 
       Fiber(do
         var tables = Model.Table.wrapSync('publicTables')();
-        assert(tables.sort(), ['states', 'my_list', 'employees', 'schedules', 'editions',
-                              'books', 'publishers', 'shipments', 'stock', 'numeric_values',
-                              'daily_inventory', 'money_example', 'customers', 'book_queue',
-                              'stock_backup', 'stock_view', 'favorite_books', 'subjects',
-                              'distinguished_authors', 'favorite_authors', 'text_sorting',
-                              'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
-                              ].sort());
+        assert(tables, ['states', 'my_list', 'employees', 'schedules', 'editions',
+                        'books', 'publishers', 'shipments', 'stock', 'numeric_values',
+                        'daily_inventory', 'money_example', 'customers', 'book_queue',
+                        'stock_backup', 'stock_view', 'favorite_books', 'subjects',
+                        'distinguished_authors', 'favorite_authors', 'text_sorting',
+                        'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
+                       ]);
 
         DbCleaner(connection).fibRecreateSchema();
         done();
