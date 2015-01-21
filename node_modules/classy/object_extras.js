@@ -75,7 +75,7 @@ ObjectKit.methods = function Object_methods (object) {
   ObjectKit.ancestors(object).forEach(function (klass) {
     ObjectKit.own_methods(klass.prototype).forEach(function(methodName) {
       if (methods.indexOf(methodName) == -1) methods.push(methodName);
-    })
+    });
   });
 
   return methods;
@@ -143,7 +143,7 @@ ObjectKit.properties = function Object_properties (object) {
   ObjectKit.ancestors(object).forEach(function (klass) {
     ObjectKit.own_properties(klass.prototype).forEach(function(methodName) {
       if (properties.indexOf(methodName) == -1) properties.push(methodName);
-    })
+    });
   });
 
   return properties;
@@ -228,6 +228,21 @@ ObjectKit.ancestors = function Object_ancestors (object) {
 
 ObjectKit.isPrototype = isPrototype;
 ObjectKit.isConstructor = ObjectKit.isPrototype;
+
+// Same as ruby's Object#present
+ObjectKit.present = function Object_present (object) {
+  if (typeof object == 'string'  && object.trim() != "") return true;
+  if (typeof object == 'boolean' && object) return true;
+  if (typeof object == 'number') return true;
+  if (typeof object == 'function') return true;
+  if (typeof object == 'object') {
+    if (object === null) return false;
+    if (Array.isArray(object) && object.length == 0) return false;
+    if (Object.keys(object).length === 0) return false;
+    return true;
+  }
+  return false;
+};
 
 ObjectKit.extendGlobal = function () {
   ObjectKit.forEach(ObjectKit, function (key, value) {

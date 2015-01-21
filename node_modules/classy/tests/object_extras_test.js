@@ -125,4 +125,29 @@ describe("object extras", function () {
     assert(Object.ancestors(true),      [Boolean, Object]);
     assert(Object.ancestors(false),     [Boolean, Object]);
   });
+
+  // Object.present
+  it('should detect presence', function () {
+    assert(Object.present(""),      false);
+    assert(Object.present(" \t\n"), false);
+    assert(Object.present("a"),     true);
+
+    assert(Object.present(true),  true);
+    assert(Object.present(false), false);
+
+    assert(Object.present(-1), true);
+    assert(Object.present(0),  true);
+    assert(Object.present(1),  true);
+
+    assert(Object.present(function () {}), true);
+    assert(Object.present(null), false);
+    assert(Object.present(undefined), false);
+
+    assert(Object.present([]),   false);
+    assert(Object.present([1]),  true);
+    assert(Object.present([""]), true);
+
+    assert(Object.present({}), false);
+    assert(Object.present({a: 1}), true);
+  });
 });
