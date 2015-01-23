@@ -94,7 +94,7 @@ global.LoginScreen = jClass.extend({
 
   fillSavedConnections: function () {
     this.connections.empty();
-    var data = App.savedConnections();
+    var data = Model.SavedConn.savedConnections();
     for (var name in data) {
       var _this = this, line = $dom(['li', name]);
 
@@ -129,10 +129,10 @@ global.LoginScreen = jClass.extend({
   renameConnection: function (name) {
     window.alertify.prompt("Rename connection?", function (confirm, newName) {
       if (confirm) {
-        App.renameConnection(name, newName);
+        Model.SavedConn.renameConnection(name, newName);
         this.fillSavedConnections();
       }
-    }, name);
+    }.bind(this), name);
   },
 
   deleteConnection: function (name) {
@@ -140,7 +140,7 @@ global.LoginScreen = jClass.extend({
     window.alertify.confirm("Remove connection " + name + "?", function (res) {
       window.alertify.labels.ok = "OK";
       if (res) {
-        App.removeConnection(name);
+        Model.SavedConn.removeConnection(name);
         this.fillSavedConnections();
       }
     }.bind(this));
@@ -148,7 +148,7 @@ global.LoginScreen = jClass.extend({
 
   saveAndConnect: function (e) {
     $u.stopEvent(e);
-    var data = App.savedConnections();
+    var data = Model.SavedConn.savedConnections();
     var host = this.form.find('[name=host]').val();
     var name = host, i = 1;
     while (data[name]) {
@@ -156,7 +156,7 @@ global.LoginScreen = jClass.extend({
       name = host + ' #' + i;
     }
 
-    App.saveConnection(name, $u.formValues(this.form));
+    Model.SavedConn.saveConnection(name, $u.formValues(this.form));
     this.fillSavedConnections();
     this.onFormSubmit();
   },

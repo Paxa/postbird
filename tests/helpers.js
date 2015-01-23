@@ -53,8 +53,9 @@ global.loadBddBase = function () {
   global.describe = bdd.describe;
 
   global.assert = asserts.assert;
-  global.assert_true = asserts.assert_true;
-  global.assert_match = asserts.assert_match;
+  global.assert_true    = asserts.assert_true;
+  global.assert_false   = asserts.assert_false;
+  global.assert_match   = asserts.assert_match;
   global.assert_contain = asserts.assert_contain;
 
   process.on("uncaughtException", function(err) {

@@ -38,6 +38,7 @@ require('./app/views/dialogs/import_file');
 require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
+require('./app/models/saved_conn');
 
 require('./app/controllers/import_controller');
 

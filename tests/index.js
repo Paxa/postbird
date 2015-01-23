@@ -64,6 +64,8 @@ global.puts = function (obj, color) {
   bdd.reporter.puts(obj + "\n", color);
 };
 
+window.localStorage.clear();
+
 connection.publicTables(function(data) {
   var queue = async.queue(function (fn, callback) {
     fn(callback);

@@ -33,8 +33,9 @@ global.Model.SavedConn = jClass.extend({
       return this.savedConnections()[name];
     },
 
-    isPersists: function(name, options) {
-      return Object.is(this.savedConnection(name), options);
+    isEqualWithSaved: function(name, options) {
+      return JSON.stringify(this.savedConnection(name)) == JSON.stringify(options);
+      //return Object.is(this.savedConnection(name), options);
     },
   }
 
