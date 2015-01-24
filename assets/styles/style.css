@@ -232,6 +232,34 @@ h4 {
   #content .tabContent {
     height: 100%; }
 
+.native-look {
+  padding: 0 9px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  border: 1px solid #9A9A9A;
+  border-radius: 4px;
+  height: 21px;
+  line-height: 19px;
+  font-size: 11px;
+  color: #000;
+  background-color: #EDEDED;
+  background-image: url("../button-bg.png");
+  background-repeat: repeat-x;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1); }
+  .native-look:focus {
+    outline-color: #5b9dd9;
+    outline-offset: -2px;
+    outline-radius: 16px;
+    outline-style: auto;
+    outline-width: 4.75; }
+  .native-look:active {
+    border-top-color: #5645B1;
+    border-bottom-color: #484175;
+    border-left-color: #4C418C;
+    border-right-color: #4C418C;
+    background-image: url("../button-bg-active.png");
+    outline: none; }
+
 .home-screen {
   background: #e1eff7;
   background: #e1eff7;
@@ -325,9 +353,10 @@ h4 {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 150px;
+    width: 170px;
     padding: 10px 0;
-    background: rgba(50, 70, 90, 0.05); }
+    border-right: 1px solid #B4B4B4;
+    background: #E5E9F0; }
     .home-screen .sidebar h4 {
       font-size: 13px;
       font-weight: bold;
@@ -339,17 +368,44 @@ h4 {
       -webkit-user-select: none;
       user-select: none;
       cursor: default; }
-    .home-screen .sidebar ul {
-      padding: 0 10px; }
-      .home-screen .sidebar ul li {
-        margin: 4px -5px;
-        padding: 1px 5px;
-        cursor: pointer;
-        -webkit-user-select: none;
-        user-select: none;
-        cursor: default; }
-        .home-screen .sidebar ul li:hover {
-          background: rgba(0, 70, 100, 0.1); }
+    .home-screen .sidebar ul > li {
+      padding: 2px 8px 2px 35px;
+      position: relative; }
+      .home-screen .sidebar ul > li:before {
+        display: block;
+        content: "";
+        background: url("../icons/table.png") no-repeat;
+        background-size: 15px 15px;
+        width: 15px;
+        height: 15px;
+        left: 13px;
+        top: 4px;
+        position: absolute; }
+      .home-screen .sidebar ul > li:hover {
+        background: rgba(0, 0, 0, 0.1); }
+      .home-screen .sidebar ul > li.selected {
+        background: rgba(0, 51, 136, 0.15);
+        background-image: url("../selected_bg.png");
+        background-size: 1px 100%;
+        background-repeat: repeat-x;
+        color: white;
+        text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
+    .home-screen .sidebar a.add-connection {
+      display: inline-block;
+      height: 20px;
+      line-height: 21px;
+      padding: 3px 11px 3px 30px;
+      border-radius: 5px;
+      margin-left: 8px;
+      margin-top: 12px;
+      background: url("../icons/add-connection.png"), linear-gradient(#fdfdfd, #f3f3f3), linear-gradient(#ededed, #f2f2f2);
+      background-repeat: no-repeat, no-repeat, no-repeat;
+      background-position: 7px center, 0px 0px, 0px bottom;
+      background-size: 18px 18px, 100% 50%, 100% 50%;
+      border: 1px solid #c3c3c3;
+      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+      color: black;
+      text-decoration: none; }
   .home-screen footer {
     text-align: center;
     margin-top: 3%; }
@@ -598,10 +654,10 @@ body.sidebar-resizing {
             position: absolute; }
         .main-screen > .sidebar > .tables > ul > li > ul {
           display: none; }
-          .main-screen > .sidebar > .tables > ul > li > ul li {
+          .main-screen > .sidebar > .tables > ul > li > ul > li {
             padding: 2px 8px 2px 35px;
             position: relative; }
-            .main-screen > .sidebar > .tables > ul > li > ul li:before {
+            .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
               background: url("../icons/table.png") no-repeat;
@@ -611,9 +667,9 @@ body.sidebar-resizing {
               left: 13px;
               top: 4px;
               position: absolute; }
-            .main-screen > .sidebar > .tables > ul > li > ul li:hover {
+            .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
-            .main-screen > .sidebar > .tables > ul > li > ul li.selected {
+            .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
               background: rgba(0, 51, 136, 0.15);
               background-image: url("../selected_bg.png");
               background-size: 1px 100%;
@@ -1099,34 +1155,6 @@ img.app-icon {
 .alertify-dialog form p {
   margin: 5px 0; }
 
-.native-look {
-  padding: 0 9px;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  border: 1px solid #9A9A9A;
-  border-radius: 4px;
-  height: 21px;
-  line-height: 19px;
-  font-size: 11px;
-  color: #000;
-  background-color: #EDEDED;
-  background-image: url("../button-bg.png");
-  background-repeat: repeat-x;
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1); }
-  .native-look:focus {
-    outline-color: #5b9dd9;
-    outline-offset: -2px;
-    outline-radius: 16px;
-    outline-style: auto;
-    outline-width: 4.75; }
-  .native-look:active {
-    border-top-color: #5645B1;
-    border-bottom-color: #484175;
-    border-left-color: #4C418C;
-    border-right-color: #4C418C;
-    background-image: url("../button-bg-active.png");
-    outline: none; }
-
 .import-file-dialog header {
   margin-bottom: 15px; }
   .import-file-dialog header code {
@@ -1134,17 +1162,36 @@ img.app-icon {
     background: #f5f5f5;
     display: block;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+    word-break: break-all;
+    padding: 5px;
+    background: #f5f5f5;
+    display: block;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
     word-break: break-all; }
 .import-file-dialog form code {
   margin: 13px 0;
-  display: none;
   padding: 5px;
   background: #f5f5f5;
+  display: block;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  word-break: break-all;
+  display: none;
   overflow: auto;
   max-height: 300px;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.25); }
 .import-file-dialog.importing form code {
   display: block; }
+
+.heroku-connection-dialog code {
+  padding: 5px;
+  background: #f5f5f5;
+  display: block;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  word-break: break-all;
+  margin: 10px 0; }
+.heroku-connection-dialog p {
+  margin: 10px 0; }
+.heroku-connection-dialog button.save-conn {
+  margin-right: 10px; }
 
 /*# sourceMappingURL=style.css.map */

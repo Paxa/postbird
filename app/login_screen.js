@@ -6,8 +6,10 @@ global.LoginScreen = jClass.extend({
     this.form = this.content.find('form');
     this.connections = this.content.find('ul.connections');
     this.form.bind('submit', this.onFormSubmit.bind(this));
-    this.form.find('#save-and-connect').bind('click', this.saveAndConnect.bind(this));
     this.fillSavedConnections();
+    this.connections.find('li:first').click();
+
+    this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
 
     this.content.find('a.go-to-help').bind('click', function() {
       var help = HelpScreen.open();
@@ -111,16 +113,45 @@ global.LoginScreen = jClass.extend({
         });
 
 
-        $u(line).bind('click', _this.fillForm.bind(_this, name, params));
+        $u(line).bind('click', _this.connectionSelected.bind(_this, name, params, line));
       }(data[name], name)
 
       this.connections.append(line)
     }
   },
 
+  connectionSelected: function (name, params, line) {
+    this.connections.find('.selected').removeClass('selected');
+    $u(line).addClass('selected');
+    this.connectionName = name;
+    this.fillForm(name, params);
+    this.setButtonShown(false);
+  },
+
+  testConnection: function () {
+    App.startLoading("Connecting...");
+
+    var options = this.getFormData();
+    var conn = new Connection(options, function (status, message) {
+      App.stopLoading();
+      if (status) {
+        window.alertify.alert("Successfullt connected!");
+        conn.close();
+      } else {
+        window.alertify.alert(this.humanErrorMessage(message));
+      }
+    }.bind(this));
+  },
+
+  addNewConnection: function () {
+    this.connectionName = "**new**";
+    this.fillForm(undefined, {host: "localhost", user: "", password: "", database: ""});
+    this.form.find('[name=host]').focus();
+    this.setButtonShown(true);
+  },
+
   fillForm: function (name, params) {
     var v;
-    this.connectionName = name;
     for (var k in params) { v = params[k];
       this.form.find('input[name=' + k + ']').val(v);
     }
@@ -163,15 +194,37 @@ global.LoginScreen = jClass.extend({
 
   onFormSubmit: function (e, callback) {
     e && e.preventDefault();
+    var options = this.getFormData();
+    console.log(options);
+    this.makeConnection(options, {}, callback);
+  },
 
-    var options = {
+  getFormData: function () {
+    return {
       host: this.form.find('[name=host]').val(),
       port: this.form.find('[name=port]').val(),
       user: this.form.find('[name=user]').val(),
+      query: this.form.find('[name=query]').val(),
       password: this.form.find('[name=password]').val(),
       database: this.form.find('[name=database]').val()
     };
-    this.makeConnection(options, {}, callback);
+  },
+
+  formChanged: function (event) {
+    if (this.connectionName == "**new**") return;
+
+    var formData = this.getFormData();
+    var isChanged = !Model.SavedConn.isEqualWithSaved(this.connectionName, formData);
+
+    if (isChanged) {
+      this.setButtonShown(true);
+    } else {
+      this.setButtonShown(false);
+    }
+  },
+
+  setButtonShown: function (isShown) {
+    this.form.find("button")[isShown ? 'show' : 'hide']();
   },
 
   makeConnection: function (connectionOptions, options, callback) {

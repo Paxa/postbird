@@ -1,0 +1,53 @@
+= native-items-list
+  > li
+    :padding 2px 8px 2px 35px
+    :position relative
+    &:before
+      display: block
+      content: ''
+      background: url("../icons/table.png") no-repeat
+      background-size: 15px 15px
+      width: 15px
+      height: 15px
+      left: 13px
+      top: 4px
+      position: absolute
+    &:hover
+      :background rgba(#000, 0.1)
+    &.selected
+      :background rgba(#038, 0.15)
+      :background-image url("../selected_bg.png")
+      :background-size 1px 100%
+      :background-repeat repeat-x
+      color: white
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44)
+
+.native-look
+  padding: 0 9px
+  box-sizing: border-box
+  -webkit-appearance: none
+  border: 1px solid #9A9A9A
+  border-radius: 4px
+  height: 21px
+  line-height: 19px
+  font-size: 11px
+  color: #000
+  background:
+    color: #EDEDED
+    image: url("../button-bg.png")
+    repeat: repeat-x
+  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.1)
+  &:focus
+    outline-color: rgb(91, 157, 217)
+    outline-offset: -2px
+    outline-radius: 16px
+    outline-style: auto
+    outline-width: 4.75
+  &:active
+    border-top-color: #5645B1
+    border-bottom-color: #484175
+    border-left-color: #4C418C
+    border-right-color: #4C418C
+    background-image: url("../button-bg-active.png")
+    outline: none
+

@@ -34,6 +34,7 @@ require('./app/views/dialogs/new_column');
 require('./app/views/dialogs/edit_column');
 require('./app/views/dialogs/new_index');
 require('./app/views/dialogs/import_file');
+require('./app/views/dialogs/heroku_connection');
 
 require('./app/models/base');
 require('./app/models/table');

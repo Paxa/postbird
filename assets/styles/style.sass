@@ -18,6 +18,8 @@
 
 $sidebar-footer-height: 27px
 
+@import "extras/mac-native-elements"
+
 @import "screens/login"
 @import "screens/main"
 @import "screens/help"
@@ -92,35 +94,5 @@ img.app-icon
 
 .alertify-dialog form p
   margin: 5px 0
-
-.native-look
-  padding: 0 9px
-  box-sizing: border-box
-  -webkit-appearance: none
-  border: 1px solid #9A9A9A
-  border-radius: 4px
-  height: 21px
-  line-height: 19px
-  font-size: 11px
-  color: #000
-  background:
-    color: #EDEDED
-    image: url("../button-bg.png")
-    repeat: repeat-x
-  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.1)
-  &:focus
-    outline-color: rgb(91, 157, 217)
-    outline-offset: -2px
-    outline-radius: 16px
-    outline-style: auto
-    outline-width: 4.75
-  &:active
-    border-top-color: #5645B1
-    border-bottom-color: #484175
-    border-left-color: #4C418C
-    border-right-color: #4C418C
-    background-image: url("../button-bg-active.png")
-    outline: none
-
 
 @import "elements/dialogs"

@@ -63,5 +63,13 @@ global.Dialog = jClass.extend({
       window.alert(error.message);
     else
       this.close();
+  },
+
+  renderTemplate: function (template, locals, title) {
+    title = title || this.title;
+    locals = locals || {};
+
+    var nodes = App.renderView(template, locals);
+    this.content = this.renderWindow(title, nodes);
   }
 });

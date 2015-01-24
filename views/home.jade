@@ -2,6 +2,7 @@
   .sidebar
     h4 Saved connections
     ul.connections
+    a.add-connection(exec="addNewConnection") Add
 
   form.middle-window.plain
     p
@@ -21,9 +22,11 @@
       label(for="login_database") Database
       input#login_database(name='database', type='text', value='')
 
+    input(name="query", type="hidden")
+
     p.buttons
-      button.native-look#test-connection Test connection
-      button.native-look#save-and-connect Save & connect
+      button.native-look(exec="testConnection") Test connection
+      button.native-look(exec="saveAndConnect") Save & connect
       input.native-look(type="submit", value="Connect", autofocus=true)
 
   .middle-window.heroku-1

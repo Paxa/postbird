@@ -85,9 +85,10 @@
     :left 0
     :top 0
     :bottom 0
-    :width 150px
+    :width 170px
     :padding 10px 0
-    :background rgba(50, 70, 90, 0.05)
+    border-right: 1px solid #B4B4B4
+    :background #E5E9F0 //rgba(50, 70, 90, 0.05)
     h4
       :font
         :size 13px
@@ -99,14 +100,25 @@
       :border-bottom 1px dotted #abc
       +system-text
     ul
-      :padding 0 10px
-      li
-        :margin 4px -5px
-        :padding 1px 5px
-        :cursor pointer
-        +system-text
-        &:hover
-          :background rgba(0, 70, 100, 0.1)
+      +native-items-list
+
+    a.add-connection
+      display: inline-block
+      height: 20px
+      line-height: 21px
+      padding: 3px 11px 3px 30px
+      border-radius: 5px
+      margin:
+        left: 8px
+        top: 12px
+      background: url("../icons/add-connection.png"), linear-gradient(#fdfdfd, #f3f3f3), linear-gradient(#ededed, #f2f2f2)
+      background-repeat: no-repeat, no-repeat, no-repeat
+      background-position: 7px center, 0px 0px, 0px bottom
+      background-size: 18px 18px, 100% 50%, 100% 50%
+      border: 1px solid #c3c3c3
+      box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1)
+      color: black
+      text-decoration: none
 
   footer
     text-align: center

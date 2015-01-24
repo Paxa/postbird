@@ -47,6 +47,9 @@ global.Connection = jClass.extend({
       var connectString = 'postgres://' + options.user + ':' + 
         options.password + '@' + options.host + ':' + 
         options.port + '/' + options.database;
+      if (options.query) {
+        connectString += "?" + options.query;
+      }
     } else {
       connectString = options;
       options = this.parseConnectionString(connectString);

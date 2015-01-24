@@ -247,8 +247,9 @@ global.DbScreenView = jClass.extend({
     ]);
 
     $u(herokuHeader.name).bind('click', function() {
-      window.alertify.alert(databseUrl);
-    });
+      new Dialog.HerokuConnection(this, name, databseUrl);
+      //window.alertify.alert(databseUrl);
+    }.bind(this));
 
     this.content.find('.databases').append(herokuHeader[0]);
   }
