@@ -13,8 +13,8 @@ global.DbScreen = jClass.extend({
 
     if (this.options.fetchDbList) this.fetchDbList();
 
+    this.database = this.connection.options.database;
     if (this.connection.options.database != this.connection.defaultDatabaseName) {
-      this.database = this.connection.options.database;
       this.fetchTablesAndSchemas(function() {
         this.view.showDatabaseContent();
       }.bind(this));
@@ -65,7 +65,7 @@ global.DbScreen = jClass.extend({
 
   // Public API
   setDatabase: function (database, callback) {
-    this.view.setDtabase(database, callback);
+    this.view.setDabase(database, callback);
   },
 
   fetchTablesAndSchemas: function (callback) {

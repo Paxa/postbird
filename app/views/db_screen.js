@@ -59,7 +59,7 @@ global.DbScreenView = jClass.extend({
   },
 
   // Public API
-  setDtabase: function (database, callback) {
+  setDabase: function (database, callback) {
     this.databaseSelect.val(database);
     this.showDatabaseContent();
     this.handler.selectDatabase(database, callback);
@@ -85,7 +85,7 @@ global.DbScreenView = jClass.extend({
 
     databases.forEach(function(dbname) {
       this.databaseSelect.append($dom(
-        ['option', {value: dbname}, dbname]
+        ['option', {value: dbname, selected: dbname == this.handler.database}, dbname]
       ));
     }.bind(this));
 
