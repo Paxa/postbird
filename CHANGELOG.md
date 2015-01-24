@@ -6,6 +6,10 @@
 * Add feature to import sql files
 * In query pane: Run only selected sql (if selected)
 * Improve tests environment
+* Improve login page design
+* Fix set current database selected on load
+* Add button to add new connection on login page
+* Add feature to save heroku connection
 
 == Version 0.3 (Sep 27, 2014)
 

@@ -1,6 +1,8 @@
 ### Postbird
 
 Postbird is postgresql client for Mac.
+![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png)
+
 ![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/4430203/3664fa62-4622-11e4-861a-0627ef37ecdb.png)
 
 
