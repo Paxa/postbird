@@ -85,7 +85,7 @@ global.DbScreenView = jClass.extend({
 
     databases.forEach(function(dbname) {
       this.databaseSelect.append($dom(
-        ['option', {value: dbname, selected: dbname == this.handler.database}, dbname]
+        ['option', {value: dbname}, dbname]
       ));
     }.bind(this));
 
@@ -96,6 +96,10 @@ global.DbScreenView = jClass.extend({
     this.databaseSelect.append($dom(
       ['option', {value: '**create-db**'}, 'Create database']
     ));
+
+    if (this.handler.database) {
+      this.databaseSelect.val(this.handler.database);
+    }
   },
 
   renderTablesAndSchemas: function (data, currentSchema, currentTable) {

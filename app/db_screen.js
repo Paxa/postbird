@@ -13,9 +13,10 @@ global.DbScreen = jClass.extend({
 
     if (this.options.fetchDbList) this.fetchDbList();
 
-    this.database = this.connection.options.database;
     if (this.connection.options.database != this.connection.defaultDatabaseName) {
+      this.database = this.connection.options.database;
       this.fetchTablesAndSchemas(function() {
+        console.log("showDatabaseContent");
         this.view.showDatabaseContent();
       }.bind(this));
     }
