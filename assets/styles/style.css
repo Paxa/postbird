@@ -1039,10 +1039,13 @@ body.sidebar-resizing {
   .window-content.structure table.native-view tr:nth-child(odd) td, .window-content table.native-view tr:nth-child(odd) td {
     background: #f3f6fa; }
   .window-content.structure table.native-view tr.selected td, .window-content table.native-view tr.selected td {
-    background: #3c6bdd;
-    color: white; }
+    background: #d4d4d4;
+    color: black; }
   .window-content.structure table.native-view td, .window-content.structure table.native-view th, .window-content table.native-view td, .window-content table.native-view th {
     padding: 1px 8px 1px 3px; }
+  .window-content.structure table.native-view.active tr.selected td, .window-content table.native-view.active tr.selected td {
+    background: #3c6bdd;
+    color: white; }
 
 .big-data-table {
   max-width: 100%;

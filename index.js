@@ -180,6 +180,17 @@ Zepto(document).ready(function() {
     importer.showImportDialog();
   });
 
+  window.Mousetrap.bind("down", function () {
+    GenericTable.keyPressed('down');
+    return false;
+  });
+
+  window.Mousetrap.bind("up", function () {
+    GenericTable.keyPressed('up');
+    return false;
+  });
+
+
   /*
   window.addEventListener('dragover', function(e) {
     e.stopPropagation();

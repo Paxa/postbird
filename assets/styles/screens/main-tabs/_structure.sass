@@ -36,11 +36,13 @@
     tr:nth-child(odd) td
       background: #f3f6fa
     tr.selected td
-      background: #3c6bdd
-      color: white
+      background: #d4d4d4
+      color: black
     td, th
       padding: 1px 8px 1px 3px
-
+    &.active tr.selected td
+      background: #3c6bdd
+      color: white
 
 .big-data-table
   //overflow: auto
