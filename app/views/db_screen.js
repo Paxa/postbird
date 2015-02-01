@@ -152,6 +152,10 @@ global.DbScreenView = jClass.extend({
                 if (error.detail) errorMsg += "\n----\n" + error.detail;
                 if (error.hint) errorMsg += "\n----\n" + error.hint;
                 window.alert(errorMsg);
+              } else {
+                if (_this.handler.currentTable == table.table_name) {
+                  _this.eraseCurrentContent();
+                }
               }
             });
           },
@@ -233,6 +237,13 @@ global.DbScreenView = jClass.extend({
     var container = this.tabContents.filter('.' + tabName);
     //container.empty().append(content);
     container.removeChildren().fasterAppend(content);
+  },
+
+  eraseCurrentContent: function () {
+    if (this.currentTab) {
+      this.topTabs.filter('.' + this.currentTab).removeClass('active');
+      this.tabContents.filter('.' + this.currentTab).removeClass('active').html("");
+    }
   },
 
   tabContent: function (tabName) {

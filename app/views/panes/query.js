@@ -51,7 +51,8 @@ global.Panes.Query = global.Pane.extend({
     var selectedText = this.editor.getSelection();
 
     var sql = selectedText || this.textarea.val();
-    var needReloadTables = !!sql.match(/(create|drop) (table|schema)/im);
+    var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN)\s+)*\s*(table|schema)/im;
+    var needReloadTables = !!sql.match(tableRegex);
 
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
