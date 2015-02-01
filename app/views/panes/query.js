@@ -51,6 +51,7 @@ global.Panes.Query = global.Pane.extend({
     var selectedText = this.editor.getSelection();
 
     var sql = selectedText || this.textarea.val();
+    var needReloadTables = !!sql.match(/(create|drop) (table|schema)/im);
 
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
@@ -63,6 +64,13 @@ global.Panes.Query = global.Pane.extend({
         this.statusLine.text("Found rows: " + data.rowCount + ' in ' + data.time + 'ms.');
         this.initTables();
       }
+      if (needReloadTables) {
+        this.reloadTables();
+      }
     }.bind(this));
+  },
+
+  reloadTables: function () {
+    this.handler.fetchTablesAndSchemas();
   }
 });
