@@ -1,4 +1,4 @@
-process.env.PGSSLMODE = 'prefer';
+//process.env.PGSSLMODE = 'prefer';
 
 var pg = require('pg');
 var anyDB = require('any-db');

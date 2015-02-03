@@ -1,0 +1,7 @@
+{
+  "strict" : true ,
+  "laxcomma" : true ,
+  "camelcase" : true ,
+  "node" : true ,
+  "trailing" : true
+}
