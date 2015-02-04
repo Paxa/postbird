@@ -40,6 +40,7 @@ require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
 require('./app/models/saved_conn');
+require('./app/models/last_query');
 
 require('./app/controllers/import_controller');
 

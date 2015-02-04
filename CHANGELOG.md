@@ -10,6 +10,10 @@
 * Fix set current database selected on load
 * Add button to add new connection on login page
 * Add feature to save heroku connection
+* Auto save last query
+* OS X style tables row selections, arrow up/down, switch between tables
+* Reload tables when run sql query with create/drop table
+* Erase current tab content when drop table
 
 == Version 0.3 (Sep 27, 2014)
 

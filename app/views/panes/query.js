@@ -26,10 +26,29 @@ global.Panes.Query = global.Pane.extend({
       extraKeys: {"Esc": "autocomplete"}
     });
 
+    if (Model.LastQuery.load()) {
+      this.editor.setValue(Model.LastQuery.load());
+    }
+
     this.editor.on("cursorActivity", this.toggleButtonText.bind(this));
+    this.editor.on("change", this.saveLastQuery.bind(this));
 
     this.setUnchangable();
     this.statusLine = this.content.find('.result .status');
+  },
+
+  saveLastQuery: function () {
+    var value = this.editor.getValue();
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
+    }
+
+    this.saveTimeout = setTimeout(function () {
+      console.log("save ", value);
+      Model.LastQuery.save(value);
+      delete this.saveTimeout;
+    }.bind(this), 700);
+
   },
 
   toggleButtonText: function () {
