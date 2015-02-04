@@ -106,9 +106,8 @@ connection.publicTables(function(data) {
 
   queue.push(function(callback) {
     bdd.runAllCases(function() {
-     global.GUI && GUI.App.quit();
-     callback();
-     process.exit(0);
+      callback();
+      process.exit(0);
     });
   });
 });
