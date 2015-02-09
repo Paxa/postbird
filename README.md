@@ -38,4 +38,3 @@ My todo:
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
 * Remove database
-* When chose saved connection, change and click "Save & Connect" then need to update existing (don't create new)

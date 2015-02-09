@@ -5,9 +5,24 @@ global.LoginScreen = jClass.extend({
     this.content = App.renderView('home');
     this.form = this.content.find('form');
     this.connections = this.content.find('ul.connections');
-    this.form.bind('submit', this.onFormSubmit.bind(this));
+
+    this.bindFormEvents();
+
     this.fillSavedConnections();
     this.connections.find('li:first').click();
+
+    this.initEvents(this.content);
+  },
+
+  bindFormEvents: function () {
+    this.form.bind('submit', this.onFormSubmit.bind(this));
+
+    this.form.find('input[type=text], input[type=password]').bind('keypress', function(event) {
+      if (event.keyIdentifier == "Enter") {
+        $u.stopEvent(event);
+        this.onFormSubmit(event);
+      }
+    }.bind(this));
 
     this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
 
@@ -15,8 +30,6 @@ global.LoginScreen = jClass.extend({
       var help = HelpScreen.open();
       help.activatePage("get-postgres");
     });
-
-    this.initEvents(this.content);
   },
 
   showPart: function (name) {
@@ -97,6 +110,8 @@ global.LoginScreen = jClass.extend({
   fillSavedConnections: function () {
     this.connections.empty();
     var data = Model.SavedConn.savedConnections();
+    var currentConnection = this.connectionName;
+
     for (var name in data) {
       var _this = this, line = $dom(['li', name]);
 
@@ -112,6 +127,9 @@ global.LoginScreen = jClass.extend({
           "Delete": _this.deleteConnection.bind(_this, name)
         });
 
+        if (name == currentConnection) {
+          $u(line).addClass('selected');
+        }
 
         $u(line).bind('click', _this.connectionSelected.bind(_this, name, params, line));
       }(data[name], name)
@@ -179,23 +197,31 @@ global.LoginScreen = jClass.extend({
 
   saveAndConnect: function (e) {
     $u.stopEvent(e);
-    var data = Model.SavedConn.savedConnections();
-    var host = this.form.find('[name=host]').val();
-    var name = host, i = 1;
-    while (data[name]) {
-      i += 1;
-      name = host + ' #' + i;
+    var name;
+
+    if (this.connectionName) {
+      name = this.connectionName;
+    } else {
+      var data = Model.SavedConn.savedConnections();
+      var host = this.form.find('[name=host]').val();
+      var i = 1;
+      while (data[name]) {
+        i += 1;
+        name = host + ' #' + i;
+      }
     }
 
-    Model.SavedConn.saveConnection(name, $u.formValues(this.form));
-    this.fillSavedConnections();
-    this.onFormSubmit();
+    this.onFormSubmit(null, function () {
+      Model.SavedConn.saveConnection(name, this.getFormData());
+      this.fillSavedConnections();
+      this.setButtonShown(false);
+    }.bind(this));
   },
 
   onFormSubmit: function (e, callback) {
     e && e.preventDefault();
     var options = this.getFormData();
-    console.log(options);
+    console.log("Connecting to db", options);
     this.makeConnection(options, {}, callback);
   },
 
