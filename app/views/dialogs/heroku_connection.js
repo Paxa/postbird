@@ -24,12 +24,10 @@ global.Dialog.HerokuConnection = global.Dialog.extend({
   },
 
   saveConnection: function () {
-    console.log(this.viewObj);
-    console.log(this.viewObj.handler);
-    console.log(this.viewObj.handler.connection);
     var parsed = this.viewObj.handler.connection.parseConnectionString(this.databseUrl);
 
     Model.SavedConn.saveConnection(this.name, parsed);
+    App.loginScreen.fillSavedConnections();
 
     window.alertify.hide();
     window.alertify.alert("Saved!");
