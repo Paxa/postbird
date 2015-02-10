@@ -14,6 +14,7 @@
 * OS X style tables row selections, arrow up/down, switch between tables
 * Reload tables when run sql query with create/drop table
 * Erase current tab content when drop table
+* Fix saving changes in connection on login screen
 
 == Version 0.3 (Sep 27, 2014)
 

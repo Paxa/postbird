@@ -1,6 +1,10 @@
+desc "Build ~/Postbird.nw and ~/Postbird.app"
+
 task :build do
   exec "./build_files/build.sh"
 end
+
+desc "Build ~/Postbird.dmg"
 
 task :build_dmg do
   file_name = "Postbird-0.4rc1.dmg"
