@@ -241,36 +241,6 @@ global.App = {
     $u('body > #content').css('height', height - topOffset);
   },
 
-  // TODO: Saving function have to be in a model
-  savedConnections: function () {
-    if (window.localStorage.savedConnections) {
-      return JSON.parse(window.localStorage.savedConnections);
-    } else {
-      return {};
-    }
-  },
-
-  saveConnection: function (name, options) {
-    var newData = this.savedConnections();
-    newData[name] = options;
-    window.localStorage.savedConnections = JSON.stringify(newData);
-  },
-
-  renameConnection: function (oldName, newName) {
-    var data = this.savedConnections();
-    data[newName] = data[oldName];
-    delete data[oldName];
-    window.localStorage.savedConnections = JSON.stringify(data);
-    return true;
-  },
-
-  removeConnection: function (name) {
-    var data = this.savedConnections();
-    delete data[name];
-    window.localStorage.savedConnections = JSON.stringify(data);
-    return true;
-  },
-
   startLoading: function (message, timeout) {
     if (this.loader) this.loader.hide();
     this.stopLoading();
@@ -296,7 +266,7 @@ global.App = {
         loader.remove();
       }, 250);
     }
-  },
+  }
 };
 
 Object.defineProperty(App, "currentTab", {
