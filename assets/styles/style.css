@@ -1013,6 +1013,11 @@ body.sidebar-resizing {
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
     padding: 2px 4px; }
+.window-content.structure table.indexes-list-table {
+  margin-bottom: 10px;
+  margin-top: 10px; }
+.window-content.structure table.columns-list-table {
+  margin-bottom: 10px; }
 
 .window-content.structure table.native-view, .window-content table.native-view {
   border: 1px solid #ccc;
