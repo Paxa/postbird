@@ -224,6 +224,10 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  proceduresTabActivate: function() {
+    
+  },
+
   addColumn: function (data, callback) {
     this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
       this.structureTabActivate();
@@ -252,26 +256,7 @@ global.DbScreen = jClass.extend({
 
   switchToHerokuMode: function (appName, dbUrl) {
     this.view.switchToHerokuMode(appName, dbUrl);
-  }
+  },
 });
 
 global.Panes = {};
-
-/*
-
-function renderMainScreen () {
-  renderPage('main', {}, function(node) {
-    var element = $u(node);
-    var list = element.find('ul.databases');
-    query('SELECT datname FROM pg_database WHERE datistemplate = false;', function(rows) {
-      rows.rows.forEach(function(dbrow) {
-        var tree = DOMinate([
-          'li', ['a', dbrow.datname]
-        ]);
-        list.append(tree[0]);
-      });
-    });
-  })
-}
-
-*/

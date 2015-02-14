@@ -16,6 +16,9 @@ require('../app');
 
 require('../sugar/redscript-loader');
 
+global.$u = {fn: {}};
+require('../app/utils');
+
 App.tabs = [{
   instance: {
     connection: Connection({
