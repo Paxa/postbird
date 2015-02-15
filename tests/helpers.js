@@ -46,6 +46,15 @@ Object.prototype.wrapSync = function(methodName) {
   };
 };
 
+global.sync_it = function (message, callback) {
+  bdd.it(message, function (done) {
+    Fiber(function () {
+      callback();
+      done();
+    }).run();
+  });
+}
+
 global.loadBddBase = function () {
   global.bdd = require('../lib/bdd/bdd');
   var asserts = require('../lib/bdd/bdd_assert');
@@ -57,6 +66,7 @@ global.loadBddBase = function () {
   global.assert_false   = asserts.assert_false;
   global.assert_match   = asserts.assert_match;
   global.assert_contain = asserts.assert_contain;
+  global.assert_present = asserts.assert_present;
 
   process.on("uncaughtException", function(err) {
     /*

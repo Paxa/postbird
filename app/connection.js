@@ -107,6 +107,14 @@ global.Connection = jClass.extend({
     this.query(vsprintf(sql, params), callback);
   },
 
+  serialize: function(sql){
+    var params = [], i;
+    var callback = arguments[arguments.length - 1];
+    for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
+
+    return vsprintf(sql, params)
+  },
+
   listDatabases: function (callback) {
     var databases = [];
     this.query('SELECT datname FROM pg_database WHERE datistemplate = false;', function (rows) {
