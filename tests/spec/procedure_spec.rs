@@ -7,8 +7,8 @@ describe('Model.Procedure', do
     var sql = "CREATE FUNCTION my_inc(val integer) RETURNS integer AS $$" +
               "BEGIN RETURN val + 1; END; $$ LANGUAGE PLPGSQL;"
 
-    Model.base.qSync(sql)
-    var procs = Model.Procedure.runSync('findAll')
+    Model.base.q(sql)
+    var procs = Model.Procedure.findAll()
 
     assert(procs.length, 1)
     assert(procs[0].schema, 'public')
@@ -20,12 +20,11 @@ describe('Model.Procedure', do
     assert(procs[0].return_type, 'int4')
     assert(procs[0].is_aggregate, false)
 
-    procs[0].runSync('drop')
+    procs[0].drop()
   end)
 
   sync_it("Create function", do
-    var fn = Model.Procedure.wrapSync('createFunction')
-    var pg_proc = fn("my_inc2", "val integer", "integer", "RETURN val + 1")
+    var pg_proc = Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN val + 1")
 
     assert(pg_proc.name, "my_inc2")
     assert(pg_proc.language, 'plpgsql')
@@ -33,12 +32,11 @@ describe('Model.Procedure', do
     assert(pg_proc.return_type, 'int4')
     assert(pg_proc.is_aggregate, false)
 
-    pg_proc.runSync('drop');
+    pg_proc.drop()
   end);
 
   sync_it("Create function fail", do
-    var fn = Model.Procedure.wrapSync('createFunction')
-    var pg_proc = fn("my_inc2", "val integer", "integer", "RETURN_ val + 1")
+    var pg_proc = Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN_ val + 1")
 
     assert_present(pg_proc.error)
     assert(pg_proc.name, "my_inc2")
@@ -46,38 +44,37 @@ describe('Model.Procedure', do
     assert(pg_proc.return_type, 'integer')
     assert(pg_proc.is_aggregate, false)
 
-    var searchable = Model.Procedure.runSync('find', 'my_inc2')
+    var searchable = Model.Procedure.find('my_inc2')
 
     assert(searchable, undefined)
   end);
 
   sync_it("Find procedure", do
-    var create = Model.Procedure.wrapSync('createFunction')
-    create("new_proc", "val integer", "integer", "RETURN val + 1")
+    Model.Procedure.createFunction("new_proc", "val integer", "integer", "RETURN val + 1")
 
-    var searchable = Model.Procedure.runSync('find', 'my_inc2')
+    var searchable = Model.Procedure.find('my_inc2')
     assert(searchable, undefined)
 
-    pg_proc = Model.Procedure.runSync('find', 'new_proc')
+    pg_proc = Model.Procedure.find('new_proc')
     assert_present(pg_proc)
     assert(pg_proc.name, 'new_proc')
 
-    pg_proc.runSync('drop');
+    pg_proc.drop()
   end)
 
   sync_it("Drop procedure", do
     var sql = "CREATE FUNCTION my_inc3(val integer) RETURNS integer AS $$" +
               "BEGIN RETURN val + 1; END; $$ LANGUAGE PLPGSQL;"
-    Model.base.qSync(sql)
+    Model.base.q(sql)
 
-    var procs = Model.Procedure.runSync('findAll')
+    var procs = Model.Procedure.findAll()
 
     assert(procs.length, 1)
     assert(procs[0].name, 'my_inc3')
 
-    procs[0].runSync('drop')
+    procs[0].drop()
 
-    procs2 = Model.Procedure.runSync('findAll')
+    procs2 = Model.Procedure.findAll()
     assert(procs2.length, 0)
   end)
 

@@ -127,27 +127,23 @@ describe('Model.Column', do
     end)
   end)
 
-  it('should make it syncroniously', do |done|
-    Fiber(do
-      var table = Model.Table.wrapSync('create')('public', 'test_table')
+  sync_it('should make it syncroniously', do
+    var table = Model.Table.create('public', 'test_table')
 
-      assert(table.table, 'test_table')
+    assert(table.table, 'test_table')
 
-      var columnData = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+    var columnData = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
 
-      var column = table.wrapSync('addColumnObj')(columnData);
+    var column = table.addColumnObj(columnData);
 
-      assert(column.attributes, {
-        name: 'some_column',
-        type: 'integer',
-        default_value: undefined,
-        max_length: undefined,
-        allow_null: false
-      })
+    assert(column.attributes, {
+      name: 'some_column',
+      type: 'integer',
+      default_value: undefined,
+      max_length: undefined,
+      allow_null: false
+    })
 
-      table.runSync('drop')
-
-      done();
-    end).run()
+    table.drop()
   end)
 end)

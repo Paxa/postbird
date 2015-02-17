@@ -12,6 +12,13 @@ require('../lib/sql_splitter');
 require('../app/connection');
 require("../app/models/base");
 require("../app/models/table");
+require("../app/models/column");
+require("../app/models/index");
+require("../app/models/procedure");
+
+require("../lib/psql_runner")
+require("../lib/sql_importer")
+
 require('../app');
 
 require('../sugar/redscript-loader');
@@ -53,13 +60,6 @@ require('./helpers');
 loadBddBase();
 loadTestCases("./spec");
 
-/*
-require('./spec/table_spec');
-require('./spec/column_spec');
-require('./spec/connection_spec');
-require('./spec/sql_splitter_spec');
-*/
-
 global.puts = function (obj, color) {
   if (typeof obj != 'string') {
     obj = node.util.inspect(obj, undefined, 3);
@@ -67,51 +67,29 @@ global.puts = function (obj, color) {
   bdd.reporter.puts(obj + "\n", color);
 };
 
+Model.base.makeSync('q');
+Model.Procedure.makeSync('findAll', 'createFunction', 'find');
+Model.Procedure.prototype.makeSync('drop');
+
+Model.Table.makeSync('publicTables');
+Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
+Model.Table.prototype.makeSync('drop', 'addColumnObj');
+
+SqlImporter.prototype.makeSyncFn('doImport', 3);
+
 window.localStorage.clear();
 
-connection.publicTables(function(data) {
-  var queue = async.queue(function (fn, callback) {
-    fn(callback);
-  }, 1);
+var queue = async.queue(function (fn, callback) {
+  fn(callback);
+}, 1);
 
-  data.forEach(function(table) {
-    if (table.table_schema != 'pg_catalog' && table.table_schema != 'information_schema') {
-      queue.push(function(callback) {
-        bdd.reporter.puts('Deleting ' + table.table_type + ' ' + table.table_name + "\n", "yellow");
-
-        Model.Table(table.table_schema, table.table_name).safeDrop(function (result, error) {
-          if (error) {
-            var msg = "Drop table error: " + error + "\n";
-            bdd.reporter.puts(msg, "red");
-            if (error.detail) bdd.reporter.puts(error.detail + "\n");
-            if (error.hint) bdd.reporter.puts("HINST: " + error.hint + "\n");
-            process.exit(1);
-          }
-          callback();
-        });
-      });
-    }
-  });
-
-  queue.push(function (callback) {
-    connection.dropUserFunctions(function(result, error) {
-      checkDbError("Drop procedures", error);
-      callback();
-    });
-  });
-
-  queue.push(function (callback) {
-    connection.dropAllSequesnces(function(result, error) {
-      checkDbError("Drop sequesnces", error);
-      callback();
-    });
-  });
-
-  queue.push(function(callback) {
-    bdd.runAllCases(function() {
-      callback();
-      process.exit(0);
-    });
-  });
+queue.push(function (callback) {
+  DbCleaner(Model.base.connection()).recreateSchema(callback);
 });
 
+queue.push(function(callback) {
+  bdd.runAllCases(function() {
+    callback();
+    process.exit(0);
+  });
+});
