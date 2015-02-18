@@ -83,6 +83,12 @@ global.Model.Procedure = Model.base.extend({
           callback(obj);
         }
       }.bind(this));
+    },
+
+    listLanguages: function (callback) {
+      Model.base.q("select * from pg_language", function (data, error) {
+        callback(data.rows);
+      });
     }
   },
 

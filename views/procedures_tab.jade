@@ -1,0 +1,24 @@
+table.native-look-table
+  thead
+    tr
+      th name
+      th return type
+      th arguments
+      th language
+      th
+  tbody
+    each proc in procs
+      tr
+        td
+          strong= proc.name
+        td= proc.return_type
+        td= proc.arg_list
+        td= proc.language
+        td
+          a(exec="editProc('" + proc.name + "')") Edit
+          != "&nbsp;"
+          a(exec="removeProc('" + proc.name + "')") Delete
+
+footer
+  button.native-look(exec="addColumnForm") Create Procedure
+  button.native-look(exec="listLanguages") List Languages

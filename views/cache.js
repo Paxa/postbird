@@ -47,7 +47,7 @@ jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/con
 buf.push("\n<div class=\"big-data-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n  <table class=\"native-view\">");
+buf.push("\n  <table class=\"native-look-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 buf.push("\n    <thead>");
@@ -305,10 +305,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next");
 }
 };
-exports["content_tab"].content = ".big-data-table\n  table.native-view\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next";
+exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    li\n      a Add\n    li\n      a Remove\n    li\n      a Duplicate\n    li.info\n\n    li.pages.right\n      a(exec=\"nextPage\") Next";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" }];
 try {
@@ -1076,6 +1076,149 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 }
 };
 exports["dialogs/import_file"].content = "header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
+exports["dialogs/list_languages"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, langs) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n<table class=\"native-look-table\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n  <thead>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
+buf.push("name");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+buf.push("trusted");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </thead>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n  <tbody>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+// iterate langs
+;(function(){
+  var $$obj = langs;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var lang = $$obj[$index];
+
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = lang.lanname) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var lang = $$obj[$index];
+
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = lang.lanname) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </tbody>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</table>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n<p>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("You can add and remove languages on extension tab");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n<p class=\"buttons\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" });
+buf.push("\n  <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
+buf.push("Close");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</p>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th name\n      th trusted\n  tbody\n    each lang in langs\n      tr\n        td= lang.lanname\n        td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n");
+}
+};
+exports["dialogs/list_languages"].content = "table.native-look-table\n  thead\n    tr\n      th name\n      th trusted\n  tbody\n    each lang in langs\n      tr\n        td= lang.lanname\n        td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n";
 exports["dialogs/new_database"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/new_database.jade" }];
 try {
@@ -1392,7 +1535,7 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/extensions_tab.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/extensions_tab.jade" });
-buf.push("\n<table class=\"native-view\">");
+buf.push("\n<table class=\"native-look-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/extensions_tab.jade" });
 buf.push("\n  <thead>");
@@ -1608,10 +1751,10 @@ buf.push("\n</table>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-view\n  thead\n    tr\n      th name\n      th default version\n      th installed_version\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.name\n        td= column.default_version\n        td\n          if column.installed_version\n            strong= column.installed_version\n            button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n          else\n            button(exec=\"install('\" + column.name + \"')\") Install\n        td= column.comment");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th name\n      th default version\n      th installed_version\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.name\n        td= column.default_version\n        td\n          if column.installed_version\n            strong= column.installed_version\n            button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n          else\n            button(exec=\"install('\" + column.name + \"')\") Install\n        td= column.comment");
 }
 };
-exports["extensions_tab"].content = "table.native-view\n  thead\n    tr\n      th name\n      th default version\n      th installed_version\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.name\n        td= column.default_version\n        td\n          if column.installed_version\n            strong= column.installed_version\n            button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n          else\n            button(exec=\"install('\" + column.name + \"')\") Install\n        td= column.comment";
+exports["extensions_tab"].content = "table.native-look-table\n  thead\n    tr\n      th name\n      th default version\n      th installed_version\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.name\n        td= column.default_version\n        td\n          if column.installed_version\n            strong= column.installed_version\n            button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n          else\n            button(exec=\"install('\" + column.name + \"')\") Install\n        td= column.comment";
 exports["help"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/help.jade" }];
 try {
@@ -2497,6 +2640,12 @@ jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</div>");
 jade_debug.shift();
+jade_debug.unshift({ lineno: 36, filename: "/Users/pavel/Sites/postbird/views/main.jade" });
+buf.push("\n    <div class=\"window-content procedures\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </div>");
 jade_debug.shift();
@@ -2505,10 +2654,267 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"icon" in locals_for_with?locals_for_with.icon:typeof icon!=="undefined"?icon:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show system tables\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show system tables\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures");
 }
 };
-exports["main"].content = ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show system tables\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions";
+exports["main"].content = ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show system tables\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures";
+exports["procedures_tab"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, procs) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n<table class=\"native-look-table\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n  <thead>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
+buf.push("name");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+buf.push("return type");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
+buf.push("arguments");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
+buf.push("language");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <th>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</th>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </thead>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n  <tbody>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+// iterate procs
+;(function(){
+  var $$obj = procs;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var proc = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<strong>" + (jade.escape(null == (jade_interp = proc.name) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</strong>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.return_type) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.arg_list) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.language) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<a" + (jade.attr("exec", "editProc('" + proc.name + "')", true, false)) + ">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
+buf.push("Edit");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("&nbsp;");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<a" + (jade.attr("exec", "removeProc('" + proc.name + "')", true, false)) + ">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 20, filename: jade_debug[0].filename });
+buf.push("Delete");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </td>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var proc = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n    <tr>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<strong>" + (jade.escape(null == (jade_interp = proc.name) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</strong>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.return_type) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.arg_list) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>" + (jade.escape(null == (jade_interp = proc.language) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</td>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n      <td>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<a" + (jade.attr("exec", "editProc('" + proc.name + "')", true, false)) + ">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
+buf.push("Edit");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("&nbsp;");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("<a" + (jade.attr("exec", "removeProc('" + proc.name + "')", true, false)) + ">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 20, filename: jade_debug[0].filename });
+buf.push("Delete");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </td>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </tr>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </tbody>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</table>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n<footer>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n  <button exec=\"addColumnForm\" class=\"native-look\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 23, filename: jade_debug[0].filename });
+buf.push("Create Procedure");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 24, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" });
+buf.push("\n  <button exec=\"listLanguages\" class=\"native-look\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 24, filename: jade_debug[0].filename });
+buf.push("List Languages");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</footer>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"procs" in locals_for_with?locals_for_with.procs:typeof procs!=="undefined"?procs:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th name\n      th return type\n      th arguments\n      th language\n      th\n  tbody\n    each proc in procs\n      tr\n        td\n          strong= proc.name\n        td= proc.return_type\n        td= proc.arg_list\n        td= proc.language\n        td\n          a(exec=\"editProc('\" + proc.name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Create Procedure\n  button.native-look(exec=\"listLanguages\") List Languages");
+}
+};
+exports["procedures_tab"].content = "table.native-look-table\n  thead\n    tr\n      th name\n      th return type\n      th arguments\n      th language\n      th\n  tbody\n    each proc in procs\n      tr\n        td\n          strong= proc.name\n        td= proc.return_type\n        td= proc.arg_list\n        td= proc.language\n        td\n          a(exec=\"editProc('\" + proc.name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Create Procedure\n  button.native-look(exec=\"listLanguages\") List Languages";
 exports["query_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" }];
 try {
@@ -2573,7 +2979,7 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" });
-buf.push("\n<table class=\"columns-list-table native-view\">");
+buf.push("\n<table class=\"columns-list-table native-look-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" });
 buf.push("\n  <thead>");
@@ -2845,7 +3251,7 @@ jade_debug.shift();
 buf.push("</h4>");
 jade_debug.shift();
 jade_debug.unshift({ lineno: 29, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" });
-buf.push("\n<table class=\"indexes-list-table native-view\">");
+buf.push("\n<table class=\"indexes-list-table native-look-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 30, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" });
 buf.push("\n  <thead>");
@@ -3067,10 +3473,10 @@ buf.push("\n</footer>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.columns-list-table.native-view\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column.udt_name\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-view\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td\n          a(exec=\"editIndex('\" + index.relname + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.columns-list-table.native-look-table\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column.udt_name\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-look-table\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td\n          a(exec=\"editIndex('\" + index.relname + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index");
 }
 };
-exports["structure_tab"].content = "table.columns-list-table.native-view\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column.udt_name\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-view\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td\n          a(exec=\"editIndex('\" + index.relname + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index";
+exports["structure_tab"].content = "table.columns-list-table.native-look-table\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column.udt_name\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-look-table\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td\n          a(exec=\"editIndex('\" + index.relname + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index";
 exports["users_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/users_tab.jade" }];
 try {
@@ -3081,7 +3487,7 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/users_tab.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/users_tab.jade" });
-buf.push("\n<table class=\"native-view\">");
+buf.push("\n<table class=\"native-look-table\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/users_tab.jade" });
 buf.push("\n  <thead>");
@@ -3285,7 +3691,7 @@ buf.push("</button>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-view\n  thead\n    tr\n      th Role name\n      th List of roles\n      th Member of\n      th\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nbutton.createUserBtn(exec=\"newUserDialog\") Create new user\nbutton.createRoleBtn(exec=\"newRole\") Create new role");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th Role name\n      th List of roles\n      th Member of\n      th\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nbutton.createUserBtn(exec=\"newUserDialog\") Create new user\nbutton.createRoleBtn(exec=\"newRole\") Create new role");
 }
 };
-exports["users_tab"].content = "table.native-view\n  thead\n    tr\n      th Role name\n      th List of roles\n      th Member of\n      th\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nbutton.createUserBtn(exec=\"newUserDialog\") Create new user\nbutton.createRoleBtn(exec=\"newRole\") Create new role";
+exports["users_tab"].content = "table.native-look-table\n  thead\n    tr\n      th Role name\n      th List of roles\n      th Member of\n      th\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nbutton.createUserBtn(exec=\"newUserDialog\") Create new user\nbutton.createRoleBtn(exec=\"newRole\") Create new role";

@@ -34,7 +34,7 @@ global.Pane = jClass.extend({
   initTables: function () {
     // heavy stuff, run it with delay
     setTimeout(function () {
-      this.content.find('table.native-view').forEach(function (table) {
+      this.content.find('table.native-look-table').forEach(function (table) {
         if (!table.hasAttribute('native-table-init')) {
           $u(table).colResizable();
           new GenericTable(table);

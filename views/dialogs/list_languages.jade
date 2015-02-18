@@ -1,0 +1,17 @@
+table.native-look-table
+  thead
+    tr
+      th name
+      th trusted
+  tbody
+    each lang in langs
+      tr
+        td= lang.lanname
+        td= lang.lanpltrusted ? "Yes" : "No"
+
+p
+  = "You can add and remove languages on extension tab"
+
+p.buttons
+  button.cancel Close
+

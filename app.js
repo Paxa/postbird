@@ -155,15 +155,19 @@ global.App = {
 
   jadeFn: {},
 
-  renderView: function (file, options, callback) {
-    //var renderStart = Date.now();
+  renderView: function (file, options) {
+    var html;
     var new_options = {};
     var i;
+
+    console.log(options);
+
     for (i in ViewHelpers) new_options[i] = ViewHelpers[i].bind(ViewHelpers);
+
     if (options) {
       for (i in options) new_options[i] = options[i];
     }
-    var html;
+
     try {
       //var st = Date.now();
       html = this.compileJade(file)(jadeRuntime, new_options);
@@ -172,10 +176,7 @@ global.App = {
       console.log("Error compiling '" + App.root + '/views/' + file + '.jade');
       throw error;
     }
-    //var st = Date.now();
     var res = $u.html2collection(html);
-    //console.log('jade dom manipulate for ' + file + ' in ' + (Date.now() - st) + 'ms');
-    //console.log("jade render " + file + " in " + (Date.now() - renderStart) + 'ms');
 
     return res;
   },

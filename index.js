@@ -24,6 +24,7 @@ require('./app/views/panes/extensions');
 require('./app/views/panes/query');
 require('./app/views/panes/structure');
 require('./app/views/panes/contents');
+require('./app/views/panes/procedures');
 
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
@@ -35,12 +36,14 @@ require('./app/views/dialogs/edit_column');
 require('./app/views/dialogs/new_index');
 require('./app/views/dialogs/import_file');
 require('./app/views/dialogs/heroku_connection');
+require('./app/views/dialogs/list_languages');
 
 require('./app/models/base');
 require('./app/models/table');
 require('./app/models/column');
 require('./app/models/saved_conn');
 require('./app/models/last_query');
+require('./app/models/procedure');
 
 require('./app/controllers/import_controller');
 
