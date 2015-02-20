@@ -44,7 +44,6 @@ global.Panes.Query = global.Pane.extend({
     }
 
     this.saveTimeout = setTimeout(function () {
-      console.log("save ", value);
       Model.LastQuery.save(value);
       delete this.saveTimeout;
     }.bind(this), 700);

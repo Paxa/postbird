@@ -1,8 +1,22 @@
 global.Panes.Procedures = global.Pane.extend({
 
   renderTab: function (procs) {
-    this.renderViewToPane('procedures', 'procedures_tab', {procs: procs});
-    this.initTables();
+    App.startLoading("Functions config...");
+
+    Model.Procedure.findAll(function(procs) {
+      Model.Trigger.findAll(function(triggers) {
+
+        App.stopLoading();
+
+        this.renderViewToPane('procedures', 'procedures_tab', {
+          procs: procs,
+          triggers: triggers
+        });
+
+        this.initTables();
+
+      }.bind(this));
+    }.bind(this));
   },
 
   listLanguages: function () {

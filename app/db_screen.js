@@ -225,9 +225,7 @@ global.DbScreen = jClass.extend({
   },
 
   proceduresTabActivate: function() {
-    Model.Procedure.findAll(function(procs) {
-      this.view.procedures.renderTab(procs);
-    }.bind(this));
+    this.view.procedures.renderTab();
   },
 
   addColumn: function (data, callback) {

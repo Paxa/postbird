@@ -160,8 +160,6 @@ global.App = {
     var new_options = {};
     var i;
 
-    console.log(options);
-
     for (i in ViewHelpers) new_options[i] = ViewHelpers[i].bind(ViewHelpers);
 
     if (options) {

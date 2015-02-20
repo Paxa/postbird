@@ -1105,6 +1105,8 @@ body.sidebar-resizing {
     height: 50%;
     border-top: 1px solid #ccc; }
 
+.window-content.procedures h4 {
+  margin-bottom: 12px; }
 .window-content.procedures table {
   margin-bottom: 10px; }
 

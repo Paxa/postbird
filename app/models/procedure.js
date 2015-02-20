@@ -15,7 +15,6 @@ global.Model.Procedure = Model.base.extend({
 
       Model.base.q(sql, function(data, error) {
         if (error) {
-          puts(error);
           callback([]);
           return;
         }
@@ -42,7 +41,6 @@ global.Model.Procedure = Model.base.extend({
 
       Model.base.q(sql, name, function(data, error) {
         if (error) {
-          puts(error);
           callback();
           return;
         }
