@@ -3,41 +3,36 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <title>Postbird by Paxa</title>
   </head>
 
   <body>
-    <header>
+    <div id="container">
       <div class="inner">
-        <h1>Postbird</h1>
-        <h2>Postgresql gui for OS X, written with node-webkit</h2>
-        <a href="https://github.com/Paxa/postbird" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+        <header>
+          <h1>Postbird</h1>
+          <h2>PostgreSQL client app for Mac OS X</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/Paxa/postbird/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/Paxa/postbird/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Paxa/postbird" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
           <h3>
-<a id="postbird" class="anchor" href="#postbird" aria-hidden="true"><span class="octicon octicon-link"></span></a>Postbird</h3>
-
-<p>Postbird is postgresql client for Mac.
-<img src="https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png" alt="postbird-0 3-screenshot"></p>
-
-<p><img src="https://cloud.githubusercontent.com/assets/26019/4430203/3664fa62-4622-11e4-861a-0627ef37ecdb.png" alt="postbird-0 3-screenshot"></p>
-
-<h4>
-<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h4>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h3>
 
 <p><strong>Version 0.3</strong></p>
 
@@ -45,53 +40,58 @@
 
 <p><a href="https://github.com/Paxa/postbird/releases/download/0.3/Postbird-0.3.dmg">Postgres-0.3.dmg</a> - For Mac: 64bit, 10.7+</p>
 
-<h4>
-<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h4>
+<p><strong>Version 0.4rc1</strong></p>
 
-<p>Pull requests and suggestions are welcome</p>
+<p><a href="https://github.com/Paxa/postbird/releases/download/0.4rc1/Postbird-0.4rc1.dmg">Postgres-0.4rc1.dmg</a> - For Mac: 64bit, 10.7+</p>
 
-<p>To run newest version, simply:</p>
+<p>Other <a href="https://github.com/Paxa/postbird/releases">releases</a></p>
 
-<pre><code>git clone git@github.com:Paxa/postbird.git
-cd postbird
-./run
-</code></pre>
+<h3>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h3>
 
-<p>To make a release, run:</p>
+<p><img src="https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png" alt="postbird-0 3-screenshot"></p>
 
-<pre><code>rake build
-</code></pre>
+<p><img src="https://cloud.githubusercontent.com/assets/26019/4430203/3664fa62-4622-11e4-861a-0627ef37ecdb.png" alt="postbird-0 3-screenshot"></p>
 
-<p>New release will be at: <code>~/Postbird.app</code></p>
-
-<p>My todo:</p>
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
 
 <ul>
-<li>Content tab reload</li>
-<li>Add index window is disappearing</li>
-<li>Allow reside columns only in header</li>
-<li>Work on content tab: filters, sticky header, pagination, increase limit, sortings</li>
-<li>Remove database</li>
+<li>Save connections</li>
+<li>Connect to heroku via OAuth</li>
+<li>Manage tables and databases</li>
+<li>Query editor</li>
+<li>Install/remove extensions</li>
+<li>Load sql dump</li>
+<li>View stored functions and triggers</li>
 </ul>
+
+<h3>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h3>
+
+<p>Please feel free to open an issue on github or submit a pull request.
+Any feedback is welcome.</p>
+
+<p>Project postbird written in javascript and runs with <a href="http://nwjs.io/">nw.js</a> (before node-webkit). Unit testing done with node-fibers and my lib for testing. I use jade to render HTML template and SASS for compiling css.</p>
         </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/Paxa/postbird/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/Paxa/postbird/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+        <footer>
+          Postbird is maintained by <a href="https://github.com/Paxa">Paxa</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-          <p class="repo-owner"><a href="https://github.com/Paxa/postbird"></a> is maintained by <a href="https://github.com/Paxa">Paxa</a>.</p>
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-60006765-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
       </div>
     </div>
-
-  
   </body>
 </html>
