@@ -71,8 +71,25 @@ global.DbScreen = jClass.extend({
 
   fetchTablesAndSchemas: function (callback) {
     this.connection.tablesAndSchemas(function(data) {
-      this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
-      callback && callback(data);
+      this.connection.mapViewsAsTables(function (matViews) {
+        // join tables with views
+        Object.forEach(matViews, function (schema, views) {
+          if (!data[schema]) data[schema] = [];
+          views.forEach(function (view) {
+            data[schema].push(view);
+          });
+        });
+        // sort everything again
+        Object.forEach(data, function (schema, tables) {
+          data[schema] = tables.sort(function (a, b) {
+            if (a.table_name > b.table_name) return 1;
+            if (a.table_name < b.table_name) return -1;
+            return 0;
+          })
+        });
+        this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
+        callback && callback(data);
+      }.bind(this));
     }.bind(this));
   },
 

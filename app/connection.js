@@ -160,7 +160,23 @@ global.Connection = jClass.extend({
 
   tablesAndSchemas: function(callback) {
     var data = {};
-    this.query("SELECT * FROM information_schema.tables order by table_schema != 'public';", function(rows) {
+    var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
+    this.query(sql, function(rows) {
+      rows.rows.forEach(function(dbrow) {
+        if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
+        data[dbrow.table_schema].push(dbrow);
+      });
+      callback(data);
+    });
+  },
+
+  mapViewsAsTables: function (callback) {
+    var data = {};
+    var sql = "select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type " +
+              "from pg_matviews " +
+              "order by schemaname != 'public', matviewname";
+
+    this.query(sql, function(rows, error) {
       rows.rows.forEach(function(dbrow) {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
         data[dbrow.table_schema].push(dbrow);

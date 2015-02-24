@@ -409,13 +409,16 @@ table.native-look-table {
       .home-screen .sidebar ul > li:before {
         display: block;
         content: "";
-        background: url("../icons/table.png") no-repeat;
+        background: url("../icons/table2.png") no-repeat;
         background-size: 15px 15px;
         width: 15px;
         height: 15px;
         left: 13px;
         top: 4px;
         position: absolute; }
+      .home-screen .sidebar ul > li[table-type=VIEW]:before, .home-screen .sidebar ul > li[table-type="MATERIALIZED VIEW"]:before {
+        background-image: url("../icons/db_view.png");
+        opacity: 0.8; }
       .home-screen .sidebar ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
       .home-screen .sidebar ul > li.selected {
@@ -697,13 +700,16 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
-              background: url("../icons/table.png") no-repeat;
+              background: url("../icons/table2.png") no-repeat;
               background-size: 15px 15px;
               width: 15px;
               height: 15px;
               left: 13px;
               top: 4px;
               position: absolute; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
+              background-image: url("../icons/db_view.png");
+              opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
             .main-screen > .sidebar > .tables > ul > li > ul > li.selected {

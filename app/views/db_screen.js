@@ -124,7 +124,7 @@ global.DbScreenView = jClass.extend({
       }
 
       data[schema].forEach(function(table) {
-        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
+        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name, 'table-type': table.table_type}]);
 
         $u(tableNode).single_double_click(function(e) {
           if (e.target.tagName == "INPUT") return;

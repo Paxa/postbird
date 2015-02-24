@@ -6,13 +6,16 @@
     &:before
       display: block
       content: ''
-      background: url("../icons/table.png") no-repeat
+      background: url("../icons/table2.png") no-repeat
       background-size: 15px 15px
       width: 15px
       height: 15px
       left: 13px
       top: 4px
       position: absolute
+    &[table-type=VIEW]:before, &[table-type="MATERIALIZED VIEW"]:before
+      background-image: url("../icons/db_view.png")
+      opacity: 0.8
     &:hover
       :background rgba(#000, 0.1)
     &.selected
