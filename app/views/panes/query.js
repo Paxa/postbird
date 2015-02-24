@@ -10,7 +10,7 @@ global.Panes.Query = global.Pane.extend({
 
     this.button = this.content.find('button');
 
-    this.mime = 'text/x-mariadb';
+    this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
 
     this.editor = window.CodeMirror.fromTextArea(this.textarea[0], {
