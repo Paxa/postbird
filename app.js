@@ -33,19 +33,6 @@ global.App = {
     /* --- auto connect */
 
     this.setSizes();
-    /*
-    var i = $dom(['a.inspector', '@']);
-    $u(i).bind('click', function() {
-      gui.Window.get().showDevTools();
-    });
-    $u(this.tabsContainer).prepend(i);
-
-    /*
-    var n = $u($dom(['a.inspector', '!!!'])).bind('click', function() {
-      Notificator.show("Notification test");
-    });
-    $u(this.tabsContainer).prepend(n);
-    */
   },
 
   addTab: function (name, contentHtml, instance) {
@@ -130,6 +117,7 @@ global.App = {
     this.activeTab = idx;
     this.tabs[idx].tabHandler.addClass('active');
     this.tabs[idx].content.show();
+    this.emit('tab.changed', idx);
   },
 
   activeTabObj: function () {
@@ -293,3 +281,16 @@ Object.defineProperty(App, "currentTable", {
     }
   }
 });
+
+
+Object.setPrototypeOf(global.App, new node.events.EventEmitter);
+
+global.App.emit = function (eventName) {
+  if (!this._events[eventName]) {
+    console.log("Fire event '" + eventName + "' but no listeners");
+  }
+  var fn = node.events.EventEmitter.prototype.emit;
+  fn.apply(this, arguments);
+}
+
+//Object.ls(global.App);

@@ -15,6 +15,7 @@ global.DbScreen = jClass.extend({
 
     if (this.connection.options.database != this.connection.defaultDatabaseName) {
       this.database = this.connection.options.database;
+      App.emit('database.changed', this.database);
       this.fetchTablesAndSchemas(function() {
         console.log("showDatabaseContent");
         this.view.showDatabaseContent();
@@ -58,6 +59,7 @@ global.DbScreen = jClass.extend({
 
   selectDatabase: function (database, callback) {
     this.database = database;
+    App.emit('database.changed', this.database);
     this.connection.switchDb(this.database, function() {
       this.fetchTablesAndSchemas();
       if (typeof callback == 'function') callback();
