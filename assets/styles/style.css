@@ -636,6 +636,8 @@ body.sidebar-resizing {
     padding: 2px 5px;
     width: 100%;
     border-bottom: 1px solid #d1d1d1; }
+    .main-screen > .sidebar > .databases select {
+      max-width: calc(100% - 20px); }
     .main-screen > .sidebar > .databases label {
       display: block;
       -webkit-user-select: none;
