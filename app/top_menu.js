@@ -42,7 +42,7 @@ var menu = {
     'separator': 'separator',
     'Drop Database': {
       click: function () {
-        window.alert('Drop Database');
+        global.App.currentTab.instance.dropDatabaseDialog();
       },
       enabled: false
     }

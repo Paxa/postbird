@@ -17,7 +17,6 @@ global.DbScreen = jClass.extend({
       this.database = this.connection.options.database;
       App.emit('database.changed', this.database);
       this.fetchTablesAndSchemas(function() {
-        console.log("showDatabaseContent");
         this.view.showDatabaseContent();
       }.bind(this));
     }
@@ -192,6 +191,30 @@ global.DbScreen = jClass.extend({
         }
         callback(res, error);
       }.bind(this));
+    }.bind(this));
+  },
+
+  dropDatabaseDialog: function () {
+    var msg = "Delete database and all tables in it?";
+    var dialog = window.alertify.confirm(msg, function (result) {
+      if (result) {
+        this.dropDatabase();
+      }
+    }.bind(this));
+  },
+
+  dropDatabase: function () {
+    App.startLoading("Deleting database...");
+    this.connection.dropDatabase(this.database, function (result, error) {
+      App.stopLoading();
+      if (error) {
+        window.alertify.alert(error.message);
+      } else {
+        this.database = undefined;
+        this.view.hideDatabaseContent();
+        this.fetchDbList();
+        App.emit('database.changed', this.database);
+      }
     }.bind(this));
   },
 

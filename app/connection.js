@@ -255,6 +255,14 @@ global.Connection = jClass.extend({
     this.q(sql, dbname, callback);
   },
 
+  dropDatabase: function (dbname, callback) {
+    this.switchDb('postgres', function () {
+      this.q('drop database %s', dbname, function (result, error) {
+        callback(result, error);
+      })
+    }.bind(this))
+  },
+
   queryMultiple: function(queries, callback) {
     var leftQueries = queries.slice();
     var conn = this;
