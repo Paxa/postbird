@@ -1,3 +1,4 @@
+require('./lib/error_reporter');
 //require('./lib/zepto');
 require('./lib/dominate');
 require('./lib/jquery.class');
@@ -10,6 +11,8 @@ require('./lib/widgets/generic_table');
 require('./lib/psql_runner');
 require('./lib/sql_importer');
 require('classy/object_ls');
+
+global.node.colors = require('colors');
 
 require('./app');
 require('./app/views/pane');
@@ -49,13 +52,6 @@ require('./app/models/trigger');
 require('./app/controllers/import_controller');
 
 require('./app/heroku_client');
-
-process.on("uncaughtException", function(err) {
-  global.log.error('error: ', err.red);
-  global.log.info(err.stack);
-  window.alert(err);
-  return false;
-});
 
 global.$u = window.$u = Zepto;
 global.$ = function (selector) {
@@ -100,5 +96,4 @@ Zepto(document).ready(function() {
     GenericTable.keyPressed('up');
     return false;
   });
-
 });
