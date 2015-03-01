@@ -82,6 +82,7 @@ global.App = {
     var tab = this.tabs[index];
     tab.tabHandler.remove();
     tab.content.remove();
+    if (tab.instance.destroy) tab.instance.destroy();
     this.tabs.splice(index, 1);
 
     if (this.activeTab == index) {

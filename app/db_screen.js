@@ -299,6 +299,10 @@ global.DbScreen = jClass.extend({
   switchToHerokuMode: function (appName, dbUrl) {
     this.view.switchToHerokuMode(appName, dbUrl);
   },
+
+  destroy: function () {
+    this.connection.close();
+  }
 });
 
 global.Panes = {};
