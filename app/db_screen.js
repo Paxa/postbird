@@ -140,8 +140,10 @@ global.DbScreen = jClass.extend({
 
   contentTabActivate: function() {
     if (!this.currentTable) return;
+    App.startLoading("Fetching data ...");
     this.table.getRows(0, this.contentTabLimit, function (data) {
       this.table.getColumnTypes(function(columnTypes) {
+        App.stopLoading();
         this.view.contents.renderTab(data, columnTypes);
       }.bind(this));
     }.bind(this));

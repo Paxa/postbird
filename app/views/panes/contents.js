@@ -31,9 +31,25 @@ global.Panes.Contents = global.Pane.extend({
 
     this.footer = this.content.find('.summary-and-pages');
 
+    this.nextPageEl = this.footer.find('.pages.next');
+    this.prevPageEl = this.footer.find('.pages.prev');
+
+    var begin = this.offset;
+    var ends = this.offset + this.dataRowsCount; //this.limit;
+
+    if (begin > 0) {
+      this.prevPageEl.css('display', 'inline-block');
+    } else {
+      this.prevPageEl.css('display', 'none');
+    }
+
     this.totals(function(count) {
-      var begin = this.offset;
-      var ends = this.offset + this.dataRowsCount; //this.limit;
+      console.log("ends, count", ends, count);
+      if (ends == count) {
+        this.nextPageEl.hide('inline-block');
+      } else {
+        this.nextPageEl.show();
+      }
 
       this.footer.find('.info').text("Rows " + begin + " - " + ends + " of " + count);
     }.bind(this));
@@ -51,15 +67,28 @@ global.Panes.Contents = global.Pane.extend({
     }
   },
 
-  nextPage: function(attribute) {
+  nextPage: function () {
     App.startLoading("Getting next page...", 100);
     this.handler.table.getRows(this.offset + this.limit, this.handler.contentTabLimit, function (data) {
-      this.limit = data.limit;
-      this.offset = data.offset;
-      this.renderData(data);
+      this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
     }.bind(this));
-  }
+  },
 
+  prevPage: function () {
+    App.startLoading("Getting previous page...", 100);
+    this.handler.table.getRows(this.offset - this.limit, this.handler.contentTabLimit, function (data) {
+      this.renderPage(data);
+      this.scrollToTop();
+      App.stopLoading();
+    }.bind(this));
+  },
+
+  renderPage: function (data) {
+    this.limit = data.limit;
+    this.offset = data.offset;
+    this.dataRowsCount = data.rows.length;
+    this.renderData(data);
+  },
 });

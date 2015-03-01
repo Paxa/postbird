@@ -1111,6 +1111,12 @@ body.sidebar-resizing {
       font-size: 13px; }
     .window-content.content .native-footer-bar li.right {
       text-align: right; }
+    .window-content.content .native-footer-bar li {
+      padding-right: 5px; }
+    .window-content.content .native-footer-bar li + li {
+      padding-left: 5px; }
+    .window-content.content .native-footer-bar li.prev {
+      display: none; }
 
 .window-content.query {
   height: 90%; }
