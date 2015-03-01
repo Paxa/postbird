@@ -202,6 +202,17 @@ global.Model.Table = Model.base.extend({
       callback ? callback(count) : console.log("Table rows count: " + this.table + " " + count);
     });
   },
+
+  insertRow: function (values, callback) {
+    var sql = "insert into %s.%s values (%s)";
+    var safeValues = values.map(function (val) {
+      return "'" + val.toString() + "'";
+    }).join(", ");
+
+    this.q(sql, this.schema, this.table, safeValues, function (data, error) {
+      callback(data, error);
+    });
+  },
 });
 
 Model.Table.create = function create (schema, tableName, callback) {

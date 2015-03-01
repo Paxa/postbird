@@ -73,7 +73,7 @@ Model.Procedure.prototype.makeSync('drop');
 
 Model.Table.makeSync('publicTables');
 Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
-Model.Table.prototype.makeSync('drop', 'addColumnObj');
+Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows');
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
 

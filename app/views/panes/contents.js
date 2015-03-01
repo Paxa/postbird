@@ -4,7 +4,13 @@ global.Panes.Contents = global.Pane.extend({
     this.columnTypes = columnTypes;
     this.limit = data.limit;
     this.offset = data.offset;
+    this.dataRowsCount = data.rows.length;
 
+    var table = [this.handler.database, this.handler.table];
+    if (this.currentTable != table) {
+      delete this.totalRows;
+      this.currentTable = table;
+    }
     this.renderData(data);
   },
 
@@ -27,7 +33,7 @@ global.Panes.Contents = global.Pane.extend({
 
     this.totals(function(count) {
       var begin = this.offset;
-      var ends = this.offset + this.limit;
+      var ends = this.offset + this.dataRowsCount; //this.limit;
 
       this.footer.find('.info').text("Rows " + begin + " - " + ends + " of " + count);
     }.bind(this));

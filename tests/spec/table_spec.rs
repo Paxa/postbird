@@ -47,4 +47,17 @@ describe('Model.Table', do
       end)
     end)
   end)
+
+  sync_it("should count rows", do
+    var table = Model.Table.create('public', 'test_table')
+    table.addColumnObj(Model.Column('some_column', {type: 'integer'}));
+
+    table.insertRow([1])
+    table.insertRow([2])
+    table.insertRow([3])
+
+    assert(table.getTotalRows(), 3)
+
+    table.drop()
+  end)
 end)
