@@ -77,6 +77,10 @@ Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRow
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
 
+if (!window.localStorage) {
+  window.localStorage = require('localStorage');
+}
+
 window.localStorage.clear();
 
 var queue = async.queue(function (fn, callback) {
