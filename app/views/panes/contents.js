@@ -44,7 +44,6 @@ global.Panes.Contents = global.Pane.extend({
     }
 
     this.totals(function(count) {
-      console.log("ends, count", ends, count);
       if (ends == count) {
         this.nextPageEl.hide('inline-block');
       } else {

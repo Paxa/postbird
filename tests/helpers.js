@@ -64,7 +64,7 @@ Object.prototype.makeSyncFn = function(methodName, errorArgNum) {
     var lastArg = arguments[arguments.length - 1];
 
     if (!Fiber.current && typeof lastArg != 'function') {
-      throw "please run '" + methodName + "' in fiber";
+      throw "please run '" + methodName + "' in fiber or pass a callback as last argument";
     }
 
     if (Fiber.current && typeof lastArg != 'function') {
