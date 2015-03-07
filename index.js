@@ -96,4 +96,7 @@ Zepto(document).ready(function() {
     GenericTable.keyPressed('up');
     return false;
   });
+
+  var win = gui.Window.get();
+  win.focus();
 });

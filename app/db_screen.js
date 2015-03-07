@@ -57,12 +57,20 @@ global.DbScreen = jClass.extend({
   },
 
   selectDatabase: function (database, callback) {
+    if (database == '') database = undefined;
+
     this.database = database;
     App.emit('database.changed', this.database);
-    this.connection.switchDb(this.database, function() {
-      this.fetchTablesAndSchemas();
-      if (typeof callback == 'function') callback();
-    }.bind(this));
+
+    if (database) {
+      this.connection.switchDb(this.database, function() {
+        this.fetchTablesAndSchemas();
+        if (typeof callback == 'function') callback();
+      }.bind(this));
+    } else {
+      this.view.hideDatabaseContent();
+      this.connection.close();
+    }
   },
 
   // Public API
@@ -214,6 +222,37 @@ global.DbScreen = jClass.extend({
       } else {
         this.database = undefined;
         this.view.hideDatabaseContent();
+        this.fetchDbList();
+        App.emit('database.changed', this.database);
+      }
+    }.bind(this));
+  },
+
+  renameDatabaseDialog: function (defaultValue) {
+    var msg = "Renaming database '" + this.database + "'?";
+    var dialog = window.alertify.prompt(msg, function (result, newName) {
+      if (result) {
+        if (newName && newName.trim() != "" && newName != this.database) {
+          this.renameDatabase(newName);
+        } else {
+          window.alert('Please fill database name');
+          this.renameDatabaseDialog(newName);
+          setTimeout(function () {
+            $u('#alertify-text').focus();
+          }, 200);
+        }
+      }
+    }.bind(this), defaultValue || this.database);
+  },
+
+  renameDatabase: function (databaseNewName) {
+    App.startLoading("Renaming database...");
+    this.connection.renameDatabase(this.database, databaseNewName, function (result, error) {
+      App.stopLoading();
+      if (error) {
+        window.alertify.alert(error.message);
+      } else {
+        this.database = databaseNewName;
         this.fetchDbList();
         App.emit('database.changed', this.database);
       }

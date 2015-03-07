@@ -23,13 +23,13 @@ var menu = {
   'Database': {
     'Refresh Database': {
       click: function () {
-        window.alert('Refresh Database');
+        global.App.currentTab.instance.fetchTablesAndSchemas();
       },
       enabled: false
     },
     'Rename Database': {
       click: function () {
-        window.alert('Rename Database');
+        global.App.currentTab.instance.renameDatabaseDialog();
       },
       enabled: false
     },
@@ -109,8 +109,12 @@ var checkDbMenu = function () {
   var db = global.App.currentTab.instance.database;
   if (db) {
     AppMenu.enableItem("Database", "Drop Database");
+    AppMenu.enableItem("Database", "Refresh Database");
+    AppMenu.enableItem("Database", "Rename Database");
   } else {
     AppMenu.disableItem("Database", "Drop Database");
+    AppMenu.disableItem("Database", "Refresh Database");
+    AppMenu.disableItem("Database", "Rename Database");
   }
 };
 

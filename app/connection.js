@@ -257,10 +257,21 @@ global.Connection = jClass.extend({
 
   dropDatabase: function (dbname, callback) {
     this.switchDb('postgres', function () {
-      this.q('drop database %s', dbname, function (result, error) {
+      this.q('drop database "%s"', dbname, function (result, error) {
         callback(result, error);
-      })
-    }.bind(this))
+      });
+    }.bind(this));
+  },
+
+  renameDatabase: function (dbname, newDbname, callback) {
+    this.switchDb('postgres', function () {
+      var sql = 'ALTER DATABASE "%s" RENAME TO "%s";'
+      this.q(sql, dbname, newDbname, function (result, error) {
+        this.switchDb(error ? dbname : newDbname, function () {
+          callback(result, error);
+        });
+      }.bind(this));
+    }.bind(this));
   },
 
   queryMultiple: function(queries, callback) {

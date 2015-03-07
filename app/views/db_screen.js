@@ -30,7 +30,7 @@ global.DbScreenView = jClass.extend({
     this.databaseSelect.bind('change', function (e) {
       var value = '' + $u(e.target).val();
 
-      if (value == '' || value == '**create-db**') {
+      if (value == '**create-db**') {
         this.hideDatabaseContent();
       } else {
         this.showDatabaseContent();
@@ -40,7 +40,7 @@ global.DbScreenView = jClass.extend({
         e.preventDefault();
         new Dialog.NewDatabase(this.handler);
         $u(e.target).val('');
-      } else if (value != '') {
+      } else {
         this.handler.selectDatabase(value);
       }
     }.bind(this));
