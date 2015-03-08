@@ -10,6 +10,8 @@ require('./lib/sidebar_resize');
 require('./lib/widgets/generic_table');
 require('./lib/psql_runner');
 require('./lib/sql_importer');
+require('./lib/pg_dump_runner');
+require('./lib/sql_exporter');
 require('classy/object_ls');
 
 global.node.colors = require('colors');
@@ -40,6 +42,7 @@ require('./app/views/dialogs/new_index');
 require('./app/views/dialogs/import_file');
 require('./app/views/dialogs/heroku_connection');
 require('./app/views/dialogs/list_languages');
+require('./app/views/dialogs/export_file');
 
 require('./app/models/base');
 require('./app/models/table');
@@ -50,6 +53,7 @@ require('./app/models/procedure');
 require('./app/models/trigger');
 
 require('./app/controllers/import_controller');
+require('./app/controllers/export_controller');
 
 require('./app/heroku_client');
 

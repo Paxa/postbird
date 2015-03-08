@@ -15,13 +15,14 @@ describe('SqlExporter', do
 
     var exporter = new SqlExporter(null, {debug: false});
 
-    var result = exporter.doExport(global.connection)
+    var result = exporter.runSyncCb('doExport', global.connection, do |success, result|
+      assert_contain(result, "PostgreSQL database dump")
+      assert_contain(result, "CREATE TABLE test_table")
+      assert_contain(result, "COPY test_table (id) FROM stdin;")
 
-    assert_contain(result, "PostgreSQL database dump")
-    assert_contain(result, "CREATE TABLE test_table")
-    assert_contain(result, "COPY test_table (id) FROM stdin;")
-
-    //process.stdout.write(result)
+      //process.stdout.write(result)
+      return success
+    end)
 
     table.drop()
   end)

@@ -822,6 +822,93 @@ jade_debug.shift();}.call(this,"data" in locals_for_with?locals_for_with.data:ty
 }
 };
 exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http://www.postgresql.org/docs/8.4/static/datatype.html\", target=\"new\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n";
+exports["dialogs/export_file"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, database) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n<header>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push(jade.escape(null == (jade_interp = "Exporting database '" + database + "'") ? "" : jade_interp));
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</header>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n<form>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n  <p class=\"save-to-file\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("Save to file:");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n    <input type=\"file\" name=\"export_to_file\"" + (jade.attr("nwsaveas", database + '.sql', true, false)) + "/>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("<code class=\"result\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</code>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n  <p class=\"buttons\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n    <button class=\"ok\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: jade_debug[0].filename });
+buf.push("Start");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n    <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: jade_debug[0].filename });
+buf.push("Cancel");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n  <p class=\"buttons close-btn is-hidden\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" });
+buf.push("\n    <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 15, filename: jade_debug[0].filename });
+buf.push("Close");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</form>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"database" in locals_for_with?locals_for_with.database:typeof database!=="undefined"?database:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "header\n  = \"Exporting database '\" + database + \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"file\" name=\"export_to_file\" nwsaveas=database + '.sql')\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close");
+}
+};
+exports["dialogs/export_file"].content = "header\n  = \"Exporting database '\" + database + \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"file\" name=\"export_to_file\" nwsaveas=database + '.sql')\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
 exports["dialogs/heroku_connection"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/heroku_connection.jade" }];
 try {

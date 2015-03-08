@@ -28,6 +28,25 @@ Object.prototype.runSync = function() {
   return newValue;
 };
 
+Object.prototype.runSyncCb = function() {
+  var newValue;
+  var fiber = Fiber.current;
+
+  var args = Array.prototype.slice.call(arguments);
+  var methodName = args.shift();
+  var userCallback = args.pop();
+
+  args.push(function(data) {
+    var result = userCallback.apply(this, arguments);
+    newValue = result;
+    fiber.run();
+  });
+
+  this[methodName].apply(this, args);
+  Fiber.yield();
+  return newValue;
+};
+
 Object.prototype.wrapSync = function(methodName) {
   var _this = this;
 

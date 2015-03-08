@@ -35,7 +35,7 @@ var menu = {
     },
     'Export Database': {
       click: function () {
-        window.alert('Export Database');
+        (new global.ExportController).doExport();
       },
       enabled: false
     },
@@ -111,10 +111,12 @@ var checkDbMenu = function () {
     AppMenu.enableItem("Database", "Drop Database");
     AppMenu.enableItem("Database", "Refresh Database");
     AppMenu.enableItem("Database", "Rename Database");
+    AppMenu.enableItem("Database", "Export Database");
   } else {
     AppMenu.disableItem("Database", "Drop Database");
     AppMenu.disableItem("Database", "Refresh Database");
     AppMenu.disableItem("Database", "Rename Database");
+    AppMenu.disableItem("Database", "Export Database");
   }
 };
 

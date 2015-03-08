@@ -1,0 +1,15 @@
+header
+  = "Exporting database '" + database + "'"
+
+form
+  p.save-to-file
+    = "Save to file:"
+    input(type="file" name="export_to_file" nwsaveas=database + '.sql')
+
+  code.result
+
+  p.buttons
+    button.ok Start
+    button.cancel Cancel
+  p.buttons.close-btn.is-hidden
+    button.cancel Close
