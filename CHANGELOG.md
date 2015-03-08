@@ -24,6 +24,11 @@
 * Enable/disable database menu, drop database
 * Add error reporting with rollbar
 * Close connection when closing tab
+* Make it run on nwjs 0.12
+* Rename database from top menu
+* Reload database from top menu
+* Create and save database dump
+
 
 == Version 0.3 (Sep 27, 2014)
 
