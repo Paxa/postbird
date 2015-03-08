@@ -16,8 +16,10 @@ require("../app/models/column");
 require("../app/models/index");
 require("../app/models/procedure");
 
-require("../lib/psql_runner")
-require("../lib/sql_importer")
+require("../lib/psql_runner");
+require("../lib/sql_importer");
+require("../lib/pg_dump_runner");
+require("../lib/sql_exporter");
 
 require('../app');
 
@@ -76,7 +78,9 @@ Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
 Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows');
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
+SqlExporter.prototype.makeSyncFn('doExport', 3);
 
+// for running test in node.js/io.js
 if (!window.localStorage) {
   window.localStorage = require('localStorage');
 }

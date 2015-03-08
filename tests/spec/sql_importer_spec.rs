@@ -1,7 +1,7 @@
 require "../../lib/psql_runner"
 require "../../lib/sql_importer"
 
-describe('PsqlRunner', do
+describe('SqlRunner', do
 
   sync_it("should import world database", do |done|
     var thisDir = node.path.dirname(module.filename);
