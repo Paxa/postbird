@@ -64,8 +64,10 @@ var helpers = global.ViewHelpers = {
 
     if (now.toDateString() == date.toDateString()) {
       return '<time>' + strftime('Today, %H:%M:%S', date) + '</time>';
-    } else {
+    } else if (now.getFullYear() == date.getFullYear()) {
       return '<time>' + strftime('%b %d, %H:%M:%S', date) + '</time>';
+    } else {
+      return '<time>' + strftime('%b %d, %Y, %H:%M:%S', date) + '</time>';
     }
   },
 
@@ -75,6 +77,8 @@ var helpers = global.ViewHelpers = {
 
     if (now.toDateString() == date.toDateString()) {
       return '<time>' + strftime('Today, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+    } else if (now.getFullYear() == date.getFullYear()) {
+      return '<time>' + strftime('%b %d, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
     } else {
       return '<time>' + strftime('%b %d, %Y, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
     }
