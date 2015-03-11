@@ -40,3 +40,5 @@ My todo:
 * Materialized views structure
 * Drop view/materialized view
 * Fix Table.describe when there is same tables in different schemas
+* Code snippets in query tab
+* Export only structure
