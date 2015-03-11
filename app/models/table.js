@@ -188,10 +188,12 @@ global.Model.Table = Model.base.extend({
     if (!limit) limit = 100;
 
     var sql = 'select * from "%s"."%s" limit %d offset %d';
-    this.q(sql, this.schema, this.table, limit, offset, function(data) {
-      data.limit = limit;
-      data.offset = offset;
-      callback(data);
+    this.q(sql, this.schema, this.table, limit, offset, function(data, error) {
+      if (data) {
+        data.limit = limit;
+        data.offset = offset;
+      }
+      callback(data, error);
     });
   },
 

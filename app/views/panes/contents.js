@@ -1,10 +1,13 @@
 global.Panes.Contents = global.Pane.extend({
 
-  renderTab: function (data, columnTypes) {
+  renderTab: function (data, columnTypes, error) {
     this.columnTypes = columnTypes;
-    this.limit = data.limit;
-    this.offset = data.offset;
-    this.dataRowsCount = data.rows.length;
+    this.error = error;
+    if (data) {
+      this.limit = data.limit;
+      this.offset = data.offset;
+      this.dataRowsCount = data.rows.length;
+    }
 
     var table = [this.handler.database, this.handler.table];
     if (this.currentTable != table) {
@@ -15,6 +18,15 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   renderData: function (data) {
+    if (this.error) {
+      var errorMsg = $dom(['div.error',
+        ['h4', "Error happen"],
+        ['code', ['pre', this.error.toString()]]
+      ]);
+
+      this.view.setTabContent('content', errorMsg);
+      return;
+    }
     var sTime = Date.now();
     this.renderViewToPane('content', 'content_tab', {data: data, types: this.columnTypes});
 
