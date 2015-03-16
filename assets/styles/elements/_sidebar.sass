@@ -34,6 +34,8 @@
     padding: 2px 5px
     width: 100%
     :border-bottom 1px solid #d1d1d1
+    select
+      max-width: calc(100% - 20px)
     label
       :display block
       +unselectable
@@ -98,7 +100,7 @@
     bottom: 0
     left: 0px
     width: 100%
-    @extend .native-footer-bar
+    +native-footer-bar($sidebar-footer-height)
     li
       width: $sidebar-footer-height
       text-align: center

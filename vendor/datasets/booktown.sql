@@ -1667,7 +1667,7 @@ d
 COPY "subjects"  FROM stdin;
 0	Arts	Creativity St
 1	Business	Productivity Ave
-2	Children's Books	Kids Ct
+2	"Children's Books"	Kids Ct
 3	Classics	Academic Rd
 4	Computers	Productivity Ave
 5	Cooking	Creativity St

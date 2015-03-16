@@ -84,10 +84,12 @@ $u.html2collection = function html2collection (html) {
   return $u(div).children();
 };
 
-window.Object.forEach     = global.Object.forEach;
-window.Object.values      = global.Object.values;
-window.Object.ancestors   = global.Object.ancestors;
-window.Object.properties  = global.Object.properties;
+if (window.Object) {
+  window.Object.forEach     = global.Object.forEach;
+  window.Object.values      = global.Object.values;
+  window.Object.ancestors   = global.Object.ancestors;
+  window.Object.properties  = global.Object.properties;
+}
 
 $u.listenClickOutside = function listenClickOutside (element, options, callback) {
   element = $u(element);
@@ -175,4 +177,8 @@ $u.makeDroppable = function (target, callback) {
     }
     return false;
   };
+};
+
+$u.commentOf = function (callback) {
+  return callback.toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 };

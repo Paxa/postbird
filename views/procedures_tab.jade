@@ -1,0 +1,60 @@
+h4 Procedures
+
+table.native-look-table
+  thead
+    tr
+      th name
+      th return type
+      th arguments
+      th language
+      th
+  tbody
+    each proc in procs
+      tr
+        td
+          strong= proc.name
+        td= proc.return_type
+        td= proc.arg_list
+        td= proc.language
+        td
+          a(exec="editProc('" + proc.name + "')") Edit
+          != "&nbsp;"
+          a(exec="removeProc('" + proc.name + "')") Delete
+
+footer
+  button.native-look(exec="addColumnForm") Create Procedure
+  button.native-look(exec="addColumnForm") Create Trigger
+  button.native-look(exec="listLanguages") List Languages
+
+h4 Triggers
+
+table.native-look-table
+  thead
+    tr
+      th Name
+      th Table
+      th Procedure
+      th Event
+      th(title="Deferrable") Deferr.
+      th
+  tbody
+    each trigger in triggers
+      tr
+        td
+          if trigger.constraint_name
+            strong(title="Constraint") C
+            != "&nbsp;"
+            = trigger.constraint_name
+          else
+            = trigger.name
+        td= trigger.table_name
+        td= trigger.proc_name
+        td= trigger.typeDesc().join(", ")
+        td= trigger.tgdeferrable ? "Yes" : "No"
+        td
+          a(exec="editProc('" + trigger.name + "')") Edit
+          != "&nbsp;"
+          a(exec="removeProc('" + trigger.name + "')") Delete
+
+footer
+  button.native-look(exec="addColumnForm") Create Trigger

@@ -17,18 +17,21 @@ global.Model.base = jClass.extend({
 
   connection: function () {
     return Model.base.connection();
+  },
+
+  klassExtend: {
+    connection: function() {
+      if (App.currentTab.instance.connection) {
+        return App.currentTab.instance.connection;
+      } else {
+        throw "Current tab is not connected yet";
+      }
+    },
+
+    q: function () {
+      var connection = Model.base.connection();
+      return connection.q.apply(connection, arguments);
+    }
+
   }
 });
-
-Model.base.connection = function() {
-  if (App.currentTab.instance.connection) {
-    return App.currentTab.instance.connection;
-  } else {
-    throw "Current tab is not connected yet";
-  }
-};
-
-Model.base.q = function () {
-  var connection = Model.base.connection();
-  return connection.q.apply(connection, arguments);
-};

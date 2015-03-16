@@ -10,6 +10,8 @@
       td
         &:not(.expanded)
           +truncate
+        &.expanded
+          word-break: break-all
         :min-width 20px
         :max-width 250px
         span.text
@@ -25,3 +27,12 @@
     left: 0
     width: 100%
     border-top-color: #dfdfdf
+
+  .native-footer-bar
+    +native-footer-bar
+    li
+      padding-right: 5px
+    li + li
+      padding-left: 5px
+    li.prev
+      display: none

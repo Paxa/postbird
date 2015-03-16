@@ -1,48 +1,9 @@
 .window-content.structure
-  table
-    :border 1px solid #ccc
-    th
-      :font-weight bold
-    td, th
-      :border-bottom 1px solid #ccc
-      :border-right 1px solid #ccc
-      :padding 2px 4px
-
-.window-content.structure, .window-content
-  table.native-view
-    border: 1px solid #ccc
-    border-top: 1px solid #a8a8a8
-    border-top: 1px solid #b6b6b6
-    th, td
-      border: 0
-    th
-      background-image: url("../table_top_bg.png")
-      background-size: 1px 100%
-      background-repeat: repeat-x
-      border-bottom: 1px solid #b6b6b6
-      position: relative
-      font-weight: normal
-      & + th
-        &:before
-          content: ''
-          display: block
-          width: 1px
-          background: #bdbdbd
-          position: absolute
-          top: 2px
-          bottom: 2px
-          left: 0px
-
-    tr:nth-child(odd) td
-      background: #f3f6fa
-    tr.selected td
-      background: #d4d4d4
-      color: black
-    td, th
-      padding: 1px 8px 1px 3px
-    &.active tr.selected td
-      background: #3c6bdd
-      color: white
+  table.indexes-list-table
+    margin-bottom: 10px
+    margin-top: 10px
+  table.columns-list-table
+    margin-bottom: 10px
 
 .big-data-table
   //overflow: auto

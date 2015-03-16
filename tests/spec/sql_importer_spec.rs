@@ -1,9 +1,9 @@
 require "../../lib/psql_runner"
 require "../../lib/sql_importer"
 
-describe('PsqlRunner', do
+describe('SqlRunner', do
 
-  it("should import world database", do |done|
+  sync_it("should import world database", do |done|
     var thisDir = node.path.dirname(module.filename);
     var worldDbPath = node.path.resolve(thisDir, "../../vendor/datasets/world.sql");
 
@@ -20,21 +20,18 @@ describe('PsqlRunner', do
       end
     end)
 
-    importer.doImport(global.connection, do |success|
-      assert(success, true);
-      //assert(onMessageCount, 17);
+    var success = importer.doImport(global.connection)
 
-      Fiber(do
-        var tables = Model.Table.wrapSync('publicTables')();
-        assert(tables, ['city', 'country', 'countrylanguage']);
+    assert(success, true);
+    //assert(onMessageCount, 17);
 
-        DbCleaner(connection).fibRecreateSchema();
-        done();
-      end).run()
-    end);
+    var tables = Model.Table.publicTables();
+    assert(tables, ['city', 'country', 'countrylanguage']);
+
+    DbCleaner(connection).fibRecreateSchema();
   end)
 
-  it("should import booktown database", do |done|
+  sync_it("should import booktown database", do |done|
     var thisDir = node.path.dirname(module.filename);
     var worldDbPath = node.path.resolve(thisDir, "../../vendor/datasets/booktown.sql");
 
@@ -51,25 +48,21 @@ describe('PsqlRunner', do
       #end
     end)
 
-    importer.doImport(global.connection, do |success|
-      assert(success, true);
+    var success = importer.doImport(global.connection)
+    assert(success, true);
 
-      //assert(onMessageCount, 101);
+    //assert(onMessageCount, 101);
 
-      Fiber(do
-        var tables = Model.Table.wrapSync('publicTables')();
-        assert(tables, ['states', 'my_list', 'employees', 'schedules', 'editions',
-                        'books', 'publishers', 'shipments', 'stock', 'numeric_values',
-                        'daily_inventory', 'money_example', 'customers', 'book_queue',
-                        'stock_backup', 'stock_view', 'favorite_books', 'subjects',
-                        'distinguished_authors', 'favorite_authors', 'text_sorting',
-                        'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
-                       ]);
+    var tables = Model.Table.publicTables();
+    assert(tables, ['states', 'my_list', 'employees', 'schedules', 'editions',
+                    'books', 'publishers', 'shipments', 'stock', 'numeric_values',
+                    'daily_inventory', 'money_example', 'customers', 'book_queue',
+                    'stock_backup', 'stock_view', 'favorite_books', 'subjects',
+                    'distinguished_authors', 'favorite_authors', 'text_sorting',
+                    'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
+                   ]);
 
-        DbCleaner(connection).fibRecreateSchema();
-        done();
-      end).run()
-    end);
+    DbCleaner(connection).fibRecreateSchema();
   end)
 
 end)

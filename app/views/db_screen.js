@@ -30,7 +30,7 @@ global.DbScreenView = jClass.extend({
     this.databaseSelect.bind('change', function (e) {
       var value = '' + $u(e.target).val();
 
-      if (value == '' || value == '**create-db**') {
+      if (value == '**create-db**') {
         this.hideDatabaseContent();
       } else {
         this.showDatabaseContent();
@@ -40,7 +40,7 @@ global.DbScreenView = jClass.extend({
         e.preventDefault();
         new Dialog.NewDatabase(this.handler);
         $u(e.target).val('');
-      } else if (value != '') {
+      } else {
         this.handler.selectDatabase(value);
       }
     }.bind(this));
@@ -74,7 +74,7 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users', 'Extensions', 'Query', 'Structure', 'Contents'].forEach(function(paneName) {
+    ['Users', 'Extensions', 'Query', 'Structure', 'Contents', 'Procedures'].forEach(function(paneName) {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
     }.bind(this));
   },
@@ -124,7 +124,7 @@ global.DbScreenView = jClass.extend({
       }
 
       data[schema].forEach(function(table) {
-        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name}]);
+        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name, 'table-type': table.table_type}]);
 
         $u(tableNode).single_double_click(function(e) {
           if (e.target.tagName == "INPUT") return;

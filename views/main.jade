@@ -18,7 +18,7 @@
         a.addTable!= icon('add-table', 'Add table')
       li.users(tab='users')!= icon('users', 'Users')
       li.extensions(tab='extensions')!= icon('extensions', "Postgres extensions")
-      //li.procedures(tab='procedures')!= icon('procedures', "Procedures")
+      li.procedures(tab='procedures')!= icon('procedures', "Procedures")
     .resize-handler
   .main
     .window-tabs
@@ -33,3 +33,4 @@
     .window-content.triggers
     .window-content.users
     .window-content.extensions
+    .window-content.procedures

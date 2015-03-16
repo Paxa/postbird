@@ -15,8 +15,8 @@ global.DbScreen = jClass.extend({
 
     if (this.connection.options.database != this.connection.defaultDatabaseName) {
       this.database = this.connection.options.database;
+      App.emit('database.changed', this.database);
       this.fetchTablesAndSchemas(function() {
-        console.log("showDatabaseContent");
         this.view.showDatabaseContent();
       }.bind(this));
     }
@@ -57,11 +57,20 @@ global.DbScreen = jClass.extend({
   },
 
   selectDatabase: function (database, callback) {
+    if (database == '') database = undefined;
+
     this.database = database;
-    this.connection.switchDb(this.database, function() {
-      this.fetchTablesAndSchemas();
-      if (typeof callback == 'function') callback();
-    }.bind(this));
+    App.emit('database.changed', this.database);
+
+    if (database) {
+      this.connection.switchDb(this.database, function() {
+        this.fetchTablesAndSchemas();
+        if (typeof callback == 'function') callback();
+      }.bind(this));
+    } else {
+      this.view.hideDatabaseContent();
+      this.connection.close();
+    }
   },
 
   // Public API
@@ -71,8 +80,25 @@ global.DbScreen = jClass.extend({
 
   fetchTablesAndSchemas: function (callback) {
     this.connection.tablesAndSchemas(function(data) {
-      this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
-      callback && callback(data);
+      this.connection.mapViewsAsTables(function (matViews) {
+        // join tables with views
+        Object.forEach(matViews, function (schema, views) {
+          if (!data[schema]) data[schema] = [];
+          views.forEach(function (view) {
+            data[schema].push(view);
+          });
+        });
+        // sort everything again
+        Object.forEach(data, function (schema, tables) {
+          data[schema] = tables.sort(function (a, b) {
+            if (a.table_name > b.table_name) return 1;
+            if (a.table_name < b.table_name) return -1;
+            return 0;
+          })
+        });
+        this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
+        callback && callback(data);
+      }.bind(this));
     }.bind(this));
   },
 
@@ -122,9 +148,11 @@ global.DbScreen = jClass.extend({
 
   contentTabActivate: function() {
     if (!this.currentTable) return;
-    this.table.getRows(0, this.contentTabLimit, function (data) {
-      this.table.getColumnTypes(function(columnTypes) {
-        this.view.contents.renderTab(data, columnTypes);
+    App.startLoading("Fetching data ...");
+    this.table.getRows(0, this.contentTabLimit, function (data, error) {
+      this.table.getColumnTypes(function(columnTypes, error2) {
+        App.stopLoading();
+        this.view.contents.renderTab(data, columnTypes, error || error2);
       }.bind(this));
     }.bind(this));
   },
@@ -176,6 +204,61 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  dropDatabaseDialog: function () {
+    var msg = "Delete database and all tables in it?";
+    var dialog = window.alertify.confirm(msg, function (result) {
+      if (result) {
+        this.dropDatabase();
+      }
+    }.bind(this));
+  },
+
+  dropDatabase: function () {
+    App.startLoading("Deleting database...");
+    this.connection.dropDatabase(this.database, function (result, error) {
+      App.stopLoading();
+      if (error) {
+        window.alertify.alert(error.message);
+      } else {
+        this.database = undefined;
+        this.view.hideDatabaseContent();
+        this.fetchDbList();
+        App.emit('database.changed', this.database);
+      }
+    }.bind(this));
+  },
+
+  renameDatabaseDialog: function (defaultValue) {
+    var msg = "Renaming database '" + this.database + "'?";
+    var dialog = window.alertify.prompt(msg, function (result, newName) {
+      if (result) {
+        if (newName && newName.trim() != "" && newName != this.database) {
+          this.renameDatabase(newName);
+        } else {
+          window.alert('Please fill database name');
+          this.renameDatabaseDialog(newName);
+          setTimeout(function () {
+            $u('#alertify-text').focus();
+          }, 200);
+        }
+      }
+    }.bind(this), defaultValue || this.database);
+  },
+
+  renameDatabase: function (databaseNewName) {
+    App.startLoading("Renaming database...");
+    this.connection.renameDatabase(this.database, databaseNewName, function (result, error) {
+      App.stopLoading();
+      if (error) {
+        window.alertify.alert(error.message);
+      } else {
+        this.database = databaseNewName;
+        this.fetchDbList();
+        App.emit('database.changed', this.database);
+      }
+    }.bind(this));
+  },
+
   createTable: function (data, callback) {
     Model.Table.create(data.tablespace, data.name, function (table, res, error) {
       if (!error) {
@@ -224,6 +307,10 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  proceduresTabActivate: function() {
+    this.view.procedures.renderTab();
+  },
+
   addColumn: function (data, callback) {
     this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
       this.structureTabActivate();
@@ -252,26 +339,11 @@ global.DbScreen = jClass.extend({
 
   switchToHerokuMode: function (appName, dbUrl) {
     this.view.switchToHerokuMode(appName, dbUrl);
+  },
+
+  destroy: function () {
+    this.connection.close();
   }
 });
 
 global.Panes = {};
-
-/*
-
-function renderMainScreen () {
-  renderPage('main', {}, function(node) {
-    var element = $u(node);
-    var list = element.find('ul.databases');
-    query('SELECT datname FROM pg_database WHERE datistemplate = false;', function(rows) {
-      rows.rows.forEach(function(dbrow) {
-        var tree = DOMinate([
-          'li', ['a', dbrow.datname]
-        ]);
-        list.append(tree[0]);
-      });
-    });
-  })
-}
-
-*/

@@ -2,8 +2,6 @@ var jade;
 var jadeRuntime = require('jade/runtime');
 require('classy/object_extras').extendGlobal();
 
-var colors = require('colors');
-
 global.log = require('./app/logger').make('info');
 
 //require('./sugar/sugar');
@@ -33,19 +31,6 @@ global.App = {
     /* --- auto connect */
 
     this.setSizes();
-    /*
-    var i = $dom(['a.inspector', '@']);
-    $u(i).bind('click', function() {
-      gui.Window.get().showDevTools();
-    });
-    $u(this.tabsContainer).prepend(i);
-
-    /*
-    var n = $u($dom(['a.inspector', '!!!'])).bind('click', function() {
-      Notificator.show("Notification test");
-    });
-    $u(this.tabsContainer).prepend(n);
-    */
   },
 
   addTab: function (name, contentHtml, instance) {
@@ -97,6 +82,7 @@ global.App = {
     var tab = this.tabs[index];
     tab.tabHandler.remove();
     tab.content.remove();
+    if (tab.instance.destroy) tab.instance.destroy();
     this.tabs.splice(index, 1);
 
     if (this.activeTab == index) {
@@ -130,6 +116,7 @@ global.App = {
     this.activeTab = idx;
     this.tabs[idx].tabHandler.addClass('active');
     this.tabs[idx].content.show();
+    this.emit('tab.changed', idx);
   },
 
   activeTabObj: function () {
@@ -155,15 +142,17 @@ global.App = {
 
   jadeFn: {},
 
-  renderView: function (file, options, callback) {
-    //var renderStart = Date.now();
+  renderView: function (file, options) {
+    var html;
     var new_options = {};
     var i;
+
     for (i in ViewHelpers) new_options[i] = ViewHelpers[i].bind(ViewHelpers);
+
     if (options) {
       for (i in options) new_options[i] = options[i];
     }
-    var html;
+
     try {
       //var st = Date.now();
       html = this.compileJade(file)(jadeRuntime, new_options);
@@ -172,10 +161,7 @@ global.App = {
       console.log("Error compiling '" + App.root + '/views/' + file + '.jade');
       throw error;
     }
-    //var st = Date.now();
     var res = $u.html2collection(html);
-    //console.log('jade dom manipulate for ' + file + ' in ' + (Date.now() - st) + 'ms');
-    //console.log("jade render " + file + " in " + (Date.now() - renderStart) + 'ms');
 
     return res;
   },
@@ -294,3 +280,16 @@ Object.defineProperty(App, "currentTable", {
     }
   }
 });
+
+
+Object.setPrototypeOf(global.App, new node.events.EventEmitter);
+
+global.App.emit = function (eventName) {
+  if (!this._events[eventName]) {
+    console.log("Fire event '" + eventName + "' but no listeners");
+  }
+  var fn = node.events.EventEmitter.prototype.emit;
+  fn.apply(this, arguments);
+}
+
+//Object.ls(global.App);

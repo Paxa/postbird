@@ -10,7 +10,7 @@ global.Panes.Query = global.Pane.extend({
 
     this.button = this.content.find('button');
 
-    this.mime = 'text/x-mariadb';
+    this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
 
     this.editor = window.CodeMirror.fromTextArea(this.textarea[0], {
@@ -44,7 +44,6 @@ global.Panes.Query = global.Pane.extend({
     }
 
     this.saveTimeout = setTimeout(function () {
-      console.log("save ", value);
       Model.LastQuery.save(value);
       delete this.saveTimeout;
     }.bind(this), 700);
@@ -70,16 +69,18 @@ global.Panes.Query = global.Pane.extend({
     var selectedText = this.editor.getSelection();
 
     var sql = selectedText || this.textarea.val();
-    var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN)\s+)*\s*(table|schema)/im;
+    var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN)\s+)*\s*(table|schema|view)/im;
     var needReloadTables = !!sql.match(tableRegex);
 
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
+        this.content.find('.result table, .result .JCLRgrips').remove();
         var message = error.message;
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
         this.statusLine.text(message);
       } else {
         var node = App.renderView('db_rows_table', {data: data})[0];
+        this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);
         this.statusLine.text("Found rows: " + data.rowCount + ' in ' + data.time + 'ms.');
         this.initTables();

@@ -3,7 +3,7 @@
 Postbird is postgresql client for Mac.
 ![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png)
 
-![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/4430203/3664fa62-4622-11e4-861a-0627ef37ecdb.png)
+![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/6429388/19308eb8-c000-11e4-9848-6d2954f1d65e.png)
 
 
 #### Download
@@ -37,4 +37,8 @@ My todo:
 * Add index window is disappearing
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
-* Remove database
+* Materialized views structure
+* Drop view/materialized view
+* Fix Table.describe when there is same tables in different schemas
+* Code snippets in query tab
+* Export only structure

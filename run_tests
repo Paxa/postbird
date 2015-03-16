@@ -1,3 +1,4 @@
 #/Applications/nwjs.app/Contents/MacOS/nwjs ./tests "$@"
 BASEDIR=$(dirname $0)
-/Applications/node-webkit.app/Contents/MacOS/node-webkit $BASEDIR/tests "$@"
+#/Applications/node-webkit.app/Contents/MacOS/node-webkit $BASEDIR/tests "$@"
+/Applications/nwjs.app/Contents/MacOS/nwjs $BASEDIR/tests "$@"

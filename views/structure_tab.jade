@@ -1,4 +1,4 @@
-table.native-view
+table.columns-list-table.native-look-table
   thead
     tr
       th column
@@ -23,10 +23,10 @@ table.native-view
           a(exec="deleteColumn('" + column.column_name + "')") Delete
 
 footer
-  button(exec="addColumnForm") Add column
+  button.native-look(exec="addColumnForm") Add column
 
 h4 Indexes
-table.native-view
+table.indexes-list-table.native-look-table
   thead
     tr
       th name
@@ -47,4 +47,4 @@ table.native-view
           a(exec="deleteIndex('" + index.relname + "')") Delete
 
 footer
-  button(exec="addIndexForm") Add index
+  button.native-look(exec="addIndexForm") Add index

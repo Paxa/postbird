@@ -15,6 +15,20 @@
 * Reload tables when run sql query with create/drop table
 * Erase current tab content when drop table
 * Fix saving changes in connection on login screen
+* List procedures
+* List triggers
+* Add dialog with installed languages
+* Write tests in sync way (with fibers)
+* Add own dialect for query runner
+* Make different icons for views and materialized views
+* Add events to global.App
+* Enable/disable database menu, drop database
+* Add error reporting with rollbar
+* Close connection when closing tab
+* Make it run on nwjs 0.12
+* Rename database from top menu
+* Reload database from top menu
+* Create and save database dump
 
 == Version 0.3 (Sep 27, 2014)
 

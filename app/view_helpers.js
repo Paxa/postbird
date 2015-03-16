@@ -3,21 +3,30 @@ var sprintf = require("sprintf-js").sprintf;
 
 var helpers = global.ViewHelpers = {
   formatCell: function (value, format) {
-    var c = value;
-    if (!c) return c;
+    var formated = value;
+    if (!formated) return formated;
+
     switch (format) {
       case 'text':
         var n = $dom(['span']);
         n.innerText = '' + value;
-        c = '<span class="text">' + n.innerHTML + '</span>';
+        formated = '<span class="text">' + n.innerHTML + '</span>';
         break;
       case 'timestamp':
-        var d = new Date(Date.parse(value)); // convert to current timezone
-        c = '<time>' + strftime('%Y-%m-%d %H:%M:%S', d) + '</time>';
+        formated = this.betterDateTime(value);
+        break;
+      case 'timestamptz':
+        formated = this.betterDateTimeZ(value);
+        break;
+      case 'date':
+        formated = this.betterDate(value);
+        break;
+      case 'jsonb':
+        formated = this.formatJson(value);
         break;
     }
 
-    return c;
+    return formated;
   },
 
   truncate: function(str, length) {
@@ -47,5 +56,44 @@ var helpers = global.ViewHelpers = {
   icon: function(name, title) {
     title = title === undefined ? name.replace(/[\-_]/g, ' ') : title;
     return sprintf('<img src="./assets/icons/%s.png" width="20" height="20" class="app-icon" title="%s"/>', name, title);
+  },
+
+  betterDateTime: function (value) {
+    var date = new Date(Date.parse(value)); // convert to current timezone
+    var now = new Date();
+
+    if (now.toDateString() == date.toDateString()) {
+      return '<time>' + strftime('Today, %H:%M:%S', date) + '</time>';
+    } else if (now.getFullYear() == date.getFullYear()) {
+      return '<time>' + strftime('%b %d, %H:%M:%S', date) + '</time>';
+    } else {
+      return '<time>' + strftime('%b %d, %Y, %H:%M:%S', date) + '</time>';
+    }
+  },
+
+  betterDateTimeZ: function (value) {
+    var date = new Date(Date.parse(value)); // convert to current timezone
+    var now = new Date();
+
+    if (now.toDateString() == date.toDateString()) {
+      return '<time>' + strftime('Today, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+    } else if (now.getFullYear() == date.getFullYear()) {
+      return '<time>' + strftime('%b %d, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+    } else {
+      return '<time>' + strftime('%b %d, %Y, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+    }
+  },
+
+  // 1999-01-08
+  betterDate: function (value) {
+    var date = new Date(Date.parse(value));
+    return '<time>' + strftime('%Y-%m-%d', date) + '</time>';
+  },
+
+  formatJson: function (value) {
+    var json = JSON.stringify(value);
+    var n = $dom(['span']);
+    n.innerText = '' + json;
+    return '<span class="text">' + n.innerHTML + '</span>';
   }
 };

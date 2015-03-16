@@ -107,6 +107,14 @@ global.Connection = jClass.extend({
     this.query(vsprintf(sql, params), callback);
   },
 
+  serialize: function(sql){
+    var params = [], i;
+    var callback = arguments[arguments.length - 1];
+    for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
+
+    return vsprintf(sql, params)
+  },
+
   listDatabases: function (callback) {
     var databases = [];
     this.query('SELECT datname FROM pg_database WHERE datistemplate = false;', function (rows) {
@@ -152,7 +160,23 @@ global.Connection = jClass.extend({
 
   tablesAndSchemas: function(callback) {
     var data = {};
-    this.query("SELECT * FROM information_schema.tables order by table_schema != 'public';", function(rows) {
+    var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
+    this.query(sql, function(rows) {
+      rows.rows.forEach(function(dbrow) {
+        if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
+        data[dbrow.table_schema].push(dbrow);
+      });
+      callback(data);
+    });
+  },
+
+  mapViewsAsTables: function (callback) {
+    var data = {};
+    var sql = "select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type " +
+              "from pg_matviews " +
+              "order by schemaname != 'public', matviewname";
+
+    this.query(sql, function(rows, error) {
       rows.rows.forEach(function(dbrow) {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
         data[dbrow.table_schema].push(dbrow);
@@ -229,6 +253,25 @@ global.Connection = jClass.extend({
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     this.q(sql, dbname, callback);
+  },
+
+  dropDatabase: function (dbname, callback) {
+    this.switchDb('postgres', function () {
+      this.q('drop database "%s"', dbname, function (result, error) {
+        callback(result, error);
+      });
+    }.bind(this));
+  },
+
+  renameDatabase: function (dbname, newDbname, callback) {
+    this.switchDb('postgres', function () {
+      var sql = 'ALTER DATABASE "%s" RENAME TO "%s";'
+      this.q(sql, dbname, newDbname, function (result, error) {
+        this.switchDb(error ? dbname : newDbname, function () {
+          callback(result, error);
+        });
+      }.bind(this));
+    }.bind(this));
   },
 
   queryMultiple: function(queries, callback) {

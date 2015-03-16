@@ -202,7 +202,6 @@ h4 {
         border-color: #6f6f6f; }
     #tabs .tab, #tabs .tab > * {
       -webkit-user-select: none;
-      user-select: none;
       cursor: default; }
     #tabs .tab:hover .close {
       display: inline-block; }
@@ -259,6 +258,41 @@ h4 {
     border-right-color: #4C418C;
     background-image: url("../button-bg-active.png");
     outline: none; }
+
+table.native-look-table {
+  border: 1px solid #ccc;
+  border-top: 1px solid #a8a8a8;
+  border-top: 1px solid #b6b6b6; }
+  table.native-look-table th, table.native-look-table td {
+    border: 0; }
+  table.native-look-table th {
+    background-image: url("../table_top_bg.png");
+    background-size: 1px 100%;
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #b6b6b6;
+    position: relative;
+    font-weight: normal; }
+    table.native-look-table th + th:before {
+      content: "";
+      display: block;
+      width: 1px;
+      background: #bdbdbd;
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 0px; }
+  table.native-look-table tr:nth-child(odd) td {
+    background: #f3f6fa; }
+  table.native-look-table tr.selected td {
+    background: #d4d4d4;
+    color: black; }
+  table.native-look-table td, table.native-look-table th {
+    padding: 1px 8px 1px 3px; }
+  table.native-look-table.active tr.selected td {
+    background: #3c6bdd;
+    color: white; }
+    table.native-look-table.active tr.selected td a {
+      color: white; }
 
 .home-screen {
   background: #e1eff7;
@@ -366,7 +400,6 @@ h4 {
       text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
       border-bottom: 1px dotted #abc;
       -webkit-user-select: none;
-      user-select: none;
       cursor: default; }
     .home-screen .sidebar ul > li {
       padding: 2px 8px 2px 35px;
@@ -374,13 +407,16 @@ h4 {
       .home-screen .sidebar ul > li:before {
         display: block;
         content: "";
-        background: url("../icons/table.png") no-repeat;
+        background: url("../icons/table2.png") no-repeat;
         background-size: 15px 15px;
         width: 15px;
         height: 15px;
         left: 13px;
         top: 4px;
         position: absolute; }
+      .home-screen .sidebar ul > li[table-type=VIEW]:before, .home-screen .sidebar ul > li[table-type="MATERIALIZED VIEW"]:before {
+        background-image: url("../icons/db_view.png");
+        opacity: 0.8; }
       .home-screen .sidebar ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
       .home-screen .sidebar ul > li.selected {
@@ -453,7 +489,6 @@ h4 {
         margin-right: 5px;
         background: rgba(0, 0, 0, 0.1);
         -webkit-user-select: none;
-        user-select: none;
         cursor: default; }
         .main-screen > .main .window-tabs > *.active {
           background: rgba(0, 51, 136, 0.15); }
@@ -465,8 +500,7 @@ h4 {
 body.sidebar-resizing {
   cursor: ew-resize; }
   body.sidebar-resizing * {
-    -webkit-user-select: none;
-    user-select: none; }
+    -webkit-user-select: none; }
 
 .help-screen {
   background: #e1eff7;
@@ -491,7 +525,6 @@ body.sidebar-resizing {
         padding: 1px 5px;
         cursor: pointer;
         -webkit-user-select: none;
-        user-select: none;
         cursor: default; }
         .help-screen > .sidebar ul li:hover {
           background: rgba(0, 70, 100, 0.1); }
@@ -541,26 +574,6 @@ body.sidebar-resizing {
       .help-screen > .content .page.about-postbird .logo img {
         max-width: 50%; }
 
-.native-footer-bar, .main-screen > .sidebar > ul.extras {
-  background: #f5f5f5;
-  background-image: url("../footer_bg.png");
-  background-size: 1px 100%;
-  background-repeat: repeat-x;
-  height: 27px;
-  border-top: 1px solid #ccc;
-  box-sizing: border-box;
-  padding: 0 5px;
-  width: 100%; }
-  .native-footer-bar li, .main-screen > .sidebar > ul.extras li {
-    padding: 2px 2px;
-    -webkit-user-select: none;
-    user-select: none;
-    cursor: default;
-    display: inline-block;
-    border-right: 1px solid #C6C6C6; }
-  .native-footer-bar li.right, .main-screen > .sidebar > ul.extras li.right {
-    text-align: right; }
-
 .main-screen > .sidebar {
   width: 30%;
   padding-top: 48px;
@@ -596,10 +609,11 @@ body.sidebar-resizing {
     padding: 2px 5px;
     width: 100%;
     border-bottom: 1px solid #d1d1d1; }
+    .main-screen > .sidebar > .databases select {
+      max-width: calc(100% - 20px); }
     .main-screen > .sidebar > .databases label {
       display: block;
-      -webkit-user-select: none;
-      user-select: none; }
+      -webkit-user-select: none; }
     .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
       display: block; }
   .main-screen > .sidebar > .tables {
@@ -613,7 +627,6 @@ body.sidebar-resizing {
       height: 0; }
       .main-screen > .sidebar > .tables div.show-system-tables label {
         -webkit-user-select: none;
-        user-select: none;
         cursor: default;
         position: absolute;
         top: -24px; }
@@ -631,14 +644,12 @@ body.sidebar-resizing {
       box-sizing: border-box; }
       .main-screen > .sidebar > .tables > ul > li {
         -webkit-user-select: none;
-        user-select: none;
         cursor: default; }
         .main-screen > .sidebar > .tables > ul > li > span {
           display: block;
           background: rgba(0, 0, 0, 0.1);
           font-weight: bold;
           -webkit-user-select: none;
-          user-select: none;
           cursor: default;
           padding: 2px 8px 2px 35px;
           position: relative; }
@@ -660,13 +671,16 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
-              background: url("../icons/table.png") no-repeat;
+              background: url("../icons/table2.png") no-repeat;
               background-size: 15px 15px;
               width: 15px;
               height: 15px;
               left: 13px;
               top: 4px;
               position: absolute; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
+              background-image: url("../icons/db_view.png");
+              opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
             .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
@@ -682,7 +696,27 @@ body.sidebar-resizing {
     position: absolute;
     bottom: 0;
     left: 0px;
-    width: 100%; }
+    width: 100%;
+    background: #f5f5f5;
+    background-image: url("../footer_bg.png");
+    background-size: 1px 100%;
+    background-repeat: repeat-x;
+    height: 27px;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 0 5px;
+    width: 100%;
+    font-size: 0; }
+    .main-screen > .sidebar > ul.extras li {
+      padding: 2px 2px;
+      -webkit-user-select: none;
+      cursor: default;
+      display: inline-block;
+      border-right: 1px solid #C6C6C6;
+      line-height: 23px;
+      font-size: 13px; }
+    .main-screen > .sidebar > ul.extras li.right {
+      text-align: right; }
     .main-screen > .sidebar > ul.extras li {
       width: 27px;
       text-align: center;
@@ -1005,47 +1039,11 @@ body.sidebar-resizing {
   background: #5CB811;
   background: rgba(92, 184, 17, 0.9); }
 
-.window-content.structure table {
-  border: 1px solid #ccc; }
-  .window-content.structure table th {
-    font-weight: bold; }
-  .window-content.structure table td, .window-content.structure table th {
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding: 2px 4px; }
-
-.window-content.structure table.native-view, .window-content table.native-view {
-  border: 1px solid #ccc;
-  border-top: 1px solid #a8a8a8;
-  border-top: 1px solid #b6b6b6; }
-  .window-content.structure table.native-view th, .window-content.structure table.native-view td, .window-content table.native-view th, .window-content table.native-view td {
-    border: 0; }
-  .window-content.structure table.native-view th, .window-content table.native-view th {
-    background-image: url("../table_top_bg.png");
-    background-size: 1px 100%;
-    background-repeat: repeat-x;
-    border-bottom: 1px solid #b6b6b6;
-    position: relative;
-    font-weight: normal; }
-    .window-content.structure table.native-view th + th:before, .window-content table.native-view th + th:before {
-      content: "";
-      display: block;
-      width: 1px;
-      background: #bdbdbd;
-      position: absolute;
-      top: 2px;
-      bottom: 2px;
-      left: 0px; }
-  .window-content.structure table.native-view tr:nth-child(odd) td, .window-content table.native-view tr:nth-child(odd) td {
-    background: #f3f6fa; }
-  .window-content.structure table.native-view tr.selected td, .window-content table.native-view tr.selected td {
-    background: #d4d4d4;
-    color: black; }
-  .window-content.structure table.native-view td, .window-content.structure table.native-view th, .window-content table.native-view td, .window-content table.native-view th {
-    padding: 1px 8px 1px 3px; }
-  .window-content.structure table.native-view.active tr.selected td, .window-content table.native-view.active tr.selected td {
-    background: #3c6bdd;
-    color: white; }
+.window-content.structure table.indexes-list-table {
+  margin-bottom: 10px;
+  margin-top: 10px; }
+.window-content.structure table.columns-list-table {
+  margin-bottom: 10px; }
 
 .big-data-table {
   max-width: 100%;
@@ -1073,6 +1071,8 @@ body.sidebar-resizing {
       -ms-text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap; }
+    .window-content.content table tr td.expanded {
+      word-break: break-all; }
     .window-content.content table tr td span.text {
       width: 100%;
       min-width: 100px; }
@@ -1090,6 +1090,33 @@ body.sidebar-resizing {
     left: 0;
     width: 100%;
     border-top-color: #dfdfdf; }
+  .window-content.content .native-footer-bar {
+    background: #f5f5f5;
+    background-image: url("../footer_bg.png");
+    background-size: 1px 100%;
+    background-repeat: repeat-x;
+    height: 27px;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 0 5px;
+    width: 100%;
+    font-size: 0; }
+    .window-content.content .native-footer-bar li {
+      padding: 2px 2px;
+      -webkit-user-select: none;
+      cursor: default;
+      display: inline-block;
+      border-right: 1px solid #C6C6C6;
+      line-height: 23px;
+      font-size: 13px; }
+    .window-content.content .native-footer-bar li.right {
+      text-align: right; }
+    .window-content.content .native-footer-bar li {
+      padding-right: 5px; }
+    .window-content.content .native-footer-bar li + li {
+      padding-left: 5px; }
+    .window-content.content .native-footer-bar li.prev {
+      display: none; }
 
 .window-content.query {
   height: 90%; }
@@ -1103,6 +1130,15 @@ body.sidebar-resizing {
   .window-content.query .result {
     height: 50%;
     border-top: 1px solid #ccc; }
+
+.window-content.procedures h4 {
+  margin-bottom: 12px; }
+.window-content.procedures table {
+  margin-bottom: 10px; }
+
+.alertify-inner.list-languages table {
+  width: 100%;
+  margin-bottom: 5px; }
 
 .custom-window .alertify-dialog {
   padding-top: 38px; }
@@ -1158,9 +1194,9 @@ img.app-icon {
 .alertify-dialog form p {
   margin: 5px 0; }
 
-.import-file-dialog header {
+.import-file-dialog header, .export-file-dialog header {
   margin-bottom: 15px; }
-  .import-file-dialog header code {
+  .import-file-dialog header code, .export-file-dialog header code {
     padding: 5px;
     background: #f5f5f5;
     display: block;
@@ -1171,7 +1207,7 @@ img.app-icon {
     display: block;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
     word-break: break-all; }
-.import-file-dialog form code {
+.import-file-dialog form code, .export-file-dialog form code {
   margin: 13px 0;
   padding: 5px;
   background: #f5f5f5;
@@ -1182,7 +1218,7 @@ img.app-icon {
   overflow: auto;
   max-height: 300px;
   box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.25); }
-.import-file-dialog.importing form code {
+.import-file-dialog.importing form code, .import-file-dialog.exporting form code, .export-file-dialog.importing form code, .export-file-dialog.exporting form code {
   display: block; }
 
 .heroku-connection-dialog code {

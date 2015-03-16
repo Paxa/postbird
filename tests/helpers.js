@@ -28,6 +28,25 @@ Object.prototype.runSync = function() {
   return newValue;
 };
 
+Object.prototype.runSyncCb = function() {
+  var newValue;
+  var fiber = Fiber.current;
+
+  var args = Array.prototype.slice.call(arguments);
+  var methodName = args.shift();
+  var userCallback = args.pop();
+
+  args.push(function(data) {
+    var result = userCallback.apply(this, arguments);
+    newValue = result;
+    fiber.run();
+  });
+
+  this[methodName].apply(this, args);
+  Fiber.yield();
+  return newValue;
+};
+
 Object.prototype.wrapSync = function(methodName) {
   var _this = this;
 
@@ -46,6 +65,60 @@ Object.prototype.wrapSync = function(methodName) {
   };
 };
 
+Object.prototype.makeSync = function () {
+  for (var n = 0; n < arguments.length; n++) {
+    this.makeSyncFn(arguments[n]);
+  }
+};
+
+Object.prototype.makeSyncFn = function(methodName, errorArgNum) {
+  var origFn = this[methodName];
+  var _this = this;
+
+  if (origFn == undefined) {
+    throw "Object don't have property '" + methodName + "'";
+  }
+
+  this[methodName] = function () {
+    var lastArg = arguments[arguments.length - 1];
+
+    if (!Fiber.current && typeof lastArg != 'function') {
+      throw "please run '" + methodName + "' in fiber or pass a callback as last argument";
+    }
+
+    if (Fiber.current && typeof lastArg != 'function') {
+      //puts("Run sync " + methodName);
+      //puts(arguments);
+      var fiber = Fiber.current;
+      var newValue;
+      var args = Array.prototype.slice.call(arguments);
+      errorArgNum = errorArgNum || 2;
+      args.push(function(data) {
+        var error = arguments[errorArgNum - 1];
+        if (error) {
+          throw error;
+        }
+        newValue = data;
+        fiber.run();
+      });
+      origFn.apply(this, args);
+      Fiber.yield();
+      return newValue;
+    } else {
+      origFn.apply(this, arguments);
+    }
+  };
+};
+
+global.sync_it = function (message, callback) {
+  bdd.it(message, function (done) {
+    Fiber(function () {
+      callback();
+      done();
+    }).run();
+  });
+}
+
 global.loadBddBase = function () {
   global.bdd = require('../lib/bdd/bdd');
   var asserts = require('../lib/bdd/bdd_assert');
@@ -57,6 +130,7 @@ global.loadBddBase = function () {
   global.assert_false   = asserts.assert_false;
   global.assert_match   = asserts.assert_match;
   global.assert_contain = asserts.assert_contain;
+  global.assert_present = asserts.assert_present;
 
   process.on("uncaughtException", function(err) {
     /*

@@ -6,9 +6,8 @@ describe('Model.Table', do
   //@timeout(50000)
 
   it('should create and drop table', do |done|
-    //Model.Table('schema', 'test_table').drop();
     Model.Table.create('public', 'test_table', do |table, res, error|
-      assert_true(error === undefined)
+      assert_true(error == undefined)
 
       Model.Table.publicTables(do |tables|
         assert(tables, ['test_table']);
@@ -47,5 +46,18 @@ describe('Model.Table', do
         table.drop(done)
       end)
     end)
+  end)
+
+  sync_it("should count rows", do
+    var table = Model.Table.create('public', 'test_table')
+    table.addColumnObj(Model.Column('some_column', {type: 'integer'}));
+
+    table.insertRow([1])
+    table.insertRow([2])
+    table.insertRow([3])
+
+    assert(table.getTotalRows(), 3)
+
+    table.drop()
   end)
 end)

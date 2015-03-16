@@ -1,5 +1,5 @@
 .big-data-table
-  table.native-view
+  table.native-look-table
     thead
       tr
         each column in data.fields
@@ -12,13 +12,15 @@
 
 .summary-and-pages.native-footer-bar
   ul
-    li
-      a Add
-    li
-      a Remove
-    li
-      a Duplicate
+    //li
+    //  a Add
+    //li
+    //  a Remove
+    //li
+    //  a Duplicate
     li.info
 
-    li.pages.right
+    li.pages.prev
+      a(exec="prevPage") Prev
+    li.pages.next
       a(exec="nextPage") Next
