@@ -143,7 +143,7 @@ Zepto(document).ready(function() {
         key: 'i'
       },
       Reload: function () {
-        gui.Window.get().reload();
+        gui.Window.get().reloadDev();
       },
       Help: {
         click: function() {
