@@ -158,7 +158,7 @@ global.DbScreen = jClass.extend({
   },
 
   usersTabActivate: function () {
-    this.connection.getUsers(function(rows) {
+    Model.User.findAll(function(rows, error) {
       this.view.users.renderTab(rows);
     }.bind(this));
   },
@@ -173,7 +173,7 @@ global.DbScreen = jClass.extend({
       data.superuser = true;
     }
 
-    this.connection.createUser(data, function(data, error) {
+    Model.User.create(data, function(data, error) {
       if (!error) {
         this.omit('user.created')
       }
@@ -182,8 +182,10 @@ global.DbScreen = jClass.extend({
   },
 
   deleteUser: function(username, callback) {
-    this.connection.deleteUser(username, function(data, error) {
-      if (!error) {
+    Model.User.drop(username, function(data, error) {
+      if (error) {
+        window.alert(error);
+      } else {
         this.omit('user.deleted')
       }
       callback && callback(data, error);

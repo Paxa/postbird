@@ -51,6 +51,7 @@ require('./app/models/saved_conn');
 require('./app/models/last_query');
 require('./app/models/procedure');
 require('./app/models/trigger');
+require('./app/models/user');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');

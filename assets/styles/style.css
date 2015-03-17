@@ -1118,6 +1118,9 @@ body.sidebar-resizing {
     .window-content.content .native-footer-bar li.prev {
       display: none; }
 
+.window-content.users table + footer {
+  margin-top: 10px; }
+
 .window-content.query {
   height: 90%; }
   .window-content.query .editing {

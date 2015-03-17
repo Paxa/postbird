@@ -203,43 +203,6 @@ global.Connection = jClass.extend({
     });
   },
 
-  getUsers: function(callback) {
-    sql = (function () { /*
-
-    SELECT r.rolname, r.rolsuper, r.rolinherit,
-      r.rolcreaterole, r.rolcreatedb, r.rolcanlogin,
-      r.rolconnlimit, r.rolvaliduntil,
-      ARRAY(SELECT b.rolname
-            FROM pg_catalog.pg_auth_members m
-            JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
-            WHERE m.member = r.oid) as memberof
-    , r.rolreplication
-    FROM pg_catalog.pg_roles r
-    ORDER BY 1;
-
-    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
-
-    this.q(sql, function(data) {
-      callback(data.rows);
-    });
-  },
-
-  createUser: function (data, callback) {
-    var sql = sprintf('CREATE USER "%s"', data.username);
-
-    if (data.password) sql += sprintf(" WITH PASSWORD '%s'", data.password);
-    sql += ';'
-    if (data.superuser) sql += sprintf('ALTER USER "%s" WITH SUPERUSER;', data.username);
-
-    this.q(sql, function(data, error) {
-      callback(data, error);
-    });
-  },
-
-  deleteUser: function (username, callback) {
-    this.q('DROP USER "%s"', username, callback);
-  },
-
   installExtension: function (extension, callback) {
     this.q('CREATE EXTENSION "%s"', extension, callback);
   },

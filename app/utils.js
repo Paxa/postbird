@@ -180,5 +180,5 @@ $u.makeDroppable = function (target, callback) {
 };
 
 $u.commentOf = function (callback) {
-  return callback.toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+  return callback.toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
 };
