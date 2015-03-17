@@ -74,7 +74,8 @@ global.Panes.Query = global.Pane.extend({
 
     this.handler.connection.query(sql, function (data, error) {
       if (error) {
-        this.content.find('.result table, .result .JCLRgrips').remove();
+        this.content.find('.result .JCLRgrips').remove();
+        this.content.find('.result table').html("").hide();
         var message = error.message;
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
         this.statusLine.text(message);
