@@ -136,31 +136,58 @@ global.DbScreenView = jClass.extend({
           _this.renameTable(tableNode, schema, table.table_name);
         }, 170);
 
-        $u.contextMenu(tableNode, {
-          'View': function () {
-            _this.handler.tableSelected(schema, table.table_name, tableNode);
-          },
-          'separator': 'separator',
-          'Rename': function () {
-            _this.renameTable(tableNode, schema, table.table_name);
-          },
-          'Truncate table' : function () {},
-          'Drop table': function() {
-            _this.handler.dropTable(schema, table.table_name, function (res, error) {
-              if (error) {
-                var errorMsg = "" + error.toString();
-                if (error.detail) errorMsg += "\n----\n" + error.detail;
-                if (error.hint) errorMsg += "\n----\n" + error.hint;
-                window.alert(errorMsg);
-              } else {
-                if (_this.handler.currentTable == table.table_name) {
-                  _this.eraseCurrentContent();
+        if (table.table_type == "TABLE") {
+          $u.contextMenu(tableNode, {
+            'View': function () {
+              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            },
+            'separator': 'separator',
+            'Rename': function () {
+              _this.renameTable(tableNode, schema, table.table_name);
+            },
+            'Truncate table' : function () {},
+            'Drop table': function() {
+              _this.handler.dropTable(schema, table.table_name, function (res, error) {
+                if (error) {
+                  var errorMsg = "" + error.toString();
+                  if (error.detail) errorMsg += "\n----\n" + error.detail;
+                  if (error.hint) errorMsg += "\n----\n" + error.hint;
+                  window.alert(errorMsg);
+                } else {
+                  if (_this.handler.currentTable == table.table_name) {
+                    _this.eraseCurrentContent();
+                  }
                 }
-              }
-            });
-          },
-          'Show table SQL': function () {}
-        });
+              });
+            },
+            'Show table SQL': function () {}
+          });
+        } else if (table.table_type == "VIEW") {
+          $u.contextMenu(tableNode, {
+            'View': function () {
+              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            },
+            'separator': 'separator',
+            'Rename': function () {
+              _this.renameTable(tableNode, schema, table.table_name);
+            },
+            'Drop view': function() {
+              _this.handler.dropTable(schema, table.table_name, function (res, error) {
+                if (error) {
+                  var errorMsg = "" + error.toString();
+                  if (error.detail) errorMsg += "\n----\n" + error.detail;
+                  if (error.hint) errorMsg += "\n----\n" + error.hint;
+                  window.alert(errorMsg);
+                } else {
+                  if (_this.handler.currentTable == table.table_name) {
+                    _this.eraseCurrentContent();
+                  }
+                }
+              });
+            },
+            'Show view SQL': function () {}
+          });
+        }
 
         $u(schemaTree.list).append(tableNode);
 
