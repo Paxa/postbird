@@ -29,6 +29,17 @@
     form code
       display: block
 
+.show-sql-dialog
+  code
+    margin: 13px 0
+    +dialog-code
+    overflow: auto
+    max-height: 400px
+    box-shadow: inset 0px 0px 4px 0px rgba(0,0,0,0.25)
+    text-align: left
+    white-space: pre-wrap
+    word-break: normal
+
 .heroku-connection-dialog
   code
     +dialog-code
@@ -37,3 +48,4 @@
     margin: 10px 0
   button.save-conn
     margin-right: 10px
+

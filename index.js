@@ -43,6 +43,7 @@ require('./app/views/dialogs/import_file');
 require('./app/views/dialogs/heroku_connection');
 require('./app/views/dialogs/list_languages');
 require('./app/views/dialogs/export_file');
+require('./app/views/dialogs/show_sql');
 
 require('./app/models/base');
 require('./app/models/table');

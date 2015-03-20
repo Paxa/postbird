@@ -334,6 +334,12 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  getTableSql: function (schema, table, callback) {
+    Model.Table(schema, table).getSourceSql(function (source) {
+      callback(source);
+    });
+  },
+
   // TODO: add caching
   tableObj: function() {
     return Model.Table(this.currentSchema, this.currentTable);

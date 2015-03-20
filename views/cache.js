@@ -1489,6 +1489,45 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 }
 };
 exports["dialogs/new_table"].content = "form\n  p\n    label Table name\n    input(name=\"name\")\n\n  p\n    label Tablespace\n    select(name=\"tablespace\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  p.buttons\n    button.ok Create table\n    button.cancel cancel\n";
+exports["dialogs/show_sql"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, code) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" });
+buf.push("<code class=\"result sql\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" });
+buf.push(jade.escape(null == (jade_interp = code) ? "" : jade_interp));
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</code>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" });
+buf.push("\n<p class=\"buttons\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/dialogs/show_sql.jade" });
+buf.push("\n  <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+buf.push("OK");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</p>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"code" in locals_for_with?locals_for_with.code:typeof code!=="undefined"?code:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "code.result.sql\n  = code\n\np.buttons\n  button.cancel OK");
+}
+};
+exports["dialogs/show_sql"].content = "code.result.sql\n  = code\n\np.buttons\n  button.cancel OK";
 exports["dialogs/user_form"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/user_form.jade" }];
 try {

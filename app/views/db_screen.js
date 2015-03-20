@@ -136,7 +136,7 @@ global.DbScreenView = jClass.extend({
           _this.renameTable(tableNode, schema, table.table_name);
         }, 170);
 
-        if (table.table_type == "TABLE") {
+        if (table.table_type == "BASE TABLE") {
           $u.contextMenu(tableNode, {
             'View': function () {
               _this.handler.tableSelected(schema, table.table_name, tableNode);
@@ -160,9 +160,11 @@ global.DbScreenView = jClass.extend({
                 }
               });
             },
-            'Show table SQL': function () {}
+            'Show table SQL': function () {
+              _this.showTableSql(schema, table.table_name);
+            }
           });
-        } else if (table.table_type == "VIEW") {
+        } else if (table.table_type == "VIEW" || table.table_type == "MATERIALIZED VIEW") {
           $u.contextMenu(tableNode, {
             'View': function () {
               _this.handler.tableSelected(schema, table.table_name, tableNode);
@@ -185,7 +187,9 @@ global.DbScreenView = jClass.extend({
                 }
               });
             },
-            'Show view SQL': function () {}
+            'Show view SQL': function () {
+              _this.showViewSql(schema, table.table_name);
+            }
           });
         }
 
@@ -279,6 +283,22 @@ global.DbScreenView = jClass.extend({
 
   newTableDialog: function () {
     new Dialog.NewTable(this.handler);
+  },
+
+  showTableSql: function (schema, table) {
+    App.startLoading("Getting table sql...");
+    this.handler.getTableSql(schema, table, function (source) {
+      App.stopLoading();
+      new Dialog.ShowSql("Table " + table, source);
+    });
+  },
+
+  showViewSql: function (schema, table) {
+    App.startLoading("Getting view sql...");
+    this.handler.getTableSql(schema, table, function (source) {
+      App.stopLoading();
+      new Dialog.ShowSql("View " + table, source);
+    });
   },
 
   switchToHerokuMode: function (name, databseUrl) {
