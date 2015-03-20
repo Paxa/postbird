@@ -199,7 +199,10 @@ global.Model.Table = Model.base.extend({
 
   getTotalRows: function (callback) {
     var sql = 'select count(*) as rows_count from "%s"."%s"';
-    this.q(sql, this.schema, this.table, function(data) {
+    this.q(sql, this.schema, this.table, function(data, error) {
+      if (error) {
+        log.error(error);
+      }
       var count = parseInt(data.rows[0].rows_count, 10);
       callback ? callback(count) : console.log("Table rows count: " + this.table + " " + count);
     });
@@ -215,15 +218,50 @@ global.Model.Table = Model.base.extend({
       callback(data, error);
     });
   },
+
+  getSourceSql: function (callback) {
+    var exporter = new SqlExporter({debug: false});
+    // TODO: include schema
+    exporter.addArgument('--table=' + this.table);
+    exporter.addArgument("--schema-only");
+    //exporter.addArgument("-v");
+    //exporter.addArgument("--no-privileges");
+
+    exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
+      stdout = stdout.toString();
+      //puts(process);
+      //console.log('result', result, stderr);
+      //puts(stdout.length);
+      stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
+      stdout = stdout.replace(/(^|\n|\r)(\-\-[\n\r]\-\-.+\n\-\-)/g, "\n"); // remove comments
+      stdout = stdout.replace(/\n\n+/gim, "\n\n"); // remove extra new lines
+      stdout = stdout.trim(); // remove padding spaces
+      //puts(stdout.length);
+      callback(stdout);
+    });
+  }
 });
 
-Model.Table.create = function create (schema, tableName, callback) {
-                           Arg.assert('string', 'string', 'function');
+Model.Table.create = function create (schema, tableName, options, callback) {
+                           //Arg.assert('string', 'string', 'function');
 
-  sql = "CREATE TABLE %s (id SERIAL PRIMARY KEY);";
+  if (typeof options == 'function' && callback == undefined) {
+    callback = options;
+    options = {};
+  }
+
+  var sql = 'CREATE TABLE "%s"';
+  if (options.empty) {
+    sql += "()";
+  } else {
+    sql += "(id SERIAL PRIMARY KEY)";
+  }
+
   if (schema != '' && schema != 'public') {
     sql += sprintf(" TABLESPACE %s", schema);
   }
+
+  sql += ";";
 
   Model.base.q(sql, tableName, function (res, error) {
     callback(Model.Table(schema, tableName), res, error);

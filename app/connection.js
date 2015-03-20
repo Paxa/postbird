@@ -85,6 +85,10 @@ global.Connection = jClass.extend({
     var time = Date.now();
     this.connection.query(sql, function (error, result) {
       historyRecord.time = Date.now() - time;
+      if (global.TESTING && error) {
+        process.stdout.write("FAILED: " + sql.yellow + "\n");
+        log.error(error);
+      }
       if (error) {
         historyRecord.error = error;
         error.query = sql;

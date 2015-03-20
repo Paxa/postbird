@@ -7,7 +7,6 @@ describe('SqlExporter', do
     var runner = new PgDumpRunner();
 
     var table = Model.Table.create('public', 'test_table')
-    table.addColumnObj(Model.Column('some_column', {type: 'integer'}));
 
     table.insertRow([1])
     table.insertRow([2])

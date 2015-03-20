@@ -49,8 +49,8 @@ describe('Model.Table', do
   end)
 
   sync_it("should count rows", do
-    var table = Model.Table.create('public', 'test_table')
-    table.addColumnObj(Model.Column('some_column', {type: 'integer'}));
+    var table = Model.Table.create('public', 'test_table', {empty: true})
+    table.addColumnObj(Model.Column('some_column', {data_type: 'integer', null: true}));
 
     table.insertRow([1])
     table.insertRow([2])
@@ -58,6 +58,16 @@ describe('Model.Table', do
 
     assert(table.getTotalRows(), 3)
 
+    table.drop()
+  end)
+
+  sync_it("should generate source sql", do
+    var table = Model.Table.create('public', 'test_table', {empty: true})
+    table.addColumnObj(Model.Column('some_column', {data_type: 'integer'}));
+
+    table.runSyncCb('getSourceSql', do |sql|
+      assert_contain(sql, 'CREATE TABLE test_table')
+    end)
     table.drop()
   end)
 end)

@@ -112,7 +112,7 @@ global.Model.Column = Model.base.extend({
 
   shouldHaveTable: function() {
     if (!this.table) {
-      throw "Column should be attached to table. column.table property should be set.";
+      throw new Error("Column should be attached to table. column.table property should be set.");
     }
   },
 

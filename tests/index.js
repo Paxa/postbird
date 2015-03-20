@@ -1,5 +1,7 @@
 if (!global.window) global.window = {};
 
+global.TESTING = true;
+
 var async = require('async');
 
 require('../sugar/redscript-loader');
