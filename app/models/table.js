@@ -239,7 +239,39 @@ global.Model.Table = Model.base.extend({
       //puts(stdout.length);
       callback(stdout);
     });
-  }
+  },
+
+  diskSummary: function (callback) {
+    var sql = $u.commentOf(function () {/*
+      select
+        pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size",
+        reltuples as estimate_count,
+        relkind
+      FROM pg_class C
+      LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
+      WHERE
+        nspname = '%s' and
+        relname = '%s'
+    */});
+
+    this.q(sql, this.schema, this.table, function (result, error) {
+      var row = result.rows[0];
+      var type = row.relkind;
+      // http://www.postgresql.org/docs/9.4/static/catalog-pg-class.html
+      switch (row.relkind) {
+        case "r": type = "table"; break;
+        case "i": type = "index"; break;
+        case "s": type = "sequence"; break;
+        case "v": type = "view"; break;
+        case "m": type = "materialized view"; break;
+        case "c": type = "composite type"; break;
+        case "t": type = "TOAST table"; break;
+        case "f": type = "foreign table"; break;
+      }
+      callback(type, row.estimate_count, row.total_size);
+    });
+  },
+
 });
 
 Model.Table.create = function create (schema, tableName, options, callback) {

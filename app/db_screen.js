@@ -340,6 +340,17 @@ global.DbScreen = jClass.extend({
     });
   },
 
+  infoTabActivate: function () {
+    var table = this.tableObj();
+    var _this = this;
+
+    table.getSourceSql(function (code) {
+      table.diskSummary(function (relType, estimateCount, diskUsage) {
+        _this.view.info.renderTab(code, relType, estimateCount, diskUsage);
+      });
+    });
+  },
+
   // TODO: add caching
   tableObj: function() {
     return Model.Table(this.currentSchema, this.currentTable);

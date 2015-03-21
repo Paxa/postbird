@@ -1121,6 +1121,16 @@ body.sidebar-resizing {
 .window-content.users table + footer {
   margin-top: 10px; }
 
+.window-content.info .summary {
+  margin-bottom: 10px; }
+.window-content.info h4 {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 9px; }
+.window-content.info code.result {
+  margin-right: 9px;
+  white-space: pre-wrap; }
+
 .window-content.query {
   height: 90%; }
   .window-content.query .editing {

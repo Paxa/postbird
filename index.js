@@ -30,6 +30,7 @@ require('./app/views/panes/query');
 require('./app/views/panes/structure');
 require('./app/views/panes/contents');
 require('./app/views/panes/procedures');
+require('./app/views/panes/info');
 
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
