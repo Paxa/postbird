@@ -228,6 +228,10 @@ global.Model.Table = Model.base.extend({
     //exporter.addArgument("--no-privileges");
 
     exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
+      if (!result) {
+        log.error("Run pg_dump failed");
+        log.error(stderr);
+      }
       stdout = stdout.toString();
       //puts(process);
       //console.log('result', result, stderr);

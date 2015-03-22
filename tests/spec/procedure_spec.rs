@@ -36,7 +36,9 @@ describe('Model.Procedure', do
   end);
 
   sync_it("Create function fail", do
+    connection.printTestingError = false;
     var pg_proc = Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN_ val + 1")
+    connection.printTestingError = true;
 
     assert_present(pg_proc.error)
     assert(pg_proc.name, "my_inc2")

@@ -79,6 +79,7 @@ global.DbScreen = jClass.extend({
   },
 
   fetchTablesAndSchemas: function (callback) {
+    App.startLoading("Getting tables list...");
     this.connection.tablesAndSchemas(function(data) {
       this.connection.mapViewsAsTables(function (matViews) {
         // join tables with views
@@ -96,6 +97,7 @@ global.DbScreen = jClass.extend({
             return 0;
           })
         });
+        App.stopLoading();
         this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
         callback && callback(data);
       }.bind(this));
@@ -302,9 +304,12 @@ global.DbScreen = jClass.extend({
 
   structureTabActivate: function () {
     if (!this.currentTable) return;
+    App.startLoading("Getting table structure...");
+
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
       this.table.describe(function(indexes) {
         this.view.structure.renderTab(rows, indexes);
+        App.stopLoading();
       }.bind(this));
     }.bind(this));
   },
@@ -344,8 +349,10 @@ global.DbScreen = jClass.extend({
     var table = this.tableObj();
     var _this = this;
 
+    App.startLoading("Getting table info...");
     table.getSourceSql(function (code) {
       table.diskSummary(function (relType, estimateCount, diskUsage) {
+        App.stopLoading();
         _this.view.info.renderTab(code, relType, estimateCount, diskUsage);
       });
     });

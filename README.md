@@ -42,5 +42,4 @@ My todo:
 * Fix Table.describe when there is same tables in different schemas
 * Code snippets in query tab
 * Export only structure
-* Show error if drop user failed
 * Drop schema
