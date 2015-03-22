@@ -264,6 +264,16 @@ global.DbScreenView = jClass.extend({
     if (this.handler[name + 'TabActivate']) this.handler[name + 'TabActivate']();
   },
 
+  setTabMessage: function (message) {
+    if (!this.currentTab) return;
+
+    var currentTabEl = this.tabContents.filter('.' + this.currentTab);
+
+    if (!currentTabEl.attr('unchangable')) {
+      currentTabEl.empty().html('<span class="tab-message">' + message + '</span>');
+    }
+  },
+
   setTabContent: function (tabName, content) {
     var container = this.tabContents.filter('.' + tabName);
     //container.empty().append(content);

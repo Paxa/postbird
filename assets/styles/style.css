@@ -162,7 +162,7 @@ h4 {
     line-height: 23px;
     font-size: 13px;
     font-weight: bold;
-    padding: 0 27px 1px 27px;
+    padding: 1px 27px 0px 27px;
     text-shadow: 0 1px 0px rgba(255, 255, 255, 0.4);
     -webkit-box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.3);
     border: 1px solid #838383;
@@ -225,6 +225,10 @@ h4 {
 .tab-loader {
   padding: 20px;
   color: #666; }
+
+.tab-message {
+  padding: 20px;
+  color: #333; }
 
 #content {
   overflow: hidden; }
@@ -475,8 +479,8 @@ table.native-look-table {
       position: absolute;
       top: 0;
       left: 9px;
-      padding: 3px 0;
-      margin-bottom: 8px; }
+      padding: 4px 0;
+      margin-bottom: 6px; }
       .main-screen > .main .window-tabs > * {
         zoom: 1;
         display: inline;
@@ -485,13 +489,15 @@ table.native-look-table {
         *display: inline;
         vertical-align: top; }
       .main-screen > .main .window-tabs > * {
-        padding: 0 5px;
+        padding: 1px 6px 0px;
         margin-right: 5px;
         background: rgba(0, 0, 0, 0.1);
         -webkit-user-select: none;
         cursor: default; }
+        .main-screen > .main .window-tabs > *:hover {
+          background: rgba(100, 120, 155, 0.19); }
         .main-screen > .main .window-tabs > *.active {
-          background: rgba(0, 51, 136, 0.15); }
+          background: rgba(28, 79, 165, 0.19); }
     .main-screen > .main .window-content {
       display: none; }
       .main-screen > .main .window-content.active {
@@ -606,14 +612,15 @@ body.sidebar-resizing {
     top: 0;
     left: 0;
     box-sizing: border-box;
-    padding: 2px 5px;
+    padding: 3px 5px;
     width: 100%;
     border-bottom: 1px solid #d1d1d1; }
     .main-screen > .sidebar > .databases select {
       max-width: calc(100% - 20px); }
     .main-screen > .sidebar > .databases label {
       display: block;
-      -webkit-user-select: none; }
+      -webkit-user-select: none;
+      margin-bottom: -1px; }
     .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
       display: block; }
   .main-screen > .sidebar > .tables {
@@ -706,7 +713,8 @@ body.sidebar-resizing {
     box-sizing: border-box;
     padding: 0 5px;
     width: 100%;
-    font-size: 0; }
+    font-size: 0;
+    overflow: hidden; }
     .main-screen > .sidebar > ul.extras li {
       padding: 2px 2px;
       -webkit-user-select: none;
@@ -1100,7 +1108,8 @@ body.sidebar-resizing {
     box-sizing: border-box;
     padding: 0 5px;
     width: 100%;
-    font-size: 0; }
+    font-size: 0;
+    overflow: hidden; }
     .window-content.content .native-footer-bar li {
       padding: 2px 2px;
       -webkit-user-select: none;

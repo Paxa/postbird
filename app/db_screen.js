@@ -62,6 +62,9 @@ global.DbScreen = jClass.extend({
     this.database = database;
     App.emit('database.changed', this.database);
 
+    this.currentTable = null;
+    this.currentSchema = null;
+
     if (database) {
       this.connection.switchDb(this.database, function() {
         this.fetchTablesAndSchemas();
@@ -149,7 +152,11 @@ global.DbScreen = jClass.extend({
   contentTabLimit: 300,
 
   contentTabActivate: function() {
-    if (!this.currentTable) return;
+    if (!this.currentTable) {
+      this.view.setTabMessage("Please select table or view");
+      return;
+    }
+
     App.startLoading("Fetching data ...");
     this.table.getRows(0, this.contentTabLimit, function (data, error) {
       this.table.getColumnTypes(function(columnTypes, error2) {
@@ -303,7 +310,10 @@ global.DbScreen = jClass.extend({
   },
 
   structureTabActivate: function () {
-    if (!this.currentTable) return;
+    if (!this.currentTable) {
+      this.view.setTabMessage("Please select table or view");
+      return;
+    }
     App.startLoading("Getting table structure...");
 
     this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
@@ -346,6 +356,11 @@ global.DbScreen = jClass.extend({
   },
 
   infoTabActivate: function () {
+    if (!this.currentTable) {
+      this.view.setTabMessage("Please select table or view");
+      return;
+    }
+
     var table = this.tableObj();
     var _this = this;
 

@@ -24,15 +24,17 @@
       :top 0
       :left 9px
       +children-inline
-      :padding 3px 0
-      :margin-bottom 8px
+      :padding 4px 0
+      :margin-bottom 6px
       > *
-        :padding 0 5px
+        :padding 1px 6px 0px
         :margin-right 5px
         :background rgba(#000, 0.1)
         +system-text
+        &:hover
+          :background rgba(100, 120, 155, 0.19)
         &.active
-          :background rgba(#038, 0.15)
+          :background rgba(28, 79, 165, 0.19)
     .window-content
       :display none
       &.active
