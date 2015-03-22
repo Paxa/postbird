@@ -1,7 +1,6 @@
 //process.env.PGSSLMODE = 'prefer';
 
 var pg = require('pg');
-var anyDB = require('any-db');
 
 var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
@@ -11,6 +10,8 @@ global.Connection = jClass.extend({
   defaultDatabaseName: 'template1',
   history: [],
   logging: true,
+  pending: [],
+  printTestingError: true,
 
   init: function(options, callback) {
     this.options = options;
@@ -58,12 +59,21 @@ global.Connection = jClass.extend({
 
     log.info('Connecting to', connectString);
 
-    if (this.connection) this.connection.end();
-    this.connection = anyDB.createConnection(connectString, function (error) {
+    if (this.connection) {
+      this.connection.end();
+      this.connection = null;
+    }
+
+    pg.connect(connectString, function (error, client) {
+      this.connection = client;
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
       } else {
+        this.pending.forEach(function (cb) {
+          cb();
+        });
+        this.pending = [];
         callback && callback(true);
       }
     }.bind(this));
@@ -74,33 +84,41 @@ global.Connection = jClass.extend({
     this.connectToServer(this.options, callback);
   },
 
-  query: function (sql, callback) {
-    if (this.logging) process.stdout.write("SQL: " + sql.green + "\n");
-    var historyRecord = {
-      sql: sql,
-      date: (new Date())
-    };
+  onReady: function (callback) {
+    if (this.connection) {
+      callback();
+    } else {
+      this.pending.push(callback);
+    }
+  },
 
-    this.history.push(historyRecord);
-    var time = Date.now();
-    this.connection.query(sql, function (error, result) {
-      historyRecord.time = Date.now() - time;
-      if (global.TESTING && error) {
-        process.stdout.write("FAILED: " + sql.yellow + "\n");
-        log.error(error);
-      }
-      if (error) {
-        historyRecord.error = error;
-        error.query = sql;
-        console.error("SQL failed", sql);
-        console.error(error);
-        if (callback) callback(result, error);
-      } else {
-        result.time = historyRecord.time;
-        //console.log(result);
-        if (callback) callback(result);
-      }
-    });
+  query: function (sql, callback) {
+    this.onReady(function () {
+      if (this.logging) process.stdout.write("SQL: " + sql.green + "\n");
+
+      var historyRecord = { sql: sql, date: (new Date()) };
+      this.history.push(historyRecord);
+      var time = Date.now();
+
+      this.connection.query(sql, function (error, result) {
+        historyRecord.time = Date.now() - time;
+        if (global.TESTING && this.printTestingError && error) {
+          process.stdout.write("FAILED: " + sql.yellow + "\n");
+          log.error(error);
+        }
+        if (error) {
+          historyRecord.error = error;
+          error.query = sql;
+          console.error("SQL failed", sql);
+          console.error(error);
+          if (callback) callback(result, error);
+        } else {
+          result.time = historyRecord.time;
+          //console.log(result);
+          if (callback) callback(result);
+        }
+      }.bind(this));
+    }.bind(this));
   },
 
   q: function(sql) {
@@ -317,10 +335,9 @@ global.Connection = jClass.extend({
 
   close: function (callback) {
     if (this.connection) {
-      this.connection.end(callback);
-    } else {
-      callback();
+      this.connection.end();
     }
+    callback();
   }
 });
 
