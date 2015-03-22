@@ -29,6 +29,15 @@
 * Rename database from top menu
 * Reload database from top menu
 * Create and save database dump
+* Display jsonb as json string
+* Fix reload app
+* Move user related queries to model
+* Add owned by user databases in users list
+* Show table source sql dialog
+* Add info tab (count, size, source sql)
+* Make default font helvetica
+* Remove any-db dependency
+
 
 == Version 0.3 (Sep 27, 2014)
 
