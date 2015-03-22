@@ -66,6 +66,7 @@ global.Connection = jClass.extend({
 
     pg.connect(connectString, function (error, client) {
       this.connection = client;
+      console.log(client);
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
@@ -198,8 +199,13 @@ global.Connection = jClass.extend({
               "from pg_matviews " +
               "order by schemaname != 'public', matviewname";
 
-    this.query(sql, function(rows, error) {
-      rows.rows.forEach(function(dbrow) {
+    this.query(sql, function(result, error) {
+      if (error) {
+        log.error(error.message);
+        callback([]);
+        return;
+      }
+      result.rows.forEach(function(dbrow) {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
         data[dbrow.table_schema].push(dbrow);
       });
