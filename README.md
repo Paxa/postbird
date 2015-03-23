@@ -1,18 +1,17 @@
 ### Postbird
 
-Postbird is postgresql client for Mac.
-![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png)
+Postbird is PostgreSQL client for Mac.
 
-![postbird-0 3-screenshot](https://cloud.githubusercontent.com/assets/26019/6429388/19308eb8-c000-11e4-9848-6d2954f1d65e.png)
+![postbird-screenshot](https://cloud.githubusercontent.com/assets/26019/5886586/9fef006c-a3d9-11e4-8330-1651f5243536.png)
+
+![postbird-table-screenshot](https://cloud.githubusercontent.com/assets/26019/6429388/19308eb8-c000-11e4-9848-6d2954f1d65e.png)
 
 
 #### Download
 
-**Version 0.3**
+**Version 0.4**
 
-[Postgres.nw](https://github.com/Paxa/postbird/releases/download/0.3/Postbird.nw) - requires node-webkit.app
-
-[Postgres-0.3.dmg](https://github.com/Paxa/postbird/releases/download/0.3/Postbird-0.3.dmg) - For Mac: 64bit, 10.7+
+[Postgres-0.4.dmg](https://github.com/Paxa/postbird/releases/download/0.4.0/Postbird-0.4.dmg) - For Mac: 64bit, 10.7+
 
 
 #### Development
