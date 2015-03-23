@@ -169,6 +169,7 @@ global.LoginScreen = jClass.extend({
   },
 
   fillForm: function (name, params) {
+    params = node.util._extend({host: "localhost", user: "", password: "", database: "", query: ""}, params);
     var v;
     for (var k in params) { v = params[k];
       this.form.find('input[name=' + k + ']').val(v);
