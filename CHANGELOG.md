@@ -1,4 +1,4 @@
-== Version 0.4-dev
+== Version 0.4
 
 * Use new shortcut api
 * Add keyboard shortcuts to open help window
