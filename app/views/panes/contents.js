@@ -2,6 +2,9 @@ global.Panes.Contents = global.Pane.extend({
 
   renderTab: function (data, columnTypes, error) {
     this.columnTypes = columnTypes;
+    this.queryOptions = {
+      with_oid: !!columnTypes.oid
+    };
     this.error = error;
     if (data) {
       this.limit = data.limit;
@@ -80,7 +83,7 @@ global.Panes.Contents = global.Pane.extend({
 
   nextPage: function () {
     App.startLoading("Getting next page...", 100);
-    this.handler.table.getRows(this.offset + this.limit, this.handler.contentTabLimit, function (data) {
+    this.handler.table.getRows(this.offset + this.limit, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
@@ -89,7 +92,7 @@ global.Panes.Contents = global.Pane.extend({
 
   prevPage: function () {
     App.startLoading("Getting previous page...", 100);
-    this.handler.table.getRows(this.offset - this.limit, this.handler.contentTabLimit, function (data) {
+    this.handler.table.getRows(this.offset - this.limit, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();

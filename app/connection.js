@@ -66,7 +66,6 @@ global.Connection = jClass.extend({
 
     pg.connect(connectString, function (error, client) {
       this.connection = client;
-      console.log(client);
       if (error) {
         callback && callback(false, error.message);
         console.log(error);

@@ -158,8 +158,9 @@ global.DbScreen = jClass.extend({
     }
 
     App.startLoading("Fetching data ...");
-    this.table.getRows(0, this.contentTabLimit, function (data, error) {
-      this.table.getColumnTypes(function(columnTypes, error2) {
+    this.table.getColumnTypes(function(columnTypes, error2) {
+      var hasOid = !!columnTypes.oid;
+      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid}, function (data, error) {
         App.stopLoading();
         this.view.contents.renderTab(data, columnTypes, error || error2);
       }.bind(this));

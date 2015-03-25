@@ -26,33 +26,64 @@ global.Model.Table = Model.base.extend({
   },
 
   getStructure: function (callback) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
+    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s'";
     this.q(sql, this.schema, this.table, function(data) {
-      this.getPrimaryKey(function(rows, error) {
-        if (!error) {
-          var keys = rows.map(function(r) {
-            return r.attname;
-          });
-
-          data.rows.forEach(function(row) {
-            row.is_primary_key = keys.indexOf(row.column_name) != -1;
+      this.hasOID(function (hasOID) {
+        if (hasOID) {
+          data.rows.unshift({
+            column_name: "oid",
+            data_type: "oid",
+            column_default: null,
+            udt_name: "oid"
           });
         }
-        callback(data.rows);
-      });
+        this.getPrimaryKey(function(rows, error) {
+          if (!error) {
+            var keys = rows.map(function(r) {
+              return r.attname;
+            });
+
+            data.rows.forEach(function(row) {
+              row.is_primary_key = keys.indexOf(row.column_name) != -1;
+            });
+          }
+          callback(data.rows);
+        });
+      }.bind(this));
     }.bind(this));
+  },
+
+  hasOID: function (callback) {
+    var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
+    this.q(sql, this.table, function(data, error) {
+      if (error) {
+        callback(undefined, error);
+      } else {
+        callback(data.rows[0] && data.rows[0].relhasoids);
+      }
+    });
   },
 
   getColumnTypes: function (callback) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
     this.q(sql, this.schema, this.table, function(data) {
-      var types = {};
-      data.rows.forEach(function(row) {
-        types[row.column_name] = row;
-        types[row.column_name].real_format = row.udt_name;
-      });
-      callback(types);
-    });
+      this.hasOID(function (hasOID) {
+        var types = {};
+        if (hasOID) {
+          types["oid"] = {
+            column_name: "oid",
+            data_type: "oid",
+            column_default: null,
+            udt_name: "oid"
+          };
+        }
+        data.rows.forEach(function(row) {
+          types[row.column_name] = row;
+          types[row.column_name].real_format = row.udt_name;
+        });
+        callback(types);
+      })
+    }.bind(this));
   },
 
   getColumns: function (name, callback) {
@@ -136,18 +167,17 @@ global.Model.Table = Model.base.extend({
 
   // find indexes
   describe: function (callback) {
-    var sql_find_oid = (function () { /*
+    var sql_find_oid = $u.commentOf(function () {/*
       SELECT c.oid,
         n.nspname,
         c.relname
       FROM pg_catalog.pg_class c
            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
       WHERE c.relname ~ '^(%s)$'
---        AND pg_catalog.pg_table_is_visible(c.oid)
       ORDER BY 2, 3
-    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+    */});
 
-    var sql_find_types = (function () { /*
+    var sql_find_types = $u.commentOf(function () {/*
       SELECT a.attname,
         pg_catalog.format_type(a.atttypid, a.atttypmod),
         (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
@@ -161,33 +191,39 @@ global.Model.Table = Model.base.extend({
       FROM pg_catalog.pg_attribute a
       WHERE a.attrelid = '%d' AND a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
-    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+    */});
 
-    var sql_find_index = (function () { /*
+    var sql_find_index = $u.commentOf(function () {/*
       SELECT c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid, pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
         pg_catalog.pg_get_constraintdef(con.oid, true), contype, condeferrable, condeferred, c2.reltablespace
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
         LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
       ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;
-    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+    */});
 
     var _this = this;
     this.q(sql_find_oid, this.table, function (oid_data, error) {
       var oid = oid_data.rows[0].oid;
-      this.q(sql_find_types, oid, function(types_data, error) {
+      //this.q(sql_find_types, oid, function(types_data, error) {
         this.q(sql_find_index, oid, function(indexes_rows, error) {
           callback(indexes_rows.rows);
         }.bind(this));
-      }.bind(this));
+      //}.bind(this));
     }.bind(this));
   },
 
-  getRows: function (offset, limit, callback) {
+  getRows: function (offset, limit, options, callback) {
     if (!offset) offset = 0;
     if (!limit) limit = 100;
+    if (!options) options = {};
 
-    var sql = 'select * from "%s"."%s" limit %d offset %d';
+    if (options.with_oid) {
+      var sql = 'select oid, * from "%s"."%s" limit %d offset %d';
+    } else {
+      var sql = 'select * from "%s"."%s" limit %d offset %d';
+    }
+
     this.q(sql, this.schema, this.table, limit, offset, function(data, error) {
       if (data) {
         data.limit = limit;
@@ -224,8 +260,6 @@ global.Model.Table = Model.base.extend({
     // TODO: include schema
     exporter.addArgument('--table=' + this.table);
     exporter.addArgument("--schema-only");
-    //exporter.addArgument("-v");
-    //exporter.addArgument("--no-privileges");
 
     exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
       if (!result) {
@@ -233,14 +267,10 @@ global.Model.Table = Model.base.extend({
         log.error(stderr);
       }
       stdout = stdout.toString();
-      //puts(process);
-      //console.log('result', result, stderr);
-      //puts(stdout.length);
       stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
       stdout = stdout.replace(/(^|\n|\r)(\-\-[\n\r]\-\-.+\n\-\-)/g, "\n"); // remove comments
       stdout = stdout.replace(/\n\n+/gim, "\n\n"); // remove extra new lines
       stdout = stdout.trim(); // remove padding spaces
-      //puts(stdout.length);
       callback(stdout);
     });
   },
