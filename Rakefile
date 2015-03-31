@@ -20,3 +20,24 @@ task :build_dmg do
       ~/Postbird.app
   }
 end
+
+task :build_dev do
+  source = ENV['PWD']
+  target = "~/Postbird.app"
+
+  # rm -f #{target}/Contents/Resources/icon.icns
+  # ln -s #{source}/build_files/icon.icns     #{target}/Contents/Resources
+
+  exec %{
+    rm -rf #{target}/Contents/Resources/app.nw
+    rm -f #{target}/Contents/Resources/Credits.html
+    rm -f #{target}/Contents/info.plist
+    rm -f #{target}/Contents/Resources/icon.icns
+
+    ln -s #{source}                           #{target}/Contents/Resources/app.nw
+    ln -s #{source}/build_files/Credits.html  #{target}/Contents/Resources
+    ln -s #{source}/build_files/info.plist    #{target}/Contents
+    ln -s #{source}/build_files/icon.icns     #{target}/Contents/Resources
+  }
+  puts "Complete"
+end
