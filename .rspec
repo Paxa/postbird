@@ -1,0 +1,2 @@
+-I ./integration_tests
+--require test_helper
