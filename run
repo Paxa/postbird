@@ -4,7 +4,8 @@ export NW_DEV=true
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   #/Applications/node-webkit.app/Contents/MacOS/node-webkit .
-  /Applications/nwjs.app/Contents/MacOS/nwjs .
+  #/Applications/nwjs.app/Contents/MacOS/nwjs .
+  ~/Postbird.app/Contents/MacOS/node-webkit
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   paths=(
     "/lib/x86_64-linux-gnu/libudev.so.1" # Ubuntu, Xubuntu, Mint

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "This script requires node-webkit.app in your applications folder"
+echo "This script requires nwjs.app in your applications folder"
 
 TARGET_DIR="${HOME}/Postbird.app"
 APP_TARGET_DIR="${TARGET_DIR}/Contents/Resources/app.nw"
@@ -17,11 +17,11 @@ if [ -e "$HOME/postbird.nw" ]; then
   rm -rf $HOME/Postbird.nw
 fi
 
-#read -p "Is node-webkit.app in your applications folder (y/n)? " -n 1 -r
+#read -p "Is nwjs.app in your applications folder (y/n)? " -n 1 -r
 #if [[ $REPLY =~ ^[Yy]$ ]]
 #then
     # node-webkit exists continue build
-    cp -r /Applications/node-webkit.app ${TARGET_DIR}
+    cp -r /Applications/nwjs.app ${TARGET_DIR}
 
     # create app.nw and move to correct location
     git checkout-index -a --prefix="${APP_TARGET_DIR}/"
@@ -44,5 +44,5 @@ fi
     zip -r -q ~/Postbird.nw *
     cd $tmp_dir
 #else
-#  echo -e "\nPlease place node-webkit.app in your applications folder and run the script again"
+#  echo -e "\nPlease place nwjs.app in your applications folder and run the script again"
 #fi
