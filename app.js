@@ -140,6 +140,18 @@ global.App = {
     return this.addTab('Help', this.helpScreen.content, this.helpScreen);
   },
 
+  helpScreenOpen: function () {
+    if (!this.helpScreen) return false;
+
+    var tabs = this.tabs.filter(function (tab) {
+      if (tab.instance == this.helpScreen) {
+        return true
+      }
+    }.bind(this));
+
+    return !!tabs.length;
+  },
+
   jadeFn: {},
 
   renderView: function (file, options) {

@@ -28,7 +28,7 @@ global.HelpScreen = jClass.extend({
 
 HelpScreen.open = function (e) {
   $u.stopEvent(e);
-  if (!App.helpScreen) {
+  if (!App.helpScreenOpen()) {
     App.addHelpScreen();
   }
 
