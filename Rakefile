@@ -28,7 +28,7 @@ task :build_dev do
   # rm -f #{target}/Contents/Resources/icon.icns
   # ln -s #{source}/build_files/icon.icns     #{target}/Contents/Resources
 
-  exec %{
+  puts %x{
     rm -rf #{target}/Contents/Resources/app.nw
     rm -f #{target}/Contents/Resources/Credits.html
     rm -f #{target}/Contents/info.plist

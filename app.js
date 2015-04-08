@@ -24,7 +24,7 @@ global.App = {
 
     this.loginScreen.onFormSubmit(false, function() {
       setTimeout(function() {
-        this.activeTabObj().instance.view.databaseSelect.val('binlist').change();
+        this.activeTabObj().instance.view.databaseSelect.val('ds2').change();
       }.bind(this), 50);
     }.bind(this));
 
