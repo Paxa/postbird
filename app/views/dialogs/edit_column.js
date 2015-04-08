@@ -9,6 +9,7 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
 
   showWindow: function () {
     Model.Column.availableTypes(function (types) {
+      this.addPseudoTypes(types);
       var groupedTypes = this.groupTypes(types);
       this.handler.tableObj().getColumnObj(this.columnName, function(column) {
         this.columnObj = column;
