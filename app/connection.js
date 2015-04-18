@@ -342,7 +342,7 @@ global.Connection = jClass.extend({
     if (this.connection) {
       this.connection.end();
     }
-    callback();
+    callback && callback();
   }
 });
 
