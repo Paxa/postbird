@@ -32,7 +32,6 @@ New release will be at: `~/Postbird.app`
 
 My todo:
 
-* Content tab reload
 * Add index window is disappearing
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings

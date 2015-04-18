@@ -1,6 +1,13 @@
 .window-content.content
   max-height: 100%
   overflow: auto
+  &.reloading
+    li.reload
+      background: rgba(0, 0, 0, 0.1)
+      a
+        text-decoration: none
+        cursor: default
+
   //@extend .window-content.structure
   table
     tr

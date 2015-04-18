@@ -83,7 +83,8 @@ global.Panes.Contents = global.Pane.extend({
 
   nextPage: function () {
     App.startLoading("Getting next page...", 100);
-    this.handler.table.getRows(this.offset + this.limit, this.handler.contentTabLimit, this.queryOptions, function (data) {
+    this.offset += this.limit;
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
@@ -92,10 +93,23 @@ global.Panes.Contents = global.Pane.extend({
 
   prevPage: function () {
     App.startLoading("Getting previous page...", 100);
-    this.handler.table.getRows(this.offset - this.limit, this.handler.contentTabLimit, this.queryOptions, function (data) {
+    this.offset -= this.limit;
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
+    }.bind(this));
+  },
+
+  reloadData: function () {
+    this.content.addClass('reloading');
+
+    App.startLoading("Reloading page...", 100);
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
+      this.renderPage(data);
+      this.scrollToTop();
+      App.stopLoading();
+      this.content.removeClass('reloading');
     }.bind(this));
   },
 

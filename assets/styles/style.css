@@ -1063,6 +1063,11 @@ body.sidebar-resizing {
 .window-content.content {
   max-height: 100%;
   overflow: auto; }
+  .window-content.content.reloading li.reload {
+    background: rgba(0, 0, 0, 0.1); }
+    .window-content.content.reloading li.reload a {
+      text-decoration: none;
+      cursor: default; }
   .window-content.content table tr th {
     max-width: 200px;
     text-overflow: ellipsis;
