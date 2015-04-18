@@ -114,6 +114,8 @@ global.DbScreen = jClass.extend({
     this.currentSchema = schema;
     this.currentTable = tableName;
 
+    App.emit('table.changed', this.currentSchema, this.currentTable);
+
     this.table = Model.Table(this.currentSchema, this.currentTable);
 
     if (this.currentTableNode) this.currentTableNode.removeClass('selected');
@@ -127,6 +129,20 @@ global.DbScreen = jClass.extend({
     Model.Table(schema, table).getStructure(function (data) {
       callback(data);
     }.bind(this));
+  },
+
+  activateTab: function (tabName, force) {
+    console.log(tabName + 'TabActivate', typeof this[tabName + 'TabActivate']);
+
+    if (this.currentTab == tabName && !force) {
+      return;
+    }
+
+    if (this[tabName + 'TabActivate']) {
+      this.currentTab = tabName;
+      App.emit('dbtab.changed', this.currentTab);
+      this[tabName + 'TabActivate']();
+    }
   },
 
   extensionsTabActivate: function () {
@@ -364,6 +380,8 @@ global.DbScreen = jClass.extend({
 
     var table = this.tableObj();
     var _this = this;
+
+    this.view.setTabMessage("Getting table information ...");
 
     App.startLoading("Getting table info...");
     table.getSourceSql(function (code) {

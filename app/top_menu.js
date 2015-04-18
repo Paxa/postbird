@@ -48,7 +48,20 @@ var menu = {
     }
   },
   'Table': {
-    
+    'Reload': {
+      click: function () {
+        var appTab = global.App.currentTab.instance;
+        var tab = appTab.currentTab;
+
+        if (tab == "content") {
+          appTab.view.contents.reloadData();
+        } else {
+          appTab.activateTab(tab, 'force');
+        }
+      },
+      key: 'r',
+      enabled: false
+    }
   },
   'Window': {
     'separator': 'separator',
@@ -120,10 +133,33 @@ var checkDbMenu = function () {
   }
 };
 
+var checkTableMenu = function () {
+  var table = global.App.currentTab.instance.currentTable;
+  var tab = global.App.currentTab.instance.currentTab;
+  //var schema = global.App.currentTab.instance.currentSchema;
+
+  if (table && ["content", "structure", "info"].indexOf(tab) != -1) {
+    AppMenu.enableItem("Table", "Reload");
+  } else {
+    AppMenu.disableItem("Table", "Reload");
+  }
+};
+
 App.on('database.changed', function (db) {
   checkDbMenu();
+  checkTableMenu();
 });
 
 App.on('tab.changed', function (tabId) {
   checkDbMenu();
+  checkTableMenu();
+});
+
+App.on('table.changed', function (schema, table) {
+  checkTableMenu(schema, table);
+});
+
+// change tab in window, such as table strunture, content, table info
+App.on('dbtab.changed', function (tab) {
+  checkTableMenu();
 });
