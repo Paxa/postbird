@@ -33,7 +33,7 @@ global.Panes.Query = global.Pane.extend({
     this.editor.on("cursorActivity", this.toggleButtonText.bind(this));
     this.editor.on("change", this.saveLastQuery.bind(this));
 
-    this.setUnchangable();
+    this.setUnchangeable();
     this.statusLine = this.content.find('.result .status');
   },
 

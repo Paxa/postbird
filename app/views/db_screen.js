@@ -256,7 +256,7 @@ global.DbScreenView = jClass.extend({
     this.currentTab = name;
     var currentTabEl = this.tabContents.filter('.' + this.currentTab);
 
-    if (!currentTabEl.attr('unchangable')) {
+    if (!currentTabEl.attr('unchangeable')) {
       currentTabEl.empty().html('<span class="tab-loader">Getting data ...</span>');
     }
 
@@ -268,7 +268,7 @@ global.DbScreenView = jClass.extend({
 
     var currentTabEl = this.tabContents.filter('.' + this.currentTab);
 
-    if (!currentTabEl.attr('unchangable')) {
+    if (!currentTabEl.attr('unchangeable')) {
       currentTabEl.empty().html('<span class="tab-message">' + message + '</span>');
     }
   },

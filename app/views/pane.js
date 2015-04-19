@@ -20,8 +20,8 @@ global.Pane = jClass.extend({
     });
   },
 
-  setUnchangable: function () {
-    this.content.attr('unchangable', true);
+  setUnchangeable: function () {
+    this.content.attr('unchangeable', true);
   },
 
   renderViewToPane: function(pane, view_file, options) {
