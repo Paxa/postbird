@@ -1166,6 +1166,173 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 }
 };
 exports["dialogs/import_file"].content = "header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
+exports["dialogs/index_form"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, columns) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n<form>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n  <p>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
+buf.push("Name");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <input name=\"name\"/>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n  <p>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
+buf.push("Columns");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <ul class=\"columns-names\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+// iterate columns
+;(function(){
+  var $$obj = columns;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var column = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n      <li>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n        <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n          <input type=\"checkbox\"" + (jade.attr("name", "columns[" + column.column_name + "]", true, false)) + (jade.attr("value", column.column_name, true, false)) + "/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push(jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp));
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n        </label>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </li>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var column = $$obj[$index];
+
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n      <li>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n        <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n          <input type=\"checkbox\"" + (jade.attr("name", "columns[" + column.column_name + "]", true, false)) + (jade.attr("value", column.column_name, true, false)) + "/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push(jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp));
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n        </label>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </li>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </ul>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n  <p>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <label>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
+buf.push("Uniq");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <input type=\"checkbox\" name=\"uniq\" value=\"1\"/>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n  <p class=\"buttons\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <button class=\"ok\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 21, filename: jade_debug[0].filename });
+buf.push("Add index");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/dialogs/index_form.jade" });
+buf.push("\n    <button class=\"cancel\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 22, filename: jade_debug[0].filename });
+buf.push("cancel");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</form>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "\nform\n  p\n    label Name\n    input(name=\"name\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label Uniq\n    input(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add index\n    button.cancel cancel\n");
+}
+};
+exports["dialogs/index_form"].content = "\nform\n  p\n    label Name\n    input(name=\"name\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label Uniq\n    input(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add index\n    button.cancel cancel\n";
 exports["dialogs/list_languages"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/list_languages.jade" }];
 try {

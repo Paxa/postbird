@@ -33,6 +33,8 @@ global.Panes.Query = global.Pane.extend({
     this.editor.on("cursorActivity", this.toggleButtonText.bind(this));
     this.editor.on("change", this.saveLastQuery.bind(this));
 
+    this.editor.focus();
+
     this.setUnchangeable();
     this.statusLine = this.content.find('.result .status');
   },
@@ -69,7 +71,7 @@ global.Panes.Query = global.Pane.extend({
     var selectedText = this.editor.getSelection();
 
     var sql = selectedText || this.textarea.val();
-    var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN)\s+)*\s*(table|schema|view)/im;
+    var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN|MATERIALIZED)\s+)*\s*(table|schema|view)/im;
     var needReloadTables = !!sql.match(tableRegex);
 
     this.handler.connection.query(sql, function (data, error) {
@@ -89,6 +91,7 @@ global.Panes.Query = global.Pane.extend({
       if (needReloadTables) {
         this.reloadTables();
       }
+      this.editor.focus();
     }.bind(this));
   },
 
