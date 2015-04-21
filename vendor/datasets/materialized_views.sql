@@ -7,7 +7,7 @@ DROP MATERIALIZED VIEW IF EXISTS mat_view_airports_count;
 DROP TABLE IF EXISTS mat_view_airports;
 
 CREATE TABLE mat_view_airports (
-  airport_id integer,
+  airport_id integer NOT NULL,
   name varchar,
   city varchar,
   country varchar,

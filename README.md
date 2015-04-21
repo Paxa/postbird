@@ -35,7 +35,6 @@ My todo:
 * Add index window is disappearing
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
-* Materialized views structure
 * Drop view/materialized view
 * Fix Table.describe when there is same tables in different schemas
 * Code snippets in query tab

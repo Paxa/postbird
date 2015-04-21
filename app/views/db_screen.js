@@ -260,7 +260,7 @@ global.DbScreenView = jClass.extend({
       currentTabEl.empty().html('<span class="tab-loader">Getting data ...</span>');
     }
 
-    this.handler.activateTab(name);
+    this.handler.activateTab(name, true);
   },
 
   setTabMessage: function (message) {

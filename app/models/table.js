@@ -25,7 +25,30 @@ global.Model.Table = Model.base.extend({
     this.q('DROP TABLE IF EXISTS "%s" CASCADE', this.table, callback);
   },
 
+  isMatView: function (callback) {
+    if (typeof this._isMatView != 'undefined') {
+      callback(this._isMatView);
+    }
+
+    var sql = `select 1 from pg_matviews where schemaname = '%s' and matviewname = '%s'`;
+
+    this.q(sql, this.schema, this.table, function (data, error) {
+      this._isMatView = data.rows.length > 0;
+      callback(this._isMatView);
+    }.bind(this));
+  },
+
   getStructure: function (callback) {
+    this.isMatView(function (isMatView) {
+      if (isMatView) {
+        this._getMatViewStructure(callback);
+      } else {
+        this._getTableStructure(callback);
+      }
+    }.bind(this));
+  },
+
+  _getTableStructure: function (callback) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s'";
     this.q(sql, this.schema, this.table, function(data) {
       this.hasOID(function (hasOID) {
@@ -47,10 +70,26 @@ global.Model.Table = Model.base.extend({
               row.is_primary_key = keys.indexOf(row.column_name) != -1;
             });
           }
+          console.log(data.rows);
           callback(data.rows);
         });
       }.bind(this));
     }.bind(this));
+  },
+
+  _getMatViewStructure: function (callback) {
+    var sql = `select attname as column_name, typname as udt_name, attnotnull
+               from pg_attribute a
+               join pg_class c on a.attrelid = c.oid
+               join pg_type t on a.atttypid = t.oid
+               where relname = '%s' and attnum >= 1;`;
+
+    this.q(sql, this.table, function(data, error) {
+      data.rows.forEach(function (row) {
+        row.is_nullable = row.attnotnull ? "NO" : "YES";
+      });
+      callback(data.rows);
+    });
   },
 
   hasOID: function (callback) {
@@ -65,6 +104,16 @@ global.Model.Table = Model.base.extend({
   },
 
   getColumnTypes: function (callback) {
+    this.isMatView(function (isMatView) {
+      if (isMatView) {
+        this._matview_getColumnTypes(callback);
+      } else {
+        this._table_getColumnTypes(callback);
+      }
+    }.bind(this));
+  },
+
+  _table_getColumnTypes: function (callback) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
     this.q(sql, this.schema, this.table, function(data) {
       this.hasOID(function (hasOID) {
@@ -84,6 +133,17 @@ global.Model.Table = Model.base.extend({
         callback(types);
       })
     }.bind(this));
+  },
+
+  _matview_getColumnTypes: function (callback) {
+    this._getMatViewStructure(function (columns) {
+      var types = {};
+      columns.forEach(function(row) {
+        types[row.column_name] = row;
+        types[row.column_name].real_format = row.udt_name;
+      });
+      callback(types);
+    });
   },
 
   getColumns: function (name, callback) {
@@ -203,14 +263,15 @@ global.Model.Table = Model.base.extend({
     */});
 
     var _this = this;
+
     this.q(sql_find_oid, this.table, function (oid_data, error) {
       var oid = oid_data.rows[0].oid;
       //this.q(sql_find_types, oid, function(types_data, error) {
-        this.q(sql_find_index, oid, function(indexes_rows, error) {
+        _this.q(sql_find_index, oid, function(indexes_rows, error) {
           callback(indexes_rows.rows);
-        }.bind(this));
-      //}.bind(this));
-    }.bind(this));
+        });
+      //});
+    });
   },
 
   getRows: function (offset, limit, options, callback) {
