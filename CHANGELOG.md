@@ -1,3 +1,16 @@
+== Version 0.4.1 dev
+
+* Add support for "oid" column. Show in columns list, show in content tab
+* Build dev version with symlinks
+* Build package with nwjs, not node-webkit
+* Fix open help multiple times
+* More type groups in column dialog
+* Fix closing tab error: undefined is not a function
+* Add reload feature to content tab
+* Add shortcut cmd+R to reload content, structure and info tabs
+* Set focus on editor after query complete
+* Add support for mat views: structure tab, content tab, drop, sample dataset
+
 == Version 0.4
 
 * Use new shortcut api

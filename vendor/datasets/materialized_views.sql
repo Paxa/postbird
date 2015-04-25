@@ -7012,6 +7012,8 @@ create materialized view mat_view_airports_count as
   group by country
   order by count(*) desc;
 
+create index airports_count_bee_tree on mat_view_airports_count using btree(airports);
+
 create view view_multi_airport_cities as
   select country, city, count(*) from mat_view_airports
   where
