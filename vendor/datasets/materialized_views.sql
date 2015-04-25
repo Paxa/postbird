@@ -3,6 +3,7 @@
 
 DROP MATERIALIZED VIEW IF EXISTS mat_view_airports_us;
 DROP MATERIALIZED VIEW IF EXISTS mat_view_airports_count;
+DROP VIEW IF EXISTS view_multi_airport_cities;
 
 DROP TABLE IF EXISTS mat_view_airports;
 
@@ -7010,3 +7011,13 @@ create materialized view mat_view_airports_count as
   select country, count(*) as airports from mat_view_airports
   group by country
   order by count(*) desc;
+
+create view view_multi_airport_cities as
+  select country, city, count(*) from mat_view_airports
+  where
+    country is not null AND
+    country != '' AND
+    city is not null AND
+    city != ''
+  group by country, city
+  order by count(*) desc, country;

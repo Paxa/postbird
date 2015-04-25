@@ -21,6 +21,15 @@ global.Model.Table = Model.base.extend({
     this.remove(callback);
   },
 
+  removeView: function (callback) {
+    this.isMatView(function (isMatView) {
+      var sql = `drop ${isMatView ? 'materialized' : ''} view "%s"."%s"`;
+      this.q(sql, this.schema, this.table, function (result, error) {
+        callback(error ? false : true, error);
+      });
+    }.bind(this));
+  },
+
   safeDrop: function (callback) {
     this.q('DROP TABLE IF EXISTS "%s" CASCADE', this.table, callback);
   },
@@ -70,7 +79,6 @@ global.Model.Table = Model.base.extend({
               row.is_primary_key = keys.indexOf(row.column_name) != -1;
             });
           }
-          console.log(data.rows);
           callback(data.rows);
         });
       }.bind(this));

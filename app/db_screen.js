@@ -302,10 +302,26 @@ global.DbScreen = jClass.extend({
   },
 
   dropTable: function (schema, table, callback) {
-    Model.Table(schema, table).remove(function (res, error) {
-      this.omit('table.deleted');
-      this.fetchTablesAndSchemas();
-      callback && callback(res, error);
+    window.alertify.confirm("Delete table " + schema + '.' + table + "?", function (agreed) {
+      if (!agreed) return;
+      Model.Table(schema, table).remove(function (res, error) {
+        this.omit('table.deleted');
+        this.fetchTablesAndSchemas();
+        callback && callback(res, error);
+      }.bind(this));
+    }.bind(this));
+  },
+
+  dropView: function (schema, table, callback) {
+    window.alertify.confirm("Delete view " + schema + '.' + table + "?", function (agreed) {
+      if (!agreed) return;
+      Model.Table(schema, table).removeView(function (success, error) {
+        if (success) {
+          this.omit('table.deleted');
+          this.fetchTablesAndSchemas();
+        }
+        callback && callback(success, error);
+      }.bind(this));
     }.bind(this));
   },
 
