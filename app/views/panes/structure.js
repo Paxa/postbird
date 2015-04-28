@@ -1,7 +1,7 @@
 global.Panes.Structure = global.Pane.extend({
 
-  renderTab: function(rows, indexes) {
-    this.renderViewToPane('structure', 'structure_tab', {rows: rows, indexes: indexes});
+  renderTab: function(rows, indexes, is_mat_view) {
+    this.renderViewToPane('structure', 'structure_tab', {rows: rows, indexes: indexes, is_mat_view: is_mat_view});
     this.initTables();
   },
 

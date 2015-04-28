@@ -39,4 +39,3 @@ My todo:
 * Code snippets in query tab
 * Export only structure
 * Drop schema
-* Create index for materialized view (columns list)

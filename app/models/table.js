@@ -86,7 +86,7 @@ global.Model.Table = Model.base.extend({
   },
 
   _getMatViewStructure: function (callback) {
-    var sql = `select attname as column_name, typname as udt_name, attnotnull
+    var sql = `select attname as column_name, typname as udt_name, attnotnull, typdefault as column_default
                from pg_attribute a
                join pg_class c on a.attrelid = c.oid
                join pg_type t on a.atttypid = t.oid
@@ -154,17 +154,31 @@ global.Model.Table = Model.base.extend({
     });
   },
 
-  getColumns: function (name, callback) {
+  getColumns: function (callback) {
+    this.isMatView(function (isMatView) {
+      if (isMatView) {
+        this._matview_getColumns(callback);
+      } else {
+        this._table_getColumns(callback);
+      }
+    }.bind(this));
+  },
+
+  _table_getColumns: function (callback) {
     if (callback == undefined) {
       callback = name;
       name = undefined;
     }
 
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;"
+    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;";
     var cond = name ? " and column_name = '" + name + "'" : '';
     this.q(sql, this.schema, this.table, cond, function(rows) {
       callback(rows.rows);
     });
+  },
+
+  _matview_getColumns: function (callback) {
+    this._getMatViewStructure(callback);
   },
 
   getColumnNames: function (callback) {

@@ -21,7 +21,6 @@ global.Dialog.NewIndex = global.Dialog.extend({
         data.columns.push(data[i]);
       }
     }
-    console.dir(data);
     this.handler.addIndex(data, this.defaultServerResponse.bind(this));
   }
 });

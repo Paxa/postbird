@@ -349,10 +349,12 @@ global.DbScreen = jClass.extend({
     }
     App.startLoading("Getting table structure...");
 
-    this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
-      this.table.describe(function(indexes) {
-        this.view.structure.renderTab(rows, indexes);
-        App.stopLoading();
+    this.table.isMatView(function (isMatView) {
+      this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
+        this.table.describe(function(indexes) {
+          this.view.structure.renderTab(rows, indexes, isMatView);
+          App.stopLoading();
+        }.bind(this));
       }.bind(this));
     }.bind(this));
   },

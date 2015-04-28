@@ -23,7 +23,8 @@ table.columns-list-table.native-look-table
           a(exec="deleteColumn('" + column.column_name + "')") Delete
 
 footer
-  button.native-look(exec="addColumnForm") Add column
+  if !is_mat_view
+    button.native-look(exec="addColumnForm") Add column
 
 h4 Indexes
 table.indexes-list-table.native-look-table
