@@ -39,3 +39,4 @@ My todo:
 * Code snippets in query tab
 * Export only structure
 * Drop schema
+* Add support for array types
