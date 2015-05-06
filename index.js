@@ -5,7 +5,7 @@ require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
-require('./lib/app_menu');
+global.AppMenu = require('nw-appmenu');
 require('./lib/sidebar_resize');
 require('./lib/widgets/generic_table');
 require('./lib/psql_runner');

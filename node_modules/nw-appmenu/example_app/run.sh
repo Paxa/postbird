@@ -1,0 +1,29 @@
+#!/bin/bash
+
+export NW_DEV=true
+export BASEDIR=$(dirname $0)
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  #/Applications/node-webkit.app/Contents/MacOS/node-webkit .
+  /Applications/nwjs.app/Contents/MacOS/nwjs $BASEDIR
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+  paths=(
+    "/lib/x86_64-linux-gnu/libudev.so.1" # Ubuntu, Xubuntu, Mint
+    "/usr/lib64/libudev.so.1" # SUSE, Fedora
+    "/usr/lib/libudev.so.1" # Arch, Fedora 32bit
+    "/lib/i386-linux-gnu/libudev.so.1" # Ubuntu 32bit
+  )
+  for i in "${paths[@]}"
+  do
+    if [ -f $i ]
+    then
+      ln -sf "$i" ./libudev.so.0
+      break
+    fi
+  done
+
+  BASEDIR=$(dirname $0)
+  export LD_LIBRARY_PATH=$BASEDIR:$LD_LIBRARY_PATH
+  echo $LD_LIBRARY_PATH
+  ~/Downloads/node-webkit-v0.11.6-linux-x64/nw $BASEDIR
+fi

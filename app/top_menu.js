@@ -1,5 +1,8 @@
 var nativeMenuBar = new gui.Menu({type: "menubar"});
-nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("Postbird");
+
+if (process.platform == "darwin") {
+  nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("Postbird");
+}
 
 var menu = {
   '': {
@@ -106,8 +109,6 @@ var menu = {
     }
   }
 };
-
-//gui.Window.get().menu = nativeMenuBar;
 
 AppMenu.extend(nativeMenuBar, menu);
 

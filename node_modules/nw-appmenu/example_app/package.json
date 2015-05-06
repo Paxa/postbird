@@ -1,0 +1,11 @@
+{
+  "name": "AppMenu example",
+  "main": "index.html",
+  "window": {
+    "toolbar": true,
+    "width": 800,
+    "height": 300
+  },
+  "version": "0.4.0",
+  "repository": "https://github.com/Paxa/nw-appmenu"
+}
