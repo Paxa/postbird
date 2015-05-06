@@ -58,6 +58,14 @@ var helpers = global.ViewHelpers = {
     return sprintf('<img src="./assets/icons/%s.png" width="20" height="20" class="app-icon" title="%s"/>', name, title);
   },
 
+  column_type_label: function (column) {
+    var baseName = column.udt_name;
+    if (column.data_type == 'ARRAY') {
+      baseName = baseName.replace(/^_/, '') + "[]";
+    }
+    return baseName;
+  },
+
   betterDateTime: function (value) {
     var date = new Date(Date.parse(value)); // convert to current timezone
     var now = new Date();

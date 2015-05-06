@@ -12,7 +12,7 @@ table.columns-list-table.native-look-table
     each column in rows
       tr
         td= column.column_name
-        td= column.udt_name
+        td= column_type_label(column)
         td= column.character_maximum_length
         td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
         td= column.is_primary_key ? 'yes' : ''
