@@ -175,6 +175,10 @@ global.App = {
     }
     var res = $u.html2collection(html);
 
+    res.find('input, textarea').each(function (i, el) {
+      $u.textInputMenu(el);
+    });
+
     return res;
   },
 

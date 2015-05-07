@@ -23,10 +23,10 @@ $u.buildOption = function (label, value, options) {
   return $dom(['option', label, options]);
 };
 
-$u.contextMenu = function (element, options) {
+$u.contextMenu = function (element, options, params) {
   if (element.is === $u.fn.is) element = element[0];
 
-  element.addEventListener('contextmenu', function(ev) {
+  element.addEventListener('contextmenu', function(event) {
     if (!element.contextmenu) {
       var menu = element.contextmenu = new gui.Menu();
       for (var n in options) {
@@ -38,7 +38,11 @@ $u.contextMenu = function (element, options) {
       }
     }
 
-    element.contextmenu.popup(ev.x, ev.y);
+    if (params && params.onShow) {
+      params.onShow(event, element.contextmenu);
+    }
+
+    element.contextmenu.popup(event.x, event.y);
   });
 };
 
@@ -181,4 +185,40 @@ $u.makeDroppable = function (target, callback) {
 
 $u.commentOf = function (callback) {
   return callback.toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
+};
+
+$u.selectedText = function (element) {
+  return element.value.substring(element.selectionStart, element.selectionEnd);
+};
+
+$u.textInputMenu = function (element) {
+  if (element.type == "checkbox" || element.type == "radio") {
+    return false;
+  }
+  // disables 'Cut' and 'Copy' when no text selected
+  var onShow = function (event, menu) {
+    var selected = $u.selectedText(element);
+    if (selected && selected != '') {
+      menu.items.forEach(function (item) {
+        item.enabled = true;
+      });
+    } else {
+      menu.items.forEach(function (item) {
+        if (item.label == "Cut" || item.label == "Copy") {
+          item.enabled = false;
+        }
+      });
+    }
+  };
+  $u.contextMenu(element, {
+    'Cut': function () {
+      window.document.execCommand("cut");
+    },
+    'Copy': function () {
+      window.document.execCommand("copy");
+    },
+    'Paste': function () {
+      window.document.execCommand("paste");
+    }
+  }, {onShow: onShow});
 };

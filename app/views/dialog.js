@@ -15,6 +15,10 @@ global.Dialog = jClass.extend({
 
     this.windowContent = $u('#alertify .alertify-inner');
 
+    this.windowContent.find('input, textarea').each(function (i, el) {
+      $u.textInputMenu(el);
+    });
+
     if (this.dialogClass) {
       this.addClass(this.dialogClass);
     }

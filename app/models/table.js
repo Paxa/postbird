@@ -164,7 +164,7 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
-  _table_getColumns: function (callback) {
+  _table_getColumns: function (name, callback) {
     if (callback == undefined) {
       callback = name;
       name = undefined;
