@@ -79,7 +79,9 @@ function reloadCss() {
 var gui = require('nw.gui');
 global.gui = gui;
 
-require('./app/top_menu');
+if (process.platform.match(/^win/)) { // win32, win64, win128, etc
+  require('./app/top_menu');
+}
 
 Zepto(document).ready(function() {
   global.App.init();
