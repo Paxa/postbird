@@ -8,7 +8,7 @@
       each row in data.rows
         tr
           each column in data.fields
-            td!= formatCell(row[column.name], types[column.name].real_format)
+            td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)
 
 .summary-and-pages.native-footer-bar
   ul

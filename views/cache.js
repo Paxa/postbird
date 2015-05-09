@@ -126,7 +126,7 @@ jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/co
 
 jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format)) ? "" : jade_interp));
+buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</td>");
@@ -141,7 +141,7 @@ jade_debug.shift();
 
 jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format)) ? "" : jade_interp));
+buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</td>");
@@ -179,7 +179,7 @@ jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/co
 
 jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format)) ? "" : jade_interp));
+buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</td>");
@@ -194,7 +194,7 @@ jade_debug.shift();
 
 jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format)) ? "" : jade_interp));
+buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</td>");
@@ -308,10 +308,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Add\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Add\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload");
 }
 };
-exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Add\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload";
+exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          th(class= 'format-' + types[column.name].real_format)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Add\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" }];
 try {

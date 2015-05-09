@@ -2,12 +2,12 @@ var strftime = require('strftime');
 var sprintf = require("sprintf-js").sprintf;
 
 var helpers = global.ViewHelpers = {
-  formatCell: function (value, format) {
+  formatCell: function (value, format, dataType) {
     var formated = value;
     if (!formated) return formated;
 
     switch (format) {
-      case 'text':
+      case 'hstore': case 'text':
         var n = $dom(['span']);
         n.innerText = '' + value;
         formated = '<span class="text">' + n.innerHTML + '</span>';
@@ -24,6 +24,10 @@ var helpers = global.ViewHelpers = {
       case 'jsonb':
         formated = this.formatJson(value);
         break;
+    }
+
+    if (dataType == 'ARRAY') {
+      formated = this.formatArray(value, format);
     }
 
     return formated;
@@ -103,5 +107,17 @@ var helpers = global.ViewHelpers = {
     var n = $dom(['span']);
     n.innerText = '' + json;
     return '<span class="text">' + n.innerHTML + '</span>';
+  },
+
+  formatArray: function (value, format) {
+    var fomrmatted = value.map(function (element) {
+      if (Array.isArray(element)) {
+        return this.formatArray(element, format);
+      } else {
+        return this.formatCell(element, format);
+      }
+    }.bind(this));
+
+    return '{' + fomrmatted.join(',') + '}';
   }
 };
