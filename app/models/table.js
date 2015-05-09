@@ -37,6 +37,7 @@ global.Model.Table = Model.base.extend({
   isMatView: function (callback) {
     if (typeof this._isMatView != 'undefined') {
       callback(this._isMatView);
+      return;
     }
 
     var sql = `select 1 from pg_matviews where schemaname = '%s' and matviewname = '%s'`;
