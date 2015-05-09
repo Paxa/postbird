@@ -3,7 +3,8 @@
     thead
       tr
         each column in data.fields
-          th(class= 'format-' + types[column.name].real_format)= column.name
+          - var type = column_type_label(types[column.name])
+          th(class= 'format-' + type, title=type)= column.name
     tbody
       each row in data.rows
         tr
