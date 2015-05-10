@@ -1,6 +1,12 @@
 //process.env.PGSSLMODE = 'prefer';
 
 var pg = require('pg');
+try {
+  var pg = pg.native;
+} catch (error) {
+  console.log("can not load pg-native, using pg");
+  console.error(error);
+}
 
 var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
@@ -70,11 +76,14 @@ global.Connection = jClass.extend({
         callback && callback(false, error.message);
         console.log(error);
       } else {
-        this.pending.forEach(function (cb) {
-          cb();
-        });
-        this.pending = [];
-        callback && callback(true);
+        this.serverVersion(function (version, fullVersion) {
+          console.log("Server version is ", version, "\n", fullVersion);
+          this.pending.forEach(function (cb) {
+            cb();
+          });
+          this.pending = [];
+          callback && callback(true);
+        }.bind(this));
       }
     }.bind(this));
   },
@@ -102,10 +111,13 @@ global.Connection = jClass.extend({
 
       this.connection.query(sql, function (error, result) {
         historyRecord.time = Date.now() - time;
+        process.stdout.write("SQL: Done ".green + historyRecord.time + "\n");
+
         if (global.TESTING && this.printTestingError && error) {
           process.stdout.write("FAILED: " + sql.yellow + "\n");
           log.error(error);
         }
+
         if (error) {
           historyRecord.error = error;
           error.query = sql;
@@ -167,6 +179,25 @@ global.Connection = jClass.extend({
     });
   },
 
+  serverVersion: function (callback) {
+    if (this._serverVersion != undefined) {
+      callback(this._serverVersion, this._serverVersionFull);
+      return;
+    }
+
+    this.query('SELECT version()', function (result, error) {
+      console.log(result.rows);
+      var version = result.rows[0].version.split(" ")[1];
+      this._serverVersion = version;
+      this._serverVersionFull = result.rows[0].version;
+      callback(this._serverVersion, this._serverVersionFull);
+    }.bind(this));
+  },
+
+  supportMatViews: function () {
+    return this._serverVersion >= "9.3";
+  },
+
   getVariable: function(variable, callback) {
     this.q('show %s', variable, function (data, error) {
       var vname = Object.keys(data.rows[0])[0];
@@ -193,6 +224,11 @@ global.Connection = jClass.extend({
   },
 
   mapViewsAsTables: function (callback) {
+    if (!this.supportMatViews()) {
+      callback([]);
+      return;
+    }
+
     var data = {};
     var sql = "select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type " +
               "from pg_matviews " +

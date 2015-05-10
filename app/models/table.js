@@ -35,6 +35,11 @@ global.Model.Table = Model.base.extend({
   },
 
   isMatView: function (callback) {
+    if (!this.connection().supportMatViews()) {
+      callback(false);
+      return;
+    }
+
     if (typeof this._isMatView != 'undefined') {
       callback(this._isMatView);
       return;
@@ -43,7 +48,11 @@ global.Model.Table = Model.base.extend({
     var sql = `select 1 from pg_matviews where schemaname = '%s' and matviewname = '%s'`;
 
     this.q(sql, this.schema, this.table, function (data, error) {
-      this._isMatView = data.rows.length > 0;
+      if (error) {
+        this._isMatView = false;
+      } else {
+        this._isMatView = data.rows.length > 0;
+      }
       callback(this._isMatView);
     }.bind(this));
   },
@@ -325,6 +334,17 @@ global.Model.Table = Model.base.extend({
       }
       var count = parseInt(data.rows[0].rows_count, 10);
       callback ? callback(count) : console.log("Table rows count: " + this.table + " " + count);
+    });
+  },
+
+  getTotalRowsEstimate: function (callback) {
+    var sql = `SELECT reltuples::bigint AS estimate
+      FROM   pg_class
+      WHERE  oid = '%s.%s'::regclass`
+
+    this.q(sql, this.schema, this.table, function (res) {
+      var row = res.rows[0];
+      callback(row.estimate);
     });
   },
 
