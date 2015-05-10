@@ -10,6 +10,13 @@
 * Add shortcut cmd+R to reload content, structure and info tabs
 * Set focus on editor after query complete
 * Add support for mat views: structure tab, content tab, drop, sample dataset
+* Add index dialog for mat views
+* Move app_menu.js to external library
+* Support for array types
+* Add context menu for text inputs and textareas
+* Add type title for content table header
+* Attempt to use node-pg-native on mac
+* Check server version and detect if server support materialized views
 
 == Version 0.4
 

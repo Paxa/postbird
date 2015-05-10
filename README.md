@@ -39,6 +39,5 @@ My todo:
 * Code snippets in query tab
 * Export only structure
 * Drop schema
-* Add support for array types
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature
