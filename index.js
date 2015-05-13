@@ -7,6 +7,7 @@ require('./lib/arg');
 require('./lib/node_lib');
 global.AppMenu = require('nw-appmenu');
 require('./lib/sidebar_resize');
+require('./lib/query_tab_resizer');
 require('./lib/widgets/generic_table');
 require('./lib/psql_runner');
 require('./lib/sql_importer');

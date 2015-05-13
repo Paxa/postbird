@@ -37,6 +37,8 @@ global.Panes.Query = global.Pane.extend({
 
     this.setUnchangeable();
     this.statusLine = this.content.find('.result .status');
+
+    new QueryTabResizer(this.content, this.editor);
   },
 
   saveLastQuery: function () {
@@ -85,7 +87,9 @@ global.Panes.Query = global.Pane.extend({
         var node = App.renderView('db_rows_table', {data: data})[0];
         this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);
-        this.statusLine.text("Found rows: " + data.rowCount + ' in ' + data.time + 'ms.');
+
+        var footerText = `Found ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'} in ${data.time}ms.`;
+        this.statusLine.text(footerText);
         this.initTables();
       }
       if (needReloadTables) {
