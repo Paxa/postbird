@@ -186,7 +186,6 @@ global.Connection = jClass.extend({
     }
 
     this.query('SELECT version()', function (result, error) {
-      console.log(result.rows);
       var version = result.rows[0].version.split(" ")[1];
       this._serverVersion = version;
       this._serverVersionFull = result.rows[0].version;

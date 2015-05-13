@@ -84,6 +84,7 @@ global.Panes.Query = global.Pane.extend({
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
         this.statusLine.text(message);
       } else {
+        PgTypeNames.extendFields(data);
         var node = App.renderView('db_rows_table', {data: data})[0];
         this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);

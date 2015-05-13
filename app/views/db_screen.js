@@ -215,7 +215,7 @@ global.DbScreenView = jClass.extend({
     var input = node.find('input');
     input.focus();
     setTimeout(function() {
-      input[0].selectionStart = input[0].selectionEnd;
+      input[0].setSelectionRange(0, 999);
     }, 20)
 
     input.bind('keyup', function(e) {

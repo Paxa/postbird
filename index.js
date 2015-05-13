@@ -13,6 +13,7 @@ require('./lib/psql_runner');
 require('./lib/sql_importer');
 require('./lib/pg_dump_runner');
 require('./lib/sql_exporter');
+require('./lib/pg_type_names');
 require('classy/object_ls');
 
 global.node.colors = require('colors');

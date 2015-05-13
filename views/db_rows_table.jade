@@ -2,9 +2,11 @@ table.native-look-table
   thead
     tr
       each column in data.fields
-        th(class= 'format-text')= column.name
+        - console.log(column);
+        - var type = column_type_label(column)
+        th(class= 'format-' + type, title= type)= column.name
   tbody
     each row in data.rows
       tr
         each column in data.fields
-          td!= formatCell(row[column.name], 'text')
+          td!= formatCell(row[column.name], column.udt_name, column.data_type)
