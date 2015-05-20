@@ -8,7 +8,7 @@ global.Panes.Query = global.Pane.extend({
 
     this.renderViewToPane('query', 'query_tab');
 
-    this.button = this.content.find('button');
+    this.button = this.content.find('button:first');
 
     this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
@@ -102,5 +102,24 @@ global.Panes.Query = global.Pane.extend({
 
   reloadTables: function () {
     this.handler.fetchTablesAndSchemas();
+  },
+
+  openSnippets: function () {
+    var newWindow = gui.Window.open('blank.html', {
+      width: 570,
+      height: 400,
+      toolbar: true,
+      show: false
+    });
+
+    var node = App.renderView("snippets", {snippets: SqlSnippets});
+    newWindow.on('document-end', function () {
+      newWindow.window.document.title = "SQL Snippets";
+      $u(newWindow.window.document.body).empty();
+      $u(newWindow.window.document.body).fasterAppend(node);
+
+      newWindow.show();
+      newWindow.focus();
+    });
   }
 });

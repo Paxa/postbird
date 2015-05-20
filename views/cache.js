@@ -3693,8 +3693,14 @@ jade_debug.shift();
 jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
 buf.push("\n  <!--button.native-look(exec=\"runQuery\") See History-->");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
-buf.push("\n  <!--button.native-look(exec=\"runQuery\") Snippets-->");
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+buf.push("\n  <button exec=\"openSnippets\" class=\"native-look\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
+buf.push("Snippets");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
@@ -3719,10 +3725,90 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  //button.native-look(exec=\"runQuery\") See History\n  //button.native-look(exec=\"runQuery\") Snippets\n.result\n  table\n  .status");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  //button.native-look(exec=\"runQuery\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n.result\n  table\n  .status");
 }
 };
-exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  //button.native-look(exec=\"runQuery\") See History\n  //button.native-look(exec=\"runQuery\") Snippets\n.result\n  table\n  .status";
+exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  //button.native-look(exec=\"runQuery\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n.result\n  table\n  .status";
+exports["snippets"] = function template(jade, locals) {
+var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (undefined, snippets) {
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n<link href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n<div class=\"snippets-window\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n  <ul>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+// iterate snippets
+;(function(){
+  var $$obj = snippets;
+  if ('number' == typeof $$obj.length) {
+
+    for (var name = 0, $$l = $$obj.length; name < $$l; name++) {
+      var sqlCode = $$obj[name];
+
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n    <li" + (jade.attr("sql", sqlCode, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</li>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var name in $$obj) {
+      $$l++;      var sqlCode = $$obj[name];
+
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n    <li" + (jade.attr("sql", sqlCode, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</li>");
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </ul>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n  <div class=\"preview\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+buf.push("\n  <footer>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</footer>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.snippets-window\n  ul\n    each sqlCode, name in snippets\n      li(sql=sqlCode)= name\n  .preview\n  footer\n    ");
+}
+};
+exports["snippets"].content = "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.snippets-window\n  ul\n    each sqlCode, name in snippets\n      li(sql=sqlCode)= name\n  .preview\n  footer\n    ";
 exports["structure_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" }];
 try {

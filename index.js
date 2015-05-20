@@ -15,6 +15,7 @@ require('./lib/pg_dump_runner');
 require('./lib/sql_exporter');
 require('./lib/pg_type_names');
 require('classy/object_ls');
+require('./lib/sql_snippets');
 
 global.node.colors = require('colors');
 

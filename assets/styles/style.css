@@ -1193,6 +1193,22 @@ body.sidebar-resizing {
   width: 100%;
   margin-bottom: 5px; }
 
+body.new-window {
+  background: #EDEDED; }
+
+.snippets-window > ul {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 100%;
+  width: 35%;
+  background: #F9F9F9;
+  border-right: 1px solid #B4B4B4;
+  padding: 6px 10px; }
+.snippets-window .preview {
+  display: inline-block;
+  width: 65%;
+  height: 100%; }
+
 .custom-window .alertify-dialog {
   padding-top: 38px; }
 .custom-window h3.window-title {
