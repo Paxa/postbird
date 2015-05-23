@@ -8,8 +8,7 @@ app.get('/', function(req, res) {
   throw new Error('Hello World');
 });
 
-app.use(rollbar.errorHandler("ACCESS_TOKEN",
-                             {environment: 'playground'}));
+app.use(rollbar.errorHandler("ACCESS_TOKEN", {environment: 'playground'}));
 
 console.log('browse to http://localhost:9876/ then go to your rollbar account: http://rollbar.com/');
 app.listen(9876);
