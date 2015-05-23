@@ -64,10 +64,11 @@ global.Dialog = jClass.extend({
   },
 
   defaultServerResponse: function (data, error) {
-    if (error)
+    if (error) {
       window.alert(error.message);
-    else
+    } else {
       this.close();
+    }
   },
 
   renderTemplate: function (template, locals, title) {

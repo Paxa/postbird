@@ -34,6 +34,7 @@ table.indexes-list-table.native-look-table
       th p. key
       th uniq
       th columns
+      th type
       th
   tbody
     each index in indexes
@@ -42,9 +43,8 @@ table.indexes-list-table.native-look-table
         td= index.indisprimary ? 'Yes' : 'No'
         td= index.indisunique ? 'Yes' : 'No'
         td= index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]
+        td= getIndexType(index.pg_get_indexdef)
         td
-          a(exec="editIndex('" + index.relname + "')") Edit
-          != "&nbsp;"
           a(exec="deleteIndex('" + index.relname + "')") Delete
 
 footer

@@ -1,8 +1,8 @@
 
 form
   p
-    label Name
-    input(name="name")
+    label(for="index_name_field") Name
+    input#index_name_field(name="name", placeholder="optional")
 
   p
     label Columns
@@ -13,8 +13,16 @@ form
             input(type="checkbox", name="columns[" + column.column_name + "]", value= column.column_name)
             = column.column_name
   p
-    label Uniq
-    input(type="checkbox", name="uniq", value="1")
+    label(for="index_uniq_field") Uniq
+    input#index_uniq_field(type="checkbox", name="uniq", value="1")
+
+  p
+    label(for="index_method_field") Method
+    select#index_method_field(name="method")
+      option(value="btree") btree
+      option(value="hash") hash
+      option(value="gist") gist
+      option(value="gin") gin
 
   input.pseudo-hidden(type="submit")
   p.buttons

@@ -21,6 +21,10 @@ global.Dialog.NewIndex = global.Dialog.extend({
         data.columns.push(data[i]);
       }
     }
+    if (data.columns.length == 0) {
+      window.alert("Please selectec at least 1 column");
+      return;
+    }
     this.handler.addIndex(data, this.defaultServerResponse.bind(this));
   }
 });

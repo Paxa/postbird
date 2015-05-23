@@ -28,8 +28,22 @@ global.Panes.Structure = global.Pane.extend({
 
   doDeleteColumn: function (column_name) {
     this.handler.deleteColumn(column_name, function (result, error) {
-      console.log(result, error);
       if (error) window.alert(error.message);
     });
-  }
+  },
+
+  deleteIndex: function (indexName) {
+    var msg = `Delete index ${indexName}?`;
+    var dialog = window.alertify.confirm(msg, function (result) {
+      if (result) {
+        this.doDeleteIndex(indexName);
+      }
+    }.bind(this));
+  },
+
+  doDeleteIndex: function (indexName) {
+    this.handler.deleteIndex(indexName, function (result, error) {
+      if (error) window.alert(error.message);
+    });
+  },
 });

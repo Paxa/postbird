@@ -392,9 +392,16 @@ global.DbScreen = jClass.extend({
   },
 
   addIndex: function (data, callback) {
-    this.table.addIndex(data.name, data.uniq, data.columns, function() {
-      this.structureTabActivate();
-      callback();
+    this.table.addIndex(data.name, data.uniq, data.columns, data.method, function(result, error) {
+      if (!error) this.structureTabActivate();
+      callback(result, error);
+    }.bind(this));
+  },
+
+  deleteIndex: function (indexName, callback) {
+    this.table.dropIndex(indexName, function(result, error) {
+      if (!error) this.structureTabActivate();
+      callback(result, error);
     }.bind(this));
   },
 

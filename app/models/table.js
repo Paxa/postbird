@@ -253,12 +253,19 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
-  addIndex: function (name, uniq, columns, callback) {
-    var sql = "CREATE %s INDEX %s ON %s(%s);"
+  addIndex: function (name, uniq, columns, method, callback) {
+    var sql = "CREATE %s INDEX CONCURRENTLY %s ON %s USING %s (%s);"
     var uniq_sql = uniq ? 'UNIQUE' : '';
     var columns_sql = columns.join(', ');
-    this.q(sql, uniq_sql, name, this.table, columns_sql, function(data, error) {
-      callback();
+    this.q(sql, uniq_sql, name, this.table, method, columns_sql, function(data, error) {
+      callback(data, error);
+    });
+  },
+
+  dropIndex: function (indexName, callback) {
+    var sql = "DROP INDEX CONCURRENTLY %s;";
+    this.q(sql, indexName, function(data, error) {
+      callback(data, error);
     });
   },
 

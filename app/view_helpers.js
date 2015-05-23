@@ -26,7 +26,7 @@ var helpers = global.ViewHelpers = {
         break;
     }
 
-    if (dataType == 'ARRAY') {
+    if (dataType == 'ARRAY' && Array.isArray(value)) {
       formated = this.formatArray(value, format);
     }
 
@@ -119,5 +119,10 @@ var helpers = global.ViewHelpers = {
     }.bind(this));
 
     return '{' + fomrmatted.join(',') + '}';
+  },
+
+  getIndexType: function (indexSql) {
+    var regM = indexSql.match(/USING ([^\s]+)\s/i);
+    return regM ? regM[1] : undefined;
   }
 };
