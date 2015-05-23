@@ -21,6 +21,13 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
   },
 
   onSubmit: function(data) {
+    if (data.type == "") {
+      window.alert("Please choose column type");
+      return;
+    }
+    if (data.allow_null == "1") {
+      data.is_null = true;
+    }
     this.handler.editColumn(this.columnObj, data, this.defaultServerResponse.bind(this));
   }
 });

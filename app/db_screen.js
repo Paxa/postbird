@@ -364,16 +364,30 @@ global.DbScreen = jClass.extend({
   },
 
   addColumn: function (data, callback) {
-    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function() {
-      this.structureTabActivate();
-      callback();
+    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function(result, error) {
+      if (!error) {
+        this.structureTabActivate();
+      }
+      callback(result, error);
     }.bind(this));
   },
 
   editColumn: function (columnObj, data, callback) {
-    columnObj.update(data, function() {
-      this.structureTabActivate();
-      callback();
+    columnObj.update(data, function(result, error) {
+      if (!error) {
+        this.structureTabActivate();
+      }
+      callback(result, error);
+    }.bind(this));
+  },
+
+  deleteColumn: function (column_name, callback) {
+    this.table.dropColumn(column_name, function(result, error) {
+      if (!error) {
+        this.structureTabActivate();
+      }
+      console.log(result, error);
+      callback(result, error);
     }.bind(this));
   },
 

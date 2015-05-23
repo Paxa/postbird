@@ -17,6 +17,13 @@ global.Dialog.NewColumn = global.Dialog.extend({
   },
 
   onSubmit: function (data) {
+    if (data.type == "") {
+      window.alert("Please choose column type");
+      return;
+    }
+    if (data.allow_null == "1") {
+      data.is_null = true;
+    }
     this.handler.addColumn(data, this.defaultServerResponse.bind(this));
   },
 

@@ -164,18 +164,23 @@ global.Model.Table = Model.base.extend({
     });
   },
 
-  getColumns: function (callback) {
+  getColumns: function (name, callback) {
+    if (callback == undefined && typeof name == 'function') {
+      callback = name;
+      name = undefined;
+    }
+
     this.isMatView(function (isMatView) {
       if (isMatView) {
         this._matview_getColumns(callback);
       } else {
-        this._table_getColumns(callback);
+        this._table_getColumns(name, callback);
       }
     }.bind(this));
   },
 
   _table_getColumns: function (name, callback) {
-    if (callback == undefined) {
+    if (callback == undefined && typeof name == 'function') {
       callback = name;
       name = undefined;
     }
@@ -221,7 +226,15 @@ global.Model.Table = Model.base.extend({
     var default_sql = this.default_sql(default_value);
     sql = "ALTER TABLE %s ADD %s %s %s %s;"
     this.q(sql, this.table, name, type_with_length, default_sql, null_sql, function(data, error) {
-      callback();
+      callback(data, error);
+    });
+  },
+
+  dropColumn: function (name, callback) {
+    var column = new Model.Column(name, {});
+    column.table = this;
+    column.drop(function (data, error) {
+      callback(data, error);
     });
   },
 
@@ -251,7 +264,7 @@ global.Model.Table = Model.base.extend({
 
   default_sql: function (default_value) {
     if (default_value !== undefined && default_value !== '') {
-      return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'")
+      return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'");
     } else {
       return '';
     }

@@ -38,12 +38,12 @@ global.Model.Column = Model.base.extend({
       return;
     }
     var _this = this;
-    _this.save_renameColumn(function() {
-      _this.save_alterType(function() {
-        _this.save_alterNullable(function() {
-          _this.save_alterDefault(function() {
+    _this.save_renameColumn(function(res1, err1) {
+      _this.save_alterType(function(res2, err2) {
+        _this.save_alterNullable(function(res3, err3) {
+          _this.save_alterDefault(function(res4, err4) {
             delete this.changes;
-            callback();
+            callback(res4, err1 || err2 || err3 || err4);
           });
         });
       });
@@ -58,7 +58,7 @@ global.Model.Column = Model.base.extend({
         if (!error) {
           delete this.changes['name'];
         }
-        callback();
+        callback(rows, error);
       }.bind(this));
     } else {
       callback();
@@ -72,7 +72,7 @@ global.Model.Column = Model.base.extend({
       var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
       sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s USING %s::%s;"
       this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, function(data, error) {
-        callback(error);
+        callback(data, error);
       });
     } else {
       callback();
@@ -84,7 +84,7 @@ global.Model.Column = Model.base.extend({
       var null_sql = this.allow_null ? "DROP NOT NULL" : "SET NOT NULL";
       sql = "ALTER TABLE %s ALTER COLUMN %s %s;"
       this.q(sql, this.table.table, this.name, null_sql, function(data, error) {
-        callback(error);
+        callback(data, error);
       });
     } else {
       callback();
@@ -93,11 +93,18 @@ global.Model.Column = Model.base.extend({
 
   save_alterDefault: function(callback) {
     if (this.changes['default_value']) {
-      var default_sql = this._default_sql(this.default_value);
-      sql = "ALTER TABLE %s ALTER COLUMN %s SET %s;"
-      this.q(sql, this.table.table, this.name, default_sql, function(data, error) {
-        callback(error);
-      });
+      if (this.default_value == undefined || this.default_value == '') {
+        var sql = "ALTER TABLE %s ALTER COLUMN %s DROP DEFAULT;";
+        this.q(sql, this.table.table, this.name, function(data, error) {
+          callback(data, error);
+        });
+      } else {
+        var default_sql = this._default_sql(this.default_value);
+        var sql = "ALTER TABLE %s ALTER COLUMN %s SET %s;"
+        this.q(sql, this.table.table, this.name, default_sql, function(data, error) {
+          callback(data, error);
+        });
+      }
     } else {
       callback();
     }
@@ -106,7 +113,7 @@ global.Model.Column = Model.base.extend({
   drop: function (callback) {
     this.shouldHaveTable();
     this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, function(data, error) {
-      callback();
+      callback(data, error);
     });
   },
 
