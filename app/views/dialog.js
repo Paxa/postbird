@@ -28,6 +28,7 @@ global.Dialog = jClass.extend({
       this.close();
     }.bind(this));
 
+    this.setInputFocus();
 
     return this.windowContent;
   },
@@ -75,5 +76,21 @@ global.Dialog = jClass.extend({
 
     var nodes = App.renderView(template, locals);
     this.content = this.renderWindow(title, nodes);
+  },
+
+  setInputFocus: function () {
+    var focusable = this.windowContent.find('[autofocus]');
+    if (focusable.length) {
+      setTimeout(function () {
+        focusable[0].focus();
+      }, 120);
+      focusable[0].focus();
+    } else {
+      var firstInput = this.windowContent.find('input, select, textare')[0];
+      if (firstInput) firstInput.focus();
+      setTimeout(function () {
+        if (firstInput) firstInput.focus();
+      }, 120);
+    }
   }
 });
