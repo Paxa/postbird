@@ -17,6 +17,12 @@
 * Add type title for content table header
 * Attempt to use node-pg-native on mac
 * Check server version and detect if server support materialized views
+* Fix add column, implement delete column
+* Fix add index, implement delete index, add index type
+* Set focus in dialogs to first field
+* Improve error reporting
+* Add grunt build for windows and linux
+* Add psql & pg_dump bonaries for each platform
 
 == Version 0.4
 

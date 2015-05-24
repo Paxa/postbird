@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# If there's an OS supplied version of libreadline, try to make use of it,
+# as it's more reliable than libedit, which we link with.
+PLL=""
+if [ -f /lib/libreadline.so.6 ];
+then
+    PLL=/lib/libreadline.so.6
+elif [ -f /lib/libreadline.so.5 ];
+then
+    PLL=$PLL:/lib/libreadline.so.5
+fi
+
+# Get the PG bin directory path relative to psql caller script.
+PG_BIN_PATH=`dirname "$0"`
+
+if [ -z "$PLL" ];
+then
+	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PG_BIN_PATH/../lib  "$PG_BIN_PATH/psql.bin" "$@"
+else
+	LD_PRELOAD=$PLL LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PG_BIN_PATH/../lib "$PG_BIN_PATH/psql.bin" "$@"
+fi
+

@@ -380,7 +380,7 @@ global.Model.Table = Model.base.extend({
   },
 
   getSourceSql: function (callback) {
-    var exporter = new SqlExporter({debug: false});
+    var exporter = new SqlExporter({debug: true});
     // TODO: include schema
     exporter.addArgument('--table=' + this.table);
     exporter.addArgument("--schema-only");
@@ -392,8 +392,8 @@ global.Model.Table = Model.base.extend({
       }
       stdout = stdout.toString();
       stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
-      stdout = stdout.replace(/(^|\n|\r)(\-\-[\n\r]\-\-.+\n\-\-)/g, "\n"); // remove comments
-      stdout = stdout.replace(/\n\n+/gim, "\n\n"); // remove extra new lines
+      stdout = stdout.replace(/(^|\n|\r)(\-\-\r?\n\-\-.+\r?\n\-\-)/g, "\n"); // remove comments
+      stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
       stdout = stdout.trim(); // remove padding spaces
       callback(stdout);
     });
