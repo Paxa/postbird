@@ -11,8 +11,13 @@
     "min_width": 572,
     "min_height": 260
   },
-  "version": "0.4.0 dev",
+  "version": "0.4.0-dev",
   "repository": "https://github.com/Paxa/postbird",
   "js-flags": "--harmony",
-  "chromium-args": "--disable-accelerated-video --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery"
+  "chromium-args": "--disable-accelerated-video --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery",
+
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-node-webkit-builder": "1.0.2"
+  }
 }

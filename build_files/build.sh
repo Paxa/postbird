@@ -31,7 +31,14 @@ fi
     rm ${APP_TARGET_DIR}/run_tests
     rm -rf ${APP_TARGET_DIR}/build_files
     rm -rf ${APP_TARGET_DIR}/node_modules/fibers
+    rm -rf ${APP_TARGET_DIR}/node_modules/grunt
+    rm -rf ${APP_TARGET_DIR}/node_modules/grunt-node-webkit-builder
     rm -rf ${APP_TARGET_DIR}/tests
+    rm -rf ${APP_TARGET_DIR}/sugar
+    rm -rf ${APP_TARGET_DIR}/integration_tests
+    rm -rf ${APP_TARGET_DIR}/vendor/datasets
+    rm -rf ${APP_TARGET_DIR}/vendor/win32
+    rm -rf ${APP_TARGET_DIR}/vendor/linux
 
     # copy icon and plist file
     cp ./build_files/icon.icns  ${TARGET_DIR}/Contents/Resources
