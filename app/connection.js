@@ -2,7 +2,9 @@
 
 var pg = require('pg');
 try {
-  var pg = pg.native;
+  if (process.platform == "darwin") {
+    var pg = pg.native;
+  }
 } catch (error) {
   console.log("can not load pg-native, using pg");
   console.error(error);
