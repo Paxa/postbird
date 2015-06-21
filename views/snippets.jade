@@ -2,8 +2,8 @@ link(href="assets/styles/style.css" media="all" rel="stylesheet" type="text/css"
 
 .snippets-window
   ul
-    each sqlCode, name in snippets
-      li(sql=sqlCode)= name
+    each snippet, name in snippets
+      li(snippet=name)= name
   .preview
   footer
     

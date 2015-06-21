@@ -27,6 +27,7 @@ require('./app/db_screen');
 require('./app/login_screen');
 require('./app/help_screen');
 require('./app/views/db_screen');
+require('./app/views/snippets');
 require('./app/views/panes/users');
 require('./app/views/panes/extensions');
 require('./app/views/panes/query');
@@ -111,4 +112,10 @@ Zepto(document).ready(function() {
 
   var win = gui.Window.get();
   win.focus();
+
+  win.on('closed', function() {
+    if (global.App.snippersWin) {
+      global.App.snippersWin.close();
+    }
+  });
 });

@@ -1203,11 +1203,48 @@ body.new-window {
   width: 35%;
   background: #F9F9F9;
   border-right: 1px solid #B4B4B4;
-  padding: 6px 10px; }
+  vertical-align: top; }
+  .snippets-window > ul > li {
+    padding: 2px 8px 2px 35px;
+    position: relative; }
+    .snippets-window > ul > li:before {
+      display: block;
+      content: "";
+      background: url("../icons/table2.png") no-repeat;
+      background-size: 15px 15px;
+      width: 15px;
+      height: 15px;
+      left: 13px;
+      top: 4px;
+      position: absolute; }
+    .snippets-window > ul > li[table-type=VIEW]:before, .snippets-window > ul > li[table-type="MATERIALIZED VIEW"]:before {
+      background-image: url("../icons/db_view.png");
+      opacity: 0.8; }
+    .snippets-window > ul > li:hover {
+      background: rgba(0, 0, 0, 0.1); }
+    .snippets-window > ul > li.selected {
+      background: rgba(0, 51, 136, 0.15);
+      background-image: url("../selected_bg.png");
+      background-size: 1px 100%;
+      background-repeat: repeat-x;
+      color: white;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
+  .snippets-window > ul > li {
+    padding-left: 12px; }
+    .snippets-window > ul > li:before {
+      display: none; }
 .snippets-window .preview {
   display: inline-block;
-  width: 65%;
-  height: 100%; }
+  width: 64%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px 10px;
+  vertical-align: top; }
+  .snippets-window .preview p {
+    margin-bottom: 12px; }
+  .snippets-window .preview code.result {
+    white-space: pre-wrap;
+    margin-bottom: 12px; }
 
 .custom-window .alertify-dialog {
   padding-top: 38px; }

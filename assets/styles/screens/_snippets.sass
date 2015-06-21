@@ -9,8 +9,22 @@ body.new-window
     width: 35%
     background: #F9F9F9
     border-right: 1px solid #B4B4B4
-    padding: 6px 10px
+    //padding: 6px 10px
+    vertical-align: top
+    +native-items-list
+    > li
+      padding-left: 12px
+      &:before
+        display: none
   .preview
     display: inline-block
-    width: 65%
+    width: 64%
     height: 100%
+    box-sizing: border-box
+    padding: 12px 10px
+    vertical-align: top
+    p
+      margin-bottom: 12px
+    code.result
+      white-space: pre-wrap
+      margin-bottom: 12px

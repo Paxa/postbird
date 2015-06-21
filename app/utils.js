@@ -23,8 +23,9 @@ $u.buildOption = function (label, value, options) {
   return $dom(['option', label, options]);
 };
 
-$u.contextMenu = function (element, options, params) {
+$u.contextMenu = function (element, options, params, gui) {
   if (element.is === $u.fn.is) element = element[0];
+  if (gui == undefined) gui = global.gui;
 
   element.addEventListener('contextmenu', function(event) {
     if (!element.contextmenu) {
@@ -187,17 +188,21 @@ $u.commentOf = function (callback) {
   return callback.toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
 };
 
-$u.selectedText = function (element) {
-  return element.value.substring(element.selectionStart, element.selectionEnd);
+$u.selectedText = function (element, currentWindow) {
+  if (element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') {
+    return element.value.substring(element.selectionStart, element.selectionEnd);
+  } else {
+    return (currentWindow || window).getSelection().toString();
+  }
 };
 
-$u.textInputMenu = function (element) {
+$u.textInputMenu = function (element, currentWindow) {
   if (element.type == "checkbox" || element.type == "radio") {
     return false;
   }
   // disables 'Cut' and 'Copy' when no text selected
   var onShow = function (event, menu) {
-    var selected = $u.selectedText(element);
+    var selected = $u.selectedText(element, currentWindow);
     if (selected && selected != '') {
       menu.items.forEach(function (item) {
         item.enabled = true;
@@ -210,15 +215,43 @@ $u.textInputMenu = function (element) {
       });
     }
   };
+
+  var gui = (currentWindow || window).nwDispatcher.requireNwGui();
+
   $u.contextMenu(element, {
     'Cut': function () {
-      window.document.execCommand("cut");
+      (currentWindow || window).document.execCommand("cut");
     },
     'Copy': function () {
-      window.document.execCommand("copy");
+      (currentWindow || window).document.execCommand("copy");
     },
     'Paste': function () {
-      window.document.execCommand("paste");
+      (currentWindow || window).document.execCommand("paste");
     }
-  }, {onShow: onShow});
+  }, {onShow: onShow}, gui);
+};
+
+$u.textContextMenu = function (element, currentWindow) {
+  var onShow = function (event, menu) {
+    var selected = $u.selectedText(element, currentWindow);
+    if (selected && selected != '') {
+      menu.items.forEach(function (item) {
+        item.enabled = true;
+      });
+    } else {
+      menu.items.forEach(function (item) {
+        if (item.label == "Copy") {
+          item.enabled = false;
+        }
+      });
+    }
+  };
+
+  var gui = (currentWindow || window).nwDispatcher.requireNwGui();
+
+  $u.contextMenu(element, {
+    'Copy': function () {
+      (currentWindow || window).document.execCommand("copy");
+    },
+  }, {onShow: onShow}, gui);
 };

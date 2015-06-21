@@ -104,22 +104,16 @@ global.Panes.Query = global.Pane.extend({
     this.handler.fetchTablesAndSchemas();
   },
 
+  appendText: function (sql, lineOffset) {
+    if (lineOffset == undefined) lineOffset = 1;
+
+    var lineNo = this.editor.lineCount();
+    this.editor.setValue(this.editor.getValue() + sql);
+    this.editor.setCursor(lineNo + lineOffset, 0);
+    this.editor.focus();
+  },
+
   openSnippets: function () {
-    var newWindow = gui.Window.open('blank.html', {
-      width: 570,
-      height: 400,
-      toolbar: true,
-      show: false
-    });
-
-    var node = App.renderView("snippets", {snippets: SqlSnippets});
-    newWindow.on('document-end', function () {
-      newWindow.window.document.title = "SQL Snippets";
-      $u(newWindow.window.document.body).empty();
-      $u(newWindow.window.document.body).fasterAppend(node);
-
-      newWindow.show();
-      newWindow.focus();
-    });
+    SnippetsWindow.init();
   }
 });
