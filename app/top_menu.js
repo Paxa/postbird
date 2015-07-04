@@ -58,6 +58,8 @@ var menu = {
 
         if (tab == "content") {
           appTab.view.contents.reloadData();
+        } else if (tab == "query") {
+          appTab.view.query.runQuery();
         } else {
           appTab.activateTab(tab, 'force');
         }
@@ -139,7 +141,7 @@ var checkTableMenu = function () {
   var tab = global.App.currentTab.instance.currentTab;
   //var schema = global.App.currentTab.instance.currentSchema;
 
-  if (table && ["content", "structure", "info"].indexOf(tab) != -1) {
+  if (tab == "query" || table && ["content", "structure", "info"].indexOf(tab) != -1) {
     AppMenu.enableItem("Table", "Reload");
   } else {
     AppMenu.disableItem("Table", "Reload");
