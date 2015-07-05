@@ -6,9 +6,9 @@ global.SnippetsWindow = {
     }
 
     var newWindow = gui.Window.open('blank.html', {
-      width: 570,
-      height: 400,
-      toolbar: true,
+      width: 775,
+      height: 420,
+      toolbar: false,
       show: false
     });
 
