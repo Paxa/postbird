@@ -9,6 +9,7 @@ global.Panes.Query = global.Pane.extend({
     this.renderViewToPane('query', 'query_tab');
 
     this.button = this.content.find('button:first');
+    this.cleanButton = this.content.find('button.cleanButton');
 
     this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
@@ -66,6 +67,14 @@ global.Panes.Query = global.Pane.extend({
     }
   },
 
+  toggleCleanButton: function () {
+    if (this.content.find('.result table tr').length) {
+      this.cleanButton.show();
+    } else {
+      this.cleanButton.hide();
+    }
+  },
+
   runQuery: function () {
     this.editor.save();
     this.statusLine.text('');
@@ -76,10 +85,11 @@ global.Panes.Query = global.Pane.extend({
     var tableRegex = /(create|drop)\s+((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN|MATERIALIZED)\s+)*\s*(table|schema|view)/im;
     var needReloadTables = !!sql.match(tableRegex);
 
+    this.button.text("Running...");
     this.handler.connection.query(sql, function (data, error) {
+      this.toggleButtonText();
       if (error) {
-        this.content.find('.result .JCLRgrips').remove();
-        this.content.find('.result table').html("").hide();
+        this.cleanResult();
         var message = error.message;
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
         this.statusLine.text(message);
@@ -89,15 +99,35 @@ global.Panes.Query = global.Pane.extend({
         this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);
 
-        var footerText = `Found ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'} in ${data.time}ms.`;
+        var footerText;
+        if (data.fields && !isNaN(data.rowCount) || data.command == "SELECT") {
+          footerText = `Found ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'} in ${data.time} ms.`;
+        } else {
+          footerText = `Complete, taking ${data.time} ms.`;
+          if (data.rowCount) {
+            footerText += ` Affected ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'}`;
+          }
+        }
         this.statusLine.text(footerText);
         this.initTables();
       }
+      this.toggleCleanButton();
       if (needReloadTables) {
         this.reloadTables();
       }
       this.editor.focus();
     }.bind(this));
+  },
+
+  cleanResult: function () {
+    this.content.find('.result .JCLRgrips').remove();
+    this.content.find('.result table').html("").hide();
+    this.statusLine.text("");
+  },
+
+  cleanButtonClick: function () {
+    this.cleanResult();
+    this.toggleCleanButton();
   },
 
   reloadTables: function () {
