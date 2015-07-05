@@ -61,6 +61,7 @@ require('./app/models/user');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');
+require('./app/controllers/updates_controller');
 
 require('./app/heroku_client');
 

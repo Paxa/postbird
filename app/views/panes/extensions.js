@@ -37,7 +37,7 @@ global.Panes.Extensions = global.Pane.extend({
         setTimeout(function () {
           window.alertify.alert(error && error.message || okMsg);
         }, 550);
-        
+
       });
     }.bind(this));
   }

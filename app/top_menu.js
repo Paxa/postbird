@@ -6,7 +6,11 @@ if (process.platform == "darwin") {
 
 var menu = {
   '': {
-    
+    "Check For Updates...": {
+      click: function () {
+        (new global.UpdatesController).checkUpdates();
+      }
+    }
   },
   'File': {
     'Import .sql file': {

@@ -1284,6 +1284,10 @@ body.new-window {
   padding-top: 5px;
   padding-bottom: 5px; }
 
+.grey-cancel-button button.alertify-button-cancel {
+  border-color: #ADA6A6;
+  background-color: #B8B8B8; }
+
 footer + h4 {
   margin-top: 15px; }
 
