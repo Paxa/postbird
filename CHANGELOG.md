@@ -1,4 +1,4 @@
-== Version 0.4.1 dev
+== Version 0.4.1
 
 * Add support for "oid" column. Show in columns list, show in content tab
 * Build dev version with symlinks
