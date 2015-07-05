@@ -23,6 +23,11 @@
 * Improve error reporting
 * Add grunt build for windows and linux
 * Add psql & pg_dump bonaries for each platform
+* Feature Snippets window
+* Run query by CMD+R in query tab
+* Add button to clean result in query tab
+* Improve result for non-SELECT statements and status text in query tab
+* Feature check for updates
 
 == Version 0.4
 
