@@ -9,9 +9,9 @@ Postbird is PostgreSQL client for Mac.
 
 #### Download
 
-**Version 0.4**
+**Version 0.4.1**
 
-[Postgres-0.4.dmg](https://github.com/Paxa/postbird/releases/download/0.4.0/Postbird-0.4.dmg) - For Mac: 64bit, 10.7+
+[Postgres-0.4.1.dmg](https://github.com/Paxa/postbird/releases/download/0.4.1/Postbird-0.4.1.dmg) - For Mac: 64bit, 10.7+
 
 
 #### Development
@@ -32,11 +32,9 @@ New release will be at: `~/Postbird.app`
 
 My todo:
 
-* Add index window is disappearing
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
 * Fix Table.describe when there is same tables in different schemas
-* Code snippets in query tab
 * Export only structure
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
