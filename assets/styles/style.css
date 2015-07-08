@@ -1208,7 +1208,8 @@ body.new-window {
     position: fixed;
     top: 0;
     left: 0;
-    vertical-align: top; }
+    vertical-align: top;
+    overflow-y: auto; }
     .snippets-window > ul > li {
       padding: 2px 8px 2px 35px;
       position: relative; }

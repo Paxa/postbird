@@ -1,4 +1,6 @@
 require('./lib/error_reporter');
+require('classy/object_extras').extendGlobal();
+
 //require('./lib/zepto');
 require('./lib/dominate');
 require('./lib/jquery.class');

@@ -1,6 +1,5 @@
 var jade;
 var jadeRuntime = require('jade/runtime');
-require('classy/object_extras').extendGlobal();
 
 global.log = require('./app/logger').make('info');
 
