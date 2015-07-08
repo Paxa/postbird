@@ -1,5 +1,5 @@
 global.Dialog.ExportFile = global.Dialog.extend({
-  title: "Import options",
+  title: "Export options",
   dialogClass: "export-file-dialog",
 
   init: function (handler, callback) {
@@ -10,7 +10,8 @@ global.Dialog.ExportFile = global.Dialog.extend({
 
   showWindow: function () {
     var nodes = App.renderView('dialogs/export_file', {
-      database: this.handler.database
+      database: this.handler.database,
+      hopePath: process.env.HOME || process.env.USERPROFILE
     });
 
     this.content = this.renderWindow(this.title, nodes);
@@ -23,7 +24,19 @@ global.Dialog.ExportFile = global.Dialog.extend({
 
   onSubmit: function (data) {
     var exportToFile = this.content.find('[name="export_to_file"]').val();
-    this.onSubmitCallback && this.onSubmitCallback(exportToFile);
+    var exportData = this.content.find('[name="export_data"]').prop('checked');
+    var exportStructure = this.content.find('[name="export_structure"]').prop('checked');
+
+    if (exportData === false && exportStructure === false) {
+      window.alert("Please choose to export data or export structure or both");
+      return false;
+    }
+
+    var options = {
+      exportData: exportData,
+      exportStructure: exportStructure
+    };
+    this.onSubmitCallback && this.onSubmitCallback(exportToFile, options);
   },
 
   showCloseButton: function () {

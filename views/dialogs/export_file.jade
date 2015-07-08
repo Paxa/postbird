@@ -1,10 +1,20 @@
 header
-  = "Exporting database '" + database + "'"
+  = "Exporting database '"
+  b= database
+  = "'"
 
 form
   p.save-to-file
     = "Save to file:"
-    input(type="file" name="export_to_file" nwsaveas=database + '.sql')
+    input(type="file" name="export_to_file" nwsaveas=database + '.sql' nwworkingdir=hopePath)
+  p
+    label
+      = "Export structure"
+      input(type="checkbox" name="export_structure" checked)
+  p
+    label
+      = "Export data"
+      input(type="checkbox" name="export_data" checked)
 
   code.result
 

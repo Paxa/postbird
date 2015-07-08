@@ -35,7 +35,6 @@ My todo:
 * Allow reside columns only in header
 * Work on content tab: filters, sticky header, pagination, increase limit, sortings
 * Fix Table.describe when there is same tables in different schemas
-* Export only structure
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature

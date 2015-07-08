@@ -14,13 +14,21 @@ global.ExportController = jClass.extend({
   },
 
   doExport: function () {
-    this.dialog = Dialog.ExportFile(this.handler, function (filename) {
-      this.runPgDump(filename);
+    this.dialog = Dialog.ExportFile(this.handler, function (filename, options) {
+      this.runPgDump(filename, options);
     }.bind(this));
   },
 
-  runPgDump: function (filename) {
+  runPgDump: function (filename, options) {
     var exporter = new SqlExporter({debug: false});
+
+    if (options.exportData === false) {
+      exporter.setOnlyStructure();
+    }
+
+    if (options.exportStructure === false) {
+      exporter.setOnlyData();
+    }
 
     this.dialog.startExporting();
     this.dialog.addMessage("Start exporting '" + this.handler.database + "'\n");
