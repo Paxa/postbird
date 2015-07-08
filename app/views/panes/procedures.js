@@ -19,6 +19,12 @@ global.Panes.Procedures = global.Pane.extend({
     }.bind(this));
   },
 
+  editProc: function (procName) {
+    Model.Procedure.find(procName, function (proc) {
+      Dialog.EditProcedure(this.handler, proc);
+    }.bind(this));
+  },
+
   listLanguages: function () {
     App.startLoading("Fetching config...");
     Model.Procedure.listLanguages(function (langs) {

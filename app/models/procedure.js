@@ -111,7 +111,7 @@ global.Model.Procedure = Model.base.extend({
 });
 
 !function () {
-  var props = ['name', 'author', 'language', 'arg_list', 'return_type'];
+  var props = ['name', 'author', 'language', 'arg_list', 'return_type', 'prosrc'];
   props.forEach(function (prop) {
     Object.defineProperty(Model.Procedure.prototype, prop, {
       get: function () {
@@ -123,6 +123,12 @@ global.Model.Procedure = Model.base.extend({
   Object.defineProperty(Model.Procedure.prototype, 'is_aggregate', {
     get: function () {
       return this.data.proisagg;
+    }
+  });
+
+  Object.defineProperty(Model.Procedure.prototype, 'source', {
+    get: function () {
+      return this.data.prosrc;
     }
   });
 

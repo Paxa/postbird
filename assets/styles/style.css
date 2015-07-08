@@ -1364,6 +1364,10 @@ img.app-icon {
 .heroku-connection-dialog button.save-conn {
   margin-right: 10px; }
 
+.edit-procedure-dialog textarea, .edit-procedure-dialog .CodeMirror {
+  border: 1px solid #ccc;
+  min-height: 368px; }
+
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
 .hljs {

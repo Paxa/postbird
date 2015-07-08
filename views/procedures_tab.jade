@@ -17,8 +17,9 @@ table.native-look-table
         td= proc.arg_list
         td= proc.language
         td
-          a(exec="editProc('" + proc.name + "')") Edit
-          != "&nbsp;"
+          if proc.language != "c" && proc.language != 'internal'
+            a(exec="editProc('" + proc.name + "')") Edit
+            != "&nbsp;"
           a(exec="removeProc('" + proc.name + "')") Delete
 
 footer
