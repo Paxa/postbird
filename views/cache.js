@@ -900,28 +900,22 @@ try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (console, proc, undefined) {
+;var locals_for_with = (locals || {});(function (proc, undefined) {
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
-console.log(proc);
+buf.push("\n<textarea class=\"editor\">" + (jade.escape(null == (jade_interp = proc.source) ? "" : jade_interp)));
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.shift();
+buf.push("</textarea>");
 jade_debug.shift();
 jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
-buf.push("\n<textarea>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
-buf.push(jade.escape(null == (jade_interp = proc.source.replace(/\t/g, '    ')) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</textarea>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
 buf.push("\n<p class=\"buttons close-btn\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/dialogs/edit_procedure.jade" });
 buf.push("\n  <button class=\"cancel\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
 buf.push("Close");
 jade_debug.shift();
 jade_debug.shift();
@@ -930,12 +924,12 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</p>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"console" in locals_for_with?locals_for_with.console:typeof console!=="undefined"?console:undefined,"proc" in locals_for_with?locals_for_with.proc:typeof proc!=="undefined"?proc:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"proc" in locals_for_with?locals_for_with.proc:typeof proc!=="undefined"?proc:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "- console.log(proc);\n\ntextarea\n  = proc.source.replace(/\\t/g, '    ')\n\np.buttons.close-btn\n  button.cancel Close");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close");
 }
 };
-exports["dialogs/edit_procedure"].content = "- console.log(proc);\n\ntextarea\n  = proc.source.replace(/\\t/g, '    ')\n\np.buttons.close-btn\n  button.cancel Close";
+exports["dialogs/edit_procedure"].content = "textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close";
 exports["dialogs/export_file"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/dialogs/export_file.jade" }];
 try {

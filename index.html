@@ -3,8 +3,10 @@
   <head>
     <title>Postbird</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="assets/styles/style.css" media="all" rel="stylesheet" type="text/css" />
+
     <link href="lib/codemirror/codemirror.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="assets/styles/style.css" media="all" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript"> window.ApplicationStart = Date.now(); </script>
   </head>
   <body>
@@ -18,14 +20,16 @@
     <script type="text/javascript" src="lib/zepto.js"></script>
     <script type="text/javascript" src="lib/zepto_extra.js"></script>
     <script type="text/javascript" src="lib/codemirror/codemirror.js"></script>
-    <script type="text/javascript" src="lib/codemirror/addons/show-hint.js"></script>
-    <script type="text/javascript" src="lib/codemirror/addons/sql-hint.js"></script>
+    <script type="text/javascript" src="lib/codemirror/addon/hint/show-hint.js"></script>
+    <script type="text/javascript" src="lib/codemirror/addon/hint/sql-hint.js"></script>
+    <script type="text/javascript" src="lib/codemirror/addon/selection/active-line.js"></script>
+    <script type="text/javascript" src="lib/codemirror/addon/edit/matchbrackets.js"></script>
     <script type="text/javascript" src="lib/codemirror/sql/sql.js"></script>
     <script type="text/javascript" src="lib/codemirror/javascript/javascript.js"></script>
-    <script type="text/javascript" src="lib/codemirror/active-line.js"></script>
     <script type="text/javascript" src="lib/colResizable.js"></script>
     <script type="text/javascript" src="lib/mousetrap.js"></script>
-    <script type="text/javascript" src="lib/highlight.js"></script>
+    <script type="text/javascript" src="lib/highlightjs/highlight.js"></script>
+    <script type="text/javascript" src="lib/highlightjs/languages/sql.js"></script>
     <script type="text/javascript" src="index.js"></script>
   </body>
 </html>

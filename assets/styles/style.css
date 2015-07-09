@@ -756,6 +756,9 @@ body.sidebar-resizing {
   background: rgba(0, 0, 0, 0.07); }
 .cm-s-mac-classic .CodeMirror-selected {
   background: rgba(77, 151, 255, 0.33); }
+.cm-s-mac-classic span.CodeMirror-matchingbracket, .cm-s-mac-classic .CodeMirror-matchingbracket {
+  background: rgba(239, 237, 137, 0.32);
+  color: black !important; }
 .cm-s-mac-classic .cm-cursor {
   color: #000000; }
 .cm-s-mac-classic .cm-keyword {
@@ -1366,7 +1369,8 @@ img.app-icon {
 
 .edit-procedure-dialog textarea, .edit-procedure-dialog .CodeMirror {
   border: 1px solid #ccc;
-  min-height: 368px; }
+  min-height: 368px;
+  text-align: left; }
 
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */

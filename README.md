@@ -38,3 +38,5 @@ My todo:
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature
+* Add autocomplete tables via codemirror sql-hint
+* Contribute text/x-pgsql to codemirror github
