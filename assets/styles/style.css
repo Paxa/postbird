@@ -102,6 +102,7 @@ input[type="file"] {
 html, body {
   background: #fff;
   height: 100%;
+  overflow: hidden;
   font-family: Helvetica Neue, Helvetica, Segoe UI, Tahoma, sans;
   font-size: 13px; }
 
