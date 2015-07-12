@@ -4,7 +4,8 @@
       tr
         each column in data.fields
           - var type = column_type_label(types[column.name])
-          th(class= 'format-' + type, title=type)= column.name
+          - var dir = sorting.column == column.name ? sorting.direction : ''
+          th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name
     tbody
       each row in data.rows
         tr

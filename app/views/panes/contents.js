@@ -31,7 +31,11 @@ global.Panes.Contents = global.Pane.extend({
       return;
     }
     var sTime = Date.now();
-    this.renderViewToPane('content', 'content_tab', {data: data, types: this.columnTypes});
+    this.renderViewToPane('content', 'content_tab', {
+      data: data,
+      types: this.columnTypes,
+      sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection}
+    });
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
 
@@ -43,6 +47,8 @@ global.Panes.Contents = global.Pane.extend({
     //console.log("Expanders " + (Date.now() - sTime) + "ms");
 
     this.initTables();
+
+    this.initSortable();
 
     this.footer = this.content.find('.summary-and-pages');
 
@@ -119,4 +125,22 @@ global.Panes.Contents = global.Pane.extend({
     this.dataRowsCount = data.rows.length;
     this.renderData(data);
   },
+
+  initSortable: function () {
+    var cells = this.content.find('table th[sortable]')
+    cells.each(function (i, cell) {
+      cell = $u(cell);
+      cell.bind('click', function (ev) {
+        var direction = cell.attr('sortable-dir') == 'asc' ? 'desc' : 'asc';
+        if (this.queryOptions.sortColumn && this.queryOptions.sortColumn != cell.attr('sortable')) {
+          this.offset = 0;
+        }
+        this.queryOptions.sortColumn = cell.attr('sortable');
+        this.queryOptions.sortDirection = direction;
+        cells.removeAttr('sortable-dir');
+        cell.attr('sortable-dir', direction);
+        this.reloadData();
+      }.bind(this));
+    }.bind(this));
+  }
 });

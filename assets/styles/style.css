@@ -277,6 +277,9 @@ table.native-look-table {
     border-bottom: 1px solid #b6b6b6;
     position: relative;
     font-weight: normal; }
+    table.native-look-table th[sortable-dir='asc'], table.native-look-table th[sortable-dir='desc'] {
+      background-image: url("../table_top_bg_sorted.png");
+      border-bottom: 1px solid #7EB1D9; }
     table.native-look-table th + th:before {
       content: "";
       display: block;

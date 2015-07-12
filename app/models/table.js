@@ -332,12 +332,18 @@ global.Model.Table = Model.base.extend({
     if (!options) options = {};
 
     if (options.with_oid) {
-      var sql = 'select oid, * from "%s"."%s" limit %d offset %d';
+      var sql = 'select oid, * from "%s"."%s" %s limit %d offset %d';
     } else {
-      var sql = 'select * from "%s"."%s" limit %d offset %d';
+      var sql = 'select * from "%s"."%s" %s limit %d offset %d';
     }
 
-    this.q(sql, this.schema, this.table, limit, offset, function(data, error) {
+    var orderSql = "";
+    if (options.sortColumn) {
+      var direction = options.sortDirection || 'asc';
+      orderSql = ` order by "${options.sortColumn}" ${direction}`;
+    }
+
+    this.q(sql, this.schema, this.table, orderSql, limit, offset, function(data, error) {
       if (data) {
         data.limit = limit;
         data.offset = offset;

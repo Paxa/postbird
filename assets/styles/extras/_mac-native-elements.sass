@@ -68,6 +68,9 @@ table.native-look-table
     border-bottom: 1px solid #b6b6b6
     position: relative
     font-weight: normal
+    &[sortable-dir='asc'], &[sortable-dir='desc']
+      background-image: url("../table_top_bg_sorted.png")
+      border-bottom: 1px solid #7EB1D9
     & + th
       &:before
         content: ''
