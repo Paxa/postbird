@@ -1150,7 +1150,8 @@ body.sidebar-resizing {
   margin-bottom: 9px; }
 .window-content.info code.result {
   margin-right: 9px;
-  white-space: pre-wrap; }
+  white-space: pre-wrap;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
 
 .window-content.query {
   height: 90%; }
@@ -1258,6 +1259,7 @@ body.new-window {
       margin-bottom: 12px; }
     .snippets-window .preview code.result {
       white-space: pre-wrap;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
       margin-bottom: 12px; }
 
 .custom-window .alertify-dialog {
