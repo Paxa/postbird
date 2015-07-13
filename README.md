@@ -9,9 +9,9 @@ Postbird is PostgreSQL client for Mac.
 
 #### Download
 
-**Version 0.4.1**
+**Version 0.4.2**
 
-[Postgres-0.4.1.dmg](https://github.com/Paxa/postbird/releases/download/0.4.1/Postbird-0.4.1.dmg) - For Mac: 64bit, 10.7+
+[Postgres-0.4.2.dmg](https://github.com/Paxa/postbird/releases/download/0.4.2/Postbird-0.4.2.dmg) - For Mac: 64bit, 10.7+
 
 
 #### Development

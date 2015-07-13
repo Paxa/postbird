@@ -11,7 +11,7 @@
     "min_width": 572,
     "min_height": 260
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "repository": "https://github.com/Paxa/postbird",
   "js-flags": "--harmony",
   "chromium-args": "--disable-accelerated-video --disable-audio --disable-3d-apis --ignore-gpu-blacklist --disable-geolocation --disable-plugins --disable-plugins-discovery",
