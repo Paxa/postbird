@@ -20,6 +20,10 @@ global.DbScreen = jClass.extend({
         this.view.showDatabaseContent();
       }.bind(this));
     }
+
+    this.connection.onNotification(function (message) {
+      window.alertify.alert("Recieve Message:<br>" + JSON.stringify(message));
+    });
   },
 
   // short cut

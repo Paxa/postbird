@@ -26,6 +26,7 @@ global.Connection = jClass.extend({
     this.connection = null;
     global.Connection.instances.push(this);
     this.connectToServer(options, callback);
+    this.notificationCallbacks = [];
   },
 
   parseConnectionString: function (postgresUrl) {
@@ -74,6 +75,12 @@ global.Connection = jClass.extend({
 
     pg.connect(connectString, function (error, client) {
       this.connection = client;
+      client.on('notification', function(msg) {
+        console.log('notification', msg);
+        this.notificationCallbacks.forEach(function (fn) {
+          fn(msg);
+        });
+      }.bind(this));
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
@@ -380,7 +387,11 @@ global.Connection = jClass.extend({
       this.connection.end();
     }
     callback && callback();
-  }
+  },
+
+  onNotification: function (callback) {
+    this.notificationCallbacks.push(callback);
+  },
 });
 
 global.Connection.instances = [];
