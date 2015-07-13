@@ -7,6 +7,7 @@ table.native-look-table
       th return type
       th arguments
       th language
+      th extension
       th
   tbody
     each proc in procs
@@ -16,6 +17,7 @@ table.native-look-table
         td= proc.return_type
         td= proc.arg_list
         td= proc.language
+        td= proc.extension
         td
           if proc.language != "c" && proc.language != 'internal'
             a(exec="editProc('" + proc.name + "')") Edit
@@ -23,8 +25,8 @@ table.native-look-table
           a(exec="removeProc('" + proc.name + "')") Delete
 
 footer
-  button.native-look(exec="addColumnForm") Create Procedure
-  button.native-look(exec="addColumnForm") Create Trigger
+  - //button.native-look(exec="addColumnForm") Create Procedure
+  - //button.native-look(exec="addColumnForm") Create Trigger
   button.native-look(exec="listLanguages") List Languages
 
 h4 Triggers
@@ -58,4 +60,4 @@ table.native-look-table
           a(exec="removeProc('" + trigger.name + "')") Delete
 
 footer
-  button.native-look(exec="addColumnForm") Create Trigger
+  - //button.native-look(exec="addColumnForm") Create Trigger

@@ -87,6 +87,34 @@ global.Model.Procedure = Model.base.extend({
       Model.base.q("select * from pg_language", function (data, error) {
         callback(data.rows);
       });
+    },
+
+    findAllWithExtensions: function (callback) {
+        var sql = `SELECT
+            p.*,
+            proname as name, pg_namespace.nspname as schema_name, pg_authid.rolname as author,
+            pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
+            ret_type.typname as return_type, e.extname as extension
+        FROM pg_proc p
+        JOIN pg_namespace ON pg_namespace.oid = p.pronamespace
+        left JOIN pg_language ON pg_language.oid = p.prolang
+        LEFT JOIN pg_depend d ON d.objid = p.oid AND d.deptype = 'e' AND d.objid IS not NULL
+        INNER JOIN pg_authid ON (p.proowner = pg_authid.oid)
+        INNER JOIN pg_type ret_type ON (p.prorettype = ret_type.oid)
+        left join pg_extension e on refobjid = e.oid
+        where refobjid != 0;`;
+
+      Model.base.q(sql, function(data, error) {
+        if (error) {
+          callback([]);
+          return;
+        }
+        var procedures = [];
+        data.rows.forEach(function (row) {
+          procedures.push(new Model.Procedure('public', row));
+        });
+        callback(procedures);
+      });
     }
   },
 
@@ -111,7 +139,7 @@ global.Model.Procedure = Model.base.extend({
 });
 
 !function () {
-  var props = ['name', 'author', 'language', 'arg_list', 'return_type', 'prosrc'];
+  var props = ['name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension'];
   props.forEach(function (prop) {
     Object.defineProperty(Model.Procedure.prototype, prop, {
       get: function () {

@@ -3,7 +3,7 @@ global.Panes.Procedures = global.Pane.extend({
   renderTab: function (procs) {
     App.startLoading("Functions config...");
 
-    Model.Procedure.findAll(function(procs) {
+    Model.Procedure.findAllWithExtensions(function(procs) {
       Model.Trigger.findAll(function(triggers) {
 
         App.stopLoading();
