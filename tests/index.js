@@ -33,9 +33,9 @@ require('../app/utils');
 App.tabs = [{
   instance: {
     connection: Connection({
-      user: 'pavel',
+      user: process.env.USER || process.env.USERNAME,
       password: '',
-      database: 'postbird_testing'
+      database: ''
     }, function(success, error) {
       if (!success) {
         process.stdout.write(("ERROR: " + error).red + "\n");
