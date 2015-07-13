@@ -1,3 +1,16 @@
+== Version 0.4.2
+
+* Add feature to export only data or only structure
+* Trim snippets sql, add snippets for mat views
+* Edit procedures dialog
+* Update CodeMirror and hightlight.js, fix proc edit
+* Disable the "bounce" scrolling for OS X
+* Implement sort feature in table content tab
+* Remove my name from default connection params
+* Notify/Listen snippet and support
+* Show extension name in procedures list
+* Add snippets about triggers and constraints, fix snippets css
+
 == Version 0.4.1
 
 * Add support for "oid" column. Show in columns list, show in content tab
