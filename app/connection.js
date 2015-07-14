@@ -75,16 +75,16 @@ global.Connection = jClass.extend({
 
     pg.connect(connectString, function (error, client) {
       this.connection = client;
-      client.on('notification', function(msg) {
-        console.log('notification', msg);
-        this.notificationCallbacks.forEach(function (fn) {
-          fn(msg);
-        });
-      }.bind(this));
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
       } else {
+        this.connection.on('notification', function(msg) {
+          this.notificationCallbacks.forEach(function (fn) {
+            fn(msg);
+          });
+        }.bind(this));
+
         this.serverVersion(function (version, fullVersion) {
           console.log("Server version is ", version, "\n", fullVersion);
           this.pending.forEach(function (cb) {
