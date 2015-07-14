@@ -7,6 +7,7 @@ if (process.platform == "darwin") {
 var menu = {
   '': {
     "Check For Updates...": {
+      position: 1,
       click: function () {
         (new global.UpdatesController).checkUpdates();
       }
