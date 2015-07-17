@@ -1,3 +1,8 @@
+== Version 0.4.3
+
+* Fix exception when login
+* Add position for "Check For Updates..."
+
 == Version 0.4.2
 
 * Add feature to export only data or only structure
