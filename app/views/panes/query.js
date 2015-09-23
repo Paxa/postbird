@@ -24,6 +24,7 @@ global.Panes.Query = global.Pane.extend({
       autofocus: true,
       styleActiveLine: true,
       tabSize: 2,
+      scrollbarStyle: 'null',
       theme: 'mac-classic',
       extraKeys: {"Esc": "autocomplete"}
     });
