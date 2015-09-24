@@ -100,6 +100,14 @@ global.Connection = jClass.extend({
     }.bind(this));
   },
 
+  reconnect: function (callback) {
+    if (this.connection) {
+      this.connection.end();
+      this.connection = null;
+    }
+    this.connectToServer(this.options, callback);
+  },
+
   switchDb: function(database, callback) {
     this.options.database = database;
     this.connectToServer(this.options, callback);
@@ -139,6 +147,7 @@ global.Connection = jClass.extend({
           console.error("SQL failed", sql);
           console.error(error);
           if (callback) callback(result, error);
+          this.onConnectionError(error);
         } else {
           historyRecord.state = 'success';
           App.log("sql.success", historyRecord);
@@ -400,6 +409,26 @@ global.Connection = jClass.extend({
   onNotification: function (callback) {
     this.notificationCallbacks.push(callback);
   },
+
+  onConnectionError: function (error) {
+    if (
+      error.message.indexOf("server closed the connection unexpectedly") != -1 ||
+      error.message.indexOf("Unable to set non-blocking to true") != -1) {
+
+      var that = this;
+
+      window.alertify.confirm("Seems like disconnected, reconnect?<br><small>" + error.message, function (is_yes) {
+        window.alertify.hide();
+        if (is_yes) {
+          var tab = global.App.tabs.filter(function (tab) {
+            return tab.instance.connection == that;
+          })[0];
+
+          if (tab) tab.instance.reconnect();
+        }
+      });
+    }
+  }
 });
 
 global.Connection.instances = [];

@@ -446,6 +446,18 @@ global.DbScreen = jClass.extend({
 
   destroy: function () {
     this.connection.close();
+  },
+
+  reconnect: function (callback) {
+    this.connection.reconnect(function (success, error) {
+      if (success) {
+        window.alertify.alert('Reconnected!');
+        if (callback) callback(true);
+      } else {
+        window.alertify.alert('Connection error.<br>' + (error.message || error));
+        if (callback) callback(false);
+      }
+    });
   }
 });
 

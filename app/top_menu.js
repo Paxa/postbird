@@ -20,6 +20,15 @@ var menu = {
       },
       key: 'i',
       modifiers: 'cmd+shift'
+    },
+    'Reconnect': {
+      click: function () {
+        if (global.App.currentTab.instance.connection) {
+          global.App.currentTab.instance.reconnect();
+        } else {
+          window.alertify.alert('Current tab not connected');
+        }
+      }
     }
   },
   'Edit': { },
@@ -114,7 +123,7 @@ var menu = {
         help.activatePage("get-postgres");
       }
     },
-    Concole: {
+    Console: {
       click: function() {
         global.HistoryWindow.init();
       },

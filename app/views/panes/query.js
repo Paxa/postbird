@@ -81,6 +81,17 @@ global.Panes.Query = global.Pane.extend({
     this.editor.save();
     this.statusLine.text('');
 
+    if (!this.handler.connection.connection) {
+      window.alertify.confirm("Not connected to server, reconnect?", function (is_yes) {
+        if (is_yes) {
+          this.handler.reconnect(function (success) {
+            if (success) this.runQuery();
+          }.bind(this));
+        }
+      }.bind(this));
+      return;
+    }
+
     var selectedText = this.editor.getSelection();
 
     var sql = selectedText || this.textarea.val();

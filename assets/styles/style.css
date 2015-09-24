@@ -1299,7 +1299,8 @@ body.new-window {
         .history-window > ul li .event-info * {
           display: inline-block; }
       .history-window > ul li span.error {
-        color: #f22121; }
+        color: #f22121;
+        display: block; }
       .history-window > ul li span.exec-time {
         display: block;
         font-style: italic; }
