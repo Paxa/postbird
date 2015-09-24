@@ -1,6 +1,7 @@
 var jade;
 var jadeRuntime = require('jade/runtime');
 
+global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.log = require('./app/logger').make('info');
 
 //require('./sugar/sugar');
@@ -307,4 +308,18 @@ global.App.emit = function (eventName) {
   fn.apply(this, arguments);
 }
 
-//Object.ls(global.App);
+global.App.logEvents = [];
+global.App.logger = new global.EventEmitter2({
+  wildcard: true
+});
+
+global.App.log = function App_log(type, value1, value2, value3, value4) {
+  return this.logger.emit.apply(this.logger, arguments);
+}.bind(App);
+
+global.App.logger.onAny(function () {
+  var event = {type: this.event, time: (new Date()), args: Array.prototype.slice.call(arguments)};
+  global.App.logEvents.push(event);
+  if (global.App._events["log.message"]) global.App.emit("log.message", event);
+});
+

@@ -1,0 +1,48 @@
+link(href="assets/styles/style.css" media="all" rel="stylesheet" type="text/css")
+
+.history-window
+  header
+    button.native-look.reload-btn Reload
+  ul
+    each event in events
+      if event.type == "sql.start" && event.args[0].state != 'running'
+        - // do nothing
+      else
+        li
+          time= timeFormat(event.time)
+          .event-info
+            if event.type == "sql.start" && event.args[0].state == 'running'
+              - var query = event.args[0]
+              strong Running
+              .sql.running
+                code.sql= "SQL: " + query.sql
+
+            else if event.type == "sql.failed"
+              - var query = event.args[0]
+              .sql.failed
+                code.sql= "SQL: " + query.sql
+                span.error= query.error
+                span.exec-time= "(" + execTime(query.time) + ")"
+
+            else if event.type == "sql.success"
+              - var query = event.args[0]
+              .sql.success
+                code.sql= "SQL: " + query.sql
+                span.exec-time= "(" + execTime(query.time) + ")"
+
+            else if event.type == "connect.success"
+              - var opts = event.args[0].options
+              = "Connected to server "
+              code.sql= opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+
+            else if event.type == "connect.error"
+              - var opts = event.args[0].options
+              = "Failed connect to server "
+              code.sql= opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+              span.error= event.args[1].message || event.args[1]
+
+            else
+              .event
+                = "~"
+                = event.type
+                = event.args.join(", ")

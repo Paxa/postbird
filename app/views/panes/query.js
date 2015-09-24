@@ -147,5 +147,9 @@ global.Panes.Query = global.Pane.extend({
 
   openSnippets: function () {
     SnippetsWindow.init();
+  },
+
+  showHistory: function () {
+    global.HistoryWindow.init();
   }
 });

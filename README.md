@@ -40,3 +40,5 @@ My todo:
 * Auto-login feature
 * Add autocomplete tables via codemirror sql-hint
 * Contribute text/x-pgsql to codemirror github
+* Fix "newRole is not defined"
+* Check manifest.toolbar in child windows

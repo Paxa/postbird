@@ -1264,6 +1264,49 @@ body.new-window {
       font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
       margin-bottom: 12px; }
 
+body.new-window {
+  background: #EDEDED; }
+
+.history-window {
+  background: #EDEDED; }
+  .history-window header {
+    padding: 7px 10px;
+    background: #EDEDED;
+    border-bottom: 1px solid #B4B4B4; }
+    .history-window header button {
+      font-size: 13px; }
+  .history-window > ul {
+    width: 100%;
+    box-sizing: border-box;
+    max-height: calc(100% - 34px);
+    overflow-y: auto;
+    background: #fff; }
+    .history-window > ul li {
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+      font-size: 0; }
+      .history-window > ul li:nth-child(even) {
+        background: #fafafa; }
+      .history-window > ul li time, .history-window > ul li .event-info {
+        display: inline-block;
+        font-size: 12px;
+        vertical-align: top; }
+      .history-window > ul li time {
+        width: 72px;
+        color: #777; }
+      .history-window > ul li .event-info {
+        width: calc(100% - 72px); }
+        .history-window > ul li .event-info * {
+          display: inline-block; }
+      .history-window > ul li span.error {
+        color: #f22121; }
+      .history-window > ul li span.exec-time {
+        display: block;
+        font-style: italic; }
+  .history-window code.sql {
+    white-space: pre-wrap;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+
 .custom-window .alertify-dialog {
   padding-top: 38px; }
 .custom-window h3.window-title {

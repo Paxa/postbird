@@ -67,6 +67,7 @@ require('./app/controllers/export_controller');
 require('./app/controllers/updates_controller');
 
 require('./app/heroku_client');
+require('./app/history_window');
 
 global.$u = window.$u = Zepto;
 global.$ = function (selector) {
@@ -120,6 +121,9 @@ Zepto(document).ready(function() {
   win.on('closed', function() {
     if (global.App.snippersWin) {
       global.App.snippersWin.close();
+    }
+    if (global.App.historyWin) {
+      global.App.historyWin.close();
     }
   });
 });

@@ -113,6 +113,12 @@ var menu = {
         var help = global.HelpScreen.open();
         help.activatePage("get-postgres");
       }
+    },
+    Concole: {
+      click: function() {
+        global.HistoryWindow.init();
+      },
+      key: 'l'
     }
   }
 };

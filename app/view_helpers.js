@@ -102,6 +102,19 @@ var helpers = global.ViewHelpers = {
     return '<time>' + strftime('%Y-%m-%d', date) + '</time>';
   },
 
+  timeFormat: function (date) {
+    return strftime('%H:%M:%S', date);
+  },
+
+  execTime: function (time) {
+    console.log(time);
+    if (time >= 1000) {
+      return "" + (time / 1000) + " sec";
+    } else {
+      return "" + time + " ms";
+    }
+  },
+
   formatJson: function (value) {
     var json = JSON.stringify(value);
     var n = $dom(['span']);

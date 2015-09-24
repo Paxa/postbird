@@ -78,11 +78,13 @@ global.Connection = jClass.extend({
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
+        App.log("connect.error", this, error);
       } else {
         this.connection.on('notification', function(msg) {
           this.notificationCallbacks.forEach(function (fn) {
             fn(msg);
           });
+          App.log("notification.recieved", msg);
         }.bind(this));
 
         this.serverVersion(function (version, fullVersion) {
@@ -93,6 +95,7 @@ global.Connection = jClass.extend({
           this.pending = [];
           callback && callback(true);
         }.bind(this));
+        App.log("connect.success", this);
       }
     }.bind(this));
   },
@@ -114,8 +117,9 @@ global.Connection = jClass.extend({
     this.onReady(function () {
       if (this.logging) process.stdout.write("SQL: " + sql.green + "\n");
 
-      var historyRecord = { sql: sql, date: (new Date()) };
+      var historyRecord = { sql: sql, date: (new Date()), state: 'running' };
       this.history.push(historyRecord);
+      App.log("sql.start", historyRecord);
       var time = Date.now();
 
       this.connection.query(sql, function (error, result) {
@@ -129,11 +133,15 @@ global.Connection = jClass.extend({
 
         if (error) {
           historyRecord.error = error;
+          historyRecord.state = 'failed';
+          App.log("sql.failed", historyRecord);
           error.query = sql;
           console.error("SQL failed", sql);
           console.error(error);
           if (callback) callback(result, error);
         } else {
+          historyRecord.state = 'success';
+          App.log("sql.success", historyRecord);
           result.time = historyRecord.time;
           //console.log(result);
           if (callback) callback(result);
