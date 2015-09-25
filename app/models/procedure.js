@@ -2,7 +2,7 @@ global.Model.Procedure = Model.base.extend({
   klassExtend: {
     findAll: function (callback) {
       var sql = $u.commentOf(function () {/*
-        SELECT *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
+        SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
                pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
                ret_type.typname as return_type
         FROM pg_proc
@@ -28,7 +28,7 @@ global.Model.Procedure = Model.base.extend({
 
     find: function (name, callback) {
       var sql = $u.commentOf(function () {/*
-        SELECT *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
+        SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
                pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
               ret_type.typname as return_type
         FROM pg_proc
@@ -36,10 +36,10 @@ global.Model.Procedure = Model.base.extend({
         INNER JOIN pg_authid ON (pg_proc.proowner = pg_authid.oid)
         INNER JOIN pg_language ON (pg_proc.prolang = pg_language.oid)
         INNER JOIN pg_type ret_type ON (pg_proc.prorettype = ret_type.oid)
-        WHERE ns.nspname = 'public' AND proname = '%s' order by proname;
+        WHERE ns.nspname = 'public' AND proname = '%s' OR pg_proc.oid = '%s' order by proname;
       */});
 
-      Model.base.q(sql, name, function(data, error) {
+      Model.base.q(sql, name, name, function(data, error) {
         if (error) {
           callback();
           return;
@@ -91,7 +91,7 @@ global.Model.Procedure = Model.base.extend({
 
     findAllWithExtensions: function (callback) {
         var sql = `SELECT
-            p.*,
+            p.oid, p.*,
             proname as name, pg_namespace.nspname as schema_name, pg_authid.rolname as author,
             pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
             ret_type.typname as return_type, e.extname as extension
@@ -102,7 +102,8 @@ global.Model.Procedure = Model.base.extend({
         INNER JOIN pg_authid ON (p.proowner = pg_authid.oid)
         INNER JOIN pg_type ret_type ON (p.prorettype = ret_type.oid)
         left join pg_extension e on refobjid = e.oid
-        where refobjid != 0;`;
+        where pg_namespace.nspname = 'public' or refobjid != 0
+        order by p.proname, arg_list`;
 
       Model.base.q(sql, function(data, error) {
         if (error) {
@@ -123,6 +124,19 @@ global.Model.Procedure = Model.base.extend({
     this.data = proc_data;
   },
 
+  getDefinition: function (callback) {
+    var sql = "select proname, pg_get_functiondef(oid) as source from pg_proc where oid = '%s'";
+
+    var fiber = global.Fiber && global.Fiber.current;
+
+    this.q(sql, this.oid, function (result, error) {
+      if (error && fiber) {
+        throw error;
+      }
+      callback(result && result.rows[0], error);
+    });
+  },
+
   drop: function (callback) {
     var type = this.is_aggregate ? "AGGREGATE" : "FUNCTION";
     var sql = "drop %s %s.%s(%s)";
@@ -139,7 +153,7 @@ global.Model.Procedure = Model.base.extend({
 });
 
 !function () {
-  var props = ['name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension'];
+  var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension'];
   props.forEach(function (prop) {
     Object.defineProperty(Model.Procedure.prototype, prop, {
       get: function () {

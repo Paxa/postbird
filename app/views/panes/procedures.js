@@ -19,10 +19,22 @@ global.Panes.Procedures = global.Pane.extend({
     }.bind(this));
   },
 
-  editProc: function (procName) {
-    Model.Procedure.find(procName, function (proc) {
+  editProc: function (poid, procName) {
+    Model.Procedure.find(poid, function (proc) {
       Dialog.EditProcedure(this.handler, proc);
     }.bind(this));
+  },
+
+  procDefinition: function (poid, name) {
+    Model.Procedure.find(poid, function (proc) {
+      proc.getDefinition(function (data, error) {
+        Dialog.DefProcedure(this.handler, proc, data.source);
+      }.bind(this));
+    }.bind(this));
+  },
+
+  editTrigger: function (triggerName) {
+    throw "Not Implemented";
   },
 
   listLanguages: function () {

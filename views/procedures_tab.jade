@@ -20,7 +20,9 @@ table.native-look-table
         td= proc.extension
         td
           if proc.language != "c" && proc.language != 'internal'
-            a(exec="editProc('" + proc.name + "')") Edit
+            a(exec="editProc('" + proc.oid + "', '" + proc.name + "')") Edit
+            != "&nbsp;"
+            a(exec="procDefinition('" + proc.oid + "', '" + proc.name + "')") Source
             != "&nbsp;"
           a(exec="removeProc('" + proc.name + "')") Delete
 
@@ -29,7 +31,7 @@ footer
   - //button.native-look(exec="addColumnForm") Create Trigger
   button.native-look(exec="listLanguages") List Languages
 
-h4 Triggers
+h4 Triggers And Constraints
 
 table.native-look-table
   thead
@@ -55,9 +57,9 @@ table.native-look-table
         td= trigger.typeDesc().join(", ")
         td= trigger.tgdeferrable ? "Yes" : "No"
         td
-          a(exec="editProc('" + trigger.name + "')") Edit
+          a(exec="editTrigger('" + trigger.name + "')") Edit
           != "&nbsp;"
-          a(exec="removeProc('" + trigger.name + "')") Delete
+          a(exec="removeTrigger('" + trigger.name + "')") Delete
 
 footer
   - //button.native-look(exec="addColumnForm") Create Trigger

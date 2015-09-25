@@ -52,6 +52,7 @@ require('./app/views/dialogs/list_languages');
 require('./app/views/dialogs/export_file');
 require('./app/views/dialogs/show_sql');
 require('./app/views/dialogs/edit_procedure');
+require('./app/views/dialogs/def_procedure');
 
 require('./app/models/base');
 require('./app/models/table');

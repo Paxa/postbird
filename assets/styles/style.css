@@ -1366,6 +1366,12 @@ img.app-icon {
 .alertify-dialog form p {
   margin: 5px 0; }
 
+code.general {
+  margin-right: 9px;
+  white-space: pre-wrap;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left; }
+
 .import-file-dialog header, .export-file-dialog header {
   margin-bottom: 15px; }
   .import-file-dialog header code, .export-file-dialog header code {
