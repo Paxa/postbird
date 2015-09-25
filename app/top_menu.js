@@ -114,8 +114,12 @@ var menu = {
       },
       key: 'i'
     },
-    Reload: function () {
-      gui.Window.get().reloadDev();
+    Reload: {
+      click: function () {
+        gui.Window.get().reloadDev();
+      },
+      key: 'r',
+      modifiers: 'cmd+shift'
     },
     Help: {
       click: function() {
