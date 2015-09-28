@@ -108,6 +108,9 @@ global.Panes.Query = global.Pane.extend({
         this.statusLine.text(message);
       } else {
         PgTypeNames.extendFields(data);
+        if (data.rows.length > 500) {
+          data.rows.length = 500;
+        }
         var node = App.renderView('db_rows_table', {data: data})[0];
         this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);
@@ -115,6 +118,9 @@ global.Panes.Query = global.Pane.extend({
         var footerText;
         if (data.fields && !isNaN(data.rowCount) || data.command == "SELECT") {
           footerText = `Found ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'} in ${data.time} ms.`;
+          if (data.rowCount > 500) {
+            footerText += " Shown first 500 records";
+          }
         } else {
           footerText = `Complete, taking ${data.time} ms.`;
           if (data.rowCount) {
