@@ -220,10 +220,17 @@ global.LoginScreen = jClass.extend({
   },
 
   onFormSubmit: function (e, callback) {
+    var button = this.form.find('input[type=submit]');
+    var buttonText = button.val();
+    button.attr('disabled', true).val("Connecting...");
+
     e && e.preventDefault();
     var options = this.getFormData();
-    console.log("Connecting to db", options);
-    this.makeConnection(options, {}, callback);
+
+    this.makeConnection(options, {}, function (tab) {
+      button.removeAttr('disabled').val(buttonText);
+      if (callback && tab) callback(tab);
+    });
   },
 
   getFormData: function () {
@@ -269,6 +276,7 @@ global.LoginScreen = jClass.extend({
         tab.activate();
         if (callback) callback(tab);
       } else {
+        if (callback) callback(false);
         window.alertify.alert(this.humanErrorMessage(message));
       }
     }.bind(this));
