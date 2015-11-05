@@ -425,6 +425,9 @@ table.native-look-table {
       .home-screen .sidebar ul > li[table-type=VIEW]:before, .home-screen .sidebar ul > li[table-type="MATERIALIZED VIEW"]:before {
         background-image: url("../icons/db_view.png");
         opacity: 0.8; }
+      .home-screen .sidebar ul > li[table-type="FOREIGN TABLE"]:before {
+        background-image: url("../icons/foreign_table.png");
+        opacity: 0.8; }
       .home-screen .sidebar ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
       .home-screen .sidebar ul > li.selected {
@@ -691,6 +694,9 @@ body.sidebar-resizing {
               position: absolute; }
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
               background-image: url("../icons/db_view.png");
+              opacity: 0.8; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="FOREIGN TABLE"]:before {
+              background-image: url("../icons/foreign_table.png");
               opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
@@ -1235,6 +1241,9 @@ body.new-window {
         position: absolute; }
       .snippets-window > ul > li[table-type=VIEW]:before, .snippets-window > ul > li[table-type="MATERIALIZED VIEW"]:before {
         background-image: url("../icons/db_view.png");
+        opacity: 0.8; }
+      .snippets-window > ul > li[table-type="FOREIGN TABLE"]:before {
+        background-image: url("../icons/foreign_table.png");
         opacity: 0.8; }
       .snippets-window > ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }

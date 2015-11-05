@@ -191,6 +191,35 @@ global.DbScreenView = jClass.extend({
               _this.showViewSql(schema, table.table_name);
             }
           });
+        } else if (table.table_type == "FOREIGN TABLE") {
+          $u.contextMenu(tableNode, {
+            'View': function () {
+              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            },
+            'separator': 'separator',
+            'Rename': function () {
+              _this.renameTable(tableNode, schema, table.table_name);
+            },
+            'Drop foreign table': function() {
+              _this.handler.dropView(schema, table.table_name, function (res, error) {
+                if (error) {
+                  var errorMsg = "" + error.toString();
+                  if (error.detail) errorMsg += "\n----\n" + error.detail;
+                  if (error.hint) errorMsg += "\n----\n" + error.hint;
+                  window.alert(errorMsg);
+                } else {
+                  if (_this.handler.currentTable == table.table_name) {
+                    _this.eraseCurrentContent();
+                  }
+                }
+              });
+            },
+            'Show view SQL': function () {
+              _this.showViewSql(schema, table.table_name);
+            }
+          });
+        } else {
+          console.log("Unknown table type: ", table.table_type, schema, table);
         }
 
         $u(schemaTree.list).append(tableNode);

@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     nodewebkit: {
       options: {
-        version: '0.12.2',
+        version: '0.12.3',
         platforms: ['win', 'linux'],
         credits: './build_files/Credits.html',
         macIcns: './build_files/icon.icns',

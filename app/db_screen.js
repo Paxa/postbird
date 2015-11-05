@@ -329,6 +329,19 @@ global.DbScreen = jClass.extend({
     }.bind(this));
   },
 
+  dropForeignTable: function (schema, table, callback) {
+    window.alertify.confirm("Delete foreign " + schema + '.' + table + "?", function (agreed) {
+      if (!agreed) return;
+      Model.Table(schema, table).dropFereign(function (success, error) {
+        if (success) {
+          this.omit('table.deleted');
+          this.fetchTablesAndSchemas();
+        }
+        callback && callback(success, error);
+      }.bind(this));
+    }.bind(this));
+  },
+
   renameTable: function (schema, tableName, newName, callback) {
     if (tableName == newName) {
       console.log("Try rename table '" + tableName + "' -> '" + newName + "', canceled, same value");

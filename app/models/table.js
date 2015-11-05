@@ -30,6 +30,12 @@ global.Model.Table = Model.base.extend({
     }.bind(this));
   },
 
+  dropFereign: function (callback) {
+    this.q("DROP FOREIGN TABLE \"%s\"", this.table, function (result, error) {
+      callback(error ? false : true, error);
+    });
+  },
+
   safeDrop: function (callback) {
     this.q('DROP TABLE IF EXISTS "%s" CASCADE', this.table, callback);
   },

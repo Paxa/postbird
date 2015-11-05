@@ -107,7 +107,6 @@ var helpers = global.ViewHelpers = {
   },
 
   execTime: function (time) {
-    console.log(time);
     if (time >= 1000) {
       return "" + (time / 1000) + " sec";
     } else {
