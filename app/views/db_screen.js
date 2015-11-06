@@ -201,7 +201,7 @@ global.DbScreenView = jClass.extend({
               _this.renameTable(tableNode, schema, table.table_name);
             },
             'Drop foreign table': function() {
-              _this.handler.dropView(schema, table.table_name, function (res, error) {
+              _this.handler.dropForeignTable(schema, table.table_name, function (res, error) {
                 if (error) {
                   var errorMsg = "" + error.toString();
                   if (error.detail) errorMsg += "\n----\n" + error.detail;
