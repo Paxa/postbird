@@ -56,6 +56,11 @@ PQ.prototype.socket = function() {
   return this.$socket();
 };
 
+// return server version number e.g. 90300
+PQ.prototype.serverVersion = function () {
+  return this.$serverVersion();
+};
+
 //finishes the connection & closes it
 PQ.prototype.finish = function() {
   this.connected = false;

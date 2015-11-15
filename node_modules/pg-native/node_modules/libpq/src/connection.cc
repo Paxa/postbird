@@ -78,6 +78,13 @@ NAN_METHOD(Connection::Finish) {
   }
 }
 
+NAN_METHOD(Connection::ServerVersion) {
+  TRACE("Connection::ServerVersion");
+  Connection* self = THIS();
+  info.GetReturnValue().Set(PQserverVersion(self->pq));
+}
+
+
 NAN_METHOD(Connection::Exec) {
   Connection *self = THIS();
   Nan::Utf8String commandText(info[0]);
