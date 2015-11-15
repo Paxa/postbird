@@ -131,7 +131,10 @@ var suite = vows.describe('parser').addBatch({
     },
     'parse it with parseException': {
       topic: function (err, exc) {
-        return parser.parseException(exc, this.callback);
+        var self = this;
+        return parser.parseException(exc, function(err, parsedObj) {
+          self.callback(err, parsedObj, exc);
+        });
       },
       'verify the filename': function (err, parsedObj) {
         assert.isNull(err);
@@ -146,6 +149,16 @@ var suite = vows.describe('parser').addBatch({
         var lastFrame = parsedObj.frames[parsedObj.frames.length - 1];
         assert.isString(lastFrame.code);
         assert.includes(lastFrame.code, 'new Error(\'Hello World\')');
+      },
+      'parse the same error again': {
+        topic: function(err, parsedObj, exc) {
+          return parser.parseException(exc, this.callback);
+        },
+        'verify the context line again': function (err, parsedObj) {
+          var lastFrame = parsedObj.frames[parsedObj.frames.length - 1];
+          assert.isString(lastFrame.code);
+          assert.includes(lastFrame.code, 'new Error(\'Hello World\')');
+        }
       }
     }
   },

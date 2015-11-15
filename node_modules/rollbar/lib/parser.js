@@ -223,7 +223,7 @@ function gatherContexts(frames, callback) {
     }
 
     function gatherContextLines(frame, callback) {
-      var lines = tempFileCache[frame.filename];
+      var lines = tempFileCache[frame.filename] || cache.get(frame.filename);
 
       if (lines) {
         extractContextLines(frame, lines);

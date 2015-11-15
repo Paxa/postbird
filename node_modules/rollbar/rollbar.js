@@ -78,15 +78,16 @@ exports.init = function (accessToken, options) {
    *    source files on rollbar
    *  branch - the branch in your version control system for this code
    *  codeVersion - the version or revision of your code
+   *  enabled - Default: true - determines if errors gets reported to Rollbar
    *  
    */
   if (!initialized) {
-    if (!accessToken) {
+    options = options || {};
+    if (!accessToken && options.enabled !== false) {
       console.error('[Rollbar] Missing access_token.');
       return;
     }
 
-    options = options || {};
     options.environment = options.environment || process.env.NODE_ENV || 'unspecified';
 
     api.init(accessToken, options);
