@@ -39,10 +39,10 @@ types.setTypeParser(TIMESTAMP_OID, parseFn)
 ```
 _note: I've never done that with my dates, and I'm not 100% sure moment can parse all the date strings returned from postgres.  It's just an example!_
 
-If you're thinking "gee, this seems pretty handy, but how can I get a list of all the OIDs in the database and what the correspond to?!?!?!" worry not:
+If you're thinking "gee, this seems pretty handy, but how can I get a list of all the OIDs in the database and what they correspond to?!?!?!" worry not:
 
 ```bash
-$ psql -c "select oid, typname from pg_type where typtype = 'b' order by oid"
+$ psql -c "select typname, oid, typarray from pg_type where typtype = 'b' order by oid"
 ```
 
 :smile:

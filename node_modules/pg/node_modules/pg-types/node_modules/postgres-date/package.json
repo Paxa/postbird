@@ -1,0 +1,62 @@
+{
+  "name": "postgres-date",
+  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Postgres date column parser",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bendrucker/postgres-date.git"
+  },
+  "author": {
+    "name": "Ben Drucker",
+    "email": "bvdrucker@gmail.com",
+    "url": "bendrucker.me"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "keywords": [
+    "postgres",
+    "date",
+    "parser"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "^4.0.0",
+    "standard": "^4.0.0"
+  },
+  "files": [
+    "index.js",
+    "readme.md"
+  ],
+  "gitHead": "34b02f42ce987cd80731e928fe96d71a79cd6af2",
+  "bugs": {
+    "url": "https://github.com/bendrucker/postgres-date/issues"
+  },
+  "homepage": "https://github.com/bendrucker/postgres-date#readme",
+  "_id": "postgres-date@1.0.0",
+  "_shasum": "cd054c8c9aea1bd93cd0d674b4f79daec8b1937e",
+  "_from": "postgres-date@>=1.0.0 <1.1.0",
+  "_npmVersion": "2.11.0",
+  "_nodeVersion": "2.2.1",
+  "_npmUser": {
+    "name": "bendrucker",
+    "email": "bvdrucker@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "bendrucker",
+      "email": "bvdrucker@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "cd054c8c9aea1bd93cd0d674b4f79daec8b1937e",
+    "tarball": "http://registry.npmjs.org/postgres-date/-/postgres-date-1.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/postgres-date/-/postgres-date-1.0.0.tgz"
+}

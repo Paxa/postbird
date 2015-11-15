@@ -1,0 +1,64 @@
+{
+  "name": "postgres-interval",
+  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Parse Postgres interval columns",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bendrucker/postgres-interval.git"
+  },
+  "author": {
+    "name": "Ben Drucker",
+    "email": "bvdrucker@gmail.com",
+    "url": "bendrucker.me"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "keywords": [
+    "postgres",
+    "interval",
+    "parser"
+  ],
+  "dependencies": {
+    "xtend": "^4.0.0"
+  },
+  "devDependencies": {
+    "tape": "^4.0.0",
+    "standard": "^4.0.0"
+  },
+  "files": [
+    "index.js",
+    "readme.md"
+  ],
+  "gitHead": "0933b0e995abc0752aca71c50f1f17b041276861",
+  "bugs": {
+    "url": "https://github.com/bendrucker/postgres-interval/issues"
+  },
+  "homepage": "https://github.com/bendrucker/postgres-interval#readme",
+  "_id": "postgres-interval@1.0.0",
+  "_shasum": "ddf3f4c67377e28a872bf3189305b4c7eb02ef14",
+  "_from": "postgres-interval@>=1.0.0 <1.1.0",
+  "_npmVersion": "2.11.0",
+  "_nodeVersion": "2.2.1",
+  "_npmUser": {
+    "name": "bendrucker",
+    "email": "bvdrucker@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "bendrucker",
+      "email": "bvdrucker@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "ddf3f4c67377e28a872bf3189305b4c7eb02ef14",
+    "tarball": "http://registry.npmjs.org/postgres-interval/-/postgres-interval-1.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/postgres-interval/-/postgres-interval-1.0.0.tgz"
+}

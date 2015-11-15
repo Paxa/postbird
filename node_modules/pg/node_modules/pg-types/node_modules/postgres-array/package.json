@@ -1,0 +1,63 @@
+{
+  "name": "postgres-array",
+  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Parse postgres array columns",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bendrucker/postgres-array.git"
+  },
+  "author": {
+    "name": "Ben Drucker",
+    "email": "bvdrucker@gmail.com",
+    "url": "bendrucker.me"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "keywords": [
+    "postgres",
+    "array",
+    "parser"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "ap": "^0.2.0",
+    "standard": "^4.0.0",
+    "tape": "^4.0.0"
+  },
+  "files": [
+    "index.js",
+    "readme.md"
+  ],
+  "gitHead": "3ced22b72207509a23dcf92c8f24651a81056f7e",
+  "bugs": {
+    "url": "https://github.com/bendrucker/postgres-array/issues"
+  },
+  "homepage": "https://github.com/bendrucker/postgres-array#readme",
+  "_id": "postgres-array@1.0.0",
+  "_shasum": "48c2e82935b178bf805e0dff689d137eec2bfe6b",
+  "_from": "postgres-array@>=1.0.0 <1.1.0",
+  "_npmVersion": "2.11.0",
+  "_nodeVersion": "2.2.1",
+  "_npmUser": {
+    "name": "bendrucker",
+    "email": "bvdrucker@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "bendrucker",
+      "email": "bvdrucker@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "48c2e82935b178bf805e0dff689d137eec2bfe6b",
+    "tarball": "http://registry.npmjs.org/postgres-array/-/postgres-array-1.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/postgres-array/-/postgres-array-1.0.0.tgz"
+}

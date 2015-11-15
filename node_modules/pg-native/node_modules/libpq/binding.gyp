@@ -1,11 +1,5 @@
 {
   'conditions': [
-    ['OS=="win"', {
-      'variables': {
-        'pgconfig': '<!@(cmd /C where /Q pg_config)'
-      }
-     }
-    ],
     ['OS=="linux"', {
       'variables' : {
         # Find the pull path to the pg_config command, since iy may not be on the PATH

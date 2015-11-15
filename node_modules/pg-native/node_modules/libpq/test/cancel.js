@@ -16,4 +16,14 @@ describe('cancel a request', function() {
     pq.exec('SELECT NOW()');
     done();
   });
+
+  it('returns (not throws) an error if not connected', function(done) {
+    var pq = new Libpq();
+    assert.doesNotThrow(function () {
+      pq.cancel(function (err) {
+        assert(err, 'should raise an error when not connected');
+      });
+    });
+    done();
+  });
 });

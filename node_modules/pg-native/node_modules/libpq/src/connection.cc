@@ -1,6 +1,6 @@
 #include "addon.h"
 
-Connection::Connection() : ObjectWrap() {
+Connection::Connection() : Nan::ObjectWrap() {
   TRACE("Connection::Constructor");
   pq = NULL;
   lastResult = NULL;
@@ -11,76 +11,59 @@ Connection::Connection() : ObjectWrap() {
 }
 
 NAN_METHOD(Connection::Create) {
-  NanScope();
-
   TRACE("Building new instance");
   Connection* conn = new Connection();
-  conn->Wrap(args.This());
+  conn->Wrap(info.This());
 
-  NanReturnValue(args.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 NAN_METHOD(Connection::ConnectSync) {
-  NanScope();
   TRACE("Connection::ConnectSync::begin");
 
-  Connection *self = ObjectWrap::Unwrap<Connection>(args.This());
-
-  char* paramString = NewCString(args[0]);
+  Connection *self = Nan::ObjectWrap::Unwrap<Connection>(info.This());
 
   self->Ref();
   self->is_reffed = true;
-  bool success = self->ConnectDB(paramString);
+  bool success = self->ConnectDB(*Nan::Utf8String(info[0]));
 
-  delete[] paramString;
-
-  NanReturnValue(success ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success);
 }
 
 NAN_METHOD(Connection::Connect) {
-  NanScope();
   TRACE("Connection::Connect");
-
-  char* paramString = NewCString(args[0]);
-  TRACEF("Connection parameters: %s\n", paramString);
 
   Connection* self = THIS();
 
-  v8::Local<v8::Function> callback = args[1].As<v8::Function>();
+  v8::Local<v8::Function> callback = info[1].As<v8::Function>();
   LOG("About to make callback");
-  NanCallback* nanCallback = new NanCallback(callback);
+  Nan::Callback* nanCallback = new Nan::Callback(callback);
   LOG("About to instantiate worker");
-  ConnectAsyncWorker* worker = new ConnectAsyncWorker(paramString, self, nanCallback);
+  ConnectAsyncWorker* worker = new ConnectAsyncWorker(info[0].As<v8::String>(), self, nanCallback);
   LOG("Instantiated worker, running it...");
   self->Ref();
   self->is_reffed = true;
-  NanAsyncQueueWorker(worker);
-
-  NanReturnUndefined();
+  Nan::AsyncQueueWorker(worker);
 }
 
 NAN_METHOD(Connection::Socket) {
-  NanScope();
   TRACE("Connection::Socket");
 
   Connection *self = THIS();
   int fd = PQsocket(self->pq);
   TRACEF("Connection::Socket::fd: %d\n", fd);
 
-  NanReturnValue(NanNew<v8::Number>(fd));
+  info.GetReturnValue().Set(fd);
 }
 
 NAN_METHOD(Connection::GetLastErrorMessage) {
-  NanScope();
-
   Connection *self = THIS();
   char* errorMessage = PQerrorMessage(self->pq);
 
-  NanReturnValue(NanNew(errorMessage));
+  info.GetReturnValue().Set(Nan::New(errorMessage).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::Finish) {
-  NanScope();
   TRACE("Connection::Finish::finish");
 
   Connection *self = THIS();
@@ -93,42 +76,32 @@ NAN_METHOD(Connection::Finish) {
     self->is_reffed = false;
     //self->Unref();
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::Exec) {
-  NanScope();
-
   Connection *self = THIS();
-  char* commandText = NewCString(args[0]);
+  Nan::Utf8String commandText(info[0]);
 
-  TRACEF("Connection::Exec: %s\n", commandText);
-  PGresult* result = PQexec(self->pq, commandText);
-
-  delete[] commandText;
+  TRACEF("Connection::Exec: %s\n", *commandText);
+  PGresult* result = PQexec(self->pq, *commandText);
 
   self->SetLastResult(result);
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::ExecParams) {
-  NanScope();
-
   Connection *self = THIS();
 
-  char* commandText = NewCString(args[0]);
-  TRACEF("Connection::Exec: %s\n", commandText);
+  Nan::Utf8String commandText(info[0]);
+  TRACEF("Connection::Exec: %s\n", *commandText);
 
-  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(args[1]);
+  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(info[1]);
 
   int numberOfParams = jsParams->Length();
-  char** parameters = NewCStringArray(jsParams);
+  char **parameters = NewCStringArray(jsParams);
 
   PGresult* result = PQexecParams(
       self->pq,
-      commandText,
+      *commandText,
       numberOfParams,
       NULL, //const Oid* paramTypes[],
       parameters, //const char* const* paramValues[]
@@ -137,58 +110,46 @@ NAN_METHOD(Connection::ExecParams) {
       0 //result format of text
       );
 
-  delete [] commandText;
   DeleteCStringArray(parameters, numberOfParams);
 
   self->SetLastResult(result);
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::Prepare) {
-  NanScope();
-
   Connection *self = THIS();
 
-  char* statementName = NewCString(args[0]);
-  char* commandText = NewCString(args[1]);
-  int numberOfParams = args[2]->Int32Value();
+  Nan::Utf8String statementName(info[0]);
+  Nan::Utf8String commandText(info[1]);
+  int numberOfParams = Nan::To<int>(info[2]).FromJust();
 
-  TRACEF("Connection::Prepare: %s\n", statementName);
+  TRACEF("Connection::Prepare: %s\n", *statementName);
 
   PGresult* result = PQprepare(
       self->pq,
-      statementName,
-      commandText,
+      *statementName,
+      *commandText,
       numberOfParams,
       NULL //const Oid* paramTypes[]
       );
 
-  delete [] statementName;
-  delete [] commandText;
-
   self->SetLastResult(result);
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::ExecPrepared) {
-  NanScope();
-
   Connection *self = THIS();
 
-  char* statementName = NewCString(args[0]);
+  Nan::Utf8String statementName(info[0]);
 
-  TRACEF("Connection::ExecPrepared: %s\n", statementName);
+  TRACEF("Connection::ExecPrepared: %s\n", *statementName);
 
-  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(args[1]);
+  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(info[1]);
 
   int numberOfParams = jsParams->Length();
   char** parameters = NewCStringArray(jsParams);
 
   PGresult* result = PQexecPrepared(
       self->pq,
-      statementName,
+      *statementName,
       numberOfParams,
       parameters, //const char* const* paramValues[]
       NULL, //const int* paramLengths[]
@@ -196,141 +157,116 @@ NAN_METHOD(Connection::ExecPrepared) {
       0 //result format of text
       );
 
-  delete [] statementName;
   DeleteCStringArray(parameters, numberOfParams);
 
   self->SetLastResult(result);
-
-  NanReturnUndefined();
 }
 
 
 NAN_METHOD(Connection::Clear) {
-  NanScope();
-
   TRACE("Connection::Clear");
   Connection *self = THIS();
 
   self->ClearLastResult();
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::Ntuples) {
-  NanScope();
-
   TRACE("Connection::Ntuples");
   Connection *self = THIS();
   PGresult* res = self->lastResult;
   int numTuples = PQntuples(res);
 
-  NanReturnValue(NanNew<v8::Number>(numTuples));
+  info.GetReturnValue().Set(numTuples);
 }
 
 NAN_METHOD(Connection::Nfields) {
-  NanScope();
-
   TRACE("Connection::Nfields");
   Connection *self = THIS();
   PGresult* res = self->lastResult;
   int numFields = PQnfields(res);
 
-  NanReturnValue(NanNew<v8::Number>(numFields));
+  info.GetReturnValue().Set(numFields);
 }
 
 NAN_METHOD(Connection::Fname) {
-  NanScope();
-
   TRACE("Connection::Fname");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
 
-  char* colName = PQfname(res, args[0]->Int32Value());
+  char* colName = PQfname(res, info[0]->Int32Value());
 
   if(colName == NULL) {
-    NanReturnNull();
+    return info.GetReturnValue().SetNull();
   }
 
-  NanReturnValue(NanNew<v8::String>(colName));
+  info.GetReturnValue().Set(Nan::New<v8::String>(colName).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::Ftype) {
-  NanScope();
-
   TRACE("Connection::Ftype");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
 
-  int colName = PQftype(res, args[0]->Int32Value());
+  int colName = PQftype(res, info[0]->Int32Value());
 
-  NanReturnValue(NanNew<v8::Number>(colName));
+  info.GetReturnValue().Set(colName);
 }
 
 NAN_METHOD(Connection::Getvalue) {
-  NanScope();
-
   TRACE("Connection::Getvalue");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
 
-  int rowNumber = args[0]->Int32Value();
-  int colNumber = args[1]->Int32Value();
+  int rowNumber = info[0]->Int32Value();
+  int colNumber = info[1]->Int32Value();
 
   char* rowValue = PQgetvalue(res, rowNumber, colNumber);
 
   if(rowValue == NULL) {
-    NanReturnNull();
+    return info.GetReturnValue().SetNull();
   }
 
-  NanReturnValue(NanNew<v8::String>(rowValue));
+  info.GetReturnValue().Set(Nan::New(rowValue).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::Getisnull) {
-  NanScope();
-
   TRACE("Connection::Getisnull");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
 
-  int rowNumber = args[0]->Int32Value();
-  int colNumber = args[1]->Int32Value();
+  int rowNumber = info[0]->Int32Value();
+  int colNumber = info[1]->Int32Value();
 
   int rowValue = PQgetisnull(res, rowNumber, colNumber);
 
-  NanReturnValue(NanNew<v8::Boolean>(rowValue == 1));
+  info.GetReturnValue().Set(rowValue == 1);
 }
 
 NAN_METHOD(Connection::CmdStatus) {
-  NanScope();
-
   TRACE("Connection::CmdStatus");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
   char* status = PQcmdStatus(res);
 
-  NanReturnValue(NanNew<v8::String>(status));
+  info.GetReturnValue().Set(Nan::New<v8::String>(status).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::CmdTuples) {
-  NanScope();
-
   TRACE("Connection::CmdTuples");
   Connection *self = THIS();
 
   PGresult* res = self->lastResult;
   char* tuples = PQcmdTuples(res);
 
-  NanReturnValue(NanNew<v8::String>(tuples));
+  info.GetReturnValue().Set(Nan::New<v8::String>(tuples).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::ResultStatus) {
-  NanScope();
-
   TRACE("Connection::ResultStatus");
   Connection *self = THIS();
 
@@ -338,12 +274,10 @@ NAN_METHOD(Connection::ResultStatus) {
 
   char* status = PQresStatus(PQresultStatus(res));
 
-  NanReturnValue(NanNew<v8::String>(status));
+  info.GetReturnValue().Set(Nan::New<v8::String>(status).ToLocalChecked());
 }
 
 NAN_METHOD(Connection::ResultErrorMessage) {
-  NanScope();
-
   TRACE("Connection::ResultErrorMessage");
   Connection *self = THIS();
 
@@ -351,25 +285,24 @@ NAN_METHOD(Connection::ResultErrorMessage) {
 
   char* status = PQresultErrorMessage(res);
 
-  NanReturnValue(NanNew<v8::String>(status));
+  info.GetReturnValue().Set(Nan::New<v8::String>(status).ToLocalChecked());
 }
 
 # define SET_E(key, name) \
   field = PQresultErrorField(self->lastResult, key); \
   if(field != NULL) { \
-    result->Set(NanNew(name), NanNew(field)); \
+    Nan::Set(result, \
+        Nan::New(name).ToLocalChecked(), Nan::New(field).ToLocalChecked()); \
   }
 
 NAN_METHOD(Connection::ResultErrorFields) {
-  NanScope();
-
   Connection *self = THIS();
 
   if(self->lastResult == NULL) {
-    NanReturnNull();
+    return info.GetReturnValue().SetNull();
   }
 
-  v8::Local<v8::Object> result = NanNew<v8::Object>();
+  v8::Local<v8::Object> result = Nan::New<v8::Object>();
   char* field;
   SET_E(PG_DIAG_SEVERITY, "severity");
   SET_E(PG_DIAG_SQLSTATE, "sqlState");
@@ -390,41 +323,37 @@ NAN_METHOD(Connection::ResultErrorFields) {
   SET_E(PG_DIAG_SOURCE_FILE, "sourceFile");
   SET_E(PG_DIAG_SOURCE_LINE, "sourceLine");
   SET_E(PG_DIAG_SOURCE_FUNCTION, "sourceFunction");
-  NanReturnValue(result);
+  info.GetReturnValue().Set(result);
 }
 
 NAN_METHOD(Connection::SendQuery) {
-  NanScope();
   TRACE("Connection::SendQuery");
 
   Connection *self = THIS();
-  char* commandText = NewCString(args[0]);
+  Nan::Utf8String commandText(info[0]);
 
-  TRACEF("Connection::SendQuery: %s\n", commandText);
-  int success = PQsendQuery(self->pq, commandText);
+  TRACEF("Connection::SendQuery: %s\n", *commandText);
+  int success = PQsendQuery(self->pq, *commandText);
 
-  delete[] commandText;
-
-  NanReturnValue(success == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success == 1);
 }
 
 NAN_METHOD(Connection::SendQueryParams) {
-  NanScope();
   TRACE("Connection::SendQueryParams");
 
   Connection *self = THIS();
 
-  char* commandText = NewCString(args[0]);
-  TRACEF("Connection::SendQueryParams: %s\n", commandText);
+  Nan::Utf8String commandText(info[0]);
+  TRACEF("Connection::SendQueryParams: %s\n", *commandText);
 
-  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(args[1]);
+  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(info[1]);
 
   int numberOfParams = jsParams->Length();
   char** parameters = NewCStringArray(jsParams);
 
   int success = PQsendQueryParams(
       self->pq,
-      commandText,
+      *commandText,
       numberOfParams,
       NULL, //const Oid* paramTypes[],
       parameters, //const char* const* paramValues[]
@@ -433,55 +362,48 @@ NAN_METHOD(Connection::SendQueryParams) {
       0 //result format of text
       );
 
-  delete[] commandText;
   DeleteCStringArray(parameters, numberOfParams);
 
-  NanReturnValue(success == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success == 1);
 }
 
 NAN_METHOD(Connection::SendPrepare) {
-  NanScope();
   TRACE("Connection::SendPrepare");
 
   Connection *self = THIS();
 
-  char* statementName = NewCString(args[0]);
-  char* commandText = NewCString(args[1]);
-  int numberOfParams = args[2]->Int32Value();
+  Nan::Utf8String statementName(info[0]);
+  Nan::Utf8String commandText(info[1]);
+  int numberOfParams = Nan::To<int>(info[2]).FromJust();
 
-  TRACEF("Connection::SendPrepare: %s\n", statementName);
+  TRACEF("Connection::SendPrepare: %s\n", *statementName);
   int success = PQsendPrepare(
       self->pq,
-      statementName,
-      commandText,
+      *statementName,
+      *commandText,
       numberOfParams,
       NULL //const Oid* paramTypes
       );
 
-
-  delete[] statementName;
-  delete[] commandText;
-
-  NanReturnValue(success == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success == 1);
 }
 
 NAN_METHOD(Connection::SendQueryPrepared) {
-  NanScope();
   TRACE("Connection::SendQueryPrepared");
 
   Connection *self = THIS();
 
-  char* statementName = NewCString(args[0]);
-  TRACEF("Connection::SendQueryPrepared: %s\n", statementName);
+  Nan::Utf8String statementName(info[0]);
+  TRACEF("Connection::SendQueryPrepared: %s\n", *statementName);
 
-  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(args[1]);
+  v8::Local<v8::Array> jsParams = v8::Local<v8::Array>::Cast(info[1]);
 
   int numberOfParams = jsParams->Length();
   char** parameters = NewCStringArray(jsParams);
 
   int success = PQsendQueryPrepared(
       self->pq,
-      statementName,
+      *statementName,
       numberOfParams,
       parameters, //const char* const* paramValues[]
       NULL, //const int* paramLengths[]
@@ -489,39 +411,35 @@ NAN_METHOD(Connection::SendQueryPrepared) {
       0 //result format of text
       );
 
-  delete[] statementName;
   DeleteCStringArray(parameters, numberOfParams);
 
-  NanReturnValue(success == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success == 1);
 }
 
 NAN_METHOD(Connection::GetResult) {
-  NanScope();
   TRACE("Connection::GetResult");
 
   Connection *self = THIS();
   PGresult *result = PQgetResult(self->pq);
 
   if(result == NULL) {
-    NanReturnValue(NanFalse());
+    return info.GetReturnValue().Set(false);
   }
 
   self->SetLastResult(result);
-  NanReturnValue(NanTrue());
+  info.GetReturnValue().Set(true);
 }
 
 NAN_METHOD(Connection::ConsumeInput) {
-  NanScope();
   TRACE("Connection::ConsumeInput");
 
   Connection *self = THIS();
 
   int success = PQconsumeInput(self->pq);
-  NanReturnValue(success == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(success == 1);
 }
 
 NAN_METHOD(Connection::IsBusy) {
-  NanScope();
   TRACE("Connection::IsBusy");
 
   Connection *self = THIS();
@@ -529,135 +447,104 @@ NAN_METHOD(Connection::IsBusy) {
   int isBusy = PQisBusy(self->pq);
   TRACEF("Connection::IsBusy: %d\n", isBusy);
 
-  NanReturnValue(isBusy == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(isBusy == 1);
 }
 
 NAN_METHOD(Connection::StartRead) {
-  NanScope();
   TRACE("Connection::StartRead");
 
   Connection* self = THIS();
 
   self->ReadStart();
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::StopRead) {
-  NanScope();
   TRACE("Connection::StopRead");
 
   Connection* self = THIS();
 
   self->ReadStop();
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::StartWrite) {
-  NanScope();
   TRACE("Connection::StartWrite");
 
   Connection* self = THIS();
 
   self->WriteStart();
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(Connection::SetNonBlocking) {
-  NanScope();
   TRACE("Connection::SetNonBlocking");
 
   Connection* self = THIS();
 
-  int ok = PQsetnonblocking(self->pq, args[0]->Int32Value());
+  int ok = PQsetnonblocking(self->pq, Nan::To<int>(info[0]).FromJust());
 
-  NanReturnValue(ok == 0 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(ok == 0);
 }
 
 NAN_METHOD(Connection::IsNonBlocking) {
-  NanScope();
   TRACE("Connection::IsNonBlocking");
 
   Connection* self = THIS();
 
   int status = PQisnonblocking(self->pq);
 
-  NanReturnValue(status == 1 ? NanTrue() : NanFalse());
+  info.GetReturnValue().Set(status == 1);
 }
 
 NAN_METHOD(Connection::Flush) {
-  NanScope();
   TRACE("Connection::Flush");
 
   Connection* self = THIS();
 
   int status = PQflush(self->pq);
 
-  NanReturnValue(NanNew<v8::Number>(status));
+  info.GetReturnValue().Set(status);
 }
 
 #ifdef ESCAPE_SUPPORTED
 NAN_METHOD(Connection::EscapeLiteral) {
-  NanScope();
   TRACE("Connection::EscapeLiteral");
 
   Connection* self = THIS();
 
-  v8::Local<v8::String> str = args[0]->ToString();
-  int len = str->Utf8Length() + 1;
-  char* buffer = new char[len];
-  str->WriteUtf8(buffer, len);
+  Nan::Utf8String str(Nan::To<v8::String>(info[0]).ToLocalChecked());
 
-  TRACEF("Connection::EscapeLiteral:input %s\n", buffer);
-  char* result = PQescapeLiteral(self->pq, buffer, len);
+  TRACEF("Connection::EscapeLiteral:input %s\n", *str);
+  char* result = PQescapeLiteral(self->pq, *str, str.length());
   TRACEF("Connection::EscapeLiteral:output %s\n", result);
 
-  delete[] buffer;
-
   if(result == NULL) {
-    NanReturnNull();
+    return info.GetReturnValue().SetNull();
   }
 
-  v8::Local<v8::String> toReturn = NanNew<v8::String>(result);
-
+  info.GetReturnValue().Set(Nan::New(result).ToLocalChecked());
   PQfreemem(result);
-
-  NanReturnValue(toReturn);
 }
 
 NAN_METHOD(Connection::EscapeIdentifier) {
-  NanScope();
   TRACE("Connection::EscapeIdentifier");
 
   Connection* self = THIS();
 
-  v8::Local<v8::String> str = args[0]->ToString();
-  int len = str->Utf8Length() + 1;
-  char* buffer = new char[len];
-  str->WriteUtf8(buffer, len);
+  Nan::Utf8String str(Nan::To<v8::String>(info[0]).ToLocalChecked());
 
-  TRACEF("Connection::EscapeIdentifier:input %s\n", buffer);
-  char* result = PQescapeIdentifier(self->pq, buffer, len);
+  TRACEF("Connection::EscapeIdentifier:input %s\n", *str);
+  char* result = PQescapeIdentifier(self->pq, *str, str.length());
   TRACEF("Connection::EscapeIdentifier:output %s\n", result);
 
-  delete[] buffer;
-
   if(result == NULL) {
-    NanReturnNull();
+    return info.GetReturnValue().SetNull();
   }
 
-  v8::Local<v8::String> toReturn = NanNew<v8::String>(result);
-
+  info.GetReturnValue().Set(Nan::New(result).ToLocalChecked());
   PQfreemem(result);
-
-  NanReturnValue(toReturn);
 }
 #endif
 
 NAN_METHOD(Connection::Notifies) {
-  NanScope();
   LOG("Connection::Notifies");
 
   Connection* self = THIS();
@@ -666,68 +553,61 @@ NAN_METHOD(Connection::Notifies) {
 
   if(msg == NULL) {
     LOG("No notification");
-    NanReturnUndefined();
+    return;
   }
 
-  v8::Local<v8::Object> result = NanNew<v8::Object>();
-  result->Set(NanNew("relname"), NanNew(msg->relname));
-  result->Set(NanNew("extra"), NanNew(msg->extra));
-  result->Set(NanNew("be_pid"), NanNew(msg->be_pid));
+  v8::Local<v8::Object> result = Nan::New<v8::Object>();
+  Nan::Set(result, Nan::New("relname").ToLocalChecked(), Nan::New(msg->relname).ToLocalChecked());
+  Nan::Set(result, Nan::New("extra").ToLocalChecked(), Nan::New(msg->extra).ToLocalChecked());
+  Nan::Set(result, Nan::New("be_pid").ToLocalChecked(), Nan::New(msg->be_pid));
 
   PQfreemem(msg);
 
-  NanReturnValue(result);
+  info.GetReturnValue().Set(result);
 };
 
 NAN_METHOD(Connection::PutCopyData) {
-  NanScope();
   LOG("Connection::PutCopyData");
 
   Connection* self = THIS();
 
-  v8::Handle<v8::Object> buffer = args[0].As<v8::Object>();
+  v8::Local<v8::Object> buffer = info[0].As<v8::Object>();
 
   char* data = node::Buffer::Data(buffer);
   int length = node::Buffer::Length(buffer);
 
   int result = PQputCopyData(self->pq, data, length);
 
-  NanReturnValue(NanNew<v8::Number>(result));
+  info.GetReturnValue().Set(result);
 }
 
 NAN_METHOD(Connection::PutCopyEnd) {
-  NanScope();
   LOG("Connection::PutCopyEnd");
 
   Connection* self = THIS();
 
   //optional error message
 
-  bool sendErrorMessage = args.Length() > 0;
-  char* msg = NULL;
+  bool sendErrorMessage = info.Length() > 0;
+  int result;
   if(sendErrorMessage) {
-    msg = NewCString(args[0]);
-    TRACEF("Connection::PutCopyEnd:%s\n", msg);
+    Nan::Utf8String msg(info[0]);
+    TRACEF("Connection::PutCopyEnd:%s\n", *msg);
+    result = PQputCopyEnd(self->pq, *msg);
+  } else {
+    result = PQputCopyEnd(self->pq, NULL);
   }
 
-  int result = PQputCopyEnd(self->pq, msg);
-
-  if(sendErrorMessage) {
-    delete[] msg;
-  }
-
-  NanReturnValue(NanNew<v8::Number>(result));
+  info.GetReturnValue().Set(result);
 }
 
 NAN_METHOD(Connection::GetCopyData) {
-  NanScope();
-
   LOG("Connection::GetCopyData");
 
   Connection* self = THIS();
 
   char* buffer = NULL;
-  int async = args[0]->IsTrue() ? 1 : 0;
+  int async = info[0]->IsTrue() ? 1 : 0;
 
   TRACEF("Connection::GetCopyData:async %d\n", async);
 
@@ -735,18 +615,14 @@ NAN_METHOD(Connection::GetCopyData) {
 
   //some sort of failure or not-ready condition
   if(length < 1) {
-    NanReturnValue(NanNew<v8::Number>(length));
+    return info.GetReturnValue().Set(length);
   }
 
-  v8::Local<v8::Value> nodeBuffer = NanNewBufferHandle(buffer, length);
+  info.GetReturnValue().Set(Nan::CopyBuffer(buffer, length).ToLocalChecked());
   PQfreemem(buffer);
-
-  NanReturnValue(nodeBuffer);
 }
 
 NAN_METHOD(Connection::Cancel) {
-  NanScope();
-
   LOG("Connection::Cancel");
 
   Connection* self = THIS();
@@ -754,7 +630,8 @@ NAN_METHOD(Connection::Cancel) {
   PGcancel *cancelStuct = PQgetCancel(self->pq);
 
   if(cancelStuct == NULL) {
-    NanReturnValue(NanNew<v8::String>("Unable to allocate cancel struct"));
+    info.GetReturnValue().Set(Nan::Error("Unable to allocate cancel struct"));
+    return;
   }
 
   char* errBuff = new char[255];
@@ -767,12 +644,11 @@ NAN_METHOD(Connection::Cancel) {
 
   if(result == 1) {
     delete errBuff;
-    NanReturnValue(NanTrue());
+    return info.GetReturnValue().Set(true);
   }
 
-  v8::Local<v8::Value> errorMessage = NanNew<v8::String>(errBuff);
+  info.GetReturnValue().Set(Nan::New(errBuff).ToLocalChecked());
   delete errBuff;
-  NanReturnValue(errorMessage);
 }
 
 bool Connection::ConnectDB(const char* paramString) {
@@ -861,25 +737,25 @@ void Connection::SetLastResult(PGresult* result) {
   lastResult = result;
 }
 
-char* Connection::NewCString(v8::Handle<v8::Value> val) {
-  NanScope();
+char* Connection::NewCString(v8::Local<v8::Value> val) {
+  Nan::HandleScope scope;
 
-  v8::Local<v8::String> str = val->ToString();
+  v8::Local<v8::String> str = Nan::To<v8::String>(val).ToLocalChecked();
   int len = str->Utf8Length() + 1;
   char* buffer = new char[len];
   str->WriteUtf8(buffer, len);
   return buffer;
 }
 
-char** Connection::NewCStringArray(v8::Handle<v8::Array> jsParams) {
-  NanScope();
+char** Connection::NewCStringArray(v8::Local<v8::Array> jsParams) {
+  Nan::HandleScope scope;
 
   int numberOfParams = jsParams->Length();
 
   char** parameters = new char*[numberOfParams];
 
   for(int i = 0; i < numberOfParams; i++) {
-    v8::Handle<v8::Value> val = jsParams->Get(i);
+    v8::Local<v8::Value> val = Nan::Get(jsParams, i).ToLocalChecked();
     if(val->IsNull()) {
       parameters[i] = NULL;
       continue;
@@ -901,22 +777,22 @@ void Connection::DeleteCStringArray(char** array, int length) {
 }
 
 void Connection::Emit(const char* message) {
-  NanScope();
+  Nan::HandleScope scope;
 
   TRACE("ABOUT TO EMIT EVENT");
-  v8::Local<v8::Object> jsInstance = NanObjectWrapHandle(this);
+  v8::Local<v8::Object> jsInstance = handle();
   TRACE("GETTING 'emit' FUNCTION INSTANCE");
-  v8::Local<v8::Value> emit_v = jsInstance->Get(NanNew<v8::String>("emit"));
+  v8::Local<v8::Value> emit_v = Nan::Get(jsInstance, Nan::New<v8::String>("emit").ToLocalChecked()).ToLocalChecked();
   assert(emit_v->IsFunction());
   v8::Local<v8::Function> emit_f = emit_v.As<v8::Function>();
 
-  v8::Local<v8::String> eventName = NanNew<v8::String>(message);
-  v8::Handle<v8::Value> args[1] = { eventName };
+  v8::Local<v8::String> eventName = Nan::New<v8::String>(message).ToLocalChecked();
+  v8::Local<v8::Value> info[1] = { eventName };
 
   TRACE("CALLING EMIT");
-  v8::TryCatch tc;
-  emit_f->Call(NanObjectWrapHandle(this), 1, args);
+  Nan::TryCatch tc;
+  Nan::MakeCallback(handle(), emit_f, 1, info);
   if(tc.HasCaught()) {
-    node::FatalException(tc);
+    Nan::FatalException(tc);
   }
 }

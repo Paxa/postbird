@@ -115,3 +115,19 @@ test('pauses', function(assert) {
 
   write(expected, t)
 })
+
+test('does not soft-end on `undefined`', function(assert) {
+  var stream = through()
+    , count = 0
+
+  stream.on('data', function (data) {
+    count++
+  })
+
+  stream.write(undefined)
+  stream.write(undefined)
+
+  assert.equal(count, 2)
+
+  assert.end()
+})

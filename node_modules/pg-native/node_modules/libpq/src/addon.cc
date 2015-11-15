@@ -1,75 +1,75 @@
 #include "addon.h"
 
 // Initialize the node addon
-void InitAddon(v8::Handle<v8::Object> exports) {
+NAN_MODULE_INIT(InitAddon) {
 
-  v8::Local<v8::FunctionTemplate> tpl = NanNew<v8::FunctionTemplate>(Connection::Create);
-  tpl->SetClassName(NanNew("PQ"));
+  v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(Connection::Create);
+  tpl->SetClassName(Nan::New("PQ").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   //connection initialization & management functions
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$connectSync", Connection::ConnectSync);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$connect", Connection::Connect);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$finish", Connection::Finish);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$getLastErrorMessage", Connection::GetLastErrorMessage);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$resultErrorFields", Connection::ResultErrorFields);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$socket", Connection::Socket);
+  Nan::SetPrototypeMethod(tpl, "$connectSync", Connection::ConnectSync);
+  Nan::SetPrototypeMethod(tpl, "$connect", Connection::Connect);
+  Nan::SetPrototypeMethod(tpl, "$finish", Connection::Finish);
+  Nan::SetPrototypeMethod(tpl, "$getLastErrorMessage", Connection::GetLastErrorMessage);
+  Nan::SetPrototypeMethod(tpl, "$resultErrorFields", Connection::ResultErrorFields);
+  Nan::SetPrototypeMethod(tpl, "$socket", Connection::Socket);
 
   //sync query functions
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$exec", Connection::Exec);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$execParams", Connection::ExecParams);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$prepare", Connection::Prepare);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$execPrepared", Connection::ExecPrepared);
+  Nan::SetPrototypeMethod(tpl, "$exec", Connection::Exec);
+  Nan::SetPrototypeMethod(tpl, "$execParams", Connection::ExecParams);
+  Nan::SetPrototypeMethod(tpl, "$prepare", Connection::Prepare);
+  Nan::SetPrototypeMethod(tpl, "$execPrepared", Connection::ExecPrepared);
 
   //async query functions
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$sendQuery", Connection::SendQuery);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$sendQueryParams", Connection::SendQueryParams);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$sendPrepare", Connection::SendPrepare);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$sendQueryPrepared", Connection::SendQueryPrepared);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$getResult", Connection::GetResult);
+  Nan::SetPrototypeMethod(tpl, "$sendQuery", Connection::SendQuery);
+  Nan::SetPrototypeMethod(tpl, "$sendQueryParams", Connection::SendQueryParams);
+  Nan::SetPrototypeMethod(tpl, "$sendPrepare", Connection::SendPrepare);
+  Nan::SetPrototypeMethod(tpl, "$sendQueryPrepared", Connection::SendQueryPrepared);
+  Nan::SetPrototypeMethod(tpl, "$getResult", Connection::GetResult);
 
   //async i/o control functions
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$startRead", Connection::StartRead);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$stopRead", Connection::StopRead);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$startWrite", Connection::StartWrite);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$consumeInput", Connection::ConsumeInput);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$isBusy", Connection::IsBusy);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$setNonBlocking", Connection::SetNonBlocking);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$isNonBlocking", Connection::IsNonBlocking);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$flush", Connection::Flush);
+  Nan::SetPrototypeMethod(tpl, "$startRead", Connection::StartRead);
+  Nan::SetPrototypeMethod(tpl, "$stopRead", Connection::StopRead);
+  Nan::SetPrototypeMethod(tpl, "$startWrite", Connection::StartWrite);
+  Nan::SetPrototypeMethod(tpl, "$consumeInput", Connection::ConsumeInput);
+  Nan::SetPrototypeMethod(tpl, "$isBusy", Connection::IsBusy);
+  Nan::SetPrototypeMethod(tpl, "$setNonBlocking", Connection::SetNonBlocking);
+  Nan::SetPrototypeMethod(tpl, "$isNonBlocking", Connection::IsNonBlocking);
+  Nan::SetPrototypeMethod(tpl, "$flush", Connection::Flush);
 
   //result accessor functions
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$clear", Connection::Clear);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$ntuples", Connection::Ntuples);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$nfields", Connection::Nfields);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$fname", Connection::Fname);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$ftype", Connection::Ftype);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$getvalue", Connection::Getvalue);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$getisnull", Connection::Getisnull);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$cmdStatus", Connection::CmdStatus);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$cmdTuples", Connection::CmdTuples);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$resultStatus", Connection::ResultStatus);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$resultErrorMessage", Connection::ResultErrorMessage);
+  Nan::SetPrototypeMethod(tpl, "$clear", Connection::Clear);
+  Nan::SetPrototypeMethod(tpl, "$ntuples", Connection::Ntuples);
+  Nan::SetPrototypeMethod(tpl, "$nfields", Connection::Nfields);
+  Nan::SetPrototypeMethod(tpl, "$fname", Connection::Fname);
+  Nan::SetPrototypeMethod(tpl, "$ftype", Connection::Ftype);
+  Nan::SetPrototypeMethod(tpl, "$getvalue", Connection::Getvalue);
+  Nan::SetPrototypeMethod(tpl, "$getisnull", Connection::Getisnull);
+  Nan::SetPrototypeMethod(tpl, "$cmdStatus", Connection::CmdStatus);
+  Nan::SetPrototypeMethod(tpl, "$cmdTuples", Connection::CmdTuples);
+  Nan::SetPrototypeMethod(tpl, "$resultStatus", Connection::ResultStatus);
+  Nan::SetPrototypeMethod(tpl, "$resultErrorMessage", Connection::ResultErrorMessage);
 
   //string escaping functions
 #ifdef ESCAPE_SUPPORTED
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$escapeLiteral", Connection::EscapeLiteral);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$escapeIdentifier", Connection::EscapeIdentifier);
+  Nan::SetPrototypeMethod(tpl, "$escapeLiteral", Connection::EscapeLiteral);
+  Nan::SetPrototypeMethod(tpl, "$escapeIdentifier", Connection::EscapeIdentifier);
 #endif
 
   //async notifications
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$notifies", Connection::Notifies);
+  Nan::SetPrototypeMethod(tpl, "$notifies", Connection::Notifies);
 
   //COPY IN/OUT
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$putCopyData", Connection::PutCopyData);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$putCopyEnd", Connection::PutCopyEnd);
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$getCopyData", Connection::GetCopyData);
+  Nan::SetPrototypeMethod(tpl, "$putCopyData", Connection::PutCopyData);
+  Nan::SetPrototypeMethod(tpl, "$putCopyEnd", Connection::PutCopyEnd);
+  Nan::SetPrototypeMethod(tpl, "$getCopyData", Connection::GetCopyData);
 
   //Cancel
-  NODE_SET_PROTOTYPE_METHOD(tpl, "$cancel", Connection::Cancel);
+  Nan::SetPrototypeMethod(tpl, "$cancel", Connection::Cancel);
 
-  exports->Set(NanNew<v8::String>("PQ"), tpl->GetFunction());
+  Nan::Set(target,
+      Nan::New("PQ").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
 NODE_MODULE(addon, InitAddon)
-

@@ -1,11 +1,10 @@
 #ifndef NODE_LIBPQ_CONNECTION
 #define NODE_LIBPQ_CONNECTION
 
-#include <node.h>
 #include <nan.h>
 #include <libpq-fe.h>
 
-class Connection : public node::ObjectWrap {
+class Connection : public Nan::ObjectWrap {
   public:
     static NAN_METHOD(Create);
     static NAN_METHOD(ConnectSync);
@@ -73,8 +72,8 @@ class Connection : public node::ObjectWrap {
     void WriteStop();
     void ClearLastResult();
     void SetLastResult(PGresult* result);
-    static char* NewCString(v8::Handle<v8::Value> val);
-    static char** NewCStringArray(v8::Handle<v8::Array> jsParams);
+    static char* NewCString(v8::Local<v8::Value> val);
+    static char** NewCStringArray(v8::Local<v8::Array> jsParams);
     static void DeleteCStringArray(char** array, int length);
     void Emit(const char* message);
 };

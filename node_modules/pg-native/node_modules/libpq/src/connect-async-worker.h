@@ -3,15 +3,15 @@
 
 #include "addon.h"
 
-class ConnectAsyncWorker : public NanAsyncWorker {
+class ConnectAsyncWorker : public Nan::AsyncWorker {
 public:
-  ConnectAsyncWorker(char* paramString, Connection* conn, NanCallback* callback);
+  ConnectAsyncWorker(v8::Local<v8::String> paramString, Connection* conn, Nan::Callback* callback);
   ~ConnectAsyncWorker();
   void Execute();
 
 private:
   Connection* conn;
-  char* paramString;
+  Nan::Utf8String paramString;
 };
 
 #endif
