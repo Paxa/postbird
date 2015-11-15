@@ -43,6 +43,5 @@ My todo:
 * Fix "newRole is not defined"
 * Check manifest.toolbar in child windows
 * Implement SHOW GRANTS FOR username
-* Refresh tables list when execute CREATE OR REPLACE VIEW
 * Handle "ERROR:  No such database: postgres"
 * Handle big response for query
