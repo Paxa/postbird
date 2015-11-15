@@ -5301,20 +5301,14 @@ jade_debug.shift();
 buf.push("</button>");
 jade_debug.shift();
 jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/users_tab.jade" });
-buf.push("\n  <button exec=\"newRole\" class=\"native-look createRoleBtn\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: jade_debug[0].filename });
-buf.push("Create new role");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
+buf.push("\n  <!--button.native-look.createRoleBtn(exec=\"newRole\") Create new role-->");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</footer>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th(width=\"70\") Role name\n      th(width=\"25%\") List of roles\n      th(width=\"50\") Member of\n      th(width=\"25%\") Owned Databases\n      th(width=\"50\")\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td= user.owned_dbs\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  button.native-look.createRoleBtn(exec=\"newRole\") Create new role");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.native-look-table\n  thead\n    tr\n      th(width=\"70\") Role name\n      th(width=\"25%\") List of roles\n      th(width=\"50\") Member of\n      th(width=\"25%\") Owned Databases\n      th(width=\"50\")\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td= user.owned_dbs\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  //button.native-look.createRoleBtn(exec=\"newRole\") Create new role");
 }
 };
-exports["users_tab"].content = "table.native-look-table\n  thead\n    tr\n      th(width=\"70\") Role name\n      th(width=\"25%\") List of roles\n      th(width=\"50\") Member of\n      th(width=\"25%\") Owned Databases\n      th(width=\"50\")\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td= user.owned_dbs\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  button.native-look.createRoleBtn(exec=\"newRole\") Create new role";
+exports["users_tab"].content = "table.native-look-table\n  thead\n    tr\n      th(width=\"70\") Role name\n      th(width=\"25%\") List of roles\n      th(width=\"50\") Member of\n      th(width=\"25%\") Owned Databases\n      th(width=\"50\")\n  tbody\n    each user in rows\n      tr\n        td= user.rolname\n        td= user.roles.join(', ')\n        td= user.memberof\n        td= user.owned_dbs\n        td\n          a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n          = \" \"\n          a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  //button.native-look.createRoleBtn(exec=\"newRole\") Create new role";
