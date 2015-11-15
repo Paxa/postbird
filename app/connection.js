@@ -87,8 +87,8 @@ global.Connection = jClass.extend({
           App.log("notification.recieved", msg);
         }.bind(this));
 
-        this.serverVersion(function (version, fullVersion) {
-          console.log("Server version is ", version, "\n", fullVersion);
+        this.serverVersion(function (version) {
+          console.log("Server version is ", version);
           this.pending.forEach(function (cb) {
             cb();
           });
@@ -211,6 +211,17 @@ global.Connection = jClass.extend({
       return;
     }
 
+    if (this.connection.native && conn.connection.native.pq.serverVersion) {
+      var intVersion = conn.connection.native.pq.serverVersion();
+      var majorVer = ~~ (intVersion / 10000);
+      var minorVer = ~~ (intVersion % 10000 / 100);
+      var patchVer = intVersion % 100;
+      this._serverVersion = [majorVer, minorVer, patchVer].join(".");
+      callback(this._serverVersion);
+      return;
+    }
+
+    console.log("Client don't support serverVersion, getting it with sql");
     this.query('SELECT version()', function (result, error) {
       var version = result.rows[0].version.split(" ")[1];
       this._serverVersion = version;
