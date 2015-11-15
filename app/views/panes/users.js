@@ -9,7 +9,9 @@ global.Panes.Users = global.Pane.extend({
       if (row.rolreplication) row.roles.push("Replication");
     });
 
-    this.renderViewToPane('users', 'users_tab', {rows: rows});
+    this.currentUser = this.handler.connection.options.user;
+
+    this.renderViewToPane('users', 'users_tab', {rows: rows, currentUser: this.currentUser});
     this.initTables();
   },
 

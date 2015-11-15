@@ -9,7 +9,13 @@ table.native-look-table
   tbody
     each user in rows
       tr
-        td= user.rolname
+        td
+          if currentUser == user.rolname
+            strong= user.rolname
+            br
+            small (current user)
+          else
+            = user.rolname
         td= user.roles.join(', ')
         td= user.memberof
         td= user.owned_dbs
