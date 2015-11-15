@@ -1,3 +1,24 @@
+== Version 0.4.4
+
+* Add support for foreign tables
+* Implement simple history window
+* Implement reconnect feature, detect when connection lost
+* Implement see procedure Source feature
+* Show max 500 records in query result
+* Add shortcut Cmd+Shift+R to reload app
+* Add snippet to kill query
+* Add sql snippet to list remote servers
+* Improve snippet for CSV LOAD
+* Add max-height and scrolling for dialogs (heppen when table have too many columns)
+* Remove artificial scrollbar in query editor
+* Prevent double click on login form button
+* Reload tables list on 'create or replace ...' query
+* Update npm packages: rollbar, pg, pg-native, libpq
+* Use server version from libpq
+* Use manifest.window.toolbar for child windows (snippets, history)
+* Disable "create role" button for now
+* Highlight current user in users management list
+
 == Version 0.4.3
 
 * Fix exception when login
