@@ -8,7 +8,7 @@ global.HistoryWindow = {
     var newWindow = gui.Window.open('blank.html', {
       width: 775,
       height: 420,
-      toolbar: false,
+      toolbar: global.gui.App.manifest.window.toolbar,
       show: false
     });
 
