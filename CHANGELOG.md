@@ -18,6 +18,10 @@
 * Use manifest.window.toolbar for child windows (snippets, history)
 * Disable "create role" button for now
 * Highlight current user in users management list
+* Double click to connect in connection list
+* Fix UI for close tab icon
+* Add shortcuts Cmd+W to close tab
+* Add shortcuts Cmd+T to switch to connection tab
 
 == Version 0.4.3
 

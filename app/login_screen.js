@@ -131,6 +131,12 @@ global.LoginScreen = jClass.extend({
           $u(line).addClass('selected');
         }
 
+        $u(line).single_double_click_nowait(function(e) {
+          _this.connectionSelected(name, params, line);
+        }, function (e) {
+          _this.connectionSelected(name, params, line);
+          _this.onFormSubmit(e);
+        });
         $u(line).bind('click', _this.connectionSelected.bind(_this, name, params, line));
       }(data[name], name)
 

@@ -47,14 +47,14 @@ $u.contextMenu = function (element, options, params, gui) {
   });
 };
 
-$u.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
+$u.fn.single_double_click = function single_double_click (single_click_callback, double_click_callback, timeout) {
   return this.each(function(){
     var clicks = 0, self = this;
     $u(this).click(function(event){
       clicks++;
       if (clicks == 1) {
-        setTimeout(function(){
-          if(clicks == 1) {
+        setTimeout(function() {
+          if (clicks == 1) {
             single_click_callback.call(self, event);
           } else {
             double_click_callback.call(self, event);
@@ -64,9 +64,27 @@ $u.fn.single_double_click = function(single_click_callback, double_click_callbac
       }
     });
   });
-}
+};
 
-$u.fn.removeChildren = function () {
+$u.fn.single_double_click_nowait = function single_double_click (single_click_callback, double_click_callback, timeout) {
+  return this.each(function(){
+    var clicks = 0, self = this;
+    $u(this).click(function(event){
+      clicks++;
+      if (clicks == 1) {
+        single_click_callback.call(self, event);
+        setTimeout(function(){
+          if (clicks == 2) {
+            double_click_callback.call(self, event);
+          }
+          clicks = 0;
+        }, timeout || 200);
+      }
+    });
+  });
+};
+
+$u.fn.removeChildren = function removeChildren () {
   for (var i = 0; i < this.length; i++) {
     while (this[i].firstChild) {
       this[i].removeChild(this[i].firstChild);
@@ -75,7 +93,7 @@ $u.fn.removeChildren = function () {
   return this;
 };
 
-$u.fn.fasterAppend = function (nodes) {
+$u.fn.fasterAppend = function fasterAppend (nodes) {
   if (nodes.tagName) nodes = [nodes];
   for (var i = 0; i < nodes.length; i++) {
     this[0].appendChild(nodes[i]);

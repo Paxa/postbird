@@ -34,7 +34,7 @@ global.App = {
   },
 
   addTab: function (name, contentHtml, instance) {
-    var tree = DOMinate([ 'div.tab', name, ['a$close.close', 'x']]);
+    var tree = DOMinate([ 'div.tab', name, ['a$close.close', '']]);
     $u(this.tabsContainer).prepend(tree[0]);
 
     var contentTree = DOMinate([ 'div.tabContent' ]);
@@ -98,6 +98,26 @@ global.App = {
       }
     } else if (this.activeTab > index) {
       this.activeTab -= 1;
+    }
+  },
+
+  closeCurrentTab: function () {
+    if (this.tabs[this.activeTab].instance instanceof LoginScreen) {
+      console.log("Can not close 'Connection' tab");
+    } else {
+      this.closeTab(this.activeTab);
+    }
+  },
+
+  activateLoginTab: function () {
+    if (this.tabs[this.activeTab].instance instanceof LoginScreen) {
+      console.log("Current tab is 'Connection' tab");
+    } else {
+      this.tabs.forEach(function (tab, tabIndex) {
+        if (tab.instance instanceof LoginScreen) {
+          this.activateTab(tabIndex);
+        }
+      }.bind(this));
     }
   },
 

@@ -29,6 +29,12 @@ var menu = {
           window.alertify.alert('Current tab not connected');
         }
       }
+    },
+    'New Connection': {
+      click: function () {
+        global.App.activateLoginTab();
+      },
+      key: 't'
     }
   },
   'Edit': { },
@@ -83,6 +89,17 @@ var menu = {
     }
   },
   'Window': {
+    'Close Window or Tab': {
+      click: function () {
+        if (global.App.tabs.length > 1) {
+          global.App.closeCurrentTab();
+        } else {
+          gui.Window.get().close();
+        }
+      },
+      key: 'w',
+      position: 1
+    },
     'separator': 'separator',
     'Zoom in': {
       click: function () {
@@ -139,6 +156,8 @@ var menu = {
 AppMenu.extend(nativeMenuBar, menu);
 
 gui.Window.get().menu = nativeMenuBar;
+
+AppMenu.removeItem("Window", "Close Window");
 
 window.Mousetrap.bind("command+shift+/", function () {
   AppMenu.callMenuItem('Window', 'Help');

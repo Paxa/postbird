@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* reset */
 html, body {
   margin: 0;
@@ -174,9 +175,6 @@ h4 {
       top: 5px;
       right: 5px;
       text-decoration: none;
-      font-weight: bold;
-      color: #e0e0e0;
-      text-shadow: 0 0px 1px rgba(0, 0, 0, 0.2);
       zoom: 1;
       display: inline;
       display: -moz-inline-box;
@@ -184,13 +182,21 @@ h4 {
       *display: inline;
       vertical-align: top;
       text-align: center;
+      display: block;
       width: 11px;
-      font-size: 12px;
-      line-height: 11px;
+      height: 11px;
       border-radius: 2px;
       border: 1px solid #828282;
       display: none;
       background: #a3a3a3; }
+      #tabs .tab .close:after {
+        content: "×";
+        position: absolute;
+        color: #e0e0e0;
+        font-size: 14px;
+        top: -1.5px;
+        left: 1.5px;
+        line-height: 11px; }
       #tabs .tab .close:hover {
         color: #dfdfdf;
         background-color: #838383;
