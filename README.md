@@ -30,6 +30,14 @@ To make a release, run:
 
 New release will be at: `~/Postbird.app`
 
+Recomfile libpq:
+```sh
+cd node_modules/pg-native/node_modules/libpq
+PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin/ \
+HOME=~/.electron-gyp \
+node-gyp rebuild --target=0.35.1 --arch=x64 --dist-url=https://atom.io/download/atom-shell
+```
+
 My todo:
 
 * Allow resize columns only in header

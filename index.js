@@ -7,7 +7,7 @@ require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/arg');
 require('./lib/node_lib');
-global.AppMenu = require('nw-appmenu');
+//global.AppMenu = require('nw-appmenu');
 require('./lib/sidebar_resize');
 require('./lib/query_tab_resizer');
 require('./lib/widgets/generic_table');
@@ -70,6 +70,8 @@ require('./app/controllers/updates_controller');
 require('./app/heroku_client');
 require('./app/history_window');
 
+console.log = require('console').log;
+
 global.$u = window.$u = Zepto;
 global.$ = function (selector) {
   return document.querySelector(selector);
@@ -86,11 +88,11 @@ function reloadCss() {
   });
 }
 
-var gui = require('nw.gui');
-global.gui = gui;
+//var gui = require('nw.gui');
+//global.gui = gui;
 
 if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // win32, win64, win128, etc
-  require('./app/top_menu');
+  //require('./app/top_menu');
 }
 
 Zepto(document).ready(function() {
@@ -116,6 +118,7 @@ Zepto(document).ready(function() {
     return false;
   });
 
+  /*
   var win = gui.Window.get();
   win.focus();
 
@@ -127,4 +130,5 @@ Zepto(document).ready(function() {
       global.App.historyWin.close();
     }
   });
+  */
 });

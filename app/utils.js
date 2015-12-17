@@ -215,6 +215,8 @@ $u.selectedText = function (element, currentWindow) {
 };
 
 $u.textInputMenu = function (element, currentWindow) {
+  return;
+
   if (element.type == "checkbox" || element.type == "radio") {
     return false;
   }
