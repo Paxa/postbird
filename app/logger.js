@@ -2,6 +2,9 @@ var sprintf = require("sprintf-js").sprintf;
 
 var log_levels = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug'];
 
+var remote = require('electron').remote;
+var topProcess = remote ? remote.process : process;
+
 function Logger (level) {
   this.logLevel = level;
 };
@@ -23,7 +26,7 @@ function Logger (level) {
       var message = messages.join(' ');
 
       line = sprintf("%s %s\n", level.toUpperCase(), message);
-      process.stdout.write(line);
+      topProcess.stdout.write(line);
     }
   };
 }(Logger.prototype);

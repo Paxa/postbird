@@ -279,5 +279,13 @@ Client.prototype.executeSync = function(statementName, parameters) {
   return this._parseResults(this.pq, []);
 };
 
+Client.prototype.escapeLiteral = function(value) {
+  return this.pq.escapeLiteral(value);
+};
+
+Client.prototype.escapeIdentifier = function(value) {
+  return this.pq.escapeIdentifier(value);
+};
+
 //export the version number so we can check it in node-postgres
 module.exports.version = require('./package.json').version

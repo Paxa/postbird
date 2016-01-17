@@ -1,5 +1,6 @@
 var jade;
 var jadeRuntime = require('jade/runtime');
+var remote = require('electron').remote;
 
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.log = require('./app/logger').make('info');
@@ -19,7 +20,7 @@ global.App = {
     this.addConnectionTab();
     this.activateTab(0);
 
-    log.info('Loaded in ' + (Date.now() - window.ApplicationStart) + 'ms');
+    log.info('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
     /* auto connect, for development *\/
 
     this.loginScreen.onFormSubmit(false, function() {

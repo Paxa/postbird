@@ -1,5 +1,6 @@
 var libs = {};
 var loadedModules = {};
+var remote = require('electron').remote;
 
 ['semver', 'needle', 'strftime'].forEach(function(lib) {
   Object.defineProperty(libs, lib, {
@@ -58,6 +59,6 @@ global.UpdatesController = jClass.extend({
   },
 
   currentVersion: function () {
-    return gui.App.manifest.version;
+    return remote.app.getVersion();
   }
 });

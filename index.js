@@ -92,7 +92,7 @@ function reloadCss() {
 //global.gui = gui;
 
 if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // win32, win64, win128, etc
-  //require('./app/top_menu');
+  require('./app/top_menu');
 }
 
 Zepto(document).ready(function() {

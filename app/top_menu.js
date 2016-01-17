@@ -1,3 +1,296 @@
+const remote = require('electron').remote;
+const Menu = remote.Menu;
+const MenuItem = remote.MenuItem;
+var webFrame = require('electron').webFrame;
+
+var template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Import .sql file',
+        click: function () {
+          (new global.ImportController).doImport();
+        },
+        accelerator: 'Shift+CmdOrCtrl+i',
+      },
+      {
+        label: 'Reconnect',
+        click: function () {
+          if (global.App.currentTab.instance.connection) {
+            global.App.currentTab.instance.reconnect();
+          } else {
+            window.alertify.alert('Current tab not connected');
+          }
+        }
+      },
+      {
+        label: 'New Connection',
+        click: function () {
+          global.App.activateLoginTab();
+        },
+        accelerator: 'CmdOrCtrl+t'
+      }
+    ]
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Undo',
+        accelerator: 'CmdOrCtrl+Z',
+        role: 'undo'
+      },
+      {
+        label: 'Redo',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        role: 'redo'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        role: 'cut'
+      },
+      {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        role: 'copy'
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        role: 'paste'
+      },
+      {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectall'
+      },
+    ]
+  },
+  {
+    label: 'Database',
+    submenu: [
+      {
+        label: 'Refresh Database',
+        click: function () {
+          global.App.currentTab.instance.fetchTablesAndSchemas();
+        },
+        enabled: false
+      },
+      {
+        label: 'Rename Database',
+        click: function () {
+          global.App.currentTab.instance.renameDatabaseDialog();
+        },
+        enabled: false
+      },
+      {
+        label: 'Export Database',
+        click: function () {
+          (new global.ExportController).doExport();
+        },
+        enabled: false
+      },
+      { type: 'separator' },
+      {
+        label: 'Drop Database',
+        click: function () {
+          global.App.currentTab.instance.dropDatabaseDialog();
+        },
+        enabled: false
+      }
+    ]
+  },
+  {
+    label: 'Table',
+    submenu: [
+      {
+        label: 'Reload',
+        click: function () {
+          var appTab = global.App.currentTab.instance;
+          var tab = appTab.currentTab;
+
+          if (tab == "content") {
+            appTab.view.contents.reloadData();
+          } else if (tab == "query") {
+            appTab.view.query.runQuery();
+          } else {
+            appTab.activateTab(tab, 'force');
+          }
+        },
+        accelerator: 'CmdOrCtrl+r',
+        enabled: false
+      }
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [
+      {
+        label: 'Reload',
+        accelerator: 'Shift+CmdOrCtrl+R',
+        click: function(item, focusedWindow) {
+          if (focusedWindow)
+            focusedWindow.reload();
+        }
+      },
+      {
+        label: 'Toggle Full Screen',
+        accelerator: (function() {
+          if (process.platform == 'darwin')
+            return 'Ctrl+Command+F';
+          else
+            return 'F11';
+        })(),
+        click: function(item, focusedWindow) {
+          if (focusedWindow)
+            focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+        }
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: (function() {
+          if (process.platform == 'darwin')
+            return 'Alt+Command+I';
+          else
+            return 'Ctrl+Shift+I';
+        })(),
+        click: function(item, focusedWindow) {
+          if (focusedWindow)
+            focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        label: 'Zoom in',
+        click: function () {
+          webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.5);
+          //remote.BrowserWindow.zoomFactor += 0.5;
+          //gui.Window.get().zoomLevel += 0.5;
+        },
+        accelerator: 'CmdOrCtrl+Plus'
+      },
+      {
+        label: 'Zoom out',
+        click: function () {
+          //remote.BrowserWindow.zoomFactor -= 0.5;
+          webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.5);
+          //gui.Window.get().zoomLevel -= 0.5;
+        },
+        accelerator: 'CmdOrCtrl+-'
+      },
+      {
+        label: 'Zoom to noraml',
+        click: function () {
+          //gui.Window.get().zoomLevel = 0;
+          //remote.BrowserWindow.zoomFactor = 1;
+          webFrame.setZoomFactor(1);
+        },
+        accelerator: 'CmdOrCtrl+0'
+      },
+    ]
+  },
+  {
+    label: 'Window',
+    role: 'window',
+    submenu: [
+      {
+        label: 'Minimize',
+        accelerator: 'CmdOrCtrl+M',
+        role: 'minimize'
+      },
+      {
+        label: 'Close',
+        accelerator: 'CmdOrCtrl+W',
+        role: 'close'
+      },
+    ]
+  },
+  /*
+  {
+    label: 'Help',
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click: function() { require('electron').shell.openExternal('http://electron.atom.io') }
+      },
+    ]
+  },
+  */
+];
+
+if (process.platform == 'darwin') {
+  var name = "Postbird";
+  template.unshift({
+    label: name,
+    submenu: [
+      {
+        label: 'About ' + name,
+        role: 'about'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: "Check For Updates...",
+        click: function () {
+          (new global.UpdatesController).checkUpdates();
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Services',
+        role: 'services',
+        submenu: []
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Hide ' + name,
+        accelerator: 'Command+H',
+        role: 'hide'
+      },
+      {
+        label: 'Hide Others',
+        accelerator: 'Command+Shift+H',
+        role: 'hideothers'
+      },
+      {
+        label: 'Show All',
+        role: 'unhide'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: function() { app.quit(); }
+      },
+    ]
+  });
+  // Window menu.
+  template[5].submenu.push(
+    { type: 'separator' },
+    {
+      label: 'Bring All to Front',
+      role: 'front'
+    }
+  );
+}
+
+var menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
+
+/*
+
 var nativeMenuBar = new gui.Menu({type: "menubar"});
 
 if (process.platform == "darwin") {
@@ -38,11 +331,6 @@ var menu = {
     }
   },
   'Edit': { },
-  /*
-  'Connection': {
-    
-  },
-  */
   'Database': {
     'Refresh Database': {
       click: function () {
@@ -153,6 +441,133 @@ var menu = {
   }
 };
 
+
+function Object_forEach (object, callback) {
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) callback(key, object[key]);
+  }
+};
+
+var AppMenu = {
+  extend: function(nativeMenuBar, newMenu) {
+    Object_forEach(newMenu, function (submenuName, submenu) {
+      var nativeSubmenu;
+      nativeMenuBar.items.forEach(function(es) {
+        if (es.label == submenuName) nativeSubmenu = es.submenu;
+      });
+      if (!nativeSubmenu) {
+        nativeSubmenu = new gui.Menu();
+        var position = nativeMenuBar.items.length - 1;
+        try {
+          nativeMenuBar.insert(new gui.MenuItem({label: submenuName, submenu: nativeSubmenu}), position);
+        } catch (error) {
+          console.log("Error inserting submenu", submenuName);
+          console.error(error);
+        }
+      }
+      Object_forEach(submenu, function (itemName, callback) {
+        if (typeof callback == 'string') {
+          nativeSubmenu.append(new gui.MenuItem({ type: callback }));
+        } else {
+          var menuItem;
+          var itemPosition = undefined;
+          if (typeof callback == 'object') {
+            var options = {label: itemName};
+            Object_forEach(callback, function (key, value) {
+              options[key] = value;
+            });
+            try {
+              if (options.position != undefined) {
+                itemPosition = options.position;
+                delete options.position;
+              }
+              menuItem = new gui.MenuItem(options);
+            } catch (error) {
+              console.log("Error creating menu item ", options);
+              console.error(error);
+            }
+          } else {
+            menuItem = new gui.MenuItem({label: itemName});
+            menuItem.click = callback;
+          }
+          try {
+            if (itemPosition != undefined) {
+              nativeSubmenu.insert(menuItem, itemPosition);
+            } else {
+              nativeSubmenu.append(menuItem);
+            }
+          } catch (error) {
+            console.log("Error appending menu item ", menuItem);
+            console.error(error);
+          }
+        }
+      });
+    });
+  },
+
+  createAndExtend: function (menuObject) {
+    var nativeMenuBar = new gui.Menu({type: "menubar"});
+    nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("AppMenu");
+
+    AppMenu.extend(nativeMenuBar, menuObject);
+    gui.Window.get().menu = nativeMenuBar;
+  },
+
+  menuItem: function (menuName, itemName) {
+    var menu = gui.Window.get().menu;
+    var result;
+    menu.items.forEach(function(es) {
+      if (es.label == menuName) {
+        es.submenu.items.forEach(function(item) {
+          if (item.label == itemName) result = item;
+        });
+      }
+    });
+    return result;
+  },
+
+  removeItem: function (menuName, itemName) {
+    var menu = gui.Window.get().menu;
+    var result;
+    menu.items.forEach(function(es) {
+      if (es.label == menuName) {
+        es.submenu.items.forEach(function(item) {
+          if (item.label == itemName) {
+            es.submenu.remove(item);
+            result = item;
+          }
+        });
+      }
+    });
+    return result;
+  },
+
+  callMenuItem: function (menuName, itemName) {
+    var item = this.menuItem(menuName, itemName);
+    if (item) item.click();
+  },
+
+  disableItem: function (menuName, itemName) {
+    var item = this.menuItem(menuName, itemName);
+    if (item) {
+      item.enabled = false;
+    } else {
+      console.log("can not find menu item: '" + menuName + " -> " + itemName);
+    }
+  },
+
+  enableItem: function (menuName, itemName) {
+    var item = this.menuItem(menuName, itemName);
+    if (item) {
+      item.enabled = true;
+    } else {
+      console.log("can not find menu item: '" + menuName + " -> " + itemName);
+    }
+  },
+};
+
+
+
 AppMenu.extend(nativeMenuBar, menu);
 
 gui.Window.get().menu = nativeMenuBar;
@@ -209,3 +624,5 @@ App.on('table.changed', function (schema, table) {
 App.on('dbtab.changed', function (tab) {
   checkTableMenu();
 });
+
+*/
