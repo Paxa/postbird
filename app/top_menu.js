@@ -1,6 +1,6 @@
-const remote = require('electron').remote;
-const Menu = remote.Menu;
-const MenuItem = remote.MenuItem;
+var remote = require('electron').remote;
+var Menu = remote.Menu;
+var MenuItem = remote.MenuItem;
 var webFrame = require('electron').webFrame;
 
 var template = [
@@ -165,28 +165,22 @@ var template = [
         }
       },
       {
-        label: 'Zoom in',
+        label: 'Zoom In',
         click: function () {
-          webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.5);
-          //remote.BrowserWindow.zoomFactor += 0.5;
-          //gui.Window.get().zoomLevel += 0.5;
+          webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.3);
         },
         accelerator: 'CmdOrCtrl+Plus'
       },
       {
-        label: 'Zoom out',
+        label: 'Zoom Out',
         click: function () {
-          //remote.BrowserWindow.zoomFactor -= 0.5;
-          webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.5);
-          //gui.Window.get().zoomLevel -= 0.5;
+          webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.3);
         },
         accelerator: 'CmdOrCtrl+-'
       },
       {
-        label: 'Zoom to noraml',
+        label: 'Zoom to Normal',
         click: function () {
-          //gui.Window.get().zoomLevel = 0;
-          //remote.BrowserWindow.zoomFactor = 1;
           webFrame.setZoomFactor(1);
         },
         accelerator: 'CmdOrCtrl+0'
@@ -197,6 +191,14 @@ var template = [
     label: 'Window',
     role: 'window',
     submenu: [
+      {
+        label: 'Console',
+        click: function() {
+          global.HistoryWindow.init();
+        },
+        accelerator: 'CmdOrCtrl+l'
+      },
+      { type: 'separator' },
       {
         label: 'Minimize',
         accelerator: 'CmdOrCtrl+M',
@@ -209,18 +211,20 @@ var template = [
       },
     ]
   },
-  /*
   {
     label: 'Help',
     role: 'help',
     submenu: [
       {
-        label: 'Learn More',
-        click: function() { require('electron').shell.openExternal('http://electron.atom.io') }
-      },
+        label: "Postbird help",
+        accelerator: 'CmdOrCtrl+Shift+/',
+        click: function () {
+          var help = global.HelpScreen.open();
+          help.activatePage("get-postgres");
+        }
+      }
     ]
   },
-  */
 ];
 
 if (process.platform == 'darwin') {
@@ -272,7 +276,7 @@ if (process.platform == 'darwin') {
       {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click: function() { app.quit(); }
+        click: function() { remote.app.quit(); }
       },
     ]
   });
@@ -289,308 +293,39 @@ if (process.platform == 'darwin') {
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-/*
 
-var nativeMenuBar = new gui.Menu({type: "menubar"});
-
-if (process.platform == "darwin") {
-  nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("Postbird");
+function enableItem(topLabel, itemLable, enabled) {
+  if (enabled === undefined) {
+    enabled = true;
+  }
+  menu.items.forEach(function (item, i) {
+    if (item.label == topLabel) {
+      item.submenu.items.forEach(function (subItem) {
+        if (subItem.label == itemLable) {
+          subItem.enabled = enabled;
+        }
+      });
+    }
+  });
 }
 
-var menu = {
-  '': {
-    "Check For Updates...": {
-      position: 1,
-      click: function () {
-        (new global.UpdatesController).checkUpdates();
-      }
-    }
-  },
-  'File': {
-    'Import .sql file': {
-      click: function () {
-        (new global.ImportController).doImport();
-      },
-      key: 'i',
-      modifiers: 'cmd+shift'
-    },
-    'Reconnect': {
-      click: function () {
-        if (global.App.currentTab.instance.connection) {
-          global.App.currentTab.instance.reconnect();
-        } else {
-          window.alertify.alert('Current tab not connected');
-        }
-      }
-    },
-    'New Connection': {
-      click: function () {
-        global.App.activateLoginTab();
-      },
-      key: 't'
-    }
-  },
-  'Edit': { },
-  'Database': {
-    'Refresh Database': {
-      click: function () {
-        global.App.currentTab.instance.fetchTablesAndSchemas();
-      },
-      enabled: false
-    },
-    'Rename Database': {
-      click: function () {
-        global.App.currentTab.instance.renameDatabaseDialog();
-      },
-      enabled: false
-    },
-    'Export Database': {
-      click: function () {
-        (new global.ExportController).doExport();
-      },
-      enabled: false
-    },
-    'separator': 'separator',
-    'Drop Database': {
-      click: function () {
-        global.App.currentTab.instance.dropDatabaseDialog();
-      },
-      enabled: false
-    }
-  },
-  'Table': {
-    'Reload': {
-      click: function () {
-        var appTab = global.App.currentTab.instance;
-        var tab = appTab.currentTab;
+function disableItem(topLabel, itemLable) {
+  enableItem(topLabel, itemLable, false);
+}
 
-        if (tab == "content") {
-          appTab.view.contents.reloadData();
-        } else if (tab == "query") {
-          appTab.view.query.runQuery();
-        } else {
-          appTab.activateTab(tab, 'force');
-        }
-      },
-      key: 'r',
-      enabled: false
-    }
-  },
-  'Window': {
-    'Close Window or Tab': {
-      click: function () {
-        if (global.App.tabs.length > 1) {
-          global.App.closeCurrentTab();
-        } else {
-          gui.Window.get().close();
-        }
-      },
-      key: 'w',
-      position: 1
-    },
-    'separator': 'separator',
-    'Zoom in': {
-      click: function () {
-        gui.Window.get().zoomLevel += 0.5;
-      },
-      key: '+'
-    },
-    'Zoom out': {
-      click: function () {
-        gui.Window.get().zoomLevel -= 0.5;
-      },
-      key: '-'
-    },
-    'Zoom to noraml': {
-      click: function () {
-        gui.Window.get().zoomLevel = 0;
-      },
-      key: '0'
-    },
-    'separator2': 'separator',
-    'Inspector': {
-      click: function () {
-        var win = gui.Window.get();
-        if (win.isDevToolsOpen()) {
-          win.closeDevTools();
-        } else {
-          win.showDevTools();
-        }
-      },
-      key: 'i'
-    },
-    Reload: {
-      click: function () {
-        gui.Window.get().reloadDev();
-      },
-      key: 'r',
-      modifiers: 'cmd+shift'
-    },
-    Help: {
-      click: function() {
-        var help = global.HelpScreen.open();
-        help.activatePage("get-postgres");
-      }
-    },
-    Console: {
-      click: function() {
-        global.HistoryWindow.init();
-      },
-      key: 'l'
-    }
-  }
-};
-
-
-function Object_forEach (object, callback) {
-  for (var key in object) {
-    if (object.hasOwnProperty(key)) callback(key, object[key]);
-  }
-};
-
-var AppMenu = {
-  extend: function(nativeMenuBar, newMenu) {
-    Object_forEach(newMenu, function (submenuName, submenu) {
-      var nativeSubmenu;
-      nativeMenuBar.items.forEach(function(es) {
-        if (es.label == submenuName) nativeSubmenu = es.submenu;
-      });
-      if (!nativeSubmenu) {
-        nativeSubmenu = new gui.Menu();
-        var position = nativeMenuBar.items.length - 1;
-        try {
-          nativeMenuBar.insert(new gui.MenuItem({label: submenuName, submenu: nativeSubmenu}), position);
-        } catch (error) {
-          console.log("Error inserting submenu", submenuName);
-          console.error(error);
-        }
-      }
-      Object_forEach(submenu, function (itemName, callback) {
-        if (typeof callback == 'string') {
-          nativeSubmenu.append(new gui.MenuItem({ type: callback }));
-        } else {
-          var menuItem;
-          var itemPosition = undefined;
-          if (typeof callback == 'object') {
-            var options = {label: itemName};
-            Object_forEach(callback, function (key, value) {
-              options[key] = value;
-            });
-            try {
-              if (options.position != undefined) {
-                itemPosition = options.position;
-                delete options.position;
-              }
-              menuItem = new gui.MenuItem(options);
-            } catch (error) {
-              console.log("Error creating menu item ", options);
-              console.error(error);
-            }
-          } else {
-            menuItem = new gui.MenuItem({label: itemName});
-            menuItem.click = callback;
-          }
-          try {
-            if (itemPosition != undefined) {
-              nativeSubmenu.insert(menuItem, itemPosition);
-            } else {
-              nativeSubmenu.append(menuItem);
-            }
-          } catch (error) {
-            console.log("Error appending menu item ", menuItem);
-            console.error(error);
-          }
-        }
-      });
-    });
-  },
-
-  createAndExtend: function (menuObject) {
-    var nativeMenuBar = new gui.Menu({type: "menubar"});
-    nativeMenuBar.createMacBuiltin && nativeMenuBar.createMacBuiltin("AppMenu");
-
-    AppMenu.extend(nativeMenuBar, menuObject);
-    gui.Window.get().menu = nativeMenuBar;
-  },
-
-  menuItem: function (menuName, itemName) {
-    var menu = gui.Window.get().menu;
-    var result;
-    menu.items.forEach(function(es) {
-      if (es.label == menuName) {
-        es.submenu.items.forEach(function(item) {
-          if (item.label == itemName) result = item;
-        });
-      }
-    });
-    return result;
-  },
-
-  removeItem: function (menuName, itemName) {
-    var menu = gui.Window.get().menu;
-    var result;
-    menu.items.forEach(function(es) {
-      if (es.label == menuName) {
-        es.submenu.items.forEach(function(item) {
-          if (item.label == itemName) {
-            es.submenu.remove(item);
-            result = item;
-          }
-        });
-      }
-    });
-    return result;
-  },
-
-  callMenuItem: function (menuName, itemName) {
-    var item = this.menuItem(menuName, itemName);
-    if (item) item.click();
-  },
-
-  disableItem: function (menuName, itemName) {
-    var item = this.menuItem(menuName, itemName);
-    if (item) {
-      item.enabled = false;
-    } else {
-      console.log("can not find menu item: '" + menuName + " -> " + itemName);
-    }
-  },
-
-  enableItem: function (menuName, itemName) {
-    var item = this.menuItem(menuName, itemName);
-    if (item) {
-      item.enabled = true;
-    } else {
-      console.log("can not find menu item: '" + menuName + " -> " + itemName);
-    }
-  },
-};
-
-
-
-AppMenu.extend(nativeMenuBar, menu);
-
-gui.Window.get().menu = nativeMenuBar;
-
-AppMenu.removeItem("Window", "Close Window");
-
-window.Mousetrap.bind("command+shift+/", function () {
-  AppMenu.callMenuItem('Window', 'Help');
-  return false;
-});
 
 var checkDbMenu = function () {
   var db = global.App.currentTab.instance.database;
   if (db) {
-    AppMenu.enableItem("Database", "Drop Database");
-    AppMenu.enableItem("Database", "Refresh Database");
-    AppMenu.enableItem("Database", "Rename Database");
-    AppMenu.enableItem("Database", "Export Database");
+    enableItem("Database", "Drop Database");
+    enableItem("Database", "Refresh Database");
+    enableItem("Database", "Rename Database");
+    enableItem("Database", "Export Database");
   } else {
-    AppMenu.disableItem("Database", "Drop Database");
-    AppMenu.disableItem("Database", "Refresh Database");
-    AppMenu.disableItem("Database", "Rename Database");
-    AppMenu.disableItem("Database", "Export Database");
+    disableItem("Database", "Drop Database");
+    disableItem("Database", "Refresh Database");
+    disableItem("Database", "Rename Database");
+    disableItem("Database", "Export Database");
   }
 };
 
@@ -600,9 +335,9 @@ var checkTableMenu = function () {
   //var schema = global.App.currentTab.instance.currentSchema;
 
   if (tab == "query" || table && ["content", "structure", "info"].indexOf(tab) != -1) {
-    AppMenu.enableItem("Table", "Reload");
+    enableItem("Table", "Reload");
   } else {
-    AppMenu.disableItem("Table", "Reload");
+    disableItem("Table", "Reload");
   }
 };
 
@@ -625,4 +360,3 @@ App.on('dbtab.changed', function (tab) {
   checkTableMenu();
 });
 
-*/

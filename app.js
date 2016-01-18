@@ -321,6 +321,8 @@ Object.defineProperty(App, "currentTable", {
 
 Object.setPrototypeOf(global.App, new node.events.EventEmitter);
 
+global.App.remote = remote;
+
 global.App.emit = function (eventName) {
   if (!this._events[eventName]) {
     console.log("Fire event '" + eventName + "' but no listeners");

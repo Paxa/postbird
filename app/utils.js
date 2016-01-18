@@ -1,3 +1,9 @@
+var remote = require('electron').remote;
+var Menu = remote.Menu;
+var MenuItem = remote.MenuItem;
+
+
+
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
   $u.each($u(selector_or_el).serializeArray(), function(_, kv) {
@@ -29,12 +35,12 @@ $u.contextMenu = function (element, options, params, gui) {
 
   element.addEventListener('contextmenu', function(event) {
     if (!element.contextmenu) {
-      var menu = element.contextmenu = new gui.Menu();
+      var menu = element.contextmenu = new Menu();
       for (var n in options) {
         if (options[n] && typeof options[n] == 'string') {
-          menu.append(new gui.MenuItem({ type: options[n] }));
+          menu.append(new MenuItem({ type: options[n] }));
         } else {
-          menu.append(new gui.MenuItem({ label: n, click: options[n] }));
+          menu.append(new MenuItem({ label: n, click: options[n] }));
         }
       }
     }
@@ -43,7 +49,7 @@ $u.contextMenu = function (element, options, params, gui) {
       params.onShow(event, element.contextmenu);
     }
 
-    element.contextmenu.popup(event.x, event.y);
+    element.contextmenu.popup(remote.getCurrentWindow());
   });
 };
 
