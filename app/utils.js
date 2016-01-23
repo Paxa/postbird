@@ -29,9 +29,8 @@ $u.buildOption = function (label, value, options) {
   return $dom(['option', label, options]);
 };
 
-$u.contextMenu = function (element, options, params, gui) {
+$u.contextMenu = function (element, options, params) {
   if (element.is === $u.fn.is) element = element[0];
-  if (gui == undefined) gui = global.gui;
 
   element.addEventListener('contextmenu', function(event) {
     if (!element.contextmenu) {
@@ -242,8 +241,6 @@ $u.textInputMenu = function (element, currentWindow) {
     }
   };
 
-  var gui = (currentWindow || window).nwDispatcher.requireNwGui();
-
   $u.contextMenu(element, {
     'Cut': function () {
       (currentWindow || window).document.execCommand("cut");
@@ -254,7 +251,7 @@ $u.textInputMenu = function (element, currentWindow) {
     'Paste': function () {
       (currentWindow || window).document.execCommand("paste");
     }
-  }, {onShow: onShow}, gui);
+  }, {onShow: onShow});
 };
 
 $u.textContextMenu = function (element, currentWindow) {
@@ -273,11 +270,9 @@ $u.textContextMenu = function (element, currentWindow) {
     }
   };
 
-  var gui = (currentWindow || window).nwDispatcher.requireNwGui();
-
   $u.contextMenu(element, {
     'Copy': function () {
       (currentWindow || window).document.execCommand("copy");
     },
-  }, {onShow: onShow}, gui);
+  }, {onShow: onShow});
 };

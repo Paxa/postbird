@@ -12,7 +12,7 @@ global.HelpScreen = jClass.extend({
     this.content.find('.page a.external').bind('click', function(e) {
       $u.stopEvent(e);
       var url = e.target.href;
-      gui.Shell.openExternal(url);
+      eletron.shell.openExternal(url);
     });
   },
 

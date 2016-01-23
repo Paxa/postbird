@@ -31,7 +31,7 @@ global.UpdatesController = jClass.extend({
           window.alertify.confirm(msg, function (answer) {
             window.alertify.labels.ok = "OK";
             if (answer) {
-              gui.Shell.openExternal(this.releasesPage);
+              electron.shell.openExternal(this.releasesPage);
             }
           }.bind(this), 'grey-cancel-button');
         } else {
