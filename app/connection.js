@@ -123,7 +123,7 @@ global.Connection = jClass.extend({
 
   query: function (sql, callback) {
     this.onReady(function () {
-      if (this.logging) process.stdout.write("SQL: " + sql.green + "\n");
+      if (this.logging) logger.print("SQL: " + sql.green + "\n");
 
       var historyRecord = { sql: sql, date: (new Date()), state: 'running' };
       this.history.push(historyRecord);
@@ -132,10 +132,10 @@ global.Connection = jClass.extend({
 
       this.connection.query(sql, function (error, result) {
         historyRecord.time = Date.now() - time;
-        process.stdout.write("SQL: Done ".green + historyRecord.time + "\n");
+        logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
 
         if (global.TESTING && this.printTestingError && error) {
-          process.stdout.write("FAILED: " + sql.yellow + "\n");
+          logger.print("FAILED: " + sql.yellow + "\n");
           log.error(error);
         }
 
