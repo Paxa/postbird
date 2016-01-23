@@ -17,16 +17,24 @@ function Logger (level) {
     };
   });
 
+  proto.print = function Logger_print (string) {
+    topProcess.stdout.write(string);
+  };
+
   proto.write = function (level, mesg_args) {
     if (log_levels.indexOf(level) <= log_levels.indexOf(this.logLevel)) {
       var messages = [];
       for (var i = 0; i < mesg_args.length; i++) {
-        messages.push(String(mesg_args[i]));
+        message = mesg_args[i];
+        if (typeof message == 'object') {
+          message = node.util.inspect(message, {depth: 5});
+        }
+        messages.push(String(message));
       }
       var message = messages.join(' ');
 
       line = sprintf("%s %s\n", level.toUpperCase(), message);
-      topProcess.stdout.write(line);
+      this.print(line);
     }
   };
 }(Logger.prototype);

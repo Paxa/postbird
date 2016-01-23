@@ -1283,7 +1283,9 @@ body.new-window {
   background: #EDEDED; }
 
 .history-window {
-  background: #EDEDED; }
+  background: #EDEDED;
+  overflow-y: auto;
+  max-height: 100%; }
   .history-window header {
     padding: 7px 10px;
     background: #EDEDED;

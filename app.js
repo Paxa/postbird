@@ -3,7 +3,7 @@ var jadeRuntime = require('jade/runtime');
 var remote = require('electron').remote;
 
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
-global.log = require('./app/logger').make('info');
+global.logger = global.log = require('./app/logger').make('info');
 
 //require('./sugar/sugar');
 
