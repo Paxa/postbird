@@ -112,36 +112,34 @@ global.LoginScreen = jClass.extend({
     var data = Model.SavedConn.savedConnections();
     var currentConnection = this.connectionName;
 
-    for (var name in data) {
-      var _this = this, line = $dom(['li', name]);
+    var _this = this;
+    Object.forEach(data, function (name, params) {
+      var line = $dom(['li', name]);
 
-      !function (params) {
-        $u.contextMenu(line, {
-          "Fill form with ...": _this.fillForm.bind(_this, name, params),
-          "Connect": function () {
-            _this.fillForm(params, name);
-            _this.onFormSubmit();
-          },
-          'separator': 'separator',
-          "Rename": _this.renameConnection.bind(_this, name),
-          "Delete": _this.deleteConnection.bind(_this, name)
-        });
+      $u.contextMenu(line, {
+        "Fill form with ...": _this.fillForm.bind(_this, name, params),
+        "Connect": function () {
+          _this.fillForm(params, name);
+          _this.onFormSubmit();
+        },
+        'separator': 'separator',
+        "Rename": _this.renameConnection.bind(_this, name),
+        "Delete": _this.deleteConnection.bind(_this, name)
+      });
 
-        if (name == currentConnection) {
-          $u(line).addClass('selected');
-        }
+      if (name == currentConnection) {
+        $u(line).addClass('selected');
+      }
 
-        $u(line).single_double_click_nowait(function(e) {
-          _this.connectionSelected(name, params, line);
-        }, function (e) {
-          _this.connectionSelected(name, params, line);
-          _this.onFormSubmit(e);
-        });
-        $u(line).bind('click', _this.connectionSelected.bind(_this, name, params, line));
-      }(data[name], name)
+      $u(line).single_double_click_nowait(function(e) {
+        _this.connectionSelected(name, params, line);
+      }, function (e) {
+        _this.connectionSelected(name, params, line);
+        _this.onFormSubmit(e);
+      });
 
-      this.connections.append(line)
-    }
+      _this.connections.append(line)
+    });
   },
 
   connectionSelected: function (name, params, line) {
