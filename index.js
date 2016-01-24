@@ -70,8 +70,6 @@ require('./app/controllers/updates_controller');
 require('./app/heroku_client');
 require('./app/history_window');
 
-console.log = require('console').log;
-
 global.$u = window.$u = Zepto;
 global.$ = function (selector) {
   return document.querySelector(selector);
