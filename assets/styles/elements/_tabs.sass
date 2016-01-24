@@ -1,8 +1,10 @@
+$tab-border-color: #a3a3a3
+
 #tabs
   +children-inline
-  :padding 5px 5px 0 5px
+  //:padding 0px 5px
   //:background rgba(#000, 0.2)
-  :background #b1b1b1
+  :background #dddddd
   :overflow hidden
   //:border-bottom 1px solid #686868
   :position relative
@@ -14,25 +16,27 @@
     :right 0
     :bottom 0
     :height 1px
-    :background #838383
+    :background $tab-border-color
   .tab
     //:background rgba(#000, 0.15)
-    :background #c0c0c0
-    :color #323232
-    :border-radius 4px 4px 0 0
+    :background #d0d0d0
+    //:color #323232
+    //:border-radius 4px 4px 0 0
     :margin
-      :right 4px
+      :right 0px
       :bottom 0px
-    :line-height 23px
+    :line-height 24px
     :font
       :size 13px
-      :weight bold
-    :padding 1px 27px 0px 27px
-    :text-shadow 0 1px 0px rgba(255, 255, 255, 0.4)
-    +box-shadow(inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.3))
-    :border 1px solid #838383
+      //:weight bold
+    :padding 1px 27px 1px 27px
+    min-width: 90px
+    text-align: center
     :border-bottom none
     :position relative
+    border-right: 1px solid #aaa //$tab-border-color
+    &:hover
+      background: #c0c0c0
     .close
       :position absolute
       :top 5px
@@ -70,12 +74,15 @@
       .close
         :display inline-block
     &.active
-      +gradient(darken(#e5f1f8, 7%), darken(#e5f1f8, 1%))
-      +box-shadow(0px 1px 4px rgba(#000, 0.3))
+      background: #ececec
       :position relative
-      :z-index 5
+      //:z-index 5
       :border-color #999
-
+      +box-shadow(inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2))
+      padding-bottom: 0
+      padding-top: 2px
+      line-height: 22px
+      border-bottom: 2px solid rgba(185, 211, 255, 0.81)
 
   .inspector
     :float right
