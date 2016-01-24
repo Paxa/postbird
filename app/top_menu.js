@@ -169,7 +169,7 @@ var template = [
         click: function () {
           webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.3);
         },
-        accelerator: 'CmdOrCtrl+Plus'
+        accelerator: 'CmdOrCtrl+='
       },
       {
         label: 'Zoom Out',
