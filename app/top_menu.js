@@ -205,9 +205,16 @@ var template = [
         role: 'minimize'
       },
       {
-        label: 'Close',
+        label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W',
-        role: 'close'
+        click: function() {
+          if (global.App.tabs.length > 1) {
+            global.App.closeCurrentTab();
+          } else {
+            remote.app.quit();
+          }
+          //global.HistoryWindow.init();
+        }
       },
     ]
   },

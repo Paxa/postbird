@@ -26,7 +26,9 @@ global.HistoryWindow = {
     logger.info('file://' + App.root + '/views/history_window.html');
     newWindow.loadURL('file://' + App.root + '/views/history_window.html');
 
-    newWindow.webContents.toggleDevTools();
+    if (process.env.NW_DEV == "true") {
+      newWindow.webContents.toggleDevTools();
+    }
 
     newWindow.webContents.on('did-finish-load', function () {
       newWindow.webContents.send('App.logEvents', App.logEvents);
