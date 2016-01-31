@@ -20,6 +20,7 @@ require('classy/object_ls');
 require('./lib/sql_snippets');
 
 global.node.colors = require('colors');
+global.node.colors.enabled = true;
 
 require('./app');
 require('./app/views/pane');

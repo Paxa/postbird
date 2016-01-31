@@ -127,7 +127,7 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   initSortable: function () {
-    var cells = this.content.find('table th[sortable]')
+    var cells = this.content.find('table th[sortable]');
     cells.each(function (i, cell) {
       cell = $u(cell);
       cell.bind('click', function (ev) {
@@ -141,6 +141,50 @@ global.Panes.Contents = global.Pane.extend({
         cell.attr('sortable-dir', direction);
         this.reloadData();
       }.bind(this));
+    }.bind(this));
+  },
+
+  addRow: function () {
+    var container = this.content.find('table tbody');
+    var sortedColumns = Object.values(this.columnTypes).sort(function (a, b) {
+      return (a.ordinal_position > b.ordinal_position) ? 1 : (a.ordinal_position < b.ordinal_position) ? -1 : 0;
+    });
+
+    var fields = $u('<tr>').addClass('adding-new-row');
+    sortedColumns.forEach(function (column) {
+      var inputType = 'text';
+      if (column.data_type == 'real' || column.data_type == 'smallint' || column.data_type == 'numeric') {
+        inputType = 'number';
+      }
+      var input = $dom(['input', {fieldname: column.column_name, type: inputType}]);
+      fields.append($u('<td>').append(input));
+    });
+
+    this.newRowFields = fields;
+    container.append(fields);
+    fields.find('input')[0].focus();
+
+    this.newRowFields.find('input').bind('keypress', function (event) {
+      if (event.keyCode === 13) { // 13 is enter
+        this.saveNewRow();
+      }
+    }.bind(this));
+  },
+
+  saveNewRow: function () {
+    var data = {};
+    this.newRowFields.find('input').each(function (i, el) {
+      data[el.getAttribute('fieldname')] = el.value;
+    });
+
+    this.handler.table.insertRow(data, function (result, error) {
+      if (error) {
+        alert(error.message);
+      }
+      if (result) {
+        this.newRowFields.remove();
+        this.reloadData();
+      }
     }.bind(this));
   }
 });

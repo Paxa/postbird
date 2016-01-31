@@ -301,6 +301,9 @@ table.native-look-table {
     color: white; }
     table.native-look-table.active tr.selected td a {
       color: white; }
+  table.native-look-table tr.adding-new-row td input {
+    max-width: 100%;
+    width: 100%; }
 
 .home-screen {
   background: #e1eff7;
