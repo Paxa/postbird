@@ -88,7 +88,7 @@ function reloadCss() {
 
 //var gui = require('nw.gui');
 //global.gui = gui;
-global.eletron = require('electron');
+global.electron = require('electron');
 
 
 if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // win32, win64, win128, etc

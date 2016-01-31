@@ -333,6 +333,10 @@ global.Model.Table = Model.base.extend({
   },
 
   getRows: function (offset, limit, options, callback) {
+    if (callback == undefined) callback = options, options = undefined;
+    if (callback == undefined) callback = limit, limit = undefined;
+    if (callback == undefined) callback = offset, offset = undefined;
+
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
@@ -381,14 +385,26 @@ global.Model.Table = Model.base.extend({
   },
 
   insertRow: function (values, callback) {
-    var sql = "insert into %s.%s values (%s)";
-    var safeValues = values.map(function (val) {
-      return "'" + val.toString() + "'";
-    }).join(", ");
+    if (Array.isArray(values)) {
+      var sql = "insert into %s.%s values (%s)";
+      var safeValues = values.map(function (val) {
+        return "'" + val.toString() + "'";
+      }).join(", ");
 
-    this.q(sql, this.schema, this.table, safeValues, function (data, error) {
-      callback(data, error);
-    });
+      this.q(sql, this.schema, this.table, safeValues, function (data, error) {
+        callback(data, error);
+      });
+    } else {
+      var columns = Object.keys(values);
+      var sql = `insert into %s.%s (${columns.join(", ")}) values (%s)`;
+      var safeValues = Object.values(values).map(function (val) {
+        return "'" + val.toString() + "'";
+      }).join(", ");
+
+      this.q(sql, this.schema, this.table, safeValues, function (data, error) {
+        callback(data, error);
+      });
+    }
   },
 
   getSourceSql: function (callback) {

@@ -1,3 +1,11 @@
+global.electron = require('electron');
+var topProcess = electron.remote ? electron.remote.process : process;
+
+process.on("uncaughtException", function(err) {
+  topProcess.stdout.write(err.message);
+  topProcess.stdout.write(err.stack);
+});
+
 if (!global.window) global.window = {};
 
 global.TESTING = true;
@@ -6,6 +14,7 @@ var async = require('async');
 
 require('../sugar/redscript-loader');
 
+require('classy/object_extras').extendGlobal();
 require('../lib/jquery.class');
 require('../lib/node_lib');
 require('../lib/arg');
@@ -30,6 +39,8 @@ require('../sugar/redscript-loader');
 global.$u = {fn: {}};
 require('../app/utils');
 
+logger.info(typeof Object.forEach);
+
 App.tabs = [{
   instance: {
     connection: Connection({
@@ -38,9 +49,9 @@ App.tabs = [{
       database: ''
     }, function(success, error) {
       if (!success) {
-        process.stdout.write(("ERROR: " + error).red + "\n");
-        process.stdout.write("Can not connect to server. Please check if server running.");
-        process.stdout.write("\n");
+        logger.print(("ERROR: " + error).red + "\n");
+        logger.print("Can not connect to server. Please check if server running.");
+        logger.print("\n");
         process.exit(0);
       }
     })
@@ -56,7 +67,10 @@ GLOBAL.connection = connection;
 
 App.activeTab = 0;
 
-console.error = function () {};
+console.log = function () {
+  logger.info.apply(logger, arguments);
+}
+//console.error = function () {};
 App.testing = true;
 
 require('./helpers');
@@ -77,7 +91,7 @@ Model.Procedure.prototype.makeSync('drop');
 
 Model.Table.makeSync('publicTables');
 Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
-Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows');
+Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows', 'getRows');
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
 SqlExporter.prototype.makeSyncFn('doExport', 3);
@@ -100,6 +114,7 @@ queue.push(function (callback) {
 queue.push(function(callback) {
   bdd.runAllCases(function() {
     callback();
-    process.exit(0);
+    electron.remote.app.quit();
+    //process.exit(0);
   });
 });

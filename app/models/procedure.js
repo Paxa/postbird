@@ -27,7 +27,7 @@ global.Model.Procedure = Model.base.extend({
     },
 
     find: function (name, callback) {
-      var sql = $u.commentOf(function () {/*
+      var sql = `
         SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
                pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
               ret_type.typname as return_type
@@ -36,8 +36,8 @@ global.Model.Procedure = Model.base.extend({
         INNER JOIN pg_authid ON (pg_proc.proowner = pg_authid.oid)
         INNER JOIN pg_language ON (pg_proc.prolang = pg_language.oid)
         INNER JOIN pg_type ret_type ON (pg_proc.prorettype = ret_type.oid)
-        WHERE ns.nspname = 'public' AND proname = '%s' OR pg_proc.oid = '%s' order by proname;
-      */});
+        WHERE ns.nspname = 'public' AND proname = '%s' ${name.match(/^\d+$/) ? "OR pg_proc.oid = '%s'" : ''} order by proname;
+      `;
 
       Model.base.q(sql, name, name, function(data, error) {
         if (error) {

@@ -133,6 +133,8 @@ global.loadBddBase = function () {
   global.assert_present = asserts.assert_present;
 
   process.on("uncaughtException", function(err) {
+    logger.info(err.message);
+    logger.info(err.stack);
     /*
     if (err == null) {
       var err1 = new Error();
@@ -148,15 +150,17 @@ global.loadBddBase = function () {
 global.loadTestCases = function (path) {
   var testFiles = node.fs.readdirSync(node.path.resolve(__dirname, path));
 
-  var args;
-  if (global.GUI) {
-    args = global.GUI.App.argv;
+  var args = [];
+
+  if (global.electron) {
+    args = electron.remote.process.argv.slice(2);
   } else {
     args = process.argv.slice(2);
   }
 
+
   if (args.length > 0) {
-    var pattern = args[0];
+    var pattern = args[0].replace(/(\.\/)?tests\/spec\//, '');
     testFiles = testFiles.filter(function(file) {
       return file.indexOf(pattern) != -1;
     });

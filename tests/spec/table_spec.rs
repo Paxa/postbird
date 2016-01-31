@@ -70,4 +70,18 @@ describe('Model.Table', do
     end)
     table.drop()
   end)
+
+  sync_it("should insert row", do
+    var table = Model.Table.create('public', 'test_table', {empty: true})
+    table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}));
+    table.addColumnObj(Model.Column('some_column', {data_type: 'text'}));
+
+    res = table.insertRow({some_number: 123, some_column: 'bob'})
+
+    rows = table.getRows()
+    assert(rows.rowCount, 1)
+    assert(rows.rows[0], { some_number: 123, some_column: 'bob' })
+
+    table.drop()
+  end)
 end)

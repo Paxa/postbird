@@ -132,10 +132,10 @@ global.Connection = jClass.extend({
 
       this.connection.query(sql, function (error, result) {
         historyRecord.time = Date.now() - time;
-        logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
+        if (this.logging) logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
 
         if (global.TESTING && this.printTestingError && error) {
-          logger.print("FAILED: " + sql.yellow + "\n");
+          if (this.logging) logger.print("FAILED: " + sql.yellow + "\n");
           log.error(error);
         }
 
@@ -211,8 +211,8 @@ global.Connection = jClass.extend({
       return;
     }
 
-    if (this.connection.native && conn.connection.native.pq.serverVersion) {
-      var intVersion = conn.connection.native.pq.serverVersion();
+    if (this.connection.native && this.connection.native.pq.serverVersion) {
+      var intVersion = this.connection.native.pq.serverVersion();
       var majorVer = ~~ (intVersion / 10000);
       var minorVer = ~~ (intVersion % 10000 / 100);
       var patchVer = intVersion % 100;

@@ -37,18 +37,3 @@ PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin/ \
 HOME=~/.electron-gyp \
 node-gyp rebuild --target=0.35.1 --arch=x64 --dist-url=https://atom.io/download/atom-shell
 ```
-
-My todo:
-
-* Allow resize columns only in header
-* Work on content tab: filters, sticky header, increase limit
-* Fix Table.describe when there is same tables in different schemas
-* Drop schema
-* Table/mat-view actions: vacuum, analyze, refresh view
-* Auto-login feature
-* Add autocomplete tables via codemirror sql-hint
-* Contribute text/x-pgsql to codemirror github
-* Fix "newRole is not defined"
-* Implement SHOW GRANTS FOR username
-* Handle "ERROR:  No such database: postgres"
-* Handle big response for query
