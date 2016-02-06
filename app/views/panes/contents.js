@@ -50,6 +50,8 @@ global.Panes.Contents = global.Pane.extend({
 
     this.initSortable();
 
+    this.initContextMenu();
+
     this.footer = this.content.find('.summary-and-pages');
 
     this.nextPageEl = this.footer.find('.pages.next');
@@ -142,6 +144,53 @@ global.Panes.Contents = global.Pane.extend({
         this.reloadData();
       }.bind(this));
     }.bind(this));
+  },
+
+  initContextMenu: function (event) {
+    var table = this.content.find('table');
+
+    // bind for delete button
+    $u(table).on('generic-table-init', function () {
+      var genericTable = table.data('generic_table');
+      genericTable.bind('key.backspace', function (event) {
+        this.deleteRow(genericTable.selectedRow);
+      }.bind(this));
+    }.bind(this));
+
+    var _this = this;
+    table.on('contextmenu', function(event) {
+      var genericTable = table.data('generic_table');
+
+      var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+
+      GenericTable.setSelected(genericTable);
+      genericTable.setSelectedRow(el);
+    });
+
+    $u.contextMenu(table, {
+      'Delete Row': function (menuItem, bwin) {
+        var event = table[0].contextmenu.clickEvent;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+        this.deleteRow(el);
+      }.bind(this),
+      'Copy': function () {
+        (currentWindow || window).document.execCommand("copy");
+      }
+    });
+  },
+
+  deleteRow: function (row) {
+    if (confirm("Are you sure wanna delete row?")) {
+      var ctid = $u(row).attr('data-ctid');
+      this.handler.table.deleteRowByCtid(ctid, function (result, error) {
+        if (error) {
+          alert(error.message);
+        }
+        if (result) {
+          this.reloadData();
+        }
+      }.bind(this));
+    }
   },
 
   addRow: function () {

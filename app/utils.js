@@ -44,6 +44,8 @@ $u.contextMenu = function (element, options, params) {
       }
     }
 
+    element.contextmenu.clickEvent = event;
+
     if (params && params.onShow) {
       params.onShow(event, element.contextmenu);
     }

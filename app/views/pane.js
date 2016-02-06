@@ -38,6 +38,7 @@ global.Pane = jClass.extend({
         if (!table.hasAttribute('native-table-init')) {
           $u(table).colResizable();
           new GenericTable(table);
+          $u(table).trigger('generic-table-init');
           table.setAttribute('native-table-init', true);
         }
       });

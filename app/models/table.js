@@ -342,9 +342,9 @@ global.Model.Table = Model.base.extend({
     if (!options) options = {};
 
     if (options.with_oid) {
-      var sql = 'select oid, * from "%s"."%s" %s limit %d offset %d';
+      var sql = 'select oid, ctid, * from "%s"."%s" %s limit %d offset %d';
     } else {
-      var sql = 'select * from "%s"."%s" %s limit %d offset %d';
+      var sql = 'select ctid, * from "%s"."%s" %s limit %d offset %d';
     }
 
     var orderSql = "";
@@ -405,6 +405,13 @@ global.Model.Table = Model.base.extend({
         callback(data, error);
       });
     }
+  },
+
+  deleteRowByCtid: function (ctid, callback) {
+    var sql = "delete from %s.%s where ctid='%s'";
+    this.q(sql, this.schema, this.table, ctid, function (data, error) {
+      callback(data, error);
+    });
   },
 
   getSourceSql: function (callback) {

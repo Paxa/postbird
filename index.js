@@ -119,6 +119,10 @@ Zepto(document).ready(function() {
     return false;
   });
 
+  window.Mousetrap.bind(["backspace", "del"], function () {
+    GenericTable.keyPressed('backspace');
+  });
+
   /*
   var win = gui.Window.get();
   win.focus();
