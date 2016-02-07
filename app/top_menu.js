@@ -207,11 +207,15 @@ var template = [
       {
         label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W',
-        click: function() {
-          if (global.App.tabs.length > 1) {
+        click: function(item, focusedWindow) {
+          if (focusedWindow && focusedWindow.getURL().match(/index\.html$/) && global.App.tabs.length > 1) {
             global.App.closeCurrentTab();
           } else {
-            remote.app.quit();
+            if (focusedWindow) {
+              focusedWindow.close();
+            } else {
+              remote.app.quit();
+            }
           }
           //global.HistoryWindow.init();
         }

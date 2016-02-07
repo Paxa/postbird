@@ -2700,18 +2700,15 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-buf.push("\n<link href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n<div class=\"history-window\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n  <header>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n    <button class=\"native-look reload-btn\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 3, filename: jade_debug[0].filename });
 buf.push("Reload");
 jade_debug.shift();
 jade_debug.shift();
@@ -2720,10 +2717,10 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </header>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n  <ul>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 // iterate events
 ;(function(){
   var $$obj = events;
@@ -2732,51 +2729,51 @@ jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/his
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var event = $$obj[$index];
 
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 if ( event.type == "sql.start" && event.args[0].state != 'running')
 {
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 // do nothing
 jade_debug.shift();
 jade_debug.shift();
 }
 else
 {
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n    <li>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n      <time>" + (jade.escape(null == (jade_interp = timeFormat(event.time)) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</time>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n      <div class=\"event-info\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 if ( event.type == "sql.start" && event.args[0].state == 'running')
 {
-jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<strong>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
 buf.push("Running");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</strong>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql running\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2789,26 +2786,26 @@ jade_debug.shift();
 }
 else if ( event.type == "sql.failed")
 {
-jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql failed\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 24, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = query.error) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</span>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2821,20 +2818,20 @@ jade_debug.shift();
 }
 else if ( event.type == "sql.success")
 {
-jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 26, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 26, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 29, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 27, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql success\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 30, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 31, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 29, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2847,14 +2844,14 @@ jade_debug.shift();
 }
 else if ( event.type == "connect.success")
 {
-jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var opts = event.args[0].options
 jade_debug.shift();
-jade_debug.unshift({ lineno: 35, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 33, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("Connected to server ");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 36, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2864,20 +2861,20 @@ jade_debug.shift();
 }
 else if ( event.type == "connect.error")
 {
-jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 37, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 37, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var opts = event.args[0].options
 jade_debug.shift();
-jade_debug.unshift({ lineno: 40, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 38, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("Failed connect to server ");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 41, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 42, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 40, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = event.args[1].message || event.args[1]) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2887,17 +2884,17 @@ jade_debug.shift();
 }
 else
 {
-jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 43, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 43, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"event\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 46, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 44, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("~");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 47, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push(jade.escape(null == (jade_interp = event.type) ? "" : jade_interp));
 jade_debug.shift();
-jade_debug.unshift({ lineno: 48, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 46, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push(jade.escape(null == (jade_interp = event.args.join(", ")) ? "" : jade_interp));
 jade_debug.shift();
 jade_debug.shift();
@@ -2923,51 +2920,51 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var event = $$obj[$index];
 
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 if ( event.type == "sql.start" && event.args[0].state != 'running')
 {
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 // do nothing
 jade_debug.shift();
 jade_debug.shift();
 }
 else
 {
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n    <li>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n      <time>" + (jade.escape(null == (jade_interp = timeFormat(event.time)) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</time>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n      <div class=\"event-info\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 if ( event.type == "sql.start" && event.args[0].state == 'running')
 {
-jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 13, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<strong>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
 buf.push("Running");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</strong>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql running\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -2980,26 +2977,26 @@ jade_debug.shift();
 }
 else if ( event.type == "sql.failed")
 {
-jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 20, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql failed\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 21, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 24, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 22, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = query.error) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</span>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 23, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -3012,20 +3009,20 @@ jade_debug.shift();
 }
 else if ( event.type == "sql.success")
 {
-jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 26, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 26, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var query = event.args[0]
 jade_debug.shift();
-jade_debug.unshift({ lineno: 29, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 27, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"sql success\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 30, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 28, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 31, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 29, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -3038,14 +3035,14 @@ jade_debug.shift();
 }
 else if ( event.type == "connect.success")
 {
-jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var opts = event.args[0].options
 jade_debug.shift();
-jade_debug.unshift({ lineno: 35, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 33, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("Connected to server ");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 36, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 34, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -3055,20 +3052,20 @@ jade_debug.shift();
 }
 else if ( event.type == "connect.error")
 {
-jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 37, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 37, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 var opts = event.args[0].options
 jade_debug.shift();
-jade_debug.unshift({ lineno: 40, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 38, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("Failed connect to server ");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 41, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 39, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</code>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 42, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 40, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = event.args[1].message || event.args[1]) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -3078,17 +3075,17 @@ jade_debug.shift();
 }
 else
 {
-jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
-jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 43, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 43, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("\n        <div class=\"event\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 46, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 44, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push("~");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 47, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 45, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push(jade.escape(null == (jade_interp = event.type) ? "" : jade_interp));
 jade_debug.shift();
-jade_debug.unshift({ lineno: 48, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
+jade_debug.unshift({ lineno: 46, filename: "/Users/pavel/Sites/postbird/views/history.jade" });
 buf.push(jade.escape(null == (jade_interp = event.args.join(", ")) ? "" : jade_interp));
 jade_debug.shift();
 jade_debug.shift();
@@ -3121,10 +3118,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"events" in locals_for_with?locals_for_with.events:typeof events!=="undefined"?events:undefined,"timeFormat" in locals_for_with?locals_for_with.timeFormat:typeof timeFormat!=="undefined"?timeFormat:undefined,"execTime" in locals_for_with?locals_for_with.execTime:typeof execTime!=="undefined"?execTime:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.history-window\n  header\n    button.native-look.reload-btn Reload\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(event.time)\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= query.error\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0].options\n              = \"Connected to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[0].options\n              = \"Failed connect to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n              span.error= event.args[1].message || event.args[1]\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = event.args.join(\", \")\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".history-window\n  header\n    button.native-look.reload-btn Reload\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(event.time)\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= query.error\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0].options\n              = \"Connected to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[0].options\n              = \"Failed connect to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n              span.error= event.args[1].message || event.args[1]\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = event.args.join(\", \")\n");
 }
 };
-exports["history"].content = "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.history-window\n  header\n    button.native-look.reload-btn Reload\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(event.time)\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= query.error\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0].options\n              = \"Connected to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[0].options\n              = \"Failed connect to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n              span.error= event.args[1].message || event.args[1]\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = event.args.join(\", \")\n";
+exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(event.time)\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= query.error\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0].options\n              = \"Connected to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[0].options\n              = \"Failed connect to server \"\n              code.sql= opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n              span.error= event.args[1].message || event.args[1]\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = event.args.join(\", \")\n";
 exports["home"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/home.jade" }];
 try {
@@ -4542,15 +4539,12 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
-buf.push("\n<link href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n<div class=\"snippets-window\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n  <ul>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 // iterate snippets
 ;(function(){
   var $$obj = snippets;
@@ -4559,8 +4553,8 @@ jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/sni
     for (var name = 0, $$l = $$obj.length; name < $$l; name++) {
       var snippet = $$obj[name];
 
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n    <li" + (jade.attr("snippet", name, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -4574,8 +4568,8 @@ jade_debug.shift();
     for (var name in $$obj) {
       $$l++;      var snippet = $$obj[name];
 
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n    <li" + (jade.attr("snippet", name, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -4591,13 +4585,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </ul>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n  <div class=\"preview\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
 buf.push("</div>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
+jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/snippets.jade" });
 buf.push("\n  <footer>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -4608,10 +4602,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n");
 }
 };
-exports["snippets"].content = "link(href=\"assets/styles/style.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\")\n\n.snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
+exports["snippets"].content = ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
 exports["structure_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/structure_tab.jade" }];
 try {

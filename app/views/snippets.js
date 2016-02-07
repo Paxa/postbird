@@ -1,3 +1,6 @@
+var electron = require('electron');
+var BrowserWindow = electron.remote.BrowserWindow;
+
 global.SnippetsWindow = {
   init: function () {
     if (App.snippersWin) {
@@ -5,6 +8,27 @@ global.SnippetsWindow = {
       return;
     }
 
+    newWindow = new BrowserWindow({
+      width: 775,
+      height: 420,
+      title: "Snippets",
+      show: true,
+      webPreferences: {
+        webSecurity: false,
+        allowDisplayingInsecureContent: true,
+        allowRunningInsecureContent: true
+      }
+    });
+
+    newWindow.loadURL('file://' + App.root + '/views/snippets_window.html');
+
+    newWindow.setTitle("Snippets");
+
+    if (process.env.NW_DEV == "true") {
+      newWindow.webContents.toggleDevTools();
+    }
+
+    /*
     var newWindow = gui.Window.open('blank.html', {
       width: 775,
       height: 420,
@@ -30,6 +54,7 @@ global.SnippetsWindow = {
       newWindow.focus();
       bindEvents();
     });
+    */
 
     newWindow.on('closed', function() {
       App.snippersWin = null;
