@@ -7,8 +7,8 @@ My todo:
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature
 * Add autocomplete tables via codemirror sql-hint
-* Contribute text/x-pgsql to codemirror github
-* Fix "newRole is not defined"
 * Implement SHOW GRANTS FOR username
 * Handle "ERROR:  No such database: postgres"
 * Handle big response for query
+* Add support for portitioning
+* Add support for foreign keys

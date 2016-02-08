@@ -2,10 +2,6 @@ global.Panes.Query = global.Pane.extend({
   renderTab: function(rows) {
     if (this.content) return;
 
-    window.CodeMirror.commands.autocomplete = function(cm) {
-      window.CodeMirror.showHint(cm, window.CodeMirror.hint.sql);
-    };
-
     this.renderViewToPane('query', 'query_tab');
 
     this.button = this.content.find('button:first');
