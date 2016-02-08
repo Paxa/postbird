@@ -13,9 +13,11 @@ global.ImportController = jClass.extend({
   },
 
   doImport: function () {
-    $u.openFileDialog('.sql', function (filepath) {
-      this.filename = filepath;
-      this.showImportDialog();
+    $u.openFileDialog('.sql', function (files) {
+      if (files && files.length > 0) {
+        this.filename = files[0];
+        this.showImportDialog();
+      }
     }.bind(this));
   },
 

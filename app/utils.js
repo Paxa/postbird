@@ -3,7 +3,6 @@ var Menu = remote.Menu;
 var MenuItem = remote.MenuItem;
 
 
-
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
   $u.each($u(selector_or_el).serializeArray(), function(_, kv) {
@@ -169,15 +168,13 @@ $u.openFileDialog = function (fileExt, callback) {
     callback = fileExt;
     fileExt = undefined;
   }
-  var input = $u('<input>').attr('type', 'file');
-  if (fileExt) {
-    input.attr('accept', fileExt);
-  }
-  input.change(function(evt) {
-    callback(this.value);
-    //console.log(evt, this.value);
-  });
-  input.trigger('click');
+
+  electron.remote.dialog.showOpenDialog({
+    properties: [ 'openFile' ],
+    filters: [
+      { name: 'SQL Files', extensions: [fileExt, 'sql', 'pgsql'] },
+    ]
+  }, callback);
 };
 
 // Make an area droppable
