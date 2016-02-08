@@ -1,3 +1,15 @@
+== Version 0.5.0
+
+* Migrate to Electron from Node-Webkit
+* Implement adding row to table
+* Implement delete row from table
+* Better support for editor highlight
+* Double click to connect in connection list
+* Add shortcuts Cmd+W to close tab
+* Add shortcuts Cmd+T to switch to connection
+* New design for tabs and home screen
+* Fix query window resize bar
+
 == Version 0.4.4
 
 * Add support for foreign tables
