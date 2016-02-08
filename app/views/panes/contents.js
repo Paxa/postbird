@@ -237,3 +237,13 @@ global.Panes.Contents = global.Pane.extend({
     }.bind(this));
   }
 });
+
+global.Panes.Contents.insertSnippet = function (sql) {
+  var tab = App.currentTab.instance;
+  if (tab.currentTab != "query") {
+    tab.view.showTab("query")
+  }
+
+  electron.remote.BrowserWindow.mainWindow.focus();
+  tab.view.query.appendText(sql, 2);
+};

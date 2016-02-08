@@ -76,14 +76,13 @@ var SnippetsWindow = {
     hljs.highlightBlock(this.view.preview.find('code')[0]);
 
     this.view.preview.find('[exec="insert"]').bind('click', function () {
-      var tab = App.currentTab.instance;
-      if (tab.currentTab != "query") {
-        tab.view.showTab("query")
-      }
+      this.sendToMainWindow('Snippet.insert', "\n\n" + snippet.sql);
+    }.bind(this));
+  },
 
-      //global.gui.Window.get().focus();
-      tab.view.query.appendText("\n\n" + snippet.sql, 2);
-    });
+  sendToMainWindow: function (event, sql) {
+    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    mainWindow.send(event, sql);
   }
 };
 

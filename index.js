@@ -123,6 +123,11 @@ Zepto(document).ready(function() {
     GenericTable.keyPressed('backspace');
   });
 
+  electron.ipcRenderer.on('Snippet.insert', function(event, message) {
+    console.log('Snippet.insert', event, message);
+    Panes.Contents.insertSnippet(message);
+  });
+
   /*
   var win = gui.Window.get();
   win.focus();
