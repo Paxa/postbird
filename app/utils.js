@@ -42,6 +42,8 @@ $u.contextMenu = function (element, options, params) {
           menu.append(new MenuItem({ label: n, click: options[n] }));
         }
       }
+      event.preventDefault();
+      event.stopPropagation();
     }
 
     element.contextmenu.clickEvent = event;
