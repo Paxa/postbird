@@ -76,12 +76,25 @@ describe('Model.Table', do
     table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}));
     table.addColumnObj(Model.Column('some_column', {data_type: 'text'}));
 
-    res = table.insertRow({some_number: 123, some_column: 'bob'})
+    var res = table.insertRow({some_number: 123, some_column: 'bob'})
 
     rows = table.getRows()
     assert(rows.rowCount, 1)
-    assert(rows.rows[0], { some_number: 123, some_column: 'bob' })
+    assert(rows.rows[0], { ctid: rows.rows[0].ctid, some_number: 123, some_column: 'bob' })
 
     table.drop()
   end)
+
+  sync_it("should select from views", do
+    var sql = "create view myview as select * from pg_available_extensions"
+    Model.base.q(sql)
+
+    var table = new Model.Table('public', 'myview')
+
+    var res = table.getRows()
+
+    assert(res.rows.length > 0, true)
+    table.drop()
+  end)
+
 end)

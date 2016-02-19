@@ -14,7 +14,13 @@ global.Model.Table = Model.base.extend({
   },
 
   remove: function(callback) {
-    this.q("DROP TABLE \"%s\"", this.table, callback);
+    this.isView(function (isView) {
+      if (isView) {
+        this.removeView(callback);
+      } else {
+        this.q("DROP TABLE \"%s\"", this.table, callback);
+      }
+    }.bind(this));
   },
 
   drop: function (callback) {
@@ -60,6 +66,23 @@ global.Model.Table = Model.base.extend({
         this._isMatView = data.rows.length > 0;
       }
       callback(this._isMatView);
+    }.bind(this));
+  },
+
+  isView: function (callback) {
+    if (typeof this._isView != 'undefined') {
+      callback(this._isView);
+      return;
+    }
+
+    var sql = "select 1 from information_schema.views where table_schema = '%s' and table_name = '%s';"
+    this.q(sql, this.schema, this.table, function (data, error) {
+      if (error) {
+        this._isView = false;
+      } else {
+        this._isView = data.rows.length > 0;
+      }
+      callback(this._isView);
     }.bind(this));
   },
 
@@ -341,25 +364,28 @@ global.Model.Table = Model.base.extend({
     if (!limit) limit = 100;
     if (!options) options = {};
 
-    if (options.with_oid) {
-      var sql = 'select oid, ctid, * from "%s"."%s" %s limit %d offset %d';
-    } else {
-      var sql = 'select ctid, * from "%s"."%s" %s limit %d offset %d';
-    }
+    this.isView(function (isView) {
+      var sysColumns = [];
+      if (options.with_oid) sysColumns.push('oid');
+      if (!isView) sysColumns.push('ctid');
 
-    var orderSql = "";
-    if (options.sortColumn) {
-      var direction = options.sortDirection || 'asc';
-      orderSql = ` order by "${options.sortColumn}" ${direction}`;
-    }
+      var sql = 'select %s * from "%s"."%s" %s limit %d offset %d';
+      sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "")
 
-    this.q(sql, this.schema, this.table, orderSql, limit, offset, function(data, error) {
-      if (data) {
-        data.limit = limit;
-        data.offset = offset;
+      var orderSql = "";
+      if (options.sortColumn) {
+        var direction = options.sortDirection || 'asc';
+        orderSql = ` order by "${options.sortColumn}" ${direction}`;
       }
-      callback(data, error);
-    });
+
+      this.q(sql, sysColumns, this.schema, this.table, orderSql, limit, offset, function(data, error) {
+        if (data) {
+          data.limit = limit;
+          data.offset = offset;
+        }
+        callback(data, error);
+      });
+    }.bind(this));
   },
 
   getTotalRows: function (callback) {
@@ -508,3 +534,5 @@ Model.Table.publicTables = function publicTables (callback) {
 Model.Table.l = function (schema, table_name) {
   return new Model.Table(schema, table_name);
 };
+
+
