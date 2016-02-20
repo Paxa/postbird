@@ -28,5 +28,6 @@
       a(exec="nextPage") Next
     li.reload
       a(exec="reloadData") Reload
-    li
-      a(exec="addRow") Add New Row
+    if tableType == 'BASE TABLE'
+      li
+        a(exec="addRow") Add New Row

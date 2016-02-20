@@ -40,7 +40,7 @@ try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, data, column_type_label, types, sorting, formatCell) {
+;var locals_for_with = (locals || {});(function (undefined, data, column_type_label, types, sorting, formatCell, tableType) {
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
@@ -349,12 +349,16 @@ jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
 jade_debug.unshift({ lineno: 31, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
+if ( tableType == 'BASE TABLE')
+{
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
+jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 buf.push("\n    <li>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 32, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
+jade_debug.unshift({ lineno: 33, filename: "/Users/pavel/Sites/postbird/views/content_tab.jade" });
 buf.push("<a exec=\"addRow\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 32, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 33, filename: jade_debug[0].filename });
 buf.push("Add New Row");
 jade_debug.shift();
 jade_debug.shift();
@@ -364,17 +368,20 @@ jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
 jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
 buf.push("\n  </ul>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    li\n      a(exec=\"addRow\") Add New Row\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
 }
 };
-exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    li\n      a(exec=\"addRow\") Add New Row\n";
+exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" }];
 try {

@@ -1,9 +1,20 @@
 var sprintf = require("sprintf-js").sprintf;
 
 global.Model.Table = Model.base.extend({
-  init: function (schema, table_name) {
+
+  tableType: null,
+  types: {
+    VIEW: 'VIEW',
+    TABLE: 'BASE TABLE',
+    MAT_VIEW: 'MATERIALIZED VIEW'
+  },
+
+  init: function (schema, table_name, tableType) {
     this.schema = schema;
     this.table = table_name;
+    if (tableType) {
+      this.tableType = tableType;
+    }
   },
 
   rename: function (new_name, callback) {
@@ -14,9 +25,11 @@ global.Model.Table = Model.base.extend({
   },
 
   remove: function(callback) {
-    this.isView(function (isView) {
-      if (isView) {
+    this.getTableType(function (tableType) {
+      if (tableType == this.types.VIEW) {
         this.removeView(callback);
+      } else if (tableType == this.types.MAT_VIEW) {
+        this.removeMatView(callback);
       } else {
         this.q("DROP TABLE \"%s\"", this.table, callback);
       }
@@ -28,12 +41,17 @@ global.Model.Table = Model.base.extend({
   },
 
   removeView: function (callback) {
-    this.isMatView(function (isMatView) {
-      var sql = `drop ${isMatView ? 'materialized' : ''} view "%s"."%s"`;
-      this.q(sql, this.schema, this.table, function (result, error) {
-        callback(error ? false : true, error);
-      });
-    }.bind(this));
+    var sql = `drop view "%s"."%s"`;
+    this.q(sql, this.schema, this.table, function (result, error) {
+      callback(error ? false : true, error);
+    });
+  },
+
+  removeMatView: function (callback) {
+    var sql = `drop materialized view "%s"."%s"`;
+    this.q(sql, this.schema, this.table, function (result, error) {
+      callback(error ? false : true, error);
+    });
   },
 
   dropFereign: function (callback) {
@@ -47,42 +65,41 @@ global.Model.Table = Model.base.extend({
   },
 
   isMatView: function (callback) {
-    if (!this.connection().supportMatViews()) {
-      callback(false);
-      return;
-    }
-
-    if (typeof this._isMatView != 'undefined') {
-      callback(this._isMatView);
-      return;
-    }
-
-    var sql = `select 1 from pg_matviews where schemaname = '%s' and matviewname = '%s'`;
-
-    this.q(sql, this.schema, this.table, function (data, error) {
-      if (error) {
-        this._isMatView = false;
-      } else {
-        this._isMatView = data.rows.length > 0;
-      }
-      callback(this._isMatView);
-    }.bind(this));
+    this.getTableType(function(tableType) {
+      callback(tableType == "MATERIALIZED VIEW")
+    });
   },
 
   isView: function (callback) {
-    if (typeof this._isView != 'undefined') {
-      callback(this._isView);
+    this.getTableType(function(tableType) {
+      callback(tableType == "VIEW")
+    });
+  },
+
+  getTableType: function (callback) {
+    if (this.tableType !== undefined && this.tableType !== null) {
+      callback(this.tableType);
       return;
     }
 
-    var sql = "select 1 from information_schema.views where table_schema = '%s' and table_name = '%s';"
-    this.q(sql, this.schema, this.table, function (data, error) {
+    var sql = `
+      SELECT table_schema, table_name, table_type
+      FROM information_schema.tables
+      where table_schema = '${this.schema}' and table_name = '${this.table}'
+      union
+      select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
+      from pg_matviews
+      where schemaname = '${this.schema}' and matviewname = '${this.table}'
+    `
+
+    this.q(sql, function (data, error) {
       if (error) {
-        this._isView = false;
-      } else {
-        this._isView = data.rows.length > 0;
+        console.log('ERROR', error);
+        callback(this.tableType, error);
+        return;
       }
-      callback(this._isView);
+      this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
+      callback(this.tableType);
     }.bind(this));
   },
 

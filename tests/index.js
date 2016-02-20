@@ -92,6 +92,7 @@ Model.Procedure.prototype.makeSync('drop');
 Model.Table.makeSync('publicTables');
 Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
 Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows', 'getRows');
+Model.Table.prototype.makeSync('isMatView', 'isView', 'getTableType');
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
 SqlExporter.prototype.makeSyncFn('doExport', 3);

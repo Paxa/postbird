@@ -92,17 +92,31 @@ Object.prototype.makeSyncFn = function(methodName, errorArgNum) {
       var fiber = Fiber.current;
       var newValue;
       var args = Array.prototype.slice.call(arguments);
+      var paused = false;
+      var skipYield = false;
       errorArgNum = errorArgNum || 2;
+
       args.push(function(data) {
         var error = arguments[errorArgNum - 1];
         if (error) {
           throw error;
         }
         newValue = data;
-        fiber.run();
+
+        if (paused) {
+          fiber.run();
+          paused = false;
+        } else {
+          //console.log("callback called synchroniusly or called twice. Function: " + methodName);
+          skipYield = true;
+        }
       });
+
       origFn.apply(this, args);
-      Fiber.yield();
+      paused = true;
+      if (!skipYield) {
+        Fiber.yield();
+      }
       return newValue;
     } else {
       origFn.apply(this, arguments);

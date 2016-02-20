@@ -15,9 +15,14 @@ global.Panes.Contents = global.Pane.extend({
     var table = [this.handler.database, this.handler.table];
     if (this.currentTable != table) {
       delete this.totalRows;
+      delete this.currentTableType;
       this.currentTable = table;
     }
-    this.renderData(data);
+
+    this.handler.table.getTableType(function(tableType) {
+      this.currentTableType = tableType;
+      this.renderData(data);
+    }.bind(this));
   },
 
   renderData: function (data) {
@@ -34,7 +39,8 @@ global.Panes.Contents = global.Pane.extend({
     this.renderViewToPane('content', 'content_tab', {
       data: data,
       types: this.columnTypes,
-      sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection}
+      sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection},
+      tableType: this.currentTableType
     });
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
@@ -150,12 +156,14 @@ global.Panes.Contents = global.Pane.extend({
     var table = this.content.find('table');
 
     // bind for delete button
-    $u(table).on('generic-table-init', function () {
-      var genericTable = table.data('generic_table');
-      genericTable.bind('key.backspace', function (event) {
-        this.deleteRow(genericTable.selectedRow);
+    if (this.currentTableType == 'BASE TABLE') {
+      $u(table).on('generic-table-init', function () {
+        var genericTable = table.data('generic_table');
+        genericTable.bind('key.backspace', function (event) {
+          this.deleteRow(genericTable.selectedRow);
+        }.bind(this));
       }.bind(this));
-    }.bind(this));
+    }
 
     var _this = this;
     table.on('contextmenu', function(event) {
@@ -167,19 +175,25 @@ global.Panes.Contents = global.Pane.extend({
       genericTable.setSelectedRow(el);
     });
 
-    $u.contextMenu(table, {
-      'Delete Row': function (menuItem, bwin) {
-        var event = table[0].contextmenu.clickEvent;
-        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
-        this.deleteRow(el);
-      }.bind(this),
+    var contextMenuActions = {
       'Copy': function () {
         (currentWindow || window).document.execCommand("copy");
       }
-    });
+    };
+    if (this.currentTableType == 'BASE TABLE') {
+      contextMenuActions['Delete Row'] = function (menuItem, bwin) {
+        var event = table[0].contextmenu.clickEvent;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+        this.deleteRow(el);
+      }.bind(this);
+    }
+    $u.contextMenu(table, contextMenuActions);
   },
 
   deleteRow: function (row) {
+    if (this.currentTableType != 'BASE TABLE') {
+      alert("Can't delete from " + this.currentTableType);
+    }
     if (confirm("Are you sure wanna delete row?")) {
       var ctid = $u(row).attr('data-ctid');
       this.handler.table.deleteRowByCtid(ctid, function (result, error) {
