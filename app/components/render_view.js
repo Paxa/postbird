@@ -85,7 +85,6 @@ var RenderView = {
       var cache = require(this.root + '/views/cache');
       if (cache) {
         this.jadeFn = cache;
-        console.log("Loaded templates cache " + Object.keys(this.jadeFn));
       }
     }
   }
