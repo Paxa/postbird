@@ -2,14 +2,16 @@ require "../../lib/pg_dump_runner"
 
 describe('PgDumpRunner', do
 
-  it("should return absolute path to pg_dump", do |done|
-    var runner = new PgDumpRunner();
+  if process.platform != 'linux'
+    it("should return absolute path to pg_dump", do |done|
+      var runner = new PgDumpRunner();
 
-    node.fs.exists(runner.binaryPath(), do |exists|
-      assert(exists, true);
-      done();
+      node.fs.exists(runner.binaryPath(), do |exists|
+        assert(exists, true);
+        done();
+      end)
     end)
-  end)
+  end
 
   it("should add cmd arguments", do
     var runner = new PgDumpRunner();
@@ -24,7 +26,7 @@ describe('PgDumpRunner', do
     var runner = new PgDumpRunner();
 
     runner.execute(["--version"], do |success, process, stdout|
-      assert(stdout, "pg_dump (PostgreSQL) 9.4.0\n");
+      assert_match(stdout, /^pg_dump \(PostgreSQL\) /);
       assert(success, true);
       done();
     end);
