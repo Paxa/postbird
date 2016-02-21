@@ -42,15 +42,16 @@ logger.info(typeof Object.forEach);
 App.tabs = [{
   instance: {
     connection: Connection({
-      user: process.env.USER || process.env.USERNAME,
-      password: '',
+      user: process.env.PG_USER || process.env.USER || process.env.USERNAME,
+      password: process.env.PG_PASSWORD || '',
+      port: process.env.PG_PORT,
       database: ''
     }, function(success, error) {
       if (!success) {
         logger.print(("ERROR: " + error).red + "\n");
         logger.print("Can not connect to server. Please check if server running.");
         logger.print("\n");
-        process.exit(0);
+        electron.remote.process.exit(1);
       }
     })
   }
