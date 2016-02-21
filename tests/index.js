@@ -10,8 +10,6 @@ if (!global.window) global.window = {};
 
 global.TESTING = true;
 
-var async = require('async');
-
 require('../sugar/redscript-loader');
 
 require('classy/object_extras').extendGlobal();
@@ -104,18 +102,12 @@ if (!window.localStorage) {
 
 window.localStorage.clear();
 
-var queue = async.queue(function (fn, callback) {
-  fn(callback);
-}, 1);
-
-queue.push(function (callback) {
-  DbCleaner(Model.base.connection()).recreateSchema(callback);
-});
-
-queue.push(function(callback) {
-  bdd.runAllCases(function() {
-    callback();
-    electron.remote.app.quit();
-    //process.exit(0);
+DbCleaner(Model.base.connection()).recreateSchema(function () {
+  bdd.runAllCases(function(success) {
+    if (success) {
+      electron.remote.app.quit();
+    } else {
+      electron.remote.process.exit(1);
+    }
   });
 });
