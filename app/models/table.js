@@ -82,15 +82,23 @@ global.Model.Table = Model.base.extend({
       return;
     }
 
-    var sql = `
-      SELECT table_schema, table_name, table_type
-      FROM information_schema.tables
-      where table_schema = '${this.schema}' and table_name = '${this.table}'
-      union
-      select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
-      from pg_matviews
-      where schemaname = '${this.schema}' and matviewname = '${this.table}'
-    `
+    if (this.connection().supportMatViews()) {
+      var sql = `
+        SELECT table_schema, table_name, table_type
+        FROM information_schema.tables
+        where table_schema = '${this.schema}' and table_name = '${this.table}'
+        union
+        select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
+        from pg_matviews
+        where schemaname = '${this.schema}' and matviewname = '${this.table}'
+      `
+    } else {
+      var sql = `
+        SELECT table_schema, table_name, table_type
+        FROM information_schema.tables
+        where table_schema = '${this.schema}' and table_name = '${this.table}'
+      `
+    }
 
     this.q(sql, function (data, error) {
       if (error) {
