@@ -1081,6 +1081,7 @@ body.sidebar-resizing {
 
 .window-content.content {
   max-height: 100%;
+  height: 100%;
   overflow: auto; }
   .window-content.content.reloading li.reload {
     background: rgba(0, 0, 0, 0.1); }
