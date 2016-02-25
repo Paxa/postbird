@@ -109,16 +109,18 @@ describe('Model.Table', do
     table.drop()
   end)
 
-  sync_it("should detect if relation is view", do
-    var sql = "create materialized view myview as select * from pg_available_extensions"
-    Model.base.q(sql)
+  if Connection.instances[0].supportMatViews()
+    sync_it("should detect if relation is view", do
+      var sql = "create materialized view myview as select * from pg_available_extensions"
+      Model.base.q(sql)
 
-    var table = new Model.Table('public', 'myview')
+      var table = new Model.Table('public', 'myview')
 
-    assert(table.isView(), false)
-    assert(table.isMatView(), true)
-    assert(table.getTableType(), 'MATERIALIZED VIEW')
-    table.drop()
-  end)
+      assert(table.isView(), false)
+      assert(table.isMatView(), true)
+      assert(table.getTableType(), 'MATERIALIZED VIEW')
+      table.drop()
+    end)
+  end
 
 end)
