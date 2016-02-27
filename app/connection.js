@@ -8,6 +8,7 @@ try {
 } catch (error) {
   console.log("can not load pg-native, using pg");
   console.error(error);
+  errorReporter(error);
 }
 
 var sprintf = require("sprintf-js").sprintf,
@@ -413,6 +414,10 @@ global.Connection = jClass.extend({
   close: function (callback) {
     if (this.connection) {
       this.connection.end();
+    }
+    var index = global.Connection.instances.indexOf(this);
+    if (index != -1) {
+      global.Connection.instances.splice(index, 1);
     }
     callback && callback();
   },

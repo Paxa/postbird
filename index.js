@@ -1,4 +1,4 @@
-require('./lib/error_reporter');
+global.errorReporter = require('./lib/error_reporter');
 require('classy/object_extras').extendGlobal();
 
 //require('./lib/zepto');

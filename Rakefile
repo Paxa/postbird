@@ -47,6 +47,7 @@ task :rebuild_ext do
   if RUBY_PLATFORM =~ /darwin/
     system "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin ./node_modules/.bin/electron-rebuild -n 47"
     system "mv node_modules/fibers/bin/darwin-x64-v8-4.6 node_modules/fibers/bin/darwin-x64-v8-4.7"
+    system "cp vendor/darwin/addon.node node_modules/libpq/build/Release/addon.node"
   else
     system "./node_modules/.bin/electron-rebuild -n 47"
     system "mv node_modules/fibers/bin/linux-x64-v8-4.6 node_modules/fibers/bin/linux-x64-v8-4.7"
