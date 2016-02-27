@@ -3,6 +3,10 @@ require "../../lib/sql_importer"
 
 describe('SqlRunner', do
 
+  bdd.after(do |done|
+    DbCleaner(connection).recreateSchema(done);
+  end)
+
   sync_it("should import world database", do |done|
     var thisDir = node.path.dirname(module.filename);
     var worldDbPath = node.path.resolve(thisDir, "../../vendor/datasets/world.sql");
@@ -28,7 +32,7 @@ describe('SqlRunner', do
     var tables = Model.Table.publicTables();
     assert(tables, ['city', 'country', 'countrylanguage']);
 
-    DbCleaner(connection).fibRecreateSchema();
+    //DbCleaner(connection).fibRecreateSchema();
   end)
 
   sync_it("should import booktown database", do |done|
@@ -62,7 +66,7 @@ describe('SqlRunner', do
                     'alternate_stock', 'book_backup', 'recent_shipments', 'authors',
                    ]);
 
-    DbCleaner(connection).fibRecreateSchema();
+    //DbCleaner(connection).fibRecreateSchema();
   end)
 
 end)
