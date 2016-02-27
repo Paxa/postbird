@@ -440,8 +440,11 @@ global.DbScreen = jClass.extend({
     this.view.setTabMessage("Getting table information ...");
 
     App.startLoading("Getting table info...");
-    table.getSourceSql(function (code) {
+    table.getSourceSql(function (code, dumpError) {
       table.diskSummary(function (relType, estimateCount, diskUsage) {
+        if (dumpError) {
+          window.alert("Running pg_dump failed:\n" + dumpError);
+        }
         App.stopLoading();
         _this.view.info.renderTab(code, relType, estimateCount, diskUsage);
       });

@@ -479,9 +479,11 @@ global.Model.Table = Model.base.extend({
       stdout = stdout.toString();
       stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
       stdout = stdout.replace(/(^|\n|\r)(\-\-\r?\n\-\-.+\r?\n\-\-)/g, "\n"); // remove comments
+      stdout = stdout.replace(/^\-\- Dumped from .+$/m, "\n"); // remove 'Dumped from ...'
+      stdout = stdout.replace(/^\-\- Dumped by .+$/m, "\n"); // remove 'Dumped by ...'
       stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
       stdout = stdout.trim(); // remove padding spaces
-      callback(stdout);
+      callback(stdout, result ? undefined : stderr);
     });
   },
 
