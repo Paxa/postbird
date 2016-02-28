@@ -108,6 +108,7 @@ global.Panes.Query = global.Pane.extend({
           data.rows.length = 500;
         }
         var node = App.renderView('db_rows_table', {data: data})[0];
+        $u(node).addClass('command_' + data.command);
         this.content.find('.result .JCLRgrips').remove();
         this.content.find('.result table').replaceWith(node);
 
@@ -125,6 +126,9 @@ global.Panes.Query = global.Pane.extend({
         }
         this.statusLine.text(footerText);
         this.initTables();
+        if (data.command == "EXPLAIN") {
+          this.content.find('.result table').css('width', '');
+        }
       }
       this.toggleCleanButton();
       if (needReloadTables) {

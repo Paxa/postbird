@@ -1203,8 +1203,9 @@ body.sidebar-resizing {
     padding-bottom: 9px;
     box-sizing: border-box; }
     .window-content.query .result table {
-      margin-bottom: 3px;
-      marin-right: 9px; }
+      margin-bottom: 3px; }
+      .window-content.query .result table.command_EXPLAIN td {
+        white-space: pre; }
 
 .window-content.procedures h4 {
   margin-bottom: 12px; }
