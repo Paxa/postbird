@@ -12,3 +12,4 @@ My todo:
 * Handle big response for query
 * Add support for portitioning
 * Add support for foreign keys
+* Syntax highlight for json and xml fields

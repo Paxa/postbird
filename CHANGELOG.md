@@ -9,6 +9,13 @@
 * Add shortcuts Cmd+T to switch to connection
 * New design for tabs and home screen
 * Fix query window resize bar
+* Update dependencies
+* Better support for Linux
+* Add staticly linked binaries: psql, pg_dump, node-libpq
+* Better formatting for EXPLAIN result
+* Fix showing column type in title in query result
+* Fix displaying json & jsonb fields
+* Better xml & html formatting
 
 == Version 0.4.4
 
