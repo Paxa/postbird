@@ -3,14 +3,24 @@ var sprintf = require("sprintf-js").sprintf;
 
 var helpers = global.ViewHelpers = {
   formatCell: function (value, format, dataType) {
+    if (typeof value == 'string') {
+      value = this.escapeHTML(value);
+    }
+
     var formated = value;
     if (!formated) return formated;
 
     switch (format) {
       case 'hstore': case 'text':
-        var n = $dom(['span']);
-        n.innerText = '' + value;
-        formated = '<span class="text">' + n.innerHTML + '</span>';
+        formated = '<span class="text">' + value + '</span>';
+        break;
+      case 'xml':
+        formated = '<span class="text type-xml">' + value + '</span>';
+        break;
+      case 'varchar':
+        if (typeof value == 'string' && value.length > 20) {
+          formated = '<span class="text">' + value + '</span>';
+        }
         break;
       case 'timestamp':
         formated = this.betterDateTime(value);
@@ -121,9 +131,8 @@ var helpers = global.ViewHelpers = {
     } else {
       json = JSON.stringify(value);
     }
-    var n = $dom(['span']);
-    n.innerText = '' + json;
-    return '<span class="text">' + n.innerHTML + '</span>';
+    json = this.escapeHTML(json);
+    return '<span class="text">' + json + '</span>';
   },
 
   formatArray: function (value, format) {
@@ -141,5 +150,20 @@ var helpers = global.ViewHelpers = {
   getIndexType: function (indexSql) {
     var regM = indexSql.match(/USING ([^\s]+)\s/i);
     return regM ? regM[1] : undefined;
+  },
+
+  escapeHTML: function(unsafe) {
+    if (unsafe.match(/[<>]/)) {
+      var result = unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+      console.log('unsafe', unsafe, result);
+      return result;
+    } else {
+      return unsafe;
+    }
   }
 };

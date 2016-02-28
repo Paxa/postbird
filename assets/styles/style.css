@@ -1105,7 +1105,8 @@ body.sidebar-resizing {
       overflow: hidden;
       white-space: nowrap; }
     .window-content.content table tr td.expanded {
-      word-break: break-all; }
+      word-break: break-all;
+      white-space: pre-wrap; }
     .window-content.content table tr td span.text {
       width: 100%;
       min-width: 100px; }
@@ -1206,6 +1207,9 @@ body.sidebar-resizing {
       margin-bottom: 3px; }
       .window-content.query .result table.command_EXPLAIN td {
         white-space: pre; }
+      .window-content.query .result table .type-xml {
+        white-space: pre;
+        word-break: break-all; }
 
 .window-content.procedures h4 {
   margin-bottom: 12px; }
