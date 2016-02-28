@@ -63,7 +63,7 @@ var helpers = global.ViewHelpers = {
   },
 
   column_type_label: function (column) {
-    var baseName = column.udt_name;
+    var baseName = column.udt_name || column.data_type;
     if (column.data_type == 'ARRAY') {
       baseName = baseName.replace(/^_/, '') + "[]";
     }

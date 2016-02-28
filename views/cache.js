@@ -383,28 +383,28 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 };
 exports["content_tab"].content = ".big-data-table\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
 exports["db_rows_table"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" }];
+var jade_debug = [ new jade.DebugItem( 1, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ) ];
 try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (data, undefined, column_type_label, formatCell) {
+;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, undefined) {
 var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 0, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 if ( data.fields)
 {
-jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 2, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 2, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n<table class=\"native-look-table\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n  <thead>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -413,13 +413,13 @@ jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/db_
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 5, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 var type = column_type_label(column)
 jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 7, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
@@ -431,13 +431,13 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 5, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 var type = column_type_label(column)
 jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 7, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
@@ -454,10 +454,10 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </thead>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 8, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n  <tbody>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 9, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
@@ -466,11 +466,11 @@ jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/db_
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var row = $$obj[$index];
 
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 9, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 10, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -479,10 +479,10 @@ jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
@@ -494,10 +494,10 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
@@ -519,11 +519,11 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var row = $$obj[$index];
 
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 9, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 10, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -532,10 +532,10 @@ jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
@@ -547,10 +547,10 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 12, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
@@ -581,26 +581,26 @@ jade_debug.shift();
 }
 else
 {
-jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
-jade_debug.unshift({ lineno: 14, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 14, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 14, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n<table class=\"native-look-table\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 15, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 15, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n  <tbody>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 16, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>" + (jade.escape(null == (jade_interp = data.command) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "/Users/pavel/Sites/postbird/views/db_rows_table.jade" });
+jade_debug.unshift(new jade.DebugItem( 18, "/Users/pavel/Sites/postbird/views/db_rows_table.jade" ));
 buf.push("\n      <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
 buf.push("OK");
 jade_debug.shift();
 jade_debug.shift();
@@ -618,7 +618,7 @@ jade_debug.shift();
 jade_debug.shift();
 }
 jade_debug.shift();
-jade_debug.shift();}.call(this,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "if data.fields\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          - var type = column_type_label(column)\n          th(class= 'format-' + type, title= type)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], column.udt_name, column.data_type)\nelse\n  table.native-look-table\n    tbody\n      tr\n        td= data.command\n        td OK\n");
 }
@@ -4402,66 +4402,66 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 };
 exports["procedures_tab"].content = "h4 Procedures\n\ntable.native-look-table\n  thead\n    tr\n      th name\n      th return type\n      th arguments\n      th language\n      th extension\n      th\n  tbody\n    each proc in procs\n      tr\n        td\n          strong= proc.name\n        td= proc.return_type\n        td= proc.arg_list\n        td= proc.language\n        td= proc.extension\n        td\n          if proc.language != \"c\" && proc.language != 'internal'\n            a(exec=\"editProc('\" + proc.oid + \"', '\" + proc.name + \"')\") Edit\n            != \"&nbsp;\"\n            a(exec=\"procDefinition('\" + proc.oid + \"', '\" + proc.name + \"')\") Source\n            != \"&nbsp;\"\n          a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Procedure\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n  button.native-look(exec=\"listLanguages\") List Languages\n\nh4 Triggers And Constraints\n\ntable.native-look-table\n  thead\n    tr\n      th Name\n      th Table\n      th Procedure\n      th Event\n      th(title=\"Deferrable\") Deferr.\n      th\n  tbody\n    each trigger in triggers\n      tr\n        td\n          if trigger.constraint_name\n            strong(title=\"Constraint\") C\n            != \"&nbsp;\"\n            = trigger.constraint_name\n          else\n            = trigger.name\n        td= trigger.table_name\n        td= trigger.proc_name\n        td= trigger.typeDesc().join(\", \")\n        td= trigger.tgdeferrable ? \"Yes\" : \"No\"\n        td\n          a(exec=\"editTrigger('\" + trigger.name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"removeTrigger('\" + trigger.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n";
 exports["query_tab"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" }];
+var jade_debug = [ new jade.DebugItem( 1, "/Users/pavel/Sites/postbird/views/query_tab.jade" ) ];
 try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined) {
+
 var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
-jade_debug.unshift({ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 0, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n<div class=\"editing\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <textarea class=\"editor\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</textarea>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 3, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n<div class=\"middlebar\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <div class=\"resizer\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</div>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
-buf.push("\n  <button exec=\"runQuery\" class=\"native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 5, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
+buf.push("\n  <button exec=\"runQuery\" title=\"Cmd+R\" class=\"native-look\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
 buf.push("Run Query");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</button>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 6, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <button exec=\"showHistory\" class=\"native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
 buf.push("See History");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</button>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 7, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <button exec=\"openSnippets\" class=\"native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
 buf.push("Snippets");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</button>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 8, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <button exec=\"cleanButtonClick\" class=\"native-look is-hidden cleanButton\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
 buf.push("Clear");
 jade_debug.shift();
 jade_debug.shift();
@@ -4470,30 +4470,30 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 9, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n<div class=\"result\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 10, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 10, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <table>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</table>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "/Users/pavel/Sites/postbird/views/query_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 11, "/Users/pavel/Sites/postbird/views/query_tab.jade" ));
 buf.push("\n  <div class=\"status\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</div>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
+jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status");
 }
 };
-exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status";
+exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status";
 exports["snippet_preview"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/snippet_preview.jade" }];
 try {
