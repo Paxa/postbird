@@ -21,7 +21,7 @@ var helpers = global.ViewHelpers = {
       case 'date':
         formated = this.betterDate(value);
         break;
-      case 'jsonb':
+      case 'jsonb': case 'json':
         formated = this.formatJson(value);
         break;
     }
@@ -115,7 +115,12 @@ var helpers = global.ViewHelpers = {
   },
 
   formatJson: function (value) {
-    var json = JSON.stringify(value);
+    var json;
+    if (typeof value == 'string') {
+      json = value;
+    } else {
+      json = JSON.stringify(value);
+    }
     var n = $dom(['span']);
     n.innerText = '' + json;
     return '<span class="text">' + n.innerHTML + '</span>';
