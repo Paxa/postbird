@@ -237,8 +237,13 @@ global.Panes.Contents = global.Pane.extend({
   saveNewRow: function () {
     var data = {};
     this.newRowFields.find('input').each(function (i, el) {
-      data[el.getAttribute('fieldname')] = el.value;
-    });
+      var field = el.getAttribute('fieldname');
+      if (el.value === '') {
+        console.log("Skip while inserting column '" + field + "' with empty value");
+      } else {
+        data[field] = el.value;
+      }
+    }.bind(this));
 
     this.handler.table.insertRow(data, function (result, error) {
       if (error) {

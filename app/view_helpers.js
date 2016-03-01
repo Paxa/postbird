@@ -160,7 +160,7 @@ var helpers = global.ViewHelpers = {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-      console.log('unsafe', unsafe, result);
+      //console.log('unsafe', unsafe, result);
       return result;
     } else {
       return unsafe;
