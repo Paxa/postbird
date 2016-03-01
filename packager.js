@@ -3,7 +3,7 @@ var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  version: '0.36.7',
+  version: '0.36.9',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
