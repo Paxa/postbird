@@ -1,9 +1,4 @@
-require "../../app/models/base"
-require "../../app/models/table"
-
-
 describe('Model.Table', do
-  //@timeout(50000)
 
   it('should create and drop table', do |done|
     Model.Table.create('public', 'test_table', do |table, res, error|

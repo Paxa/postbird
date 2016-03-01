@@ -24,6 +24,7 @@ require("../app/models/table");
 require("../app/models/column");
 require("../app/models/index");
 require("../app/models/procedure");
+require("../app/models/schema");
 
 require("../lib/psql_runner");
 require("../lib/sql_importer");
@@ -91,7 +92,11 @@ Model.Procedure.prototype.makeSync('drop');
 Model.Table.makeSync('publicTables');
 Model.Table.makeSyncFn('create', 3 /* error arg posiotion */);
 Model.Table.prototype.makeSync('drop', 'addColumnObj', 'insertRow', 'getTotalRows', 'getRows');
-Model.Table.prototype.makeSync('isMatView', 'isView', 'getTableType');
+Model.Table.prototype.makeSync('isMatView', 'isView', 'getTableType', 'describe', 'getColumnNames', 'addIndex');
+Model.Table.prototype.makeSync('rename', 'remove', 'getPrimaryKey', 'getSourceSql', 'deleteRowByCtid');
+
+Model.Schema.makeSync('create', 'findAll');
+Model.Schema.prototype.makeSync('drop', 'getTableNames');
 
 SqlImporter.prototype.makeSyncFn('doImport', 3);
 SqlExporter.prototype.makeSyncFn('doExport', 3);

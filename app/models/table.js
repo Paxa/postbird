@@ -18,9 +18,10 @@ global.Model.Table = Model.base.extend({
   },
 
   rename: function (new_name, callback) {
-    this.q(sql = "ALTER INDEX %s RENAME TO  %s", this.table, new_name, function(data, error) {
+    var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO  ${new_name}`;
+    this.q(sql, function(data, error) {
       this.table = new_name;
-      callback(error);
+      callback(data, error);
     }.bind(this));
   },
 
@@ -31,7 +32,7 @@ global.Model.Table = Model.base.extend({
       } else if (tableType == this.types.MAT_VIEW) {
         this.removeMatView(callback);
       } else {
-        this.q("DROP TABLE \"%s\"", this.table, callback);
+        this.q(`DROP TABLE "${this.schema}"."${this.table}"`, callback);
       }
     }.bind(this));
   },
@@ -41,27 +42,27 @@ global.Model.Table = Model.base.extend({
   },
 
   removeView: function (callback) {
-    var sql = `drop view "%s"."%s"`;
-    this.q(sql, this.schema, this.table, function (result, error) {
+    var sql = `drop view "${this.schema}"."${this.table}"`;
+    this.q(sql, function (result, error) {
       callback(error ? false : true, error);
     });
   },
 
   removeMatView: function (callback) {
-    var sql = `drop materialized view "%s"."%s"`;
-    this.q(sql, this.schema, this.table, function (result, error) {
+    var sql = `drop materialized view "${this.schema}"."${this.table}"`;
+    this.q(sql, function (result, error) {
       callback(error ? false : true, error);
     });
   },
 
   dropFereign: function (callback) {
-    this.q("DROP FOREIGN TABLE \"%s\"", this.table, function (result, error) {
+    this.q(`DROP FOREIGN TABLE "${this.schema}"."${this.table}"`, function (result, error) {
       callback(error ? false : true, error);
     });
   },
 
   safeDrop: function (callback) {
-    this.q('DROP TABLE IF EXISTS "%s" CASCADE', this.table, callback);
+    this.q(`DROP TABLE IF EXISTS "${this.schema}"."${this.table}" CASCADE`, callback);
   },
 
   isMatView: function (callback) {
@@ -165,8 +166,10 @@ global.Model.Table = Model.base.extend({
   },
 
   hasOID: function (callback) {
-    var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
-    this.q(sql, this.table, function(data, error) {
+    //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
+    var sql = `select relhasoids from pg_catalog.pg_class, pg_catalog.pg_namespace n
+      where n.oid = pg_class.relnamespace and nspname = '${this.schema}' and relname = '${this.table}'`
+    this.q(sql, function(data, error) {
       if (error) {
         callback(undefined, error);
       } else {
@@ -259,15 +262,16 @@ global.Model.Table = Model.base.extend({
   },
 
   getPrimaryKey: function (callback) {
-    var sql = "SELECT pg_attribute.attname \
-    FROM pg_index, pg_class, pg_attribute \
-    WHERE \
-      pg_class.oid = '%s'::regclass AND \
-      indrelid = pg_class.oid AND \
-      pg_attribute.attrelid = pg_class.oid AND \
-      pg_attribute.attnum = any(pg_index.indkey) \
-      AND indisprimary;";
-    this.q(sql, this.table, function(data, error) {
+    var sql = `SELECT pg_attribute.attname
+      FROM pg_index, pg_class, pg_attribute
+      WHERE
+        pg_class.oid = '${this.schema}.${this.table}'::regclass AND
+        indrelid = pg_class.oid AND
+        pg_attribute.attrelid = pg_class.oid AND
+        pg_attribute.attnum = any(pg_index.indkey)
+        AND indisprimary;`;
+
+    this.q(sql, function(data, error) {
       callback((data || {}).rows, error);
     });
   },
@@ -277,9 +281,10 @@ global.Model.Table = Model.base.extend({
   addColumn: function (name, type, max_length, default_value, is_null, callback) {
     var type_with_length = max_length ? type + "(" + max_length + ")" : type;
     var null_sql = is_null ? "NULL" : "NOT NULL";
-    var default_sql = this.default_sql(default_value);
-    sql = "ALTER TABLE %s ADD %s %s %s %s;"
-    this.q(sql, this.table, name, type_with_length, default_sql, null_sql, function(data, error) {
+    var default_sql = this._default_sql(default_value);
+
+    sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
+    this.q(sql, function(data, error) {
       callback(data, error);
     });
   },
@@ -308,22 +313,25 @@ global.Model.Table = Model.base.extend({
   },
 
   addIndex: function (name, uniq, columns, method, callback) {
-    var sql = "CREATE %s INDEX CONCURRENTLY %s ON %s USING %s (%s);"
     var uniq_sql = uniq ? 'UNIQUE' : '';
-    var columns_sql = columns.join(', ');
-    this.q(sql, uniq_sql, name, this.table, method, columns_sql, function(data, error) {
+    var columns_sql = Array.isArray(columns) ? columns.join(', ') : columns.toString();
+    if (!method) method = 'btree';
+
+    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON "${this.schema}"."${this.table}" USING ${method} (%s);`;
+
+    this.q(sql, columns_sql, function(data, error) {
       callback(data, error);
     });
   },
 
   dropIndex: function (indexName, callback) {
-    var sql = "DROP INDEX CONCURRENTLY %s;";
-    this.q(sql, indexName, function(data, error) {
+    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${this.schema};`;
+    this.q(sql, function(data, error) {
       callback(data, error);
     });
   },
 
-  default_sql: function (default_value) {
+  _default_sql: function (default_value) {
     if (default_value !== undefined && default_value !== '') {
       return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'");
     } else {
@@ -331,19 +339,23 @@ global.Model.Table = Model.base.extend({
     }
   },
 
-  // find indexes
+  // legacy
   describe: function (callback) {
-    var sql_find_oid = $u.commentOf(function () {/*
+    return this.getIndexes(callback);
+  },
+
+  // find indexes
+  getIndexes: function (callback) {
+    var sql_find_oid = `
       SELECT c.oid,
         n.nspname,
         c.relname
       FROM pg_catalog.pg_class c
            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-      WHERE c.relname ~ '^(%s)$'
-      ORDER BY 2, 3
-    */});
+      WHERE n.nspname = '${this.schema}' and c.relname = '${this.table}'
+      ORDER BY 2, 3;`;
 
-    var sql_find_types = $u.commentOf(function () {/*
+    var sql_find_types = `
       SELECT a.attname,
         pg_catalog.format_type(a.atttypid, a.atttypmod),
         (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
@@ -356,21 +368,19 @@ global.Model.Table = Model.base.extend({
         NULL AS attfdwoptions
       FROM pg_catalog.pg_attribute a
       WHERE a.attrelid = '%d' AND a.attnum > 0 AND NOT a.attisdropped
-      ORDER BY a.attnum;
-    */});
+      ORDER BY a.attnum;`
 
-    var sql_find_index = $u.commentOf(function () {/*
+    var sql_find_index = `
       SELECT c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid, pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
         pg_catalog.pg_get_constraintdef(con.oid, true), contype, condeferrable, condeferred, c2.reltablespace
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
         LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
-      ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;
-    */});
+      ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;`;
 
     var _this = this;
 
-    this.q(sql_find_oid, this.table, function (oid_data, error) {
+    this.q(sql_find_oid, function (oid_data, error) {
       var oid = oid_data.rows[0].oid;
       //this.q(sql_find_types, oid, function(types_data, error) {
         _this.q(sql_find_index, oid, function(indexes_rows, error) {
@@ -437,30 +447,31 @@ global.Model.Table = Model.base.extend({
 
   insertRow: function (values, callback) {
     if (Array.isArray(values)) {
-      var sql = "insert into %s.%s values (%s)";
+      var sql = `insert into "${this.schema}"."${this.table}" values (%s)`;
+
       var safeValues = values.map(function (val) {
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, this.schema, this.table, safeValues, function (data, error) {
+      this.q(sql, safeValues, function (data, error) {
         callback(data, error);
       });
     } else {
       var columns = Object.keys(values);
-      var sql = `insert into %s.%s (${columns.join(", ")}) values (%s)`;
+      var sql = `insert into "${this.schema}"."${this.table}" (${columns.join(", ")}) values (%s)`;
       var safeValues = Object.values(values).map(function (val) {
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, this.schema, this.table, safeValues, function (data, error) {
+      this.q(sql, safeValues, function (data, error) {
         callback(data, error);
       });
     }
   },
 
   deleteRowByCtid: function (ctid, callback) {
-    var sql = "delete from %s.%s where ctid='%s'";
-    this.q(sql, this.schema, this.table, ctid, function (data, error) {
+    var sql = `delete from "${this.schema}"."${this.table}" where ctid='${ctid}'`;
+    this.q(sql, function (data, error) {
       callback(data, error);
     });
   },
@@ -468,7 +479,7 @@ global.Model.Table = Model.base.extend({
   getSourceSql: function (callback) {
     var exporter = new SqlExporter({debug: true});
     // TODO: include schema
-    exporter.addArgument('--table=' + this.table);
+    exporter.addArgument('--table=' + this.schema + '.' + this.table);
     exporter.addArgument("--schema-only");
 
     exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
@@ -528,20 +539,15 @@ Model.Table.create = function create (schema, tableName, options, callback) {
     options = {};
   }
 
-  var sql = 'CREATE TABLE "%s"';
-  if (options.empty) {
-    sql += "()";
-  } else {
-    sql += "(id SERIAL PRIMARY KEY)";
+  var columns = "()";
+  if (!options.empty) {
+    columns = "(id SERIAL PRIMARY KEY)";
   }
 
-  if (schema != '' && schema != 'public') {
-    sql += sprintf(" TABLESPACE %s", schema);
-  }
+  var schemaSql = schema && schema != '' ? `"${schema}".` : '';
+  var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
 
-  sql += ";";
-
-  Model.base.q(sql, tableName, function (res, error) {
+  Model.base.q(sql, function (res, error) {
     callback(Model.Table(schema, tableName), res, error);
   });
 };

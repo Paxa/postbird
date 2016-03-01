@@ -15,6 +15,10 @@ global.Model.base = jClass.extend({
     }
   },
 
+  query: function () {
+    return this.q.apply(this, arguments);
+  },
+
   connection: function () {
     return Model.base.connection();
   },
