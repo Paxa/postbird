@@ -13,13 +13,11 @@ global.DbScreen = jClass.extend({
 
     if (this.options.fetchDbList) this.fetchDbList();
 
-    if (this.connection.options.database != this.connection.defaultDatabaseName) {
-      this.database = this.connection.options.database;
-      App.emit('database.changed', this.database);
-      this.fetchTablesAndSchemas(function() {
-        this.view.showDatabaseContent();
-      }.bind(this));
-    }
+    this.database = this.connection.options.database;
+    App.emit('database.changed', this.database);
+    this.fetchTablesAndSchemas(function() {
+      this.view.showDatabaseContent();
+    }.bind(this));
 
     this.connection.onNotification(function (message) {
       window.alertify.alert("Recieve Message:<br>" + JSON.stringify(message));
