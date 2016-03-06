@@ -38,7 +38,7 @@ require('../sugar/redscript-loader');
 global.$u = {fn: {}};
 require('../app/utils');
 
-logger.info(typeof Object.forEach);
+Connection.PG.defaults.poolSize = 1;
 
 App.tabs = [{
   instance: {
@@ -70,6 +70,7 @@ App.activeTab = 0;
 console.log = function () {
   logger.info.apply(logger, arguments);
 }
+
 //console.error = function () {};
 App.testing = true;
 

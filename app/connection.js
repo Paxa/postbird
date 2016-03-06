@@ -89,7 +89,7 @@ global.Connection = jClass.extend({
         }.bind(this));
 
         this.serverVersion(function (version) {
-          console.log("Server version is ", version);
+          console.log("Server version is", version);
           this.pending.forEach(function (cb) {
             cb();
           });
@@ -131,7 +131,7 @@ global.Connection = jClass.extend({
       App.log("sql.start", historyRecord);
       var time = Date.now();
 
-      this.connection.query(sql, function (error, result) {
+      var query = this.connection.query(sql, function (error, result) {
         historyRecord.time = Date.now() - time;
         if (this.logging) logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
 
@@ -147,6 +147,7 @@ global.Connection = jClass.extend({
           error.query = sql;
           console.error("SQL failed", sql);
           console.error(error);
+          query.state = 'error';
           if (callback) callback(result, error);
           this.onConnectionError(error);
         } else {
@@ -422,6 +423,12 @@ global.Connection = jClass.extend({
     callback && callback();
   },
 
+  reconnect: function (callback) {
+    this.close(function () {
+      this.connectToServer(this.options, callback);
+    }.bind(this));
+  },
+
   onNotification: function (callback) {
     this.notificationCallbacks.push(callback);
   },
@@ -447,4 +454,5 @@ global.Connection = jClass.extend({
   }
 });
 
+global.Connection.PG = pg;
 global.Connection.instances = [];

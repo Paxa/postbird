@@ -48,7 +48,6 @@ global.Model.Schema.create = function (name, options, callback) {
   var sql = 'CREATE SCHEMA "%s";';
 
   Model.base.q(sql, name, function (res, error) {
-    console.log("Created schema", name);
     callback(Model.Schema(name), error);
   });
 };

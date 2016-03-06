@@ -58,16 +58,18 @@ describe('Model.Table and Model.Schema', do
     assert(schema2.getTableNames(), ['test_table'])
   end)
 
-  sync_it("should delete views and mat views in schemas", do
-    var schema1 = Model.Schema.create("my_schema_1")
-    Model.base.q("create view my_schema_1.my_view as select * from pg_available_extensions")
-    Model.base.q("create materialized view my_schema_1.my_mat_view as select * from pg_available_extensions")
+  if Connection.instances[0].supportMatViews()
+    sync_it("should delete views and mat views in schemas", do
+      var schema1 = Model.Schema.create("my_schema_1")
+      Model.base.q("create view my_schema_1.my_view as select * from pg_available_extensions")
+      Model.base.q("create materialized view my_schema_1.my_mat_view as select * from pg_available_extensions")
 
-    Model.Table('my_schema_1', 'my_view').drop()
-    Model.Table('my_schema_1', 'my_mat_view').drop()
+      Model.Table('my_schema_1', 'my_view').drop()
+      Model.Table('my_schema_1', 'my_mat_view').drop()
 
-    assert(schema1.getTableNames(), [])
-  end)
+      assert(schema1.getTableNames(), [])
+    end)
+  end
 
   sync_it("should fetch primary key in schemas", do
     var schema1 = Model.Schema.create("my_schema_1")
