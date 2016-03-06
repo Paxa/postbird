@@ -23,7 +23,7 @@
     "jade": "1.11.0",
     "localStorage": "1.0.3",
     "needle": "1.0.0",
-    "pg": "^4.4.6",
+    "pg": "^4.5.1",
     "pg-native": "1.10.0",
     "rollbar": "0.5.13",
     "sprintf-js": "1.0.3",
