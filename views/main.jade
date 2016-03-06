@@ -9,15 +9,15 @@
       .show-system-tables
         label
           input(type="checkbox")
-          = "Show system tables"
+          = "Show Schemas"
 
     ul.extras
       li.reload
-        a.reloadStructure!= icon('reload', 'Reload tables')
+        a.reloadStructure!= icon('reload', 'Reload Tables')
       li.add-table
-        a.addTable!= icon('add-table', 'Add table')
+        a.addTable!= icon('add-table', 'Add Table')
       li.users(tab='users')!= icon('users', 'Users')
-      li.extensions(tab='extensions')!= icon('extensions', "Postgres extensions")
+      li.extensions(tab='extensions')!= icon('extensions', "Postgres Extensions")
       li.procedures(tab='procedures')!= icon('procedures', "Procedures")
     .resize-handler
   .main
