@@ -214,10 +214,9 @@ var template = [
             if (focusedWindow) {
               focusedWindow.close();
             } else {
-              remote.app.quit();
+              //remote.app.quit();
             }
           }
-          //global.HistoryWindow.init();
         }
       },
     ]

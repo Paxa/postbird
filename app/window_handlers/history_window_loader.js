@@ -2,6 +2,7 @@ require(__dirname + '/../lib/dominate');
 require(__dirname + '/../lib/jquery.class');
 require(__dirname + '/../lib/alertify');
 require(__dirname + '/../lib/node_lib');
+require(__dirname + '/../lib/mousetrap');
 require(__dirname + '/../lib/widgets/generic_table');
 var RenderView = require(__dirname + '/../app/components/render_view');
 
@@ -36,14 +37,20 @@ function renderContent() {
   var node = App.renderView("history", {events: global.App.logEvents});
   $u(document.body).empty();
   $u(document.body).fasterAppend(node);
+  $('.history-window ul').scrollTop = $('.history-window ul').scrollHeight;
+  $u('.reload-btn').on('click', renderContent);
+  $u('.clear-btn').on('click', function () {
+    App.logEvents = [];
+    renderContent()
+  });
 }
 
 Zepto(document).ready(function() {
   App.init();
 
-  electron.ipcRenderer.on('App.logEvents', function(event, message) {
+  electron.ipcRenderer.on('App.logEvents', function(event, messages) {
     //logger.info(event, message);
-    App.logEvents = message;
+    App.logEvents = messages;
     renderContent();
   });
 
@@ -51,6 +58,12 @@ Zepto(document).ready(function() {
     //logger.info(event, message);
     App.logEvents.push(message);
     renderContent();
+  });
+
+  window.Mousetrap.bind("command+k", function () {
+    App.logEvents = [];
+    renderContent();
+    return false;
   });
 
 });

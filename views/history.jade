@@ -1,13 +1,14 @@
 .history-window
   header
     button.native-look.reload-btn Reload
+    button.native-look.clear-btn Clear
   ul
     each event in events
       if event.type == "sql.start" && event.args[0].state != 'running'
         - // do nothing
       else
         li
-          time= timeFormat(event.time)
+          time= timeFormat(new Date(event.time))
           .event-info
             if event.type == "sql.start" && event.args[0].state == 'running'
               - var query = event.args[0]
@@ -19,7 +20,7 @@
               - var query = event.args[0]
               .sql.failed
                 code.sql= "SQL: " + query.sql
-                span.error= query.error
+                span.error= JSON.stringify(query.error, null, 2)
                 span.exec-time= "(" + execTime(query.time) + ")"
 
             else if event.type == "sql.success"
@@ -39,8 +40,20 @@
               code.sql= opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
               span.error= event.args[1].message || event.args[1]
 
+            else if event.type == "exec.start"
+              strong Executing
+              .exec.start
+                code= event.args[0].command
+
+            else if event.type == "exec.finish"
+              strong Complete
+              .exec.finish
+                code= event.args[0].command
+                span.exec-time= "(" + execTime(event.args[0].time) + ")"
+
             else
               .event
                 = "~"
                 = event.type
-                = event.args.join(", ")
+                = " "
+                = JSON.stringify(event.args, null, 2)

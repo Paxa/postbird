@@ -1290,7 +1290,8 @@ body.new-window {
 .history-window {
   background: #EDEDED;
   overflow-y: auto;
-  max-height: 100%; }
+  max-height: 100%;
+  height: 100%; }
   .history-window header {
     padding: 7px 10px;
     background: #EDEDED;
@@ -1300,7 +1301,7 @@ body.new-window {
   .history-window > ul {
     width: 100%;
     box-sizing: border-box;
-    max-height: calc(100% - 34px);
+    max-height: calc(100% - 36px);
     overflow-y: auto;
     background: #fff; }
     .history-window > ul li {
@@ -1320,9 +1321,13 @@ body.new-window {
         width: calc(100% - 72px); }
         .history-window > ul li .event-info * {
           display: inline-block; }
+        .history-window > ul li .event-info strong {
+          vertical-align: top; }
       .history-window > ul li span.error {
         color: #f22121;
-        display: block; }
+        display: block;
+        white-space: pre;
+        word-break: break-all; }
       .history-window > ul li span.exec-time {
         display: block;
         font-style: italic; }

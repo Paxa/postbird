@@ -27,18 +27,21 @@ global.HistoryWindow = {
       newWindow.webContents.toggleDevTools();
     }
 
+    var evenEmitter = function (event) {
+      if (newWindow) {
+        newWindow.webContents.send('App.logEvents.add', event);
+      }
+    };
+
     newWindow.webContents.on('did-finish-load', function () {
       newWindow.webContents.send('App.logEvents', App.logEvents);
-      App.on("log.message", function (event) {
-        if (newWindow) {
-          newWindow.webContents.send('App.logEvents.add', event);
-        }
-      });
+      App.on("log.message", evenEmitter);
     });
 
     newWindow.on('closed', function(event) {
       newWindow = null;
       App.historyWin = null;
+      App.removeListener("log.message", evenEmitter);
     });
 
     App.historyWin = newWindow;
