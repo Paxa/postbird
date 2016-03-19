@@ -3684,7 +3684,7 @@ jade_debug.unshift(new jade.DebugItem( 4, "/Users/pavel/Sites/postbird/views/mai
 buf.push("\n      <label>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Select Database");
+buf.push("Select database");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</label>");
@@ -3696,7 +3696,7 @@ jade_debug.unshift(new jade.DebugItem( 6, "/Users/pavel/Sites/postbird/views/mai
 buf.push("\n        <option>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Select Database...");
+buf.push("Select database...");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</option>");
@@ -3901,10 +3901,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"icon" in locals_for_with?locals_for_with.icon:typeof icon!=="undefined"?icon:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".main-screen\n  .sidebar\n    .databases\n      label Select Database\n      select\n        option Select Database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.info(tab='info') Info\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.info(tab='info') Info\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures");
 }
 };
-exports["main"].content = ".main-screen\n  .sidebar\n    .databases\n      label Select Database\n      select\n        option Select Database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.info(tab='info') Info\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures";
+exports["main"].content = ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .tab.structure(tab='structure') Structure\n      .tab.content(tab='content') Content\n      .tab.info(tab='info') Info\n      .tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures";
 exports["procedures_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "/Users/pavel/Sites/postbird/views/procedures_tab.jade" }];
 try {
