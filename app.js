@@ -146,7 +146,9 @@ global.App = {
 
   addConnectionTab: function() {
     this.loginScreen = new LoginScreen();
-    return this.addTab('Connection', this.loginScreen.content, this.loginScreen);
+    var tab = this.addTab('Connection', this.loginScreen.content, this.loginScreen);
+    tab.tabHandler.find('.close').hide();
+    return tab;
   },
 
   addDbScreen: function(connection, connectionName, options, do_activate) {

@@ -9,7 +9,11 @@ global.LoginScreen = jClass.extend({
     this.bindFormEvents();
 
     this.fillSavedConnections();
-    this.connections.find('li:first').click();
+    if (this.connections.find('li:first').length) {
+      this.connections.find('li:first').click();
+    } else {
+      this.fillForm(null, {user: process.env.USER});
+    }
 
     this.initEvents(this.content);
   },
@@ -22,6 +26,10 @@ global.LoginScreen = jClass.extend({
         $u.stopEvent(event);
         this.onFormSubmit(event);
       }
+    }.bind(this));
+
+    this.form.find('input[type=text], input[type=password]').bind('focus', function(event) {
+      this.formChanged(event);
     }.bind(this));
 
     this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
@@ -209,6 +217,7 @@ global.LoginScreen = jClass.extend({
     } else {
       var data = Model.SavedConn.savedConnections();
       var host = this.form.find('[name=host]').val();
+      var name = host;
       var i = 1;
       while (data[name]) {
         i += 1;
@@ -216,6 +225,7 @@ global.LoginScreen = jClass.extend({
       }
     }
 
+    this.connectionName = name;
     this.onFormSubmit(null, function () {
       Model.SavedConn.saveConnection(name, this.getFormData());
       this.fillSavedConnections();
