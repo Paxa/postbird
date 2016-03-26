@@ -73,7 +73,7 @@ describe('Model.Table', do
 
     var res = table.insertRow({some_number: 123, some_column: 'bob'})
 
-    rows = table.getRows()
+    var rows = table.getRows()
     assert(rows.rowCount, 1)
     assert(rows.rows[0], { ctid: rows.rows[0].ctid, some_number: 123, some_column: 'bob' })
 
@@ -117,5 +117,19 @@ describe('Model.Table', do
       table.drop()
     end)
   end
+
+  sync_it("should truncate table", do
+    var table = Model.Table.create('public', 'test_table', {empty: true})
+    table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}))
+    table.addColumnObj(Model.Column('some_column', {data_type: 'text'}))
+
+    table.insertRow({some_number: 123, some_column: 'bob'})
+    assert(table.getRows().rowCount, 1)
+
+    var res = table.truncate()
+
+    assert(table.getRows().rowCount, 0)
+    table.drop()
+  end)
 
 end)

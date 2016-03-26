@@ -145,7 +145,18 @@ global.DbScreenView = jClass.extend({
             'Rename': function () {
               _this.renameTable(tableNode, schema, table.table_name);
             },
-            'Truncate table' : function () {},
+            'Truncate table' : function () {
+              _this.handler.truncateTable(schema, table.table_name, function (res, error) {
+                if (error) {
+                  var errorMsg = "" + error.toString();
+                  if (error.detail) errorMsg += "\n----\n" + error.detail;
+                  if (error.hint) errorMsg += "\n----\n" + error.hint;
+                  window.alert(errorMsg);
+                } else {
+                  window.alert("TRUNCATE OK");
+                }
+              });
+            },
             'Drop table': function() {
               _this.handler.dropTable(schema, table.table_name, function (res, error) {
                 if (error) {

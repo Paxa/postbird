@@ -325,7 +325,7 @@ global.Model.Table = Model.base.extend({
   },
 
   dropIndex: function (indexName, callback) {
-    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${this.schema};`;
+    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${this.table};`;
     this.q(sql, function(data, error) {
       callback(data, error);
     });
@@ -499,7 +499,7 @@ global.Model.Table = Model.base.extend({
   },
 
   diskSummary: function (callback) {
-    var sql = $u.commentOf(function () {/*
+    var sql = `
       select
         pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size",
         reltuples as estimate_count,
@@ -509,7 +509,7 @@ global.Model.Table = Model.base.extend({
       WHERE
         nspname = '%s' and
         relname = '%s'
-    */});
+    `;
 
     this.q(sql, this.schema, this.table, function (result, error) {
       var row = result.rows[0];
@@ -528,6 +528,13 @@ global.Model.Table = Model.base.extend({
       callback(type, row.estimate_count, row.total_size);
     });
   },
+
+  truncate(callback) {
+    var sql = `truncate table ${this.schema}.${this.table};`;
+    this.q(sql, function (data, error) {
+      callback(data, error);
+    });
+  }
 
 });
 

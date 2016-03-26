@@ -472,6 +472,12 @@ global.DbScreen = jClass.extend({
         if (callback) callback(false);
       }
     });
+  },
+
+  truncateTable(schema, table, callback) {
+    Model.Table(schema, table).truncate(function (result, error) {
+      callback(result, error);
+    });
   }
 });
 
