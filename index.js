@@ -128,6 +128,11 @@ Zepto(document).ready(function() {
     Panes.Contents.insertSnippet(message);
   });
 
+  setTimeout(function () {
+    console.log("Checking updates info");
+    (new global.UpdatesController).checkUpdates();
+  }, 10000);
+
   /*
   var win = gui.Window.get();
   win.focus();

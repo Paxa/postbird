@@ -252,7 +252,7 @@ if (process.platform == 'darwin') {
       {
         label: "Check For Updates...",
         click: function () {
-          (new global.UpdatesController).checkUpdates();
+          (new global.UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
         }
       },
       {

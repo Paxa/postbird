@@ -18,14 +18,21 @@ global.UpdatesController = jClass.extend({
   releasesUrl: "https://api.github.com/repos/paxa/Postbird/releases",
   releasesPage: "https://github.com/Paxa/postbird/releases",
 
-  checkUpdates: function () {
+  checkUpdates: function (options) {
+    if (options && options.showLoading) {
+      App.startLoading("Getting latest version number");
+    }
+
     this.fetchLatestRelease(function (err, release) {
+      if (options && options.showLoading) {
+        App.stopLoading();
+      }
       if (release) {
         var current = this.currentVersion();
         var remote = release.tag_name;
         if (libs.semver.gt(remote, current)) {
           var date = new Date(release.published_at);
-          var msg = `Newer version is available. ${remote} > ${current}
+          var msg = `Newer version is available. ${remote} (You are currently using: ${current})
                      <br>Released at: ${libs.strftime("%d %B %Y, %H:%M", date)}<br>`;
           window.alertify.labels.ok = "Install";
           window.alertify.confirm(msg, function (answer) {
@@ -35,7 +42,9 @@ global.UpdatesController = jClass.extend({
             }
           }.bind(this), 'grey-cancel-button');
         } else {
-          window.alertify.alert("You are using latest version");
+          if (options && options.showAlreadyLatest) {
+            window.alertify.alert("You are using latest version");
+          }
         }
       }
 
