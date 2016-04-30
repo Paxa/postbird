@@ -79,7 +79,7 @@ global.Connection = jClass.extend({
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
-        App.log("connect.error", this, error);
+        App.log("connect.error", this, JSON.parse(JSON.stringify(this.options)), error);
       } else {
         this.connection.on('notification', function(msg) {
           this.notificationCallbacks.forEach(function (fn) {
@@ -96,7 +96,7 @@ global.Connection = jClass.extend({
           this.pending = [];
           callback && callback(true);
         }.bind(this));
-        App.log("connect.success", this);
+        App.log("connect.success", this, JSON.parse(JSON.stringify(this.options)));
       }
     }.bind(this));
   },

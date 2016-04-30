@@ -30,15 +30,23 @@
                 span.exec-time= "(" + execTime(query.time) + ")"
 
             else if event.type == "connect.success"
-              - var opts = event.args[0].options
+              - var opts = event.args[1]
+              - console.log(event)
               = "Connected to server "
-              code.sql= opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+              if opts
+                code.sql
+                  = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+                  if opts.database
+                    = "/" + opts.database
 
             else if event.type == "connect.error"
-              - var opts = event.args[0].options
+              - var opts = event.args[1]
               = "Failed connect to server "
-              code.sql= opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
-              span.error= event.args[1].message || event.args[1]
+              code.sql
+                = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+                if opts.database
+                  = "/" + opts.database
+              span.error= event.args[2].message || event.args[2]
 
             else if event.type == "exec.start"
               strong Executing
