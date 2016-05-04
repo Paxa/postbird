@@ -177,7 +177,7 @@ global.Panes.Contents = global.Pane.extend({
 
     var contextMenuActions = {
       'Copy': function () {
-        (currentWindow || window).document.execCommand("copy");
+        window.document.execCommand("copy");
       }
     };
     if (this.currentTableType == 'BASE TABLE') {
