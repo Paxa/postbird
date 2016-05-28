@@ -1,5 +1,6 @@
 var remote = require('electron').remote;
 
+require('./lib/node_lib');
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require('./app/logger').make('info');
 

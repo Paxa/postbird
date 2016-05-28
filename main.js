@@ -1,10 +1,12 @@
-var app = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const windowStateKeeper = require('electron-window-state');
 
 BrowserWindow.ApplicationStart = Date.now();
 
 // Report crashes to our server.
-require('crash-reporter').start();
+//require('crash-reporter').start();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -16,9 +18,22 @@ app.on('window-all-closed', function() {
   //}
 });
 
+console.log(app.getPath('userData'));
+
 app.on('ready', function() {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 960, height: 640});
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 960,
+    defaultHeight: 640
+  });
+
+  mainWindow = new BrowserWindow({
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height
+  });
+
+  mainWindowState.manage(mainWindow);
 
   BrowserWindow.mainWindow = mainWindow;
 
