@@ -8,27 +8,22 @@
   > .main
     :margin-left $sidebar-width
     :padding
-      :left 9px
-      :top 33px
-      :right 0px
       :bottom $sidebar-footer-height
-    :overflow-y auto
     position: absolute
     top: 0
     left: 0
     right: 0
     bottom: 0
     .window-tabs
-      :position absolute
-      :top 0
-      :left 9px
+      :display flex
+      :background rgba(#000, 0.1)
+      :border-bottom 1px solid #a3a3a3
       +children-inline
-      :padding 4px 0
-      :margin-bottom 6px
       > *
-        :padding 1px 6px 0px
-        :margin-right 5px
-        :background rgba(#000, 0.1)
+        :width 150px
+        :max-width 100%
+        :text-align center
+        :border-right 1px solid #a3a3a3
         +system-text
         &:hover
           :background rgba(100, 120, 155, 0.19)
@@ -38,6 +33,9 @@
       :display none
       &.active
         :display block
+
+.window-tab
+  :float left
 
 body.sidebar-resizing
   cursor: ew-resize
