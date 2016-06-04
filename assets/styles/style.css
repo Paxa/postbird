@@ -474,13 +474,12 @@ table.native-look-table {
     box-sizing: border-box;
     height: 100%; }
   .main-screen > .main {
-    margin-left: 30%;
+    margin-left: 20%;
     padding-left: 9px;
     padding-top: 33px;
     padding-right: 0px;
     padding-bottom: 27px;
     overflow-y: auto;
-    position: relative;
     position: absolute;
     top: 0;
     left: 0;
@@ -592,7 +591,7 @@ body.sidebar-resizing {
         max-width: 50%; }
 
 .main-screen > .sidebar {
-  width: 30%;
+  width: 20%;
   padding-top: 48px;
   padding-right: 0px;
   padding-left: 0px;
@@ -627,7 +626,7 @@ body.sidebar-resizing {
     width: 100%;
     border-bottom: 1px solid #d1d1d1; }
     .main-screen > .sidebar > .databases select {
-      max-width: calc(100% - 20px); }
+      width: 100%; }
     .main-screen > .sidebar > .databases label {
       display: block;
       -webkit-user-select: none;
