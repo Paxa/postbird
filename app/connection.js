@@ -179,7 +179,7 @@ global.Connection = jClass.extend({
 
   listDatabases: function (callback) {
     var databases = [];
-    this.query('SELECT datname FROM pg_database WHERE datistemplate = false;', function (rows) {
+    this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', function (rows) {
       rows.rows.forEach(function(dbrow) {
         databases.push(dbrow.datname);
       });
