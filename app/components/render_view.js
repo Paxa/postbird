@@ -72,7 +72,7 @@ var RenderView = {
     result = "";
     Object.keys(this.jadeFn).sort().forEach(function(key) {
       var fn = this.jadeFn[key];
-      result += 'exports["' + key + '"] = ' + fn.toString() + ";\n";
+      result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(process.env.PWD + '/', 'g'), '') + ";\n";
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
     }.bind(this));
 
