@@ -1,39 +1,55 @@
 exports["_loader"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/_loader.jade" }];
+var jade_debug = [ new jade.DebugItem( 1, "views/_loader.jade" ) ];
 try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, message) {
+;var locals_for_with = (locals || {});(function (cancel, message) {
 var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/_loader.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/_loader.jade" });
+jade_debug.unshift(new jade.DebugItem( 0, "views/_loader.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "views/_loader.jade" ));
 buf.push("\n<div class=\"app-loader\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/_loader.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, "views/_loader.jade" ));
 buf.push("<span>" + (jade.escape(null == (jade_interp = message) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</span>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/_loader.jade" });
+jade_debug.unshift(new jade.DebugItem( 3, "views/_loader.jade" ));
 buf.push("<small>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
 buf.push("Please wait");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</small>");
 jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 4, "views/_loader.jade" ));
+if ( cancel)
+{
+jade_debug.unshift(new jade.DebugItem( 5, "views/_loader.jade" ));
+jade_debug.unshift(new jade.DebugItem( 5, "views/_loader.jade" ));
+buf.push("<a class=\"cancel-btn\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("Cancel");
 jade_debug.shift();
-buf.push("</div>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"message" in locals_for_with?locals_for_with.message:typeof message!=="undefined"?message:undefined));;return buf.join("");
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"cancel" in locals_for_with?locals_for_with.cancel:typeof cancel!=="undefined"?cancel:undefined,"message" in locals_for_with?locals_for_with.message:typeof message!=="undefined"?message:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".app-loader\n  span= message\n  small Please wait");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel");
 }
 };
-exports["_loader"].content = ".app-loader\n  span= message\n  small Please wait";
+exports["_loader"].content = ".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel";
 exports["content_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "views/content_tab.jade" }];
 try {
