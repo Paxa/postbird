@@ -55,6 +55,11 @@ global.DbScreenView = jClass.extend({
       }
     });
 
+    $u.contextMenu(this.tablesList, {
+      "Create Table": this.newTableDialog.bind(this),
+      "Refresh Tables": this.reloadStructure.bind(this)
+    });
+
     new SidebarResize(this.content.find('.resize-handler'));
   },
 
@@ -104,10 +109,6 @@ global.DbScreenView = jClass.extend({
 
   renderTablesAndSchemas: function (data, currentSchema, currentTable) {
     this.tablesList.empty();
-    $u.contextMenu(this.tablesList, {
-      "Create Table": this.newTableDialog.bind(this),
-      "Refresh Tables": this.reloadStructure.bind(this)
-    });
 
     var _this = this;
     $u.each(data, function (schema, tables) {

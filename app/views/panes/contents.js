@@ -52,11 +52,13 @@ global.Panes.Contents = global.Pane.extend({
 
     //console.log("Expanders " + (Date.now() - sTime) + "ms");
 
-    this.initTables();
+    //this.initTables();
 
     this.initSortable();
 
     this.initContextMenu();
+
+    new ResizableColumns(this.content.find('.rescol-wrapper'));
 
     this.footer = this.content.find('.summary-and-pages');
 

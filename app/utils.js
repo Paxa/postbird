@@ -16,6 +16,12 @@ $u.stopEvent = function (e) {
   e && e.preventDefault();
 };
 
+$.fn.forEach = function (callback) {
+  this.each(function (i, item) {
+    return callback(item, i);
+  });
+};
+
 $u.buildOption = function (label, value, options) {
   if (options == undefined && typeof value == 'object') {
     options = value;

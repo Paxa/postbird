@@ -1,7 +1,6 @@
 global.errorReporter = require('./lib/error_reporter');
 require('classy/object_extras').extendGlobal();
 
-//require('./lib/zepto');
 require('./lib/dominate');
 require('./lib/jquery.class');
 require('./lib/alertify');
@@ -18,6 +17,7 @@ require('./lib/sql_exporter');
 require('./lib/pg_type_names');
 require('classy/object_ls');
 require('./lib/sql_snippets');
+require('./lib/resizable_columns');
 
 global.node.colors = require('colors');
 global.node.colors.enabled = true;
@@ -71,10 +71,14 @@ require('./app/controllers/updates_controller');
 require('./app/heroku_client');
 require('./app/history_window');
 
-global.$u = window.$u = Zepto;
+global.$u = window.$u = window.Zepto || window.jQuery;
+
+
+/*
 global.$ = function (selector) {
   return document.querySelector(selector);
 };
+*/
 
 global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
 
@@ -96,10 +100,10 @@ if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // w
   require('./app/top_menu');
 }
 
-Zepto(document).ready(function() {
+$(document).ready(function() {
   global.App.init();
   //renderHome();
-  Zepto(window).bind('resize', function () {
+  $(window).bind('resize', function () {
     global.App.setSizes();
   });
 

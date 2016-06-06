@@ -1,4 +1,7 @@
-global.Fiber = require('fibers');
+window.Fiber = global.Fiber = require('fibers');
+
+console.log(global.Fiber);
+console.log(process.versions.v8);
 
 global.waiting = function(runner) {
   var newValue;
