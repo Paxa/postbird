@@ -476,6 +476,7 @@ table.native-look-table {
   .main-screen > .main {
     margin-left: 20%;
     padding-bottom: 27px;
+    overflow-y: auto;
     position: absolute;
     top: 0;
     left: 0;
