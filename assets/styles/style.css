@@ -310,9 +310,10 @@ table.native-look-table {
   background: rgba(225, 226, 224, 0.38);
   height: 100%;
   margin: 0;
-  padding-left: 140px;
   position: relative;
   overflow: hidden; }
+  .home-screen .main-window {
+    padding-left: 20%; }
   .home-screen .middle-window {
     font-size: 13px;
     width: 320px;
@@ -398,16 +399,14 @@ table.native-look-table {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 170px;
-    padding: 10px 0;
+    width: 20%;
     border-right: 1px solid #B4B4B4;
     background: #E5E9F0; }
     .home-screen .sidebar h4 {
       font-size: 13px;
       font-weight: bold;
       color: #666;
-      margin-bottom: 7px;
-      padding: 0 10px 8px;
+      padding: 7px;
       text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
       border-bottom: 1px dotted #abc;
       -webkit-user-select: none;

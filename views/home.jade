@@ -4,54 +4,55 @@
     ul.connections
     a.add-connection(exec="addNewConnection") Add
 
-  form.middle-window.plain
-    p
-      label(for="login_host") Host
-      input#login_host(name='host', type='text', value='localhost')
-    p
-      label(for="login_port") Port
-      input#login_port(name='port', type='text', value='5432')
-    p
-      label(for="login_username") Username
-      input#login_username(name='user', type='text', value='')
-    p
-      label(for="login_password") Password
-      input#login_password(name='password', type='password', value='')
+  .main-window
+    form.middle-window.plain
+      p
+        label(for="login_host") Host
+        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')
+      p
+        label(for="login_port") Port
+        input#login_port(name='port', type='text', value='5432', placeholder='5432')
+      p
+        label(for="login_username") Username
+        input#login_username(name='user', type='text', value='')
+      p
+        label(for="login_password") Password
+        input#login_password(name='password', type='password', value='')
 
-    p
-      label(for="login_database") Database
-      input#login_database(name='database', type='text', value='')
+      p
+        label(for="login_database") Database
+        input#login_database(name='database', type='text', value='')
 
-    input(name="query", type="hidden")
+      input(name="query", type="hidden")
 
-    p.buttons
-      button.native-look(exec="testConnection") Test connection
-      button.native-look(exec="saveAndConnect") Save & connect
-      input.native-look(type="submit", value="Connect", autofocus=true)
+      p.buttons
+        button.native-look(exec="testConnection") Test connection
+        button.native-look(exec="saveAndConnect") Save & connect
+        input.native-look(type="submit", value="Connect", autofocus=true)
 
-  .middle-window.heroku-1
-    h5 Heroku login
+    .middle-window.heroku-1
+      h5 Heroku login
 
-    p!= link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})
-    - //p!= link_to('Access with "$ heroku" command line tool', '#')
+      p!= link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})
+      - //p!= link_to('Access with "$ heroku" command line tool', '#')
 
-  .middle-window.heroku-oauth
-    ul.steps
-      li.access-token Grand access
-      li.request-token Request Token
-      li.get-apps Get applications list
-    ul.apps
-    ul.steps
-      li.database-url Database URL
-      li.connect-db Connect to DB
+    .middle-window.heroku-oauth
+      ul.steps
+        li.access-token Grand access
+        li.request-token Request Token
+        li.get-apps Get applications list
+      ul.apps
+      ul.steps
+        li.database-url Database URL
+        li.connect-db Connect to DB
 
-  .middle-window.heroku-cl
-    ul
-      li Detect command line utilite
-      li Get applications list
+    .middle-window.heroku-cl
+      ul
+        li Detect command line utilite
+        li Get applications list
 
-  footer
-    != link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})
-    != link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})
-    br
-    a.go-to-help Get Postgres
+    footer
+      != link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})
+      != link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})
+      br
+      a.go-to-help Get Postgres
