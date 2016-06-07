@@ -42,6 +42,23 @@
     //border-right: 1px solid #ccc;
     text-align: left;
     position: relative;
+    &[sortable-dir='asc'], &[sortable-dir='desc'] {
+      &:before {
+        content: '\2303';
+        display: block;
+        position: absolute;
+        color: #9f9f9f;
+        top: 6px;
+        right: 4px;
+        font-size: 12px;
+      }
+    }
+    &[sortable-dir='desc'] {
+      &:before {
+        -webkit-transform: rotate(180deg);
+        top: 3px;
+      }
+    }
   }
 
   table td {
@@ -64,6 +81,17 @@
   .rescol-content-wrapper {
     table {
       border-bottom-color: #fff;
+      tr.selected td {
+        background: #dcdcdc;
+        color: black;
+      }
+      &.active tr.selected td {
+        background: #015cdc;
+        color: white;
+        a {
+          color: white;
+        }
+      }
     }
   }
 
@@ -95,8 +123,10 @@
       background: transparent;
     }
   }
-}
 
-table.native-look-table {
-  display: none;
+  &.with-borders {
+    .rescol-content-wrapper table {
+      border: 1px solid #d6d6d6;
+    }
+  }
 }

@@ -72,18 +72,18 @@ table.native-look-table
     position: relative
     font-weight: normal
     &[sortable-dir='asc'], &[sortable-dir='desc']
-      background-image: url("../table_top_bg_sorted.png")
-      border-bottom: 1px solid #7EB1D9
-    & + th
       &:before
-        content: ''
+        content: '\2303'
         display: block
-        width: 1px
-        background: #bdbdbd
+        width: 10px
         position: absolute
+        color: #9f9f9f
         top: 2px
         bottom: 2px
         left: 0px
+    &[sortable-dir='desc']
+      &:before
+        content: '\2304'
 
   tr:nth-child(odd) td
     background: #f3f6fa

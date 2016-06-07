@@ -1,51 +1,58 @@
-table.columns-list-table.native-look-table
-  thead
-    tr
-      th column
-      th type
-      th max length
-      th default
-      th primary key
-      th Null
-      th
-  tbody
-    each column in rows
-      tr
-        td= column.column_name
-        td= column_type_label(column)
-        td= column.character_maximum_length
-        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
-        td= column.is_primary_key ? 'yes' : ''
-        td= column.is_nullable == 'YES' ? 'yes' : 'no'
-        td
-          a(exec="editColumn('" + column.column_name + "')") Edit
-          != "&nbsp;"
-          a(exec="deleteColumn('" + column.column_name + "')") Delete
+.rescol-wrapper.with-borders.indexes-list-table
+  .rescol-header-wrapper
+  .rescol-content-wrapper
+    table
+      thead
+        tr
+          th column
+          th type
+          th max length
+          th default
+          th primary key
+          th Null
+          th
+      tbody
+        each column in rows
+          tr
+            td= column.column_name
+            td= column_type_label(column)
+            td= column.character_maximum_length
+            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
+            td= column.is_primary_key ? 'yes' : ''
+            td= column.is_nullable == 'YES' ? 'yes' : 'no'
+            td
+              a(exec="editColumn('" + column.column_name + "')") Edit
+              != "&nbsp;"
+              a(exec="deleteColumn('" + column.column_name + "')") Delete
 
 footer
   if !is_mat_view
     button.native-look(exec="addColumnForm") Add column
 
 h4 Indexes
-table.indexes-list-table.native-look-table
-  thead
-    tr
-      th name
-      th p. key
-      th uniq
-      th columns
-      th type
-      th
-  tbody
-    each index in indexes
-      tr
-        td= index.relname
-        td= index.indisprimary ? 'Yes' : 'No'
-        td= index.indisunique ? 'Yes' : 'No'
-        td= index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]
-        td= getIndexType(index.pg_get_indexdef)
-        td
-          a(exec="deleteIndex('" + index.relname + "')") Delete
+
+.rescol-wrapper.with-borders.columns-list-table
+  .rescol-header-wrapper
+  .rescol-content-wrapper
+    table
+      thead
+        tr
+          th name
+          th p. key
+          th uniq
+          th columns
+          th type
+          th
+      tbody
+        each index in indexes
+          tr
+            td= index.relname
+            td= index.indisprimary ? 'Yes' : 'No'
+            td= index.indisunique ? 'Yes' : 'No'
+            td= index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]
+            td= getIndexType(index.pg_get_indexdef)
+            td
+              a(exec="deleteIndex('" + index.relname + "')") Delete
 
 footer
   button.native-look(exec="addIndexForm") Add index

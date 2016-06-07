@@ -60,263 +60,27 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift(new jade.DebugItem( 0, "views/content_tab.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "views/content_tab.jade" ));
-buf.push("\n<div class=\"big-data-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/content_tab.jade" ));
-buf.push("\n  <table style=\"display: none\" class=\"native-look-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/content_tab.jade" ));
-buf.push("\n    <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/content_tab.jade" ));
-buf.push("\n      <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-// iterate data.fields
-;(function(){
-  var $$obj = data.fields;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-var type = column_type_label(types[column.name])
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
-var dir = sorting.column == column.name ? sorting.direction : ''
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-buf.push("\n        <th" + (jade.attr("title", type, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-var type = column_type_label(types[column.name])
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
-var dir = sorting.column == column.name ? sorting.direction : ''
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-buf.push("\n        <th" + (jade.attr("title", type, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  }
-}).call(this);
-
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
-buf.push("\n    <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
-// iterate data.rows
-;(function(){
-  var $$obj = data.rows;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
-buf.push("\n      <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-// iterate data.fields
-;(function(){
-  var $$obj = data.fields;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  }
-}).call(this);
-
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
-buf.push("\n      <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-// iterate data.fields
-;(function(){
-  var $$obj = data.fields;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-buf.push("\n        <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  }
-}).call(this);
-
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
-  }
-}).call(this);
-
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
 buf.push("\n<div class=\"rescol-wrapper\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 2, "views/content_tab.jade" ));
 buf.push("\n  <div class=\"rescol-header-wrapper\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</div>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 3, "views/content_tab.jade" ));
 buf.push("\n  <div class=\"rescol-content-wrapper\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 4, "views/content_tab.jade" ));
 buf.push("\n    <table>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
 buf.push("\n      <thead>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
 buf.push("\n        <tr>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -325,18 +89,18 @@ jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
 var type = column_type_label(types[column.name])
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
 var dir = sorting.column == column.name ? sorting.direction : ''
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
 buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -353,18 +117,18 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
 var type = column_type_label(types[column.name])
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
 var dir = sorting.column == column.name ? sorting.direction : ''
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
 buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -386,10 +150,10 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n      </thead>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
 buf.push("\n      <tbody>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
@@ -398,11 +162,11 @@ jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
 buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -411,12 +175,12 @@ jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -433,12 +197,12 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -465,11 +229,11 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
 buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -478,12 +242,12 @@ jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -500,12 +264,12 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -543,37 +307,37 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 20, "views/content_tab.jade" ));
 buf.push("\n<div class=\"summary-and-pages native-footer-bar\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
 buf.push("\n  <ul>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
 buf.push("\n    <!--li-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
 buf.push("\n    <!--  a Remove-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
 buf.push("\n    <!--li-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
 buf.push("\n    <!--  a Duplicate-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"info\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"pages prev\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
 buf.push("<a exec=\"prevPage\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
 buf.push("Prev");
 jade_debug.shift();
 jade_debug.shift();
@@ -582,13 +346,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"pages next\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
 buf.push("<a exec=\"nextPage\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
 buf.push("Next");
 jade_debug.shift();
 jade_debug.shift();
@@ -597,13 +361,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"reload\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
 buf.push("<a exec=\"reloadData\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 33, jade_debug[0].filename ));
 buf.push("Reload");
 jade_debug.shift();
 jade_debug.shift();
@@ -612,17 +376,17 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
 if ( tableType == 'BASE TABLE')
 {
-jade_debug.unshift(new jade.DebugItem( 52, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 52, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
 buf.push("\n    <li>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 53, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
 buf.push("<a exec=\"addRow\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 53, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 36, jade_debug[0].filename ));
 buf.push("Add New Row");
 jade_debug.shift();
 jade_debug.shift();
@@ -642,10 +406,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".big-data-table\n  table.native-look-table(style=\"display: none\")\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
 }
 };
-exports["content_tab"].content = ".big-data-table\n  table.native-look-table(style=\"display: none\")\n    thead\n      tr\n        each column in data.fields\n          if column.name != 'ctid'\n            - var type = column_type_label(types[column.name])\n            - var dir = sorting.column == column.name ? sorting.direction : ''\n            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n    tbody\n      each row in data.rows\n        tr(data-ctid = row.ctid)\n          each column in data.fields\n            if column.name != 'ctid'\n              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
+exports["content_tab"].content = ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [ new jade.DebugItem( 1, "views/db_rows_table.jade" ) ];
 try {
@@ -656,19 +420,31 @@ var jade_interp;
 var jade_indent = [];
 jade_debug.unshift(new jade.DebugItem( 0, "views/db_rows_table.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "views/db_rows_table.jade" ));
-if ( data.fields)
-{
-jade_debug.unshift(new jade.DebugItem( 2, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/db_rows_table.jade" ));
-buf.push("\n<table class=\"native-look-table\">");
+buf.push("\n<div class=\"rescol-wrapper with-borders\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, "views/db_rows_table.jade" ));
+buf.push("\n  <div class=\"rescol-header-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 3, "views/db_rows_table.jade" ));
-buf.push("\n  <thead>");
+buf.push("\n  <div class=\"rescol-content-wrapper\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, "views/db_rows_table.jade" ));
-buf.push("\n    <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+if ( data.fields)
+{
 jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
+buf.push("\n    <table>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 6, "views/db_rows_table.jade" ));
+buf.push("\n      <thead>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/db_rows_table.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -677,12 +453,12 @@ jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
 var type = column_type_label(column)
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "views/db_rows_table.jade" ));
-buf.push("\n      <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
+buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
@@ -695,12 +471,12 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
 var type = column_type_label(column)
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "views/db_rows_table.jade" ));
-buf.push("\n      <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
+buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
@@ -713,15 +489,15 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </thead>");
+buf.push("\n      </thead>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
-buf.push("\n  <tbody>");
+jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
+buf.push("\n      <tbody>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
@@ -730,11 +506,11 @@ jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
-buf.push("\n    <tr>");
+jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/db_rows_table.jade" ));
+buf.push("\n        <tr>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -743,9 +519,9 @@ jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
+buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
@@ -758,9 +534,9 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
+buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
@@ -773,7 +549,7 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -783,11 +559,11 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
-buf.push("\n    <tr>");
+jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/db_rows_table.jade" ));
+buf.push("\n        <tr>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -796,9 +572,9 @@ jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
+buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
@@ -811,9 +587,9 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-buf.push("\n      <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
+jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
+buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
@@ -826,7 +602,7 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -836,58 +612,64 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </tbody>");
+buf.push("\n      </tbody>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n</table>");
+buf.push("\n    </table>");
 jade_debug.shift();
 jade_debug.shift();
 }
 else
 {
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-buf.push("\n<table class=\"native-look-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
-buf.push("\n  <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/db_rows_table.jade" ));
-buf.push("\n    <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 17, "views/db_rows_table.jade" ));
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = data.command) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( 17, "views/db_rows_table.jade" ));
+buf.push("\n    <table>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 18, "views/db_rows_table.jade" ));
+buf.push("\n      <tbody>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 19, "views/db_rows_table.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 20, "views/db_rows_table.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = data.command) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/db_rows_table.jade" ));
-buf.push("\n      <td>");
+jade_debug.unshift(new jade.DebugItem( 21, "views/db_rows_table.jade" ));
+buf.push("\n          <td>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
 buf.push("OK");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </tbody>");
+buf.push("\n      </tbody>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n</table>");
+buf.push("\n    </table>");
 jade_debug.shift();
 jade_debug.shift();
 }
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "if data.fields\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          - var type = column_type_label(column)\n          th(class= 'format-' + type, title= type)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], column.udt_name, column.data_type)\nelse\n  table.native-look-table\n    tbody\n      tr\n        td= data.command\n        td OK\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n");
 }
 };
-exports["db_rows_table"].content = "if data.fields\n  table.native-look-table\n    thead\n      tr\n        each column in data.fields\n          - var type = column_type_label(column)\n          th(class= 'format-' + type, title= type)= column.name\n    tbody\n      each row in data.rows\n        tr\n          each column in data.fields\n            td!= formatCell(row[column.name], column.udt_name, column.data_type)\nelse\n  table.native-look-table\n    tbody\n      tr\n        td= data.command\n        td OK\n";
+exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
 exports["dialogs/column_form"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "views/dialogs/column_form.jade" }];
 try {
@@ -4944,12 +4726,30 @@ jade_debug.unshift(new jade.DebugItem( 9, "views/query_tab.jade" ));
 buf.push("\n<div class=\"result\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 10, "views/query_tab.jade" ));
-buf.push("\n  <table>");
+buf.push("\n  <div class=\"rescol-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, "views/query_tab.jade" ));
+buf.push("\n    <div class=\"rescol-header-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 12, "views/query_tab.jade" ));
+buf.push("\n    <div class=\"rescol-content-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 13, "views/query_tab.jade" ));
+buf.push("\n      <table>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</table>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/query_tab.jade" ));
+jade_debug.shift();
+buf.push("\n    </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 14, "views/query_tab.jade" ));
 buf.push("\n  <div class=\"status\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -4960,10 +4760,10 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  .rescol-wrapper\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n  .status");
 }
 };
-exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  table\n  .status";
+exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  .rescol-wrapper\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n  .status";
 exports["snippet_preview"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "views/snippet_preview.jade" }];
 try {
@@ -5084,93 +4884,105 @@ jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.un
 };
 exports["snippets"].content = ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
 exports["structure_tab"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/structure_tab.jade" }];
+var jade_debug = [ new jade.DebugItem( 1, "views/structure_tab.jade" ) ];
 try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, rows, column_type_label, is_mat_view, indexes, getIndexType) {
+;var locals_for_with = (locals || {});(function (column_type_label, getIndexType, indexes, is_mat_view, rows, undefined) {
 var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/structure_tab.jade" });
-buf.push("\n<table class=\"columns-list-table native-look-table\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/structure_tab.jade" });
-buf.push("\n  <thead>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 0, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "views/structure_tab.jade" ));
+buf.push("\n<div class=\"rescol-wrapper with-borders indexes-list-table\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, "views/structure_tab.jade" ));
+buf.push("\n  <div class=\"rescol-header-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 3, "views/structure_tab.jade" ));
+buf.push("\n  <div class=\"rescol-content-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, "views/structure_tab.jade" ));
+buf.push("\n    <table>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, "views/structure_tab.jade" ));
+buf.push("\n      <thead>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 6, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
 buf.push("column");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 8, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
 buf.push("type");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 9, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
 buf.push("max length");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 10, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
 buf.push("default");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 11, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
 buf.push("primary key");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 12, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
 buf.push("Null");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 13, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </thead>");
+buf.push("\n      </thead>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "views/structure_tab.jade" });
-buf.push("\n  <tbody>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 14, "views/structure_tab.jade" ));
+buf.push("\n      <tbody>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
 // iterate rows
 ;(function(){
   var $$obj = rows;
@@ -5179,75 +4991,75 @@ jade_debug.unshift({ lineno: 12, filename: "views/structure_tab.jade" });
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 12, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 13, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column_type_label(column)) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 18, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column_type_label(column)) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 19, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 20, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 21, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' ? 'yes' : 'no') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 22, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' ? 'yes' : 'no') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 20, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 23, "views/structure_tab.jade" ));
+buf.push("\n          <td>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 24, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
 buf.push("Edit");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</a>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "views/structure_tab.jade" });
-buf.push("&nbsp;");
+jade_debug.unshift(new jade.DebugItem( 25, "views/structure_tab.jade" ));
+buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
 jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 26, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
 buf.push("Delete");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</a>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n      </td>");
+buf.push("\n          </td>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -5257,75 +5069,75 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift({ lineno: 12, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 13, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 16, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column_type_label(column)) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 18, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column_type_label(column)) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 19, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 20, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 21, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' ? 'yes' : 'no') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 22, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' ? 'yes' : 'no') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 20, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 23, "views/structure_tab.jade" ));
+buf.push("\n          <td>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 24, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
 buf.push("Edit");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</a>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "views/structure_tab.jade" });
-buf.push("&nbsp;");
+jade_debug.unshift(new jade.DebugItem( 25, "views/structure_tab.jade" ));
+buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
 jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 26, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
 buf.push("Delete");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</a>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n      </td>");
+buf.push("\n          </td>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -5335,22 +5147,28 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </tbody>");
+buf.push("\n      </tbody>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n</table>");
+buf.push("\n    </table>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "views/structure_tab.jade" });
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 28, "views/structure_tab.jade" ));
 buf.push("\n<footer>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 29, "views/structure_tab.jade" ));
 if ( !is_mat_view)
 {
-jade_debug.unshift({ lineno: 27, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 27, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 30, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 30, "views/structure_tab.jade" ));
 buf.push("\n  <button exec=\"addColumnForm\" class=\"native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 27, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
 buf.push("Add column");
 jade_debug.shift();
 jade_debug.shift();
@@ -5362,85 +5180,97 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</footer>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 29, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 32, "views/structure_tab.jade" ));
 buf.push("\n<h4>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 29, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
 buf.push("Indexes");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</h4>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 30, filename: "views/structure_tab.jade" });
-buf.push("\n<table class=\"indexes-list-table native-look-table\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 31, filename: "views/structure_tab.jade" });
-buf.push("\n  <thead>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 32, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 33, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 33, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 34, "views/structure_tab.jade" ));
+buf.push("\n<div class=\"rescol-wrapper with-borders columns-list-table\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/structure_tab.jade" ));
+buf.push("\n  <div class=\"rescol-header-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 36, "views/structure_tab.jade" ));
+buf.push("\n  <div class=\"rescol-content-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 37, "views/structure_tab.jade" ));
+buf.push("\n    <table>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 38, "views/structure_tab.jade" ));
+buf.push("\n      <thead>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 39, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 40, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
 buf.push("name");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 34, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 34, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 41, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
 buf.push("p. key");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 35, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 35, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 42, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
 buf.push("uniq");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 36, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 36, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 43, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
 buf.push("columns");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 37, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 37, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 44, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
 buf.push("type");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 38, filename: "views/structure_tab.jade" });
-buf.push("\n      <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 45, "views/structure_tab.jade" ));
+buf.push("\n          <th>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</th>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </thead>");
+buf.push("\n      </thead>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 39, filename: "views/structure_tab.jade" });
-buf.push("\n  <tbody>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 40, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 46, "views/structure_tab.jade" ));
+buf.push("\n      <tbody>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
 // iterate indexes
 ;(function(){
   var $$obj = indexes;
@@ -5449,47 +5279,47 @@ jade_debug.unshift({ lineno: 40, filename: "views/structure_tab.jade" });
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var index = $$obj[$index];
 
-jade_debug.unshift({ lineno: 40, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 41, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 42, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 48, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 49, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 43, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 50, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 44, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 51, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 45, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 52, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 46, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 53, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 47, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 48, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 54, "views/structure_tab.jade" ));
+buf.push("\n          <td>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 55, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 48, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
 buf.push("Delete");
 jade_debug.shift();
 jade_debug.shift();
@@ -5499,7 +5329,7 @@ jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -5509,47 +5339,47 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var index = $$obj[$index];
 
-jade_debug.unshift({ lineno: 40, filename: "views/structure_tab.jade" });
-jade_debug.unshift({ lineno: 41, filename: "views/structure_tab.jade" });
-buf.push("\n    <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 42, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 48, "views/structure_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 49, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 43, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 50, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 44, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 51, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 45, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 52, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 46, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( 53, "views/structure_tab.jade" ));
+buf.push("\n          <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 47, filename: "views/structure_tab.jade" });
-buf.push("\n      <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 48, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( 54, "views/structure_tab.jade" ));
+buf.push("\n          <td>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 55, "views/structure_tab.jade" ));
 buf.push("<a" + (jade.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 48, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
 buf.push("Delete");
 jade_debug.shift();
 jade_debug.shift();
@@ -5559,7 +5389,7 @@ jade_debug.shift();
 buf.push("</td>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n    </tr>");
+buf.push("\n        </tr>");
 jade_debug.shift();
 jade_debug.shift();
     }
@@ -5569,18 +5399,24 @@ jade_debug.shift();
 
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n  </tbody>");
+buf.push("\n      </tbody>");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("\n</table>");
+buf.push("\n    </table>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 50, filename: "views/structure_tab.jade" });
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 57, "views/structure_tab.jade" ));
 buf.push("\n<footer>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 51, filename: "views/structure_tab.jade" });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 58, "views/structure_tab.jade" ));
 buf.push("\n  <button exec=\"addIndexForm\" class=\"native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 51, filename: jade_debug[0].filename });
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
 buf.push("Add index");
 jade_debug.shift();
 jade_debug.shift();
@@ -5589,12 +5425,12 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</footer>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"is_mat_view" in locals_for_with?locals_for_with.is_mat_view:typeof is_mat_view!=="undefined"?is_mat_view:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"is_mat_view" in locals_for_with?locals_for_with.is_mat_view:typeof is_mat_view!=="undefined"?is_mat_view:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "table.columns-list-table.native-look-table\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column_type_label(column)\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-look-table\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th type\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td= getIndexType(index.pg_get_indexdef)\n        td\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th Null\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.column_name\n            td= column_type_label(column)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index");
 }
 };
-exports["structure_tab"].content = "table.columns-list-table.native-look-table\n  thead\n    tr\n      th column\n      th type\n      th max length\n      th default\n      th primary key\n      th Null\n      th\n  tbody\n    each column in rows\n      tr\n        td= column.column_name\n        td= column_type_label(column)\n        td= column.character_maximum_length\n        td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n        td= column.is_primary_key ? 'yes' : ''\n        td= column.is_nullable == 'YES' ? 'yes' : 'no'\n        td\n          a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n          != \"&nbsp;\"\n          a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\ntable.indexes-list-table.native-look-table\n  thead\n    tr\n      th name\n      th p. key\n      th uniq\n      th columns\n      th type\n      th\n  tbody\n    each index in indexes\n      tr\n        td= index.relname\n        td= index.indisprimary ? 'Yes' : 'No'\n        td= index.indisunique ? 'Yes' : 'No'\n        td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n        td= getIndexType(index.pg_get_indexdef)\n        td\n          a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index";
+exports["structure_tab"].content = ".rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th Null\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.column_name\n            td= column_type_label(column)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index";
 exports["users_tab"] = function template(jade, locals) {
 var jade_debug = [{ lineno: 1, filename: "views/users_tab.jade" }];
 try {

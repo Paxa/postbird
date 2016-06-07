@@ -1,20 +1,3 @@
-.big-data-table
-  table.native-look-table(style="display: none")
-    thead
-      tr
-        each column in data.fields
-          if column.name != 'ctid'
-            - var type = column_type_label(types[column.name])
-            - var dir = sorting.column == column.name ? sorting.direction : ''
-            th(class= 'format-' + type, title=type, sortable=column.name, sortable-dir=dir)= column.name
-    tbody
-      each row in data.rows
-        tr(data-ctid = row.ctid)
-          each column in data.fields
-            if column.name != 'ctid'
-              td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)
-
-
 .rescol-wrapper
   .rescol-header-wrapper
   .rescol-content-wrapper
