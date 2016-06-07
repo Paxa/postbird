@@ -819,6 +819,15 @@ body.sidebar-resizing {
     font-size: 13px; }
   .app-loader.appear {
     opacity: 1; }
+  .app-loader a.cancel-btn {
+    margin-left: 10px;
+    color: white;
+    background: black;
+    border-radius: 5px;
+    padding: 4px 6px;
+    text-decoration: none;
+    float: right;
+    margin-right: -6px; }
 
 .alertify, .alertify-show, .alertify-log {
   -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1199,7 +1208,7 @@ body.sidebar-resizing {
   .window-content.query .result {
     padding: 0 9px;
     width: calc(100% + 9px);
-    height: calc(50% - 15px);
+    height: calc(50% - 30px);
     overflow-x: auto;
     padding-bottom: 9px;
     box-sizing: border-box; }
