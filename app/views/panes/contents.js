@@ -165,7 +165,7 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   initContextMenu: function (event) {
-    var table = this.content.find('table');
+    var table = this.content.find('.rescol-content-wrapper table');
 
     // bind for delete button
     if (this.currentTableType == 'BASE TABLE') {

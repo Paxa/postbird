@@ -117,8 +117,7 @@ global.Panes.Query = global.Pane.extend({
         }
         var node = App.renderView('db_rows_table', {data: data})[0];
         $u(node).addClass('command_' + data.command);
-        this.content.find('.result .JCLRgrips').remove();
-        this.content.find('.result table').replaceWith(node);
+        this.content.find('.result .rescol-wrapper').replaceWith(node);
 
         var footerText;
         if (data.fields && !isNaN(data.rowCount) || data.command == "SELECT") {
@@ -135,7 +134,7 @@ global.Panes.Query = global.Pane.extend({
         this.statusLine.text(footerText);
         this.initTables();
         if (data.command == "EXPLAIN") {
-          this.content.find('.result table').css('width', '');
+          this.content.find('.result .rescol-wrapper').css('width', '');
         }
       }
       this.toggleCleanButton();
@@ -147,8 +146,7 @@ global.Panes.Query = global.Pane.extend({
   },
 
   cleanResult: function () {
-    this.content.find('.result .JCLRgrips').remove();
-    this.content.find('.result table').html("").hide();
+    this.content.find('.result .rescol-wrapper').html("").hide();
     this.statusLine.text("");
   },
 
