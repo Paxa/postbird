@@ -4,10 +4,10 @@
   :background rgba(225, 226, 224, 0.38)
   :height 100%
   :margin 0
-  :padding
-    :left 140px
   :position relative
   :overflow hidden
+  .main-window
+    :padding-left $sidebar-width
   .middle-window
     :font-size 13px
     :width 320px
@@ -86,8 +86,7 @@
     :left 0
     :top 0
     :bottom 0
-    :width 170px
-    :padding 10px 0
+    :width $sidebar-width
     border-right: 1px solid #B4B4B4
     :background #E5E9F0 //rgba(50, 70, 90, 0.05)
     h4
@@ -95,8 +94,7 @@
         :size 13px
         :weight bold
       :color #666
-      :margin-bottom 7px
-      :padding 0 10px 8px
+      :padding 7px
       text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px
       :border-bottom 1px dotted #abc
       +system-text
