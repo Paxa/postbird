@@ -21,6 +21,7 @@ global.Connection = jClass.extend({
   logging: true,
   pending: [],
   printTestingError: true,
+  currentQuery: null,
 
   init: function(options, callback) {
     this.options = options;
@@ -131,7 +132,8 @@ global.Connection = jClass.extend({
       App.log("sql.start", historyRecord);
       var time = Date.now();
 
-      var query = this.connection.query(sql, function (error, result) {
+      var query = this.currentQuery = this.connection.query(sql, function (error, result) {
+        this.currentQuery = null;
         historyRecord.time = Date.now() - time;
         if (this.logging) logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
 
@@ -179,7 +181,7 @@ global.Connection = jClass.extend({
 
   listDatabases: function (callback) {
     var databases = [];
-    this.query('SELECT datname FROM pg_database WHERE datistemplate = false;', function (rows) {
+    this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', function (rows) {
       rows.rows.forEach(function(dbrow) {
         databases.push(dbrow.datname);
       });
@@ -450,6 +452,18 @@ global.Connection = jClass.extend({
           if (tab) tab.instance.reconnect();
         }
       });
+    }
+  },
+
+  stopRunningQuery: function stopRunningQuery () {
+    if (this.currentQuery) {
+      try {
+        this.currentQuery.native.cancel(function () {
+          console.log(arguments);
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 });

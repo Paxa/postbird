@@ -175,7 +175,11 @@ global.DbScreen = jClass.extend({
       return;
     }
 
-    App.startLoading("Fetching data ...");
+    App.startLoading("Fetching data ...", {
+      cancel: function () {
+        App.stopRunningQuery();
+      }
+    });
     this.table.getColumnTypes(function(columnTypes, error2) {
       var hasOid = !!columnTypes.oid;
       this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid}, function (data, error) {

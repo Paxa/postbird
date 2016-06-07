@@ -95,8 +95,16 @@ global.Panes.Query = global.Pane.extend({
     var needReloadTables = !!sql.match(tableRegex);
 
     this.button.text("Running...");
+
+    App.startLoading("Query still running...", 3000, {
+      cancel: function () {
+        App.stopRunningQuery();
+      }
+    });
+
     this.handler.connection.query(sql, function (data, error) {
       this.toggleButtonText();
+      App.stopLoading();
       if (error) {
         this.cleanResult();
         var message = error.message;

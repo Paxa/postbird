@@ -184,11 +184,23 @@ global.App = {
     $u('body > #content').css('height', height - topOffset);
   },
 
-  startLoading: function (message, timeout) {
+  startLoading: function (message, timeout, options) {
+    if (!options) options = {};
+
     if (this.loader) this.loader.hide();
     this.stopLoading();
 
-    this.loader = this.renderView('_loader', {message: message});
+    this.loader = this.renderView('_loader', {
+      message: message,
+      cancel: options.cancel
+    });
+
+    if (options.cancel) {
+      $u(this.loader).find('a.cancel-btn').on('click', function () {
+        options.cancel();
+      });
+    }
+
     $u(window.document.body).append(this.loader);
 
     if (timeout === undefined) timeout = 300;
@@ -196,7 +208,7 @@ global.App = {
     this.loaderTimeout = setTimeout(function() {
       delete this.loaderTimeout;
       this.loader.addClass('appear');
-    }.bind(this), 300);
+    }.bind(this), timeout);
   },
 
   stopLoading: function () {
@@ -208,6 +220,12 @@ global.App = {
       setTimeout(function() {
         loader.remove();
       }, 250);
+    }
+  },
+
+  stopRunningQuery: function () {
+    if (this.currentTab.instance.connection) {
+      this.currentTab.instance.connection.stopRunningQuery();
     }
   }
 };

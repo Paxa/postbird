@@ -98,7 +98,11 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   nextPage: function () {
-    App.startLoading("Getting next page...", 100);
+    App.startLoading("Getting next page...", 100, {
+      cancel: function () {
+        App.stopRunningQuery();
+      }
+    });
     this.offset += this.limit;
     this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
@@ -108,7 +112,11 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   prevPage: function () {
-    App.startLoading("Getting previous page...", 100);
+    App.startLoading("Getting previous page...", 100, {
+      cancel: function () {
+        App.stopRunningQuery();
+      }
+    });
     this.offset -= this.limit;
     this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
@@ -120,7 +128,11 @@ global.Panes.Contents = global.Pane.extend({
   reloadData: function () {
     this.content.addClass('reloading');
 
-    App.startLoading("Reloading page...", 100);
+    App.startLoading("Reloading page...", 100, {
+      cancel: function () {
+        App.stopRunningQuery();
+      }
+    });
     this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
       this.renderPage(data);
       this.scrollToTop();
