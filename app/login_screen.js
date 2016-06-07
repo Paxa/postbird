@@ -165,7 +165,7 @@ global.LoginScreen = jClass.extend({
     var conn = new Connection(options, function (status, message) {
       App.stopLoading();
       if (status) {
-        window.alertify.alert("Successfullt connected!");
+        window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
         window.alertify.alert(this.humanErrorMessage(message));
