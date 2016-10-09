@@ -325,7 +325,7 @@ global.Model.Table = Model.base.extend({
   },
 
   dropIndex: function (indexName, callback) {
-    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${this.table};`;
+    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${indexName};`;
     this.q(sql, function(data, error) {
       callback(data, error);
     });
