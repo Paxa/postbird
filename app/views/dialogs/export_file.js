@@ -9,12 +9,21 @@ global.Dialog.ExportFile = global.Dialog.extend({
   },
 
   showWindow: function () {
-    var nodes = App.renderView('dialogs/export_file', {
-      database: this.handler.database,
-      hopePath: process.env.HOME || process.env.USERPROFILE
-    });
+    var nodes = App.renderView('dialogs/export_file', {database: this.handler.database});
 
     this.content = this.renderWindow(this.title, nodes);
+
+    var dialog = electron.remote.dialog;
+    var fileInput = this.content.find('[name=export_to_file]');
+    fileInput.on('click', (e) => {
+      e.preventDefault();
+      var options = {
+        defaultPath: this.handler.database + '.sql'
+      };
+      dialog.showSaveDialog(electron.remote.BrowserWindow.mainWindow, options, function (selected) {
+        fileInput.val(selected);
+      });
+    });
     this.bindFormSubmitting();
   },
 

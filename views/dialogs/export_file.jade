@@ -6,7 +6,7 @@ header
 form
   p.save-to-file
     = "Save to file:"
-    input(type="file" name="export_to_file" nwsaveas=database + '.sql' nwworkingdir=hopePath)
+    input(type="text" name="export_to_file" placeholder="click here...")
   p
     label
       = "Export structure"
