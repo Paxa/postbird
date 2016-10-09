@@ -1,3 +1,4 @@
+var jQuery = require(__dirname + '/../lib/jquery.js');
 require(__dirname + '/../lib/node_lib');
 require('classy/object_extras').extendGlobal();
 
@@ -25,7 +26,7 @@ global.App = {
 global.electron = require('electron');
 global.App.remote = remote;
 
-global.$u = window.$u = Zepto;
+global.$u = window.$u = jQuery;
 global.$ = function (selector) {
   return document.querySelector(selector);
 };
@@ -86,7 +87,7 @@ var SnippetsWindow = {
   }
 };
 
-Zepto(document).ready(function() {
+jQuery(document).ready(function() {
   App.init();
   SnippetsWindow.renderContent();
 });

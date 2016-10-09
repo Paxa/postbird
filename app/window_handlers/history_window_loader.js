@@ -1,3 +1,4 @@
+//var jQuery = require(__dirname + '/../lib/jquery.js');
 require(__dirname + '/../lib/dominate');
 require(__dirname + '/../lib/jquery.class');
 require(__dirname + '/../lib/alertify');
@@ -24,7 +25,7 @@ global.App = {
 global.electron = require('electron');
 global.App.remote = remote;
 
-global.$u = window.$u = Zepto;
+global.$u = window.$u = jQuery;
 global.$ = function (selector) {
   return document.querySelector(selector);
 };
@@ -45,7 +46,7 @@ function renderContent() {
   });
 }
 
-Zepto(document).ready(function() {
+$u(document).ready(function() {
   App.init();
 
   electron.ipcRenderer.on('App.logEvents', function(event, messages) {

@@ -2,7 +2,6 @@ var remote = require('electron').remote;
 var Menu = remote.Menu;
 var MenuItem = remote.MenuItem;
 
-
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
   $u.each($u(selector_or_el).serializeArray(), function(_, kv) {
@@ -16,7 +15,7 @@ $u.stopEvent = function (e) {
   e && e.preventDefault();
 };
 
-$.fn.forEach = function (callback) {
+$u.fn.forEach = function (callback) {
   this.each(function (i, item) {
     return callback(item, i);
   });
