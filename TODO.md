@@ -13,3 +13,7 @@ My todo:
 * Add support for portitioning
 * Add support for foreign keys
 * Syntax highlight for json and xml fields
+
+* check indisvalid in list of indexes (indisvalid means index created with errors, there is record but no index actually)
+* fix column sizes when no rows
+* add command line util

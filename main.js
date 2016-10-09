@@ -18,8 +18,6 @@ app.on('window-all-closed', function() {
   //}
 });
 
-console.log(app.getPath('userData'));
-
 app.on('ready', function() {
   let mainWindowState = windowStateKeeper({
     defaultWidth: 960,
