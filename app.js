@@ -33,6 +33,7 @@ global.App = {
     /* --- auto connect */
 
     this.setSizes();
+    $(window).trigger('window-ready');
   },
 
   addTab: function (name, contentHtml, instance) {
@@ -226,6 +227,38 @@ global.App = {
   stopRunningQuery: function () {
     if (this.currentTab.instance.connection) {
       this.currentTab.instance.connection.stopRunningQuery();
+    }
+  },
+
+  openConnection: function (options, connectionName, callback) {
+    this.startLoading("Connecting...");
+
+    if (typeof options == 'string') {
+      options = Connection.parseConnectionString(options);
+      if (!connectionName) {
+        connectionName = options.host;
+      }
+    }
+
+    var conn = new Connection(options, (status, message) => {
+      this.stopLoading();
+      if (status) {
+        var tab = this.addDbScreen(conn, connectionName, options);
+        tab.activate();
+        if (callback) callback(tab);
+      } else {
+        window.alertify.alert(this.humanErrorMessage(message));
+        if (callback) callback(false);
+      }
+    });
+    //global.conn = conn; // TODO: clean
+  },
+
+  humanErrorMessage: (error) => {
+    if (error == "connect ECONNREFUSED") {
+      return "Connection refused.<br>Make sure postgres is running";
+    } else {
+      return error;
     }
   }
 };

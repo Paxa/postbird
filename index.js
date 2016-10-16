@@ -95,6 +95,19 @@ function reloadCss() {
 //global.gui = gui;
 global.electron = require('electron');
 
+electron.ipcRenderer.on('open-file', function(event, message) {
+  console.log('open-file', event, message);
+});
+
+electron.ipcRenderer.on('open-url', function(event, url) {
+  console.log('open-url', event, url);
+  App.openConnection(url);
+});
+
+$(window).on('window-ready', (event) => {
+  electron.ipcRenderer.send('main-window-ready', {});
+  console.log('window-ready');
+});
 
 if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // win32, win64, win128, etc
   require('./app/top_menu');

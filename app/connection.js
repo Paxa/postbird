@@ -32,17 +32,17 @@ global.Connection = jClass.extend({
   },
 
   parseConnectionString: function (postgresUrl) {
-    var step1 = postgresUrl.match(/^(postgres:\/\/)([\w\d_]+)(:([^@]+))?@/); // protocol, user, [password]
-    var step2 = postgresUrl.match(/@([^\/:]+)(:(\d+))?(\/([^\/\?]+))/); // host, [port], db name
-    var step3 = postgresUrl.match(/\?(.+)$/); // query string
+    var parsed = node.url.parse(postgresUrl);
+    var auth = (parsed.auth || '').split(':');
+    var dbname = !parsed.pathname || parsed.pathname == '/' ? this.defaultDatabaseName : parsed.pathname.replace(/^\//, '');
 
     return {
-      user: step1[2],
-      password: step1[4],
-      host: step2[1],
-      port: (step2[3] || '5432').toString(),
-      database: step2[5] || this.defaultDatabaseName,
-      query: step3 && step3[1]
+      user: auth[0],
+      password: auth[1],
+      host: parsed.host,
+      port: parsed.port || '5432',
+      database: dbname,
+      query: parsed.query
     };
   },
 
@@ -470,3 +470,7 @@ global.Connection = jClass.extend({
 
 global.Connection.PG = pg;
 global.Connection.instances = [];
+
+global.Connection.parseConnectionString = global.Connection.prototype.parseConnectionString;
+
+module.exports = global.Connection;

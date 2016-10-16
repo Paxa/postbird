@@ -276,34 +276,8 @@ global.LoginScreen = jClass.extend({
   },
 
   makeConnection: function (connectionOptions, options, callback) {
-    App.startLoading("Connecting...");
-
-    if (typeof callback == 'undefined' && typeof options == 'function') {
-      callback = options;
-      options = {};
-    }
-
-    var conn = new Connection(connectionOptions, function (status, message) {
-      App.stopLoading();
-      if (status) {
-        var tab = App.addDbScreen(conn, options.name || this.connectionName, options);
-        tab.activate();
-        if (callback) callback(tab);
-      } else {
-        if (callback) callback(false);
-        window.alertify.alert(this.humanErrorMessage(message));
-      }
-    }.bind(this));
-    global.conn = conn; // TODO: clean
-  },
-
-  humanErrorMessage: function (error) {
-    if (error == "connect ECONNREFUSED") {
-      return "Connection refused.<br>Make sure postgres is running";
-    } else {
-      return error;
-    }
-  },
+    App.openConnection(connectionOptions, options.name || this.connectionName, callback);
+  }
 });
 
 LoginScreen.prototype.initEvents = Pane.prototype.initEvents;

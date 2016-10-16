@@ -1,0 +1,9 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $0)
+
+if [ $1 ]; then
+  open -a Postgres.app $1
+else
+  open -a Postgres.app .
+fi

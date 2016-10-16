@@ -3,7 +3,7 @@ var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  version: '0.36.10',
+  version: '1.4.3',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
@@ -15,7 +15,9 @@ var opts = {
   name: packageJson.name,
   prune: true,
   overwrite: true,
-  out: process.env.HOME + '/Postbird_release'
+  out: process.env.HOME + '/Postbird_release',
+  protocol: 'postbird',
+  'extend-info': 'build_files/Info.plist'
 };
 
 child_process.exec('git rev-list HEAD --count', (err, stdout, stderr) => {

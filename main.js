@@ -11,11 +11,35 @@ BrowserWindow.ApplicationStart = Date.now();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
+var filesToOpen = [];
+var urlsToOpen = [];
 
 app.on('window-all-closed', function() {
   //if (process.platform != 'darwin') {
     app.quit();
   //}
+});
+
+var result = app.setAsDefaultProtocolClient('postgres');
+
+app.on('open-file', (event, filename) => {
+  event.preventDefault();
+
+  if (mainWindow) {
+    mainWindow.send('open-file', filename);
+  } else {
+    filesToOpen.push(filename);
+  }
+});
+
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+
+  if (mainWindow) {
+    mainWindow.send('open-url', url);
+  } else {
+    urlsToOpen.push(url);
+  }
 });
 
 app.on('ready', function() {
@@ -41,6 +65,17 @@ app.on('ready', function() {
   if (process.env.NW_DEV == "true") {
     mainWindow.webContents.openDevTools({detach: true});
   }
+
+  // when main window is ready - send all pending events
+  electron.ipcMain.on('main-window-ready', () => {
+    filesToOpen.forEach((file) => {
+      mainWindow.send('open-file', file);
+    });
+
+    urlsToOpen.forEach((url) => {
+      mainWindow.send('open-url', url);
+    });
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

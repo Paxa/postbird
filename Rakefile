@@ -53,3 +53,11 @@ task :rebuild_ext do
     system "mv node_modules/fibers/bin/linux-x64-v8-5.0 node_modules/fibers/bin/linux-x64-v8-5.1"
   end
 end
+
+desc "Build and install"
+task :build_install do
+  system "rm -rf /Users/pavel/Postbird_release"
+  system "node packager.js"
+  system "rm -rf /Applications/Postbird.app"
+  system "mv /Users/pavel/Postbird_release/Postbird-darwin-x64/Postbird.app /Applications/"
+end

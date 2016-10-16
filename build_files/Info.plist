@@ -2,39 +2,37 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleDevelopmentRegion</key>
-  <string>en</string>
-  <key>CFBundleDisplayName</key>
-  <string>Postbird</string>
   <key>CFBundleDocumentTypes</key>
-  <array/>
-  <key>CFBundleExecutable</key>
-  <string>nwjs</string>
-  <key>CFBundleIconFile</key>
-  <string>icon.icns</string>
-  <key>CFBundleIdentifier</key>
-  <string>com.postbird</string>
-  <key>CFBundleInfoDictionaryVersion</key>
-  <string>6.0</string>
-  <key>CFBundleName</key>
-  <string>Postbird</string>
-  <key>CFBundlePackageType</key>
-  <string>APPL</string>
-  <key>CFBundleShortVersionString</key>
-  <string>0.4.3</string>
-  <key>CFBundleVersion</key>
-  <string>commit 238</string>
-  <key>LSFileQuarantineEnabled</key>
-  <true/>
-  <key>LSMinimumSystemVersion</key>
-  <string>10.6.0</string>
-  <key>NSPrincipalClass</key>
-  <string>NSApplication</string>
-  <key>NSSupportsAutomaticGraphicsSwitching</key>
-  <true/>
-  <key>SCMRevision</key>
-  <string>175484</string>
-  <key>UTExportedTypeDeclarations</key>
-  <array/>
+  <array>
+    <dict>
+      <key>CFBundleTypeExtensions</key>
+      <array>
+        <string>sql</string>
+      </array>
+      <key>CFBundleTypeIconFile</key>
+      <string>SQL.icns</string>
+      <key>CFBundleTypeName</key>
+      <string>SQL File</string>
+      <key>CFBundleTypeOSTypes</key>
+      <array>
+        <string>sqlt</string>
+      </array>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>NSDocumentClass</key>
+      <string>SPDocumentController</string>
+    </dict>
+  </array>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLName</key>
+      <string>Postgres Database</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>postgres</string>
+      </array>
+    </dict>
+  </array>
 </dict>
 </plist>
