@@ -1,9 +1,22 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $0)
+WORKING_DIR=$(pwd)
+
+if [ "$1" == "--help" ]; then
+  echo "Usage:"
+  echo "postbird localhost/dbname  -> open postgres://$USER@localhost/dbname"
+  echo "postbird .                 -> try to find .postbird in PWD"
+  echo "postbird ../pathto/project -> try to find .postbird in ../pathto/project"
+  exit 0
+fi
+
+# postbird localhost/dbname  => open postgres://localhost/dbname#WORKING_DIR=$WORKING_DIR
+# postbird                   => postgres://.#WORKING_DIR=$WORKING_DIR
+# postbird ../pathto/project => postgres://../pathto/project#WORKING_DIR=$WORKING_DIR
 
 if [ $1 ]; then
-  open -a Postgres.app $1
+  open postgres://$1\#WORKING_DIR=$WORKING_DIR
 else
-  open -a Postgres.app .
+  open postgres://.\#WORKING_DIR=$WORKING_DIR
 fi

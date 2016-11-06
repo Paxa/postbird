@@ -71,6 +71,8 @@ require('./app/controllers/updates_controller');
 require('./app/heroku_client');
 require('./app/history_window');
 
+var CliUtil = require('./lib/cli_util');
+
 global.$u = window.$u = window.Zepto || window.jQuery;
 
 
@@ -101,7 +103,10 @@ electron.ipcRenderer.on('open-file', function(event, message) {
 
 electron.ipcRenderer.on('open-url', function(event, url) {
   console.log('open-url', event, url);
-  App.openConnection(url);
+  CliUtil.resolveArg(url, (resultUrl) => {
+    console.log('CliUtil.resolveArg', resultUrl);
+    App.openConnection(resultUrl);
+  });
 });
 
 $(window).on('window-ready', (event) => {
