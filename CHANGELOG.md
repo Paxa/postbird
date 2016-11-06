@@ -1,3 +1,21 @@
+== Version 0.6.0 (pending)
+
+* Add Feature: Truncate table
+* Fix checking updates, check updates on startup
+* Fix copying in content tab
+* Save window state
+* Use relative path for view cache instead of absolute
+* Order databases alphabetically in a dropdown
+* Show loader for query tab, allow cancel running query
+* Use use new js tables
+* More consistent design (Thanks to @yoonwaiyan)
+* Fix deleting index
+* Fix exporting file
+* Fix history and snippets windows with new electron
+* Update to PostgreSQL 9.6
+* Add support for postgres:// protocol
+* Add `postbird` command line util
+
 == Version 0.5.0
 
 * Migrate to Electron from Node-Webkit
