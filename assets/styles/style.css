@@ -1300,15 +1300,15 @@ body.sidebar-resizing {
     box-sizing: border-box; }
     .window-content.query .result .rescol-wrapper {
       height: calc(100% - 19px); }
+    .window-content.query .result .command_EXPLAIN td {
+      white-space: pre; }
+    .window-content.query .result .type-xml {
+      white-space: pre;
+      word-break: break-all; }
     .window-content.query .result table {
       margin-bottom: 3px; }
       .window-content.query .result table th {
         background: #f5f5f5; }
-      .window-content.query .result table.command_EXPLAIN td {
-        white-space: pre; }
-      .window-content.query .result table .type-xml {
-        white-space: pre;
-        word-break: break-all; }
 
 .window-content.procedures h4 {
   margin-bottom: 12px; }
