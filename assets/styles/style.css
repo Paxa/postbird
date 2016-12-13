@@ -508,7 +508,7 @@ table.native-look-table {
       .main-screen > .main .window-content.active {
         display: block;
         height: calc(100% - 20px); }
-      .main-screen > .main .window-content.structure.active, .main-screen > .main .window-content.procedures.active, .main-screen > .main .window-content.info.active, .main-screen > .main .window-content.extensions.active {
+      .main-screen > .main .window-content.structure.active, .main-screen > .main .window-content.procedures.active, .main-screen > .main .window-content.info.active, .main-screen > .main .window-content.extensions.active, .main-screen > .main .window-content.query.active {
         margin-bottom: -27px;
         height: calc(100% + 7px); }
 
@@ -1317,6 +1317,8 @@ body.sidebar-resizing {
       margin-bottom: 3px; }
       .window-content.query .result table th {
         background: #f5f5f5; }
+      .window-content.query .result table td {
+        white-space: pre; }
 
 .window-content.procedures {
   padding: 9px;
