@@ -146,10 +146,6 @@ global.Model.Table = Model.base.extend({
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
     `;
-    var sql1 = `
-      select * from information_schema.columns
-      where table_schema = '${this.schema}' and table_name = '${this.table}';
-    `;
     this.q(sql, function(data) {
       this.hasOID(function (hasOID) {
         if (hasOID) {
@@ -216,6 +212,25 @@ global.Model.Table = Model.base.extend({
 
   _table_getColumnTypes: function (callback) {
     var sql = `
+      SELECT
+        a.attname as column_name,
+        pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type,
+        t.typname as udt_name,
+        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+         FROM pg_catalog.pg_attrdef d
+         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default
+      FROM pg_catalog.pg_attribute a
+      JOIN pg_type t on t.oid = a.atttypid
+      WHERE
+        a.attrelid = (
+          select c.oid from pg_catalog.pg_class c
+          LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+          where c.relname = '${this.table}' and n.nspname = '${this.schema}' limit 1
+        ) AND
+        a.attnum > 0 AND NOT a.attisdropped
+      ORDER BY a.attnum;
+    `;
+    var sql1 = `
       select * from information_schema.columns
       where table_schema = '${this.schema}' and table_name = '${this.table}';
     `;
@@ -433,8 +448,11 @@ global.Model.Table = Model.base.extend({
       if (options.with_oid) sysColumns.push('oid');
       if (!isView) sysColumns.push('ctid');
 
-      var sql = 'select %s * from "%s"."%s" %s limit %d offset %d';
-      sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "")
+      //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
+      var selectColumns = sysColumns.concat(['*']);
+      if (options.extraColumns) {
+        selectColumns = selectColumns.concat(options.extraColumns);
+      }
 
       var orderSql = "";
       if (options.sortColumn) {
@@ -442,10 +460,16 @@ global.Model.Table = Model.base.extend({
         orderSql = ` order by "${options.sortColumn}" ${direction}`;
       }
 
-      this.q(sql, sysColumns, this.schema, this.table, orderSql, limit, offset, function(data, error) {
+      var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${orderSql} limit ${limit} offset ${offset}`;
+
+      this.q(sql, function(data, error) {
         if (data) {
           data.limit = limit;
           data.offset = offset;
+        }
+        // remove columns if we selected extra columns
+        if (options.extraColumns) {
+          data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
         }
         callback(data, error);
       });

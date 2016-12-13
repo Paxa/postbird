@@ -127,12 +127,6 @@ global.DbScreen = jClass.extend({
     this.view.showTab('structure');
   },
 
-  fetchTableStructure: function(schema, table, callback) {
-    Model.Table(schema, table).getStructure(function (data) {
-      callback(data);
-    }.bind(this));
-  },
-
   activateTab: function (tabName, force) {
     console.log(tabName + 'TabActivate', typeof this[tabName + 'TabActivate']);
 
@@ -182,7 +176,13 @@ global.DbScreen = jClass.extend({
     });
     this.table.getColumnTypes(function(columnTypes, error2) {
       var hasOid = !!columnTypes.oid;
-      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid}, function (data, error) {
+      var extraColumns = [];
+      Object.forEach(columnTypes, (key, col) => {
+        if (/geometry\(Point\)/.test(col.data_type)) {
+          extraColumns.push(`ST_AsText(${key}) as ${key}`);
+        }
+      });
+      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, function (data, error) {
         App.stopLoading();
         this.view.contents.renderTab(data, columnTypes, error || error2);
       }.bind(this));
@@ -369,7 +369,7 @@ global.DbScreen = jClass.extend({
     App.startLoading("Getting table structure...");
 
     this.table.isMatView(function (isMatView) {
-      this.fetchTableStructure(this.currentSchema, this.currentTable, function(rows) {
+      Model.Table(this.currentSchema, this.currentTable).getStructure(function (rows) {
         this.table.describe(function(indexes) {
           this.view.structure.renderTab(rows, indexes, isMatView);
           App.stopLoading();
