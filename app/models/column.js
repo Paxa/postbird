@@ -196,8 +196,7 @@ Object.defineProperty(Model.Column.prototype, "attributes", {
 });
 
 Model.Column.availableTypes = function (callback) {
-  sql = (function () { /*
-
+  var sql = `
     SELECT n.nspname as "schema",
       pg_catalog.format_type(t.oid, NULL) AS "name",
       pg_catalog.obj_description(t.oid, 'pg_type') as "description"
@@ -207,8 +206,7 @@ Model.Column.availableTypes = function (callback) {
       AND NOT EXISTS(SELECT 1 FROM pg_catalog.pg_type el WHERE el.oid = t.typelem AND el.typarray = t.oid)
       AND pg_catalog.pg_type_is_visible(t.oid)
     ORDER BY 1, 2;
-
-  */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+  `.trim();
 
   Model.base.q(sql, function(data) {
     callback(data.rows);

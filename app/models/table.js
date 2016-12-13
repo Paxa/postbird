@@ -123,8 +123,34 @@ global.Model.Table = Model.base.extend({
   },
 
   _getTableStructure: function (callback) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s'";
-    this.q(sql, this.schema, this.table, function(data) {
+    var sql = `
+      SELECT
+        a.attname as column_name,
+        NOT a.attnotnull as is_nullable,
+        information_schema._pg_char_max_length(information_schema._pg_truetypid(a.*, t.*), information_schema._pg_truetypmod(a.*, t.*)) as character_maximum_length,
+        pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type,
+        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+         FROM pg_catalog.pg_attrdef d
+         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default,
+        a.attnotnull, a.attnum,
+        (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t
+         WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation
+      FROM pg_catalog.pg_attribute a
+      JOIN pg_type t on t.oid = a.atttypid
+      WHERE
+        a.attrelid = (
+          select c.oid from pg_catalog.pg_class c
+          LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+          where c.relname = '${this.table}' and n.nspname = '${this.schema}' limit 1
+        ) AND
+        a.attnum > 0 AND NOT a.attisdropped
+      ORDER BY a.attnum;
+    `;
+    var sql1 = `
+      select * from information_schema.columns
+      where table_schema = '${this.schema}' and table_name = '${this.table}';
+    `;
+    this.q(sql, function(data) {
       this.hasOID(function (hasOID) {
         if (hasOID) {
           data.rows.unshift({
@@ -189,8 +215,11 @@ global.Model.Table = Model.base.extend({
   },
 
   _table_getColumnTypes: function (callback) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s';"
-    this.q(sql, this.schema, this.table, function(data) {
+    var sql = `
+      select * from information_schema.columns
+      where table_schema = '${this.schema}' and table_name = '${this.table}';
+    `;
+    this.q(sql, function(data) {
       this.hasOID(function (hasOID) {
         var types = {};
         if (hasOID) {

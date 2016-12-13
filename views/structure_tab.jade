@@ -15,11 +15,11 @@
         each column in rows
           tr
             td= column.column_name
-            td= column_type_label(column)
+            td(title = column_type_label(column))= column_type_label(column, true)
             td= column.character_maximum_length
             td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default
             td= column.is_primary_key ? 'yes' : ''
-            td= column.is_nullable == 'YES' ? 'yes' : 'no'
+            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'
             td
               a(exec="editColumn('" + column.column_name + "')") Edit
               != "&nbsp;"

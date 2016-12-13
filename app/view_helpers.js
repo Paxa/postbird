@@ -72,12 +72,12 @@ var helpers = global.ViewHelpers = {
     return sprintf('<img src="./assets/icons/%s.png" width="20" height="20" class="app-icon" title="%s"/>', name, title);
   },
 
-  column_type_label: function (column) {
+  column_type_label: function (column, short) {
     var baseName = column.udt_name || column.data_type;
     if (column.data_type == 'ARRAY') {
       baseName = baseName.replace(/^_/, '') + "[]";
     }
-    return baseName;
+    return short ? this.shorterTypeName(baseName) : baseName;
   },
 
   betterDateTime: function (value) {
@@ -165,5 +165,14 @@ var helpers = global.ViewHelpers = {
     } else {
       return unsafe;
     }
+  },
+
+  shorterTypeName(typeName) {
+    return typeName
+      .replace(/character varying/, 'varchar')
+      .replace(/timestamp without time zone/, 'timestamp')
+      .replace(/timestamp with time zone/, 'timestampz')
+      .replace(/time without time zone/, 'time')
+      .replace(/time with time zone/, 'timez');
   }
 };
