@@ -1,19 +1,22 @@
-table.native-look-table
-  thead
-    tr
-      th Name
-      th Default Version
-      th Installed Version
-      th
-  tbody
-    each column in rows
-      tr
-        td= column.name
-        td= column.default_version
-        td
-          if column.installed_version
-            strong= column.installed_version
-            button(exec="uninstall('" + column.name + "')") Uninstall
-          else
-            button(exec="install('" + column.name + "')") Install
-        td= column.comment
+.rescol-wrapper.with-borders
+  .rescol-header-wrapper
+  .rescol-content-wrapper
+    table
+      thead
+        tr
+          th Name
+          th Default Version
+          th Installed Version
+          th
+      tbody
+        each column in rows
+          tr
+            td= column.name
+            td= column.default_version
+            td
+              if column.installed_version
+                strong= column.installed_version
+                button(exec="uninstall('" + column.name + "')") Uninstall
+              else
+                button(exec="install('" + column.name + "')") Install
+            td= column.comment

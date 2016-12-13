@@ -138,6 +138,7 @@ var template = [
             focusedWindow.reload();
         }
       },
+      /*
       {
         label: 'Toggle Full Screen',
         accelerator: (function() {
@@ -151,6 +152,7 @@ var template = [
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
         }
       },
+      */
       {
         label: 'Toggle Developer Tools',
         accelerator: (function() {

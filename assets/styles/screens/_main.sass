@@ -34,7 +34,11 @@
       :display none
       overflow: auto
       &.active
-        :display block
+        display: block
+        height: calc(100% - 20px)
+      &.structure.active, &.procedures.active, &.info.active, &.extensions.active
+        margin-bottom: -27px
+        height: calc(100% + 7px)
 
 .window-tab
   :float left

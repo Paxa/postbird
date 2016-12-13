@@ -506,7 +506,11 @@ table.native-look-table {
       display: none;
       overflow: auto; }
       .main-screen > .main .window-content.active {
-        display: block; }
+        display: block;
+        height: calc(100% - 20px); }
+      .main-screen > .main .window-content.structure.active, .main-screen > .main .window-content.procedures.active, .main-screen > .main .window-content.info.active, .main-screen > .main .window-content.extensions.active {
+        margin-bottom: -27px;
+        height: calc(100% + 7px); }
 
 .window-tab {
   float: left; }
@@ -1160,11 +1164,14 @@ body.sidebar-resizing {
   background: rgba(92, 184, 17, 0.9); }
 
 .window-content.structure {
-  margin: 9px; }
+  padding: 9px;
+  box-sizing: border-box; }
   .window-content.structure .indexes-list-table {
     margin-bottom: 10px;
-    margin-top: 10px; }
+    margin-top: 10px;
+    height: auto; }
   .window-content.structure .columns-list-table {
+    height: auto;
     margin-bottom: 10px; }
 
 .big-data-table {
@@ -1254,7 +1261,8 @@ body.sidebar-resizing {
   margin-top: 10px; }
 
 .window-content.info {
-  margin: 9px 9px 0; }
+  padding: 9px;
+  box-sizing: border-box; }
   .window-content.info .summary {
     margin-bottom: 10px; }
   .window-content.info h4 {
@@ -1310,10 +1318,14 @@ body.sidebar-resizing {
       .window-content.query .result table th {
         background: #f5f5f5; }
 
-.window-content.procedures h4 {
-  margin-bottom: 12px; }
-.window-content.procedures table {
-  margin-bottom: 10px; }
+.window-content.procedures {
+  padding: 9px;
+  box-sizing: border-box; }
+  .window-content.procedures h4 {
+    margin-bottom: 12px; }
+  .window-content.procedures .rescol-wrapper {
+    margin-bottom: 10px;
+    height: auto; }
 
 .alertify-inner.list-languages table {
   width: 100%;
