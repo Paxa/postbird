@@ -17,3 +17,5 @@ My todo:
 * check indisvalid in list of indexes (indisvalid means index created with errors, there is record but no index actually)
 * fix column sizes when no rows
 * add command line util
+* Add "ALTER TABLE ... OWNER TO ...;" flag to export
+* make JSON strings (json field with string value that contain json data) look differnt then usual json. Eg "{\"a\": 123}" instead of {"a": 123}
