@@ -126,13 +126,19 @@ var helpers = global.ViewHelpers = {
 
   formatJson: function (value) {
     var json;
+    var wrongJson = false;
     if (typeof value == 'string') {
       json = value;
-    } else {
-      json = JSON.stringify(value);
+      if (value.startsWith('{') && value.endsWith('}') || value.startsWith('[') && value.endsWith(']')) {
+        try {
+          JSON.parse(value);
+          wrongJson = true;
+        } catch (e) {}
+      }
     }
+    json = JSON.stringify(value, null, 4);
     json = this.escapeHTML(json);
-    return '<span class="text">' + json + '</span>';
+    return `<span class="text ${wrongJson ? 'wrong-json' : ''}" ${wrongJson ? 'title="JSON value saved as string"' : ''}>${json}</span>`;
   },
 
   formatArray: function (value, format) {
