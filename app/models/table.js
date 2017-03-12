@@ -534,6 +534,7 @@ global.Model.Table = Model.base.extend({
     // TODO: include schema
     exporter.addArgument('--table=' + this.schema + '.' + this.table);
     exporter.addArgument("--schema-only");
+    exporter.addArgument('--no-owner');
 
     exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
       if (!result) {

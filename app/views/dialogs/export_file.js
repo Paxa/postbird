@@ -35,6 +35,7 @@ global.Dialog.ExportFile = global.Dialog.extend({
     var exportToFile = this.content.find('[name="export_to_file"]').val();
     var exportData = this.content.find('[name="export_data"]').prop('checked');
     var exportStructure = this.content.find('[name="export_structure"]').prop('checked');
+    var exportOwners = this.content.find('[name="objects_ownership"]').prop('checked');
 
     if (exportData === false && exportStructure === false) {
       window.alert("Please choose to export data or export structure or both");
@@ -43,7 +44,8 @@ global.Dialog.ExportFile = global.Dialog.extend({
 
     var options = {
       exportData: exportData,
-      exportStructure: exportStructure
+      exportStructure: exportStructure,
+      exportOwners: exportOwners
     };
     this.onSubmitCallback && this.onSubmitCallback(exportToFile, options);
   },

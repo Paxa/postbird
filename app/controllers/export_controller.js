@@ -30,6 +30,10 @@ global.ExportController = jClass.extend({
       exporter.setOnlyData();
     }
 
+    if (options.exportOwners === false) {
+      exporter.setNoOwners();
+    }
+
     this.dialog.startExporting();
     this.dialog.addMessage("Start exporting '" + this.handler.database + "'\n");
 
