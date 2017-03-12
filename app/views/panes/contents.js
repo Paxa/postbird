@@ -1,6 +1,6 @@
 global.Panes.Contents = global.Pane.extend({
 
-  renderTab: function (data, columnTypes, error) {
+  renderTab(data, columnTypes, error) {
     this.columnTypes = columnTypes;
     this.queryOptions = {
       with_oid: !!columnTypes.oid
@@ -19,13 +19,13 @@ global.Panes.Contents = global.Pane.extend({
       this.currentTable = table;
     }
 
-    this.handler.table.getTableType(function(tableType) {
+    this.handler.table.getTableType((tableType) => {
       this.currentTableType = tableType;
       this.renderData(data);
-    }.bind(this));
+    });
   },
 
-  renderData: function (data) {
+  renderData(data) {
     if (this.error) {
       var errorMsg = $dom(['div.error',
         ['h4', "Error happen"],
@@ -72,7 +72,7 @@ global.Panes.Contents = global.Pane.extend({
       this.prevPageEl.css('display', 'none');
     }
 
-    this.totals(function(count) {
+    this.totals((count) => {
       if (ends == count) {
         this.nextPageEl.hide('inline-block');
       } else {
@@ -80,77 +80,77 @@ global.Panes.Contents = global.Pane.extend({
       }
 
       this.footer.find('.info').text("Rows " + begin + " - " + ends + " of " + count);
-    }.bind(this));
+    });
 
   },
 
-  totals: function (callback) {
+  totals(callback) {
     if (this.totalRows) {
       callback(this.totalRows);
     } else {
-      this.handler.table.getTotalRows(function(count) {
+      this.handler.table.getTotalRows((count) => {
         this.totalRows = count;
         callback(count);
-      }.bind(this));
+      });
     }
   },
 
-  nextPage: function () {
+  nextPage() {
     App.startLoading("Getting next page...", 100, {
-      cancel: function () {
+      cancel() {
         App.stopRunningQuery();
       }
     });
     this.offset += this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
-    }.bind(this));
+    });
   },
 
-  prevPage: function () {
+  prevPage() {
     App.startLoading("Getting previous page...", 100, {
-      cancel: function () {
+      cancel() {
         App.stopRunningQuery();
       }
     });
     this.offset -= this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
-    }.bind(this));
+    });
   },
 
-  reloadData: function () {
+  reloadData() {
     this.content.addClass('reloading');
 
     App.startLoading("Reloading page...", 100, {
-      cancel: function () {
+      cancel() {
         App.stopRunningQuery();
       }
     });
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, function (data) {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
       this.content.removeClass('reloading');
-    }.bind(this));
+    });
   },
 
-  renderPage: function (data) {
+  renderPage(data) {
     this.limit = data.limit;
     this.offset = data.offset;
     this.dataRowsCount = data.rows.length;
     this.renderData(data);
   },
 
-  initSortable: function () {
+  initSortable() {
     var cells = this.content.find('table th[sortable]');
-    cells.each(function (i, cell) {
+    cells.each((i, cell) => {
       cell = $u(cell);
-      cell.bind('click', function (ev) {
+      cell.bind('click', (ev) => {
         var direction = cell.attr('sortable-dir') == 'asc' ? 'desc' : 'asc';
         if (this.queryOptions.sortColumn && this.queryOptions.sortColumn != cell.attr('sortable')) {
           this.offset = 0;
@@ -160,21 +160,21 @@ global.Panes.Contents = global.Pane.extend({
         cells.removeAttr('sortable-dir');
         cell.attr('sortable-dir', direction);
         this.reloadData();
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
-  initContextMenu: function (event) {
+  initContextMenu(event) {
     var table = this.content.find('.rescol-content-wrapper table');
 
     // bind for delete button
     if (this.currentTableType == 'BASE TABLE') {
-      $u(table).on('generic-table-init', function () {
+      $u(table).on('generic-table-init', () => {
         var genericTable = table.data('generic_table');
-        genericTable.bind('key.backspace', function (event) {
+        genericTable.bind('key.backspace', (event) => {
           this.deleteRow(genericTable.selectedRow);
-        }.bind(this));
-      }.bind(this));
+        });
+      });
     }
 
     var _this = this;
@@ -188,7 +188,7 @@ global.Panes.Contents = global.Pane.extend({
     });
 
     var contextMenuActions = {
-      'Copy': function () {
+      'Copy'() {
         window.document.execCommand("copy");
       }
     };
@@ -202,24 +202,24 @@ global.Panes.Contents = global.Pane.extend({
     $u.contextMenu(table, contextMenuActions);
   },
 
-  deleteRow: function (row) {
+  deleteRow(row) {
     if (this.currentTableType != 'BASE TABLE') {
       alert("Can't delete from " + this.currentTableType);
     }
     if (confirm("Are you sure wanna delete row?")) {
       var ctid = $u(row).attr('data-ctid');
-      this.handler.table.deleteRowByCtid(ctid, function (result, error) {
+      this.handler.table.deleteRowByCtid(ctid, (result, error) => {
         if (error) {
           alert(error.message);
         }
         if (result) {
           this.reloadData();
         }
-      }.bind(this));
+      });
     }
   },
 
-  addRow: function () {
+  addRow() {
     var container = this.content.find('table tbody');
     var sortedColumns = Object.values(this.columnTypes).sort(function (a, b) {
       return (a.ordinal_position > b.ordinal_position) ? 1 : (a.ordinal_position < b.ordinal_position) ? -1 : 0;
@@ -239,25 +239,31 @@ global.Panes.Contents = global.Pane.extend({
     container.append(fields);
     fields.find('input')[0].focus();
 
-    this.newRowFields.find('input').bind('keypress', function (event) {
+    this.newRowFields.find('input').on('keypress', (event) => {
       if (event.keyCode === 13) { // 13 is enter
         this.saveNewRow();
       }
-    }.bind(this));
+    });
+
+    this.newRowFields.find('input').on('keyup', (event) => {
+      if (event.keyCode === 27) { // 27 is esc
+        this.cancelNewRow();
+      }
+    });
   },
 
-  saveNewRow: function () {
+  saveNewRow() {
     var data = {};
-    this.newRowFields.find('input').each(function (i, el) {
+    this.newRowFields.find('input').each((i, el) => {
       var field = el.getAttribute('fieldname');
       if (el.value === '') {
         console.log("Skip while inserting column '" + field + "' with empty value");
       } else {
         data[field] = el.value;
       }
-    }.bind(this));
+    });
 
-    this.handler.table.insertRow(data, function (result, error) {
+    this.handler.table.insertRow(data, (result, error) => {
       if (error) {
         alert(error.message);
       }
@@ -265,7 +271,23 @@ global.Panes.Contents = global.Pane.extend({
         this.newRowFields.remove();
         this.reloadData();
       }
-    }.bind(this));
+    });
+  },
+
+  cancelNewRow() {
+    var nonEmptyValue = [];
+    this.newRowFields.find('input').forEach((input) => {
+      if (input.value && input.value !== '') {
+        nonEmptyValue.push(input.value);
+      }
+    });
+    if (nonEmptyValue.length) {
+      if (confirm("Remove unsaved row?")) {
+        this.newRowFields.remove();
+      }
+    } else {
+      this.newRowFields.remove();
+    }
   }
 });
 
