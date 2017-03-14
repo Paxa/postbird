@@ -1,0 +1,179 @@
+.home-screen {
+  background: $mac-window-background;
+  height: 100%;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+
+  .main-window {
+    padding-left: $sidebar-width;
+  }
+
+  .middle-window {
+    @include native-panel-element;
+    font-size: 13px;
+    width: 320px;
+    margin: 45px auto 0;
+    padding: 16px 20px;
+
+    p {
+      margin: 12px 0;
+
+      &.buttons {
+        text-align: right;
+        margin-bottom: 1px;
+        padding: {
+          right: 23px;
+          top: 3px;
+        };
+
+        button {
+          display: none;
+        }
+      }
+    }
+
+    input[type=text], input[type=password], input[type=email], input[type=number], input[type=url] {
+      font-size: 12px;
+      line-height: 18px;
+      padding: 1px 4px;
+      width: 186px;
+    }
+
+    button {
+      height: 21px;
+    }
+
+    label {
+      line-height: 22px;
+      margin-right: 8px;
+
+      @include inline-block;
+
+      width: 88px;
+      text-align: right;
+    }
+  }
+
+  .middle-window {
+    display: none;
+
+    &.plain {
+      display: block;
+    }
+  }
+
+  .heroku-oauth {
+    ul.steps {
+      padding-left: 13px;
+
+      li {
+        position: relative;
+        line-height: 24px;
+
+        &:before {
+          content: "";
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          border-radius: 6px;
+          background: #999;
+          left: -12px;
+          top: 9px;
+        }
+
+        &.started:before {
+          background: orange;
+        }
+
+        &.done:before {
+          background: green;
+        }
+      }
+    }
+
+    ul.apps {
+      margin: 10px 0;
+      border-top: 1px solid #ccc;
+
+      li {
+        padding: 3px 10px;
+        border-bottom: 1px solid #ccc;
+
+        button {
+          margin-left: 11px;
+          height: 20px;
+          line-height: 16px;
+        }
+
+        span {
+          line-height: 24px;
+          font-weight: bold;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+      }
+    }
+  }
+
+  .sidebar {
+    @include native-sidebar;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: $sidebar-width;
+
+    h4 {
+      font: {
+        size: 13px;
+        weight: bold;
+      };
+      color: #666;
+      padding: 7px;
+      text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
+      border-bottom: 1px dotted #abc;
+
+      @include system-text;
+    }
+
+    ul {
+      @include native-items-list;
+    }
+
+    a.add-connection {
+      display: inline-block;
+      height: 20px;
+      line-height: 21px;
+      padding: 3px 11px 3px 30px;
+      border-radius: 5px;
+      margin: {
+        left: 8px;
+        top: 12px;
+      };
+      background: url("../icons/add-connection.png"), linear-gradient(#fdfdfd, #f3f3f3), linear-gradient(#ededed, #f2f2f2);
+      background-repeat: no-repeat, no-repeat, no-repeat;
+      background-position: 7px center, 0px 0px, 0px bottom;
+      background-size: 18px 18px, 100% 50%, 100% 50%;
+      border: 1px solid #c3c3c3;
+      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+      color: black;
+      text-decoration: none;
+    }
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3%;
+
+    a {
+      text-decoration: underline;
+    }
+
+    .login-with-password {
+      display: none;
+    }
+  }
+}

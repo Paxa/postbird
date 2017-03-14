@@ -67,7 +67,7 @@
   }
 
   table tr:nth-child(even) td {
-    background: #f5f5f5;
+    background: $mac-table-even-row-dg;
   }
 
   table.shadow-headers {
@@ -82,11 +82,11 @@
     table {
       border-bottom-color: #fff;
       tr.selected td {
-        background: #dcdcdc;
+        background: $mac-item-selected-inactive-bg;
         color: black;
       }
       &.active tr.selected td {
-        background: #015cdc;
+        background: $mac-item-selected-bg;
         color: white;
         a {
           color: white;

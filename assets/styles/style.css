@@ -7,7 +7,6 @@ html, body {
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline; }
 
 div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
@@ -19,7 +18,6 @@ dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, th
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline; }
 
 body {
@@ -35,7 +33,6 @@ blockquote, q {
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline;
   quotes: "" ""; }
   blockquote:before, blockquote:after, q:before, q:after {
@@ -48,7 +45,6 @@ th, td, caption {
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline;
   text-align: left;
   font-weight: normal;
@@ -61,7 +57,6 @@ table {
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline;
   border-collapse: separate;
   border-spacing: 0;
@@ -88,7 +83,6 @@ footer, header, aside, nav, menu, video, audio, time, progress, section, article
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
   vertical-align: baseline;
   display: block; }
 
@@ -104,7 +98,7 @@ html, body {
   background: #fff;
   height: 100%;
   overflow: hidden;
-  font-family: Helvetica Neue, Helvetica, Segoe UI, Tahoma, sans;
+  font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
   font-size: 13px; }
 
 a {
@@ -128,6 +122,9 @@ h3 {
 h4 {
   font-size: 1.25em;
   line-height: 1.35em; }
+
+input, textarea {
+  border: 1px solid #b4b4b4; }
 
 .pseudo-hidden {
   position: absolute;
@@ -278,7 +275,7 @@ table.native-look-table {
     position: relative;
     font-weight: normal; }
     table.native-look-table th[sortable-dir='asc']:before, table.native-look-table th[sortable-dir='desc']:before {
-      content: "⌃";
+      content: "\2303";
       display: block;
       width: 10px;
       position: absolute;
@@ -287,7 +284,7 @@ table.native-look-table {
       bottom: 2px;
       left: 0px; }
     table.native-look-table th[sortable-dir='desc']:before {
-      content: "⌄"; }
+      content: "\2304"; }
   table.native-look-table tr:nth-child(odd) td {
     background: #f3f6fa; }
   table.native-look-table tr.selected td {
@@ -305,9 +302,7 @@ table.native-look-table {
     width: 100%; }
 
 .home-screen {
-  background: #e1eff7;
-  background: #e1eff7;
-  background: rgba(225, 226, 224, 0.38);
+  background: #ececec;
   height: 100%;
   margin: 0;
   position: relative;
@@ -315,21 +310,19 @@ table.native-look-table {
   .home-screen .main-window {
     padding-left: 20%; }
   .home-screen .middle-window {
-    font-size: 13px;
-    width: 320px;
-    margin: 45px auto 0;
-    background: #EDEDED;
-    padding: 16px 20px;
+    background: #e2e2e2;
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
     -ms-border-radius: 5px;
     -khtml-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: inset 0px 1.6px 2px rgba(0, 0, 0, 0.15);
-    border: 1px solid #C3C3C3; }
+    border: 1px solid #dfdfdf;
+    border-top: 1px solid #d3d3d3;
+    font-size: 13px;
+    width: 320px;
+    margin: 45px auto 0;
+    padding: 16px 20px; }
     .home-screen .middle-window p {
       margin: 12px 0; }
       .home-screen .middle-window p.buttons {
@@ -341,7 +334,7 @@ table.native-look-table {
           display: none; }
     .home-screen .middle-window input[type=text], .home-screen .middle-window input[type=password], .home-screen .middle-window input[type=email], .home-screen .middle-window input[type=number], .home-screen .middle-window input[type=url] {
       font-size: 12px;
-      line-height: 16px;
+      line-height: 18px;
       padding: 1px 4px;
       width: 186px; }
     .home-screen .middle-window button {
@@ -395,13 +388,13 @@ table.native-look-table {
       .home-screen .heroku-oauth ul.apps li:hover {
         background: rgba(255, 255, 255, 0.4); }
   .home-screen .sidebar {
+    background: #f5f5f4;
+    border-right: 1px solid #ddddd9;
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 20%;
-    border-right: 1px solid #B4B4B4;
-    background: #E5E9F0; }
+    width: 20%; }
     .home-screen .sidebar h4 {
       font-size: 13px;
       font-weight: bold;
@@ -433,12 +426,8 @@ table.native-look-table {
       .home-screen .sidebar ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
       .home-screen .sidebar ul > li.selected {
-        background: rgba(0, 51, 136, 0.15);
-        background-image: url("../selected_bg.png");
-        background-size: 1px 100%;
-        background-repeat: repeat-x;
-        color: white;
-        text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
+        background: #116cd6;
+        color: white; }
     .home-screen .sidebar a.add-connection {
       display: inline-block;
       height: 20px;
@@ -473,7 +462,7 @@ table.native-look-table {
     height: 100%; }
   .main-screen > .main {
     margin-left: 20%;
-    padding-bottom: 27px;
+    padding-bottom: 25px;
     overflow-y: auto;
     position: absolute;
     top: 0;
@@ -593,15 +582,17 @@ body.sidebar-resizing {
         max-width: 50%; }
 
 .main-screen > .sidebar {
+  background: #f5f5f4;
+  border-right: 1px solid #ddddd9;
+  border-right: none;
   width: 20%;
   padding-top: 48px;
   padding-right: 0px;
   padding-left: 0px;
-  padding-bottom: 28px;
+  padding-bottom: 26px;
   max-height: 100%;
   position: relative;
-  overflow-y: hidden;
-  background: #E5E9F0; }
+  overflow-y: hidden; }
   .main-screen > .sidebar > .resize-handler {
     position: absolute;
     top: 0;
@@ -614,7 +605,7 @@ body.sidebar-resizing {
       content: "";
       position: absolute;
       display: block;
-      background: #B4B4B4;
+      background: #ddddd9;
       top: 0;
       left: 0;
       right: 0;
@@ -706,12 +697,8 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
             .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
-              background: rgba(0, 51, 136, 0.15);
-              background-image: url("../selected_bg.png");
-              background-size: 1px 100%;
-              background-repeat: repeat-x;
-              color: white;
-              text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
+              background: #116cd6;
+              color: white; }
         .main-screen > .sidebar > .tables > ul > li.open > ul {
           display: block; }
   .main-screen > .sidebar > ul.extras {
@@ -719,32 +706,38 @@ body.sidebar-resizing {
     bottom: 0;
     left: 0px;
     width: 100%;
-    background: #f5f5f5;
-    background-image: url("../footer_bg.png");
-    background-size: 1px 100%;
-    background-repeat: repeat-x;
-    height: 27px;
-    border-top: 1px solid #ccc;
+    font-size: 0;
+    background: #e8e6e8;
+    background-image: linear-gradient(to bottom, #e8e5e8 0, #d1cfd1 100%);
+    height: 25px;
+    border-top: 1px solid #c4c2c4;
     box-sizing: border-box;
     padding: 0 5px;
     width: 100%;
     font-size: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    color: #535353;
+    font-size: 11px; }
     .main-screen > .sidebar > ul.extras li {
       padding: 2px 2px;
       -webkit-user-select: none;
       cursor: default;
       display: inline-block;
       border-right: 1px solid #C6C6C6;
-      line-height: 23px;
-      font-size: 13px; }
+      line-height: 21px;
+      font-size: 12px; }
     .main-screen > .sidebar > ul.extras li.right {
       text-align: right; }
     .main-screen > .sidebar > ul.extras li {
-      width: 27px;
+      width: 24px;
+      height: 22px;
       text-align: center;
-      cursor: pointer; }
+      cursor: pointer;
+      font-size: 0;
+      display: block;
+      float: left; }
       .main-screen > .sidebar > ul.extras li a {
+        font-size: 0;
         display: inline-block;
         width: 100%; }
       .main-screen > .sidebar > ul.extras li:hover {
@@ -882,7 +875,7 @@ body.sidebar-resizing {
 .rescol-wrapper table td {
   padding: 2px 3px; }
 .rescol-wrapper table tr:nth-child(even) td {
-  background: #f5f5f5; }
+  background: #f5f5f4; }
 .rescol-wrapper table.shadow-headers {
   overflow: hidden; }
 .rescol-wrapper table.shadow-headers th {
@@ -893,7 +886,7 @@ body.sidebar-resizing {
     background: #dcdcdc;
     color: black; }
   .rescol-wrapper .rescol-content-wrapper table.active tr.selected td {
-    background: #015cdc;
+    background: #116cd6;
     color: white; }
     .rescol-wrapper .rescol-content-wrapper table.active tr.selected td a {
       color: white; }
@@ -1232,25 +1225,25 @@ body.sidebar-resizing {
   .window-content.content .native-footer-bar {
     position: fixed;
     margin-left: 20%;
-    background: #f5f5f5;
-    background-image: url("../footer_bg.png");
-    background-size: 1px 100%;
-    background-repeat: repeat-x;
-    height: 27px;
-    border-top: 1px solid #ccc;
+    background: #e8e6e8;
+    background-image: linear-gradient(to bottom, #e8e5e8 0, #d1cfd1 100%);
+    height: 25px;
+    border-top: 1px solid #c4c2c4;
     box-sizing: border-box;
     padding: 0 5px;
     width: 100%;
     font-size: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    color: #535353;
+    font-size: 11px; }
     .window-content.content .native-footer-bar li {
       padding: 2px 2px;
       -webkit-user-select: none;
       cursor: default;
       display: inline-block;
       border-right: 1px solid #C6C6C6;
-      line-height: 23px;
-      font-size: 13px; }
+      line-height: 21px;
+      font-size: 12px; }
     .window-content.content .native-footer-bar li.right {
       text-align: right; }
     .window-content.content .native-footer-bar li {
@@ -1375,12 +1368,8 @@ body.new-window {
       .snippets-window > ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
       .snippets-window > ul > li.selected {
-        background: rgba(0, 51, 136, 0.15);
-        background-image: url("../selected_bg.png");
-        background-size: 1px 100%;
-        background-repeat: repeat-x;
-        color: white;
-        text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.44); }
+        background: #116cd6;
+        color: white; }
     .snippets-window > ul > li {
       padding-left: 12px; }
       .snippets-window > ul > li:before {
