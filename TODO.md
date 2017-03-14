@@ -2,7 +2,6 @@ My todo:
 
 * Allow resize columns only in header
 * Work on content tab: filters, sticky header, increase limit
-* Fix Table.describe when there is same tables in different schemas
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature
@@ -16,6 +15,5 @@ My todo:
 
 * check indisvalid in list of indexes (indisvalid means index created with errors, there is record but no index actually)
 * fix column sizes when no rows
-* add command line util
-* Add "ALTER TABLE ... OWNER TO ...;" flag to export
-* make JSON strings (json field with string value that contain json data) look differnt then usual json. Eg "{\"a\": 123}" instead of {"a": 123}
+* add content table sorting
+* add content talbe filtering

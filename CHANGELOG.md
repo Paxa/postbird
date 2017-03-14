@@ -15,6 +15,13 @@
 * Update to PostgreSQL 9.6
 * Add support for postgres:// protocol
 * Add `postbird` command line util
+* Show real data type in structure table
+* Display postigs point in readble format
+* Allow cancel adding row
+* Show table SQL without OWNED BY
+* Show double encoded JSON with pink
+* Switch from rollbar to raven for exception notifications
+* Modern Mac look
 
 == Version 0.5.0
 

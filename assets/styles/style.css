@@ -1184,6 +1184,19 @@ body.sidebar-resizing {
     .window-content.content.reloading li.reload a {
       text-decoration: none;
       cursor: default; }
+  .window-content.content .rescol-header-wrapper:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 1px;
+    background: #d6d6d6; }
+  .window-content.content .rescol-header-wrapper table {
+    border: none;
+    border-bottom: 1px solid #d6d6d6; }
+  .window-content.content .rescol-content-wrapper table {
+    border: none; }
   .window-content.content table tr th {
     max-width: 200px;
     text-overflow: ellipsis;
@@ -1192,7 +1205,7 @@ body.sidebar-resizing {
     overflow: hidden;
     white-space: nowrap; }
   .window-content.content table tr td {
-    min-width: 20px;
+    min-width: 23px;
     max-width: 250px; }
     .window-content.content table tr td:not(.expanded) {
       text-overflow: ellipsis;
