@@ -593,7 +593,6 @@ global.Model.Table = Model.base.extend({
 });
 
 Model.Table.create = function create (schema, tableName, options, callback) {
-                           //Arg.assert('string', 'string', 'function');
 
   if (typeof options == 'function' && callback == undefined) {
     callback = options;

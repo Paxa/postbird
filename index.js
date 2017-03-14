@@ -4,7 +4,6 @@ require('classy/object_extras').extendGlobal();
 require('./lib/dominate');
 require('./lib/jquery.class');
 require('./lib/alertify');
-require('./lib/arg');
 require('./lib/node_lib');
 //global.AppMenu = require('nw-appmenu');
 require('./lib/sidebar_resize');
@@ -73,7 +72,7 @@ require('./app/history_window');
 
 var CliUtil = require('./lib/cli_util');
 
-global.$u = window.$u = window.Zepto || window.jQuery;
+global.$u = window.$u = window.jQuery;
 
 
 /*

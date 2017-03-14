@@ -15,7 +15,6 @@ require('../sugar/redscript-loader');
 require('classy/object_extras').extendGlobal();
 require('../lib/jquery.class');
 require('../lib/node_lib');
-require('../lib/arg');
 require('../lib/sql_splitter');
 window.$ = window.jQuery = require('../lib/jquery.js');
 
