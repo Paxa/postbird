@@ -1,3 +1,29 @@
+.content-filter
+  form
+    = "Search"
+    select(name="filter-field")
+      each column in data.fields
+        if column.name != 'ctid'
+          option(value = column.name selected = state.filterField == column.name)= column.name
+    select(name="filter-matcher")
+      option(value="eq") =
+      option(value="not_eq") ≠
+      option(value="lt") <
+      option(value="gt") >
+      option(value="lte") ≤
+      option(value="gte") ≥
+      option(value="null") is null
+      option(value="not_null") not null
+      option(value="empty") empty
+      option(value="like") like
+      option(value="regex") regexp
+      option(value="starts") starts
+      option(value="ends") ends
+      option(value="contain") contain
+      option(value="custom") custom
+    input(type="search" placeholder="Search" name="filter-value" value=state.filterValue)
+    button Filter
+
 .rescol-wrapper(full-width=true)
   .rescol-header-wrapper
   .rescol-content-wrapper

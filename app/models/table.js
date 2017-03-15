@@ -460,7 +460,12 @@ global.Model.Table = Model.base.extend({
         orderSql = ` order by "${options.sortColumn}" ${direction}`;
       }
 
-      var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${orderSql} limit ${limit} offset ${offset}`;
+      var condition = "";
+      if (options.conditions) {
+        condition = `where ${options.conditions.join(" and ")}`;
+      }
+
+      var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
 
       this.q(sql, function(data, error) {
         if (data) {

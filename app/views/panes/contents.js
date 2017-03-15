@@ -1,3 +1,40 @@
+var Client = require('pg').Client;
+
+var filterMatchers = (function () {
+  var pgClient = new Client();
+
+  var ev = (value) => {
+    return pgClient.escapeLiteral(value);
+  };
+
+  var ef = (value) => {
+    return pgClient.escapeIdentifier(value);
+  };
+
+  var numOrStr = (value) => {
+    return value && value.match(/^\d+$/) ? value : ev(value);
+  };
+
+  return {
+    eq: {
+      sql: (f, v) => {
+        return `${ef(f)} = ${numOrStr(v)}`
+      },
+      validate: (v) => {
+        return v === '' ? "Value is required" : false;
+      }
+    },
+    not_eq: {
+      sql: (f, v) => {
+        return `${ef(f)} != ${numOrStr(v)}`
+      },
+      validate: (v) => {
+        return v === '' ? "Value is required" : false;
+      }
+    }
+  };
+})();
+
 global.Panes.Contents = global.Pane.extend({
 
   renderTab(data, columnTypes, error) {
@@ -18,6 +55,8 @@ global.Panes.Contents = global.Pane.extend({
       delete this.currentTableType;
       this.currentTable = table;
     }
+
+    this.state = {};
 
     this.handler.table.getTableType((tableType) => {
       this.currentTableType = tableType;
@@ -40,7 +79,8 @@ global.Panes.Contents = global.Pane.extend({
       data: data,
       types: this.columnTypes,
       sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection},
-      tableType: this.currentTableType
+      tableType: this.currentTableType,
+      state: this.state
     });
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
@@ -57,6 +97,8 @@ global.Panes.Contents = global.Pane.extend({
     this.initSortable();
 
     this.initContextMenu();
+
+    this.initFilters();
 
     this.footer = this.content.find('.summary-and-pages');
 
@@ -131,7 +173,12 @@ global.Panes.Contents = global.Pane.extend({
         App.stopRunningQuery();
       }
     });
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data, error) => {
+      if (error) {
+        alert(error.message);
+        App.stopLoading();
+        return;
+      }
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
@@ -300,6 +347,44 @@ global.Panes.Contents = global.Pane.extend({
     } else {
       this.newRowFields.remove();
     }
+  },
+
+  initFilters() {
+    this.filterField =   this.content.find('[name=filter-field]');
+    this.filterMatcher = this.content.find('[name=filter-matcher]');
+    this.filterValue =   this.content.find('[name=filter-value]');
+    this.filterForm =    this.content.find('.content-filter form');
+
+    this.filterField.on('change', () => {
+      this.state.filterField = this.filterField.val();
+    });
+
+    this.filterMatcher.on('change', () => {
+      this.state.filterMatcher = this.filterMatcher.val();
+    });
+
+    this.filterValue.on('change', () => {
+      this.state.filterValue = this.filterValue.val();
+    });
+
+    this.filterForm.on('submit', (e) => {
+      e.preventDefault();
+
+      var value = this.filterValue.val();
+      var m = filterMatchers[this.filterMatcher.val()];
+      if (m) {
+        if (m.validate) {
+          var message = m.validate(value);
+          if (message) {
+            alert(message);
+            this.filterValue.focus();
+            return;
+          }
+        }
+        this.queryOptions.conditions = [m.sql(this.filterField.val(), value)];
+        this.reloadData();
+      }
+    });
   }
 });
 

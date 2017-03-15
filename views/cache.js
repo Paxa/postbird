@@ -56,31 +56,22 @@ try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, shorterTypeName, sorting, tableType, types, undefined) {
+;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, shorterTypeName, sorting, state, tableType, types, undefined) {
 var jade_indent = [];
 jade_debug.unshift(new jade.DebugItem( 0, "views/content_tab.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "views/content_tab.jade" ));
-buf.push("\n<div full-width=\"full-width\" class=\"rescol-wrapper\">");
+buf.push("\n<div class=\"content-filter\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 2, "views/content_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
+buf.push("\n  <form>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 3, "views/content_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+buf.push(jade.escape(null == (jade_interp = "Search") ? "" : jade_interp));
+jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 4, "views/content_tab.jade" ));
-buf.push("\n    <table>");
+buf.push("\n    <select name=\"filter-field\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -89,21 +80,256 @@ jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+buf.push("\n      <option" + (jade.attr("value", column.name, true, false)) + (jade.attr("selected", state.filterField == column.name, true, false)) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var column = $$obj[$index];
+
+jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
+if ( column.name != 'ctid')
+{
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
+buf.push("\n      <option" + (jade.attr("value", column.name, true, false)) + (jade.attr("selected", state.filterField == column.name, true, false)) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
+    }
+
+  }
+}).call(this);
+
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
+buf.push("\n    <select name=\"filter-matcher\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-var type = column_type_label(types[column.name])
+buf.push("\n      <option value=\"eq\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
+buf.push("=");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
-var typeLabel = shorterTypeName(types[column.name].data_type);
+buf.push("\n      <option value=\"not_eq\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
+buf.push("≠");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
-var dir = sorting.column == column.name ? sorting.direction : ''
+buf.push("\n      <option value=\"lt\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
+buf.push("<");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"gt\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
+buf.push(">");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"lte\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
+buf.push("≤");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"gte\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
+buf.push("≥");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"null\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
+buf.push("is null");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"not_null\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+buf.push("not null");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"empty\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
+buf.push("empty");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"like\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
+buf.push("like");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 19, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"regex\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
+buf.push("regexp");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 20, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"starts\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
+buf.push("starts");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"ends\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
+buf.push("ends");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 22, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"contain\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
+buf.push("contain");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
+buf.push("\n      <option value=\"custom\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
+buf.push("custom");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
+buf.push("\n    <input type=\"search\" placeholder=\"Search\" name=\"filter-value\"" + (jade.attr("value", state.filterValue, true, false)) + "/>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+buf.push("\n    <button>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
+buf.push("Filter");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </form>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
+buf.push("\n<div full-width=\"full-width\" class=\"rescol-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
+buf.push("\n  <div class=\"rescol-header-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
+buf.push("\n  <div class=\"rescol-content-wrapper\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
+buf.push("\n    <table>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
+buf.push("\n      <thead>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
+buf.push("\n        <tr>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+// iterate data.fields
+;(function(){
+  var $$obj = data.fields;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var column = $$obj[$index];
+
+jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+if ( column.name != 'ctid')
+{
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
+var type = column_type_label(types[column.name])
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
+var typeLabel = shorterTypeName(types[column.name].data_type);
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 37, "views/content_tab.jade" ));
+var dir = sorting.column == column.name ? sorting.direction : ''
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 38, "views/content_tab.jade" ));
 buf.push("\n          <th" + (jade.attr("title", typeLabel, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -120,21 +346,21 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
 var type = column_type_label(types[column.name])
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
 var typeLabel = shorterTypeName(types[column.name].data_type);
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 37, "views/content_tab.jade" ));
 var dir = sorting.column == column.name ? sorting.direction : ''
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 38, "views/content_tab.jade" ));
 buf.push("\n          <th" + (jade.attr("title", typeLabel, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -156,10 +382,10 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n      </thead>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 39, "views/content_tab.jade" ));
 buf.push("\n      <tbody>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 40, "views/content_tab.jade" ));
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
@@ -168,11 +394,11 @@ jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 40, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 41, "views/content_tab.jade" ));
 buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -181,12 +407,12 @@ jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -203,12 +429,12 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -235,11 +461,11 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var row = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 14, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 40, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 41, "views/content_tab.jade" ));
 buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
@@ -248,12 +474,12 @@ jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -270,12 +496,12 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var column = $$obj[$index];
 
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
 if ( column.name != 'ctid')
 {
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
 buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
@@ -313,37 +539,37 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 47, "views/content_tab.jade" ));
 buf.push("\n<div class=\"summary-and-pages native-footer-bar\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 48, "views/content_tab.jade" ));
 buf.push("\n  <ul>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 50, "views/content_tab.jade" ));
 buf.push("\n    <!--li-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 51, "views/content_tab.jade" ));
 buf.push("\n    <!--  a Remove-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 52, "views/content_tab.jade" ));
 buf.push("\n    <!--li-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 53, "views/content_tab.jade" ));
 buf.push("\n    <!--  a Duplicate-->");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 53, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"info\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 55, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"pages prev\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 56, "views/content_tab.jade" ));
 buf.push("<a exec=\"prevPage\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 56, jade_debug[0].filename ));
 buf.push("Prev");
 jade_debug.shift();
 jade_debug.shift();
@@ -352,13 +578,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 57, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"pages next\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 58, "views/content_tab.jade" ));
 buf.push("<a exec=\"nextPage\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
 buf.push("Next");
 jade_debug.shift();
 jade_debug.shift();
@@ -367,13 +593,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 59, "views/content_tab.jade" ));
 buf.push("\n    <li class=\"reload\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 60, "views/content_tab.jade" ));
 buf.push("<a exec=\"reloadData\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 60, jade_debug[0].filename ));
 buf.push("Reload");
 jade_debug.shift();
 jade_debug.shift();
@@ -382,17 +608,17 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 61, "views/content_tab.jade" ));
 if ( tableType == 'BASE TABLE')
 {
-jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 62, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 62, "views/content_tab.jade" ));
 buf.push("\n    <li>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, "views/content_tab.jade" ));
+jade_debug.unshift(new jade.DebugItem( 63, "views/content_tab.jade" ));
 buf.push("<a exec=\"addRow\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 63, jade_debug[0].filename ));
 buf.push("Add New Row");
 jade_debug.shift();
 jade_debug.shift();
@@ -410,12 +636,12 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</div>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".content-filter\n  form\n    = \"Search\"\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      option(value=\"eq\") =\n      option(value=\"not_eq\") ≠\n      option(value=\"lt\") <\n      option(value=\"gt\") >\n      option(value=\"lte\") ≤\n      option(value=\"gte\") ≥\n      option(value=\"null\") is null\n      option(value=\"not_null\") not null\n      option(value=\"empty\") empty\n      option(value=\"like\") like\n      option(value=\"regex\") regexp\n      option(value=\"starts\") starts\n      option(value=\"ends\") ends\n      option(value=\"contain\") contain\n      option(value=\"custom\") custom\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
 }
 };
-exports["content_tab"].content = ".rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
+exports["content_tab"].content = ".content-filter\n  form\n    = \"Search\"\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      option(value=\"eq\") =\n      option(value=\"not_eq\") ≠\n      option(value=\"lt\") <\n      option(value=\"gt\") >\n      option(value=\"lte\") ≤\n      option(value=\"gte\") ≥\n      option(value=\"null\") is null\n      option(value=\"not_null\") not null\n      option(value=\"empty\") empty\n      option(value=\"like\") like\n      option(value=\"regex\") regexp\n      option(value=\"starts\") starts\n      option(value=\"ends\") ends\n      option(value=\"contain\") contain\n      option(value=\"custom\") custom\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
 exports["db_rows_table"] = function template(jade, locals) {
 var jade_debug = [ new jade.DebugItem( 1, "views/db_rows_table.jade" ) ];
 try {
