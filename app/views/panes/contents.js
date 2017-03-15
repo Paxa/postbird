@@ -74,7 +74,7 @@ global.Panes.Contents = global.Pane.extend({
 
     this.totals((count) => {
       if (ends == count) {
-        this.nextPageEl.hide('inline-block');
+        this.nextPageEl.hide();
       } else {
         this.nextPageEl.show();
       }
@@ -147,19 +147,31 @@ global.Panes.Contents = global.Pane.extend({
   },
 
   initSortable() {
-    var cells = this.content.find('table th[sortable]');
-    cells.each((i, cell) => {
-      cell = $u(cell);
-      cell.bind('click', (ev) => {
-        var direction = cell.attr('sortable-dir') == 'asc' ? 'desc' : 'asc';
-        if (this.queryOptions.sortColumn && this.queryOptions.sortColumn != cell.attr('sortable')) {
+    var rotate = {
+      '': 'asc',
+      'asc': 'desc',
+      'desc': ''
+    };
+
+    this.content.find('.rescol-wrapper').on('resizable-columns:init', (event) => {
+
+      var cells = this.content.find('table th[sortable]');
+      cells.each((i, cell) => {
+        cell = $u(cell);
+        cell.bind('click', (ev) => {
+          var direction = rotate[cell.attr('sortable-dir') || ''];
           this.offset = 0;
-        }
-        this.queryOptions.sortColumn = cell.attr('sortable');
-        this.queryOptions.sortDirection = direction;
-        cells.removeAttr('sortable-dir');
-        cell.attr('sortable-dir', direction);
-        this.reloadData();
+          if (direction == '') {
+            delete this.queryOptions.sortColumn;
+            delete this.queryOptions.sortDirection;
+            cells.removeAttr('sortable-dir');
+          } else {
+            this.queryOptions.sortColumn = cell.attr('sortable');
+            this.queryOptions.sortDirection = direction;
+            cell.attr('sortable-dir', direction);
+          }
+          this.reloadData();
+        });
       });
     });
   },
