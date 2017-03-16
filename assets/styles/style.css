@@ -1184,6 +1184,8 @@ body.sidebar-resizing {
     .window-content.content.reloading li.reload a {
       text-decoration: none;
       cursor: default; }
+  .window-content.content .rescol-wrapper {
+    height: calc(100% - 29px); }
   .window-content.content .rescol-header-wrapper:after {
     position: absolute;
     content: '';

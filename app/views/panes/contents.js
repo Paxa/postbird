@@ -4,32 +4,151 @@ var filterMatchers = (function () {
   var pgClient = new Client();
 
   var ev = (value) => {
-    return pgClient.escapeLiteral(value);
+    return pgClient.escapeLiteral(value).replace(/%/g, '%%');
   };
 
   var ef = (value) => {
-    return pgClient.escapeIdentifier(value);
+    return pgClient.escapeIdentifier(value).replace(/%/g, '%%');
   };
 
-  var numOrStr = (value) => {
-    return value && value.match(/^\d+$/) ? value : ev(value);
+  var numOrStr = (type, value) => {
+    return isNumericType(type) ? value : ev(value);
   };
+
+  var isNumericType = (type) => {
+    return type == 'integer';
+  };
+
+  var isString = (type) => {
+    return type.match(/^character varying.*/);
+  };
+
+  var basicValidation = (type, v) => {
+    if (v === '') return "Value is required";
+    if (isNumericType(type) && v.match(/\D/)) return `Value must be numberic (field type: ${type})`;
+    return false;
+  };
+
+  var validateNonNumeric = (operation = "like") => {
+    return (type, v) => {
+      if (isNumericType(type)) {
+        return `can not use "${operation}" with numeric types (field type: ${type})`;
+      }
+      return false;
+    };
+  }
 
   return {
     eq: {
-      sql: (f, v) => {
-        return `${ef(f)} = ${numOrStr(v)}`
+      label: '=',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} = ${numOrStr(type, v)}`;
       },
-      validate: (v) => {
-        return v === '' ? "Value is required" : false;
-      }
+      
     },
     not_eq: {
-      sql: (f, v) => {
-        return `${ef(f)} != ${numOrStr(v)}`
-      },
-      validate: (v) => {
-        return v === '' ? "Value is required" : false;
+      label: '≠',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} != ${numOrStr(type, v)}`;
+      }
+    },
+    gt: {
+      label: '>',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} > ${numOrStr(type, v)}`;
+      }
+    },
+    lt: {
+      label: '<',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} < ${numOrStr(type, v)}`;
+      }
+    },
+    gte: {
+      label: '≥',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} >= ${numOrStr(type, v)}`;
+      }
+    },
+    lte: {
+      label: '≤',
+      validate: basicValidation,
+      sql: (type, f, v) => {
+        return `${ef(f)} <= ${numOrStr(type, v)}`;
+      }
+    },
+    'null': {
+      label: 'is null',
+      sql: (type, f, v) => {
+        return `${ef(f)} is null`;
+      }
+    },
+    not_null: {
+      label: 'not null',
+      sql: (type, f, v) => {
+        return `${ef(f)} is not null`;
+      }
+    },
+    empty: {
+      label: 'empty',
+      sql: (type, f, v) => {
+        if (isNumericType(type)) {
+          return `${ef(f)} is null`;
+        }
+        return `${ef(f)} is null || ${ef(f)} = ''`;
+      }
+    },
+    like: {
+      label: 'like',
+      validate: validateNonNumeric(),
+      sql: (type, f, v) => {
+        return `${ef(f)} like ${ev(v)}`;
+      }
+    },
+    not_like: {
+      label: 'not like',
+      validate: validateNonNumeric(),
+      sql: (type, f, v) => {
+        return `${ef(f)} not like ${ev(v)}`;
+      }
+    },
+    regexp: {
+      label: 'regexp',
+      validate: validateNonNumeric("regex"),
+      sql: (type, f, v) => {
+        return `${ef(f)} ~* ${ev(v)}`;
+      }
+    },
+    starts: {
+      label: 'starts',
+      validate: validateNonNumeric(),
+      sql: (type, f, v) => {
+        return `${ef(f)} like ${ev(v + '%')}`;
+      }
+    },
+    ends: {
+      label: 'ends',
+      validate: validateNonNumeric(),
+      sql: (type, f, v) => {
+        return `${ef(f)} like ${ev('%' + v)}`;
+      }
+    },
+    contain: {
+      label: 'contain',
+      validate: validateNonNumeric(),
+      sql: (type, f, v) => {
+        return `${ef(f)} like ${ev('%' + v + '%')}`;
+      }
+    },
+    custom: {
+      label: 'custom',
+      sql: (type, f, v) => {
+        return `${ef(f)} ${v.replace(/%/g, '%%')}`;
       }
     }
   };
@@ -80,7 +199,8 @@ global.Panes.Contents = global.Pane.extend({
       types: this.columnTypes,
       sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection},
       tableType: this.currentTableType,
-      state: this.state
+      state: this.state,
+      matchers: filterMatchers
     });
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
@@ -173,17 +293,22 @@ global.Panes.Contents = global.Pane.extend({
         App.stopRunningQuery();
       }
     });
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data, error) => {
-      if (error) {
-        alert(error.message);
+    try {
+      this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data, error) => {
+        if (error) {
+          alert(error.message);
+          App.stopLoading();
+          return;
+        }
+        this.renderPage(data);
+        this.scrollToTop();
         App.stopLoading();
-        return;
-      }
-      this.renderPage(data);
-      this.scrollToTop();
+        this.content.removeClass('reloading');
+      });
+    } catch (error) {
+      alert(error.message);
       App.stopLoading();
-      this.content.removeClass('reloading');
-    });
+    }
   },
 
   renderPage(data) {
@@ -371,17 +496,22 @@ global.Panes.Contents = global.Pane.extend({
       e.preventDefault();
 
       var value = this.filterValue.val();
+      var field = this.filterField.val();
+      var dataType = this.columnTypes[field].data_type;
+
+      console.log(this.columnTypes);
+
       var m = filterMatchers[this.filterMatcher.val()];
       if (m) {
         if (m.validate) {
-          var message = m.validate(value);
+          var message = m.validate(dataType, value);
           if (message) {
             alert(message);
             this.filterValue.focus();
             return;
           }
         }
-        this.queryOptions.conditions = [m.sql(this.filterField.val(), value)];
+        this.queryOptions.conditions = [m.sql(dataType, this.filterField.val(), value)];
         this.reloadData();
       }
     });
