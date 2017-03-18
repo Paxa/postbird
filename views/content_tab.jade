@@ -1,6 +1,6 @@
 .content-filter
   form
-    = "Search"
+    label Search:
     select(name="filter-field")
       each column in data.fields
         if column.name != 'ctid'

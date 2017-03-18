@@ -22,6 +22,8 @@
 * Show double encoded JSON with pink
 * Switch from rollbar to raven for exception notifications
 * Modern Mac look
+* Convert code to use fat arrow
+* Upgrade to electron 1.6
 
 == Version 0.5.0
 
