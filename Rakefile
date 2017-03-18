@@ -46,10 +46,10 @@ desc "Rebuild npm native extensions for electron"
 task :rebuild_ext do
   if RUBY_PLATFORM =~ /darwin/
     system "rm -rf node_modules/fibers/bin/darwin-x64-v8-5.1"
-    system "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin ./node_modules/.bin/electron-rebuild -n 51"
+    system "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin ./node_modules/.bin/electron-rebuild -n 53"
     system "mv node_modules/fibers/bin/darwin-x64-v8-5.0 node_modules/fibers/bin/darwin-x64-v8-5.1"
   else
-    system "./node_modules/.bin/electron-rebuild -n 51"
+    system "./node_modules/.bin/electron-rebuild -n 53"
     system "mv node_modules/fibers/bin/linux-x64-v8-5.0 node_modules/fibers/bin/linux-x64-v8-5.1"
   end
 end
