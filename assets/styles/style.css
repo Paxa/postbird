@@ -1548,6 +1548,11 @@ code.general {
     display: block;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
     word-break: break-all; }
+.import-file-dialog form input[name="export_to_file"], .export-file-dialog form input[name="export_to_file"] {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  outline: none; }
 .import-file-dialog form code, .export-file-dialog form code {
   margin: 13px 0;
   padding: 5px;
