@@ -33,12 +33,12 @@ global.HistoryWindow = {
       }
     };
 
-    newWindow.webContents.on('did-finish-load', function () {
+    newWindow.webContents.on('did-finish-load', () => {
       newWindow.webContents.send('App.logEvents', App.logEvents);
       App.on("log.message", evenEmitter);
     });
 
-    newWindow.on('closed', function(event) {
+    newWindow.on('closed', (event) => {
       newWindow = null;
       App.historyWin = null;
       App.removeListener("log.message", evenEmitter);

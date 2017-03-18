@@ -54,9 +54,9 @@ var SnippetsWindow = {
     };
     this.view.listItems = this.view.list.find('li');
 
-    this.view.listItems.bind('click', function (event) {
+    this.view.listItems.bind('click', (event) => {
       this.activateItem($u(event.target).attr('snippet'));
-    }.bind(this));
+    });
 
     this.activateItem( this.view.listItems.attr('snippet') );
   },
@@ -76,9 +76,9 @@ var SnippetsWindow = {
     $u.textContextMenu(this.view.preview.find('code'), window);
     hljs.highlightBlock(this.view.preview.find('code')[0]);
 
-    this.view.preview.find('[exec="insert"]').bind('click', function () {
+    this.view.preview.find('[exec="insert"]').bind('click', () => {
       this.sendToMainWindow('Snippet.insert', "\n\n" + snippet.sql);
-    }.bind(this));
+    });
   },
 
   sendToMainWindow: function (event, sql) {
@@ -87,7 +87,7 @@ var SnippetsWindow = {
   }
 };
 
-jQuery(document).ready(function() {
+jQuery(document).ready(() => {
   App.init();
   SnippetsWindow.renderContent();
 });

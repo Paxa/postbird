@@ -9,14 +9,14 @@ var template = [
     submenu: [
       {
         label: 'Import .sql file',
-        click: function () {
+        click: () => {
           (new global.ImportController).doImport();
         },
         accelerator: 'Shift+CmdOrCtrl+i',
       },
       {
         label: 'Reconnect',
-        click: function () {
+        click: () => {
           if (global.App.currentTab.instance.connection) {
             global.App.currentTab.instance.reconnect();
           } else {
@@ -26,7 +26,7 @@ var template = [
       },
       {
         label: 'New Connection',
-        click: function () {
+        click: () => {
           global.App.activateLoginTab();
         },
         accelerator: 'CmdOrCtrl+t'
@@ -76,21 +76,21 @@ var template = [
     submenu: [
       {
         label: 'Refresh Database',
-        click: function () {
+        click: () => {
           global.App.currentTab.instance.fetchTablesAndSchemas();
         },
         enabled: false
       },
       {
         label: 'Rename Database',
-        click: function () {
+        click: () => {
           global.App.currentTab.instance.renameDatabaseDialog();
         },
         enabled: false
       },
       {
         label: 'Export Database',
-        click: function () {
+        click: () => {
           (new global.ExportController).doExport();
         },
         enabled: false
@@ -98,7 +98,7 @@ var template = [
       { type: 'separator' },
       {
         label: 'Drop Database',
-        click: function () {
+        click: () => {
           global.App.currentTab.instance.dropDatabaseDialog();
         },
         enabled: false
@@ -110,7 +110,7 @@ var template = [
     submenu: [
       {
         label: 'Reload',
-        click: function () {
+        click: () => {
           var appTab = global.App.currentTab.instance;
           var tab = appTab.currentTab;
 
@@ -133,7 +133,7 @@ var template = [
       {
         label: 'Reload',
         accelerator: 'Shift+CmdOrCtrl+R',
-        click: function(item, focusedWindow) {
+        click: (item, focusedWindow) => {
           if (focusedWindow)
             focusedWindow.reload();
         }
@@ -141,13 +141,13 @@ var template = [
       /*
       {
         label: 'Toggle Full Screen',
-        accelerator: (function() {
+        accelerator: (() => {
           if (process.platform == 'darwin')
             return 'Ctrl+Command+F';
           else
             return 'F11';
         })(),
-        click: function(item, focusedWindow) {
+        click: (item, focusedWindow) => {
           if (focusedWindow)
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
         }
@@ -155,34 +155,34 @@ var template = [
       */
       {
         label: 'Toggle Developer Tools',
-        accelerator: (function() {
+        accelerator: (() => {
           if (process.platform == 'darwin')
             return 'Alt+Command+I';
           else
             return 'Ctrl+Shift+I';
         })(),
-        click: function(item, focusedWindow) {
+        click: (item, focusedWindow) => {
           if (focusedWindow)
             focusedWindow.toggleDevTools();
         }
       },
       {
         label: 'Zoom In',
-        click: function () {
+        click: () => {
           webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.3);
         },
         accelerator: 'CmdOrCtrl+='
       },
       {
         label: 'Zoom Out',
-        click: function () {
+        click: () => {
           webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.3);
         },
         accelerator: 'CmdOrCtrl+-'
       },
       {
         label: 'Zoom to Normal',
-        click: function () {
+        click: () => {
           webFrame.setZoomFactor(1);
         },
         accelerator: 'CmdOrCtrl+0'
@@ -195,7 +195,7 @@ var template = [
     submenu: [
       {
         label: 'Console',
-        click: function() {
+        click: () => {
           global.HistoryWindow.init();
         },
         accelerator: 'CmdOrCtrl+l'
@@ -209,7 +209,7 @@ var template = [
       {
         label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W',
-        click: function(item, focusedWindow) {
+        click: (item, focusedWindow) => {
           if (focusedWindow && focusedWindow.getURL().match(/index\.html$/) && global.App.tabs.length > 1) {
             global.App.closeCurrentTab();
           } else {
@@ -230,7 +230,7 @@ var template = [
       {
         label: "Postbird help",
         accelerator: 'CmdOrCtrl+Shift+/',
-        click: function () {
+        click: () => {
           var help = global.HelpScreen.open();
           help.activatePage("get-postgres");
         }
@@ -253,7 +253,7 @@ if (process.platform == 'darwin') {
       },
       {
         label: "Check For Updates...",
-        click: function () {
+        click: () => {
           (new global.UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
         }
       },
@@ -288,7 +288,7 @@ if (process.platform == 'darwin') {
       {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click: function() { remote.app.quit(); }
+        click: () => { remote.app.quit(); }
       },
     ]
   });
@@ -310,9 +310,9 @@ function enableItem(topLabel, itemLable, enabled) {
   if (enabled === undefined) {
     enabled = true;
   }
-  menu.items.forEach(function (item, i) {
+  menu.items.forEach((item, i) => {
     if (item.label == topLabel) {
-      item.submenu.items.forEach(function (subItem) {
+      item.submenu.items.forEach((subItem) => {
         if (subItem.label == itemLable) {
           subItem.enabled = enabled;
         }
@@ -353,22 +353,22 @@ var checkTableMenu = function () {
   }
 };
 
-App.on('database.changed', function (db) {
+App.on('database.changed', (db) => {
   checkDbMenu();
   checkTableMenu();
 });
 
-App.on('tab.changed', function (tabId) {
+App.on('tab.changed', (tabId) => {
   checkDbMenu();
   checkTableMenu();
 });
 
-App.on('table.changed', function (schema, table) {
+App.on('table.changed', (schema, table) => {
   checkTableMenu(schema, table);
 });
 
 // change tab in window, such as table strunture, content, table info
-App.on('dbtab.changed', function (tab) {
+App.on('dbtab.changed', (tab) => {
   checkTableMenu();
 });
 

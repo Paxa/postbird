@@ -2,9 +2,9 @@ global.Model.Column = Model.base.extend({
   init: function (name, data) {
     if (typeof name == 'object') {
       this._super({});
-      Object.keys(name).forEach(function(attr) {
+      Object.keys(name).forEach((attr) => {
         this[attr] = name[attr];
-      }.bind(this));
+      });
 
       // set defaults
       if (this.default_value === undefined) {
@@ -38,28 +38,28 @@ global.Model.Column = Model.base.extend({
       return;
     }
     var _this = this;
-    _this.save_renameColumn(function(res1, err1) {
-      _this.save_alterType(function(res2, err2) {
-        _this.save_alterNullable(function(res3, err3) {
-          _this.save_alterDefault(function(res4, err4) {
+    _this.save_renameColumn((res1, err1) => {
+      _this.save_alterType((res2, err2) => {
+        _this.save_alterNullable((res3, err3) => {
+          _this.save_alterDefault((res4, err4) => {
             delete this.changes;
             callback(res4, err1 || err2 || err3 || err4);
           });
         });
       });
-    }.bind(this));
+    });
   },
 
   save_renameColumn: function (callback) {
     if (this.changes['name']) {
       var oldName = this.changes['name'][0];
       var newName = this.changes['name'][1];
-      this.q('ALTER TABLE %s RENAME COLUMN %s TO %s;', this.table.table, oldName, newName, function (rows, error) {
+      this.q('ALTER TABLE %s RENAME COLUMN %s TO %s;', this.table.table, oldName, newName, (rows, error) => {
         if (!error) {
           delete this.changes['name'];
         }
         callback(rows, error);
-      }.bind(this));
+      });
     } else {
       callback();
     }
@@ -71,7 +71,7 @@ global.Model.Column = Model.base.extend({
       this.shouldHaveTable();
       var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
       sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s USING %s::%s;"
-      this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, function(data, error) {
+      this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, (data, error) => {
         callback(data, error);
       });
     } else {
@@ -83,7 +83,7 @@ global.Model.Column = Model.base.extend({
     if (this.changes['allow_null']) {
       var null_sql = this.allow_null ? "DROP NOT NULL" : "SET NOT NULL";
       sql = "ALTER TABLE %s ALTER COLUMN %s %s;"
-      this.q(sql, this.table.table, this.name, null_sql, function(data, error) {
+      this.q(sql, this.table.table, this.name, null_sql, (data, error) => {
         callback(data, error);
       });
     } else {
@@ -95,13 +95,13 @@ global.Model.Column = Model.base.extend({
     if (this.changes['default_value']) {
       if (this.default_value == undefined || this.default_value == '') {
         var sql = "ALTER TABLE %s ALTER COLUMN %s DROP DEFAULT;";
-        this.q(sql, this.table.table, this.name, function(data, error) {
+        this.q(sql, this.table.table, this.name, (data, error) => {
           callback(data, error);
         });
       } else {
         var default_sql = this._default_sql(this.default_value);
         var sql = "ALTER TABLE %s ALTER COLUMN %s SET %s;"
-        this.q(sql, this.table.table, this.name, default_sql, function(data, error) {
+        this.q(sql, this.table.table, this.name, default_sql, (data, error) => {
           callback(data, error);
         });
       }
@@ -112,7 +112,7 @@ global.Model.Column = Model.base.extend({
 
   drop: function (callback) {
     this.shouldHaveTable();
-    this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, function(data, error) {
+    this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, (data, error) => {
       callback(data, error);
     });
   },
@@ -139,7 +139,7 @@ Model.Column.attributesAliases = {
   max_length: 'character_maximum_length'
 };
 
-Object.keys(Model.Column.attributesAliases).forEach(function(attr) {
+Object.keys(Model.Column.attributesAliases).forEach((attr) => {
   var data_attr = Model.Column.attributesAliases[attr];
   Object.defineProperty(Model.Column.prototype, attr, {
     get: function () {
@@ -208,7 +208,7 @@ Model.Column.availableTypes = function (callback) {
     ORDER BY 1, 2;
   `.trim();
 
-  Model.base.q(sql, function(data) {
+  Model.base.q(sql, (data) => {
     callback(data.rows);
   });
 };

@@ -7,11 +7,11 @@ global.Dialog.NewIndex = global.Dialog.extend({
   },
 
   showWindow: function () {
-    this.handler.tableObj().getColumns(function (columns) {
+    this.handler.tableObj().getColumns((columns) => {
       var nodes = App.renderView('dialogs/index_form', {columns: columns});
       this.content = this.renderWindow(this.title, nodes);
       this.bindFormSubmitting();
-    }.bind(this));
+    });
   },
 
   onSubmit: function (data) {

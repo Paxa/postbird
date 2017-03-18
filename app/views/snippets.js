@@ -28,7 +28,7 @@ global.SnippetsWindow = {
       newWindow.webContents.toggleDevTools();
     }
 
-    newWindow.on('closed', function() {
+    newWindow.on('closed', () => {
       App.snippersWin = null;
     });
 

@@ -15,7 +15,7 @@ global.Dialog = jClass.extend({
 
     this.windowContent = $u('#alertify .alertify-inner');
 
-    this.windowContent.find('input, textarea').each(function (i, el) {
+    this.windowContent.find('input, textarea').each((i, el) => {
       $u.textInputMenu(el);
     });
 
@@ -23,10 +23,10 @@ global.Dialog = jClass.extend({
       this.addClass(this.dialogClass);
     }
 
-    this.windowContent.find('button.cancel').bind('click', function(e) {
+    this.windowContent.find('button.cancel').bind('click', (e) => {
       e && e.preventDefault();
       this.close();
-    }.bind(this));
+    });
 
     this.setInputFocus();
 
@@ -38,10 +38,10 @@ global.Dialog = jClass.extend({
   },
 
   setAutofocus: function () {
-    setTimeout(function() {
+    setTimeout(() => {
       var inputs = this.content.find('input[autofocus], input[type=text], input:not([type=hidden]), input[type=password]');
       inputs[0] && inputs[0].focus();
-    }.bind(this), 300);
+    }, 300);
   },
 
   close: function () {
@@ -53,7 +53,7 @@ global.Dialog = jClass.extend({
       e && e.preventDefault();
       var data = $u.formValues(this.content.find('form'));
       this.onSubmit(data);
-    }.bind(this);
+    };
 
     this.content.find('button.ok').bind('click', handler);
     this.content.find('form').bind('submit', handler);
@@ -82,14 +82,14 @@ global.Dialog = jClass.extend({
   setInputFocus: function () {
     var focusable = this.windowContent.find('[autofocus]');
     if (focusable.length) {
-      setTimeout(function () {
+      setTimeout(() => {
         focusable[0].focus();
       }, 120);
       focusable[0].focus();
     } else {
       var firstInput = this.windowContent.find('input, select, textare')[0];
       if (firstInput) firstInput.focus();
-      setTimeout(function () {
+      setTimeout(() => {
         if (firstInput) firstInput.focus();
       }, 120);
     }

@@ -1,7 +1,7 @@
 global.Panes.Users = global.Pane.extend({
 
   renderTab: function(rows) {
-    rows.forEach(function(row) {
+    rows.forEach((row) => {
       row.roles = [];
       if (row.rolsuper) row.roles.push("Superuser");
       if (row.rolcreaterole) row.roles.push("Create role");
@@ -24,10 +24,10 @@ global.Panes.Users = global.Pane.extend({
   },
 
   deleteUser: function (username) {
-    window.alertify.confirm('Do you want to delete user "' + username + '"?', function(res) {
+    window.alertify.confirm('Do you want to delete user "' + username + '"?', (res) => {
       if (res) {
         this.handler.deleteUser(username);
       }
-    }.bind(this));
+    });
   }
 });

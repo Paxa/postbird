@@ -13,13 +13,13 @@ global.Model.Trigger = Model.base.extend({
         inner join pg_class on (pg_trigger.tgrelid = pg_class.oid)
       `;
 
-      Model.base.q(sql, function(data, error) {
+      Model.base.q(sql, (data, error) => {
         if (error) {
           callback([], error);
           return;
         }
         var triggers = [];
-        data.rows.forEach(function (row) {
+        data.rows.forEach((row) => {
           triggers.push(new Model.Trigger('public', row));
         });
         callback(triggers);
@@ -36,7 +36,7 @@ global.Model.Trigger = Model.base.extend({
           pg_class.relname = "%s" and pg_trigger.tgname = "%s"
       `
 
-      Model.base.q(sql, table, name, function(data, error) {
+      Model.base.q(sql, table, name, (data, error) => {
         if (error) {
           callback();
           return;
@@ -54,7 +54,7 @@ global.Model.Trigger = Model.base.extend({
       var nums = Number(typeNum).toString(2).split("").reverse();
       var actions = ["row", "before", "insert", "delete", "update", "truncate", "instead"];
       var res = [];
-      nums.forEach(function (num, pos) {
+      nums.forEach((num, pos) => {
         if (num == "1") res.push(actions[pos]);
       });
 
@@ -82,7 +82,7 @@ global.Model.Trigger = Model.base.extend({
 
     var fiber = global.Fiber && global.Fiber.current;
 
-    this.q(sql, this.name, this.table_name, function (result, error) {
+    this.q(sql, this.name, this.table_name, (result, error) => {
       if (error && fiber) {
         throw error;
       }
@@ -93,7 +93,7 @@ global.Model.Trigger = Model.base.extend({
 
 !function () {
   var props = ['table_name', 'proc_name', 'constraint_name'];
-  props.forEach(function (prop) {
+  props.forEach((prop) => {
     Object.defineProperty(Model.Trigger.prototype, prop, {
       get: function () {
         return this.data[prop];

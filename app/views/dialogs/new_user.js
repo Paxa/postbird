@@ -20,17 +20,17 @@ global.Dialog.NewUser = global.Dialog.extend({
   },
 
   processData: function (data) {
-    this.handler.createUser(data, function(data, error) {
+    this.handler.createUser(data, (data, error) => {
       if (error)
         window.alert(error.message);
       else
         this.close();
-    }.bind(this));
+    });
   },
 
   validate: function (data) {
     var fail = function (msg) {
-      setTimeout(function() {
+      setTimeout(() => {
         window.alert(msg);
       }, 100);
       return false;

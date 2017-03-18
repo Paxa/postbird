@@ -46,7 +46,7 @@ global.DbScreenView = jClass.extend({
     });
 
     var tablesBlock = this.content.find('.sidebar .tables');
-    this.content.find('.show-system-tables input').bind('change', function(e) {
+    this.content.find('.show-system-tables input').bind('change', (e) => {
       var checkbox = e.target;
       if (checkbox.checked) {
         tablesBlock.removeClass('without-system-tables');
@@ -256,7 +256,7 @@ global.DbScreenView = jClass.extend({
     input.focus();
     setTimeout(() => { input[0].setSelectionRange(0, 999); }, 20);
 
-    input.bind('keyup', function(e) {
+    input.bind('keyup', (e) => {
       if (e.keyCode == 27) {
         node.html(tableName);
       }

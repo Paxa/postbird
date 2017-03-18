@@ -1,6 +1,6 @@
 var Client = require('pg').Client;
 
-var filterMatchers = (function () {
+var filterMatchers = (() => {
   var pgClient = new Client();
 
   var ev = (value) => {
@@ -211,7 +211,7 @@ global.Panes.Contents = global.Pane.extend({
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
 
-    this.content.find('span.text').bind('dblclick', function(e) {
+    this.content.find('span.text').bind('dblclick', (e) => {
       $u.stopEvent(e);
       $u(e.target.parentNode).toggleClass('expanded');
     });
@@ -368,7 +368,7 @@ global.Panes.Contents = global.Pane.extend({
     }
 
     var _this = this;
-    table.on('contextmenu', function(event) {
+    table.on('contextmenu', (event) => {
       var genericTable = table.data('generic_table');
 
       var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
@@ -387,7 +387,7 @@ global.Panes.Contents = global.Pane.extend({
         var event = table[0].contextmenu.clickEvent;
         var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
         this.deleteRow(el);
-      }.bind(this);
+      };
     }
     $u.contextMenu(table, contextMenuActions);
   },
@@ -411,12 +411,12 @@ global.Panes.Contents = global.Pane.extend({
 
   addRow() {
     var container = this.content.find('table tbody');
-    var sortedColumns = Object.values(this.columnTypes).sort(function (a, b) {
+    var sortedColumns = Object.values(this.columnTypes).sort((a, b) => {
       return (a.ordinal_position > b.ordinal_position) ? 1 : (a.ordinal_position < b.ordinal_position) ? -1 : 0;
     });
 
     var fields = $u('<tr>').addClass('adding-new-row');
-    sortedColumns.forEach(function (column) {
+    sortedColumns.forEach((column) => {
       var inputType = 'text';
       if (column.data_type == 'real' || column.data_type == 'smallint' || column.data_type == 'numeric') {
         inputType = 'number';

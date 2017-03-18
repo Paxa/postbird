@@ -21,20 +21,20 @@ global.LoginScreen = jClass.extend({
   bindFormEvents: function () {
     this.form.bind('submit', this.onFormSubmit.bind(this));
 
-    this.form.find('input[type=text], input[type=password]').bind('keypress', function(event) {
+    this.form.find('input[type=text], input[type=password]').bind('keypress', (event) => {
       if (event.keyIdentifier == "Enter") {
         $u.stopEvent(event);
         this.onFormSubmit(event);
       }
-    }.bind(this));
+    });
 
-    this.form.find('input[type=text], input[type=password]').bind('focus', function(event) {
+    this.form.find('input[type=text], input[type=password]').bind('focus', (event) => {
       this.formChanged(event);
-    }.bind(this));
+    });
 
     this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
 
-    this.content.find('a.go-to-help').bind('click', function() {
+    this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();
       help.activatePage("get-postgres");
     });
@@ -78,21 +78,21 @@ global.LoginScreen = jClass.extend({
     };
 
     var appsList = this.content.find('ul.apps');
-    HerokuClient.authAndGetApps(function(apps) {
-      apps.forEach(function(app) {
+    HerokuClient.authAndGetApps((apps) => {
+      apps.forEach((app) => {
         var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
         appsList.append(appEl);
-        $u(appEl).find('button').bind('click', function (event) {
+        $u(appEl).find('button').bind('click', (event) => {
           event.preventDefault();
           this.connectToHeroku(app);
-        }.bind(this));
-      }.bind(this));
-    }.bind(this), options);
+        });
+      });
+    }, options);
   },
 
   connectToHeroku: function (heroku_app) {
     App.startLoading("Fetching config...");
-    HerokuClient.getDatabaseUrl(heroku_app.id, function(db_url) {
+    HerokuClient.getDatabaseUrl(heroku_app.id, (db_url) => {
       if (!db_url) {
         window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
         App.stopLoading();
@@ -100,17 +100,17 @@ global.LoginScreen = jClass.extend({
       }
       db_url = db_url + "?ssl=true";
       console.log('connecting to', db_url);
-      this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, function(tab) {
+      this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, (tab) => {
         if (tab) {
           tab.instance.switchToHerokuMode(heroku_app.name, db_url);
         }
         console.log('connected to heroku');
       });
-    }.bind(this));
+    });
   },
 
   openHerokuLoginWindow: function(link) {
-    HerokuClient.auth(function() {
+    HerokuClient.auth(() => {
       console.log("authenticated");
     });
   },
@@ -121,7 +121,7 @@ global.LoginScreen = jClass.extend({
     var currentConnection = this.connectionName;
 
     var _this = this;
-    Object.forEach(data, function (name, params) {
+    Object.forEach(data, (name, params) => {
       var line = $dom(['li', name]);
 
       $u.contextMenu(line, {
@@ -139,9 +139,9 @@ global.LoginScreen = jClass.extend({
         $u(line).addClass('selected');
       }
 
-      $u(line).single_double_click_nowait(function(e) {
+      $u(line).single_double_click_nowait((e) => {
         _this.connectionSelected(name, params, line);
-      }, function (e) {
+      }, (e) => {
         _this.connectionSelected(name, params, line);
         _this.onFormSubmit(e);
       });
@@ -162,7 +162,7 @@ global.LoginScreen = jClass.extend({
     App.startLoading("Connecting...");
 
     var options = this.getFormData();
-    var conn = new Connection(options, function (status, message) {
+    var conn = new Connection(options, (status, message) => {
       App.stopLoading();
       if (status) {
         window.alertify.alert("Successfully connected!");
@@ -170,7 +170,7 @@ global.LoginScreen = jClass.extend({
       } else {
         window.alertify.alert(this.humanErrorMessage(message));
       }
-    }.bind(this));
+    });
   },
 
   addNewConnection: function () {
@@ -189,23 +189,23 @@ global.LoginScreen = jClass.extend({
   },
 
   renameConnection: function (name) {
-    window.alertify.prompt("Rename connection?", function (confirm, newName) {
+    window.alertify.prompt("Rename connection?", (confirm, newName) => {
       if (confirm) {
         Model.SavedConn.renameConnection(name, newName);
         this.fillSavedConnections();
       }
-    }.bind(this), name);
+    }, name);
   },
 
   deleteConnection: function (name) {
     window.alertify.labels.ok = "Remove";
-    window.alertify.confirm("Remove connection " + name + "?", function (res) {
+    window.alertify.confirm("Remove connection " + name + "?", (res) => {
       window.alertify.labels.ok = "OK";
       if (res) {
         Model.SavedConn.removeConnection(name);
         this.fillSavedConnections();
       }
-    }.bind(this));
+    });
   },
 
   saveAndConnect: function (e) {
@@ -226,11 +226,11 @@ global.LoginScreen = jClass.extend({
     }
 
     this.connectionName = name;
-    this.onFormSubmit(null, function () {
+    this.onFormSubmit(null, () => {
       Model.SavedConn.saveConnection(name, this.getFormData());
       this.fillSavedConnections();
       this.setButtonShown(false);
-    }.bind(this));
+    });
   },
 
   onFormSubmit: function (e, callback) {
@@ -241,7 +241,7 @@ global.LoginScreen = jClass.extend({
     e && e.preventDefault();
     var options = this.getFormData();
 
-    this.makeConnection(options, {}, function (tab) {
+    this.makeConnection(options, {}, (tab) => {
       button.removeAttr('disabled').val(buttonText);
       if (callback && tab) callback(tab);
     });

@@ -4,7 +4,7 @@ var MenuItem = remote.MenuItem;
 
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
-  $u.each($u(selector_or_el).serializeArray(), (v) => {
+  $u.each($u(selector_or_el).serializeArray(), (_, kv) => {
     paramObj[kv.name] = kv.value;
   });
 
@@ -17,7 +17,7 @@ $u.stopEvent = function (e) {
 
 // replacement of behated .each()
 $u.fn.forEach = function (callback) {
-  this.each(function (i, item) {
+  this.each((i, item) => {
     return callback(item, i);
   });
 };
@@ -38,7 +38,7 @@ $u.buildOption = function (label, value, options) {
 $u.contextMenu = function (element, options, params) {
   if (element.is === $u.fn.is) element = element[0];
 
-  element.addEventListener('contextmenu', (t) => {
+  element.addEventListener('contextmenu', (event) => {
     if (!element.contextmenu) {
       var menu = element.contextmenu = new Menu();
       for (var n in options) {
@@ -63,12 +63,12 @@ $u.contextMenu = function (element, options, params) {
 };
 
 $u.fn.single_double_click = function single_double_click (single_click_callback, double_click_callback, timeout) {
-  return this.each(function() {
+  return this.each(() => {
     var clicks = 0, self = this;
     $u(this).click(function(event){
       clicks++;
       if (clicks == 1) {
-        setTimeout(function() {
+        setTimeout(() => {
           if (clicks == 1) {
             single_click_callback.call(self, event);
           } else {
@@ -137,7 +137,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
   var carcher = window.document.body;
 
   // listen click outside
-  setTimeout(function() {
+  setTimeout(() => {
     var closer = function closer (e) {
       if (options.condition) {
         if (!options.condition()) {
@@ -148,7 +148,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
       var matched;
       if (e.target == element[0]) matched = true;
-      $u(e.target).parents().each((t) => {
+      $u(e.target).parents().each((i, parent) => {
         if (parent == element[0]) matched = true;
       });
 
@@ -232,11 +232,11 @@ $u.textInputMenu = function (element, currentWindow) {
   var onShow = function (event, menu) {
     var selected = $u.selectedText(element, currentWindow);
     if (selected && selected != '') {
-      menu.items.forEach(function (item) {
+      menu.items.forEach((item) => {
         item.enabled = true;
       });
     } else {
-      menu.items.forEach(function (item) {
+      menu.items.forEach((item) => {
         if (item.label == "Cut" || item.label == "Copy") {
           item.enabled = false;
         }
@@ -261,11 +261,11 @@ $u.textContextMenu = function (element, currentWindow) {
   var onShow = function (event, menu) {
     var selected = $u.selectedText(element, currentWindow);
     if (selected && selected != '') {
-      menu.items.forEach(function (item) {
+      menu.items.forEach((item) => {
         item.enabled = true;
       });
     } else {
-      menu.items.forEach(function (item) {
+      menu.items.forEach((item) => {
         if (item.label == "Copy") {
           item.enabled = false;
         }

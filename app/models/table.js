@@ -19,14 +19,14 @@ global.Model.Table = Model.base.extend({
 
   rename: function (new_name, callback) {
     var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO  ${new_name}`;
-    this.q(sql, function(data, error) {
+    this.q(sql, (data, error) => {
       this.table = new_name;
       callback(data, error);
-    }.bind(this));
+    });
   },
 
   remove: function(callback) {
-    this.getTableType(function (tableType) {
+    this.getTableType((tableType) => {
       if (tableType == this.types.VIEW) {
         this.removeView(callback);
       } else if (tableType == this.types.MAT_VIEW) {
@@ -34,7 +34,7 @@ global.Model.Table = Model.base.extend({
       } else {
         this.q(`DROP TABLE "${this.schema}"."${this.table}"`, callback);
       }
-    }.bind(this));
+    });
   },
 
   drop: function (callback) {
@@ -43,20 +43,20 @@ global.Model.Table = Model.base.extend({
 
   removeView: function (callback) {
     var sql = `drop view "${this.schema}"."${this.table}"`;
-    this.q(sql, function (result, error) {
+    this.q(sql, (result, error) => {
       callback(error ? false : true, error);
     });
   },
 
   removeMatView: function (callback) {
     var sql = `drop materialized view "${this.schema}"."${this.table}"`;
-    this.q(sql, function (result, error) {
+    this.q(sql, (result, error) => {
       callback(error ? false : true, error);
     });
   },
 
   dropFereign: function (callback) {
-    this.q(`DROP FOREIGN TABLE "${this.schema}"."${this.table}"`, function (result, error) {
+    this.q(`DROP FOREIGN TABLE "${this.schema}"."${this.table}"`, (result, error) => {
       callback(error ? false : true, error);
     });
   },
@@ -66,13 +66,13 @@ global.Model.Table = Model.base.extend({
   },
 
   isMatView: function (callback) {
-    this.getTableType(function(tableType) {
+    this.getTableType((tableType) => {
       callback(tableType == "MATERIALIZED VIEW")
     });
   },
 
   isView: function (callback) {
-    this.getTableType(function(tableType) {
+    this.getTableType((tableType) => {
       callback(tableType == "VIEW")
     });
   },
@@ -101,7 +101,7 @@ global.Model.Table = Model.base.extend({
       `
     }
 
-    this.q(sql, function (data, error) {
+    this.q(sql, (data, error) => {
       if (error) {
         console.log('ERROR', error);
         callback(this.tableType, error);
@@ -109,17 +109,17 @@ global.Model.Table = Model.base.extend({
       }
       this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
       callback(this.tableType);
-    }.bind(this));
+    });
   },
 
   getStructure: function (callback) {
-    this.isMatView(function (isMatView) {
+    this.isMatView((isMatView) => {
       if (isMatView) {
         this._getMatViewStructure(callback);
       } else {
         this._getTableStructure(callback);
       }
-    }.bind(this));
+    });
   },
 
   _getTableStructure: function (callback) {
@@ -146,8 +146,8 @@ global.Model.Table = Model.base.extend({
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
     `;
-    this.q(sql, function(data) {
-      this.hasOID(function (hasOID) {
+    this.q(sql, (data) => {
+      this.hasOID((hasOID) => {
         if (hasOID) {
           data.rows.unshift({
             column_name: "oid",
@@ -156,20 +156,20 @@ global.Model.Table = Model.base.extend({
             udt_name: "oid"
           });
         }
-        this.getPrimaryKey(function(rows, error) {
+        this.getPrimaryKey((rows, error) => {
           if (!error) {
-            var keys = rows.map(function(r) {
+            var keys = rows.map((r) => {
               return r.attname;
             });
 
-            data.rows.forEach(function(row) {
+            data.rows.forEach((row) => {
               row.is_primary_key = keys.indexOf(row.column_name) != -1;
             });
           }
           callback(data.rows);
         });
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   _getMatViewStructure: function (callback) {
@@ -179,8 +179,8 @@ global.Model.Table = Model.base.extend({
                join pg_type t on a.atttypid = t.oid
                where relname = '%s' and attnum >= 1;`;
 
-    this.q(sql, this.table, function(data, error) {
-      data.rows.forEach(function (row) {
+    this.q(sql, this.table, (data, error) => {
+      data.rows.forEach((row) => {
         row.is_nullable = row.attnotnull ? "NO" : "YES";
       });
       callback(data.rows);
@@ -191,7 +191,7 @@ global.Model.Table = Model.base.extend({
     //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
     var sql = `select relhasoids from pg_catalog.pg_class, pg_catalog.pg_namespace n
       where n.oid = pg_class.relnamespace and nspname = '${this.schema}' and relname = '${this.table}'`
-    this.q(sql, function(data, error) {
+    this.q(sql, (data, error) => {
       if (error) {
         callback(undefined, error);
       } else {
@@ -201,13 +201,13 @@ global.Model.Table = Model.base.extend({
   },
 
   getColumnTypes: function (callback) {
-    this.isMatView(function (isMatView) {
+    this.isMatView((isMatView) => {
       if (isMatView) {
         this._matview_getColumnTypes(callback);
       } else {
         this._table_getColumnTypes(callback);
       }
-    }.bind(this));
+    });
   },
 
   _table_getColumnTypes: function (callback) {
@@ -234,8 +234,8 @@ global.Model.Table = Model.base.extend({
       select * from information_schema.columns
       where table_schema = '${this.schema}' and table_name = '${this.table}';
     `;
-    this.q(sql, function(data) {
-      this.hasOID(function (hasOID) {
+    this.q(sql, (data) => {
+      this.hasOID((hasOID) => {
         var types = {};
         if (hasOID) {
           types["oid"] = {
@@ -245,19 +245,19 @@ global.Model.Table = Model.base.extend({
             udt_name: "oid"
           };
         }
-        data.rows.forEach(function(row) {
+        data.rows.forEach((row) => {
           types[row.column_name] = row;
           types[row.column_name].real_format = row.udt_name;
         });
         callback(types);
       })
-    }.bind(this));
+    });
   },
 
   _matview_getColumnTypes: function (callback) {
-    this._getMatViewStructure(function (columns) {
+    this._getMatViewStructure((columns) => {
       var types = {};
-      columns.forEach(function(row) {
+      columns.forEach((row) => {
         types[row.column_name] = row;
         types[row.column_name].real_format = row.udt_name;
       });
@@ -271,13 +271,13 @@ global.Model.Table = Model.base.extend({
       name = undefined;
     }
 
-    this.isMatView(function (isMatView) {
+    this.isMatView((isMatView) => {
       if (isMatView) {
         this._matview_getColumns(callback);
       } else {
         this._table_getColumns(name, callback);
       }
-    }.bind(this));
+    });
   },
 
   _table_getColumns: function (name, callback) {
@@ -288,7 +288,7 @@ global.Model.Table = Model.base.extend({
 
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;";
     var cond = name ? " and column_name = '" + name + "'" : '';
-    this.q(sql, this.schema, this.table, cond, function(rows) {
+    this.q(sql, this.schema, this.table, cond, (rows) => {
       callback(rows.rows);
     });
   },
@@ -298,9 +298,9 @@ global.Model.Table = Model.base.extend({
   },
 
   getColumnNames: function (callback) {
-    this.getColumns(function (rows) {
+    this.getColumns((rows) => {
       var names = [];
-      rows.forEach(function(c) { names.push(c.column_name); });
+      rows.forEach((c) => { names.push(c.column_name); });
       callback(names);
     });
   },
@@ -315,7 +315,7 @@ global.Model.Table = Model.base.extend({
         pg_attribute.attnum = any(pg_index.indkey)
         AND indisprimary;`;
 
-    this.q(sql, function(data, error) {
+    this.q(sql, (data, error) => {
       callback((data || {}).rows, error);
     });
   },
@@ -328,7 +328,7 @@ global.Model.Table = Model.base.extend({
     var default_sql = this._default_sql(default_value);
 
     sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
-    this.q(sql, function(data, error) {
+    this.q(sql, (data, error) => {
       callback(data, error);
     });
   },
@@ -336,24 +336,24 @@ global.Model.Table = Model.base.extend({
   dropColumn: function (name, callback) {
     var column = new Model.Column(name, {});
     column.table = this;
-    column.drop(function (data, error) {
+    column.drop((data, error) => {
       callback(data, error);
     });
   },
 
   getColumnObj: function (name, callback) {
-    this.getColumns(name, function(data) {
+    this.getColumns(name, (data) => {
       var row = new Model.Column(data[0].column_name, data[0]);
       row.table = this;
       callback(row);
-    }.bind(this));
+    });
   },
 
   addColumnObj: function (columnObj, callback) {
-    this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, function() {
+    this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, () => {
       columnObj.table = this;
       callback(columnObj);
-    }.bind(this));
+    });
   },
 
   addIndex: function (name, uniq, columns, method, callback) {
@@ -363,14 +363,14 @@ global.Model.Table = Model.base.extend({
 
     var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON "${this.schema}"."${this.table}" USING ${method} (%s);`;
 
-    this.q(sql, columns_sql, function(data, error) {
+    this.q(sql, columns_sql, (data, error) => {
       callback(data, error);
     });
   },
 
   dropIndex: function (indexName, callback) {
     var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${indexName};`;
-    this.q(sql, function(data, error) {
+    this.q(sql, (data, error) => {
       callback(data, error);
     });
   },
@@ -424,10 +424,10 @@ global.Model.Table = Model.base.extend({
 
     var _this = this;
 
-    this.q(sql_find_oid, function (oid_data, error) {
+    this.q(sql_find_oid, (oid_data, error) => {
       var oid = oid_data.rows[0].oid;
-      //this.q(sql_find_types, oid, function(types_data, error) {
-        _this.q(sql_find_index, oid, function(indexes_rows, error) {
+      //this.q(sql_find_types, oid, (types_data, error) => {
+        _this.q(sql_find_index, oid, (indexes_rows, error) => {
           callback(indexes_rows.rows);
         });
       //});
@@ -443,7 +443,7 @@ global.Model.Table = Model.base.extend({
     if (!limit) limit = 100;
     if (!options) options = {};
 
-    this.isView(function (isView) {
+    this.isView((isView) => {
       var sysColumns = [];
       if (options.with_oid) sysColumns.push('oid');
       if (!isView) sysColumns.push('ctid');
@@ -467,7 +467,7 @@ global.Model.Table = Model.base.extend({
 
       var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
 
-      this.q(sql, function(data, error) {
+      this.q(sql, (data, error) => {
         if (data) {
           data.limit = limit;
           data.offset = offset;
@@ -478,12 +478,12 @@ global.Model.Table = Model.base.extend({
         }
         callback(data, error);
       });
-    }.bind(this));
+    });
   },
 
   getTotalRows: function (callback) {
     var sql = 'select count(*) as rows_count from "%s"."%s"';
-    this.q(sql, this.schema, this.table, function(data, error) {
+    this.q(sql, this.schema, this.table, (data, error) => {
       if (error) {
         log.error(error);
       }
@@ -497,7 +497,7 @@ global.Model.Table = Model.base.extend({
       FROM   pg_class
       WHERE  oid = '%s.%s'::regclass`
 
-    this.q(sql, this.schema, this.table, function (res) {
+    this.q(sql, this.schema, this.table, (res) => {
       var row = res.rows[0];
       callback(row.estimate);
     });
@@ -507,21 +507,21 @@ global.Model.Table = Model.base.extend({
     if (Array.isArray(values)) {
       var sql = `insert into "${this.schema}"."${this.table}" values (%s)`;
 
-      var safeValues = values.map(function (val) {
+      var safeValues = values.map((val) => {
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, safeValues, function (data, error) {
+      this.q(sql, safeValues, (data, error) => {
         callback(data, error);
       });
     } else {
       var columns = Object.keys(values);
       var sql = `insert into "${this.schema}"."${this.table}" (${columns.join(", ")}) values (%s)`;
-      var safeValues = Object.values(values).map(function (val) {
+      var safeValues = Object.values(values).map((val) => {
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, safeValues, function (data, error) {
+      this.q(sql, safeValues, (data, error) => {
         callback(data, error);
       });
     }
@@ -529,7 +529,7 @@ global.Model.Table = Model.base.extend({
 
   deleteRowByCtid: function (ctid, callback) {
     var sql = `delete from "${this.schema}"."${this.table}" where ctid='${ctid}'`;
-    this.q(sql, function (data, error) {
+    this.q(sql, (data, error) => {
       callback(data, error);
     });
   },
@@ -541,7 +541,7 @@ global.Model.Table = Model.base.extend({
     exporter.addArgument("--schema-only");
     exporter.addArgument('--no-owner');
 
-    exporter.doExport(Model.base.connection(), function (result, stdout, stderr, process) {
+    exporter.doExport(Model.base.connection(), (result, stdout, stderr, process) => {
       if (!result) {
         log.error("Run pg_dump failed");
         log.error(stderr);
@@ -570,7 +570,7 @@ global.Model.Table = Model.base.extend({
         relname = '%s'
     `;
 
-    this.q(sql, this.schema, this.table, function (result, error) {
+    this.q(sql, this.schema, this.table, (result, error) => {
       var row = result.rows[0];
       var type = row.relkind;
       // http://www.postgresql.org/docs/9.4/static/catalog-pg-class.html
@@ -590,7 +590,7 @@ global.Model.Table = Model.base.extend({
 
   truncate(callback) {
     var sql = `truncate table ${this.schema}.${this.table};`;
-    this.q(sql, function (data, error) {
+    this.q(sql, (data, error) => {
       callback(data, error);
     });
   }
@@ -612,16 +612,16 @@ Model.Table.create = function create (schema, tableName, options, callback) {
   var schemaSql = schema && schema != '' ? `"${schema}".` : '';
   var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
 
-  Model.base.q(sql, function (res, error) {
+  Model.base.q(sql, (res, error) => {
     callback(Model.Table(schema, tableName), res, error);
   });
 };
 
 Model.Table.publicTables = function publicTables (callback) {
-  Model.base.connection().publicTables(function(tables, error) {
+  Model.base.connection().publicTables((tables, error) => {
 
     var data = [];
-    tables.forEach(function(e) {
+    tables.forEach((e) => {
       data.push('' + e.table_name);
     });
 

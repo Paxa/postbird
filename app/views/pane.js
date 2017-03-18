@@ -7,8 +7,8 @@ global.Pane = jClass.extend({
   initEvents: function (content) {
     var $this = this;
 
-    $u(content).find('a[exec], button[exec], input[type=submit][exec]').each(function(i, el) {
-      $u(el).bind('click', function(e) {
+    $u(content).find('a[exec], button[exec], input[type=submit][exec]').each((i, el) => {
+      $u(el).bind('click', (e) => {
         $u.stopEvent(e);
         $this.lastEvent = e;
         with($this) {
@@ -33,19 +33,19 @@ global.Pane = jClass.extend({
 
   initTables: function () {
     // heavy stuff, run it with delay
-    setTimeout(function () {
-      this.content.find('.rescol-wrapper').each(function (i, table) {
+    setTimeout(() => {
+      this.content.find('.rescol-wrapper').each((i, table) => {
         new ResizableColumns(table);
       });
 
-      this.content.find('.rescol-content-wrapper table').forEach(function (table) {
+      this.content.find('.rescol-content-wrapper table').forEach((table) => {
         if (!table.hasAttribute('native-table-init')) {
           new GenericTable(table);
           $u(table).trigger('generic-table-init');
           table.setAttribute('native-table-init', true);
         }
       });
-    }.bind(this), 10);
+    }, 10);
   },
 
   scrollToTop: function () {

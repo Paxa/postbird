@@ -15,11 +15,11 @@ global.DbScreen = jClass.extend({
 
     this.database = this.connection.options.database;
     App.emit('database.changed', this.database);
-    this.fetchTablesAndSchemas(function() {
+    this.fetchTablesAndSchemas(() => {
       this.view.showDatabaseContent();
-    }.bind(this));
+    });
 
-    this.connection.onNotification(function (message) {
+    this.connection.onNotification((message) => {
       window.alertify.alert("Recieve Message:<br>" + JSON.stringify(message));
     });
   },
@@ -48,10 +48,10 @@ global.DbScreen = jClass.extend({
   },
 
   fetchDbList: function (callback) {
-    this.connection.listDatabases(function(databases) {
+    this.connection.listDatabases((databases) => {
       this.view.renderDbList(databases);
       callback && callback();
-    }.bind(this));
+    });
   },
 
   listDatabases: function(callback){
@@ -68,10 +68,10 @@ global.DbScreen = jClass.extend({
     this.currentSchema = null;
 
     if (database) {
-      this.connection.switchDb(this.database, function() {
+      this.connection.switchDb(this.database, () => {
         this.fetchTablesAndSchemas();
         if (typeof callback == 'function') callback();
-      }.bind(this));
+      });
     } else {
       this.view.hideDatabaseContent();
       this.connection.close();
@@ -85,18 +85,18 @@ global.DbScreen = jClass.extend({
 
   fetchTablesAndSchemas: function (callback) {
     App.startLoading("Getting tables list...");
-    this.connection.tablesAndSchemas(function(data) {
-      this.connection.mapViewsAsTables(function (matViews) {
+    this.connection.tablesAndSchemas((data) => {
+      this.connection.mapViewsAsTables((matViews) => {
         // join tables with views
-        Object.forEach(matViews, function (schema, views) {
+        Object.forEach(matViews, (schema, views) => {
           if (!data[schema]) data[schema] = [];
-          views.forEach(function (view) {
+          views.forEach((view) => {
             data[schema].push(view);
           });
         });
         // sort everything again
-        Object.forEach(data, function (schema, tables) {
-          data[schema] = tables.sort(function (a, b) {
+        Object.forEach(data, (schema, tables) => {
+          data[schema] = tables.sort((a, b) => {
             if (a.table_name > b.table_name) return 1;
             if (a.table_name < b.table_name) return -1;
             return 0;
@@ -105,8 +105,8 @@ global.DbScreen = jClass.extend({
         App.stopLoading();
         this.view.renderTablesAndSchemas(data, this.currentSchema, this.currentTable);
         callback && callback(data);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   tableSelected: function(schema, tableName, node) {
@@ -142,23 +142,23 @@ global.DbScreen = jClass.extend({
   },
 
   extensionsTabActivate: function () {
-    this.connection.getExtensions(function(rows) {
+    this.connection.getExtensions((rows) => {
       this.view.extensions.renderTab(rows);
-    }.bind(this));
+    });
   },
 
   installExtension: function (extension, callback) {
-    this.connection.installExtension(extension, function (data, error) {
+    this.connection.installExtension(extension, (data, error) => {
       if (!error) this.omit('extension.installed');
       callback(data, error);
-    }.bind(this));
+    });
   },
 
   uninstallExtension: function (extension, callback) {
-    this.connection.uninstallExtension(extension, function (data, error) {
+    this.connection.uninstallExtension(extension, (data, error) => {
       if (!error) this.omit('extension.uninstalled');
       callback(data, error);
-    }.bind(this));
+    });
   },
 
   contentTabLimit: 300,
@@ -174,7 +174,7 @@ global.DbScreen = jClass.extend({
         App.stopRunningQuery();
       }
     });
-    this.table.getColumnTypes(function(columnTypes, error2) {
+    this.table.getColumnTypes((columnTypes, error2) => {
       var hasOid = !!columnTypes.oid;
       var extraColumns = [];
       Object.forEach(columnTypes, (key, col) => {
@@ -182,17 +182,17 @@ global.DbScreen = jClass.extend({
           extraColumns.push(`ST_AsText(${key}) as ${key}`);
         }
       });
-      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, function (data, error) {
+      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, (data, error) => {
         App.stopLoading();
         this.view.contents.renderTab(data, columnTypes, error || error2);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   usersTabActivate: function () {
-    Model.User.findAll(function(rows, error) {
+    Model.User.findAll((rows, error) => {
       this.view.users.renderTab(rows);
-    }.bind(this));
+    });
   },
 
   queryTabActivate: function () {
@@ -205,51 +205,51 @@ global.DbScreen = jClass.extend({
       data.superuser = true;
     }
 
-    Model.User.create(data, function(data, error) {
+    Model.User.create(data, (data, error) => {
       if (!error) {
         this.omit('user.created')
       }
       callback(data, error);
-    }.bind(this));
+    });
   },
 
   deleteUser: function(username, callback) {
-    Model.User.drop(username, function(data, error) {
+    Model.User.drop(username, (data, error) => {
       if (error) {
         window.alert(error);
       } else {
         this.omit('user.deleted')
       }
       callback && callback(data, error);
-    }.bind(this));
+    });
   },
 
   createDatabase: function (data, callback) {
-    this.connection.switchDb(this.connection.defaultDatabaseName, function () {
-      this.connection.createDatabase(data.dbname, data.template, data.encoding, function (res, error) {
+    this.connection.switchDb(this.connection.defaultDatabaseName, () => {
+      this.connection.createDatabase(data.dbname, data.template, data.encoding, (res, error) => {
         if (!error) {
-          this.fetchDbList(function() {
+          this.fetchDbList(() => {
             this.view.databaseSelect.val(data.dbname).change();
             //this.selectDatabase(data.dbname);
-          }.bind(this));
+          });
         }
         callback(res, error);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   dropDatabaseDialog: function () {
     var msg = "Delete database and all tables in it?";
-    var dialog = window.alertify.confirm(msg, function (result) {
+    var dialog = window.alertify.confirm(msg, (result) => {
       if (result) {
         this.dropDatabase();
       }
-    }.bind(this));
+    });
   },
 
   dropDatabase: function () {
     App.startLoading("Deleting database...");
-    this.connection.dropDatabase(this.database, function (result, error) {
+    this.connection.dropDatabase(this.database, (result, error) => {
       App.stopLoading();
       if (error) {
         window.alertify.alert(error.message);
@@ -259,29 +259,29 @@ global.DbScreen = jClass.extend({
         this.fetchDbList();
         App.emit('database.changed', this.database);
       }
-    }.bind(this));
+    });
   },
 
   renameDatabaseDialog: function (defaultValue) {
     var msg = "Renaming database '" + this.database + "'?";
-    var dialog = window.alertify.prompt(msg, function (result, newName) {
+    var dialog = window.alertify.prompt(msg, (result, newName) => {
       if (result) {
         if (newName && newName.trim() != "" && newName != this.database) {
           this.renameDatabase(newName);
         } else {
           window.alert('Please fill database name');
           this.renameDatabaseDialog(newName);
-          setTimeout(function () {
+          setTimeout(() => {
             $u('#alertify-text').focus();
           }, 200);
         }
       }
-    }.bind(this), defaultValue || this.database);
+    }, defaultValue || this.database);
   },
 
   renameDatabase: function (databaseNewName) {
     App.startLoading("Renaming database...");
-    this.connection.renameDatabase(this.database, databaseNewName, function (result, error) {
+    this.connection.renameDatabase(this.database, databaseNewName, (result, error) => {
       App.stopLoading();
       if (error) {
         window.alertify.alert(error.message);
@@ -290,58 +290,58 @@ global.DbScreen = jClass.extend({
         this.fetchDbList();
         App.emit('database.changed', this.database);
       }
-    }.bind(this));
+    });
   },
 
   createTable: function (data, callback) {
-    Model.Table.create(data.tablespace, data.name, function (table, res, error) {
+    Model.Table.create(data.tablespace, data.name, (table, res, error) => {
       if (!error) {
         this.omit('table.created');
-        this.fetchTablesAndSchemas(function(tables) {
+        this.fetchTablesAndSchemas((tables) => {
           var tableElement = this.view.sidebar.find('[schema-name=' + data.tablespace + '] ' +
                                                       '[table-name=' + data.name + ']')[0];
           this.tableSelected(data.tablespace, data.name, tableElement);
-        }.bind(this));
+        });
       }
       callback(res, error);
-    }.bind(this));
+    });
   },
 
   dropTable: function (schema, table, callback) {
-    window.alertify.confirm("Delete table " + schema + '.' + table + "?", function (agreed) {
+    window.alertify.confirm("Delete table " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
-      Model.Table(schema, table).remove(function (res, error) {
+      Model.Table(schema, table).remove((res, error) => {
         this.omit('table.deleted');
         this.fetchTablesAndSchemas();
         callback && callback(res, error);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   dropView: function (schema, table, callback) {
-    window.alertify.confirm("Delete view " + schema + '.' + table + "?", function (agreed) {
+    window.alertify.confirm("Delete view " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
-      Model.Table(schema, table).removeView(function (success, error) {
+      Model.Table(schema, table).removeView((success, error) => {
         if (success) {
           this.omit('table.deleted');
           this.fetchTablesAndSchemas();
         }
         callback && callback(success, error);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   dropForeignTable: function (schema, table, callback) {
-    window.alertify.confirm("Delete foreign " + schema + '.' + table + "?", function (agreed) {
+    window.alertify.confirm("Delete foreign " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
-      Model.Table(schema, table).dropFereign(function (success, error) {
+      Model.Table(schema, table).dropFereign((success, error) => {
         if (success) {
           this.omit('table.deleted');
           this.fetchTablesAndSchemas();
         }
         callback && callback(success, error);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   renameTable: function (schema, tableName, newName, callback) {
@@ -351,14 +351,14 @@ global.DbScreen = jClass.extend({
       return;
     }
 
-    Model.Table(schema, tableName).rename(newName, function (res, error) {
+    Model.Table(schema, tableName).rename(newName, (res, error) => {
       if (this.currentTable == tableName) {
         this.currentTable = newName;
       }
       this.omit('table.renamed');
       this.fetchTablesAndSchemas();
       callback && callback(res, error);
-    }.bind(this));
+    });
   },
 
   structureTabActivate: function () {
@@ -368,14 +368,14 @@ global.DbScreen = jClass.extend({
     }
     App.startLoading("Getting table structure...");
 
-    this.table.isMatView(function (isMatView) {
-      Model.Table(this.currentSchema, this.currentTable).getStructure(function (rows) {
-        this.table.describe(function(indexes) {
+    this.table.isMatView((isMatView) => {
+      Model.Table(this.currentSchema, this.currentTable).getStructure((rows) => {
+        this.table.describe((indexes) => {
           this.view.structure.renderTab(rows, indexes, isMatView);
           App.stopLoading();
-        }.bind(this));
-      }.bind(this));
-    }.bind(this));
+        });
+      });
+    });
   },
 
   proceduresTabActivate: function() {
@@ -383,49 +383,49 @@ global.DbScreen = jClass.extend({
   },
 
   addColumn: function (data, callback) {
-    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, function(result, error) {
+    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, (result, error) => {
       if (!error) {
         this.structureTabActivate();
       }
       callback(result, error);
-    }.bind(this));
+    });
   },
 
   editColumn: function (columnObj, data, callback) {
-    columnObj.update(data, function(result, error) {
+    columnObj.update(data, (result, error) => {
       if (!error) {
         this.structureTabActivate();
       }
       callback(result, error);
-    }.bind(this));
+    });
   },
 
   deleteColumn: function (column_name, callback) {
-    this.table.dropColumn(column_name, function(result, error) {
+    this.table.dropColumn(column_name, (result, error) => {
       if (!error) {
         this.structureTabActivate();
       }
       console.log(result, error);
       callback(result, error);
-    }.bind(this));
+    });
   },
 
   addIndex: function (data, callback) {
-    this.table.addIndex(data.name, data.uniq, data.columns, data.method, function(result, error) {
+    this.table.addIndex(data.name, data.uniq, data.columns, data.method, (result, error) => {
       if (!error) this.structureTabActivate();
       callback(result, error);
-    }.bind(this));
+    });
   },
 
   deleteIndex: function (indexName, callback) {
-    this.table.dropIndex(indexName, function(result, error) {
+    this.table.dropIndex(indexName, (result, error) => {
       if (!error) this.structureTabActivate();
       callback(result, error);
-    }.bind(this));
+    });
   },
 
   getTableSql: function (schema, table, callback) {
-    Model.Table(schema, table).getSourceSql(function (source) {
+    Model.Table(schema, table).getSourceSql((source) => {
       callback(source);
     });
   },
@@ -442,8 +442,8 @@ global.DbScreen = jClass.extend({
     this.view.setTabMessage("Getting table information ...");
 
     App.startLoading("Getting table info...");
-    table.getSourceSql(function (code, dumpError) {
-      table.diskSummary(function (relType, estimateCount, diskUsage) {
+    table.getSourceSql((code, dumpError) => {
+      table.diskSummary((relType, estimateCount, diskUsage) => {
         if (dumpError) {
           window.alert("Running pg_dump failed:\n" + dumpError);
         }
@@ -467,7 +467,7 @@ global.DbScreen = jClass.extend({
   },
 
   reconnect: function (callback) {
-    this.connection.reconnect(function (success, error) {
+    this.connection.reconnect((success, error) => {
       if (success) {
         window.alertify.alert('Reconnected!');
         if (callback) callback(true);
@@ -479,7 +479,7 @@ global.DbScreen = jClass.extend({
   },
 
   truncateTable(schema, table, callback) {
-    Model.Table(schema, table).truncate(function (result, error) {
+    Model.Table(schema, table).truncate((result, error) => {
       callback(result, error);
     });
   }

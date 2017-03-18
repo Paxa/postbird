@@ -1,7 +1,7 @@
 var libs = {};
 var loadedModules = {};
 
-['child_process', 'http', 'https', 'url', 'querystring', 'needle'].forEach(function(lib) {
+['child_process', 'http', 'https', 'url', 'querystring', 'needle'].forEach((lib) => {
   Object.defineProperty(libs, lib, {
     get: function() {
       if (!loadedModules[lib]) {
@@ -65,11 +65,11 @@ global.HerokuClient = {
     if (!options) options = {};
     //console.log('auth started');
     options.onAccessTokenStart && options.onAccessTokenStart();
-    _this.fetchRequestToken(function() {
+    _this.fetchRequestToken(() => {
       options.onAccessTokenDone && options.onAccessTokenDone()
       options.onRequestTokenStart && options.onRequestTokenStart()
       //console.log('got request token ' + _this.getRequestToken());
-      _this.fetchAccessToken(function() {
+      _this.fetchAccessToken(() => {
         options.onRequestTokenDone && options.onRequestTokenDone()
         console.log(_this.getAccessToken());
         callback();
@@ -78,9 +78,9 @@ global.HerokuClient = {
   },
 
   authAndGetApps: function(callback, options) {
-    this.auth(function() {
+    this.auth(() => {
       options.onGetAppsStarted && options.onGetAppsStarted();
-      this.getApps(function(apps) {
+      this.getApps((apps) => {
         if (apps.id == 'unauthorized') {
           if (options.retry) {
             callback([]);
@@ -89,15 +89,15 @@ global.HerokuClient = {
           options.retry = true;
           this.clearRequestToken();
           this.clearAccessToken();
-          this.auth(function() {
+          this.auth(() => {
             this.authAndGetApps(callback, options);
-          }.bind(this), options);
+          }, options);
         } else {
           options.onGetAppsDone && options.onGetAppsDone();
           callback(apps)
         }
-      }.bind(this));
-    }.bind(this), options);
+      });
+    }, options);
   },
 
   fetchRequestToken: function(callback) {
@@ -126,18 +126,18 @@ global.HerokuClient = {
       var options = { ssl: true, timeout: 30 * 1000 };
       console.log("POST", 'https://id.heroku.com/oauth/token', libs.querystring.stringify(params));
 
-      libs.needle.post('https://id.heroku.com/oauth/token', params, options, function (err, resp) {
+      libs.needle.post('https://id.heroku.com/oauth/token', params, options, (err, resp) => {
         console.log(err, resp);
         if (resp.body.id == "unauthorized") {
           this.clearRequestToken();
-          this.auth(function() {
+          this.auth(() => {
             this.fetchAccessToken(callback);
-          }.bind(this), callbackOoptions);
+          }, callbackOoptions);
         } else {
           this.setAccessToken(resp.body);
           callback();
         }
-      }.bind(this));
+      });
     }
   },
 
@@ -154,7 +154,7 @@ global.HerokuClient = {
   },
 
   getDatabaseUrl: function(app_id, callback) {
-    this.getConfigVars(app_id, function(data) {
+    this.getConfigVars(app_id, (data) => {
       callback(data['DATABASE_URL']);
     });
   },
@@ -171,7 +171,7 @@ global.HerokuClient = {
     };
     var url = this.apiUrl + uri;
     console.log("GET " + url, options);
-    libs.needle.get(url, options, function (err, resp) {
+    libs.needle.get(url, options, (err, resp) => {
       console.log('response', err, resp);
       if (resp) {
         callback ? callback(resp.body) : console.log(resp.body);
@@ -188,7 +188,7 @@ global.HerokuCatcher = jClass.extend({
   init: function (doneCallback) {
     this.doneCallback = doneCallback;
     var _this = this;
-    this.server = libs.http.createServer(function (request, response) {
+    this.server = libs.http.createServer((request, response) => {
       console.dir(request);
 
       var parsed = libs.url.parse(request.url);
@@ -200,7 +200,7 @@ global.HerokuCatcher = jClass.extend({
       response.writeHead(200, {"Content-Type": "text/html"});
       response.end("<script type='text/javascript'>window.close();</script>");
 
-      setTimeout(function() {
+      setTimeout(() => {
         _this.stop();
       }, 100);
     });

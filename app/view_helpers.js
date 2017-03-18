@@ -55,7 +55,7 @@ var helpers = global.ViewHelpers = {
 
   tag_options: function (options) {
     var attrs = [];
-    Object.keys(options).forEach(function(key) {
+    Object.keys(options).forEach((key) => {
       attrs.push(key + '="' + options[key] + '"');
     });
     return attrs.join(" ");
@@ -142,13 +142,13 @@ var helpers = global.ViewHelpers = {
   },
 
   formatArray: function (value, format) {
-    var fomrmatted = value.map(function (element) {
+    var fomrmatted = value.map((element) => {
       if (Array.isArray(element)) {
         return this.formatArray(element, format);
       } else {
         return this.formatCell(element, format);
       }
-    }.bind(this));
+    });
 
     return '{' + fomrmatted.join(',') + '}';
   },

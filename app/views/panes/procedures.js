@@ -3,8 +3,8 @@ global.Panes.Procedures = global.Pane.extend({
   renderTab: function (procs) {
     App.startLoading("Functions config...");
 
-    Model.Procedure.findAllWithExtensions(function(procs) {
-      Model.Trigger.findAll(function(triggers) {
+    Model.Procedure.findAllWithExtensions((procs) => {
+      Model.Trigger.findAll((triggers) => {
 
         App.stopLoading();
 
@@ -15,22 +15,22 @@ global.Panes.Procedures = global.Pane.extend({
 
         this.initTables();
 
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   editProc: function (poid, procName) {
-    Model.Procedure.find(poid, function (proc) {
+    Model.Procedure.find(poid, (proc) => {
       Dialog.EditProcedure(this.handler, proc);
-    }.bind(this));
+    });
   },
 
   procDefinition: function (poid, name) {
-    Model.Procedure.find(poid, function (proc) {
-      proc.getDefinition(function (data, error) {
+    Model.Procedure.find(poid, (proc) => {
+      proc.getDefinition((data, error) => {
         Dialog.DefProcedure(this.handler, proc, data.source);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
   editTrigger: function (triggerName) {
@@ -39,10 +39,10 @@ global.Panes.Procedures = global.Pane.extend({
 
   listLanguages: function () {
     App.startLoading("Fetching config...");
-    Model.Procedure.listLanguages(function (langs) {
+    Model.Procedure.listLanguages((langs) => {
       App.stopLoading();
       new Dialog.ListLanguages(this.hadler, langs);
-    }.bind(this));
+    });
   },
 
 });

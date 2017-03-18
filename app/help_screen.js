@@ -3,13 +3,13 @@ global.HelpScreen = jClass.extend({
 
   init: function () {
     this.content = App.renderView('help');
-    this.content.find(".sidebar a[page]").bind('click', function (e) {
+    this.content.find(".sidebar a[page]").bind('click', (e) => {
       $u.stopEvent(e);
       var link = $u(e.target);
       this.activatePage(link.attr('page'));
-    }.bind(this));
+    });
 
-    this.content.find('.page a.external').bind('click', function(e) {
+    this.content.find('.page a.external').bind('click', (e) => {
       $u.stopEvent(e);
       var url = e.target.href;
       eletron.shell.openExternal(url);
@@ -32,7 +32,7 @@ HelpScreen.open = function (e) {
     App.addHelpScreen();
   }
 
-  App.tabs.forEach(function(tab) {
+  App.tabs.forEach((tab) => {
     if (tab.instance === App.helpScreen) {
       tab.activate();
     }

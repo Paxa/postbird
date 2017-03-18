@@ -13,19 +13,19 @@ global.ImportController = jClass.extend({
   },
 
   doImport: function () {
-    $u.openFileDialog('.sql', function (files) {
+    $u.openFileDialog('.sql', (files) => {
       if (files && files.length > 0) {
         this.filename = files[0];
         this.showImportDialog();
       }
-    }.bind(this));
+    });
   },
 
   showImportDialog: function () {
     var shorterName = this.filename.replace(new RegExp("^" + process.env['HOME']), '~');
-    this.dialog = Dialog.ImportFile(this.handler, shorterName, function (data) {
+    this.dialog = Dialog.ImportFile(this.handler, shorterName, (data) => {
       this.setOrCreateDatabase(data);
-    }.bind(this));
+    });
   },
 
   setOrCreateDatabase: function(data) {
@@ -36,16 +36,16 @@ global.ImportController = jClass.extend({
       }
 
       this.dialog.addMessage("Creating database '" + data.new_database_name + "'\n");
-      this.handler.createDatabase({dbname: data.new_database_name}, function (error, result) {
+      this.handler.createDatabase({dbname: data.new_database_name}, (error, result) => {
         //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
-      }.bind(this));
+      });
     } else {
       this.dialog.addMessage("Select database '" + data.database + "'\n");
-      this.handler.setDatabase(data.database, function (error, relust) {
+      this.handler.setDatabase(data.database, (error, relust) => {
         //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
-      }.bind(this));
+      });
     }
   },
 
@@ -54,16 +54,16 @@ global.ImportController = jClass.extend({
     //this.dialog.addMessage("Importing " + this.filename + " ...");
     var importer = new SqlImporter(this.filename);
 
-    importer.onMessage(function (message, is_good) {
+    importer.onMessage((message, is_good) => {
       this.dialog.addMessage(message);
-    }.bind(this));
+    });
 
-    importer.doImport(this.handler.connection, function(success) {
+    importer.doImport(this.handler.connection, (success) => {
       console.log("Import finish: " + (success ? "SUCCESS" : "FAILURE") + " File: " + this.filename);
       this.dialog.addMessage(success ? "SUCCESS" : "FAILURE");
       this.dialog.showCloseButton();
       this.handler.fetchTablesAndSchemas();
-    }.bind(this));
+    });
   },
 
   currentTab: function () {

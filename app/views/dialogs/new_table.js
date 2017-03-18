@@ -7,7 +7,7 @@ global.Dialog.NewTable = global.Dialog.extend({
   },
 
   showWindow: function () {
-    this.handler.connection.tableSchemas(function(schemas) {
+    this.handler.connection.tableSchemas((schemas) => {
       //console.log(schemas);
       var nodes = App.renderView('dialogs/new_table');
       this.content = this.renderWindow(this.title, nodes);
@@ -16,13 +16,13 @@ global.Dialog.NewTable = global.Dialog.extend({
       if (schemas.indexOf('public') == -1) {
         tablespaces.append( $u.buildOption('public', 'public') );
       }
-      schemas.forEach(function(schema) {
+      schemas.forEach((schema) => {
         tablespaces.append( $u.buildOption(schema, schema) );
       });
 
       this.setAutofocus();
       this.bindFormSubmitting();
-    }.bind(this));
+    });
   },
 
   onSubmit: function (data) {

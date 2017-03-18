@@ -13,13 +13,13 @@ global.Model.Procedure = Model.base.extend({
         WHERE ns.nspname = 'public' order by proname;
       `;
 
-      Model.base.q(sql, function(data, error) {
+      Model.base.q(sql, (data, error) => {
         if (error) {
           callback([]);
           return;
         }
         var procedures = [];
-        data.rows.forEach(function (row) {
+        data.rows.forEach((row) => {
           procedures.push(new Model.Procedure('public', row));
         });
         callback(procedures);
@@ -39,7 +39,7 @@ global.Model.Procedure = Model.base.extend({
         WHERE ns.nspname = 'public' AND proname = '%s' ${name.match(/^\d+$/) ? "OR pg_proc.oid = '%s'" : ''} order by proname;
       `;
 
-      Model.base.q(sql, name, name, function(data, error) {
+      Model.base.q(sql, name, name, (data, error) => {
         if (error) {
           callback();
           return;
@@ -64,7 +64,7 @@ global.Model.Procedure = Model.base.extend({
 
       //var fiber = global.Fiber && global.Fiber.current;
 
-      Model.base.q(sql, name, args, return_type, body, options.lang, function (data, error) {
+      Model.base.q(sql, name, args, return_type, body, options.lang, (data, error) => {
         //if (error && fiber) throw error;
 
         if (!error) {
@@ -80,11 +80,11 @@ global.Model.Procedure = Model.base.extend({
           obj.error = error;
           callback(obj);
         }
-      }.bind(this));
+      });
     },
 
     listLanguages: function (callback) {
-      Model.base.q("select * from pg_language", function (data, error) {
+      Model.base.q("select * from pg_language", (data, error) => {
         callback(data.rows);
       });
     },
@@ -105,13 +105,13 @@ global.Model.Procedure = Model.base.extend({
         where pg_namespace.nspname = 'public' or refobjid != 0
         order by p.proname, arg_list`;
 
-      Model.base.q(sql, function(data, error) {
+      Model.base.q(sql, (data, error) => {
         if (error) {
           callback([]);
           return;
         }
         var procedures = [];
-        data.rows.forEach(function (row) {
+        data.rows.forEach((row) => {
           procedures.push(new Model.Procedure('public', row));
         });
         callback(procedures);
@@ -129,7 +129,7 @@ global.Model.Procedure = Model.base.extend({
 
     var fiber = global.Fiber && global.Fiber.current;
 
-    this.q(sql, this.oid, function (result, error) {
+    this.q(sql, this.oid, (result, error) => {
       if (error && fiber) {
         throw error;
       }
@@ -143,7 +143,7 @@ global.Model.Procedure = Model.base.extend({
 
     var fiber = global.Fiber && global.Fiber.current;
 
-    this.q(sql, type, this.data.schema_name, this.name, this.arg_list, function (result, error) {
+    this.q(sql, type, this.data.schema_name, this.name, this.arg_list, (result, error) => {
       if (error && fiber) {
         throw error;
       }
@@ -154,7 +154,7 @@ global.Model.Procedure = Model.base.extend({
 
 !function () {
   var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension'];
-  props.forEach(function (prop) {
+  props.forEach((prop) => {
     Object.defineProperty(Model.Procedure.prototype, prop, {
       get: function () {
         return this.data[prop];

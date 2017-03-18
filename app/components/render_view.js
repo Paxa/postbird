@@ -28,7 +28,7 @@ var RenderView = {
     }
     var res = $u.html2collection(html);
 
-    res.find('input, textarea').forEach(function (el) {
+    res.find('input, textarea').forEach((el) => {
       $u.textInputMenu(el);
     });
 

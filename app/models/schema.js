@@ -20,7 +20,7 @@ global.Model.Schema = Model.base.extend({
     var cascadeSql = options.cascade ? "CASCADE" : "";
     var sql = `DROP SCHEMA ${ifExistSql} "${this.schemaName}" ${cascadeSql}`;
 
-    this.q(sql, function (res, error) {
+    this.q(sql, (res, error) => {
       callback(res, error);
     });
   },
@@ -28,10 +28,10 @@ global.Model.Schema = Model.base.extend({
   getTableNames: function (callback) {
     var sql = `SELECT * FROM information_schema.tables where table_schema = '${this.schemaName}';`;
 
-    this.query(sql, function(rows, error) {
+    this.query(sql, (rows, error) => {
       var names = [];
       if (rows.rows) {
-        names = rows.rows.map(function (t) { return t.table_name });
+        names = rows.rows.map((t) => { return t.table_name });
       }
       callback(names, error);
     });
@@ -47,7 +47,7 @@ global.Model.Schema.create = function (name, options, callback) {
 
   var sql = 'CREATE SCHEMA "%s";';
 
-  Model.base.q(sql, name, function (res, error) {
+  Model.base.q(sql, name, (res, error) => {
     callback(Model.Schema(name), error);
   });
 };
@@ -55,10 +55,10 @@ global.Model.Schema.create = function (name, options, callback) {
 global.Model.Schema.findAll = function (callback) {
   var sql = "select nspname as name from pg_catalog.pg_namespace;"
 
-  Model.base.q(sql, function (res, error) {
+  Model.base.q(sql, (res, error) => {
     var schemas = [];
     if (res) {
-      res.rows.forEach(function (row) {
+      res.rows.forEach((row) => {
         schemas.push(Model.Schema(row.name));
       });
     }

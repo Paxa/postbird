@@ -14,9 +14,9 @@ global.ExportController = jClass.extend({
   },
 
   doExport: function () {
-    this.dialog = Dialog.ExportFile(this.handler, function (filename, options) {
+    this.dialog = Dialog.ExportFile(this.handler, (filename, options) => {
       this.runPgDump(filename, options);
-    }.bind(this));
+    });
   },
 
   runPgDump: function (filename, options) {
@@ -37,17 +37,17 @@ global.ExportController = jClass.extend({
     this.dialog.startExporting();
     this.dialog.addMessage("Start exporting '" + this.handler.database + "'\n");
 
-    exporter.onMessage(function (message, is_good) {
+    exporter.onMessage((message, is_good) => {
       this.dialog.addMessage(message);
-    }.bind(this));
+    });
 
-    exporter.doExport(this.handler.connection, filename, function (success, result) {
+    exporter.doExport(this.handler.connection, filename, (success, result) => {
       this.dialog.addMessage(success ? "SUCCESS\n" : "FAILED\n");
       if (filename && success) {
         this.dialog.addMessage("Saved to file " + filename);
       }
       this.dialog.showCloseButton();
-    }.bind(this));
+    });
   },
 
   currentTab: function () {

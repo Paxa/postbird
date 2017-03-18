@@ -40,28 +40,28 @@ function renderContent() {
   $u(document.body).fasterAppend(node);
   $('.history-window ul').scrollTop = $('.history-window ul').scrollHeight;
   $u('.reload-btn').on('click', renderContent);
-  $u('.clear-btn').on('click', function () {
+  $u('.clear-btn').on('click', () => {
     App.logEvents = [];
     renderContent()
   });
 }
 
-$u(document).ready(function() {
+$u(document).ready(() => {
   App.init();
 
-  electron.ipcRenderer.on('App.logEvents', function(event, messages) {
+  electron.ipcRenderer.on('App.logEvents', (event, messages) => {
     //logger.info(event, message);
     App.logEvents = messages;
     renderContent();
   });
 
-  electron.ipcRenderer.on('App.logEvents.add', function(event, message) {
+  electron.ipcRenderer.on('App.logEvents.add', (event, message) => {
     //logger.info(event, message);
     App.logEvents.push(message);
     renderContent();
   });
 
-  window.Mousetrap.bind("command+k", function () {
+  window.Mousetrap.bind("command+k", () => {
     App.logEvents = [];
     renderContent();
     return false;

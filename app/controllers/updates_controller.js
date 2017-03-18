@@ -2,7 +2,7 @@ var libs = {};
 var loadedModules = {};
 var remote = require('electron').remote;
 
-['semver', 'needle', 'strftime'].forEach(function(lib) {
+['semver', 'needle', 'strftime'].forEach((lib) => {
   Object.defineProperty(libs, lib, {
     get: function() {
       if (!loadedModules[lib]) {
@@ -23,7 +23,7 @@ global.UpdatesController = jClass.extend({
       App.startLoading("Getting latest version number");
     }
 
-    this.fetchLatestRelease(function (err, release) {
+    this.fetchLatestRelease((err, release) => {
       if (options && options.showLoading) {
         App.stopLoading();
       }
@@ -35,12 +35,12 @@ global.UpdatesController = jClass.extend({
           var msg = `Newer version is available. ${remote} (You are currently using: ${current})
                      <br>Released at: ${libs.strftime("%d %B %Y, %H:%M", date)}<br>`;
           window.alertify.labels.ok = "Install";
-          window.alertify.confirm(msg, function (answer) {
+          window.alertify.confirm(msg, (answer) => {
             window.alertify.labels.ok = "OK";
             if (answer) {
               electron.shell.openExternal(this.releasesPage);
             }
-          }.bind(this), 'grey-cancel-button');
+          }, 'grey-cancel-button');
         } else {
           if (options && options.showAlreadyLatest) {
             window.alertify.alert("You are using latest version");
@@ -51,20 +51,20 @@ global.UpdatesController = jClass.extend({
       //if (err) console.error(err);
       //if (release) console.log(release);
 
-    }.bind(this));
+    });
   },
 
   fetchLatestRelease: function (callback) {
-    libs.needle.get(this.releasesUrl, {}, function (err, resp) {
+    libs.needle.get(this.releasesUrl, {}, (err, resp) => {
       if (err) {
         callback(err);
       } else {
-        var stableRelease = resp.body.filter(function (rel) {
+        var stableRelease = resp.body.filter((rel) => {
           return !rel.prerelease;
         })[0];
         callback(undefined, stableRelease);
       }
-    }.bind(this));
+    });
   },
 
   currentVersion: function () {

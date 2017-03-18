@@ -7,13 +7,13 @@ global.Dialog.NewColumn = global.Dialog.extend({
   },
 
   showWindow: function () {
-    Model.Column.availableTypes(function (types) {
+    Model.Column.availableTypes((types) => {
       this.addPseudoTypes(types);
       var groupedTypes = this.groupTypes(types);
       var nodes = App.renderView('dialogs/column_form', {groupedTypes: groupedTypes, action: "create"});
       this.content = this.renderWindow(this.title, nodes);
       this.bindFormSubmitting();
-    }.bind(this));
+    });
   },
 
   onSubmit: function (data) {
@@ -39,9 +39,9 @@ global.Dialog.NewColumn = global.Dialog.extend({
     var groupName;
     for (groupName in this.groups) {
       grouped[groupName] = [];
-      this.groups[groupName].forEach(function(type) {
+      this.groups[groupName].forEach((type) => {
         var typeRow;
-        types.forEach(function(t, i) {
+        types.forEach((t, i) => {
           if (t.name == type) {
             typeRow = t;
             delete types[i];

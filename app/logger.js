@@ -11,7 +11,7 @@ function Logger (level) {
 
 !function (proto) {
 
-  log_levels.forEach(function(level) {
+  log_levels.forEach((level) => {
     proto[level] = function (message) {
       this.write(level, arguments);
     };

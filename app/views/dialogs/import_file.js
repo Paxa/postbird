@@ -10,7 +10,7 @@ global.Dialog.ImportFile = global.Dialog.extend({
   },
 
   showWindow: function () {
-    this.databaseList(function (databases) {
+    this.databaseList((databases) => {
       var nodes = App.renderView('dialogs/import_file', {
         filename: this.filename,
         databases: databases,
@@ -20,7 +20,7 @@ global.Dialog.ImportFile = global.Dialog.extend({
       this.content = this.renderWindow(this.title, nodes);
 
       var newDbNameInput = this.content.find("p.new-database-input");
-      this.content.find("select").bind('change', function (event) {
+      this.content.find("select").bind('change', (event) => {
         if (this.value == '**create-db**') {
           newDbNameInput.show();
           console.log(newDbNameInput.find('input'));
@@ -30,7 +30,7 @@ global.Dialog.ImportFile = global.Dialog.extend({
         }
       });
       this.bindFormSubmitting();
-    }.bind(this));
+    });
   },
 
   startImporting: function () {
@@ -54,7 +54,7 @@ global.Dialog.ImportFile = global.Dialog.extend({
   },
 
   databaseList: function (callback) {
-    this.handler.listDatabases(function (databases) {
+    this.handler.listDatabases((databases) => {
       callback(databases);
     });
   }

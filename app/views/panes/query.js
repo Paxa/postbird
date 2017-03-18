@@ -46,10 +46,10 @@ global.Panes.Query = global.Pane.extend({
       clearTimeout(this.saveTimeout);
     }
 
-    this.saveTimeout = setTimeout(function () {
+    this.saveTimeout = setTimeout(() => {
       Model.LastQuery.save(value);
       delete this.saveTimeout;
-    }.bind(this), 700);
+    }, 700);
 
   },
 
@@ -78,13 +78,13 @@ global.Panes.Query = global.Pane.extend({
     this.statusLine.text('');
 
     if (!this.handler.connection.connection) {
-      window.alertify.confirm("Not connected to server, reconnect?", function (is_yes) {
+      window.alertify.confirm("Not connected to server, reconnect?", (is_yes) => {
         if (is_yes) {
-          this.handler.reconnect(function (success) {
+          this.handler.reconnect((success) => {
             if (success) this.runQuery();
-          }.bind(this));
+          });
         }
-      }.bind(this));
+      });
       return;
     }
 
@@ -102,7 +102,7 @@ global.Panes.Query = global.Pane.extend({
       }
     });
 
-    this.handler.connection.query(sql, function (data, error) {
+    this.handler.connection.query(sql, (data, error) => {
       this.toggleButtonText();
       App.stopLoading();
       if (error) {
@@ -142,7 +142,7 @@ global.Panes.Query = global.Pane.extend({
         this.reloadTables();
       }
       this.editor.focus();
-    }.bind(this));
+    });
   },
 
   cleanResult: function () {

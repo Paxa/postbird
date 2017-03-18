@@ -19,30 +19,30 @@ global.Panes.Structure = global.Pane.extend({
 
   deleteColumn: function (column_name) {
     var msg = `Delete column ${column_name}?`;
-    var dialog = window.alertify.confirm(msg, function (result) {
+    var dialog = window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteColumn(column_name);
       }
-    }.bind(this));
+    });
   },
 
   doDeleteColumn: function (column_name) {
-    this.handler.deleteColumn(column_name, function (result, error) {
+    this.handler.deleteColumn(column_name, (result, error) => {
       if (error) window.alert(error.message);
     });
   },
 
   deleteIndex: function (indexName) {
     var msg = `Delete index ${indexName}?`;
-    var dialog = window.alertify.confirm(msg, function (result) {
+    var dialog = window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteIndex(indexName);
       }
-    }.bind(this));
+    });
   },
 
   doDeleteIndex: function (indexName) {
-    this.handler.deleteIndex(indexName, function (result, error) {
+    this.handler.deleteIndex(indexName, (result, error) => {
       if (error) window.alert(error.message);
     });
   },

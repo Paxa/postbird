@@ -116,7 +116,7 @@ global.App = {
     if (this.tabs[this.activeTab].instance instanceof LoginScreen) {
       console.log("Current tab is 'Connection' tab");
     } else {
-      this.tabs.forEach((x) => {
+      this.tabs.forEach((tab, tabIndex) => {
         if (tab.instance instanceof LoginScreen) {
           this.activateTab(tabIndex);
         }
@@ -168,7 +168,7 @@ global.App = {
   helpScreenOpen: function () {
     if (!this.helpScreen) return false;
 
-    var tabs = this.tabs.filter((b) => {
+    var tabs = this.tabs.filter((tab) => {
       if (tab.instance == this.helpScreen) {
         return true
       }

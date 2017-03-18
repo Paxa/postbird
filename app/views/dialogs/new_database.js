@@ -12,12 +12,12 @@ global.Dialog.NewDatabase = global.Dialog.extend({
 
     this.templateSelect = this.content.find('select.template');
     this.templateSelect.append( $u.buildOption('') );
-    this.templates.forEach(function(template) {
+    this.templates.forEach((template) => {
       this.templateSelect.append( $u.buildOption(template, template) );
-    }.bind(this));
+    });
 
     this.encodingSelect = this.content.find('select.encoding');
-    this.encodings.forEach(function(encoding) {
+    this.encodings.forEach((encoding) => {
       var label = encoding, options = {};
       if (this.clientEncoding == encoding) {
         label = label + '  (Client encoding)';
@@ -27,7 +27,7 @@ global.Dialog.NewDatabase = global.Dialog.extend({
       }
 
       this.encodingSelect.append( $u.buildOption(label, encoding, options) );
-    }.bind(this));
+    });
 
     this.bindFormSubmitting();
     this.setAutofocus();
@@ -39,24 +39,24 @@ global.Dialog.NewDatabase = global.Dialog.extend({
       return;
     }
 
-    this.handler.createDatabase(data, function (data, error) {
+    this.handler.createDatabase(data, (data, error) => {
       if (error)
         window.alert(error.message);
       else
         this.close();
-    }.bind(this));
+    });
   },
 
   prepareData: function (callback) {
     var _this = this, c = this.handler.connection;
     with (this.handler.connection) {
-      databaseTemplatesList(function(data) {
+      databaseTemplatesList((data) => {
         _this.templates = data;
-        avaliableEncodings(function (encodings) {
+        avaliableEncodings((encodings) => {
           _this.encodings = encodings;
-          getVariable('CLIENT_ENCODING', function (result) {
+          getVariable('CLIENT_ENCODING', (result) => {
             _this.clientEncoding = result;
-            getVariable('SERVER_ENCODING', function (result) {
+            getVariable('SERVER_ENCODING', (result) => {
               _this.serverEncoding = result;
               callback();
             }); // SERVER_ENCODING

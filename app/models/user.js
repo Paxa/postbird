@@ -20,7 +20,7 @@ global.Model.User = Model.base.extend({
         ORDER BY 1;
       `;
 
-      Model.base.q(sql, function(data, error) {
+      Model.base.q(sql, (data, error) => {
         callback(data.rows, error);
       });
     },
@@ -33,7 +33,7 @@ global.Model.User = Model.base.extend({
       sql += ';'
       if (data.superuser) sql += sprintf('ALTER USER "%s" WITH SUPERUSER;', data.username);
 
-      Model.base.q(sql, function(data, error) {
+      Model.base.q(sql, (data, error) => {
         callback(data, error);
       });
     },

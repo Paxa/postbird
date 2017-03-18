@@ -7,11 +7,11 @@ global.Dialog.EditUser = global.Dialog.NewUser.extend({
   },
 
   processData: function(attribute){
-    this.handler.updateUser(data, function(data, error) {
+    this.handler.updateUser(data, (data, error) => {
       if (error)
         window.alert(error.message);
       else
         this.close();
-    }.bind(this));
+    });
   },
 });
