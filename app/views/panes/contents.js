@@ -147,6 +147,12 @@ var filterMatchers = (function () {
     },
     custom: {
       label: 'custom',
+      validate: (type, v) => {
+        if (v === '' && type != 'boolean') {
+          return "Value is required";
+        }
+        return false;
+      },
       sql: (type, f, v) => {
         return `${ef(f)} ${v.replace(/%/g, '%%')}`;
       }
