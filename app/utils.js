@@ -4,7 +4,7 @@ var MenuItem = remote.MenuItem;
 
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
-  $u.each($u(selector_or_el).serializeArray(), function(_, kv) {
+  $u.each($u(selector_or_el).serializeArray(), (v) => {
     paramObj[kv.name] = kv.value;
   });
 
@@ -15,12 +15,14 @@ $u.stopEvent = function (e) {
   e && e.preventDefault();
 };
 
+// replacement of behated .each()
 $u.fn.forEach = function (callback) {
   this.each(function (i, item) {
     return callback(item, i);
   });
 };
 
+// build <option> tag
 $u.buildOption = function (label, value, options) {
   if (options == undefined && typeof value == 'object') {
     options = value;
@@ -36,7 +38,7 @@ $u.buildOption = function (label, value, options) {
 $u.contextMenu = function (element, options, params) {
   if (element.is === $u.fn.is) element = element[0];
 
-  element.addEventListener('contextmenu', function(event) {
+  element.addEventListener('contextmenu', (t) => {
     if (!element.contextmenu) {
       var menu = element.contextmenu = new Menu();
       for (var n in options) {
@@ -56,12 +58,12 @@ $u.contextMenu = function (element, options, params) {
       params.onShow(event, element.contextmenu);
     }
 
-    element.contextmenu.popup(remote.getCurrentWindow());
+    element.contextmenu.popup(remote.getCurrentWindow(), {async: true});
   });
 };
 
 $u.fn.single_double_click = function single_double_click (single_click_callback, double_click_callback, timeout) {
-  return this.each(function(){
+  return this.each(function() {
     var clicks = 0, self = this;
     $u(this).click(function(event){
       clicks++;
@@ -146,7 +148,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
       var matched;
       if (e.target == element[0]) matched = true;
-      $u(e.target).parents().each(function(i, parent) {
+      $u(e.target).parents().each((t) => {
         if (parent == element[0]) matched = true;
       });
 
@@ -158,7 +160,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
     $u(carcher).bind('click', closer);
 
-    window.Mousetrap.bind('esc', function () {
+    window.Mousetrap.bind('esc', () => {
       closer({target: window.document.body, escpeKey: true});
       window.Mousetrap.unbind('esc');
     });
@@ -197,7 +199,7 @@ $u.makeDroppable = function (target, callback) {
     e.preventDefault();
     return false;
   };
-  window.ondragleave = function () {
+  window.ondragleave = () => {
     holder.className = '';
     return false;
   };
@@ -213,10 +215,6 @@ $u.makeDroppable = function (target, callback) {
   };
 };
 
-$u.commentOf = function (callback) {
-  return callback.toString().match(/[^]*\/\*([^]*)\*\/\s*\}$/)[1];
-};
-
 $u.selectedText = function (element, currentWindow) {
   if (element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') {
     return element.value.substring(element.selectionStart, element.selectionEnd);
@@ -225,9 +223,8 @@ $u.selectedText = function (element, currentWindow) {
   }
 };
 
+// should be used for all text fields
 $u.textInputMenu = function (element, currentWindow) {
-  return;
-
   if (element.type == "checkbox" || element.type == "radio") {
     return false;
   }
@@ -248,13 +245,13 @@ $u.textInputMenu = function (element, currentWindow) {
   };
 
   $u.contextMenu(element, {
-    'Cut': function () {
+    'Cut': () => {
       (currentWindow || window).document.execCommand("cut");
     },
-    'Copy': function () {
+    'Copy': () => {
       (currentWindow || window).document.execCommand("copy");
     },
-    'Paste': function () {
+    'Paste': () => {
       (currentWindow || window).document.execCommand("paste");
     }
   }, {onShow: onShow});
@@ -277,7 +274,7 @@ $u.textContextMenu = function (element, currentWindow) {
   };
 
   $u.contextMenu(element, {
-    'Copy': function () {
+    'Copy': () => {
       (currentWindow || window).document.execCommand("copy");
     },
   }, {onShow: onShow});

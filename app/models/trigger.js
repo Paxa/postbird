@@ -1,7 +1,7 @@
 global.Model.Trigger = Model.base.extend({
   klassExtend: {
     findAll: function (callback) {
-      var sql = $u.commentOf(function () {/*
+      var sql = `
         select
           pg_class.relname as table_name,
           pg_proc.proname as proc_name,
@@ -11,7 +11,7 @@ global.Model.Trigger = Model.base.extend({
         left outer join pg_constraint on (pg_trigger.tgconstraint = pg_constraint.oid)
         inner join pg_proc on (pg_trigger.tgfoid = pg_proc.oid)
         inner join pg_class on (pg_trigger.tgrelid = pg_class.oid)
-      */});
+      `;
 
       Model.base.q(sql, function(data, error) {
         if (error) {
@@ -27,14 +27,14 @@ global.Model.Trigger = Model.base.extend({
     },
 
     find: function (table, name, callback) {
-      var sql = $u.commentOf(function () {/*
+      var sql = `
         select pg_class.relname as table_name, pg_proc.proname as proc_name, pg_trigger.*
         from pg_trigger, pg_proc, pg_class
         where
           pg_trigger.tgfoid = pg_proc.oid and
           pg_trigger.tgrelid = pg_class.oid
           pg_class.relname = "%s" and pg_trigger.tgname = "%s"
-      */});
+      `
 
       Model.base.q(sql, table, name, function(data, error) {
         if (error) {

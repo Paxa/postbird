@@ -16,18 +16,18 @@ global.DbScreenView = jClass.extend({
   },
 
   initEvents: function() {
-    this.topTabs.each(function(i, el) {
-      $u(el).bind('click', function(e) {
+    this.topTabs.forEach((el) => {
+      $u(el).bind('click', (e) => {
         var tabName = el.getAttribute('tab');
         e.preventDefault();
         this.showTab(tabName);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
 
     this.sidebar.find('a.addTable').bind('click', this.newTableDialog.bind(this));
     this.sidebar.find('a.reloadStructure').bind('click', this.reloadStructure.bind(this));
 
-    this.databaseSelect.bind('change', function (e) {
+    this.databaseSelect.bind('change', (e) => {
       var value = '' + $u(e.target).val();
 
       if (value == '**create-db**') {
@@ -43,7 +43,7 @@ global.DbScreenView = jClass.extend({
       } else {
         this.handler.selectDatabase(value);
       }
-    }.bind(this));
+    });
 
     var tablesBlock = this.content.find('.sidebar .tables');
     this.content.find('.show-system-tables input').bind('change', function(e) {
@@ -79,20 +79,20 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users', 'Extensions', 'Query', 'Structure', 'Contents', 'Procedures', 'Info'].forEach(function(paneName) {
+    ['Users', 'Extensions', 'Query', 'Structure', 'Contents', 'Procedures', 'Info'].forEach((paneName) => {
       this[paneName.toLowerCase()] = new global.Panes[paneName](this);
-    }.bind(this));
+    });
   },
 
   renderDbList: function (databases) {
     this.databaseSelect.empty();
     this.databaseSelect.append($u('<option>'))
 
-    databases.forEach(function(dbname) {
+    databases.forEach((dbname) => {
       this.databaseSelect.append($dom(
         ['option', {value: dbname}, dbname]
       ));
-    }.bind(this));
+    });
 
     this.databaseSelect.append($dom(
       ['option', {disabled: true}, '-----']
@@ -110,12 +110,11 @@ global.DbScreenView = jClass.extend({
   renderTablesAndSchemas: function (data, currentSchema, currentTable) {
     this.tablesList.empty();
 
-    var _this = this;
-    $u.each(data, function (schema, tables) {
+    $u.each(data, (schema, tables) => {
       var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
       if (schema == 'public') $u(schemaTree[0]).addClass('open');
 
-      $u(schemaTree[0]).find('span').bind('click', function() {
+      $u(schemaTree[0]).find('span').bind('click', () => {
         $u(schemaTree[0]).toggleClass('open');
       });
 
@@ -124,30 +123,30 @@ global.DbScreenView = jClass.extend({
         $u(schemaTree[0]).addClass('open');
       }
 
-      data[schema].forEach(function(table) {
+      data[schema].forEach((table) => {
         var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name, 'table-type': table.table_type}]);
 
-        $u(tableNode).single_double_click(function(e) {
+        $u(tableNode).single_double_click((e) => {
           if (e.target.tagName == "INPUT") return;
           e.preventDefault();
-          _this.handler.tableSelected(schema, table.table_name, tableNode);
-        }, function(e) {
+          this.handler.tableSelected(schema, table.table_name, tableNode);
+        }, (e) => {
           if (e.target.tagName == "INPUT") return;
           e.preventDefault();
-          _this.renameTable(tableNode, schema, table.table_name);
+          this.renameTable(tableNode, schema, table.table_name);
         }, 170);
 
         if (table.table_type == "BASE TABLE") {
           $u.contextMenu(tableNode, {
-            'View': function () {
-              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            'View': () => {
+              this.handler.tableSelected(schema, table.table_name, tableNode);
             },
             'separator': 'separator',
-            'Rename': function () {
-              _this.renameTable(tableNode, schema, table.table_name);
+            'Rename': () => {
+              this.renameTable(tableNode, schema, table.table_name);
             },
-            'Truncate table' : function () {
-              _this.handler.truncateTable(schema, table.table_name, function (res, error) {
+            'Truncate table' : () => {
+              this.handler.truncateTable(schema, table.table_name, (res, error) => {
                 if (error) {
                   var errorMsg = "" + error.toString();
                   if (error.detail) errorMsg += "\n----\n" + error.detail;
@@ -158,76 +157,76 @@ global.DbScreenView = jClass.extend({
                 }
               });
             },
-            'Drop table': function() {
-              _this.handler.dropTable(schema, table.table_name, function (res, error) {
+            'Drop table': () => {
+              this.handler.dropTable(schema, table.table_name, (res, error) => {
                 if (error) {
                   var errorMsg = "" + error.toString();
                   if (error.detail) errorMsg += "\n----\n" + error.detail;
                   if (error.hint) errorMsg += "\n----\n" + error.hint;
                   window.alert(errorMsg);
                 } else {
-                  if (_this.handler.currentTable == table.table_name) {
-                    _this.eraseCurrentContent();
+                  if (this.handler.currentTable == table.table_name) {
+                    this.eraseCurrentContent();
                   }
                 }
               });
             },
-            'Show table SQL': function () {
-              _this.showTableSql(schema, table.table_name);
+            'Show table SQL': () => {
+              this.showTableSql(schema, table.table_name);
             }
           });
         } else if (table.table_type == "VIEW" || table.table_type == "MATERIALIZED VIEW") {
           $u.contextMenu(tableNode, {
-            'View': function () {
-              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            'View': () => {
+              this.handler.tableSelected(schema, table.table_name, tableNode);
             },
             'separator': 'separator',
-            'Rename': function () {
-              _this.renameTable(tableNode, schema, table.table_name);
+            'Rename': () => {
+              this.renameTable(tableNode, schema, table.table_name);
             },
-            'Drop view': function() {
-              _this.handler.dropView(schema, table.table_name, function (res, error) {
+            'Drop view': () => {
+              this.handler.dropView(schema, table.table_name, (res, error) => {
                 if (error) {
                   var errorMsg = "" + error.toString();
                   if (error.detail) errorMsg += "\n----\n" + error.detail;
                   if (error.hint) errorMsg += "\n----\n" + error.hint;
                   window.alert(errorMsg);
                 } else {
-                  if (_this.handler.currentTable == table.table_name) {
-                    _this.eraseCurrentContent();
+                  if (this.handler.currentTable == table.table_name) {
+                    this.eraseCurrentContent();
                   }
                 }
               });
             },
-            'Show view SQL': function () {
-              _this.showViewSql(schema, table.table_name);
+            'Show view SQL': () => {
+              this.showViewSql(schema, table.table_name);
             }
           });
         } else if (table.table_type == "FOREIGN TABLE") {
           $u.contextMenu(tableNode, {
-            'View': function () {
-              _this.handler.tableSelected(schema, table.table_name, tableNode);
+            'View': () => {
+              this.handler.tableSelected(schema, table.table_name, tableNode);
             },
             'separator': 'separator',
-            'Rename': function () {
-              _this.renameTable(tableNode, schema, table.table_name);
+            'Rename': () => {
+              this.renameTable(tableNode, schema, table.table_name);
             },
-            'Drop foreign table': function() {
-              _this.handler.dropForeignTable(schema, table.table_name, function (res, error) {
+            'Drop foreign table': () => {
+              this.handler.dropForeignTable(schema, table.table_name, (res, error) => {
                 if (error) {
                   var errorMsg = "" + error.toString();
                   if (error.detail) errorMsg += "\n----\n" + error.detail;
                   if (error.hint) errorMsg += "\n----\n" + error.hint;
                   window.alert(errorMsg);
                 } else {
-                  if (_this.handler.currentTable == table.table_name) {
-                    _this.eraseCurrentContent();
+                  if (this.handler.currentTable == table.table_name) {
+                    this.eraseCurrentContent();
                   }
                 }
               });
             },
-            'Show view SQL': function () {
-              _this.showViewSql(schema, table.table_name);
+            'Show view SQL': () => {
+              this.showViewSql(schema, table.table_name);
             }
           });
         } else {
@@ -238,11 +237,11 @@ global.DbScreenView = jClass.extend({
 
         if (currentSchema == schema && table.table_name == currentTable) {
           $u(tableNode).addClass('selected');
-          _this.handler.currentTableNode = $u(tableNode);
+          this.handler.currentTableNode = $u(tableNode);
         }
       });
 
-      _this.tablesList.append(schemaTree[0]);
+      this.tablesList.append(schemaTree[0]);
     });
   },
 
@@ -255,9 +254,7 @@ global.DbScreenView = jClass.extend({
     node.html('<input value="' + tableName + '" type=text>');
     var input = node.find('input');
     input.focus();
-    setTimeout(function() {
-      input[0].setSelectionRange(0, 999);
-    }, 20)
+    setTimeout(() => { input[0].setSelectionRange(0, 999); }, 20);
 
     input.bind('keyup', function(e) {
       if (e.keyCode == 27) {
@@ -265,7 +262,7 @@ global.DbScreenView = jClass.extend({
       }
     });
 
-    $u.listenClickOutside(input, function (action) {
+    $u.listenClickOutside(input, (action) => {
       if (action == 'click') {
         var newValue = input.val();
         if (newValue != tableName) {
@@ -274,16 +271,16 @@ global.DbScreenView = jClass.extend({
         }
       }
       node.html(tableName);
-    }.bind(this));
+    });
 
-    input.bind('keypress', function(e) {
+    input.bind('keypress', (e) => {
       if (e.keyCode == 13) {
         // Enter key pressed
         var newValue = e.target.value;
         node.html(e.target.value);
         this.handler.renameTable(schema, tableName, newValue);
       }
-    }.bind(this));
+    });
   },
 
   showTab: function(name) {
@@ -337,7 +334,7 @@ global.DbScreenView = jClass.extend({
 
   showTableSql: function (schema, table) {
     App.startLoading("Getting table sql...");
-    this.handler.getTableSql(schema, table, function (source) {
+    this.handler.getTableSql(schema, table, (source) => {
       App.stopLoading();
       new Dialog.ShowSql("Table " + table, source);
     });
@@ -345,7 +342,7 @@ global.DbScreenView = jClass.extend({
 
   showViewSql: function (schema, table) {
     App.startLoading("Getting view sql...");
-    this.handler.getTableSql(schema, table, function (source) {
+    this.handler.getTableSql(schema, table, (source) => {
       App.stopLoading();
       new Dialog.ShowSql("View " + table, source);
     });
@@ -358,10 +355,10 @@ global.DbScreenView = jClass.extend({
       ['a$name', name]
     ]);
 
-    $u(herokuHeader.name).bind('click', function() {
+    $u(herokuHeader.name).bind('click', () => {
       new Dialog.HerokuConnection(this, name, databseUrl);
       //window.alertify.alert(databseUrl);
-    }.bind(this));
+    });
 
     this.content.find('.databases').append(herokuHeader[0]);
   }

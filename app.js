@@ -24,11 +24,11 @@ global.App = {
     log.info('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
     /* auto connect, for development *\/
 
-    this.loginScreen.onFormSubmit(false, function() {
-      setTimeout(function() {
+    this.loginScreen.onFormSubmit(false, () => {
+      setTimeout(() => {
         this.activeTabObj().instance.view.databaseSelect.val('ds2').change();
-      }.bind(this), 50);
-    }.bind(this));
+      }, 50);
+    });
 
     /* --- auto connect */
 
@@ -61,7 +61,7 @@ global.App = {
     this.tabs.unshift(tabData);
     if (this.activeTab !== null) this.activeTab += 1;
 
-    tabData.tabHandler.bind('click', function() {
+    tabData.tabHandler.bind('click', () => {
       tabData.activate();
     });
 
@@ -72,7 +72,7 @@ global.App = {
       App.activateTab(App.tabs.indexOf(tabData));
     };
 
-    $u(tree.close).bind('click', function(e) {
+    $u(tree.close).bind('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       App.closeTab(App.tabs.indexOf(tabData));
@@ -116,11 +116,11 @@ global.App = {
     if (this.tabs[this.activeTab].instance instanceof LoginScreen) {
       console.log("Current tab is 'Connection' tab");
     } else {
-      this.tabs.forEach(function (tab, tabIndex) {
+      this.tabs.forEach((x) => {
         if (tab.instance instanceof LoginScreen) {
           this.activateTab(tabIndex);
         }
-      }.bind(this));
+      });
     }
   },
 
@@ -168,11 +168,11 @@ global.App = {
   helpScreenOpen: function () {
     if (!this.helpScreen) return false;
 
-    var tabs = this.tabs.filter(function (tab) {
+    var tabs = this.tabs.filter((b) => {
       if (tab.instance == this.helpScreen) {
         return true
       }
-    }.bind(this));
+    });
 
     return !!tabs.length;
   },
@@ -197,7 +197,7 @@ global.App = {
     });
 
     if (options.cancel) {
-      $u(this.loader).find('a.cancel-btn').on('click', function () {
+      $u(this.loader).find('a.cancel-btn').on('click', () => {
         options.cancel();
       });
     }
@@ -206,10 +206,10 @@ global.App = {
 
     if (timeout === undefined) timeout = 300;
 
-    this.loaderTimeout = setTimeout(function() {
+    this.loaderTimeout = setTimeout(() => {
       delete this.loaderTimeout;
       this.loader.addClass('appear');
-    }.bind(this), timeout);
+    }, timeout);
   },
 
   stopLoading: function () {
@@ -218,7 +218,7 @@ global.App = {
       var loader = this.loader;
       delete this.loader;
       loader.removeClass('appear');
-      setTimeout(function() {
+      setTimeout(() => {
         loader.remove();
       }, 250);
     }
@@ -311,7 +311,7 @@ global.App.log = function App_log(type, value1, value2, value3, value4) {
   return this.logger.emit.apply(this.logger, arguments);
 }.bind(App);
 
-global.App.logger.onAny(function () {
+global.App.logger.onAny(() => {
   var event = {type: this.event, time: (new Date()), args: Array.prototype.slice.call(arguments)};
   global.App.logEvents.push(event);
   if (global.App._events["log.message"]) global.App.emit("log.message", event);

@@ -28,7 +28,7 @@ var RenderView = {
     }
     var res = $u.html2collection(html);
 
-    res.find('input, textarea').each(function (i, el) {
+    res.find('input, textarea').forEach(function (el) {
       $u.textInputMenu(el);
     });
 
@@ -61,20 +61,20 @@ var RenderView = {
     if (this.jadeCacheTimeout) {
       clearTimeout(this.jadeCacheTimeout);
     }
-    this.jadeCacheTimeout = setTimeout(function() {
+    this.jadeCacheTimeout = setTimeout(() => {
       clearTimeout(this.jadeCacheTimeout);
       delete this.jadeCacheTimeout;
       this.jadeCacheSave();
-    }.bind(this), 1000);
+    }, 1000);
   },
 
   jadeCacheSave: function () {
     result = "";
-    Object.keys(this.jadeFn).sort().forEach(function(key) {
+    Object.keys(this.jadeFn).sort().forEach((key) => {
       var fn = this.jadeFn[key];
       result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(process.env.PWD + '/', 'g'), '') + ";\n";
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
-    }.bind(this));
+    });
 
     node.fs.writeFileSync(this.root + '/views/cache.js', result, 'utf8');
     console.log("Jade cache saved!");

@@ -5,7 +5,7 @@ global.Model.User = Model.base.extend({
 
     findAll: function (callback) {
 
-      var sql = $u.commentOf(function () {/*
+      var sql = `
         SELECT r.rolname, r.rolsuper, r.rolinherit,
           r.rolcreaterole, r.rolcreatedb, r.rolcanlogin,
           r.rolconnlimit, r.rolvaliduntil, r.rolreplication,
@@ -18,7 +18,7 @@ global.Model.User = Model.base.extend({
           ), ', ') as owned_dbs
         FROM pg_catalog.pg_roles r
         ORDER BY 1;
-      */ });
+      `;
 
       Model.base.q(sql, function(data, error) {
         callback(data.rows, error);
