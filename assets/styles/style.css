@@ -242,23 +242,20 @@ input, textarea {
   height: 21px;
   line-height: 19px;
   font-size: 11px;
-  color: #000;
-  background-color: #EDEDED;
-  background-image: url("../button-bg.png");
-  background-repeat: repeat-x;
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1); }
+  color: #333;
+  background-color: #fcfcfc;
+  background-image: linear-gradient(to bottom, #fcfcfc 0, #f1f1f1 100%);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06); }
   .native-look:focus {
+    box-shadow: none;
     outline-color: #5b9dd9;
     outline-offset: -2px;
     outline-radius: 16px;
     outline-style: auto;
     outline-width: 4.75; }
   .native-look:active {
-    border-top-color: #5645B1;
-    border-bottom-color: #484175;
-    border-left-color: #4C418C;
-    border-right-color: #4C418C;
-    background-image: url("../button-bg-active.png");
+    background-color: #ddd;
+    background-image: none;
     outline: none; }
 
 table.native-look-table {
@@ -321,7 +318,7 @@ table.native-look-table {
     border-top: 1px solid #d3d3d3;
     font-size: 13px;
     width: 320px;
-    margin: 45px auto 0;
+    margin: calc(50% - 220px) auto 0;
     padding: 16px 20px; }
     .home-screen .middle-window p {
       margin: 12px 0; }
@@ -428,22 +425,14 @@ table.native-look-table {
       .home-screen .sidebar ul > li.selected {
         background: #116cd6;
         color: white; }
-    .home-screen .sidebar a.add-connection {
-      display: inline-block;
-      height: 20px;
-      line-height: 21px;
-      padding: 3px 11px 3px 30px;
-      border-radius: 5px;
-      margin-left: 8px;
-      margin-top: 12px;
-      background: url("../icons/add-connection.png"), linear-gradient(#fdfdfd, #f3f3f3), linear-gradient(#ededed, #f2f2f2);
-      background-repeat: no-repeat, no-repeat, no-repeat;
-      background-position: 7px center, 0px 0px, 0px bottom;
-      background-size: 18px 18px, 100% 50%, 100% 50%;
-      border: 1px solid #c3c3c3;
-      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
-      color: black;
-      text-decoration: none; }
+    .home-screen .sidebar button.add-connection {
+      padding-left: 28px;
+      background-color: #f9f9f9;
+      background-image: url("../icons/add-connection.png");
+      background-repeat: no-repeat;
+      background-position: 7px 2px;
+      background-size: 15px 15px;
+      margin: 12px 0 0 8px; }
   .home-screen footer {
     text-align: center;
     margin-top: 3%; }
@@ -1233,6 +1222,35 @@ body.sidebar-resizing {
       border-bottom-color: #ccc;
       border-radius: 3.75px;
       min-width: 250px; }
+      .window-content.content .content-filter input::-webkit-search-cancel-button {
+        display: none; }
+    .window-content.content .content-filter span.cancel {
+      background-color: #7f7f7f;
+      border-radius: 5px;
+      height: 11px;
+      width: 11px;
+      position: relative;
+      margin-left: -20px;
+      margin-right: 9px;
+      display: none; }
+      .window-content.content .content-filter span.cancel:before, .window-content.content .content-filter span.cancel:after {
+        content: '';
+        position: absolute;
+        background: white; }
+      .window-content.content .content-filter span.cancel:before {
+        left: 2px;
+        right: 2px;
+        height: 1px;
+        top: 5px;
+        transform: rotate(45deg); }
+      .window-content.content .content-filter span.cancel:after {
+        left: 2px;
+        right: 2px;
+        height: 1px;
+        top: 5px;
+        transform: rotate(-45deg); }
+    .window-content.content .content-filter[filtered] span.cancel {
+      display: inline-block; }
   .window-content.content table tr th {
     max-width: 200px;
     text-overflow: ellipsis;

@@ -8,6 +8,10 @@ $mac-sidebar-border-color: #ddddd9;
 
 $mac-footer-border-color: #c4c2c4;
 
+$mac-button-bg: #fcfcfc;
+$mac-button-gradient: linear-gradient(to bottom,#fcfcfc 0,#f1f1f1 100%);
+$mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
+
 @mixin native-items-list {
   > li {
     padding: 2px 8px 2px 35px;
@@ -46,6 +50,7 @@ $mac-footer-border-color: #c4c2c4;
   }
 }
 
+// mac's button
 .native-look {
   padding: 0 9px;
   box-sizing: border-box;
@@ -55,15 +60,15 @@ $mac-footer-border-color: #c4c2c4;
   height: 21px;
   line-height: 19px;
   font-size: 11px;
-  color: #000;
+  color: #333;
   background: {
-    color: #EDEDED;
-    image: url("../button-bg.png");
-    repeat: repeat-x;
+    color: $mac-button-bg;
+    image: $mac-button-gradient;
   };
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0,0,0,.06);
 
   &:focus {
+    box-shadow: none;
     outline-color: rgb(91, 157, 217);
     outline-offset: -2px;
     outline-radius: 16px;
@@ -72,11 +77,14 @@ $mac-footer-border-color: #c4c2c4;
   }
 
   &:active {
-    border-top-color: #5645B1;
-    border-bottom-color: #484175;
-    border-left-color: #4C418C;
-    border-right-color: #4C418C;
-    background-image: url("../button-bg-active.png");
+    background-color: #ddd;
+    background-image: none;
+
+    //border-top-color: #5645B1;
+    //border-bottom-color: #484175;
+    //border-left-color: #4C418C;
+    //border-right-color: #4C418C;
+    //background-image: url("../button-bg-active.png");
     outline: none;
   }
 }

@@ -13,7 +13,7 @@
     @include native-panel-element;
     font-size: 13px;
     width: 320px;
-    margin: 45px auto 0;
+    margin: calc(50% - 220px) auto 0;
     padding: 16px 20px;
 
     p {
@@ -143,24 +143,14 @@
       @include native-items-list;
     }
 
-    a.add-connection {
-      display: inline-block;
-      height: 20px;
-      line-height: 21px;
-      padding: 3px 11px 3px 30px;
-      border-radius: 5px;
-      margin: {
-        left: 8px;
-        top: 12px;
-      };
-      background: url("../icons/add-connection.png"), linear-gradient(#fdfdfd, #f3f3f3), linear-gradient(#ededed, #f2f2f2);
-      background-repeat: no-repeat, no-repeat, no-repeat;
-      background-position: 7px center, 0px 0px, 0px bottom;
-      background-size: 18px 18px, 100% 50%, 100% 50%;
-      border: 1px solid #c3c3c3;
-      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
-      color: black;
-      text-decoration: none;
+    button.add-connection {
+      padding-left: 28px;
+      background-color: #f9f9f9;
+      background-image: url("../icons/add-connection.png");
+      background-repeat: no-repeat;
+      background-position: 7px 2px;
+      background-size: 15px 15px;
+      margin: 12px 0 0 8px;
     }
   }
 
