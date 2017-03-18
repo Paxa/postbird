@@ -1,0 +1,44 @@
+.app-loader {
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  height: 79px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  top: 50%;
+  border-radius: 20px;
+  margin-left: -150px;
+  margin-top: -50px;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+
+  span {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  small {
+    font-size: 13px;
+  }
+
+  &.appear {
+    opacity: 1;
+  }
+
+  a.cancel-btn {
+    margin-left: 10px;
+    color: white;
+    background: black;
+    border-radius: 5px;
+    padding: 4px 6px;
+    text-decoration: none;
+    float: right;
+    margin-right: -6px;
+  }
+}

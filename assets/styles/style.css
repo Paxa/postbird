@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* reset */
 html, body {
   margin: 0;
@@ -185,7 +184,7 @@ input, textarea {
       display: none;
       background: #a3a3a3; }
       #tabs .tab .close:after {
-        content: "×";
+        content: "\d7";
         position: absolute;
         color: #e0e0e0;
         font-size: 14px;

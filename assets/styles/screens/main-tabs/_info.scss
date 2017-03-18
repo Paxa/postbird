@@ -1,0 +1,19 @@
+.window-content.info {
+  padding: 9px;
+  box-sizing: border-box;
+
+  .summary {
+    margin-bottom: 10px;
+  }
+
+  h4 {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 9px;
+  }
+
+  code.result {
+    white-space: pre-wrap;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  }
+}

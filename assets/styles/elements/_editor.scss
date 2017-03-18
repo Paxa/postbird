@@ -1,0 +1,64 @@
+.cm-s-mac-classic {
+  &.CodeMirror {
+    color: #000000;
+    background: #FFFFFF;
+    font: {
+      family: "Monaco", monospace;
+      size: 12px;
+    };
+    line-height: 18px;
+  }
+
+  .CodeMirror-activeline-background {
+    background: rgba(0, 0, 0, 0.07);
+  }
+
+  .CodeMirror-selected {
+    background: rgba(77, 151, 255, 0.33);
+  }
+
+  span.CodeMirror-matchingbracket, .CodeMirror-matchingbracket {
+    background: rgba(239, 237, 137, 0.32);
+    color: black !important;
+  }
+
+  .cm-cursor {
+    color: #000000;
+  }
+
+  .cm-keyword {
+    font-weight: bold;
+    color: #0000FF;
+  }
+
+  .cm-variable {
+    color: #318495;
+  }
+
+  .cm-variable-2 {
+    color: #318495;
+  }
+
+  .cm-builtin {
+    font-weight: bold;
+    color: #585CF6;
+  }
+
+  .cm-comment {
+    font-style: italic;
+    color: #4387EC;
+  }
+
+  .cm-string {
+    color: #910A2A;
+  }
+
+  .cm-number {
+    color: #0000CD;
+  }
+
+  .cm-error, .cm-invalidchar {
+    background: #990000;
+    color: #FFFFFF;
+  }
+}

@@ -1,0 +1,134 @@
+/* reset */
+@mixin reset-box-model {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+@mixin reset {
+  @include reset-box-model;
+
+  font: {
+    weight: inherit;
+    style: inherit;
+    size: 100%;
+  };
+  vertical-align: baseline;
+}
+
+@mixin reset-quotation {
+  @include reset;
+
+  quotes: "" "";
+
+  &:before,
+  &:after {
+    content: "";
+  }
+}
+
+@mixin reset-table-cell {
+  @include reset;
+
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+@mixin reset-table {
+  @include reset;
+
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+@mixin reset-link {
+  text: {
+    decoration: none;
+  };
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+
+  img {
+    border: 0;
+  }
+}
+
+@mixin reset-list {
+  list-style-type: none;
+}
+
+@mixin nested-reset {
+  div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+  pre, a, abbr, acronym, address, code, del, dfn, em, img,
+  dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr {
+    @include reset;
+  }
+
+  body {
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+  }
+
+  blockquote, q {
+    @include reset-quotation;
+  }
+
+  th, td, caption {
+    @include reset-table-cell;
+  }
+
+  table {
+    @include reset-table;
+  }
+
+  li {
+    @include reset-list;
+  }
+
+  a {
+    @include reset-link;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  * {
+    //:outline none
+ 
+  }
+
+  footer, header, aside, nav, menu, video, audio, time, progress, section, article {
+    @include reset;
+
+    display: block;
+  }
+
+  aside {
+    text: {
+      align: left;
+    };
+  }
+
+  input[type="file"] {
+    @include opacity(1);
+
+    cursor: pointer;
+  }
+}
+
+@mixin global-reset {
+  html, body {
+    @include reset;
+  }
+
+  @include nested-reset;
+}
