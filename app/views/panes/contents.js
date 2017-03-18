@@ -485,6 +485,7 @@ global.Panes.Contents = global.Pane.extend({
     this.filterMatcher = this.content.find('[name=filter-matcher]');
     this.filterValue =   this.content.find('[name=filter-value]');
     this.filterForm =    this.content.find('.content-filter form');
+    this.filterCancel =  this.content.find('.content-filter span.cancel');
 
     this.filterField.on('change', () => {
       this.state.filterField = this.filterField.val();
@@ -498,14 +499,20 @@ global.Panes.Contents = global.Pane.extend({
       this.state.filterValue = this.filterValue.val();
     });
 
+    this.filterCancel.on('click', (e) => this.cancelFilters());
+    this.filterValue.on('keyup', (event) => {
+      if (event.keyCode === 27) { // 27 is esc
+        this.cancelFilters();
+      }
+    });
+
     this.filterForm.on('submit', (e) => {
       e.preventDefault();
 
       var value = this.filterValue.val();
       var field = this.filterField.val();
       var dataType = this.columnTypes[field].data_type;
-
-      console.log(this.columnTypes);
+      this.state.filtered = true;
 
       var m = filterMatchers[this.filterMatcher.val()];
       if (m) {
@@ -521,6 +528,15 @@ global.Panes.Contents = global.Pane.extend({
         this.reloadData();
       }
     });
+  },
+
+  cancelFilters() {
+    this.filterValue.val("").trigger('change');
+    if (this.state.filtered) {
+      this.state.filtered = false;
+      delete this.queryOptions.conditions;
+      this.reloadData();
+    }
   }
 });
 

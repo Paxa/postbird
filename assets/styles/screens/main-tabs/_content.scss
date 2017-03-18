@@ -77,6 +77,41 @@
       border-bottom-color: #ccc;
       border-radius: 3.75px;
       min-width: 250px;
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
+    }
+    span.cancel {
+      background-color: #7f7f7f;
+      border-radius: 5px;
+      height: 11px;
+      width: 11px;
+      position: relative;
+      margin-left: -20px;
+      margin-right: 9px;
+      display: none;
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        background: white;
+      }
+      &:before {
+        left: 2px;
+        right: 2px;
+        height: 1px;
+        top: 5px;
+        transform: rotate(45deg);
+      }
+      &:after {
+        left: 2px;
+        right: 2px;
+        height: 1px;
+        top: 5px;
+        transform: rotate(-45deg);
+      }
+    }
+    &[filtered] span.cancel {
+      display: inline-block;
     }
   }
 

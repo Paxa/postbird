@@ -1,4 +1,4 @@
-.content-filter
+.content-filter(filtered=!!state.filtered)
   form
     label Search:
     select(name="filter-field")
@@ -9,6 +9,7 @@
       each matcher, key in matchers
         option(value = key, selected = state.filterMatcher === key)= matcher.label
     input(type="search" placeholder="Search" name="filter-value" value=state.filterValue)
+    span.cancel(title="Cancel Filter")
     button Filter
 
 .rescol-wrapper(full-width=true)
