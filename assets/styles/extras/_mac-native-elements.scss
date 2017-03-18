@@ -20,7 +20,7 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
     &:before {
       display: block;
       content: "";
-      background: url("../icons/table2.png") no-repeat;
+      background: url("icons/table2.png") no-repeat;
       background-size: 15px 15px;
       width: 15px;
       height: 15px;
@@ -30,12 +30,12 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
     }
 
     &[table-type=VIEW]:before, &[table-type="MATERIALIZED VIEW"]:before {
-      background-image: url("../icons/db_view.png");
+      background-image: url("icons/db_view.png");
       opacity: 0.8;
     }
 
     &[table-type="FOREIGN TABLE"]:before {
-      background-image: url("../icons/foreign_table.png");
+      background-image: url("icons/foreign_table.png");
       opacity: 0.8;
     }
 
@@ -56,6 +56,7 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
   box-sizing: border-box;
   -webkit-appearance: none;
   border: 1px solid #9A9A9A;
+  border-color: $mac-button-border-color;
   border-radius: 4px;
   height: 21px;
   line-height: 19px;
@@ -79,82 +80,7 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
   &:active {
     background-color: #ddd;
     background-image: none;
-
-    //border-top-color: #5645B1;
-    //border-bottom-color: #484175;
-    //border-left-color: #4C418C;
-    //border-right-color: #4C418C;
-    //background-image: url("../button-bg-active.png");
     outline: none;
-  }
-}
-
-table.native-look-table {
-  border: 1px solid #ccc;
-  border-top: 1px solid #a8a8a8;
-  border-top: 1px solid #b6b6b6;
-
-  th, td {
-    border: 0;
-  }
-
-  th {
-    background-image: url("../table_top_bg.png");
-    background-size: 1px 100%;
-    background-repeat: repeat-x;
-    border-bottom: 1px solid #b6b6b6;
-    position: relative;
-    font-weight: normal;
-
-    &[sortable-dir='asc'], &[sortable-dir='desc'] {
-      &:before {
-        content: "\2303";
-        display: block;
-        width: 10px;
-        position: absolute;
-        color: #9f9f9f;
-        top: 2px;
-        bottom: 2px;
-        left: 0px;
-      }
-    }
-
-    &[sortable-dir='desc'] {
-      &:before {
-        content: "\2304";
-      }
-    }
-  }
-
-  tr:nth-child(odd) td {
-    background: #f3f6fa;
-  }
-
-  tr.selected td {
-    background: #d4d4d4;
-    color: black;
-  }
-
-  td, th {
-    padding: 1px 8px 1px 3px;
-  }
-
-  &.active tr.selected td {
-    background: #3c6bdd;
-    color: white;
-
-    a {
-      color: white;
-    }
-  }
-
-  tr.adding-new-row {
-    td {
-      input {
-        max-width: 100%;
-        width: 100%;
-      }
-    }
   }
 }
 

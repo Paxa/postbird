@@ -1,28 +1,31 @@
-table.native-look-table
-  thead
-    tr
-      th(width="70") Role name
-      th(width="25%") List of roles
-      th(width="50") Member of
-      th(width="25%") Owned Databases
-      th(width="50")
-  tbody
-    each user in rows
-      tr
-        td
-          if currentUser == user.rolname
-            strong= user.rolname
-            br
-            small (current user)
-          else
-            = user.rolname
-        td= user.roles.join(', ')
-        td= user.memberof
-        td= user.owned_dbs
-        td
-          a(exec="editUser('" + user.rolname + "')") Edit
-          = " "
-          a(exec="deleteUser('" + user.rolname + "')") Delete
+.rescol-wrapper.with-borders
+  .rescol-header-wrapper
+  .rescol-content-wrapper
+    table
+      thead
+        tr
+          th Role name
+          th List of roles
+          th Member of
+          th(style="max-width: 250px") Owned Databases
+          th
+      tbody
+        each user in rows
+          tr
+            td
+              if currentUser == user.rolname
+                strong= user.rolname
+                br
+                small (current user)
+              else
+                = user.rolname
+            td(style="max-width: 180px")= user.roles.join(', ')
+            td= user.memberof
+            td(style="max-width: 250px")= user.owned_dbs
+            td
+              a(exec="editUser('" + user.rolname + "')") Edit
+              = " "
+              a(exec="deleteUser('" + user.rolname + "')") Delete
 
 footer
   button.native-look.createUserBtn(exec="newUserDialog") Create new user

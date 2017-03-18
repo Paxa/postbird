@@ -237,6 +237,7 @@ input, textarea {
   box-sizing: border-box;
   -webkit-appearance: none;
   border: 1px solid #9A9A9A;
+  border-color: #c2c0c2 #c2c0c2 #a19fa1;
   border-radius: 4px;
   height: 21px;
   line-height: 19px;
@@ -256,46 +257,6 @@ input, textarea {
     background-color: #ddd;
     background-image: none;
     outline: none; }
-
-table.native-look-table {
-  border: 1px solid #ccc;
-  border-top: 1px solid #a8a8a8;
-  border-top: 1px solid #b6b6b6; }
-  table.native-look-table th, table.native-look-table td {
-    border: 0; }
-  table.native-look-table th {
-    background-image: url("../table_top_bg.png");
-    background-size: 1px 100%;
-    background-repeat: repeat-x;
-    border-bottom: 1px solid #b6b6b6;
-    position: relative;
-    font-weight: normal; }
-    table.native-look-table th[sortable-dir='asc']:before, table.native-look-table th[sortable-dir='desc']:before {
-      content: "\2303";
-      display: block;
-      width: 10px;
-      position: absolute;
-      color: #9f9f9f;
-      top: 2px;
-      bottom: 2px;
-      left: 0px; }
-    table.native-look-table th[sortable-dir='desc']:before {
-      content: "\2304"; }
-  table.native-look-table tr:nth-child(odd) td {
-    background: #f3f6fa; }
-  table.native-look-table tr.selected td {
-    background: #d4d4d4;
-    color: black; }
-  table.native-look-table td, table.native-look-table th {
-    padding: 1px 8px 1px 3px; }
-  table.native-look-table.active tr.selected td {
-    background: #3c6bdd;
-    color: white; }
-    table.native-look-table.active tr.selected td a {
-      color: white; }
-  table.native-look-table tr.adding-new-row td input {
-    max-width: 100%;
-    width: 100%; }
 
 .home-screen {
   background: #ececec;
@@ -317,7 +278,8 @@ table.native-look-table {
     border-top: 1px solid #d3d3d3;
     font-size: 13px;
     width: 320px;
-    margin: calc(50% - 220px) auto 0;
+    margin: 40px auto 0;
+    margin-top: calc(50vh - 163px);
     padding: 16px 20px; }
     .home-screen .middle-window p {
       margin: 12px 0; }
@@ -406,7 +368,7 @@ table.native-look-table {
       .home-screen .sidebar ul > li:before {
         display: block;
         content: "";
-        background: url("../icons/table2.png") no-repeat;
+        background: url("icons/table2.png") no-repeat;
         background-size: 15px 15px;
         width: 15px;
         height: 15px;
@@ -414,10 +376,10 @@ table.native-look-table {
         top: 4px;
         position: absolute; }
       .home-screen .sidebar ul > li[table-type=VIEW]:before, .home-screen .sidebar ul > li[table-type="MATERIALIZED VIEW"]:before {
-        background-image: url("../icons/db_view.png");
+        background-image: url("icons/db_view.png");
         opacity: 0.8; }
       .home-screen .sidebar ul > li[table-type="FOREIGN TABLE"]:before {
-        background-image: url("../icons/foreign_table.png");
+        background-image: url("icons/foreign_table.png");
         opacity: 0.8; }
       .home-screen .sidebar ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }
@@ -427,7 +389,7 @@ table.native-look-table {
     .home-screen .sidebar button.add-connection {
       padding-left: 28px;
       background-color: #f9f9f9;
-      background-image: url("../icons/add-connection.png");
+      background-image: url("icons/add-connection.png");
       background-repeat: no-repeat;
       background-position: 7px 2px;
       background-size: 15px 15px;
@@ -654,7 +616,7 @@ body.sidebar-resizing {
           .main-screen > .sidebar > .tables > ul > li > span:before {
             display: block;
             content: "";
-            background: url("../icons/orange_database.png") no-repeat;
+            background: url("icons/orange_database.png") no-repeat;
             background-size: 15px 15px;
             width: 15px;
             height: 15px;
@@ -669,7 +631,7 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
-              background: url("../icons/table2.png") no-repeat;
+              background: url("icons/table2.png") no-repeat;
               background-size: 15px 15px;
               width: 15px;
               height: 15px;
@@ -677,10 +639,10 @@ body.sidebar-resizing {
               top: 4px;
               position: absolute; }
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
-              background-image: url("../icons/db_view.png");
+              background-image: url("icons/db_view.png");
               opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="FOREIGN TABLE"]:before {
-              background-image: url("../icons/foreign_table.png");
+              background-image: url("icons/foreign_table.png");
               opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
               background: rgba(0, 0, 0, 0.1); }
@@ -1319,8 +1281,15 @@ body.sidebar-resizing {
     .window-content.content .native-footer-bar li.prev {
       display: none; }
 
-.window-content.users table + footer {
-  margin-top: 10px; }
+.window-content.users {
+  margin-bottom: -27px;
+  height: calc(100% + 7px);
+  padding: 9px; }
+  .window-content.users .rescol-wrapper {
+    height: auto;
+    margin-bottom: 10px; }
+  .window-content.users table + footer {
+    margin-top: 10px; }
 
 .window-content.info {
   padding: 9px;
@@ -1347,7 +1316,7 @@ body.sidebar-resizing {
       height: 100%; }
   .window-content.query .middlebar {
     background: #F5F5F5;
-    background-image: url("../middlebar_bg.png");
+    background-image: url("images/middlebar_bg.png");
     background-size: 1px 108%;
     background-repeat: repeat-x;
     padding-left: 9px;
@@ -1393,6 +1362,7 @@ body.sidebar-resizing {
 
 .alertify-inner.list-languages table {
   width: 100%;
+  max-width: 350px;
   margin-bottom: 5px; }
 
 body.new-window {
@@ -1418,7 +1388,7 @@ body.new-window {
       .snippets-window > ul > li:before {
         display: block;
         content: "";
-        background: url("../icons/table2.png") no-repeat;
+        background: url("icons/table2.png") no-repeat;
         background-size: 15px 15px;
         width: 15px;
         height: 15px;
@@ -1426,10 +1396,10 @@ body.new-window {
         top: 4px;
         position: absolute; }
       .snippets-window > ul > li[table-type=VIEW]:before, .snippets-window > ul > li[table-type="MATERIALIZED VIEW"]:before {
-        background-image: url("../icons/db_view.png");
+        background-image: url("icons/db_view.png");
         opacity: 0.8; }
       .snippets-window > ul > li[table-type="FOREIGN TABLE"]:before {
-        background-image: url("../icons/foreign_table.png");
+        background-image: url("icons/foreign_table.png");
         opacity: 0.8; }
       .snippets-window > ul > li:hover {
         background: rgba(0, 0, 0, 0.1); }

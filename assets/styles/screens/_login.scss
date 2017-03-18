@@ -13,7 +13,8 @@
     @include native-panel-element;
     font-size: 13px;
     width: 320px;
-    margin: calc(50% - 220px) auto 0;
+    margin: 40px auto 0;
+    margin-top: calc(50vh - 163px);
     padding: 16px 20px;
 
     p {
@@ -146,7 +147,7 @@
     button.add-connection {
       padding-left: 28px;
       background-color: #f9f9f9;
-      background-image: url("../icons/add-connection.png");
+      background-image: url("icons/add-connection.png");
       background-repeat: no-repeat;
       background-position: 7px 2px;
       background-size: 15px 15px;

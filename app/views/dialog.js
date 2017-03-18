@@ -29,6 +29,7 @@ global.Dialog = jClass.extend({
     });
 
     this.setInputFocus();
+    this.initTables();
 
     return this.windowContent;
   },
@@ -93,5 +94,23 @@ global.Dialog = jClass.extend({
         if (firstInput) firstInput.focus();
       }, 120);
     }
+  },
+
+  // TODO: dry
+  initTables: function () {
+    // heavy stuff, run it with delay
+    setTimeout(() => {
+      this.content.find('.rescol-wrapper').forEach((table) => {
+        new ResizableColumns(table);
+      });
+
+      this.content.find('.rescol-content-wrapper table').forEach((table) => {
+        if (!table.hasAttribute('native-table-init')) {
+          new GenericTable(table);
+          $u(table).trigger('generic-table-init');
+          table.setAttribute('native-table-init', true);
+        }
+      });
+    }, 10);
   }
 });

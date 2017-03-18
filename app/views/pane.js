@@ -34,7 +34,7 @@ global.Pane = jClass.extend({
   initTables: function () {
     // heavy stuff, run it with delay
     setTimeout(() => {
-      this.content.find('.rescol-wrapper').each((i, table) => {
+      this.content.find('.rescol-wrapper').forEach((table) => {
         new ResizableColumns(table);
       });
 
