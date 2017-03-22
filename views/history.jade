@@ -31,11 +31,10 @@
 
             else if event.type == "connect.success"
               - var opts = event.args[1]
-              - console.log(event)
               = "Connected to server "
               if opts
                 code.sql
-                  = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+                  = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port
                   if opts.database
                     = "/" + opts.database
 
@@ -43,7 +42,7 @@
               - var opts = event.args[1]
               = "Failed connect to server "
               code.sql
-                = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port
+                = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port
                 if opts.database
                   = "/" + opts.database
               span.error= event.args[2].message || event.args[2]

@@ -1,11 +1,11 @@
-var jade;
-var jadeRuntime = require('jade/runtime');
+var pug;
+var pugRuntime = require('pug-runtime');
 require(__dirname + '/../view_helpers');
 
 var RenderView = {
   root: __dirname.replace(/\/app\/components/, ''),
 
-  jadeFn: {},
+  pugFn: {},
 
   renderView: function (file, options) {
     var html;
@@ -20,8 +20,8 @@ var RenderView = {
 
     try {
       //var st = Date.now();
-      html = this.compileJade(file)(jadeRuntime, new_options);
-      //console.log('jade render ' + file + ' in ' + (Date.now() - st) + 'ms');
+      html = this.compileJade(file)(pugRuntime, new_options);
+      //console.log('pug render ' + file + ' in ' + (Date.now() - st) + 'ms');
     } catch (error) {
       console.log("Error compiling '" + RenderView.root + '/views/' + file + '.jade');
       throw error;
@@ -39,52 +39,55 @@ var RenderView = {
     var filepath = RenderView.root + '/views/' + file + '.jade';
     var content = node.fs.readFileSync(filepath, 'utf-8');
 
-    if (this.jadeFn[file] && this.jadeFn[file].content != content) {
+    if (this.pugFn[file] && this.pugFn[file].content != content) {
       console.log('remove template cache for: ' + file);
-      delete this.jadeFn[file];
+      delete this.pugFn[file];
     }
 
-    if (!this.jadeFn[file]) {
-      if (!jade) {
-        log.info('loading jade....');
-        jade = require('jade');
+    if (!this.pugFn[file]) {
+      if (!pug) {
+        log.info('loading pug....');
+        pug = require('pug');
       }
-      this.jadeFn[file] = jade.compileClient(content, {filename: filepath, pretty: true, compileDebug: true});
-      eval("RenderView.jadeFn['" + file + "'] = " + this.jadeFn[file].replace('locals', 'jade, locals'));
-      this.jadeFn[file].content = content;
+      this.pugFn[file] = pug.compile(content, {filename: filepath, pretty: true, compileDebug: true});
+      eval("RenderView.pugFn['" + file + "'] = " + this.pugFn[file].toString().replace('locals', 'pug, locals'));
+      this.pugFn[file].content = content;
       this.triggerSaveCache();
     }
-    return this.jadeFn[file];
+    return this.pugFn[file];
   },
 
   triggerSaveCache: function() {
-    if (this.jadeCacheTimeout) {
-      clearTimeout(this.jadeCacheTimeout);
+    if (this.pugCacheTimeout) {
+      clearTimeout(this.pugCacheTimeout);
     }
-    this.jadeCacheTimeout = setTimeout(() => {
-      clearTimeout(this.jadeCacheTimeout);
-      delete this.jadeCacheTimeout;
-      this.jadeCacheSave();
+    this.pugCacheTimeout = setTimeout(() => {
+      clearTimeout(this.pugCacheTimeout);
+      delete this.pugCacheTimeout;
+      this.pugCacheSave();
     }, 1000);
   },
 
-  jadeCacheSave: function () {
+  pugCacheSave: function () {
     result = "";
-    Object.keys(this.jadeFn).sort().forEach((key) => {
-      var fn = this.jadeFn[key];
-      result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(process.env.PWD + '/', 'g'), '') + ";\n";
+    var convertedPath = (process.env.PWD + '/').replace(/\//g, '\\\\u002F');
+
+    Object.keys(this.pugFn).sort().forEach((key) => {
+      var fn = this.pugFn[key];
+      console.log(convertedPath, new RegExp(convertedPath, 'g'));
+      result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(convertedPath, 'g'), '') + ";\n";
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
     });
 
     node.fs.writeFileSync(this.root + '/views/cache.js', result, 'utf8');
-    console.log("Jade cache saved!");
+    console.log("Pug cache saved!");
   },
 
-  jadeCacheLoad: function() {
+  pugCacheLoad: function() {
     if (node.fs.existsSync(this.root + '/views/cache.js')) {
       var cache = require(this.root + '/views/cache');
       if (cache) {
-        this.jadeFn = cache;
+        this.pugFn = cache;
       }
     }
   }

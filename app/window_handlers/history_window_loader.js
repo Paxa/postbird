@@ -3,7 +3,7 @@ require(__dirname + '/../lib/dominate');
 require(__dirname + '/../lib/jquery.class');
 require(__dirname + '/../lib/alertify');
 require(__dirname + '/../lib/node_lib');
-require(__dirname + '/../lib/mousetrap');
+//require(__dirname + '/../public/mousetrap');
 require(__dirname + '/../lib/widgets/generic_table');
 var RenderView = require(__dirname + '/../app/components/render_view');
 
@@ -17,7 +17,7 @@ global.logger = global.log = require(__dirname + '/../app/logger').make('info');
 
 global.App = {
   init: function () {
-    RenderView.jadeCacheLoad();
+    RenderView.pugCacheLoad();
   },
   renderView: RenderView.renderView.bind(RenderView)
 };

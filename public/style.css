@@ -1366,10 +1366,10 @@ body.sidebar-resizing {
   margin-bottom: 5px; }
 
 body.new-window {
-  background: #EDEDED; }
+  background: #ececec; }
 
 .snippets-window {
-  background: #EDEDED; }
+  background: #ececec; }
   .snippets-window > ul {
     box-sizing: border-box;
     display: inline-block;

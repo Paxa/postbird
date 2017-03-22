@@ -14,7 +14,7 @@ global.App = {
   tabs: [], // {name, content, is_active}
 
   init: function () {
-    RenderView.jadeCacheLoad();
+    RenderView.pugCacheLoad();
     this.container = $('#content');
     this.tabsContainer = $('#tabs');
     // skip first page
@@ -311,8 +311,13 @@ global.App.log = function App_log(type, value1, value2, value3, value4) {
   return this.logger.emit.apply(this.logger, arguments);
 }.bind(App);
 
-global.App.logger.onAny(() => {
-  var event = {type: this.event, time: (new Date()), args: Array.prototype.slice.call(arguments)};
+global.App.logger.onAny((ev, ...args) => {
+  if (args[2] && args[2] instanceof Error) {
+    args[2] = {
+      message: args[2].message
+    };
+  }
+  var event = {type: ev, time: (new Date()), args: args};
   global.App.logEvents.push(event);
   if (global.App._events["log.message"]) global.App.emit("log.message", event);
 });

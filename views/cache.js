@@ -1,6323 +1,2590 @@
-exports["_loader"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/_loader.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (cancel, message) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/_loader.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/_loader.jade" ));
-buf.push("\n<div class=\"app-loader\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/_loader.jade" ));
-buf.push("<span>" + (jade.escape(null == (jade_interp = message) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/_loader.jade" ));
-buf.push("<small>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Please wait");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</small>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "views/_loader.jade" ));
-if ( cancel)
-{
-jade_debug.unshift(new jade.DebugItem( 5, "views/_loader.jade" ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/_loader.jade" ));
-buf.push("<a class=\"cancel-btn\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
+exports["_loader"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002F_loader.jade":".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel"};
+;var locals_for_with = (locals || {});(function (cancel, message) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"app-loader\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "\u003Cspan\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = message) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "\u003Csmall\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "Please wait\u003C\u002Fsmall\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002F_loader.jade";
+if (cancel) {
+;pug_debug_line = 5;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "\u003Ca class=\"cancel-btn\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002F_loader.jade";
+pug_html = pug_html + "Cancel\u003C\u002Fa\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"cancel" in locals_for_with?locals_for_with.cancel:typeof cancel!=="undefined"?cancel:undefined,"message" in locals_for_with?locals_for_with.message:typeof message!=="undefined"?message:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel");
-}
-};
+pug_html = pug_html + "\n\u003C\u002Fdiv\u003E";}.call(this,"cancel" in locals_for_with?locals_for_with.cancel:typeof cancel!=="undefined"?cancel:undefined,"message" in locals_for_with?locals_for_with.message:typeof message!=="undefined"?message:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["_loader"].content = ".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel";
-exports["content_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/content_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, matchers, shorterTypeName, sorting, state, tableType, types, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/content_tab.jade" ));
-buf.push("\n<div" + (jade.attr("filtered", !!state.filtered, true, false)) + " class=\"content-filter\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/content_tab.jade" ));
-buf.push("\n  <form>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/content_tab.jade" ));
-buf.push("\n    <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Search:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "views/content_tab.jade" ));
-buf.push("\n    <select name=\"filter-field\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
+exports["content_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fcontent_tab.jade":".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    \u002F\u002Fli\n    \u002F\u002F  a Remove\n    \u002F\u002Fli\n    \u002F\u002F  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n"};
+;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, matchers, shorterTypeName, sorting, state, tableType, types) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv" + (" class=\"content-filter\""+pug.attr("filtered", !!state.filtered, true, false)) + "\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n  \u003Cform\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Search:\u003C\u002Flabel\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"filter-field\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-buf.push("\n      <option" + (jade.attr("value", column.name, true, false)) + (jade.attr("selected", state.filterField == column.name, true, false)) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var column = $$obj[pug_index0];
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", column.name, true, false)+pug.attr("selected", state.filterField == column.name, true, false)) + "\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 5, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/content_tab.jade" ));
-buf.push("\n      <option" + (jade.attr("value", column.name, true, false)) + (jade.attr("selected", state.filterField == column.name, true, false)) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index0];
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", column.name, true, false)+pug.attr("selected", state.filterField == column.name, true, false)) + "\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/content_tab.jade" ));
-buf.push("\n    <select name=\"filter-matcher\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
+pug_html = pug_html + "\n    \u003C\u002Fselect\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"filter-matcher\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate matchers
 ;(function(){
   var $$obj = matchers;
   if ('number' == typeof $$obj.length) {
-
-    for (var key = 0, $$l = $$obj.length; key < $$l; key++) {
-      var matcher = $$obj[key];
-
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
-buf.push("\n      <option" + (jade.attr("value", key, true, false)) + (jade.attr("selected", state.filterMatcher === key, true, false)) + ">" + (jade.escape(null == (jade_interp = matcher.label) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var key = 0, $$l = $$obj.length; key < $$l; key++) {
+        var matcher = $$obj[key];
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", key, true, false)+pug.attr("selected", state.filterMatcher === key, true, false)) + "\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = matcher.label) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
+      }
   } else {
     var $$l = 0;
     for (var key in $$obj) {
-      $$l++;      var matcher = $$obj[key];
-
-jade_debug.unshift(new jade.DebugItem( 9, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/content_tab.jade" ));
-buf.push("\n      <option" + (jade.attr("value", key, true, false)) + (jade.attr("selected", state.filterMatcher === key, true, false)) + ">" + (jade.escape(null == (jade_interp = matcher.label) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+      $$l++;
+      var matcher = $$obj[key];
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", key, true, false)+pug.attr("selected", state.filterMatcher === key, true, false)) + "\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = matcher.label) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/content_tab.jade" ));
-buf.push("\n    <input type=\"search\" placeholder=\"Search\" name=\"filter-value\"" + (jade.attr("value", state.filterValue, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/content_tab.jade" ));
-buf.push("<span title=\"Cancel Filter\" class=\"cancel\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/content_tab.jade" ));
-buf.push("\n    <button>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Filter");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </form>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/content_tab.jade" ));
-buf.push("\n<div full-width=\"full-width\" class=\"rescol-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/content_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "views/content_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/content_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/content_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/content_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
+pug_html = pug_html + "\n    \u003C\u002Fselect\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cinput" + (" type=\"search\" placeholder=\"Search\" name=\"filter-value\""+pug.attr("value", state.filterValue, true, false)) + "\u002F\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Cspan class=\"cancel\" title=\"Cancel Filter\"\u003E\u003C\u002Fspan\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cbutton\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Filter\u003C\u002Fbutton\u003E\n  \u003C\u002Fform\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper\" full-width=\"full-width\"\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
+      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
+        var column = $$obj[pug_index2];
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var type = column_type_label(types[column.name])
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var typeLabel = shorterTypeName(types[column.name].data_type);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var dir = sorting.column == column.name ? sorting.direction : ''
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
-buf.push("\n          <th" + (jade.attr("title", typeLabel, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Cth" + (pug.attr("class", pug.classes(['format-' + type], [true]), false, false)+pug.attr("title", typeLabel, true, false)+pug.attr("sortable", column.name, true, false)+pug.attr("sortable-dir", dir, true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 21, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 23, "views/content_tab.jade" ));
+    for (var pug_index2 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index2];
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var type = column_type_label(types[column.name])
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/content_tab.jade" ));
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var typeLabel = shorterTypeName(types[column.name].data_type);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/content_tab.jade" ));
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fcontent_tab.jade";
 var dir = sorting.column == column.name ? sorting.direction : ''
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/content_tab.jade" ));
-buf.push("\n          <th" + (jade.attr("title", typeLabel, true, false)) + (jade.attr("sortable", column.name, true, false)) + (jade.attr("sortable-dir", dir, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Cth" + (pug.attr("class", pug.classes(['format-' + type], [true]), false, false)+pug.attr("title", typeLabel, true, false)+pug.attr("sortable", column.name, true, false)+pug.attr("sortable-dir", dir, true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/content_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
-buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
+      for (var pug_index3 = 0, $$l = $$obj.length; pug_index3 < $$l; pug_index3++) {
+        var row = $$obj[pug_index3];
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr" + (pug.attr("data-ctid", row.ctid, true, false)) + "\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index4 = 0, $$l = $$obj.length; pug_index4 < $$l; pug_index4++) {
+        var column = $$obj[pug_index4];
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index4 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index4];
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 28, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/content_tab.jade" ));
-buf.push("\n        <tr" + (jade.attr("data-ctid", row.ctid, true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
+    for (var pug_index3 in $$obj) {
+      $$l++;
+      var row = $$obj[pug_index3];
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr" + (pug.attr("data-ctid", row.ctid, true, false)) + "\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fcontent_tab.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index5 = 0, $$l = $$obj.length; pug_index5 < $$l; pug_index5++) {
+        var column = $$obj[pug_index5];
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 30, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/content_tab.jade" ));
-if ( column.name != 'ctid')
-{
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 32, "views/content_tab.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index5 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index5];
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (column.name != 'ctid') {
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/content_tab.jade" ));
-buf.push("\n<div class=\"summary-and-pages native-footer-bar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 36, "views/content_tab.jade" ));
-buf.push("\n  <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, "views/content_tab.jade" ));
-buf.push("\n    <!--li-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/content_tab.jade" ));
-buf.push("\n    <!--  a Remove-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 40, "views/content_tab.jade" ));
-buf.push("\n    <!--li-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/content_tab.jade" ));
-buf.push("\n    <!--  a Duplicate-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/content_tab.jade" ));
-buf.push("\n    <li class=\"info\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "views/content_tab.jade" ));
-buf.push("\n    <li class=\"pages prev\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, "views/content_tab.jade" ));
-buf.push("<a exec=\"prevPage\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
-buf.push("Prev");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/content_tab.jade" ));
-buf.push("\n    <li class=\"pages next\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "views/content_tab.jade" ));
-buf.push("<a exec=\"nextPage\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("Next");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/content_tab.jade" ));
-buf.push("\n    <li class=\"reload\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/content_tab.jade" ));
-buf.push("<a exec=\"reloadData\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
-buf.push("Reload");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/content_tab.jade" ));
-if ( tableType == 'BASE TABLE')
-{
-jade_debug.unshift(new jade.DebugItem( 50, "views/content_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 50, "views/content_tab.jade" ));
-buf.push("\n    <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, "views/content_tab.jade" ));
-buf.push("<a exec=\"addRow\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, jade_debug[0].filename ));
-buf.push("Add New Row");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"summary-and-pages native-footer-bar\"\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n  \u003Cul\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003C!--li--\u003E";
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003C!--  a Remove--\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003C!--li--\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003C!--  a Duplicate--\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cli class=\"info\"\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cli class=\"pages prev\"\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Ca exec=\"prevPage\"\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Prev\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cli class=\"pages next\"\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Ca exec=\"nextPage\"\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Next\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cli class=\"reload\"\u003E";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Ca exec=\"reloadData\"\u003E";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Reload\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (tableType == 'BASE TABLE') {
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003Cli\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Ca exec=\"addRow\"\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Add New Row\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"matchers" in locals_for_with?locals_for_with.matchers:typeof matchers!=="undefined"?matchers:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n");
-}
-};
+pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"matchers" in locals_for_with?locals_for_with.matchers:typeof matchers!=="undefined"?matchers:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["content_tab"].content = ".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
-exports["db_rows_table"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/db_rows_table.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/db_rows_table.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/db_rows_table.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/db_rows_table.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/db_rows_table.jade" ));
-if ( data.fields)
-{
-jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/db_rows_table.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/db_rows_table.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/db_rows_table.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
+exports["db_rows_table"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdb_rows_table.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n"};
+;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+if (data.fields) {
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var column = $$obj[pug_index0];
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 var type = column_type_label(column)
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
-buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Cth" + (pug.attr("class", pug.classes(['format-' + type], [true]), false, false)+pug.attr("title", type, true, false)) + "\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 8, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/db_rows_table.jade" ));
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index0];
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 var type = column_type_label(column)
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/db_rows_table.jade" ));
-buf.push("\n          <th" + (jade.attr("title", type, true, false)) + (jade.cls(['format-' + type], [true])) + ">" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Cth" + (pug.attr("class", pug.classes(['format-' + type], [true]), false, false)+pug.attr("title", type, true, false)) + "\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Fth\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/db_rows_table.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 // iterate data.rows
 ;(function(){
   var $$obj = data.rows;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/db_rows_table.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var row = $$obj[pug_index1];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
+        var column = $$obj[pug_index2];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index2 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index2];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var row = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 12, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/db_rows_table.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var row = $$obj[pug_index1];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 // iterate data.fields
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index3 = 0, $$l = $$obj.length; pug_index3 < $$l; pug_index3++) {
+        var column = $$obj[pug_index3];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 14, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/db_rows_table.jade" ));
-buf.push("\n          <td>" + (null == (jade_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index3 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index3];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], column.udt_name, column.data_type)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E";
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 17, "views/db_rows_table.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/db_rows_table.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/db_rows_table.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/db_rows_table.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/db_rows_table.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = data.command) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/db_rows_table.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("OK");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = data.command) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fdb_rows_table.jade";
+pug_html = pug_html + "OK\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n");
-}
-};
+pug_html = pug_html + "\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
-exports["dialogs/column_form"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/column_form.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (data, undefined, groupedTypes, action) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/column_form.jade" });
+exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.4\u002Fstatic\u002Fdatatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n"};
+;var locals_for_with = (locals || {});(function (action, data, groupedTypes) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 data = data || {}
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/column_form.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
-buf.push("Name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <input name=\"name\"" + (jade.attr("value", data.column_name, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
-buf.push("Type");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <select name=\"type\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <option>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/column_form.jade" });
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Name\u003C\u002Flabel\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cinput" + (" name=\"name\""+pug.attr("value", data.column_name, true, false)) + "\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Type\u003C\u002Flabel\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"type\"\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coption\u003E\u003C\u002Foption\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 // iterate groupedTypes
 ;(function(){
   var $$obj = groupedTypes;
   if ('number' == typeof $$obj.length) {
-
-    for (var group = 0, $$l = $$obj.length; group < $$l; group++) {
-      var types = $$obj[group];
-
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <optgroup" + (jade.attr("label", group, true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</optgroup>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
+      for (var group = 0, $$l = $$obj.length; group < $$l; group++) {
+        var types = $$obj[group];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E\u003C\u002Foptgroup\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 // iterate types
 ;(function(){
   var $$obj = types;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var type = $$obj[$index];
-
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/column_form.jade" });
-if ( type)
-{
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <option" + (jade.attr("value", type.name, true, false)) + (jade.attr("title", type.description, true, false)) + (jade.attr("selected", (data.data_type == type.name), true, false)) + ">" + (jade.escape(null == (jade_interp = type.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var type = $$obj[pug_index1];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+if (type) {
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var type = $$obj[$index];
-
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/column_form.jade" });
-if ( type)
-{
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <option" + (jade.attr("value", type.name, true, false)) + (jade.attr("title", type.description, true, false)) + (jade.attr("selected", (data.data_type == type.name), true, false)) + ">" + (jade.escape(null == (jade_interp = type.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var type = $$obj[pug_index1];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+if (type) {
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
     for (var group in $$obj) {
-      $$l++;      var types = $$obj[group];
-
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <optgroup" + (jade.attr("label", group, true, false)) + ">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</optgroup>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
+      $$l++;
+      var types = $$obj[group];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E\u003C\u002Foptgroup\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 // iterate types
 ;(function(){
   var $$obj = types;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var type = $$obj[$index];
-
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/column_form.jade" });
-if ( type)
-{
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <option" + (jade.attr("value", type.name, true, false)) + (jade.attr("title", type.description, true, false)) + (jade.attr("selected", (data.data_type == type.name), true, false)) + ">" + (jade.escape(null == (jade_interp = type.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
+        var type = $$obj[pug_index2];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+if (type) {
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var type = $$obj[$index];
-
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/column_form.jade" });
-if ( type)
-{
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <option" + (jade.attr("value", type.name, true, false)) + (jade.attr("title", type.description, true, false)) + (jade.attr("selected", (data.data_type == type.name), true, false)) + ">" + (jade.escape(null == (jade_interp = type.name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index2 in $$obj) {
+      $$l++;
+      var type = $$obj[pug_index2];
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+if (type) {
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: "views/dialogs/column_form.jade" });
-buf.push("See ");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "views/dialogs/column_form.jade" });
-buf.push("<a href=\"http://www.postgresql.org/docs/9.4/static/datatype.html\" target=\"_blank\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 19, filename: jade_debug[0].filename });
-buf.push("documentation for datatypes");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 21, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 22, filename: jade_debug[0].filename });
-buf.push("Default value");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <input name=\"default_value\"" + (jade.attr("value", data.column_default, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
-buf.push("Max length");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <input name=\"max_length\"" + (jade.attr("value", data.character_maximum_length, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 29, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 30, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 31, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <input type=\"hidden\" name=\"allow_null\" value=\"0\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 32, filename: "views/dialogs/column_form.jade" });
-buf.push("\n      <input type=\"checkbox\" name=\"allow_null\" value=\"1\"" + (jade.attr("checked", (data.is_nullable == 'YES'), true, false)) + "/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 33, filename: "views/dialogs/column_form.jade" });
-buf.push("Allow null");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 35, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 36, filename: "views/dialogs/column_form.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 37, filename: "views/dialogs/column_form.jade" });
-if ( action == "edit")
-{
-jade_debug.unshift({ lineno: 38, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 38, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 38, filename: jade_debug[0].filename });
-buf.push("Update column");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n    \u003C\u002Fselect\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "See ") ? "" : pug_interp));
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\u003Ca href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.4\u002Fstatic\u002Fdatatype.html\" target=\"_blank\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "documentation for datatypes\u003C\u002Fa\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cp\u003E\u003C\u002Fp\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Default value\u003C\u002Flabel\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cinput" + (" name=\"default_value\""+pug.attr("value", data.column_default, true, false)) + "\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Max length\u003C\u002Flabel\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cinput" + (" name=\"max_length\""+pug.attr("value", data.character_maximum_length, true, false)) + "\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Cinput type=\"hidden\" name=\"allow_null\" value=\"0\"\u002F\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n      \u003Cinput" + (" type=\"checkbox\" name=\"allow_null\" value=\"1\""+pug.attr("checked", (data.is_nullable == 'YES'), true, false)) + "\u002F\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Allow null") ? "" : pug_interp)) + "\n    \u003C\u002Flabel\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+if (action == "edit") {
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Update column\u003C\u002Fbutton\u003E";
 }
-else
-{
-jade_debug.unshift({ lineno: 40, filename: "views/dialogs/column_form.jade" });
-jade_debug.unshift({ lineno: 40, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 40, filename: jade_debug[0].filename });
-buf.push("Add column");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "Add column\u003C\u002Fbutton\u003E";
 }
-jade_debug.shift();
-jade_debug.unshift({ lineno: 41, filename: "views/dialogs/column_form.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 41, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"groupedTypes" in locals_for_with?locals_for_with.groupedTypes:typeof groupedTypes!=="undefined"?groupedTypes:undefined,"action" in locals_for_with?locals_for_with.action:typeof action!=="undefined"?action:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http://www.postgresql.org/docs/9.4/static/datatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n");
-}
-};
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
+pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"action" in locals_for_with?locals_for_with.action:typeof action!=="undefined"?action:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"groupedTypes" in locals_for_with?locals_for_with.groupedTypes:typeof groupedTypes!=="undefined"?groupedTypes:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http://www.postgresql.org/docs/9.4/static/datatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n";
-exports["dialogs/def_procedure"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/def_procedure.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (source, undefined) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/def_procedure.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/def_procedure.jade" });
-buf.push("<code class=\"general sql\">" + (jade.escape(null == (jade_interp = source) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/def_procedure.jade" });
-buf.push("\n<p class=\"buttons close-btn\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/def_procedure.jade" });
-buf.push("\n  <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"source" in locals_for_with?locals_for_with.source:typeof source!=="undefined"?source:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "code.general.sql= source\n\np.buttons.close-btn\n  button.cancel Close");
-}
-};
+exports["dialogs/def_procedure"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fdef_procedure.jade":"code.general.sql= source\n\np.buttons.close-btn\n  button.cancel Close"};
+;var locals_for_with = (locals || {});(function (source) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
+pug_html = pug_html + "\u003Ccode class=\"general sql\"\u003E";
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = source) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons close-btn\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"source" in locals_for_with?locals_for_with.source:typeof source!=="undefined"?source:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/def_procedure"].content = "code.general.sql= source\n\np.buttons.close-btn\n  button.cancel Close";
-exports["dialogs/edit_procedure"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/edit_procedure.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (proc, undefined) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/edit_procedure.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/edit_procedure.jade" });
-buf.push("\n<textarea class=\"editor\">" + (jade.escape(null == (jade_interp = proc.source) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</textarea>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/edit_procedure.jade" });
-buf.push("\n<p class=\"buttons close-btn\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/edit_procedure.jade" });
-buf.push("\n  <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"proc" in locals_for_with?locals_for_with.proc:typeof proc!=="undefined"?proc:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close");
-}
-};
+exports["dialogs/edit_procedure"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fedit_procedure.jade":"textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close"};
+;var locals_for_with = (locals || {});(function (proc) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
+pug_html = pug_html + "\n\u003Ctextarea class=\"editor\"\u003E";
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.source) ? "" : pug_interp)) + "\u003C\u002Ftextarea\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons close-btn\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"proc" in locals_for_with?locals_for_with.proc:typeof proc!=="undefined"?proc:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/edit_procedure"].content = "textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close";
-exports["dialogs/export_file"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/dialogs/export_file.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (database) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/dialogs/export_file.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/dialogs/export_file.jade" ));
-buf.push("\n<header>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Exporting database '") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/dialogs/export_file.jade" ));
-buf.push("<b>" + (jade.escape(null == (jade_interp = database) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</b>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "'") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</header>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "views/dialogs/export_file.jade" ));
-buf.push("\n<form>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p class=\"save-to-file\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Save to file:") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/dialogs/export_file.jade" ));
-buf.push("\n    <input type=\"text\" name=\"export_to_file\" readonly=\"readonly\" placeholder=\"click to select file...\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/dialogs/export_file.jade" ));
-buf.push("\n    <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Export structure") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/dialogs/export_file.jade" ));
-buf.push("\n      <input type=\"checkbox\" name=\"export_structure\" checked=\"checked\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/dialogs/export_file.jade" ));
-buf.push("\n    <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Export data") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "views/dialogs/export_file.jade" ));
-buf.push("\n      <input type=\"checkbox\" name=\"export_data\" checked=\"checked\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/dialogs/export_file.jade" ));
-buf.push("\n    <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/dialogs/export_file.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Objects ownership") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/dialogs/export_file.jade" ));
-buf.push("\n      <input type=\"checkbox\" name=\"objects_ownership\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/dialogs/export_file.jade" ));
-buf.push("<code class=\"result\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, "views/dialogs/export_file.jade" ));
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("Start");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/dialogs/export_file.jade" ));
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "views/dialogs/export_file.jade" ));
-buf.push("\n  <p class=\"buttons close-btn is-hidden\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/dialogs/export_file.jade" ));
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"database" in locals_for_with?locals_for_with.database:typeof database!=="undefined"?database:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close");
-}
-};
+exports["dialogs/export_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fexport_file.jade":"header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
+;var locals_for_with = (locals || {});(function (database) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n\u003Cheader\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Exporting database '") ? "" : pug_interp));
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\u003Cb\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = database) ? "" : pug_interp)) + "\u003C\u002Fb\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "'") ? "" : pug_interp)) + "\n\u003C\u002Fheader\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"save-to-file\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Save to file:") ? "" : pug_interp));
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Cinput type=\"text\" name=\"export_to_file\" readonly=\"readonly\" placeholder=\"click to select file...\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Export structure") ? "" : pug_interp));
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n      \u003Cinput type=\"checkbox\" name=\"export_structure\" checked=\"checked\"\u002F\u003E\n    \u003C\u002Flabel\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Export data") ? "" : pug_interp));
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n      \u003Cinput type=\"checkbox\" name=\"export_data\" checked=\"checked\"\u002F\u003E\n    \u003C\u002Flabel\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Objects ownership") ? "" : pug_interp));
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n      \u003Cinput type=\"checkbox\" name=\"objects_ownership\"\u002F\u003E\n    \u003C\u002Flabel\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\u003Ccode class=\"result\"\u003E\u003C\u002Fcode\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "Start\u003C\u002Fbutton\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons close-btn is-hidden\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"database" in locals_for_with?locals_for_with.database:typeof database!=="undefined"?database:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/export_file"].content = "header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
-exports["dialogs/heroku_connection"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/heroku_connection.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (name, undefined, connectionUrl) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/heroku_connection.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("<strong>" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("<code class=\"connection-info\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/heroku_connection.jade" });
-buf.push(jade.escape(null == (jade_interp = connectionUrl) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("\n<p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("<i>Note: This information can be changed in future by heroku");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</i>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("\n<button class=\"save-conn native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
-buf.push("Save locally");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/heroku_connection.jade" });
-buf.push("\n<button autofocus=\"autofocus\" class=\"cancel native-look\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 10, filename: jade_debug[0].filename });
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"name" in locals_for_with?locals_for_with.name:typeof name!=="undefined"?name:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"connectionUrl" in locals_for_with?locals_for_with.connectionUrl:typeof connectionUrl!=="undefined"?connectionUrl:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "strong= name\n\ncode.connection-info\n  = connectionUrl\n\np\n  i= \"Note: This information can be changed in future by heroku\"\n\nbutton.save-conn.native-look Save locally\nbutton.cancel.native-look(autofocus=true) Close");
-}
-};
-exports["dialogs/heroku_connection"].content = "strong= name\n\ncode.connection-info\n  = connectionUrl\n\np\n  i= \"Note: This information can be changed in future by heroku\"\n\nbutton.save-conn.native-look Save locally\nbutton.cancel.native-look(autofocus=true) Close";
-exports["dialogs/import_file"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/import_file.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, filename, databases, currentDb) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/import_file.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/import_file.jade" });
-buf.push("\n<header>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/import_file.jade" });
-buf.push("Importing file:");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/import_file.jade" });
-buf.push("<code>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/import_file.jade" });
-buf.push(jade.escape(null == (jade_interp = filename) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</header>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/import_file.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/import_file.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
-buf.push("Database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <select name=\"database\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/import_file.jade" });
+exports["dialogs/import_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fimport_file.jade":"header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
+;var locals_for_with = (locals || {});(function (currentDb, databases, filename) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n\u003Cheader\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Importing file:") ? "" : pug_interp));
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = filename) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\n\u003C\u002Fheader\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Database\u003C\u002Flabel\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"database\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 // iterate databases
 ;(function(){
   var $$obj = databases;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var database = $$obj[$index];
-
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/import_file.jade" });
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/import_file.jade" });
-buf.push("\n      <option" + (jade.attr("value", database, true, false)) + (jade.attr("selected", (database == currentDb), true, false)) + ">" + (jade.escape(null == (jade_interp = database) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var database = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", database, true, false)+pug.attr("selected", (database == currentDb), true, false)) + "\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = database) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var database = $$obj[$index];
-
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/import_file.jade" });
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/import_file.jade" });
-buf.push("\n      <option" + (jade.attr("value", database, true, false)) + (jade.attr("selected", (database == currentDb), true, false)) + ">" + (jade.escape(null == (jade_interp = database) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var database = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", database, true, false)+pug.attr("selected", (database == currentDb), true, false)) + "\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = database) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/import_file.jade" });
-buf.push("\n      <option disabled=\"disabled\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: jade_debug[0].filename });
-buf.push("-----");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/import_file.jade" });
-buf.push("\n      <option value=\"**create-db**\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
-buf.push("Create database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/import_file.jade" });
-buf.push("\n  <p class=\"new-database-input is-hidden\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: jade_debug[0].filename });
-buf.push("New database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <input name=\"new_database_name\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 20, filename: "views/dialogs/import_file.jade" });
-buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 22, filename: "views/dialogs/import_file.jade" });
-buf.push("<code class=\"result\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 24, filename: "views/dialogs/import_file.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 25, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 25, filename: jade_debug[0].filename });
-buf.push("Import file");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 26, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "views/dialogs/import_file.jade" });
-buf.push("\n  <p class=\"buttons close-btn is-hidden\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 28, filename: "views/dialogs/import_file.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 28, filename: jade_debug[0].filename });
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"filename" in locals_for_with?locals_for_with.filename:typeof filename!=="undefined"?filename:undefined,"databases" in locals_for_with?locals_for_with.databases:typeof databases!=="undefined"?databases:undefined,"currentDb" in locals_for_with?locals_for_with.currentDb:typeof currentDb!=="undefined"?currentDb:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close");
-}
-};
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption disabled=\"disabled\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "-----\u003C\u002Foption\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"**create-db**\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Create database\u003C\u002Foption\u003E\n    \u003C\u002Fselect\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"new-database-input is-hidden\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "New database\u003C\u002Flabel\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cinput name=\"new_database_name\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\u003Ccode class=\"result\"\u003E\u003C\u002Fcode\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Import file\u003C\u002Fbutton\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons close-btn is-hidden\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"currentDb" in locals_for_with?locals_for_with.currentDb:typeof currentDb!=="undefined"?currentDb:undefined,"databases" in locals_for_with?locals_for_with.databases:typeof databases!=="undefined"?databases:undefined,"filename" in locals_for_with?locals_for_with.filename:typeof filename!=="undefined"?filename:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/import_file"].content = "header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
-exports["dialogs/index_form"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/index_form.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, columns) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/index_form.jade" });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/index_form.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <label for=\"index_name_field\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: jade_debug[0].filename });
-buf.push("Name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <input id=\"index_name_field\" name=\"name\" placeholder=\"optional\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
-buf.push("Columns");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <ul class=\"columns-names\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/index_form.jade" });
+exports["dialogs/index_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Findex_form.jade":"\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Method\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"gin\") gin\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add index\n    button.cancel cancel\n"};
+;var locals_for_with = (locals || {});(function (columns) {var pug_indent = [];
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Clabel for=\"index_name_field\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "Name\u003C\u002Flabel\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cinput id=\"index_name_field\" name=\"name\" placeholder=\"optional\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "Columns\u003C\u002Flabel\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cul class=\"columns-names\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
 // iterate columns
 ;(function(){
   var $$obj = columns;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/index_form.jade" });
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <li>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/index_form.jade" });
-buf.push("\n        <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/index_form.jade" });
-buf.push("\n          <input type=\"checkbox\"" + (jade.attr("name", "columns[" + column.column_name + "]", true, false)) + (jade.attr("value", column.column_name, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/index_form.jade" });
-buf.push(jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </li>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var column = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Cli\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n        \u003Clabel\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n          \u003Cinput" + (" type=\"checkbox\""+pug.attr("name", "columns[" + column.column_name + "]", true, false)+pug.attr("value", column.column_name, true, false)) + "\u002F\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.column_name) ? "" : pug_interp)) + "\n        \u003C\u002Flabel\u003E\n      \u003C\u002Fli\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/index_form.jade" });
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <li>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/index_form.jade" });
-buf.push("\n        <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/index_form.jade" });
-buf.push("\n          <input type=\"checkbox\"" + (jade.attr("name", "columns[" + column.column_name + "]", true, false)) + (jade.attr("value", column.column_name, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/index_form.jade" });
-buf.push(jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </li>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Cli\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n        \u003Clabel\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n          \u003Cinput" + (" type=\"checkbox\""+pug.attr("name", "columns[" + column.column_name + "]", true, false)+pug.attr("value", column.column_name, true, false)) + "\u002F\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.column_name) ? "" : pug_interp)) + "\n        \u003C\u002Flabel\u003E\n      \u003C\u002Fli\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <label for=\"index_uniq_field\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
-buf.push("Uniq");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <input id=\"index_uniq_field\" type=\"checkbox\" name=\"uniq\" value=\"1\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 20, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <label for=\"index_method_field\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 20, filename: jade_debug[0].filename });
-buf.push("Method");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 21, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <select id=\"index_method_field\" name=\"method\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 22, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <option value=\"btree\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 22, filename: jade_debug[0].filename });
-buf.push("btree");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <option value=\"hash\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 23, filename: jade_debug[0].filename });
-buf.push("hash");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 24, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <option value=\"gist\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 24, filename: jade_debug[0].filename });
-buf.push("gist");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "views/dialogs/index_form.jade" });
-buf.push("\n      <option value=\"gin\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 25, filename: jade_debug[0].filename });
-buf.push("gin");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 28, filename: "views/dialogs/index_form.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 29, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 29, filename: jade_debug[0].filename });
-buf.push("Add index");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 30, filename: "views/dialogs/index_form.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 30, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Method\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"gin\") gin\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add index\n    button.cancel cancel\n");
-}
-};
+pug_html = pug_html + "\n    \u003C\u002Ful\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Clabel for=\"index_uniq_field\"\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "Uniq\u003C\u002Flabel\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cinput id=\"index_uniq_field\" type=\"checkbox\" name=\"uniq\" value=\"1\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Clabel for=\"index_method_field\"\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "Method\u003C\u002Flabel\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cselect id=\"index_method_field\" name=\"method\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"btree\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "btree\u003C\u002Foption\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"hash\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "hash\u003C\u002Foption\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"gist\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "gist\u003C\u002Foption\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"gin\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "gin\u003C\u002Foption\u003E\n    \u003C\u002Fselect\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "Add index\u003C\u002Fbutton\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
+pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/index_form"].content = "\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Method\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"gin\") gin\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add index\n    button.cancel cancel\n";
-exports["dialogs/list_languages"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/dialogs/list_languages.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (langs, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/dialogs/list_languages.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/dialogs/list_languages.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/dialogs/list_languages.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/dialogs/list_languages.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/dialogs/list_languages.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/dialogs/list_languages.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/dialogs/list_languages.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("trusted");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/dialogs/list_languages.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/dialogs/list_languages.jade" ));
+exports["dialogs/list_languages"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Flist_languages.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th trusted\n      tbody\n        each lang in langs\n          tr\n            td= lang.lanname\n            td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n"};
+;var locals_for_with = (locals || {});(function (langs) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "trusted\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
 // iterate langs
 ;(function(){
   var $$obj = langs;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var lang = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 10, "views/dialogs/list_languages.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/dialogs/list_languages.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = lang.lanname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var lang = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = lang.lanname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var lang = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 10, "views/dialogs/list_languages.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/dialogs/list_languages.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = lang.lanname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/dialogs/list_languages.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var lang = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = lang.lanname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = lang.lanpltrusted ? "Yes" : "No") ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/dialogs/list_languages.jade" ));
-buf.push("\n<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/dialogs/list_languages.jade" ));
-buf.push(jade.escape(null == (jade_interp = "You can add and remove languages on extension tab") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/dialogs/list_languages.jade" ));
-buf.push("\n<p class=\"buttons\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/dialogs/list_languages.jade" ));
-buf.push("\n  <button class=\"cancel\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Close");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th trusted\n      tbody\n        each lang in langs\n          tr\n            td= lang.lanname\n            td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n");
-}
-};
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n\u003Cp\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "You can add and remove languages on extension tab") ? "" : pug_interp)) + "\n\u003C\u002Fp\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Flist_languages.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"langs" in locals_for_with?locals_for_with.langs:typeof langs!=="undefined"?langs:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/list_languages"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th trusted\n      tbody\n        each lang in langs\n          tr\n            td= lang.lanname\n            td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n";
-exports["dialogs/new_database"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/new_database.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/new_database.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/new_database.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/new_database.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: jade_debug[0].filename });
-buf.push("Database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <input type=\"text\" name=\"dbname\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/dialogs/new_database.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
-buf.push("Template");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <select name=\"template\" class=\"template\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "views/dialogs/new_database.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
-buf.push("Encoding");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <select name=\"encoding\" class=\"encoding\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</select>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/new_database.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
-buf.push("Create database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/new_database.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 15, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "form\n  p\n    label Database\n    input(type=\"text\" name=\"dbname\")\n  p\n    label Template\n    select.template(name=\"template\")\n  p\n    label Encoding\n    select.encoding(name=\"encoding\")\n\n    input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Create database\n    button.cancel cancel\n");
-}
-};
-exports["dialogs/new_database"].content = "form\n  p\n    label Database\n    input(type=\"text\" name=\"dbname\")\n  p\n    label Template\n    select.template(name=\"template\")\n  p\n    label Encoding\n    select.encoding(name=\"encoding\")\n\n    input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Create database\n    button.cancel cancel\n";
-exports["dialogs/new_table"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/new_table.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/new_table.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/new_table.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/new_table.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: jade_debug[0].filename });
-buf.push("Table name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <input name=\"name\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/new_table.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
-buf.push("Tablespace");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <select name=\"tablespace\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/new_table.jade" });
-buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/new_table.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: jade_debug[0].filename });
-buf.push("Create table");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/new_table.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "form\n  p\n    label Table name\n    input(name=\"name\")\n\n  p\n    label Tablespace\n    select(name=\"tablespace\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  p.buttons\n    button.ok Create table\n    button.cancel cancel\n");
-}
-};
+exports["dialogs/new_table"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fnew_table.jade":"form\n  p\n    label Table name\n    input(name=\"name\")\n\n  p\n    label Tablespace\n    select(name=\"tablespace\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  p.buttons\n    button.ok Create table\n    button.cancel cancel\n"};
+var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "Table name\u003C\u002Flabel\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Cinput name=\"name\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "Tablespace\u003C\u002Flabel\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"tablespace\"\u003E\u003C\u002Fselect\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "Create table\u003C\u002Fbutton\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
+pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/new_table"].content = "form\n  p\n    label Table name\n    input(name=\"name\")\n\n  p\n    label Tablespace\n    select(name=\"tablespace\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  p.buttons\n    button.ok Create table\n    button.cancel cancel\n";
-exports["dialogs/show_sql"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/show_sql.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, code) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/show_sql.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/show_sql.jade" });
-buf.push("<code class=\"result sql\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/show_sql.jade" });
-buf.push(jade.escape(null == (jade_interp = code) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/show_sql.jade" });
-buf.push("\n<p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "views/dialogs/show_sql.jade" });
-buf.push("\n  <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
-buf.push("OK");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"code" in locals_for_with?locals_for_with.code:typeof code!=="undefined"?code:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "code.result.sql\n  = code\n\np.buttons\n  button.cancel OK");
-}
-};
+exports["dialogs/show_sql"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fshow_sql.jade":"code.result.sql\n  = code\n\np.buttons\n  button.cancel OK"};
+;var locals_for_with = (locals || {});(function (code) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";
+pug_html = pug_html + "\u003Ccode class=\"result sql\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = code) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";
+pug_html = pug_html + "OK\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"code" in locals_for_with?locals_for_with.code:typeof code!=="undefined"?code:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/show_sql"].content = "code.result.sql\n  = code\n\np.buttons\n  button.cancel OK";
-exports["dialogs/user_form"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/dialogs/user_form.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/dialogs/user_form.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/dialogs/user_form.jade" });
-buf.push("\n<form>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: jade_debug[0].filename });
-buf.push("Name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <input name=\"username\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
-buf.push("Password");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <input name=\"password\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <!--p-->");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <!--  label Password (again)-->");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <!--  input(name=\"password_again\")-->");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <label>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "views/dialogs/user_form.jade" });
-buf.push("\n      <input type=\"checkbox\" name=\"admin\" value=\"1\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/dialogs/user_form.jade" });
-buf.push("Admin?");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <input type=\"submit\" class=\"pseudo-hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 16, filename: "views/dialogs/user_form.jade" });
-buf.push("\n  <p class=\"buttons\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <button class=\"ok\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: jade_debug[0].filename });
-buf.push("Create user");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "views/dialogs/user_form.jade" });
-buf.push("\n    <button class=\"cancel\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
-buf.push("cancel");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</form>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "form\n  p\n    label Name\n    input(name=\"username\")\n  p\n    label Password\n    input(name=\"password\")\n  //p\n  //  label Password (again)\n  //  input(name=\"password_again\")\n  p\n    label\n      input(type=\"checkbox\" name=\"admin\" value=\"1\")\n      = \"Admin?\"\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Create user\n    button.cancel cancel\n");
-}
-};
+exports["dialogs/user_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fuser_form.jade":"form\n  p\n    label Name\n    input(name=\"username\")\n  p\n    label Password\n    input(name=\"password\")\n  \u002F\u002Fp\n  \u002F\u002F  label Password (again)\n  \u002F\u002F  input(name=\"password_again\")\n  p\n    label\n      input(type=\"checkbox\" name=\"admin\" value=\"1\")\n      = \"Admin?\"\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Create user\n    button.cancel cancel\n"};
+var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "Name\u003C\u002Flabel\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Cinput name=\"username\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "Password\u003C\u002Flabel\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Cinput name=\"password\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003C!--p--\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003C!--  label Password (again)--\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003C!--  input(name=\"password_again\")--\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n      \u003Cinput type=\"checkbox\" name=\"admin\" value=\"1\"\u002F\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Admin?") ? "" : pug_interp)) + "\n    \u003C\u002Flabel\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "Create user\u003C\u002Fbutton\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fuser_form.jade";
+pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/user_form"].content = "form\n  p\n    label Name\n    input(name=\"username\")\n  p\n    label Password\n    input(name=\"password\")\n  //p\n  //  label Password (again)\n  //  input(name=\"password_again\")\n  p\n    label\n      input(type=\"checkbox\" name=\"admin\" value=\"1\")\n      = \"Admin?\"\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Create user\n    button.cancel cancel\n";
-exports["extensions_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/extensions_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (rows, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/extensions_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/extensions_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/extensions_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/extensions_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/extensions_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/extensions_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/extensions_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/extensions_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Default Version");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/extensions_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Installed Version");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/extensions_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/extensions_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/extensions_tab.jade" ));
+exports["extensions_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fextensions_tab.jade":".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Default Version\n          th Installed Version\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.name\n            td= column.default_version\n            td\n              if column.installed_version\n                strong= column.installed_version\n                button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n              else\n                button(exec=\"install('\" + column.name + \"')\") Install\n            td= column.comment"};
+;var locals_for_with = (locals || {});(function (rows) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Name\u003C\u002Fth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Default Version\u003C\u002Fth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Installed Version\u003C\u002Fth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fextensions_tab.jade";
 // iterate rows
 ;(function(){
   var $$obj = rows;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 12, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/extensions_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.default_version) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "views/extensions_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/extensions_tab.jade" ));
-if ( column.installed_version)
-{
-jade_debug.unshift(new jade.DebugItem( 18, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/extensions_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = column.installed_version) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/extensions_tab.jade" ));
-buf.push("\n            <button" + (jade.attr("exec", "uninstall('" + column.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Uninstall");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var column = $$obj[pug_index0];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.default_version) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fextensions_tab.jade";
+if (column.installed_version) {
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.installed_version) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n            \u003Cbutton" + (pug.attr("exec", "uninstall('" + column.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Uninstall\u003C\u002Fbutton\u003E";
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 21, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/extensions_tab.jade" ));
-buf.push("\n            <button" + (jade.attr("exec", "install('" + column.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("Install");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n            \u003Cbutton" + (pug.attr("exec", "install('" + column.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Install\u003C\u002Fbutton\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.comment) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.comment) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 12, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/extensions_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.default_version) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "views/extensions_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/extensions_tab.jade" ));
-if ( column.installed_version)
-{
-jade_debug.unshift(new jade.DebugItem( 18, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/extensions_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = column.installed_version) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/extensions_tab.jade" ));
-buf.push("\n            <button" + (jade.attr("exec", "uninstall('" + column.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Uninstall");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index0];
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.default_version) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fextensions_tab.jade";
+if (column.installed_version) {
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.installed_version) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n            \u003Cbutton" + (pug.attr("exec", "uninstall('" + column.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Uninstall\u003C\u002Fbutton\u003E";
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 21, "views/extensions_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/extensions_tab.jade" ));
-buf.push("\n            <button" + (jade.attr("exec", "install('" + column.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("Install");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n            \u003Cbutton" + (pug.attr("exec", "install('" + column.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "Install\u003C\u002Fbutton\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/extensions_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.comment) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fextensions_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.comment) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Default Version\n          th Installed Version\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.name\n            td= column.default_version\n            td\n              if column.installed_version\n                strong= column.installed_version\n                button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n              else\n                button(exec=\"install('\" + column.name + \"')\") Install\n            td= column.comment");
-}
-};
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["extensions_tab"].content = ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Default Version\n          th Installed Version\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.name\n            td= column.default_version\n            td\n              if column.installed_version\n                strong= column.installed_version\n                button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n              else\n                button(exec=\"install('\" + column.name + \"')\") Install\n            td= column.comment";
-exports["help"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/help.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (link_to) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/help.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/help.jade" ));
-buf.push("\n<div class=\"help-screen\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/help.jade" ));
-buf.push("\n  <div class=\"sidebar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/help.jade" ));
-buf.push("\n    <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/help.jade" ));
-buf.push("\n      <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/help.jade" ));
-buf.push("<a page=\"about-postbird\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("About Postbird");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "views/help.jade" ));
-buf.push("\n      <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/help.jade" ));
-buf.push("<a page=\"get-postgres\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Get Postgres");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/help.jade" ));
-buf.push("\n      <!--li-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/help.jade" ));
-buf.push("\n      <!--  a(page=\"sql-basics\") SQL basics-->");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/help.jade" ));
-buf.push("");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/help.jade" ));
-buf.push("\n  <div class=\"content\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "views/help.jade" ));
-buf.push("\n    <div class=\"page about-postbird\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/help.jade" ));
-buf.push("\n      <h2>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("About Postbird");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h2>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/help.jade" ));
-buf.push("\n      <p class=\"logo\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/help.jade" ));
-buf.push("<img src=\"public/images/icon.png\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "views/help.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push("It's open source client for postgresql, written in JavaScript, run with node-webkit.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/help.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Source code at ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/help.jade" ));
-buf.push(null == (jade_interp = link_to("github.com/paxa/postbird", "https://github.com/paxa/postbird", {class: "external"})) ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/help.jade" ));
-buf.push("\n    <div class=\"page get-postgres\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/help.jade" ));
-buf.push("\n      <h2>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("Get Postgres");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h2>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/help.jade" ));
-buf.push("\n      <article>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, "views/help.jade" ));
-buf.push("\n        <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("Postgres.app");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/help.jade" ));
-buf.push("\n        <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer.") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Open the app, and you have a PostgreSQL server ready and awaiting new connections.") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Close the app, and the server shuts down.") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "views/help.jade" ));
-buf.push("<a href=\"http://postgresapp.com/\" class=\"download external\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
-buf.push("Download");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </article>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/help.jade" ));
-buf.push("\n      <article>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, "views/help.jade" ));
-buf.push("\n        <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, jade_debug[0].filename ));
-buf.push("Postgres Graphical installer");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/help.jade" ));
-buf.push("\n        <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 38, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "the StackBuilder utility for installation of additional packages.") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/help.jade" ));
-buf.push("<a href=\"http://www.enterprisedb.com/products-services-training/pgdownload#osx\" class=\"download external\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
-buf.push("Download");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </article>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/help.jade" ));
-buf.push("\n      <article>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, "views/help.jade" ));
-buf.push("\n        <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("Using Homebrew or MacPorts or Fink");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "views/help.jade" ));
-buf.push("\n        <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, "views/help.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, jade_debug[0].filename ));
-buf.push("For Homebrew:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 46, "views/help.jade" ));
-buf.push("<code>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("brew isntall postgresql");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/help.jade" ));
-buf.push("\n        <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/help.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
-buf.push("For MacPorts:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/help.jade" ));
-buf.push("<code>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "sudo port install postgresql93-server\n") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "views/help.jade" ));
-buf.push(jade.escape(null == (jade_interp = "sudo port select --set postgresql postgresql93") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "views/help.jade" ));
-buf.push("<a href=\"http://chriskief.com/2013/11/17/mavericks-macports-postgresql-9-tomcat-6-and-postgresql-studio/\" class=\"external\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("Manual");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "views/help.jade" ));
-buf.push("\n        <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/help.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, jade_debug[0].filename ));
-buf.push("For Fink:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 55, "views/help.jade" ));
-buf.push("<span>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
-buf.push("&nbsp;");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 56, "views/help.jade" ));
-buf.push("<a href=\"http://pdb.finkproject.org/pdb/browse.php?summary=postgresql\" class=\"external\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 56, jade_debug[0].filename ));
-buf.push("find it here");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </article>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/help.jade" ));
-buf.push("\n    <div class=\"page sql-basics\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 59, "views/help.jade" ));
-buf.push("\n      <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 59, jade_debug[0].filename ));
-buf.push("SQL Basics");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 61, "views/help.jade" ));
-buf.push("<i>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 61, jade_debug[0].filename ));
-buf.push("not ready");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</i>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"link_to" in locals_for_with?locals_for_with.link_to:typeof link_to!=="undefined"?link_to:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".help-screen\n  .sidebar\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      //li\n      //  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public/images/icon.png\")\n      p.\n        It's open source client for postgresql, written in JavaScript, run with node-webkit.\n      p\n        = \"Source code at \"\n        != link_to(\"github.com/paxa/postbird\", \"https://github.com/paxa/postbird\", {class: \"external\"})\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer.\"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections.\"\n          = \"Close the app, and the server shuts down.\"\n        a.download.external(href=\"http://postgresapp.com/\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and\"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http://www.enterprisedb.com/products-services-training/pgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew or MacPorts or Fink\n\n        p\n          strong For Homebrew:\n          code brew isntall postgresql\n        p\n          strong For MacPorts:\n          code\n            = \"sudo port install postgresql93-server\\n\"\n            = \"sudo port select --set postgresql postgresql93\"\n          a.external(href=\"http://chriskief.com/2013/11/17/mavericks-macports-postgresql-9-tomcat-6-and-postgresql-studio/\") Manual\n        p\n          strong For Fink:\n          span &nbsp;\n          a.external(href=\"http://pdb.finkproject.org/pdb/browse.php?summary=postgresql\") find it here\n\n    .page.sql-basics\n      h5 SQL Basics\n\n      i not ready");
-}
-};
-exports["help"].content = ".help-screen\n  .sidebar\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      //li\n      //  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public/images/icon.png\")\n      p.\n        It's open source client for postgresql, written in JavaScript, run with node-webkit.\n      p\n        = \"Source code at \"\n        != link_to(\"github.com/paxa/postbird\", \"https://github.com/paxa/postbird\", {class: \"external\"})\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer.\"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections.\"\n          = \"Close the app, and the server shuts down.\"\n        a.download.external(href=\"http://postgresapp.com/\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and\"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http://www.enterprisedb.com/products-services-training/pgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew or MacPorts or Fink\n\n        p\n          strong For Homebrew:\n          code brew isntall postgresql\n        p\n          strong For MacPorts:\n          code\n            = \"sudo port install postgresql93-server\\n\"\n            = \"sudo port select --set postgresql postgresql93\"\n          a.external(href=\"http://chriskief.com/2013/11/17/mavericks-macports-postgresql-9-tomcat-6-and-postgresql-studio/\") Manual\n        p\n          strong For Fink:\n          span &nbsp;\n          a.external(href=\"http://pdb.finkproject.org/pdb/browse.php?summary=postgresql\") find it here\n\n    .page.sql-basics\n      h5 SQL Basics\n\n      i not ready";
-exports["history"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/history.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (Date, JSON, console, events, execTime, timeFormat, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/history.jade" ));
-buf.push("\n<div class=\"history-window\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/history.jade" ));
-buf.push("\n  <header>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/history.jade" ));
-buf.push("\n    <button class=\"native-look reload-btn\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Reload");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "views/history.jade" ));
-buf.push("\n    <button class=\"native-look clear-btn\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Clear");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </header>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "views/history.jade" ));
-buf.push("\n  <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/history.jade" ));
+exports["history"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhistory.jade":".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      - console.log(event)\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - \u002F\u002F do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"\u002F\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"\u002F\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n"};
+;var locals_for_with = (locals || {});(function (Date, JSON, console, events, execTime, timeFormat) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"history-window\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n  \u003Cheader\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"native-look reload-btn\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Reload\u003C\u002Fbutton\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"native-look clear-btn\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Clear\u003C\u002Fbutton\u003E\n  \u003C\u002Fheader\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n  \u003Cul\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fhistory.jade";
 // iterate events
 ;(function(){
   var $$obj = events;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var event = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 6, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/history.jade" ));
-if ( event.type == "sql.start" && event.args[0].state != 'running')
-{
-jade_debug.unshift(new jade.DebugItem( 8, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/history.jade" ));
-// do nothing
-jade_debug.shift();
-jade_debug.shift();
-}
-else
-{
-jade_debug.unshift(new jade.DebugItem( 10, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/history.jade" ));
-buf.push("\n    <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/history.jade" ));
-buf.push("\n      <time>" + (jade.escape(null == (jade_interp = timeFormat(new Date(event.time))) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</time>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/history.jade" ));
-buf.push("\n      <div class=\"event-info\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/history.jade" ));
-if ( event.type == "sql.start" && event.args[0].state == 'running')
-{
-jade_debug.unshift(new jade.DebugItem( 14, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("Running");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "views/history.jade" ));
-buf.push("\n        <div class=\"sql running\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "sql.failed")
-{
-jade_debug.unshift(new jade.DebugItem( 20, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/history.jade" ));
-buf.push("\n        <div class=\"sql failed\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/history.jade" ));
-buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = JSON.stringify(query.error, null, 2)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "sql.success")
-{
-jade_debug.unshift(new jade.DebugItem( 27, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 27, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/history.jade" ));
-buf.push("\n        <div class=\"sql success\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "connect.success")
-{
-jade_debug.unshift(new jade.DebugItem( 33, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/history.jade" ));
-var opts = event.args[1]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/history.jade" ));
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var event = $$obj[pug_index0];
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fhistory.jade";
 console.log(event)
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Connected to server ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/history.jade" ));
-if ( opts)
-{
-jade_debug.unshift(new jade.DebugItem( 37, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 37, "views/history.jade" ));
-buf.push("<code class=\"sql\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/history.jade" ));
-if ( opts.database)
-{
-jade_debug.unshift(new jade.DebugItem( 40, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "/" + opts.database) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
+if (event.type == "sql.start" && event.args[0].state != 'running') {
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fhistory.jade";
+// do nothing
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "connect.error")
-{
-jade_debug.unshift(new jade.DebugItem( 43, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 43, "views/history.jade" ));
-var opts = event.args[1]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Failed connect to server ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/history.jade" ));
-buf.push("<code class=\"sql\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/history.jade" ));
-if ( opts.database)
-{
-jade_debug.unshift(new jade.DebugItem( 48, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "/" + opts.database) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/history.jade" ));
-buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = event.args[2].message || event.args[2]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "exec.start")
-{
-jade_debug.unshift(new jade.DebugItem( 52, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 52, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("Executing");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "views/history.jade" ));
-buf.push("\n        <div class=\"exec start\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/history.jade" ));
-buf.push("<code>" + (jade.escape(null == (jade_interp = event.args[0].command) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "exec.finish")
-{
-jade_debug.unshift(new jade.DebugItem( 57, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 57, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 57, jade_debug[0].filename ));
-buf.push("Complete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/history.jade" ));
-buf.push("\n        <div class=\"exec finish\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 59, "views/history.jade" ));
-buf.push("<code>" + (jade.escape(null == (jade_interp = event.args[0].command) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 60, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(event.args[0].time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n    \u003Cli\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n      \u003Ctime\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = timeFormat(new Date(event.time))) ? "" : pug_interp)) + "\u003C\u002Ftime\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"event-info\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
+if (event.type == "sql.start" && event.args[0].state == 'running') {
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Running\u003C\u002Fstrong\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql running\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
-{
-jade_debug.unshift(new jade.DebugItem( 63, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 63, "views/history.jade" ));
-buf.push("\n        <div class=\"event\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 64, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "~") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 65, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = event.type) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 66, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = " ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 67, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = JSON.stringify(event.args, null, 2)) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </div>");
-jade_debug.shift();
-jade_debug.shift();
+if (event.type == "sql.failed") {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql failed\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(query.error, null, 2)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </li>");
-jade_debug.shift();
-jade_debug.shift();
+else
+if (event.type == "sql.success") {
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql success\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+else
+if (event.type == "connect.success") {
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
+var opts = event.args[1]
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
+console.log(event)
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Connected to server ") ? "" : pug_interp));
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts) {
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts.database) {
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
+}
+pug_html = pug_html + "\u003C\u002Fcode\u003E";
+}
+}
+else
+if (event.type == "connect.error") {
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
+var opts = event.args[1]
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Failed connect to server ") ? "" : pug_interp));
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts.database) {
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
+}
+pug_html = pug_html + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[2].message || event.args[2]) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+else
+if (event.type == "exec.start") {
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Executing\u003C\u002Fstrong\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"exec start\"\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
+}
+else
+if (event.type == "exec.finish") {
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Complete\u003C\u002Fstrong\u003E";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"exec finish\"\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(event.args[0].time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
+}
+else {
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"event\"\u003E";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "~") ? "" : pug_interp));
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.type) ? "" : pug_interp));
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(event.args, null, 2)) ? "" : pug_interp)) + "\n        \u003C\u002Fdiv\u003E";
+}
+pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
+}
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var event = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 6, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/history.jade" ));
-if ( event.type == "sql.start" && event.args[0].state != 'running')
-{
-jade_debug.unshift(new jade.DebugItem( 8, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/history.jade" ));
-// do nothing
-jade_debug.shift();
-jade_debug.shift();
-}
-else
-{
-jade_debug.unshift(new jade.DebugItem( 10, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/history.jade" ));
-buf.push("\n    <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/history.jade" ));
-buf.push("\n      <time>" + (jade.escape(null == (jade_interp = timeFormat(new Date(event.time))) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</time>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/history.jade" ));
-buf.push("\n      <div class=\"event-info\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/history.jade" ));
-if ( event.type == "sql.start" && event.args[0].state == 'running')
-{
-jade_debug.unshift(new jade.DebugItem( 14, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("Running");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "views/history.jade" ));
-buf.push("\n        <div class=\"sql running\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "sql.failed")
-{
-jade_debug.unshift(new jade.DebugItem( 20, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 20, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/history.jade" ));
-buf.push("\n        <div class=\"sql failed\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/history.jade" ));
-buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = JSON.stringify(query.error, null, 2)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "sql.success")
-{
-jade_debug.unshift(new jade.DebugItem( 27, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 27, "views/history.jade" ));
-var query = event.args[0]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/history.jade" ));
-buf.push("\n        <div class=\"sql success\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/history.jade" ));
-buf.push("<code class=\"sql\">" + (jade.escape(null == (jade_interp = "SQL: " + query.sql) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(query.time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "connect.success")
-{
-jade_debug.unshift(new jade.DebugItem( 33, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/history.jade" ));
-var opts = event.args[1]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/history.jade" ));
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var event = $$obj[pug_index0];
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fhistory.jade";
 console.log(event)
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Connected to server ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/history.jade" ));
-if ( opts)
-{
-jade_debug.unshift(new jade.DebugItem( 37, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 37, "views/history.jade" ));
-buf.push("<code class=\"sql\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/history.jade" ));
-if ( opts.database)
-{
-jade_debug.unshift(new jade.DebugItem( 40, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "/" + opts.database) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
+if (event.type == "sql.start" && event.args[0].state != 'running') {
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fhistory.jade";
+// do nothing
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "connect.error")
-{
-jade_debug.unshift(new jade.DebugItem( 43, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 43, "views/history.jade" ));
-var opts = event.args[1]
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Failed connect to server ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/history.jade" ));
-buf.push("<code class=\"sql\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/history.jade" ));
-if ( opts.database)
-{
-jade_debug.unshift(new jade.DebugItem( 48, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "/" + opts.database) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-}
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/history.jade" ));
-buf.push("<span class=\"error\">" + (jade.escape(null == (jade_interp = event.args[2].message || event.args[2]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "exec.start")
-{
-jade_debug.unshift(new jade.DebugItem( 52, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 52, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("Executing");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "views/history.jade" ));
-buf.push("\n        <div class=\"exec start\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/history.jade" ));
-buf.push("<code>" + (jade.escape(null == (jade_interp = event.args[0].command) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-}
-else if ( event.type == "exec.finish")
-{
-jade_debug.unshift(new jade.DebugItem( 54, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/history.jade" ));
-buf.push("<strong>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 57, jade_debug[0].filename ));
-buf.push("Complete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/history.jade" ));
-buf.push("\n        <div class=\"exec finish\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 59, "views/history.jade" ));
-buf.push("<code>" + (jade.escape(null == (jade_interp = event.args[0].command) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 60, "views/history.jade" ));
-buf.push("<span class=\"exec-time\">" + (jade.escape(null == (jade_interp = "(" + execTime(event.args[0].time) + ")") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n    \u003Cli\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n      \u003Ctime\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = timeFormat(new Date(event.time))) ? "" : pug_interp)) + "\u003C\u002Ftime\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"event-info\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
+if (event.type == "sql.start" && event.args[0].state == 'running') {
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Running\u003C\u002Fstrong\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql running\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
-{
-jade_debug.unshift(new jade.DebugItem( 60, "views/history.jade" ));
-jade_debug.unshift(new jade.DebugItem( 60, "views/history.jade" ));
-buf.push("\n        <div class=\"event\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 61, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = "~") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 62, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = event.type) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 63, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = " ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 64, "views/history.jade" ));
-buf.push(jade.escape(null == (jade_interp = JSON.stringify(event.args, null, 2)) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </div>");
-jade_debug.shift();
-jade_debug.shift();
+if (event.type == "sql.failed") {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql failed\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(query.error, null, 2)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </li>");
-jade_debug.shift();
-jade_debug.shift();
+else
+if (event.type == "sql.success") {
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
+var query = event.args[0]
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"sql success\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
+else
+if (event.type == "connect.success") {
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
+var opts = event.args[1]
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
+console.log(event)
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Connected to server ") ? "" : pug_interp));
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts) {
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts.database) {
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
+}
+pug_html = pug_html + "\u003C\u002Fcode\u003E";
+}
+}
+else
+if (event.type == "connect.error") {
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
+var opts = event.args[1]
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Failed connect to server ") ? "" : pug_interp));
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
+if (opts.database) {
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
+}
+pug_html = pug_html + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[2].message || event.args[2]) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+else
+if (event.type == "exec.start") {
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Executing\u003C\u002Fstrong\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"exec start\"\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
+}
+else
+if (event.type == "exec.finish") {
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "Complete\u003C\u002Fstrong\u003E";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"exec finish\"\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(event.args[0].time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
+}
+else {
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + "\n        \u003Cdiv class=\"event\"\u003E";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "~") ? "" : pug_interp));
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = event.type) ? "" : pug_interp));
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(event.args, null, 2)) ? "" : pug_interp)) + "\n        \u003C\u002Fdiv\u003E";
+}
+pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
+}
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"console" in locals_for_with?locals_for_with.console:typeof console!=="undefined"?console:undefined,"events" in locals_for_with?locals_for_with.events:typeof events!=="undefined"?events:undefined,"execTime" in locals_for_with?locals_for_with.execTime:typeof execTime!=="undefined"?execTime:undefined,"timeFormat" in locals_for_with?locals_for_with.timeFormat:typeof timeFormat!=="undefined"?timeFormat:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n");
-}
-};
-exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n";
-exports["home"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (link_to) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n<div class=\"home-screen\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n  <div class=\"sidebar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <h4>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Saved connections");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <ul class=\"connections\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("<a exec=\"addNewConnection\" class=\"add-connection\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Add");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n  <div class=\"main-window\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <form class=\"middle-window plain\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <label for=\"login_host\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Host");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input id=\"login_host\" name=\"host\" type=\"text\" value=\"localhost\" placeholder=\"localhost\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <label for=\"login_port\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Port");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input id=\"login_port\" name=\"port\" type=\"text\" value=\"5432\" placeholder=\"5432\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <label for=\"login_username\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Username");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input id=\"login_username\" name=\"user\" type=\"text\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <label for=\"login_password\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Password");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input id=\"login_password\" name=\"password\" type=\"password\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <label for=\"login_database\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("Database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input id=\"login_database\" name=\"database\" type=\"text\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <input name=\"query\" type=\"hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p class=\"buttons\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <button exec=\"testConnection\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
-buf.push("Test connection");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <button exec=\"saveAndConnect\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Save & connect");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <input type=\"submit\" value=\"Connect\" autofocus=\"autofocus\" class=\"native-look\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </form>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-1\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
-buf.push("Heroku login");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <p>" + (null == (jade_interp = link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-//p!= link_to('Access with "$ heroku" command line tool', '#')
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-oauth\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <ul class=\"steps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li class=\"access-token\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
-buf.push("Grand access");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li class=\"request-token\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("Request Token");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li class=\"get-apps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
-buf.push("Get applications list");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <ul class=\"apps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <ul class=\"steps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li class=\"database-url\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("Database URL");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li class=\"connect-db\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
-buf.push("Connect to DB");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-cl\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n      <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, jade_debug[0].filename ));
-buf.push("Detect command line utilite");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n        <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("Get applications list");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 54, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("\n    <footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push(null == (jade_interp = link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})) ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 56, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push(null == (jade_interp = link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})) ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("<br/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "/Users/yoonwaiyan/Documents/workspace/postbird/views/home.jade" ));
-buf.push("<a class=\"go-to-help\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
-buf.push("Get Postgres");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </footer>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"link_to" in locals_for_with?locals_for_with.link_to:typeof link_to!=="undefined"?link_to:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".home-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    a.add-connection(exec=\"addNewConnection\") Add\n\n  .main-window\n    form.middle-window.plain\n      p\n        label(for=\"login_host\") Host\n        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n      p\n        label(for=\"login_port\") Port\n        input#login_port(name='port', type='text', value='5432', placeholder='5432')\n      p\n        label(for=\"login_username\") Username\n        input#login_username(name='user', type='text', value='')\n      p\n        label(for=\"login_password\") Password\n        input#login_password(name='password', type='password', value='')\n\n      p\n        label(for=\"login_database\") Database\n        input#login_database(name='database', type='text', value='')\n\n      input(name=\"query\", type=\"hidden\")\n\n      p.buttons\n        button.native-look(exec=\"testConnection\") Test connection\n        button.native-look(exec=\"saveAndConnect\") Save & connect\n        input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n    .middle-window.heroku-1\n      h5 Heroku login\n\n      p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n      - //p!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n    .middle-window.heroku-oauth\n      ul.steps\n        li.access-token Grand access\n        li.request-token Request Token\n        li.get-apps Get applications list\n      ul.apps\n      ul.steps\n        li.database-url Database URL\n        li.connect-db Connect to DB\n\n    .middle-window.heroku-cl\n      ul\n        li Detect command line utilite\n        li Get applications list\n\n    footer\n      != link_to(\"Login with heroku\", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})\n      != link_to(\"Login with password\", '#', {exec: 'showPlainPane', class: 'login-with-password'})\n      br\n      a.go-to-help Get Postgres\n");
-}
-};
-exports["home"].content = ".home-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    a.add-connection(exec=\"addNewConnection\") Add\n\n  .main-window\n    form.middle-window.plain\n      p\n        label(for=\"login_host\") Host\n        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n      p\n        label(for=\"login_port\") Port\n        input#login_port(name='port', type='text', value='5432', placeholder='5432')\n      p\n        label(for=\"login_username\") Username\n        input#login_username(name='user', type='text', value='')\n      p\n        label(for=\"login_password\") Password\n        input#login_password(name='password', type='password', value='')\n\n      p\n        label(for=\"login_database\") Database\n        input#login_database(name='database', type='text', value='')\n\n      input(name=\"query\", type=\"hidden\")\n\n      p.buttons\n        button.native-look(exec=\"testConnection\") Test connection\n        button.native-look(exec=\"saveAndConnect\") Save & connect\n        input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n    .middle-window.heroku-1\n      h5 Heroku login\n\n      p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n      - //p!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n    .middle-window.heroku-oauth\n      ul.steps\n        li.access-token Grand access\n        li.request-token Request Token\n        li.get-apps Get applications list\n      ul.apps\n      ul.steps\n        li.database-url Database URL\n        li.connect-db Connect to DB\n\n    .middle-window.heroku-cl\n      ul\n        li Detect command line utilite\n        li Get applications list\n\n    footer\n      != link_to(\"Login with heroku\", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})\n      != link_to(\"Login with password\", '#', {exec: 'showPlainPane', class: 'login-with-password'})\n      br\n      a.go-to-help Get Postgres\n";
-exports["info_tab"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/info_tab.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, relType, recordsCount, tableSize, code) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/info_tab.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/info_tab.jade" });
-buf.push("\n<div class=\"summary\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/info_tab.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/info_tab.jade" });
-buf.push("Type: ");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/info_tab.jade" });
-buf.push("<strong>" + (jade.escape(null == (jade_interp = relType) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/info_tab.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: "views/info_tab.jade" });
-buf.push("Estimate rows count: ");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "views/info_tab.jade" });
-buf.push(jade.escape(null == (jade_interp = recordsCount) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "views/info_tab.jade" });
-buf.push("\n  <p>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: "views/info_tab.jade" });
-buf.push("Size on disk: ");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "views/info_tab.jade" });
-buf.push(jade.escape(null == (jade_interp = tableSize) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 12, filename: "views/info_tab.jade" });
-buf.push("\n<h4>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: jade_debug[0].filename });
-buf.push("Source SQL");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "views/info_tab.jade" });
-buf.push("<code class=\"result sql\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 15, filename: "views/info_tab.jade" });
-buf.push(jade.escape(null == (jade_interp = code) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"relType" in locals_for_with?locals_for_with.relType:typeof relType!=="undefined"?relType:undefined,"recordsCount" in locals_for_with?locals_for_with.recordsCount:typeof recordsCount!=="undefined"?recordsCount:undefined,"tableSize" in locals_for_with?locals_for_with.tableSize:typeof tableSize!=="undefined"?tableSize:undefined,"code" in locals_for_with?locals_for_with.code:typeof code!=="undefined"?code:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  p\n    = \"Size on disk: \"\n    = tableSize\n\nh4 Source SQL\n\ncode.result.sql\n  = code");
-}
-};
+pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"console" in locals_for_with?locals_for_with.console:typeof console!=="undefined"?console:undefined,"events" in locals_for_with?locals_for_with.events:typeof events!=="undefined"?events:undefined,"execTime" in locals_for_with?locals_for_with.execTime:typeof execTime!=="undefined"?execTime:undefined,"timeFormat" in locals_for_with?locals_for_with.timeFormat:typeof timeFormat!=="undefined"?timeFormat:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      - console.log(event)\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n";
+exports["info_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Finfo_tab.jade":".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  p\n    = \"Size on disk: \"\n    = tableSize\n\nh4 Source SQL\n\ncode.result.sql\n  = code"};
+;var locals_for_with = (locals || {});(function (code, recordsCount, relType, tableSize) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"summary\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Type: ") ? "" : pug_interp));
+;pug_debug_line = 4;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = relType) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Estimate rows count: ") ? "" : pug_interp));
+;pug_debug_line = 7;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = recordsCount) ? "" : pug_interp)) + "\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Size on disk: ") ? "" : pug_interp));
+;pug_debug_line = 10;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = tableSize) ? "" : pug_interp)) + "\n  \u003C\u002Fp\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "Source SQL\u003C\u002Fh4\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\u003Ccode class=\"result sql\"\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = code) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";}.call(this,"code" in locals_for_with?locals_for_with.code:typeof code!=="undefined"?code:undefined,"recordsCount" in locals_for_with?locals_for_with.recordsCount:typeof recordsCount!=="undefined"?recordsCount:undefined,"relType" in locals_for_with?locals_for_with.relType:typeof relType!=="undefined"?relType:undefined,"tableSize" in locals_for_with?locals_for_with.tableSize:typeof tableSize!=="undefined"?tableSize:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["info_tab"].content = ".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  p\n    = \"Size on disk: \"\n    = tableSize\n\nh4 Source SQL\n\ncode.result.sql\n  = code";
-exports["login_screen"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/login_screen.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (link_to) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/login_screen.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/login_screen.jade" ));
-buf.push("\n<div class=\"home-screen\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/login_screen.jade" ));
-buf.push("\n  <div class=\"sidebar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/login_screen.jade" ));
-buf.push("\n    <h4>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Saved connections");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "views/login_screen.jade" ));
-buf.push("\n    <ul class=\"connections\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "views/login_screen.jade" ));
-buf.push("\n    <button exec=\"addNewConnection\" class=\"add-connection native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Add");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "views/login_screen.jade" ));
-buf.push("\n  <div class=\"main-window\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/login_screen.jade" ));
-buf.push("\n    <form class=\"middle-window plain\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/login_screen.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/login_screen.jade" ));
-buf.push("\n        <label for=\"login_host\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Host");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/login_screen.jade" ));
-buf.push("\n        <input id=\"login_host\" name=\"host\" type=\"text\" value=\"localhost\" placeholder=\"localhost\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/login_screen.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/login_screen.jade" ));
-buf.push("\n        <label for=\"login_port\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Port");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/login_screen.jade" ));
-buf.push("\n        <input id=\"login_port\" name=\"port\" type=\"text\" value=\"5432\" placeholder=\"5432\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/login_screen.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/login_screen.jade" ));
-buf.push("\n        <label for=\"login_username\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Username");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "views/login_screen.jade" ));
-buf.push("\n        <input id=\"login_username\" name=\"user\" type=\"text\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/login_screen.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/login_screen.jade" ));
-buf.push("\n        <label for=\"login_password\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Password");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/login_screen.jade" ));
-buf.push("\n        <input id=\"login_password\" name=\"password\" type=\"password\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/login_screen.jade" ));
-buf.push("\n      <p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, "views/login_screen.jade" ));
-buf.push("\n        <label for=\"login_database\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("Database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/login_screen.jade" ));
-buf.push("\n        <input id=\"login_database\" name=\"database\" type=\"text\" value=\"\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/login_screen.jade" ));
-buf.push("\n      <input name=\"query\" type=\"hidden\"/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/login_screen.jade" ));
-buf.push("\n      <p class=\"buttons\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/login_screen.jade" ));
-buf.push("\n        <button exec=\"testConnection\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
-buf.push("Test connection");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/login_screen.jade" ));
-buf.push("\n        <button exec=\"saveAndConnect\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Save & connect");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "views/login_screen.jade" ));
-buf.push("\n        <input type=\"submit\" value=\"Connect\" autofocus=\"autofocus\" class=\"native-look\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </form>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "views/login_screen.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-1\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, "views/login_screen.jade" ));
-buf.push("\n      <h5>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
-buf.push("Heroku login");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/login_screen.jade" ));
-buf.push("\n      <p>" + (null == (jade_interp = link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "views/login_screen.jade" ));
+exports["login_screen"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Flogin_screen.jade":".home-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    button.add-connection.native-look(exec=\"addNewConnection\") Add\n\n  .main-window\n    form.middle-window.plain\n      p\n        label(for=\"login_host\") Host\n        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n      p\n        label(for=\"login_port\") Port\n        input#login_port(name='port', type='text', value='5432', placeholder='5432')\n      p\n        label(for=\"login_username\") Username\n        input#login_username(name='user', type='text', value='')\n      p\n        label(for=\"login_password\") Password\n        input#login_password(name='password', type='password', value='')\n\n      p\n        label(for=\"login_database\") Database\n        input#login_database(name='database', type='text', value='')\n\n      input(name=\"query\", type=\"hidden\")\n\n      p.buttons\n        button.native-look(exec=\"testConnection\") Test connection\n        button.native-look(exec=\"saveAndConnect\") Save & connect\n        input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n    .middle-window.heroku-1\n      h5 Heroku login\n\n      p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n      - \u002F\u002Fp!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n    .middle-window.heroku-oauth\n      ul.steps\n        li.access-token Grand access\n        li.request-token Request Token\n        li.get-apps Get applications list\n      ul.apps\n      ul.steps\n        li.database-url Database URL\n        li.connect-db Connect to DB\n\n    .middle-window.heroku-cl\n      ul\n        li Detect command line utilite\n        li Get applications list\n\n    footer\n      != link_to(\"Login with heroku\", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})\n      != link_to(\"Login with password\", '#', {exec: 'showPlainPane', class: 'login-with-password'})\n      br\n      a.go-to-help Get Postgres\n"};
+;var locals_for_with = (locals || {});(function (link_to) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"home-screen\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"sidebar\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Ch4\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Saved connections\u003C\u002Fh4\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cul class=\"connections\"\u003E\u003C\u002Ful\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"add-connection native-look\" exec=\"addNewConnection\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Add\u003C\u002Fbutton\u003E\n  \u003C\u002Fdiv\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"main-window\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cform class=\"middle-window plain\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Clabel for=\"login_host\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Host\u003C\u002Flabel\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput id=\"login_host\" name=\"host\" type=\"text\" value=\"localhost\" placeholder=\"localhost\"\u002F\u003E\n      \u003C\u002Fp\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Clabel for=\"login_port\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Port\u003C\u002Flabel\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput id=\"login_port\" name=\"port\" type=\"text\" value=\"5432\" placeholder=\"5432\"\u002F\u003E\n      \u003C\u002Fp\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Clabel for=\"login_username\"\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Username\u003C\u002Flabel\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput id=\"login_username\" name=\"user\" type=\"text\" value=\"\"\u002F\u003E\n      \u003C\u002Fp\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Clabel for=\"login_password\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Password\u003C\u002Flabel\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput id=\"login_password\" name=\"password\" type=\"password\" value=\"\"\u002F\u003E\n      \u003C\u002Fp\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Clabel for=\"login_database\"\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Database\u003C\u002Flabel\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput id=\"login_database\" name=\"database\" type=\"text\" value=\"\"\u002F\u003E\n      \u003C\u002Fp\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cinput name=\"query\" type=\"hidden\"\u002F\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"native-look\" exec=\"testConnection\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Test connection\u003C\u002Fbutton\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"native-look\" exec=\"saveAndConnect\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Save & connect\u003C\u002Fbutton\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cinput class=\"native-look\" type=\"submit\" value=\"Connect\" autofocus=\"autofocus\"\u002F\u003E\n      \u003C\u002Fp\u003E\n    \u003C\u002Fform\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"middle-window heroku-1\"\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Ch5\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Heroku login\u003C\u002Fh5\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cp\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + (null == (pug_interp = link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})) ? "" : pug_interp) + "\u003C\u002Fp\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Flogin_screen.jade";
 //p!= link_to('Access with "$ heroku" command line tool', '#')
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/login_screen.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-oauth\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/login_screen.jade" ));
-buf.push("\n      <ul class=\"steps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, "views/login_screen.jade" ));
-buf.push("\n        <li class=\"access-token\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
-buf.push("Grand access");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "views/login_screen.jade" ));
-buf.push("\n        <li class=\"request-token\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("Request Token");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "views/login_screen.jade" ));
-buf.push("\n        <li class=\"get-apps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
-buf.push("Get applications list");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "views/login_screen.jade" ));
-buf.push("\n      <ul class=\"apps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/login_screen.jade" ));
-buf.push("\n      <ul class=\"steps\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, "views/login_screen.jade" ));
-buf.push("\n        <li class=\"database-url\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("Database URL");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/login_screen.jade" ));
-buf.push("\n        <li class=\"connect-db\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
-buf.push("Connect to DB");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/login_screen.jade" ));
-buf.push("\n    <div class=\"middle-window heroku-cl\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, "views/login_screen.jade" ));
-buf.push("\n      <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, "views/login_screen.jade" ));
-buf.push("\n        <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, jade_debug[0].filename ));
-buf.push("Detect command line utilite");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "views/login_screen.jade" ));
-buf.push("\n        <li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("Get applications list");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </ul>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 54, "views/login_screen.jade" ));
-buf.push("\n    <footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "views/login_screen.jade" ));
-buf.push(null == (jade_interp = link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})) ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 56, "views/login_screen.jade" ));
-buf.push(null == (jade_interp = link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})) ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "views/login_screen.jade" ));
-buf.push("<br/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/login_screen.jade" ));
-buf.push("<a class=\"go-to-help\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
-buf.push("Get Postgres");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </footer>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"link_to" in locals_for_with?locals_for_with.link_to:typeof link_to!=="undefined"?link_to:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".home-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    button.add-connection.native-look(exec=\"addNewConnection\") Add\n\n  .main-window\n    form.middle-window.plain\n      p\n        label(for=\"login_host\") Host\n        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n      p\n        label(for=\"login_port\") Port\n        input#login_port(name='port', type='text', value='5432', placeholder='5432')\n      p\n        label(for=\"login_username\") Username\n        input#login_username(name='user', type='text', value='')\n      p\n        label(for=\"login_password\") Password\n        input#login_password(name='password', type='password', value='')\n\n      p\n        label(for=\"login_database\") Database\n        input#login_database(name='database', type='text', value='')\n\n      input(name=\"query\", type=\"hidden\")\n\n      p.buttons\n        button.native-look(exec=\"testConnection\") Test connection\n        button.native-look(exec=\"saveAndConnect\") Save & connect\n        input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n    .middle-window.heroku-1\n      h5 Heroku login\n\n      p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n      - //p!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n    .middle-window.heroku-oauth\n      ul.steps\n        li.access-token Grand access\n        li.request-token Request Token\n        li.get-apps Get applications list\n      ul.apps\n      ul.steps\n        li.database-url Database URL\n        li.connect-db Connect to DB\n\n    .middle-window.heroku-cl\n      ul\n        li Detect command line utilite\n        li Get applications list\n\n    footer\n      != link_to(\"Login with heroku\", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})\n      != link_to(\"Login with password\", '#', {exec: 'showPlainPane', class: 'login-with-password'})\n      br\n      a.go-to-help Get Postgres\n");
-}
-};
+pug_html = pug_html + "\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"middle-window heroku-oauth\"\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cul class=\"steps\"\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli class=\"access-token\"\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Grand access\u003C\u002Fli\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli class=\"request-token\"\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Request Token\u003C\u002Fli\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli class=\"get-apps\"\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Get applications list\u003C\u002Fli\u003E\n      \u003C\u002Ful\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cul class=\"apps\"\u003E\u003C\u002Ful\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cul class=\"steps\"\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli class=\"database-url\"\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Database URL\u003C\u002Fli\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli class=\"connect-db\"\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Connect to DB\u003C\u002Fli\u003E\n      \u003C\u002Ful\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"middle-window heroku-cl\"\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n      \u003Cul\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Detect command line utilite\u003C\u002Fli\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n        \u003Cli\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Get applications list\u003C\u002Fli\u003E\n      \u003C\u002Ful\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\n    \u003Cfooter\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + (null == (pug_interp = link_to("Login with heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})) ? "" : pug_interp);
+;pug_debug_line = 56;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + (null == (pug_interp = link_to("Login with password", '#', {exec: 'showPlainPane', class: 'login-with-password'})) ? "" : pug_interp);
+;pug_debug_line = 57;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "\u003Ca class=\"go-to-help\"\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Flogin_screen.jade";
+pug_html = pug_html + "Get Postgres\u003C\u002Fa\u003E\n    \u003C\u002Ffooter\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"link_to" in locals_for_with?locals_for_with.link_to:typeof link_to!=="undefined"?link_to:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["login_screen"].content = ".home-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    button.add-connection.native-look(exec=\"addNewConnection\") Add\n\n  .main-window\n    form.middle-window.plain\n      p\n        label(for=\"login_host\") Host\n        input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n      p\n        label(for=\"login_port\") Port\n        input#login_port(name='port', type='text', value='5432', placeholder='5432')\n      p\n        label(for=\"login_username\") Username\n        input#login_username(name='user', type='text', value='')\n      p\n        label(for=\"login_password\") Password\n        input#login_password(name='password', type='password', value='')\n\n      p\n        label(for=\"login_database\") Database\n        input#login_database(name='database', type='text', value='')\n\n      input(name=\"query\", type=\"hidden\")\n\n      p.buttons\n        button.native-look(exec=\"testConnection\") Test connection\n        button.native-look(exec=\"saveAndConnect\") Save & connect\n        input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n    .middle-window.heroku-1\n      h5 Heroku login\n\n      p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n      - //p!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n    .middle-window.heroku-oauth\n      ul.steps\n        li.access-token Grand access\n        li.request-token Request Token\n        li.get-apps Get applications list\n      ul.apps\n      ul.steps\n        li.database-url Database URL\n        li.connect-db Connect to DB\n\n    .middle-window.heroku-cl\n      ul\n        li Detect command line utilite\n        li Get applications list\n\n    footer\n      != link_to(\"Login with heroku\", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})\n      != link_to(\"Login with password\", '#', {exec: 'showPlainPane', class: 'login-with-password'})\n      br\n      a.go-to-help Get Postgres\n";
-exports["main"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/main.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (icon) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/main.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/main.jade" ));
-buf.push("\n<div class=\"main-screen\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/main.jade" ));
-buf.push("\n  <div class=\"sidebar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "views/main.jade" ));
-buf.push("\n    <div class=\"databases\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/main.jade" ));
-buf.push("\n      <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Select database");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "views/main.jade" ));
-buf.push("\n      <select>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/main.jade" ));
-buf.push("\n        <option>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Select database...");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "views/main.jade" ));
-buf.push("\n    <div class=\"tables without-system-tables\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/main.jade" ));
-buf.push("\n      <ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/main.jade" ));
-buf.push("\n      <div class=\"show-system-tables\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/main.jade" ));
-buf.push("\n        <label>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/main.jade" ));
-buf.push("\n          <input type=\"checkbox\"/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/main.jade" ));
-buf.push(jade.escape(null == (jade_interp = "Show Schemas") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </label>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/main.jade" ));
-buf.push("\n    <ul class=\"extras\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/main.jade" ));
-buf.push("\n      <li class=\"reload\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/main.jade" ));
-buf.push("<a class=\"reloadStructure\">" + (null == (jade_interp = icon('reload', 'Reload Tables')) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "views/main.jade" ));
-buf.push("\n      <li class=\"add-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/main.jade" ));
-buf.push("<a class=\"addTable\">" + (null == (jade_interp = icon('add-table', 'Add Table')) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/main.jade" ));
-buf.push("\n      <li tab=\"users\" class=\"users\">" + (null == (jade_interp = icon('users', 'Users')) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/main.jade" ));
-buf.push("\n      <li tab=\"extensions\" class=\"extensions\">" + (null == (jade_interp = icon('extensions', "Postgres Extensions")) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/main.jade" ));
-buf.push("\n      <li tab=\"procedures\" class=\"procedures\">" + (null == (jade_interp = icon('procedures', "Procedures")) ? "" : jade_interp));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </ul>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/main.jade" ));
-buf.push("\n    <div class=\"resize-handler\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/main.jade" ));
-buf.push("\n  <div class=\"main\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/main.jade" ));
-buf.push("\n    <div class=\"window-tabs\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, "views/main.jade" ));
-buf.push("\n      <div tab=\"structure\" class=\"window-tab tab structure\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
-buf.push("Structure");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/main.jade" ));
-buf.push("\n      <div tab=\"content\" class=\"window-tab tab content\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Content");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/main.jade" ));
-buf.push("\n      <div tab=\"info\" class=\"window-tab tab info\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("Info");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/main.jade" ));
-buf.push("\n      <div tab=\"query\" class=\"window-tab tab query\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Query");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/main.jade" ));
-buf.push("\n      <!--.tab.triggers(tab='triggers') Triggers-->");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/main.jade" ));
-buf.push("\n    <div class=\"clearfix\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content structure\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content content\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content info\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content query\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content triggers\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content users\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 38, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content extensions\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/main.jade" ));
-buf.push("\n    <div class=\"window-content procedures\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"icon" in locals_for_with?locals_for_with.icon:typeof icon!=="undefined"?icon:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .window-tab.tab.structure(tab='structure') Structure\n      .window-tab.tab.content(tab='content') Content\n      .window-tab.tab.info(tab='info') Info\n      .window-tab.tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n    .clearfix\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures");
-}
-};
+exports["main"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fmain.jade":".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .window-tab.tab.structure(tab='structure') Structure\n      .window-tab.tab.content(tab='content') Content\n      .window-tab.tab.info(tab='info') Info\n      .window-tab.tab.query(tab='query') Query\n      \u002F\u002F.tab.triggers(tab='triggers') Triggers\n    .clearfix\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures"};
+;var locals_for_with = (locals || {});(function (icon) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"main-screen\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"sidebar\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"databases\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Clabel\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Select database\u003C\u002Flabel\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cselect\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n        \u003Coption\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Select database...\u003C\u002Foption\u003E\n      \u003C\u002Fselect\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"tables without-system-tables\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cul\u003E\u003C\u002Ful\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"show-system-tables\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n        \u003Clabel\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n          \u003Cinput type=\"checkbox\"\u002F\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Show Schemas") ? "" : pug_interp)) + "\n        \u003C\u002Flabel\u003E\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cul class=\"extras\"\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cli class=\"reload\"\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\u003Ca class=\"reloadStructure\"\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (null == (pug_interp = icon('reload', 'Reload Tables')) ? "" : pug_interp) + "\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cli class=\"add-table\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\u003Ca class=\"addTable\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (null == (pug_interp = icon('add-table', 'Add Table')) ? "" : pug_interp) + "\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cli class=\"users\" tab=\"users\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (null == (pug_interp = icon('users', 'Users')) ? "" : pug_interp) + "\u003C\u002Fli\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cli class=\"extensions\" tab=\"extensions\"\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (null == (pug_interp = icon('extensions', "Postgres Extensions")) ? "" : pug_interp) + "\u003C\u002Fli\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cli class=\"procedures\" tab=\"procedures\"\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + (null == (pug_interp = icon('procedures', "Procedures")) ? "" : pug_interp) + "\u003C\u002Fli\u003E\n    \u003C\u002Ful\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"resize-handler\"\u003E\u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"main\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-tabs\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"window-tab tab structure\" tab=\"structure\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Structure\u003C\u002Fdiv\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"window-tab tab content\" tab=\"content\"\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Content\u003C\u002Fdiv\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"window-tab tab info\" tab=\"info\"\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Info\u003C\u002Fdiv\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"window-tab tab query\" tab=\"query\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "Query\u003C\u002Fdiv\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n      \u003C!--.tab.triggers(tab='triggers') Triggers--\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"clearfix\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content structure\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content content\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content info\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content query\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content triggers\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content users\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content extensions\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fmain.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"window-content procedures\"\u003E\u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"icon" in locals_for_with?locals_for_with.icon:typeof icon!=="undefined"?icon:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["main"].content = ".main-screen\n  .sidebar\n    .databases\n      label Select database\n      select\n        option Select database...\n    .tables.without-system-tables\n      ul\n      .show-system-tables\n        label\n          input(type=\"checkbox\")\n          = \"Show Schemas\"\n\n    ul.extras\n      li.reload\n        a.reloadStructure!= icon('reload', 'Reload Tables')\n      li.add-table\n        a.addTable!= icon('add-table', 'Add Table')\n      li.users(tab='users')!= icon('users', 'Users')\n      li.extensions(tab='extensions')!= icon('extensions', \"Postgres Extensions\")\n      li.procedures(tab='procedures')!= icon('procedures', \"Procedures\")\n    .resize-handler\n  .main\n    .window-tabs\n      .window-tab.tab.structure(tab='structure') Structure\n      .window-tab.tab.content(tab='content') Content\n      .window-tab.tab.info(tab='info') Info\n      .window-tab.tab.query(tab='query') Query\n      //.tab.triggers(tab='triggers') Triggers\n    .clearfix\n\n    .window-content.structure\n    .window-content.content\n    .window-content.info\n    .window-content.query\n    .window-content.triggers\n    .window-content.users\n    .window-content.extensions\n    .window-content.procedures";
-exports["procedures_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/procedures_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (procs, triggers, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/procedures_tab.jade" ));
-buf.push("\n<h4>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Procedures");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/procedures_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/procedures_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "views/procedures_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/procedures_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/procedures_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("return type");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("arguments");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("language");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("extension");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "views/procedures_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/procedures_tab.jade" ));
+exports["procedures_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fprocedures_tab.jade":"h4 Procedures\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th return type\n          th arguments\n          th language\n          th extension\n          th\n      tbody\n        each proc in procs\n          tr\n            td\n              strong= proc.name\n            td= proc.return_type\n            td= proc.arg_list\n            td= proc.language\n            td= proc.extension\n            td\n              if proc.language != \"c\" && proc.language != 'internal'\n                a(exec=\"editProc('\" + proc.oid + \"', '\" + proc.name + \"')\") Edit\n                != \"&nbsp;\"\n                a(exec=\"procDefinition('\" + proc.oid + \"', '\" + proc.name + \"')\") Source\n                != \"&nbsp;\"\n              a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  - \u002F\u002Fbutton.native-look(exec=\"addColumnForm\") Create Procedure\n  - \u002F\u002Fbutton.native-look(exec=\"addColumnForm\") Create Trigger\n  button.native-look(exec=\"listLanguages\") List Languages\n\nh4 Triggers And Constraints\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Table\n          th Procedure\n          th Event\n          th(title=\"Deferrable\") Deferr.\n          th\n      tbody\n        each trigger in triggers\n          tr\n            td\n              if trigger.constraint_name\n                strong(title=\"Constraint\") C\n                != \"&nbsp;\"\n                = trigger.constraint_name\n              else\n                = trigger.name\n            td= trigger.table_name\n            td= trigger.proc_name\n            td= trigger.typeDesc().join(\", \")\n            td= trigger.tgdeferrable ? \"Yes\" : \"No\"\n            td\n              a(exec=\"editTrigger('\" + trigger.name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"removeTrigger('\" + trigger.name + \"')\") Delete\n\nfooter\n  - \u002F\u002Fbutton.native-look(exec=\"addColumnForm\") Create Trigger\n"};
+;var locals_for_with = (locals || {});(function (procs, triggers) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Procedures\u003C\u002Fh4\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "return type\u003C\u002Fth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "arguments\u003C\u002Fth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "language\u003C\u002Fth\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "extension\u003C\u002Fth\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fprocedures_tab.jade";
 // iterate procs
 ;(function(){
   var $$obj = procs;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var proc = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 16, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/procedures_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = proc.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.return_type) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.arg_list) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.language) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.extension) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, "views/procedures_tab.jade" ));
-if ( proc.language != "c" && proc.language != 'internal')
-{
-jade_debug.unshift(new jade.DebugItem( 26, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editProc('" + proc.oid + "', '" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "procDefinition('" + proc.oid + "', '" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Source");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var proc = $$obj[pug_index0];
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.name) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E\u003C\u002Ftd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.return_type) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.arg_list) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.language) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.extension) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+if (proc.language != "c" && proc.language != 'internal') {
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editProc('" + proc.oid + "', '" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "procDefinition('" + proc.oid + "', '" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Source\u003C\u002Fa\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
 }
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "removeProc('" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "removeProc('" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var proc = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 16, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, "views/procedures_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = proc.name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.return_type) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.arg_list) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.language) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = proc.extension) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, "views/procedures_tab.jade" ));
-if ( proc.language != "c" && proc.language != 'internal')
-{
-jade_debug.unshift(new jade.DebugItem( 26, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editProc('" + proc.oid + "', '" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "procDefinition('" + proc.oid + "', '" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Source");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var proc = $$obj[pug_index0];
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.name) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E\u003C\u002Ftd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.return_type) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.arg_list) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.language) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = proc.extension) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+if (proc.language != "c" && proc.language != 'internal') {
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editProc('" + proc.oid + "', '" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "procDefinition('" + proc.oid + "', '" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Source\u003C\u002Fa\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
 }
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "removeProc('" + proc.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "removeProc('" + proc.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "views/procedures_tab.jade" ));
-buf.push("\n<footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 33, "views/procedures_tab.jade" ));
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fprocedures_tab.jade";
 //button.native-look(exec="addColumnForm") Create Procedure
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/procedures_tab.jade" ));
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fprocedures_tab.jade";
 //button.native-look(exec="addColumnForm") Create Trigger
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "views/procedures_tab.jade" ));
-buf.push("\n  <button exec=\"listLanguages\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, jade_debug[0].filename ));
-buf.push("List Languages");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</footer>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "views/procedures_tab.jade" ));
-buf.push("\n<h4>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, jade_debug[0].filename ));
-buf.push("Triggers And Constraints");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "views/procedures_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/procedures_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/procedures_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, "views/procedures_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, "views/procedures_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, jade_debug[0].filename ));
-buf.push("Name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 46, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("Table");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
-buf.push("Procedure");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 48, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
-buf.push("Event");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "views/procedures_tab.jade" ));
-buf.push("\n          <th title=\"Deferrable\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 49, jade_debug[0].filename ));
-buf.push("Deferr.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 50, "views/procedures_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "views/procedures_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, "views/procedures_tab.jade" ));
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"listLanguages\"\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "List Languages\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Triggers And Constraints\u003C\u002Fh4\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Name\u003C\u002Fth\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Table\u003C\u002Fth\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Procedure\u003C\u002Fth\u003E";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Event\u003C\u002Fth\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth title=\"Deferrable\"\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Deferr.\u003C\u002Fth\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fprocedures_tab.jade";
 // iterate triggers
 ;(function(){
   var $$obj = triggers;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var trigger = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 52, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 53, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "views/procedures_tab.jade" ));
-if ( trigger.constraint_name)
-{
-jade_debug.unshift(new jade.DebugItem( 56, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 56, "views/procedures_tab.jade" ));
-buf.push("<strong title=\"Constraint\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 56, jade_debug[0].filename ));
-buf.push("C");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/procedures_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = trigger.constraint_name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var trigger = $$obj[pug_index1];
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+if (trigger.constraint_name) {
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Cstrong title=\"Constraint\"\u003E";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "C\u003C\u002Fstrong\u003E";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.constraint_name) ? "" : pug_interp));
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 60, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 60, "views/procedures_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = trigger.name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.name) ? "" : pug_interp));
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 61, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.table_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 62, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.proc_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 63, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.typeDesc().join(", ")) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 64, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.tgdeferrable ? "Yes" : "No") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 65, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 66, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editTrigger('" + trigger.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 66, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 67, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 68, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "removeTrigger('" + trigger.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 68, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.table_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.proc_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.typeDesc().join(", ")) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.tgdeferrable ? "Yes" : "No") ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editTrigger('" + trigger.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "removeTrigger('" + trigger.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var trigger = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 52, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 53, "views/procedures_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "views/procedures_tab.jade" ));
-if ( trigger.constraint_name)
-{
-jade_debug.unshift(new jade.DebugItem( 56, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 56, "views/procedures_tab.jade" ));
-buf.push("<strong title=\"Constraint\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 56, jade_debug[0].filename ));
-buf.push("C");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "views/procedures_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = trigger.constraint_name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var trigger = $$obj[pug_index1];
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+if (trigger.constraint_name) {
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Cstrong title=\"Constraint\"\u003E";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "C\u003C\u002Fstrong\u003E";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.constraint_name) ? "" : pug_interp));
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 60, "views/procedures_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 60, "views/procedures_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = trigger.name) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.name) ? "" : pug_interp));
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 61, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.table_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 62, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.proc_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 63, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.typeDesc().join(", ")) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 64, "views/procedures_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = trigger.tgdeferrable ? "Yes" : "No") ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 65, "views/procedures_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 66, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editTrigger('" + trigger.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 66, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 67, "views/procedures_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 68, "views/procedures_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "removeTrigger('" + trigger.name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 68, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.table_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.proc_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.typeDesc().join(", ")) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = trigger.tgdeferrable ? "Yes" : "No") ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editTrigger('" + trigger.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "removeTrigger('" + trigger.name + "')", true, false)) + "\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 70, "views/procedures_tab.jade" ));
-buf.push("\n<footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 71, "views/procedures_tab.jade" ));
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 70;pug_debug_filename = "views\u002Fprocedures_tab.jade";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
+;pug_debug_line = 71;pug_debug_filename = "views\u002Fprocedures_tab.jade";
 //button.native-look(exec="addColumnForm") Create Trigger
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</footer>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"procs" in locals_for_with?locals_for_with.procs:typeof procs!=="undefined"?procs:undefined,"triggers" in locals_for_with?locals_for_with.triggers:typeof triggers!=="undefined"?triggers:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h4 Procedures\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th return type\n          th arguments\n          th language\n          th extension\n          th\n      tbody\n        each proc in procs\n          tr\n            td\n              strong= proc.name\n            td= proc.return_type\n            td= proc.arg_list\n            td= proc.language\n            td= proc.extension\n            td\n              if proc.language != \"c\" && proc.language != 'internal'\n                a(exec=\"editProc('\" + proc.oid + \"', '\" + proc.name + \"')\") Edit\n                != \"&nbsp;\"\n                a(exec=\"procDefinition('\" + proc.oid + \"', '\" + proc.name + \"')\") Source\n                != \"&nbsp;\"\n              a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Procedure\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n  button.native-look(exec=\"listLanguages\") List Languages\n\nh4 Triggers And Constraints\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Table\n          th Procedure\n          th Event\n          th(title=\"Deferrable\") Deferr.\n          th\n      tbody\n        each trigger in triggers\n          tr\n            td\n              if trigger.constraint_name\n                strong(title=\"Constraint\") C\n                != \"&nbsp;\"\n                = trigger.constraint_name\n              else\n                = trigger.name\n            td= trigger.table_name\n            td= trigger.proc_name\n            td= trigger.typeDesc().join(\", \")\n            td= trigger.tgdeferrable ? \"Yes\" : \"No\"\n            td\n              a(exec=\"editTrigger('\" + trigger.name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"removeTrigger('\" + trigger.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n");
-}
-};
+pug_html = pug_html + "\n\u003C\u002Ffooter\u003E";}.call(this,"procs" in locals_for_with?locals_for_with.procs:typeof procs!=="undefined"?procs:undefined,"triggers" in locals_for_with?locals_for_with.triggers:typeof triggers!=="undefined"?triggers:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["procedures_tab"].content = "h4 Procedures\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th return type\n          th arguments\n          th language\n          th extension\n          th\n      tbody\n        each proc in procs\n          tr\n            td\n              strong= proc.name\n            td= proc.return_type\n            td= proc.arg_list\n            td= proc.language\n            td= proc.extension\n            td\n              if proc.language != \"c\" && proc.language != 'internal'\n                a(exec=\"editProc('\" + proc.oid + \"', '\" + proc.name + \"')\") Edit\n                != \"&nbsp;\"\n                a(exec=\"procDefinition('\" + proc.oid + \"', '\" + proc.name + \"')\") Source\n                != \"&nbsp;\"\n              a(exec=\"removeProc('\" + proc.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Procedure\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n  button.native-look(exec=\"listLanguages\") List Languages\n\nh4 Triggers And Constraints\n\n.rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Table\n          th Procedure\n          th Event\n          th(title=\"Deferrable\") Deferr.\n          th\n      tbody\n        each trigger in triggers\n          tr\n            td\n              if trigger.constraint_name\n                strong(title=\"Constraint\") C\n                != \"&nbsp;\"\n                = trigger.constraint_name\n              else\n                = trigger.name\n            td= trigger.table_name\n            td= trigger.proc_name\n            td= trigger.typeDesc().join(\", \")\n            td= trigger.tgdeferrable ? \"Yes\" : \"No\"\n            td\n              a(exec=\"editTrigger('\" + trigger.name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"removeTrigger('\" + trigger.name + \"')\") Delete\n\nfooter\n  - //button.native-look(exec=\"addColumnForm\") Create Trigger\n";
-exports["query_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/query_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/query_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/query_tab.jade" ));
-buf.push("\n<div class=\"editing\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/query_tab.jade" ));
-buf.push("\n  <textarea class=\"editor\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</textarea>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/query_tab.jade" ));
-buf.push("\n<div class=\"middlebar\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/query_tab.jade" ));
-buf.push("\n  <div class=\"resizer\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "views/query_tab.jade" ));
-buf.push("\n  <button exec=\"runQuery\" title=\"Cmd+R\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Run Query");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "views/query_tab.jade" ));
-buf.push("\n  <button exec=\"showHistory\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("See History");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "views/query_tab.jade" ));
-buf.push("\n  <button exec=\"openSnippets\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Snippets");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/query_tab.jade" ));
-buf.push("\n  <button exec=\"cleanButtonClick\" class=\"native-look is-hidden cleanButton\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Clear");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/query_tab.jade" ));
-buf.push("\n<div class=\"result\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "views/query_tab.jade" ));
-buf.push("\n  <div class=\"rescol-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, "views/query_tab.jade" ));
-buf.push("\n    <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/query_tab.jade" ));
-buf.push("\n    <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/query_tab.jade" ));
-buf.push("\n      <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/query_tab.jade" ));
-buf.push("\n  <div class=\"status\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  .rescol-wrapper\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n  .status");
-}
-};
+exports["query_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fquery_tab.jade":".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  .rescol-wrapper\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n  .status"};
+var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"editing\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Ctextarea class=\"editor\"\u003E\u003C\u002Ftextarea\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"middlebar\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"resizer\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"runQuery\" title=\"Cmd+R\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "Run Query\u003C\u002Fbutton\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"showHistory\"\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "See History\u003C\u002Fbutton\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"openSnippets\"\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "Snippets\u003C\u002Fbutton\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look is-hidden cleanButton\" exec=\"cleanButtonClick\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "Clear\u003C\u002Fbutton\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"result\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-wrapper\"\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n      \u003Ctable\u003E\u003C\u002Ftable\u003E\n    \u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fquery_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"status\"\u003E\u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["query_tab"].content = ".editing\n  textarea.editor\n.middlebar\n  .resizer\n  button.native-look(exec=\"runQuery\" title=\"Cmd+R\") Run Query\n  button.native-look(exec=\"showHistory\") See History\n  button.native-look(exec=\"openSnippets\") Snippets\n  button.native-look.is-hidden.cleanButton(exec=\"cleanButtonClick\") Clear\n.result\n  .rescol-wrapper\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n  .status";
-exports["snippet_preview"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/snippet_preview.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, snippet) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/snippet_preview.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/snippet_preview.jade" });
-buf.push("\n<div class=\"preview-content\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/snippet_preview.jade" });
-buf.push("\n  <p>" + (jade.escape(null == (jade_interp = snippet.description) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 4, filename: "views/snippet_preview.jade" });
-buf.push("<code class=\"result sql\">" + (jade.escape(null == (jade_interp = snippet.sql) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/snippet_preview.jade" });
-buf.push("\n  <button exec=\"insert\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
-buf.push("Insert to Editor");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"snippet" in locals_for_with?locals_for_with.snippet:typeof snippet!=="undefined"?snippet:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".preview-content\n  p= snippet.description\n\n  code.result.sql= snippet.sql\n\n  button(exec=\"insert\") Insert to Editor\n");
-}
-};
+exports["snippet_preview"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fsnippet_preview.jade":".preview-content\n  p= snippet.description\n\n  code.result.sql= snippet.sql\n\n  button(exec=\"insert\") Insert to Editor\n"};
+;var locals_for_with = (locals || {});(function (snippet) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"preview-content\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = snippet.description) ? "" : pug_interp)) + "\u003C\u002Fp\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + "\u003Ccode class=\"result sql\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = snippet.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + "\n  \u003Cbutton exec=\"insert\"\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fsnippet_preview.jade";
+pug_html = pug_html + "Insert to Editor\u003C\u002Fbutton\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"snippet" in locals_for_with?locals_for_with.snippet:typeof snippet!=="undefined"?snippet:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["snippet_preview"].content = ".preview-content\n  p= snippet.description\n\n  code.result.sql= snippet.sql\n\n  button(exec=\"insert\") Insert to Editor\n";
-exports["snippets"] = function template(jade, locals) {
-var jade_debug = [{ lineno: 1, filename: "views/snippets.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (undefined, snippets) {
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "views/snippets.jade" });
-jade_debug.unshift({ lineno: 1, filename: "views/snippets.jade" });
-buf.push("\n<div class=\"snippets-window\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 2, filename: "views/snippets.jade" });
-buf.push("\n  <ul>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 3, filename: "views/snippets.jade" });
+exports["snippets"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fsnippets.jade":".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n"};
+;var locals_for_with = (locals || {});(function (snippets) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"snippets-window\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n  \u003Cul\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fsnippets.jade";
 // iterate snippets
 ;(function(){
   var $$obj = snippets;
   if ('number' == typeof $$obj.length) {
-
-    for (var name = 0, $$l = $$obj.length; name < $$l; name++) {
-      var snippet = $$obj[name];
-
-jade_debug.unshift({ lineno: 3, filename: "views/snippets.jade" });
-jade_debug.unshift({ lineno: 4, filename: "views/snippets.jade" });
-buf.push("\n    <li" + (jade.attr("snippet", name, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var name = 0, $$l = $$obj.length; name < $$l; name++) {
+        var snippet = $$obj[name];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n    \u003Cli" + (pug.attr("snippet", name, true, false)) + "\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = name) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
+      }
   } else {
     var $$l = 0;
     for (var name in $$obj) {
-      $$l++;      var snippet = $$obj[name];
-
-jade_debug.unshift({ lineno: 3, filename: "views/snippets.jade" });
-jade_debug.unshift({ lineno: 4, filename: "views/snippets.jade" });
-buf.push("\n    <li" + (jade.attr("snippet", name, true, false)) + ">" + (jade.escape(null == (jade_interp = name) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+      $$l++;
+      var snippet = $$obj[name];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n    \u003Cli" + (pug.attr("snippet", name, true, false)) + "\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = name) ? "" : pug_interp)) + "\u003C\u002Fli\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </ul>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 5, filename: "views/snippets.jade" });
-buf.push("\n  <div class=\"preview\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "views/snippets.jade" });
-buf.push("\n  <footer>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</footer>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n");
-}
-};
+pug_html = pug_html + "\n  \u003C\u002Ful\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"preview\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fsnippets.jade";
+pug_html = pug_html + "\n  \u003Cfooter\u003E\u003C\u002Ffooter\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["snippets"].content = ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
-exports["structure_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/structure_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (column_type_label, getIndexType, indexes, is_mat_view, rows, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/structure_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders columns-list-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/structure_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/structure_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/structure_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/structure_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("column");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("type");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("max length");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("default");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("primary key");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("Null");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "views/structure_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
+exports["structure_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fstructure_tab.jade":".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th Null\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(\u002F^nextval\u002F) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(\u002FON [^\\(]+\\((.+)\\)\u002F)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index"};
+;var locals_for_with = (locals || {});(function (column_type_label, getIndexType, indexes, is_mat_view, rows) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders columns-list-table\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "column\u003C\u002Fth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "type\u003C\u002Fth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "max length\u003C\u002Fth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "default\u003C\u002Fth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "primary key\u003C\u002Fth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Null\u003C\u002Fth\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fstructure_tab.jade";
 // iterate rows
 ;(function(){
   var $$obj = rows;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/structure_tab.jade" ));
-buf.push("\n          <td" + (jade.attr("title", column_type_label(column), true, false)) + ">" + (jade.escape(null == (jade_interp = column_type_label(column, true)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/structure_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/structure_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var column = $$obj[pug_index0];
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.column_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd" + (pug.attr("title", column_type_label(column), true, false)) + "\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column_type_label(column, true)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.character_maximum_length) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.is_primary_key ? 'yes' : '') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + "\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var column = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 15, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.column_name) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/structure_tab.jade" ));
-buf.push("\n          <td" + (jade.attr("title", column_type_label(column), true, false)) + ">" + (jade.escape(null == (jade_interp = column_type_label(column, true)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.character_maximum_length) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_primary_key ? 'yes' : '') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/structure_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/structure_tab.jade" ));
-buf.push(null == (jade_interp = "&nbsp;") ? "" : jade_interp);
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var column = $$obj[pug_index0];
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.column_name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd" + (pug.attr("title", column_type_label(column), true, false)) + "\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column_type_label(column, true)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.character_maximum_length) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.is_primary_key ? 'yes' : '') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editColumn('" + column.column_name + "')", true, false)) + "\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (null == (pug_interp = "&nbsp;") ? "" : pug_interp);
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteColumn('" + column.column_name + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/structure_tab.jade" ));
-buf.push("\n<footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, "views/structure_tab.jade" ));
-if ( !is_mat_view)
-{
-jade_debug.unshift(new jade.DebugItem( 30, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 30, "views/structure_tab.jade" ));
-buf.push("\n  <button exec=\"addColumnForm\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Add column");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (!is_mat_view) {
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addColumnForm\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Add column\u003C\u002Fbutton\u003E";
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</footer>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "views/structure_tab.jade" ));
-buf.push("\n<h4>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
-buf.push("Indexes");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h4>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "views/structure_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders indexes-list-table\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, "views/structure_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "views/structure_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, "views/structure_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, "views/structure_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 39, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
-buf.push("name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
-buf.push("p. key");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("uniq");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
-buf.push("columns");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
-buf.push("type");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "views/structure_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 46, "views/structure_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
+pug_html = pug_html + "\n\u003C\u002Ffooter\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Indexes\u003C\u002Fh4\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 40;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "p. key\u003C\u002Fth\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "uniq\u003C\u002Fth\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "columns\u003C\u002Fth\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "type\u003C\u002Fth\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fstructure_tab.jade";
 // iterate indexes
 ;(function(){
   var $$obj = indexes;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var index = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 49, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 50, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 54, "views/structure_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var index = $$obj[pug_index1];
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var index = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 47, "views/structure_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 48, "views/structure_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 49, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.relname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 50, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisprimary ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.indisunique ? 'Yes' : 'No') ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "views/structure_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = getIndexType(index.pg_get_indexdef)) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 54, "views/structure_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, "views/structure_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var index = $$obj[pug_index1];
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "views/structure_tab.jade" ));
-buf.push("\n<footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 58, "views/structure_tab.jade" ));
-buf.push("\n  <button exec=\"addIndexForm\" class=\"native-look\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
-buf.push("Add index");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</footer>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"is_mat_view" in locals_for_with?locals_for_with.is_mat_view:typeof is_mat_view!=="undefined"?is_mat_view:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th Null\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index");
-}
-};
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addIndexForm\"\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Add index\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"is_mat_view" in locals_for_with?locals_for_with.is_mat_view:typeof is_mat_view!=="undefined"?is_mat_view:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["structure_tab"].content = ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th Null\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index";
-exports["users_tab"] = function template(jade, locals) {
-var jade_debug = [ new jade.DebugItem( 1, "views/users_tab.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-;var locals_for_with = (locals || {});(function (currentUser, rows, undefined) {
-var jade_indent = [];
-jade_debug.unshift(new jade.DebugItem( 0, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "views/users_tab.jade" ));
-buf.push("\n<div class=\"rescol-wrapper with-borders\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "views/users_tab.jade" ));
-buf.push("\n  <div class=\"rescol-header-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "views/users_tab.jade" ));
-buf.push("\n  <div class=\"rescol-content-wrapper\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "views/users_tab.jade" ));
-buf.push("\n    <table>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "views/users_tab.jade" ));
-buf.push("\n      <thead>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "views/users_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, "views/users_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Role name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "views/users_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("List of roles");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "views/users_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Member of");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "views/users_tab.jade" ));
-buf.push("\n          <th style=\"max-width: 250px\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Owned Databases");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "views/users_tab.jade" ));
-buf.push("\n          <th>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </thead>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "views/users_tab.jade" ));
-buf.push("\n      <tbody>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, "views/users_tab.jade" ));
+exports["users_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fusers_tab.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Role name\n          th List of roles\n          th Member of\n          th(style=\"max-width: 250px\") Owned Databases\n          th\n      tbody\n        each user in rows\n          tr\n            td\n              if currentUser == user.rolname\n                strong= user.rolname\n                br\n                small (current user)\n              else\n                = user.rolname\n            td(style=\"max-width: 180px\")= user.roles.join(', ')\n            td= user.memberof\n            td(style=\"max-width: 250px\")= user.owned_dbs\n            td\n              a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n              = \" \"\n              a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  \u002F\u002Fbutton.native-look.createRoleBtn(exec=\"newRole\") Create new role"};
+;var locals_for_with = (locals || {});(function (currentUser, rows) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Role name\u003C\u002Fth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "List of roles\u003C\u002Fth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Member of\u003C\u002Fth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Cth style=\"max-width: 250px;\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Owned Databases\u003C\u002Fth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fusers_tab.jade";
 // iterate rows
 ;(function(){
   var $$obj = rows;
   if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var user = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/users_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/users_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/users_tab.jade" ));
-if ( currentUser == user.rolname)
-{
-jade_debug.unshift(new jade.DebugItem( 17, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/users_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = user.rolname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/users_tab.jade" ));
-buf.push("<br/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/users_tab.jade" ));
-buf.push("<small>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("(current user)");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</small>");
-jade_debug.shift();
-jade_debug.shift();
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var user = $$obj[pug_index0];
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fusers_tab.jade";
+if (currentUser == user.rolname) {
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.rolname) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Csmall\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "(current user)\u003C\u002Fsmall\u003E";
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 21, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/users_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = user.rolname) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.rolname) ? "" : pug_interp));
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/users_tab.jade" ));
-buf.push("\n          <td style=\"max-width: 180px\">" + (jade.escape(null == (jade_interp = user.roles.join(', ')) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/users_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = user.memberof) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/users_tab.jade" ));
-buf.push("\n          <td style=\"max-width: 250px\">" + (jade.escape(null == (jade_interp = user.owned_dbs) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/users_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/users_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editUser('" + user.rolname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/users_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = " ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/users_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteUser('" + user.rolname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
-    }
-
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd style=\"max-width: 180px;\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.roles.join(', ')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.memberof) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd style=\"max-width: 250px;\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.owned_dbs) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editUser('" + user.rolname + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteUser('" + user.rolname + "')", true, false)) + "\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
   } else {
     var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var user = $$obj[$index];
-
-jade_debug.unshift(new jade.DebugItem( 13, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "views/users_tab.jade" ));
-buf.push("\n        <tr>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, "views/users_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, "views/users_tab.jade" ));
-if ( currentUser == user.rolname)
-{
-jade_debug.unshift(new jade.DebugItem( 17, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 17, "views/users_tab.jade" ));
-buf.push("<strong>" + (jade.escape(null == (jade_interp = user.rolname) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</strong>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "views/users_tab.jade" ));
-buf.push("<br/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "views/users_tab.jade" ));
-buf.push("<small>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("(current user)");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</small>");
-jade_debug.shift();
-jade_debug.shift();
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var user = $$obj[pug_index0];
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fusers_tab.jade";
+if (currentUser == user.rolname) {
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.rolname) ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Csmall\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "(current user)\u003C\u002Fsmall\u003E";
 }
-else
-{
-jade_debug.unshift(new jade.DebugItem( 21, "views/users_tab.jade" ));
-jade_debug.unshift(new jade.DebugItem( 21, "views/users_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = user.rolname) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.shift();
+else {
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.rolname) ? "" : pug_interp));
 }
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "views/users_tab.jade" ));
-buf.push("\n          <td style=\"max-width: 180px\">" + (jade.escape(null == (jade_interp = user.roles.join(', ')) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "views/users_tab.jade" ));
-buf.push("\n          <td>" + (jade.escape(null == (jade_interp = user.memberof) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "views/users_tab.jade" ));
-buf.push("\n          <td style=\"max-width: 250px\">" + (jade.escape(null == (jade_interp = user.owned_dbs) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "views/users_tab.jade" ));
-buf.push("\n          <td>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, "views/users_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "editUser('" + user.rolname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Edit");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "views/users_tab.jade" ));
-buf.push(jade.escape(null == (jade_interp = " ") ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "views/users_tab.jade" ));
-buf.push("<a" + (jade.attr("exec", "deleteUser('" + user.rolname + "')", true, false)) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Delete");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n          </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n        </tr>");
-jade_debug.shift();
-jade_debug.shift();
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd style=\"max-width: 180px;\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.roles.join(', ')) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.memberof) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd style=\"max-width: 250px;\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = user.owned_dbs) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "editUser('" + user.rolname + "')", true, false)) + "\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Edit\u003C\u002Fa\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteUser('" + user.rolname + "')", true, false)) + "\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Delete\u003C\u002Fa\u003E\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
-
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </tbody>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </table>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "views/users_tab.jade" ));
-buf.push("\n<footer>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, "views/users_tab.jade" ));
-buf.push("\n  <button exec=\"newUserDialog\" class=\"native-look createUserBtn\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
-buf.push("Create new user");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</button>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "views/users_tab.jade" ));
-buf.push("\n  <!--button.native-look.createRoleBtn(exec=\"newRole\") Create new role-->");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</footer>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"currentUser" in locals_for_with?locals_for_with.currentUser:typeof currentUser!=="undefined"?currentUser:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Role name\n          th List of roles\n          th Member of\n          th(style=\"max-width: 250px\") Owned Databases\n          th\n      tbody\n        each user in rows\n          tr\n            td\n              if currentUser == user.rolname\n                strong= user.rolname\n                br\n                small (current user)\n              else\n                = user.rolname\n            td(style=\"max-width: 180px\")= user.roles.join(', ')\n            td= user.memberof\n            td(style=\"max-width: 250px\")= user.owned_dbs\n            td\n              a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n              = \" \"\n              a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  //button.native-look.createRoleBtn(exec=\"newRole\") Create new role");
-}
-};
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look createUserBtn\" exec=\"newUserDialog\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "Create new user\u003C\u002Fbutton\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fusers_tab.jade";
+pug_html = pug_html + "\n  \u003C!--button.native-look.createRoleBtn(exec=\"newRole\") Create new role--\u003E\n\u003C\u002Ffooter\u003E";}.call(this,"currentUser" in locals_for_with?locals_for_with.currentUser:typeof currentUser!=="undefined"?currentUser:undefined,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["users_tab"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Role name\n          th List of roles\n          th Member of\n          th(style=\"max-width: 250px\") Owned Databases\n          th\n      tbody\n        each user in rows\n          tr\n            td\n              if currentUser == user.rolname\n                strong= user.rolname\n                br\n                small (current user)\n              else\n                = user.rolname\n            td(style=\"max-width: 180px\")= user.roles.join(', ')\n            td= user.memberof\n            td(style=\"max-width: 250px\")= user.owned_dbs\n            td\n              a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n              = \" \"\n              a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  //button.native-look.createRoleBtn(exec=\"newRole\") Create new role";

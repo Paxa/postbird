@@ -50,7 +50,7 @@ global.Dialog = jClass.extend({
   },
 
   bindFormSubmitting: function () {
-    var handler = function (e) {
+    var handler = (e) => {
       e && e.preventDefault();
       var data = $u.formValues(this.content.find('form'));
       this.onSubmit(data);

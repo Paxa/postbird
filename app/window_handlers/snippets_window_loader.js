@@ -1,4 +1,4 @@
-var jQuery = require(__dirname + '/../lib/jquery.js');
+var jQuery = require(__dirname + '/../public/jquery.js');
 require(__dirname + '/../lib/node_lib');
 require('classy/object_extras').extendGlobal();
 
@@ -18,7 +18,7 @@ global.logger = global.log = require(__dirname + '/../app/logger').make('info');
 
 global.App = {
   init: function () {
-    RenderView.jadeCacheLoad();
+    RenderView.pugCacheLoad();
   },
   renderView: RenderView.renderView.bind(RenderView)
 };
@@ -73,7 +73,7 @@ var SnippetsWindow = {
     this.view.preview.empty();
     this.view.preview.fasterAppend(node);
 
-    $u.textContextMenu(this.view.preview.find('code'), window);
+    $u.textContextMenu(this.view.preview.find('.preview-content'), window);
     hljs.highlightBlock(this.view.preview.find('code')[0]);
 
     this.view.preview.find('[exec="insert"]').bind('click', () => {

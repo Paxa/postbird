@@ -1,9 +1,9 @@
 body.new-window {
-  background: #EDEDED;
+  background: $mac-window-background;
 }
 
 .snippets-window {
-  background: #EDEDED;
+  background: $mac-window-background;
 
   > ul {
     box-sizing: border-box;
