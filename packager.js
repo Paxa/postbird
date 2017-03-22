@@ -3,21 +3,21 @@ var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  version: '1.6.2',
+  electronVersion: '1.6.2',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
-  'app-bundle-id': 'com.postbird',
-  'app-category-type': 'public.app-category.developer-tools',
-  'app-version': packageJson.version,
-  'build-version': packageJson.version,
+  appBundleId: 'com.postbird',
+  appCategoryType: 'public.app-category.developer-tools',
+  appVersion: packageJson.version,
+  buildVersion: packageJson.version,
   icon: 'build_files/icon.icns',
   name: packageJson.name,
   prune: true,
   overwrite: true,
   out: process.env.HOME + '/Postbird_release',
   protocol: 'postbird',
-  'extend-info': 'build_files/Info.plist'
+  extendInfo: 'build_files/Info.plist'
 };
 
 child_process.exec('git rev-list HEAD --count', (err, stdout, stderr) => {
