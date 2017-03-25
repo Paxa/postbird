@@ -427,7 +427,7 @@ pug_html = pug_html + "OK\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E\n   
 }
 pug_html = pug_html + "\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCell(row[column.name], column.udt_name, column.data_type)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
-exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.4\u002Fstatic\u002Fdatatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n"};
+exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.6\u002Fstatic\u002Fdatatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n"};
 ;var locals_for_with = (locals || {});(function (action, data, groupedTypes) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 data = data || {}
@@ -459,7 +459,7 @@ pug_html = pug_html + "\n      \u003Coption\u003E\u003C\u002Foption\u003E";
       for (var group = 0, $$l = $$obj.length; group < $$l; group++) {
         var types = $$obj[group];
 ;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E\u003C\u002Foptgroup\u003E";
+pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E";
 ;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 // iterate types
 ;(function(){
@@ -470,7 +470,7 @@ pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true,
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -483,7 +483,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -491,6 +491,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
   }
 }).call(this);
 
+pug_html = pug_html + "\n      \u003C\u002Foptgroup\u003E";
       }
   } else {
     var $$l = 0;
@@ -498,7 +499,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
       $$l++;
       var types = $$obj[group];
 ;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E\u003C\u002Foptgroup\u003E";
+pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true, false)) + "\u003E";
 ;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 // iterate types
 ;(function(){
@@ -509,7 +510,7 @@ pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true,
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -522,7 +523,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -530,6 +531,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
   }
 }).call(this);
 
+pug_html = pug_html + "\n      \u003C\u002Foptgroup\u003E";
     }
   }
 }).call(this);
@@ -540,7 +542,7 @@ pug_html = pug_html + "\n  \u003Cp\u003E";
 ;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "See ") ? "" : pug_interp));
 ;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\u003Ca href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.4\u002Fstatic\u002Fdatatype.html\" target=\"_blank\"\u003E";
+pug_html = pug_html + "\u003Ca href=\"http:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002F9.6\u002Fstatic\u002Fdatatype.html\" target=\"_blank\"\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + "documentation for datatypes\u003C\u002Fa\u003E";
 ;pug_debug_line = 21;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
@@ -590,7 +592,7 @@ pug_html = pug_html + "Add column\u003C\u002Fbutton\u003E";
 pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 41;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + "cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"action" in locals_for_with?locals_for_with.action:typeof action!=="undefined"?action:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"groupedTypes" in locals_for_with?locals_for_with.groupedTypes:typeof groupedTypes!=="undefined"?groupedTypes:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n        each type in types\n          if type\n            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http://www.postgresql.org/docs/9.4/static/datatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n";
+exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name)\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    = \"See \"\n    a(href=\"http://www.postgresql.org/docs/9.6/static/datatype.html\", target=\"_blank\") documentation for datatypes\n\n    p\n    label Default value\n    input(name=\"default_value\", value = data.column_default)\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length)\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update column\n    else\n        button.ok Add column\n    button.cancel cancel\n";
 exports["dialogs/def_procedure"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fdef_procedure.jade":"code.general.sql= source\n\np.buttons.close-btn\n  button.cancel Close"};
 ;var locals_for_with = (locals || {});(function (source) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";

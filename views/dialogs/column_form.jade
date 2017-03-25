@@ -11,12 +11,12 @@ form
       option
       each types, group in groupedTypes
         optgroup(label = group)
-        each type in types
-          if type
-            option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name
+          each type in types
+            if type
+              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name
   p
     = "See "
-    a(href="http://www.postgresql.org/docs/9.4/static/datatype.html", target="_blank") documentation for datatypes
+    a(href="http://www.postgresql.org/docs/9.6/static/datatype.html", target="_blank") documentation for datatypes
 
     p
     label Default value

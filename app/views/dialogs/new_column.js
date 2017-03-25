@@ -37,6 +37,7 @@ global.Dialog.NewColumn = global.Dialog.extend({
     var types = types.slice(0);
     var grouped = {};
     var groupName;
+
     for (groupName in this.groups) {
       grouped[groupName] = [];
       this.groups[groupName].forEach((type) => {
@@ -50,19 +51,32 @@ global.Dialog.NewColumn = global.Dialog.extend({
         if (typeRow) grouped[groupName].push(typeRow);
       });
     }
-    grouped['other'] = types;
+
+    types.forEach((type, i) => {
+      if (type.schema != 'pg_catalog') {
+        if (!grouped['Extensions']) {
+          grouped['Extensions'] = [];
+        }
+        grouped['Extensions'].push(type);
+        delete types[i];
+      }
+    });
+
+    grouped['Other'] = types;
     return grouped;
   },
 
   groups: {
-    "Number": ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal'],
-    "Text": ['text', 'character varying', 'character', 'name'],
+    "Number": ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal', 'int2vector', 'int4range', 'int8range', 'numrange', ''],
+    "Text": ['text', 'character varying', 'character', 'name', 'bit', 'bit varying'],
     "ID column": ['uuid', 'smallserial', 'serial', 'bigserial', 'oid'],
     "Date": ['date', 'timestamp without time zone', 'timestamp with time zone',
              'time without time zone', 'time with time zone'],
     "Time Range": ['interval', 'tsrange', 'tstzrange', 'daterange', 'tinterval', 'reltime', 'abstime'],
     "Boolean": ['boolean'],
     "JSON": ['json', 'jsonb'],
-    "Network": ['macaddr', 'cidr', 'inet']
+    "Network": ['macaddr', 'cidr', 'inet'],
+    "Geometry": ['point', 'line', 'lseg', 'box', 'path', 'polygon', 'circle'],
+    "Text Search": ['tsvector', 'tsquery', '']
   }
 });
