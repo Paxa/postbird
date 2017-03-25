@@ -1162,7 +1162,7 @@ body.sidebar-resizing {
       text-decoration: none;
       cursor: default; }
   .window-content.content .rescol-wrapper {
-    height: calc(100% - 29px); }
+    height: calc(100% - 30px); }
   .window-content.content .rescol-header-wrapper:after {
     position: absolute;
     content: '';
