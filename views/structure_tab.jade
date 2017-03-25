@@ -12,7 +12,7 @@
           th Null
           th
       tbody
-        each column in rows
+        each column in columns
           tr
             td= column.column_name
             td(title = column_type_label(column))= column_type_label(column, true)
@@ -56,3 +56,22 @@ h4 Indexes
 
 footer
   button.native-look(exec="addIndexForm") Add index
+
+if constraints.length > 0
+  h4 Constraints
+  .rescol-wrapper.with-borders.indexes-list-table
+    .rescol-header-wrapper
+    .rescol-content-wrapper
+      table
+        thead
+          tr
+            th name
+            th source
+            th
+        tbody
+          each constraint in constraints
+            tr
+              td= constraint.conname
+              td= constraint.pretty_source
+              td
+                a(exec="deleteConstraint('" + constraint.conname + "')") Delete

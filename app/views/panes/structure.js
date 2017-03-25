@@ -1,7 +1,21 @@
 global.Panes.Structure = global.Pane.extend({
 
-  renderTab: function(rows, indexes, is_mat_view) {
-    this.renderViewToPane('structure', 'structure_tab', {rows: rows, indexes: indexes, is_mat_view: is_mat_view});
+  renderTab: function(columns, indexes, constraints, is_mat_view) {
+    this.constraints = constraints.rows;
+    var neededConstraints = [];
+    if (constraints.rows) {
+      constraints.rows.forEach((constraint) => {
+        if (constraint.contype != "p") {
+          neededConstraints.push(constraint);
+        }
+      });
+    }
+    this.renderViewToPane('structure', 'structure_tab', {
+      columns: columns,
+      indexes: indexes,
+      is_mat_view: is_mat_view,
+      constraints: neededConstraints
+    });
     this.initTables();
   },
 
@@ -18,8 +32,8 @@ global.Panes.Structure = global.Pane.extend({
   },
 
   deleteColumn: function (column_name) {
-    var msg = `Delete column ${column_name}?`;
-    var dialog = window.alertify.confirm(msg, (result) => {
+    var msg = `Delete column <b>${column_name}</b>?`;
+    window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteColumn(column_name);
       }
@@ -33,8 +47,8 @@ global.Panes.Structure = global.Pane.extend({
   },
 
   deleteIndex: function (indexName) {
-    var msg = `Delete index ${indexName}?`;
-    var dialog = window.alertify.confirm(msg, (result) => {
+    var msg = `Delete index <b>${indexName}</b>?`;
+    window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteIndex(indexName);
       }
@@ -46,4 +60,17 @@ global.Panes.Structure = global.Pane.extend({
       if (error) window.alert(error.message);
     });
   },
+
+  deleteConstraint: function (constraintName) {
+    var msg = `Delete constraint <b>${constraintName}</b>?`;
+    var constraint = this.constraints.find((c) => { return c.conname == constraintName; });
+    if (constraint) msg = msg + `<br><code>${constraint.pretty_source}</code>`;
+    window.alertify.confirm(msg, (result) => {
+      if (result) {
+        this.handler.deleteConstraint(constraintName, (result, error) => {
+          if (error) window.alert(error.message);
+        });
+      }
+    });
+  }
 });

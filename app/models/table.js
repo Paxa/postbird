@@ -327,7 +327,7 @@ global.Model.Table = Model.base.extend({
     var null_sql = is_null ? "NULL" : "NOT NULL";
     var default_sql = this._default_sql(default_value);
 
-    sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
+    var sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });
@@ -590,6 +590,23 @@ global.Model.Table = Model.base.extend({
 
   truncate(callback) {
     var sql = `truncate table ${this.schema}.${this.table};`;
+    this.q(sql, (data, error) => {
+      callback(data, error);
+    });
+  },
+
+  getConstraints(callback) {
+    var sql = `
+      SELECT *, pg_get_constraintdef(oid, true) as pretty_source
+      FROM pg_constraint WHERE conrelid = '${this.schema}.${this.table}'::regclass
+    `;
+    this.q(sql, (data, error) => {
+      callback(data, error);
+    });
+  },
+
+  dropConstraint(constraintName, callback) {
+    var sql = `ALTER TABLE "${this.schema}"."${this.table}" DROP CONSTRAINT ${constraintName};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });

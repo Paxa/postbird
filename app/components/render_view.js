@@ -74,7 +74,6 @@ var RenderView = {
 
     Object.keys(this.pugFn).sort().forEach((key) => {
       var fn = this.pugFn[key];
-      console.log(convertedPath, new RegExp(convertedPath, 'g'));
       result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(convertedPath, 'g'), '') + ";\n";
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
     });

@@ -370,9 +370,13 @@ global.DbScreen = jClass.extend({
 
     this.table.isMatView((isMatView) => {
       Model.Table(this.currentSchema, this.currentTable).getStructure((rows) => {
-        this.table.describe((indexes) => {
-          this.view.structure.renderTab(rows, indexes, isMatView);
-          App.stopLoading();
+        this.table.describe((indexes, error) => {
+          if (error) console.error(error);
+          this.table.getConstraints((constraints, error2) => {
+            if (error2) console.error(error2);
+            this.view.structure.renderTab(rows, indexes, constraints, isMatView);
+            App.stopLoading();
+          });
         });
       });
     });
@@ -419,6 +423,13 @@ global.DbScreen = jClass.extend({
 
   deleteIndex: function (indexName, callback) {
     this.table.dropIndex(indexName, (result, error) => {
+      if (!error) this.structureTabActivate();
+      callback(result, error);
+    });
+  },
+
+  deleteConstraint: function (constraintName, callback) {
+    this.table.dropConstraint(constraintName, (result, error) => {
       if (!error) this.structureTabActivate();
       callback(result, error);
     });
