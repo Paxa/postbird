@@ -1,7 +1,5 @@
 My todo:
 
-* Allow resize columns only in header
-* Work on content tab: filters, sticky header, increase limit
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
 * Auto-login feature
