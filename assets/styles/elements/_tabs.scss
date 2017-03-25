@@ -1,14 +1,11 @@
-$tab-border-color: #a3a3a3;
+$tab-border-color: #9b9b9b;
 
 #tabs {
   @include children-inline;
-
-  //:padding 0px 5px
-  //:background rgba(#000, 0.2)
-  background: #dddddd;
+  @include gradient(#c4c2c4, #bfbdbf);
+  @include gradient(#c3c1c3, #bebdbe);
   overflow: hidden;
 
-  //:border-bottom 1px solid #686868
   position: relative;
 
   &:after {
@@ -23,20 +20,15 @@ $tab-border-color: #a3a3a3;
   }
 
   .tab {
-    //:background rgba(#000, 0.15)
-    background: #d0d0d0;
-
-    //:color #323232
-    //:border-radius 4px 4px 0 0
+    @include gradient(#c3c1c3, #bebdbe);
+    color: #4d4d4d;
     margin: {
       right: 0px;
       bottom: 0px;
     };
-    line-height: 24px;
+    line-height: 22px;
     font: {
-      size: 13px;
-
-      //:weight bold
+      size: 12px;
     };
     padding: 1px 27px 1px 27px;
     min-width: 90px;
@@ -45,48 +37,38 @@ $tab-border-color: #a3a3a3;
     position: relative;
     border-right: 1px solid #aaa;
 
-    &:hover {
-      background: #c0c0c0;
-    }
-
     .close {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 3px;
+      left: 5px;
       text-decoration: none;
-
-      @include inline-block;
+      vertical-align: top;
 
       text-align: center;
-      display: block;
-      width: 11px;
-      height: 11px;
+      width: 16px;
+      height: 16px;
       border-radius: 2px;
-      border: 1px solid #828282;
       display: none;
-      background: #a3a3a3;
+      background: transparent;
 
-      &:after {
-        content: "\d7";
+      &:before, &:after {
+        content: '';
         position: absolute;
-        color: #e0e0e0;
-        font-size: 14px;
-        top: -1.5px;
-        left: 1.5px;
-        line-height: 11px;
+        background: #646364;
+        left: 4px;
+        right: 4px;
+        height: 1px;
+        top: 8px;
+      }
+      &:before {
+        transform: rotate(45deg);
+      }
+      &:after {
+        transform: rotate(-45deg);
       }
 
       &:hover {
-        color: #dfdfdf;
-
-        @include gradient(#838383, #939393);
-
-        //:background #9f9f9f
-        text-shadow: 0 0px 1px rgba(0, 0, 0, 0.4);
-        border-color: #6f6f6f;
-
-        //:background rgba(#000, 0.2)
-     
+        @include gradient(#a7a5a7, #a3a2a3);
       }
     }
 
@@ -95,25 +77,28 @@ $tab-border-color: #a3a3a3;
     }
 
     &:hover {
-      //:background rgba(#042, 0.15)
+      @include gradient(#b8b7b8, #b4b2b4);
       .close {
         display: inline-block;
       }
     }
 
     &.active {
-      background: #ececec;
+      @include gradient(#dcdadc, #d6d4d6);
       position: relative;
 
-      //:z-index 5
       border-color: #999;
-
       @include box-shadow(inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2));
 
       padding-bottom: 0;
-      padding-top: 2px;
-      line-height: 22px;
-      border-bottom: 2px solid rgba(185, 211, 255, 0.81);
+      &:hover .close {
+        &:hover {
+          @include gradient(#cac8ca, #c5c4c5);
+        }
+        &:before, &:after {
+          background: #797879;
+        }
+      }
     }
   }
 

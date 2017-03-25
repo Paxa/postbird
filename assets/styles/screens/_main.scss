@@ -36,11 +36,11 @@
         @include system-text;
 
         &:hover {
-          background: rgba(100, 120, 155, 0.19);
+          background: rgba(100, 120, 155, 0.15);
         }
 
         &.active {
-          background: rgba(28, 79, 165, 0.19);
+          background: rgba(69, 92, 130, 0.19);
         }
       }
     }
