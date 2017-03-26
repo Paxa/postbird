@@ -1,4 +1,4 @@
-== Version 0.6.0 (pending)
+== Version 0.6.0 (26-mar-2017)
 
 * Add Feature: Truncate table
 * Fix checking updates, check updates on startup
@@ -24,8 +24,12 @@
 * Modern Mac look
 * Convert code to use fat arrow
 * Upgrade to electron 1.6
+* Upgrade jade to pug
+* Update types select
+* Close dialog by esc
+* Display constraints on table structure page
 
-== Version 0.5.0
+== Version 0.5.0 (25-mar-2016)
 
 * Migrate to Electron from Node-Webkit
 * Implement adding row to table
