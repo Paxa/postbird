@@ -148,14 +148,18 @@ global.DbScreen = jClass.extend({
   },
 
   installExtension: function (extension, callback) {
+    App.startLoading(`Installing extension ${extension}`);
     this.connection.installExtension(extension, (data, error) => {
+      App.stopLoading();
       if (!error) this.omit('extension.installed');
       callback(data, error);
     });
   },
 
   uninstallExtension: function (extension, callback) {
+    App.startLoading(`Removing extension ${extension}`);
     this.connection.uninstallExtension(extension, (data, error) => {
+      App.stopLoading();
       if (!error) this.omit('extension.uninstalled');
       callback(data, error);
     });
@@ -214,7 +218,9 @@ global.DbScreen = jClass.extend({
   },
 
   deleteUser: function(username, callback) {
+    App.startLoading(`Deleting user ${username}`);
     Model.User.drop(username, (data, error) => {
+      App.stopLoading();
       if (error) {
         window.alert(error);
       } else {
@@ -294,7 +300,9 @@ global.DbScreen = jClass.extend({
   },
 
   createTable: function (data, callback) {
+    App.startLoading(`Creating table table ${data.name}`);
     Model.Table.create(data.tablespace, data.name, (table, res, error) => {
+      App.stopLoading();
       if (!error) {
         this.omit('table.created');
         this.fetchTablesAndSchemas((tables) => {
@@ -310,7 +318,9 @@ global.DbScreen = jClass.extend({
   dropTable: function (schema, table, callback) {
     window.alertify.confirm("Delete table " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
+      App.startLoading(`Dropping table ${table}`);
       Model.Table(schema, table).remove((res, error) => {
+        App.stopLoading();
         this.omit('table.deleted');
         this.fetchTablesAndSchemas();
         callback && callback(res, error);
@@ -321,7 +331,9 @@ global.DbScreen = jClass.extend({
   dropView: function (schema, table, callback) {
     window.alertify.confirm("Delete view " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
+      App.startLoading(`Dropping view ${table}`);
       Model.Table(schema, table).removeView((success, error) => {
+        App.stopLoading();
         if (success) {
           this.omit('table.deleted');
           this.fetchTablesAndSchemas();
@@ -334,7 +346,9 @@ global.DbScreen = jClass.extend({
   dropForeignTable: function (schema, table, callback) {
     window.alertify.confirm("Delete foreign " + schema + '.' + table + "?", (agreed) => {
       if (!agreed) return;
+      App.startLoading(`Dropping foreign table ${table}`);
       Model.Table(schema, table).dropFereign((success, error) => {
+        App.stopLoading();
         if (success) {
           this.omit('table.deleted');
           this.fetchTablesAndSchemas();
@@ -351,7 +365,9 @@ global.DbScreen = jClass.extend({
       return;
     }
 
+    App.startLoading(`Renaming table ${tableName} to ${newName}`);
     Model.Table(schema, tableName).rename(newName, (res, error) => {
+      App.stopLoading();
       if (this.currentTable == tableName) {
         this.currentTable = newName;
       }
@@ -387,7 +403,9 @@ global.DbScreen = jClass.extend({
   },
 
   addColumn: function (data, callback) {
+    App.startLoading(`Adding column ${data.name}`);
     this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, (result, error) => {
+      App.stopLoading();
       if (!error) {
         this.structureTabActivate();
       }
@@ -396,7 +414,9 @@ global.DbScreen = jClass.extend({
   },
 
   editColumn: function (columnObj, data, callback) {
+    App.startLoading(`Updating column ${columnObj.data.column_name}`);
     columnObj.update(data, (result, error) => {
+      App.stopLoading();
       if (!error) {
         this.structureTabActivate();
       }
@@ -404,8 +424,10 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  deleteColumn: function (column_name, callback) {
-    this.table.dropColumn(column_name, (result, error) => {
+  deleteColumn: function (columnName, callback) {
+    App.startLoading(`Deleting column ${columnName}`);
+    this.table.dropColumn(columnName, (result, error) => {
+      App.stopLoading();
       if (!error) {
         this.structureTabActivate();
       }
@@ -415,21 +437,27 @@ global.DbScreen = jClass.extend({
   },
 
   addIndex: function (data, callback) {
+    App.startLoading(`Adding index ${data.name}`);
     this.table.addIndex(data.name, data.uniq, data.columns, data.method, (result, error) => {
+      App.stopLoading();
       if (!error) this.structureTabActivate();
       callback(result, error);
     });
   },
 
   deleteIndex: function (indexName, callback) {
+    App.startLoading(`Deleting index ${indexName}`);
     this.table.dropIndex(indexName, (result, error) => {
+      App.stopLoading();
       if (!error) this.structureTabActivate();
       callback(result, error);
     });
   },
 
   deleteConstraint: function (constraintName, callback) {
+    App.startLoading(`Deleting constraint ${constraintName}`);
     this.table.dropConstraint(constraintName, (result, error) => {
+      App.stopLoading();
       if (!error) this.structureTabActivate();
       callback(result, error);
     });
@@ -490,7 +518,9 @@ global.DbScreen = jClass.extend({
   },
 
   truncateTable(schema, table, callback) {
+    App.startLoading(`Truncating ${table}`);
     Model.Table(schema, table).truncate((result, error) => {
+      App.stopLoading();
       callback(result, error);
     });
   }

@@ -41,7 +41,9 @@ global.ExportController = jClass.extend({
       this.dialog.addMessage(message);
     });
 
+    App.startLoading(`Saving dump to ${filename}`);
     exporter.doExport(this.handler.connection, filename, (success, result) => {
+      App.stopLoading();
       this.dialog.addMessage(success ? "SUCCESS\n" : "FAILED\n");
       if (filename && success) {
         this.dialog.addMessage("Saved to file " + filename);
