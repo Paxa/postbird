@@ -1,6 +1,6 @@
 global.Panes.Procedures = global.Pane.extend({
 
-  renderTab: function (procs) {
+  renderTab: function (callback) {
     App.startLoading("Functions config...");
 
     Model.Procedure.findAllWithExtensions((procs) => {
@@ -14,7 +14,7 @@ global.Panes.Procedures = global.Pane.extend({
         });
 
         this.initTables();
-
+        if (callback) callback();
       });
     });
   },

@@ -11,6 +11,8 @@ global.DbScreen = jClass.extend({
     this.connection = connection;
     this.view = new DbScreenView(this);
 
+    this.currentTab = null;
+
     if (this.options.fetchDbList) this.fetchDbList();
 
     this.database = this.connection.options.database;
@@ -144,6 +146,7 @@ global.DbScreen = jClass.extend({
   extensionsTabActivate: function () {
     this.connection.getExtensions((rows) => {
       this.view.extensions.renderTab(rows);
+      this.currentTab = 'extensions';
     });
   },
 
@@ -189,6 +192,7 @@ global.DbScreen = jClass.extend({
       this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, (data, error) => {
         App.stopLoading();
         this.view.contents.renderTab(data, columnTypes, error || error2);
+        this.currentTab = 'content';
       });
     });
   },
@@ -196,11 +200,13 @@ global.DbScreen = jClass.extend({
   usersTabActivate: function () {
     Model.User.findAll((rows, error) => {
       this.view.users.renderTab(rows);
+      this.currentTab = 'users';
     });
   },
 
   queryTabActivate: function () {
     this.view.query.renderTab();
+    this.currentTab = 'query';
   },
 
   createUser: function(data, callback) {
@@ -399,7 +405,9 @@ global.DbScreen = jClass.extend({
   },
 
   proceduresTabActivate: function() {
-    this.view.procedures.renderTab();
+    this.view.procedures.renderTab(() => {
+      this.currentTab = 'procedures';
+    });
   },
 
   addColumn: function (data, callback) {
@@ -476,7 +484,6 @@ global.DbScreen = jClass.extend({
     }
 
     var table = this.tableObj();
-    var _this = this;
 
     this.view.setTabMessage("Getting table information ...");
 
@@ -487,7 +494,8 @@ global.DbScreen = jClass.extend({
           window.alert("Running pg_dump failed:\n" + dumpError);
         }
         App.stopLoading();
-        _this.view.info.renderTab(code, relType, estimateCount, diskUsage);
+        this.view.info.renderTab(code, relType, estimateCount, diskUsage);
+        this.currentTab = 'info';
       });
     });
   },

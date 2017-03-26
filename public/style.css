@@ -709,7 +709,6 @@ body.sidebar-resizing {
       width: 24px;
       height: 22px;
       text-align: center;
-      cursor: pointer;
       font-size: 0;
       display: block;
       float: left; }
