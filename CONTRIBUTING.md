@@ -1,6 +1,6 @@
 ## Setup Environment
 
-You gonna need any, not too old, version of nodejs and npm. Ruby (already installed in Mac), command line tools from Apple for compiling postrs native extension.
+You gonna need any, not too old, version of nodejs and npm. Ruby (already installed in Mac), command line tools from Apple for compiling Postgres native extension.
 
     npm install
     rake rebuild_ext

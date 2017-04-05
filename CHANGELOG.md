@@ -1,4 +1,4 @@
-== Version 0.6.0 (26-mar-2017)
+== Version 0.6.0 (05-apr-2017)
 
 * Add Feature: Truncate table
 * Fix checking updates, check updates on startup
@@ -28,6 +28,9 @@
 * Update types select
 * Close dialog by esc
 * Display constraints on table structure page
+* Add loader for table modifications
+* Set extensions page to same position after install or uninstall
+* Smaller release size
 
 == Version 0.5.0 (25-mar-2016)
 
