@@ -22,6 +22,7 @@ global.App = {
     this.activateTab(0);
 
     log.info('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
+    console.log('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
     /* auto connect, for development *\/
 
     this.loginScreen.onFormSubmit(false, () => {

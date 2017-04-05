@@ -22,8 +22,16 @@ Postbird using cpmmand line utils for imporing and exporing sql dumps, also for 
 
 ## Building Prostgres.app
 
+Electron packager or npm has a bug, it may include developer dependecies to release and result file will be bloated. As a workaround, before creating package need to delete developer dependecies from package.json and run `npm prune`
+
 ```
+# make sure you have ran "rake rebuild_ext"
+# delete "devDependencies" from package.json
+npm prune
+npm install electron-packager@8.6.0
+sudo npm install -g electron@1.6.2
 node packager.js
+rake build_dmg
 ```
 
 ## Writing Code

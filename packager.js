@@ -17,7 +17,8 @@ var opts = {
   overwrite: true,
   out: process.env.HOME + '/Postbird_release',
   protocol: 'postbird',
-  extendInfo: 'build_files/Info.plist'
+  extendInfo: 'build_files/Info.plist',
+  ignore: ['vendor/win32', 'build_files', 'tests', 'integration_tests', 'sugar', 'assets']
 };
 
 child_process.exec('git rev-list HEAD --count', (err, stdout, stderr) => {
@@ -34,8 +35,8 @@ child_process.exec('git rev-list HEAD --count', (err, stdout, stderr) => {
     }
     var commitID = stdout;
 
-    opts['build-version'] = commitsCount + ' - ' + commitID;
-    console.log('build-version', opts['build-version']);
+    opts.buildVersion = commitsCount + ' - ' + commitID;
+    console.log('build-version', opts.buildVersion);
 
     packager(opts, function done (err, appPath) {
       console.log("Done");
