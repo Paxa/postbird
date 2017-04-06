@@ -258,6 +258,9 @@ global.App = {
   humanErrorMessage: (error) => {
     if (error == "connect ECONNREFUSED") {
       return "Connection refused.<br>Make sure postgres is running";
+    } else if (error.match(/^getaddrinfo ENOTFOUND/)) {
+      var host = error.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
+      return `Can not resolve host '${host[1]}'`;
     } else {
       return error;
     }

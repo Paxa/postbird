@@ -168,7 +168,7 @@ global.LoginScreen = jClass.extend({
         window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
-        window.alertify.alert(this.humanErrorMessage(message));
+        window.alertify.alert(App.humanErrorMessage(message));
       }
     });
   },
