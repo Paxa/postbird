@@ -7,12 +7,16 @@ end
 desc "Build ~/Postbird.dmg"
 
 task :build_dmg do
-  file_name = "Postbird-0.6.0.dmg"
+  require 'json'
+  version = JSON.parse(File.read('package.json'))['version']
+  puts "Creating Postbird #{version}..."
+
+  file_name = "Postbird-#{version}.dmg"
   File.delete("~/#{file_name}") if File.exist?("~/#{file_name}")
 
   exec %{
     ./build_files/yoursway-create-dmg/create-dmg \
-      --volname "Postbird 0.6.0" \
+      --volname "Postbird #{version}" \
       --volicon "./build_files/icon.icns" \
       --icon Postbird.app 50 50 \
       --app-drop-link 300 50 \
