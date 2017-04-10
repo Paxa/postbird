@@ -9,10 +9,10 @@
           th max length
           th default
           th primary key
-          th Null
+          th null
           th
       tbody
-        each column in columns
+        each column in columns || []
           tr
             td= column.column_name
             td(title = column_type_label(column))= column_type_label(column, true)
@@ -24,6 +24,10 @@
               a(exec="editColumn('" + column.column_name + "')") Edit
               != "&nbsp;"
               a(exec="deleteColumn('" + column.column_name + "')") Delete
+        else
+          if !columns
+            tr
+              td(collspan=7) Error accured while getting table info
 
 footer
   if !is_mat_view

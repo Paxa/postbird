@@ -390,12 +390,14 @@ global.DbScreen = jClass.extend({
     }
     App.startLoading("Getting table structure...");
 
-    this.table.isMatView((isMatView) => {
-      Model.Table(this.currentSchema, this.currentTable).getStructure((rows) => {
-        this.table.describe((indexes, error) => {
-          if (error) console.error(error);
-          this.table.getConstraints((constraints, error2) => {
-            if (error2) console.error(error2);
+    this.table.isMatView((isMatView, error) => {
+      if (error) errorReporter(error, false);
+      Model.Table(this.currentSchema, this.currentTable).getStructure((rows, error1) => {
+        if (error1) errorReporter(error1, false);
+        this.table.describe((indexes, error2) => {
+          if (error2) errorReporter(error2, false);
+          this.table.getConstraints((constraints, error3) => {
+            if (error3) errorReporter(error3, false);
             this.view.structure.renderTab(rows, indexes, constraints, isMatView);
             App.stopLoading();
           });
@@ -489,9 +491,13 @@ global.DbScreen = jClass.extend({
 
     App.startLoading("Getting table info...");
     table.getSourceSql((code, dumpError) => {
-      table.diskSummary((relType, estimateCount, diskUsage) => {
+      table.diskSummary((relType, estimateCount, diskUsage, error) => {
         if (dumpError) {
           window.alert("Running pg_dump failed:\n" + dumpError);
+          global.errorReporter(dumpError, false);
+        }
+        if (error) {
+          global.errorReporter(error, false);
         }
         App.stopLoading();
         this.view.info.renderTab(code, relType, estimateCount, diskUsage);

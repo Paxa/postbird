@@ -66,8 +66,8 @@ global.Model.Table = Model.base.extend({
   },
 
   isMatView: function (callback) {
-    this.getTableType((tableType) => {
-      callback(tableType == "MATERIALIZED VIEW")
+    this.getTableType((tableType, error) => {
+      callback(tableType == "MATERIALIZED VIEW", error);
     });
   },
 
@@ -146,7 +146,11 @@ global.Model.Table = Model.base.extend({
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
     `;
-    this.q(sql, (data) => {
+    this.q(sql, (data, error) => {
+      if (error) {
+        callback(data && data.rows, error);
+        return;
+      }
       this.hasOID((hasOID) => {
         if (hasOID) {
           data.rows.unshift({
@@ -180,10 +184,14 @@ global.Model.Table = Model.base.extend({
                where relname = '%s' and attnum >= 1;`;
 
     this.q(sql, this.table, (data, error) => {
-      data.rows.forEach((row) => {
-        row.is_nullable = row.attnotnull ? "NO" : "YES";
-      });
-      callback(data.rows);
+      if (data && data.rows) {
+        data.rows.forEach((row) => {
+          row.is_nullable = row.attnotnull ? "NO" : "YES";
+        });
+        callback(data.rows);
+      } else {
+        callback(null, error);
+      }
     });
   },
 
@@ -195,7 +203,7 @@ global.Model.Table = Model.base.extend({
       if (error) {
         callback(undefined, error);
       } else {
-        callback(data.rows[0] && data.rows[0].relhasoids);
+        callback(data && data.rows[0] && data.rows[0].relhasoids);
       }
     });
   },
@@ -571,6 +579,10 @@ global.Model.Table = Model.base.extend({
     `;
 
     this.q(sql, this.schema, this.table, (result, error) => {
+      if (!result) {
+        callback("error getting talbe info", '', '', error);
+        return;
+      }
       var row = result.rows[0];
       var type = row.relkind;
       // http://www.postgresql.org/docs/9.4/static/catalog-pg-class.html
