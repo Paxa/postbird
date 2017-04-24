@@ -383,7 +383,7 @@ global.Panes.Contents = global.Pane.extend({
       }
     };
     if (this.currentTableType == 'BASE TABLE') {
-      contextMenuActions['Delete Row'] = function (menuItem, bwin) {
+      contextMenuActions['Delete Row'] = (menuItem, bwin) => {
         var event = table[0].contextmenu.clickEvent;
         var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
         this.deleteRow(el);
