@@ -149,7 +149,7 @@ global.Connection = jClass.extend({
           error.query = sql;
           console.error("SQL failed", sql);
           console.error(error);
-          query.state = 'error';
+          if (query) query.state = 'error';
           if (callback) callback(result, error);
           this.onConnectionError(error);
         } else {
@@ -440,13 +440,11 @@ global.Connection = jClass.extend({
       error.message.indexOf("server closed the connection unexpectedly") != -1 ||
       error.message.indexOf("Unable to set non-blocking to true") != -1) {
 
-      var that = this;
-
       window.alertify.confirm("Seems like disconnected, reconnect?<br><small>" + error.message, (is_yes) => {
         window.alertify.hide();
         if (is_yes) {
           var tab = global.App.tabs.filter((tab) => {
-            return tab.instance.connection == that;
+            return tab.instance.connection == this;
           })[0];
 
           if (tab) tab.instance.reconnect();
