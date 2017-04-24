@@ -3,7 +3,7 @@ global.Panes.Structure = global.Pane.extend({
   renderTab: function(columns, indexes, constraints, extra = {}) {
     this.constraints = constraints.rows;
     var neededConstraints = [];
-    if (constraints.rows) {
+    if (constraints && constraints.rows) {
       constraints.rows.forEach((constraint) => {
         if (constraint.contype != "p") {
           neededConstraints.push(constraint);
