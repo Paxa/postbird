@@ -27,10 +27,15 @@
         else
           if !columns
             tr
-              td(collspan=7) Error accured while getting table info
+              td(colspan=7)
+                = "Error accured while getting table info"
+                if columnsError
+                  br
+                  pre
+                    code= columnsError.message
 
 footer
-  if !is_mat_view
+  if !isMatView
     button.native-look(exec="addColumnForm") Add column
 
 h4 Indexes
@@ -48,7 +53,7 @@ h4 Indexes
           th type
           th
       tbody
-        each index in indexes
+        each index in indexes || []
           tr
             td= index.relname
             td= index.indisprimary ? 'Yes' : 'No'
@@ -57,6 +62,15 @@ h4 Indexes
             td= getIndexType(index.pg_get_indexdef)
             td
               a(exec="deleteIndex('" + index.relname + "')") Delete
+        else
+          if !indexes
+            tr
+              td(colspan=6)
+                = "Error accured while getting table indexes "
+                if indexesError
+                  br
+                  pre
+                    code= indexesError.message
 
 footer
   button.native-look(exec="addIndexForm") Add index

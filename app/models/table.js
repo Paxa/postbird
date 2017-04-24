@@ -391,11 +391,6 @@ global.Model.Table = Model.base.extend({
     }
   },
 
-  // legacy
-  describe: function (callback) {
-    return this.getIndexes(callback);
-  },
-
   // find indexes
   getIndexes: function (callback) {
     var sql_find_oid = `
@@ -433,10 +428,14 @@ global.Model.Table = Model.base.extend({
     var _this = this;
 
     this.q(sql_find_oid, (oid_data, error) => {
+      if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
+        callback(null, new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
+        return;
+      }
       var oid = oid_data.rows[0].oid;
       //this.q(sql_find_types, oid, (types_data, error) => {
         _this.q(sql_find_index, oid, (indexes_rows, error) => {
-          callback(indexes_rows.rows);
+          callback(indexes_rows.rows, error);
         });
       //});
     });

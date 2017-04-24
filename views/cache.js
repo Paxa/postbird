@@ -2211,8 +2211,8 @@ pug_html = pug_html + "\n  \u003Cdiv class=\"preview\"\u003E\u003C\u002Fdiv\u003
 ;pug_debug_line = 6;pug_debug_filename = "views\u002Fsnippets.jade";
 pug_html = pug_html + "\n  \u003Cfooter\u003E\u003C\u002Ffooter\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["snippets"].content = ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
-exports["structure_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fstructure_tab.jade":".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(\u002F^nextval\u002F) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(collspan=7) Error accured while getting table info\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(\u002FON [^\\(]+\\((.+)\\)\u002F)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index\n\nif constraints.length \u003E 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n"};
-;var locals_for_with = (locals || {});(function (column_type_label, columns, constraints, getIndexType, indexes, is_mat_view) {var pug_indent = [];
+exports["structure_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fstructure_tab.jade":".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(\u002F^nextval\u002F) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(\u002FON [^\\(]+\\((.+)\\)\u002F)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index\n\nif constraints.length \u003E 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n"};
+;var locals_for_with = (locals || {});(function (column_type_label, columns, columnsError, constraints, getIndexType, indexes, indexesError, isMatView) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders columns-list-table\"\u003E";
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fstructure_tab.jade";
@@ -2306,9 +2306,21 @@ if (!columns) {
 ;pug_debug_line = 29;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd collspan=\"7\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Error accured while getting table info\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+pug_html = pug_html + "\n          \u003Ctd colspan=\"7\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table info") ? "" : pug_interp));
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (columnsError) {
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n            \u003Cpre\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = columnsError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
 }
     }
   } else {
@@ -2361,197 +2373,256 @@ if (!columns) {
 ;pug_debug_line = 29;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd collspan=\"7\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Error accured while getting table info\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+pug_html = pug_html + "\n          \u003Ctd colspan=\"7\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table info") ? "" : pug_interp));
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (columnsError) {
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n            \u003Cpre\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = columnsError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
 }
     }
   }
 }).call(this);
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-;pug_debug_line = 32;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n\u003Cfooter\u003E";
-;pug_debug_line = 33;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (!is_mat_view) {
-;pug_debug_line = 34;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (!isMatView) {
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addColumnForm\"\u003E";
-;pug_debug_line = 34;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Add column\u003C\u002Fbutton\u003E";
 }
 pug_html = pug_html + "\n\u003C\u002Ffooter\u003E";
-;pug_debug_line = 36;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Ch4\u003E";
-;pug_debug_line = 36;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Indexes\u003C\u002Fh4\u003E";
-;pug_debug_line = 38;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
-;pug_debug_line = 39;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
-;pug_debug_line = 40;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
 ;pug_debug_line = 41;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n    \u003Ctable\u003E";
-;pug_debug_line = 42;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Cthead\u003E";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 41;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Indexes\u003C\u002Fh4\u003E";
 ;pug_debug_line = 43;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "name\u003C\u002Fth\u003E";
-;pug_debug_line = 45;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 45;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "p. key\u003C\u002Fth\u003E";
-;pug_debug_line = 46;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 46;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "uniq\u003C\u002Fth\u003E";
-;pug_debug_line = 47;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 47;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "columns\u003C\u002Fth\u003E";
-;pug_debug_line = 48;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 48;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "type\u003C\u002Fth\u003E";
 ;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 49;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
 ;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Ctbody\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "p. key\u003C\u002Fth\u003E";
 ;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
-// iterate indexes
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "uniq\u003C\u002Fth\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "columns\u003C\u002Fth\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "type\u003C\u002Fth\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
+// iterate indexes || []
 ;(function(){
-  var $$obj = indexes;
+  var $$obj = indexes || [];
   if ('number' == typeof $$obj.length) {
+    if ($$obj.length) {
       for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
         var index = $$obj[pug_index1];
-;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
-;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
       }
+    } else {
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (!indexes) {
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
+;pug_debug_line = 70;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (indexesError) {
+;pug_debug_line = 71;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n            \u003Cpre\u003E";
+;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = indexesError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+}
+    }
   } else {
     var $$l = 0;
     for (var pug_index1 in $$obj) {
       $$l++;
       var index = $$obj[pug_index1];
-;pug_debug_line = 52;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
-;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+    }
+    if ($$l === 0) {
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (!indexes) {
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
+;pug_debug_line = 70;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (indexesError) {
+;pug_debug_line = 71;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n            \u003Cpre\u003E";
+;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = indexesError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+}
     }
   }
 }).call(this);
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Cfooter\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addIndexForm\"\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Add index\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (constraints.length > 0) {
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Ch4\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Constraints\u003C\u002Fh4\u003E";
-;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
-;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
-;pug_debug_line = 68;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
-;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n    \u003Ctable\u003E";
-;pug_debug_line = 70;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Cthead\u003E";
-;pug_debug_line = 71;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "name\u003C\u002Fth\u003E";
-;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "source\u003C\u002Fth\u003E";
-;pug_debug_line = 74;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
 ;pug_debug_line = 75;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Ctbody\u003E";
+pug_html = pug_html + "\n\u003Cfooter\u003E";
 ;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addIndexForm\"\u003E";
+;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Add index\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";
+;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (constraints.length > 0) {
+;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Constraints\u003C\u002Fh4\u003E";
+;pug_debug_line = 80;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
+;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 82;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 83;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 84;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 85;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 86;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 86;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
+;pug_debug_line = 87;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 87;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "source\u003C\u002Fth\u003E";
+;pug_debug_line = 88;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 89;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 90;pug_debug_filename = "views\u002Fstructure_tab.jade";
 // iterate constraints
 ;(function(){
   var $$obj = constraints;
   if ('number' == typeof $$obj.length) {
       for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
         var constraint = $$obj[pug_index2];
-;pug_debug_line = 77;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 91;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 93;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 93;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 80;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 94;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteConstraint('" + constraint.conname + "')", true, false)) + "\u003E";
-;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
       }
   } else {
@@ -2559,29 +2630,29 @@ pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u
     for (var pug_index2 in $$obj) {
       $$l++;
       var constraint = $$obj[pug_index2];
-;pug_debug_line = 77;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 91;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 93;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 93;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 80;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 94;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteConstraint('" + constraint.conname + "')", true, false)) + "\u003E";
-;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
   }
 }).call(this);
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-}}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined,"constraints" in locals_for_with?locals_for_with.constraints:typeof constraints!=="undefined"?constraints:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"is_mat_view" in locals_for_with?locals_for_with.is_mat_view:typeof is_mat_view!=="undefined"?is_mat_view:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["structure_tab"].content = ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(collspan=7) Error accured while getting table info\n\nfooter\n  if !is_mat_view\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index\n\nif constraints.length > 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n";
+}}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined,"columnsError" in locals_for_with?locals_for_with.columnsError:typeof columnsError!=="undefined"?columnsError:undefined,"constraints" in locals_for_with?locals_for_with.constraints:typeof constraints!=="undefined"?constraints:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"indexesError" in locals_for_with?locals_for_with.indexesError:typeof indexesError!=="undefined"?indexesError:undefined,"isMatView" in locals_for_with?locals_for_with.isMatView:typeof isMatView!=="undefined"?isMatView:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["structure_tab"].content = ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td= index.relname\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.pg_get_indexdef.match(/ON [^\\(]+\\((.+)\\)/)[1]\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add index\n\nif constraints.length > 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n";
 exports["users_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fusers_tab.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Role name\n          th List of roles\n          th Member of\n          th(style=\"max-width: 250px\") Owned Databases\n          th\n      tbody\n        each user in rows\n          tr\n            td\n              if currentUser == user.rolname\n                strong= user.rolname\n                br\n                small (current user)\n              else\n                = user.rolname\n            td(style=\"max-width: 180px\")= user.roles.join(', ')\n            td= user.memberof\n            td(style=\"max-width: 250px\")= user.owned_dbs\n            td\n              a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n              = \" \"\n              a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  \u002F\u002Fbutton.native-look.createRoleBtn(exec=\"newRole\") Create new role"};
 ;var locals_for_with = (locals || {});(function (currentUser, rows) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fusers_tab.jade";

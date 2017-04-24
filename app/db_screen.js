@@ -392,13 +392,18 @@ global.DbScreen = jClass.extend({
 
     this.table.isMatView((isMatView, error) => {
       if (error) errorReporter(error, false);
-      Model.Table(this.currentSchema, this.currentTable).getStructure((rows, error1) => {
-        if (error1) errorReporter(error1, false);
-        this.table.describe((indexes, error2) => {
-          if (error2) errorReporter(error2, false);
-          this.table.getConstraints((constraints, error3) => {
-            if (error3) errorReporter(error3, false);
-            this.view.structure.renderTab(rows, indexes, constraints, isMatView);
+      Model.Table(this.currentSchema, this.currentTable).getStructure((rows, columnsError) => {
+        if (columnsError) errorReporter(columnsError, false);
+        this.table.getIndexes((indexes, indexesError) => {
+          if (indexesError) errorReporter(indexesError, false);
+          this.table.getConstraints((constraints, constraintsError) => {
+            if (constraintsError) errorReporter(constraintsError, false);
+            this.view.structure.renderTab(rows, indexes, constraints, {
+              isMatView: isMatView,
+              columnsError: columnsError,
+              indexesError: indexesError,
+              constraintsError: constraintsError
+            });
             App.stopLoading();
           });
         });

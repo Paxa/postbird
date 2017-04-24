@@ -1,6 +1,6 @@
 global.Panes.Structure = global.Pane.extend({
 
-  renderTab: function(columns, indexes, constraints, is_mat_view) {
+  renderTab: function(columns, indexes, constraints, extra = {}) {
     this.constraints = constraints.rows;
     var neededConstraints = [];
     if (constraints.rows) {
@@ -13,8 +13,11 @@ global.Panes.Structure = global.Pane.extend({
     this.renderViewToPane('structure', 'structure_tab', {
       columns: columns,
       indexes: indexes,
-      is_mat_view: is_mat_view,
-      constraints: neededConstraints
+      constraints: neededConstraints,
+      isMatView: extra.isMatView,
+      indexesError: extra.indexesError,
+      columnsError: extra.columnsError,
+      constraintsError: extra.constraintsError
     });
     this.initTables();
   },
