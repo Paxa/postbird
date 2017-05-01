@@ -21,7 +21,7 @@
     "needle": "1.6.0",
     "pg": "6.1.5",
     "pg-native": "1.10.1",
-    "pug": "2.0.0-beta12",
+    "pug": "2.0.0-beta.12",
     "raven": "1.2.1",
     "semver": "^5.1.0",
     "sprintf-js": "1.0.3",
