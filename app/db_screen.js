@@ -536,9 +536,9 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  truncateTable(schema, table, callback) {
+  truncateTable(schema, table, cascade, callback) {
     App.startLoading(`Truncating ${table}`);
-    Model.Table(schema, table).truncate((result, error) => {
+    Model.Table(schema, table).truncate(cascade, (result, error) => {
       App.stopLoading();
       callback(result, error);
     });

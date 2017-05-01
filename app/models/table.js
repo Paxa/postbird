@@ -599,8 +599,8 @@ global.Model.Table = Model.base.extend({
     });
   },
 
-  truncate(callback) {
-    var sql = `truncate table ${this.schema}.${this.table};`;
+  truncate(cascade, callback) {
+    var sql = `truncate table ${this.sqlTable()} ${cascade ? "CASCADE" : ""};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });
@@ -621,8 +621,11 @@ global.Model.Table = Model.base.extend({
     this.q(sql, (data, error) => {
       callback(data, error);
     });
-  }
+  },
 
+  sqlTable() {
+    return `"${this.schema}"."${this.table}"`;
+  }
 });
 
 Model.Table.create = function create (schema, tableName, options, callback) {

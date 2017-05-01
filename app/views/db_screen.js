@@ -1,3 +1,5 @@
+const {dialog} = require('electron').remote;
+
 global.DbScreenView = jClass.extend({
   init: function (handler) {
     this.handler = handler;
@@ -146,16 +148,7 @@ global.DbScreenView = jClass.extend({
               this.renameTable(tableNode, schema, table.table_name);
             },
             'Truncate table' : () => {
-              this.handler.truncateTable(schema, table.table_name, (res, error) => {
-                if (error) {
-                  var errorMsg = "" + error.toString();
-                  if (error.detail) errorMsg += "\n----\n" + error.detail;
-                  if (error.hint) errorMsg += "\n----\n" + error.hint;
-                  window.alert(errorMsg);
-                } else {
-                  window.alert("TRUNCATE OK");
-                }
-              });
+              this.truncateTable(schema, table.table_name);
             },
             'Drop table': () => {
               this.handler.dropTable(schema, table.table_name, (res, error) => {
@@ -299,6 +292,43 @@ global.DbScreenView = jClass.extend({
     }
 
     this.handler.activateTab(name, true);
+  },
+
+  truncateTable: function (schema, tableName) {
+    dialog.showMessageBox({
+      type: 'question',
+      buttons: ['Truncate', 'Cancel'],
+      defaultId: 0,
+      message: `Truncate table ${schema}.${tableName}?`,
+      detail: `All records will be removed. And table will be locked during this operation`,
+      checkboxLabel: "Truncate tables with foreign-key references"
+    }, (response, cascade) => {
+      if (response == 1) {
+        return;
+      }
+      this.handler.truncateTable(schema, tableName, cascade, (res, error) => {
+        if (error) {
+          var errorMsg = "" + error.toString();
+
+          if (error.detail) errorMsg += "\n----\n" + error.detail;
+          if (error.hint) errorMsg += "\n----\n" + error.hint;
+
+          if (!errorMsg.includes(error.query)) errorMsg += "\n----\nSQL: " + error.query;
+
+          dialog.showMessageBox({
+            type: "error",
+            message: `Error while truncating ${schema}.${tableName}`,
+            detail: errorMsg
+          });
+        } else {
+          dialog.showMessageBox({
+            type: "info",
+            message: "Table successfully truncated",
+            detail: `Complete in ${res.time} ms.`
+          });
+        }
+      });
+    });
   },
 
   setTabMessage: function (message) {
