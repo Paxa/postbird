@@ -1,4 +1,4 @@
-== Version 0.6.1 (01-may-2017)
+== Version 0.6.2 (01-may-2017)
 
 * Fix “Cannot set property 'state' of undefined”
 * Use editMenu, zoomin, zoomout for top menu
