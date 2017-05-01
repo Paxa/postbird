@@ -1,3 +1,21 @@
+== Version 0.6.1 (01-may-2017)
+
+* Fix “Cannot set property 'state' of undefined”
+* Use editMenu, zoomin, zoomout for top menu
+* Better error handling when table not found anymore
+* Update dependencies
+* Fix Cannot read property 'rows' of undefined
+* Fix this.deleteRow is not a function
+* Fix exporter.setNoOwners is not a function
+* Dialog for truncate table action, add cascade truncate
+* Fix dialog cancel button error
+
+== Version 0.6.1 (11-apr-2017)
+
+* Fix displaying connection error message
+* More error reporting
+* Fix layout of resizable table when some cell is empty
+
 == Version 0.6.0 (05-apr-2017)
 
 * Add Feature: Truncate table

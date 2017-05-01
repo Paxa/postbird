@@ -1,7 +1,7 @@
 {
   "name": "Postbird",
   "main": "main.js",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
   "engines": {
@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "electron-packager": "8.6.0",
-    "electron": "1.6.5",
+    "electron": "1.6.6",
     "electron-rebuild": "1.5.7"
   },
   "dependencies": {

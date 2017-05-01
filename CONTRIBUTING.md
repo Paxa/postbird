@@ -29,7 +29,7 @@ Electron packager or npm has a bug, it may include developer dependecies to rele
 # delete "devDependencies" from package.json
 npm prune
 npm install electron-packager@8.6.0
-sudo npm install -g electron@1.6.2
+sudo npm install -g electron@1.6.6
 node packager.js
 rake build_dmg
 ```
