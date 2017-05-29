@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "electron-packager": "8.6.0",
-    "electron": "1.6.6",
+    "electron": "1.6.10",
     "electron-rebuild": "1.5.7"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "needle": "1.6.0",
     "pg": "6.1.5",
     "pg-native": "1.10.1",
-    "pug": "2.0.0-beta.12",
+    "pug": "2.0.0-rc.1",
     "raven": "1.2.1",
     "semver": "^5.1.0",
     "sprintf-js": "1.0.3",
