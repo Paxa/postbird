@@ -19,7 +19,7 @@ global.Dialog.ExportFile = global.Dialog.extend({
       e.preventDefault();
       var options = {
         message: `Postgres dump of '${this.handler.database}' database`,
-        defaultPath: `${process.env.HOME}/${this.handler.database}.sql`,
+        defaultPath: `${this.handler.database}.sql`,
       };
       dialog.showSaveDialog(electron.remote.BrowserWindow.mainWindow, options, (selected) => {
         fileInput.val(selected);

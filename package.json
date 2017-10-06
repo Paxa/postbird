@@ -5,26 +5,26 @@
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
   "engines": {
-    "node": "5.6.0"
+    "node": "8.6.0"
   },
   "devDependencies": {
-    "electron-packager": "8.6.0",
-    "electron": "1.6.10",
-    "electron-rebuild": "1.5.7"
+    "electron-packager": "9.1.0",
+    "electron": "1.7.8",
+    "electron-rebuild": "1.6.0"
   },
   "dependencies": {
     "classy": "github:paxa/classy",
     "colors": "^1.1.2",
     "electron-window-state": "4.1.1",
-    "eventemitter2": "3.0.2",
+    "eventemitter2": "4.1.2",
     "is-electron-renderer": "^2.0.1",
-    "needle": "1.6.0",
-    "pg": "6.1.5",
-    "pg-native": "1.10.1",
-    "pug": "2.0.0-rc.1",
-    "raven": "1.2.1",
+    "needle": "2.0.1",
+    "pg": "7.3.0",
+    "pg-native": "2.2.0",
+    "pug": "2.0.0-rc.4",
+    "raven": "2.2.1",
     "semver": "^5.1.0",
-    "sprintf-js": "1.0.3",
+    "sprintf-js": "1.1.1",
     "strftime": "0.10.0"
   }
 }

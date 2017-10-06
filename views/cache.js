@@ -1187,8 +1187,8 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = column.comment) ? "" : p
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"rows" in locals_for_with?locals_for_with.rows:typeof rows!=="undefined"?rows:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["extensions_tab"].content = ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Default Version\n          th Installed Version\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.name\n            td= column.default_version\n            td\n              if column.installed_version\n                strong= column.installed_version\n                button(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n              else\n                button(exec=\"install('\" + column.name + \"')\") Install\n            td= column.comment";
-exports["history"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhistory.jade":".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      - console.log(event)\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - \u002F\u002F do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"\u002F\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"\u002F\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n"};
-;var locals_for_with = (locals || {});(function (Date, JSON, console, events, execTime, timeFormat) {var pug_indent = [];
+exports["history"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhistory.jade":".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - \u002F\u002F do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":\u003Cpassword\u003E\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"\u002F\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":\u003Cpassword\u003E\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"\u002F\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n"};
+;var locals_for_with = (locals || {});(function (Date, JSON, events, execTime, timeFormat) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n\u003Cdiv class=\"history-window\"\u003E";
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fhistory.jade";
@@ -1211,87 +1211,83 @@ pug_html = pug_html + "\n  \u003Cul\u003E";
       for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
         var event = $$obj[pug_index0];
 ;pug_debug_line = 7;pug_debug_filename = "views\u002Fhistory.jade";
-console.log(event)
-;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
 if (event.type == "sql.start" && event.args[0].state != 'running') {
-;pug_debug_line = 9;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
 // do nothing
 }
 else {
-;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n    \u003Cli\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n      \u003Ctime\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = timeFormat(new Date(event.time))) ? "" : pug_interp)) + "\u003C\u002Ftime\u003E";
-;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n      \u003Cdiv class=\"event-info\"\u003E";
-;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
 if (event.type == "sql.start" && event.args[0].state == 'running') {
-;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Running\u003C\u002Fstrong\u003E";
-;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql running\"\u003E";
-;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "sql.failed") {
-;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql failed\"\u003E";
-;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(query.error, null, 2)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "sql.success") {
-;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql success\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "connect.success") {
-;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fhistory.jade";
 var opts = event.args[1]
-;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
-console.log(event)
-;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "Connected to server ") ? "" : pug_interp));
-;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts) {
-;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
-;pug_debug_line = 40;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts.database) {
-;pug_debug_line = 41;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
 }
 pug_html = pug_html + "\u003C\u002Fcode\u003E";
@@ -1299,65 +1295,65 @@ pug_html = pug_html + "\u003C\u002Fcode\u003E";
 }
 else
 if (event.type == "connect.error") {
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fhistory.jade";
 var opts = event.args[1]
-;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "Failed connect to server ") ? "" : pug_interp));
-;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
-;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts.database) {
-;pug_debug_line = 49;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
 }
 pug_html = pug_html + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
-;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[2].message || event.args[2]) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 else
 if (event.type == "exec.start") {
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Executing\u003C\u002Fstrong\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"exec start\"\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "exec.finish") {
-;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Complete\u003C\u002Fstrong\u003E";
-;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"exec finish\"\u003E";
-;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(event.args[0].time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else {
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"event\"\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "~") ? "" : pug_interp));
-;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.type) ? "" : pug_interp));
-;pug_debug_line = 67;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
-;pug_debug_line = 68;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(event.args, null, 2)) ? "" : pug_interp)) + "\n        \u003C\u002Fdiv\u003E";
 }
 pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
@@ -1369,87 +1365,83 @@ pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
       $$l++;
       var event = $$obj[pug_index0];
 ;pug_debug_line = 7;pug_debug_filename = "views\u002Fhistory.jade";
-console.log(event)
-;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
 if (event.type == "sql.start" && event.args[0].state != 'running') {
-;pug_debug_line = 9;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fhistory.jade";
 // do nothing
 }
 else {
-;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n    \u003Cli\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n      \u003Ctime\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = timeFormat(new Date(event.time))) ? "" : pug_interp)) + "\u003C\u002Ftime\u003E";
-;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n      \u003Cdiv class=\"event-info\"\u003E";
-;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fhistory.jade";
 if (event.type == "sql.start" && event.args[0].state == 'running') {
-;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Running\u003C\u002Fstrong\u003E";
-;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql running\"\u003E";
-;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 18;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "sql.failed") {
-;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 21;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql failed\"\u003E";
-;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(query.error, null, 2)) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "sql.success") {
-;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fhistory.jade";
 var query = event.args[0]
-;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"sql success\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "SQL: " + query.sql) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 31;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 30;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(query.time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "connect.success") {
-;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fhistory.jade";
 var opts = event.args[1]
-;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
-console.log(event)
-;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "Connected to server ") ? "" : pug_interp));
-;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 35;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts) {
-;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 36;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
-;pug_debug_line = 40;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 37;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 38;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts.database) {
-;pug_debug_line = 41;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 39;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
 }
 pug_html = pug_html + "\u003C\u002Fcode\u003E";
@@ -1457,65 +1449,65 @@ pug_html = pug_html + "\u003C\u002Fcode\u003E";
 }
 else
 if (event.type == "connect.error") {
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fhistory.jade";
 var opts = event.args[1]
-;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 43;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "Failed connect to server ") ? "" : pug_interp));
-;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 44;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode class=\"sql\"\u003E";
-;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":*" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
-;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 45;pug_debug_filename = "views\u002Fhistory.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port) ? "" : pug_interp));
+;pug_debug_line = 46;pug_debug_filename = "views\u002Fhistory.jade";
 if (opts.database) {
-;pug_debug_line = 49;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 47;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "/" + opts.database) ? "" : pug_interp));
 }
 pug_html = pug_html + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"error\"\u003E";
-;pug_debug_line = 50;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 48;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[2].message || event.args[2]) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
 }
 else
 if (event.type == "exec.start") {
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Executing\u003C\u002Fstrong\u003E";
-;pug_debug_line = 54;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"exec start\"\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 55;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fdiv\u003E";
 }
 else
 if (event.type == "exec.finish") {
-;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 56;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "Complete\u003C\u002Fstrong\u003E";
-;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"exec finish\"\u003E";
-;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 60;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 58;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.args[0].command) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\u003Cspan class=\"exec-time\"\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 59;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "(" + execTime(event.args[0].time) + ")") ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E";
 }
 else {
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + "\n        \u003Cdiv class=\"event\"\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = "~") ? "" : pug_interp));
-;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = event.type) ? "" : pug_interp));
-;pug_debug_line = 67;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = " ") ? "" : pug_interp));
-;pug_debug_line = 68;pug_debug_filename = "views\u002Fhistory.jade";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fhistory.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = JSON.stringify(event.args, null, 2)) ? "" : pug_interp)) + "\n        \u003C\u002Fdiv\u003E";
 }
 pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
@@ -1524,8 +1516,8 @@ pug_html = pug_html + "\n      \u003C\u002Fdiv\u003E\n    \u003C\u002Fli\u003E";
   }
 }).call(this);
 
-pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"console" in locals_for_with?locals_for_with.console:typeof console!=="undefined"?console:undefined,"events" in locals_for_with?locals_for_with.events:typeof events!=="undefined"?events:undefined,"execTime" in locals_for_with?locals_for_with.execTime:typeof execTime!=="undefined"?execTime:undefined,"timeFormat" in locals_for_with?locals_for_with.timeFormat:typeof timeFormat!=="undefined"?timeFormat:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      - console.log(event)\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              - console.log(event)\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":*\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n";
+pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"Date" in locals_for_with?locals_for_with.Date:typeof Date!=="undefined"?Date:undefined,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"events" in locals_for_with?locals_for_with.events:typeof events!=="undefined"?events:undefined,"execTime" in locals_for_with?locals_for_with.execTime:typeof execTime!=="undefined"?execTime:undefined,"timeFormat" in locals_for_with?locals_for_with.timeFormat:typeof timeFormat!=="undefined"?timeFormat:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.sql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.sql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.sql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[1]\n              = \"Connected to server \"\n              if opts\n                code.sql\n                  = opts.user + (opts.password ? \":<password>\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.sql\n                = opts.user + (opts.password ? \":<password>\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n";
 exports["info_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Finfo_tab.jade":".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  p\n    = \"Size on disk: \"\n    = tableSize\n\nh4 Source SQL\n\ncode.result.sql\n  = code"};
 ;var locals_for_with = (locals || {});(function (code, recordsCount, relType, tableSize) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Finfo_tab.jade";

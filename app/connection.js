@@ -75,8 +75,11 @@ global.Connection = jClass.extend({
       this.connection = null;
     }
 
-    pg.connect(connectString, (error, client) => {
-      this.connection = client;
+    this.connection = new pg.Client({connectionString: connectString});
+
+    this.connection.connect();
+    this.connection.query("select now()", (error, client) => {
+      //this.connection = client;
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
