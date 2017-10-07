@@ -77,7 +77,7 @@ global.LoginScreen = jClass.extend({
       onGetAppsDone:       function() { steps.find('.get-apps').addClass('done'); }
     };
 
-    var appsList = this.content.find('ul.apps');
+    var appsList = this.content.find('ul.apps').html('');
     HerokuClient.authAndGetApps((apps) => {
       apps.forEach((app) => {
         var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
@@ -98,7 +98,7 @@ global.LoginScreen = jClass.extend({
         App.stopLoading();
         return;
       }
-      db_url = db_url + "?ssl=true";
+      db_url = db_url + "?ssl=verify-full";
       console.log('connecting to', db_url);
       this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, (tab) => {
         if (tab) {

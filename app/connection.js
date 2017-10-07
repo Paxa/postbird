@@ -39,7 +39,7 @@ global.Connection = jClass.extend({
     return {
       user: auth[0],
       password: auth[1],
-      host: parsed.host,
+      host: parsed.hostname,
       port: parsed.port || '5432',
       database: dbname,
       query: parsed.query

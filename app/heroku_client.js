@@ -172,7 +172,7 @@ global.HerokuClient = {
     var url = this.apiUrl + uri;
     console.log("GET " + url, options);
     libs.needle.get(url, options, (err, resp) => {
-      console.log('response', err, resp);
+      //console.log('response', err, resp);
       if (resp) {
         callback ? callback(resp.body) : console.log(resp.body);
       } else {
@@ -189,7 +189,7 @@ global.HerokuCatcher = jClass.extend({
     this.doneCallback = doneCallback;
     var _this = this;
     this.server = libs.http.createServer((request, response) => {
-      console.dir(request);
+      //console.dir(request);
 
       var parsed = libs.url.parse(request.url);
       var query = libs.querystring.parse(parsed.query);
