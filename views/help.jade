@@ -15,7 +15,7 @@
       p.logo
         img(src="public/images/icon.png")
       p.
-        It's open source client for postgresql, written in JavaScript, run with node-webkit.
+        It's open source client for postgresql, written in JavaScript, run with Electron.
       p
         = "Source code at "
         != link_to("github.com/paxa/postbird", "https://github.com/paxa/postbird", {class: "external"})
@@ -39,23 +39,7 @@
         a.download.external(href="http://www.enterprisedb.com/products-services-training/pgdownload#osx") Download
 
       article
-        h5 Using Homebrew or MacPorts or Fink
+        h5 Using Homebrew
 
         p
-          strong For Homebrew:
           code brew isntall postgresql
-        p
-          strong For MacPorts:
-          code
-            = "sudo port install postgresql93-server\n"
-            = "sudo port select --set postgresql postgresql93"
-          a.external(href="http://chriskief.com/2013/11/17/mavericks-macports-postgresql-9-tomcat-6-and-postgresql-studio/") Manual
-        p
-          strong For Fink:
-          span &nbsp;
-          a.external(href="http://pdb.finkproject.org/pdb/browse.php?summary=postgresql") find it here
-
-    .page.sql-basics
-      h5 SQL Basics
-
-      i not ready

@@ -75,7 +75,7 @@ global.Dialog.NewColumn = global.Dialog.extend({
     "Time Range": ['interval', 'tsrange', 'tstzrange', 'daterange', 'tinterval', 'reltime', 'abstime'],
     "Boolean": ['boolean'],
     "JSON": ['json', 'jsonb'],
-    "Network": ['macaddr', 'cidr', 'inet'],
+    "Network": ['macaddr', 'macaddr8', 'cidr', 'inet'],
     "Geometry": ['point', 'line', 'lseg', 'box', 'path', 'polygon', 'circle'],
     "Text Search": ['tsvector', 'tsquery', '']
   }

@@ -77,9 +77,7 @@ global.Connection = jClass.extend({
 
     this.connection = new pg.Client({connectionString: connectString});
 
-    this.connection.connect();
-    this.connection.query("select now()", (error, client) => {
-      //this.connection = client;
+    this.connection.connect((error, b) => {
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
@@ -90,6 +88,12 @@ global.Connection = jClass.extend({
             fn(msg);
           });
           App.log("notification.recieved", msg);
+        });
+
+        this.connection.on('error', (error) => {
+          var dialog = electron.remote.dialog;
+          var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
+          dialog.showErrorBox("Server Connection Error", message);
         });
 
         this.serverVersion((version) => {
