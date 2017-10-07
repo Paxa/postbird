@@ -1,3 +1,12 @@
+== Version 0.7.0
+
+* Update to electron 1.7.8
+* Update to PostgreSQL 10
+* Add Feature: Auto Connect
+* Better message for "server disconnected" error
+* Fix connecting to heroku
+* Move from ruby sass to node-sass
+
 == Version 0.6.2 (01-may-2017)
 
 * Fix “Cannot set property 'state' of undefined”

@@ -14,7 +14,7 @@ It will open app with web inspector, also in development mode exceptions not bei
 
 ## Recompile CSS
 
-    ./run_sass
+    yarn run sass
 
 ## Compiling dependencies for release
 

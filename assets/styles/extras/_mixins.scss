@@ -1,9 +1,5 @@
 @mixin inline-block($align: top) {
-  zoom: 1;
-  display: inline;
-  display: -moz-inline-box;
   display: inline-block;
-  *display: inline;
   vertical-align: $align;
 }
 
@@ -11,41 +7,6 @@
   > * {
     @include inline-block($align);
   }
-}
-
-@mixin box-shadow($value, $extra: false) {
-  @if $extra {
-    -webkit-box-shadow: $value, $extra;
-  }
-  @else {
-    box-shadow: $value;
-    -moz-box-shadow: $value;
-    -webkit-box-shadow: $value;
-  }
-}
-
-$base_transition: all 0.1s ease-out !default;
-
-@mixin transition($value: $base_transition) {
-  transition: $value;
-  -webkit-transition: $value;
-  -moz-transition: $value;
-  -o-transition: $value;
-}
-
-@mixin rotation($time: 2s) {
-  -moz-animation: spin #{$time} infinite linear;
-  -o-animation: spin #{$time} infinite linear;
-  -webkit-animation: spin #{$time} infinite linear;
-  animation: spin #{$time} infinite linear;
-}
-
-@mixin absoluted($left: 0, $top: 0, $right: 0, $bottom: 0) {
-  position: absolute;
-  top: $top;
-  left: $left;
-  right: $right;
-  bottom: $bottom;
 }
 
 @mixin truncate {
@@ -56,106 +17,8 @@ $base_transition: all 0.1s ease-out !default;
   white-space: nowrap;
 }
 
-$main_radius: 3px !default;
-
-@mixin border-radius($radius: $main_radius, $y: false, $x: false) {
-  @if $x {
-    -moz-border-radius-#{$y}#{$x}: $radius;
-    -o-border-radius-#{$y}-#{$x}: $radius;
-    -khtml-border-radius-#{$y}-#{$x}: $radius;
-    -ms-border-radius-#{$y}-#{$x}: $radius;
-    -webkit-border-#{$y}-#{$x}-radius: $radius;
-    border-#{$y}-#{$x}-radius: $radius;
-  }
-  @else {
-    -moz-border-radius: $radius;
-    -o-border-radius: $radius;
-    -ms-border-radius: $radius;
-    -khtml-border-radius: $radius;
-    -webkit-border-radius: $radius;
-    border-radius: $radius;
-  }
-}
-
-@mixin opacity($value, $ie: false) {
-  opacity: $value;
-  -moz-opacity: $value;
-
-  @if $ie {
-    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=#{$value * 100});
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=#{$value * 100})";
-  }
-}
-
 @mixin unselectable {
-  -webkit-user-select: none;
-
-  //:-khtml-user-select none
-  //:-moz-user-select -moz-none
-  //:-o-user-select none
-  //:user-select none
-}
-
-@mixin selectable {
-  -webkit-user-select: text;
-  -khtml-user-select: text;
-  -moz-user-select: -moz-text;
-  -o-user-select: text;
-  user-select: text;
-}
-
-@mixin clear($overflow_visible: true) {
-  zoom: 1;
-  *display: block;
-
-  @if $overflow_visible {
-    overflow: visible !important;
-  }
-  @else {
-    overflow: hidden;
-  }
-
-  &:after {
-    content: "";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-  }
-}
-
-@mixin safe-clear {
-  &:after {
-    content: "";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-  }
-}
-
-@mixin placeholder-color($color) {
-  &::-webkit-input-placeholder {
-    color: $color;
-  }
-
-  &:-moz-placeholder {
-    color: $color;
-  }
-
-  &:-ms-input-placeholder {
-    color: $color;
-  }
-}
-
-@mixin horisontal-gradient($from, $to) {
-  background: {
-    color: $from;
-  };
-  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$from}', endColorstr='#{$to}')";
-  background: -webkit-gradient(linear, left top, right top, from($from), to($to));
-  background: -moz-linear-gradient(left, $from, $to);
-  background: linear-gradient(left, $from, $to);
+  user-select: none;
 }
 
 @mixin gradient($from, $to) {
@@ -167,38 +30,4 @@ $main_radius: 3px !default;
   background: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
   background: -moz-linear-gradient(top, $from, $to);
   background: linear-gradient(top, $from, $to);
-}
-
-@mixin box-sizing($value) {
-  -moz-box-sizing: $value;
-  -webkit-box-sizing: $value;
-  box-sizing: $value;
-}
-
-@mixin when-big-screen {
-  @media only screen and (min-width: 1024px) {
-    @content;
-  }
-}
-
-@mixin when-medium-screen {
-  @media only screen and (min-width: 641px) and (max-width: 1024px) {
-    @content;
-  }
-}
-
-@mixin when-small-screen {
-  @media only screen and (max-width: 640px) {
-    @content;
-  }
-}
-
-@mixin when-retina {
-  body.retina-display {
-    @content;
-  }
-
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-    @content;
-  }
 }

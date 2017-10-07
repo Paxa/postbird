@@ -2,7 +2,6 @@ My todo:
 
 * Drop schema
 * Table/mat-view actions: vacuum, analyze, refresh view
-* Auto-login feature
 * Add autocomplete tables via codemirror sql-hint
 * Implement SHOW GRANTS FOR username
 * Handle "ERROR:  No such database: postgres"

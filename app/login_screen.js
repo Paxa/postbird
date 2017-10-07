@@ -15,6 +15,8 @@ global.LoginScreen = jClass.extend({
       this.fillForm(null, {user: process.env.USER});
     }
 
+    this.checkAutoLogin();
+
     this.initEvents(this.content);
   },
 
@@ -33,6 +35,8 @@ global.LoginScreen = jClass.extend({
     });
 
     this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
+
+    this.form.find('input[type=checkbox]').bind('change', this.formChanged.bind(this));
 
     this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();
@@ -117,12 +121,12 @@ global.LoginScreen = jClass.extend({
 
   fillSavedConnections: function () {
     this.connections.empty();
-    var data = Model.SavedConn.savedConnections();
+    this.savedConnections = Model.SavedConn.savedConnections();
     var currentConnection = this.connectionName;
 
     var _this = this;
-    Object.forEach(data, (name, params) => {
-      var line = $dom(['li', name]);
+    Object.forEach(this.savedConnections, (name, params) => {
+      var line = $dom(['li', {'data-auto-connect': params.auto_connect}, name]);
 
       $u.contextMenu(line, {
         "Fill form with ...": _this.fillForm.bind(_this, name, params),
@@ -182,10 +186,15 @@ global.LoginScreen = jClass.extend({
 
   fillForm: function (name, params) {
     params = node.util._extend({host: "localhost", user: "", password: "", database: "", query: ""}, params);
-    var v;
-    for (var k in params) { v = params[k];
-      this.form.find('input[name=' + k + ']').val(v);
-    }
+
+    Object.forEach(params, (k, v) => {
+      var field = this.form.find('input[name=' + k + ']');
+      if (field.attr("type") == "checkbox") {
+        field.prop('checked', v);
+      } else {
+        field.val(v);
+      }
+    });
   },
 
   renameConnection: function (name) {
@@ -254,7 +263,8 @@ global.LoginScreen = jClass.extend({
       user: this.form.find('[name=user]').val(),
       query: this.form.find('[name=query]').val(),
       password: this.form.find('[name=password]').val(),
-      database: this.form.find('[name=database]').val()
+      database: this.form.find('[name=database]').val(),
+      auto_connect: this.form.find('[name=auto_connect]').prop('checked')
     };
   },
 
@@ -277,6 +287,21 @@ global.LoginScreen = jClass.extend({
 
   makeConnection: function (connectionOptions, options, callback) {
     App.openConnection(connectionOptions, options.name || this.connectionName, callback);
+  },
+
+  checkAutoLogin: function () {
+    var autoConnect = null;
+    Object.forEach(this.savedConnections, (key, connection) => {
+      if (!autoConnect && connection.auto_connect) {
+        autoConnect = key;
+      }
+    });
+
+    if (autoConnect) {
+      console.log("Connecting to auto-connect saved connection: " + autoConnect, this.savedConnections[autoConnect]);
+      this.fillForm(this.savedConnections[autoConnect], autoConnect);
+      this.onFormSubmit();
+    }
   }
 });
 

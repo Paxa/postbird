@@ -88,7 +88,7 @@ $tab-border-color: #9b9b9b;
       position: relative;
 
       border-color: #999;
-      @include box-shadow(inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2));
+      box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2);
 
       padding-bottom: 0;
       &:hover .close {

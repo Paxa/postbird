@@ -23,6 +23,12 @@
         label(for="login_database") Database
         input#login_database(name='database', type='text', value='')
 
+      p
+        label
+        label
+          input#auto_connect(name='auto_connect', type='checkbox', value='1')
+          = "Connect on start"
+
       input(name="query", type="hidden")
 
       p.buttons

@@ -47,9 +47,7 @@
 
   > .content {
     padding: 10px 0 10px 0;
-
-    @include box-sizing(border-box);
-
+    box-sizing: border-box;
     overflow-y: auto;
     max-height: 100%;
 

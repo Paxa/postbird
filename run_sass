@@ -1,5 +1,0 @@
-cd assets
-sass --watch \
-     --cache-location styles/.sass-cache \
-     --load-path styles \
-     styles/style.scss:../public/style.css

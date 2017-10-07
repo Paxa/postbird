@@ -100,8 +100,10 @@ var template = [
         label: 'Reload',
         accelerator: 'Shift+CmdOrCtrl+R',
         click: (item, focusedWindow) => {
-          if (focusedWindow)
+          if (focusedWindow) {
+            remote.BrowserWindow.ApplicationStart = Date.now();
             focusedWindow.reload();
+          }
         }
       },
       /*

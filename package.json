@@ -4,13 +4,17 @@
   "version": "0.6.2",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
+  "scripts": {
+    "sass": "node-sass assets/styles/style.scss --output public --watch"
+  },
   "engines": {
     "node": "8.6.0"
   },
   "devDependencies": {
     "electron-packager": "9.1.0",
     "electron": "1.7.8",
-    "electron-rebuild": "1.6.0"
+    "electron-rebuild": "1.6.0",
+    "node-sass": "4.5.3"
   },
   "dependencies": {
     "classy": "github:paxa/classy",

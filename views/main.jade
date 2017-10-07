@@ -12,10 +12,10 @@
           = "Show Schemas"
 
     ul.extras
-      li.reload
-        a.reloadStructure!= icon('reload', 'Reload Tables')
       li.add-table
         a.addTable!= icon('add-table', 'Add Table')
+      li.reload
+        a.reloadStructure!= icon('reload', 'Reload Tables')
       li.users(tab='users')!= icon('users', 'Users')
       li.extensions(tab='extensions')!= icon('extensions', "Postgres Extensions")
       li.procedures(tab='procedures')!= icon('procedures', "Procedures")

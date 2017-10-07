@@ -54,6 +54,13 @@
       width: 88px;
       text-align: right;
     }
+
+    label + label {
+      width: auto;
+      input[type=checkbox] {
+        margin-left: 0;
+      }
+    }
   }
 
   .middle-window {
@@ -131,7 +138,7 @@
       font: {
         size: 13px;
         weight: bold;
-      };
+      }
       color: #666;
       padding: 7px;
       text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
@@ -142,6 +149,22 @@
 
     ul {
       @include native-items-list;
+      li[data-auto-connect="true"] {
+        &:after {
+          content: 'AUTO';
+          font-size: 9px;
+          display: inline-block;
+          vertical-align: middle;
+          float: right;
+          background: rgba(89, 216, 174, 0.42);
+          line-height: 9px;
+          padding: 2px;
+          margin-top: 2.5px;
+        }
+        &.selected:after {
+          background: rgba(30, 165, 120, 0.9);
+        }
+      }
     }
 
     button.add-connection {

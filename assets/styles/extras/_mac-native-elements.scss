@@ -120,7 +120,7 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
 
 @mixin native-panel-element() {
   background: #e2e2e2;
-  @include border-radius(5px);
+  border-radius: 5px;
   border: 1px solid #dfdfdf;
   border-top: 1px solid #d3d3d3;
 }

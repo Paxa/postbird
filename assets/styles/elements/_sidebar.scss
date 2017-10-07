@@ -48,9 +48,7 @@
 
     label {
       display: block;
-
       @include unselectable;
-
       margin-bottom: -1px;
     }
 
