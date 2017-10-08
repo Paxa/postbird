@@ -298,8 +298,10 @@ global.LoginScreen = jClass.extend({
     });
 
     if (autoConnect) {
-      console.log("Connecting to auto-connect saved connection: " + autoConnect, this.savedConnections[autoConnect]);
-      this.fillForm(autoConnect, this.savedConnections[autoConnect]);
+      var connection = this.savedConnections[autoConnect];
+      console.log("Connecting to auto-connect saved connection: " + autoConnect, connection);
+      App.startLoading("Connecting...", 50);
+      this.fillForm(autoConnect, connection);
       this.onFormSubmit();
     }
   }

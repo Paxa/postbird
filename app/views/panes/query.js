@@ -96,7 +96,7 @@ global.Panes.Query = global.Pane.extend({
 
     this.button.text("Running...");
 
-    App.startLoading("Query still running...", 3000, {
+    App.startLoading("Query still running...", 1000, {
       cancel: function () {
         App.stopRunningQuery();
       }
