@@ -241,7 +241,8 @@ global.App = {
       }
     }
 
-    var conn = new Connection(options, (status, message) => {
+    var conn = new Connection();
+    conn.connectToServer(options, (status, message) => {
       this.stopLoading();
       if (status) {
         var tab = this.addDbScreen(conn, connectionName, options);
@@ -252,7 +253,6 @@ global.App = {
         if (callback) callback(false);
       }
     });
-    //global.conn = conn; // TODO: clean
   },
 
   humanErrorMessage: (error) => {

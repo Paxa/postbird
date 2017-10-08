@@ -2,6 +2,8 @@
 
 var pg = require('pg');
 const semver = require('semver');
+const colors = require('colors/safe');
+colors.enabled = true;
 
 try {
   if (process.platform == "darwin") {
@@ -16,24 +18,23 @@ try {
 var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
-global.Connection = jClass.extend({
-  className: 'Connection',
-  defaultDatabaseName: 'template1',
-  history: [],
-  logging: true,
-  pending: [],
-  printTestingError: true,
-  currentQuery: null,
+class Connection {
+//global.Connection = jClass.extend({
 
-  init: function(options, callback) {
-    this.options = options;
+  constructor(options) {
+    this.className = 'Connection';
+    this.defaultDatabaseName = 'template1';
+    this.history = []
+    this.logging = true;
+    this.printTestingError = true;
+
+    //this.options = options;
     this.connection = null;
     global.Connection.instances.push(this);
-    this.connectToServer(options, callback);
     this.notificationCallbacks = [];
-  },
+  }
 
-  parseConnectionString: function (postgresUrl) {
+  parseConnectionString(postgresUrl) {
     var parsed = node.url.parse(postgresUrl);
     var auth = (parsed.auth || '').split(':');
     var dbname = !parsed.pathname || parsed.pathname == '/' ? this.defaultDatabaseName : parsed.pathname.replace(/^\//, '');
@@ -46,9 +47,9 @@ global.Connection = jClass.extend({
       database: dbname,
       query: parsed.query
     };
-  },
+  }
 
-  connectToServer: function (options, callback) {
+  connectToServer(options, callback) {
     var connectString;
 
     if (typeof options == 'object') {
@@ -67,7 +68,6 @@ global.Connection = jClass.extend({
     } else {
       connectString = options;
       options = this.parseConnectionString(connectString);
-      this.options = options;
     }
 
     log.info('Connecting to', connectString);
@@ -77,13 +77,15 @@ global.Connection = jClass.extend({
       this.connection = null;
     }
 
+    this.options = options;
+
     this.connection = new pg.Client({connectionString: connectString});
 
-    this.connection.connect((error, b) => {
+    return this.connection.connect((error, b) => {
       if (error) {
         callback && callback(false, error.message);
         console.log(error);
-        App.log("connect.error", this, JSON.parse(JSON.stringify(this.options)), error);
+        App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
       } else {
         this.connection.on('notification', (msg) => {
           this.notificationCallbacks.forEach((fn) => {
@@ -99,55 +101,44 @@ global.Connection = jClass.extend({
         });
 
         this.serverVersion((version) => {
-          console.log("Server version is", version);
-          this.pending.forEach((cb) => {
-            cb();
-          });
-          this.pending = [];
+          if (this.logging) {
+            console.log("Server version is", version);
+          }
           callback && callback(true);
         });
-        App.log("connect.success", this, JSON.parse(JSON.stringify(this.options)));
+        App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
       }
     });
-  },
+  }
 
-  reconnect: function (callback) {
+  reconnect(callback) {
     if (this.connection) {
       this.connection.end();
       this.connection = null;
     }
-    this.connectToServer(this.options, callback);
-  },
+    return this.connectToServer(this.options, callback);
+  }
 
-  switchDb: function(database, callback) {
+  switchDb(database, callback) {
     this.options.database = database;
-    this.connectToServer(this.options, callback);
-  },
+    return this.connectToServer(this.options, callback);
+  }
 
-  onReady: function (callback) {
-    if (this.connection) {
-      callback();
-    } else {
-      this.pending.push(callback);
-    }
-  },
+  query(sql, callback) {
+    if (this.logging) logger.print("SQL: " + colors.green(sql) + "\n");
 
-  query: function (sql, callback) {
-    this.onReady(() => {
-      if (this.logging) logger.print("SQL: " + sql.green + "\n");
+    var historyRecord = { sql: sql, date: (new Date()), state: 'running' };
+    this.history.push(historyRecord);
+    App.log("sql.start", historyRecord);
+    var time = Date.now();
 
-      var historyRecord = { sql: sql, date: (new Date()), state: 'running' };
-      this.history.push(historyRecord);
-      App.log("sql.start", historyRecord);
-      var time = Date.now();
-
-      var query = this.currentQuery = this.connection.query(sql, (error, result) => {
-        this.currentQuery = null;
+    return new Promise((resolve, reject) => {
+      this.connection.query(sql, (error, result) => {
         historyRecord.time = Date.now() - time;
-        if (this.logging) logger.print("SQL:" + " Done ".green + historyRecord.time + "\n");
+        if (this.logging) logger.print("SQL:" + colors.green(" Done ") + historyRecord.time + "\n");
 
         if (global.TESTING && this.printTestingError && error) {
-          if (this.logging) logger.print("FAILED: " + sql.yellow + "\n");
+          if (this.logging) logger.print("FAILED: " + colors.yellow(sql) + "\n");
           log.error(error);
         }
 
@@ -156,69 +147,73 @@ global.Connection = jClass.extend({
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
           error.query = sql;
-          console.error("SQL failed", sql);
-          console.error(error);
-          if (query) query.state = 'error';
+          if (this.logging) {
+            console.error("SQL failed", sql);
+            console.error(error);
+          }
+          //if (query) query.state = 'error';
           if (callback) callback(result, error);
           this.onConnectionError(error);
+          reject(error);
         } else {
           historyRecord.state = 'success';
           App.log("sql.success", historyRecord);
           result.time = historyRecord.time;
           //console.log(result);
           if (callback) callback(result);
+          resolve(result);
         }
       });
     });
-  },
+  }
 
-  q: function(sql) {
+  q(sql) {
     var params = [], i;
     var callback = arguments[arguments.length - 1];
     for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
 
-    this.query(vsprintf(sql, params), callback);
-  },
+    return this.query(vsprintf(sql, params), callback);
+  }
 
-  serialize: function(sql){
+  serialize(sql) {
     var params = [], i;
     var callback = arguments[arguments.length - 1];
     for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
 
     return vsprintf(sql, params)
-  },
+  }
 
-  listDatabases: function (callback) {
+  listDatabases(callback) {
     var databases = [];
-    this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', (rows) => {
+    return this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', (rows) => {
       rows.rows.forEach((dbrow) => {
         databases.push(dbrow.datname);
       });
       callback(databases);
     });
-  },
+  }
 
-  databaseTemplatesList: function (callback) {
+  databaseTemplatesList(callback) {
     var databases = [];
-    this.query('SELECT datname FROM pg_database WHERE datistemplate = true;', (rows) => {
+    return this.query('SELECT datname FROM pg_database WHERE datistemplate = true;', (rows) => {
       rows.rows.forEach((dbrow) => {
         databases.push(dbrow.datname);
       });
       callback(databases);
     });
-  },
+  }
 
-  avaliableEncodings: function (callback) {
+  avaliableEncodings(callback) {
     var encodings = [];
-    this.query('select pg_encoding_to_char(i) as encoding from generate_series(0,100) i', (rows) => {
+    return this.query('select pg_encoding_to_char(i) as encoding from generate_series(0,100) i', (rows) => {
       rows.rows.forEach((dbrow) => {
         if (dbrow.encoding != '') encodings.push(dbrow.encoding);
       });
       callback(encodings);
     });
-  },
+  }
 
-  serverVersion: function (callback) {
+  serverVersion(callback) {
     if (this._serverVersion != undefined) {
       callback(this._serverVersion, this._serverVersionFull);
       return;
@@ -241,38 +236,38 @@ global.Connection = jClass.extend({
       this._serverVersionFull = result.rows[0].version;
       callback(this._serverVersion, this._serverVersionFull);
     });
-  },
+  }
 
-  supportMatViews: function () {
+  supportMatViews() {
     return semver.gt(this._serverVersion, "9.3.0");
-  },
+  }
 
-  getVariable: function(variable, callback) {
-    this.q('show %s', variable, (data, error) => {
+  getVariable(variable, callback) {
+    return this.q('show %s', variable, (data, error) => {
       var vname = Object.keys(data.rows[0])[0];
-      callback(data.rows[0][vname]);
+      callback && callback(data.rows[0][vname]);
     });
-  },
+  }
 
-  publicTables: function(callback) {
-    this.query("SELECT * FROM information_schema.tables where table_schema = 'public';", (rows, error) => {
+  publicTables(callback) {
+    return this.query("SELECT * FROM information_schema.tables where table_schema = 'public';", (rows, error) => {
       callback(rows.rows, error);
     });
-  },
+  }
 
-  tablesAndSchemas: function(callback) {
+  tablesAndSchemas(callback) {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
-    this.query(sql, (rows) => {
+    return this.query(sql, (rows) => {
       rows.rows.forEach((dbrow) => {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
         data[dbrow.table_schema].push(dbrow);
       });
       callback(data);
     });
-  },
+  }
 
-  mapViewsAsTables: function (callback) {
+  mapViewsAsTables(callback) {
     if (!this.supportMatViews()) {
       callback([]);
       return;
@@ -283,7 +278,7 @@ global.Connection = jClass.extend({
               "from pg_matviews " +
               "order by schemaname != 'public', matviewname";
 
-    this.query(sql, (result, error) => {
+    return this.query(sql, (result, error) => {
       if (error) {
         log.error(error.message);
         callback([]);
@@ -295,50 +290,50 @@ global.Connection = jClass.extend({
       });
       callback(data);
     });
-  },
+  }
 
-  tableSchemas: function (callback) {
+  tableSchemas(callback) {
     var sql = "select table_schema from information_schema.tables group by table_schema " +
               "order by table_schema != 'public'";
-    this.query(sql, (rows) => {
+    return this.query(sql, (rows) => {
       var data = rows.rows.map((dbrow) => {
         return dbrow.table_schema;
       });
       callback(data);
     })
-  },
+  }
 
-  getExtensions: function(callback) {
+  getExtensions(callback) {
     // 'select * from pg_available_extensions order by (installed_version is null), name;'
-    this.q('select * from pg_available_extensions order by name;', (data) => {
+    return this.q('select * from pg_available_extensions order by name;', (data) => {
       callback(data.rows);
     });
-  },
+  }
 
-  installExtension: function (extension, callback) {
-    this.q('CREATE EXTENSION "%s"', extension, callback);
-  },
+  installExtension(extension, callback) {
+    return this.q('CREATE EXTENSION "%s"', extension, callback);
+  }
 
-  uninstallExtension: function (extension, callback) {
-    this.q('DROP EXTENSION "%s"', extension, callback);
-  },
+  uninstallExtension(extension, callback) {
+    return this.q('DROP EXTENSION "%s"', extension, callback);
+  }
 
-  createDatabase: function(dbname, template, encoding, callback) {
+  createDatabase(dbname, template, encoding, callback) {
     var sql = "CREATE DATABASE %s";
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
-    this.q(sql, dbname, callback);
-  },
+    return this.q(sql, dbname, callback);
+  }
 
-  dropDatabase: function (dbname, callback) {
-    this.switchDb('postgres', () => {
-      this.q('drop database "%s"', dbname, (result, error) => {
+  dropDatabase(dbname, callback) {
+    return this.switchDb('postgres', () => {
+      return this.q('drop database "%s"', dbname, (result, error) => {
         callback(result, error);
       });
     });
-  },
+  }
 
-  renameDatabase: function (dbname, newDbname, callback) {
+  renameDatabase(dbname, newDbname, callback) {
     this.switchDb('postgres', () => {
       var sql = 'ALTER DATABASE "%s" RENAME TO "%s";'
       this.q(sql, dbname, newDbname, (result, error) => {
@@ -347,9 +342,9 @@ global.Connection = jClass.extend({
         });
       });
     });
-  },
+  }
 
-  queryMultiple: function(queries, callback) {
+  queryMultiple(queries, callback) {
     var leftQueries = queries.slice();
     var conn = this;
 
@@ -373,9 +368,9 @@ global.Connection = jClass.extend({
     };
 
     runner();
-  },
+  }
 
-  dropUserFunctions: function (namespace, callback) {
+  dropUserFunctions(namespace, callback) {
     if (typeof callback == 'undefined' && typeof namespace == 'function') {
       callback = namespace;
       namespace = undefined;
@@ -401,9 +396,9 @@ global.Connection = jClass.extend({
         }
       }
     });
-  },
+  }
 
-  dropAllSequesnces: function (callback) {
+  dropAllSequesnces(callback) {
     var sql = "SELECT 'drop sequence ' || c.relname || ';' as cmd FROM pg_class c WHERE (c.relkind = 'S');";
 
     this.q(sql, (result, error) => {
@@ -421,9 +416,9 @@ global.Connection = jClass.extend({
         }
       }
     });
-  },
+  }
 
-  close: function (callback) {
+  close(callback) {
     if (this.connection) {
       this.connection.end();
     }
@@ -432,19 +427,19 @@ global.Connection = jClass.extend({
       global.Connection.instances.splice(index, 1);
     }
     callback && callback();
-  },
+  }
 
-  reconnect: function (callback) {
+  reconnect(callback) {
     this.close(() => {
       this.connectToServer(this.options, callback);
     });
-  },
+  }
 
-  onNotification: function (callback) {
+  onNotification(callback) {
     this.notificationCallbacks.push(callback);
-  },
+  }
 
-  onConnectionError: function (error) {
+  onConnectionError(error) {
     if (
       error.message.indexOf("server closed the connection unexpectedly") != -1 ||
       error.message.indexOf("Unable to set non-blocking to true") != -1) {
@@ -460,20 +455,25 @@ global.Connection = jClass.extend({
         }
       });
     }
-  },
+  }
 
-  stopRunningQuery: function stopRunningQuery () {
-    if (this.currentQuery) {
+  stopRunningQuery() {
+    var query = this.connection._activeQuery;
+    if (query) {
       try {
-        this.currentQuery.native.cancel(() => {
-          console.log(arguments);
+        query.native.cancel((error) => {
+          if (this.logging) {
+            console.log('canceled', error);
+          }
         });
       } catch (e) {
         console.error(e);
       }
     }
   }
-});
+}
+
+global.Connection = Connection;
 
 global.Connection.PG = pg;
 global.Connection.instances = [];

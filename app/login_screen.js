@@ -166,7 +166,7 @@ global.LoginScreen = jClass.extend({
     App.startLoading("Connecting...");
 
     var options = this.getFormData();
-    var conn = new Connection(options, (status, message) => {
+    var conn = new Connection().connectToServer(options, (status, message) => {
       App.stopLoading();
       if (status) {
         window.alertify.alert("Successfully connected!");
