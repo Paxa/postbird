@@ -174,6 +174,7 @@ var helpers = global.ViewHelpers = {
   },
 
   shorterTypeName(typeName) {
+    if (typeName == undefined) typeName = '';
     return typeName
       .replace(/character varying/, 'varchar')
       .replace(/timestamp without time zone/, 'timestamp')

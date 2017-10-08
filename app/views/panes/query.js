@@ -92,7 +92,7 @@ global.Panes.Query = global.Pane.extend({
 
     var sql = selectedText || this.textarea.val();
     var tableRegex = /(create|drop)\s+(OR REPLACE\s+)?((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN|MATERIALIZED)\s+)*\s*(table|schema|view)/im;
-    var needReloadTables = !!sql.match(tableRegex);
+    var needReloadTables = tableRegex.test(sql);
 
     this.button.text("Running...");
 

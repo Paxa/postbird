@@ -560,7 +560,22 @@ global.Model.Table = Model.base.extend({
       stdout = stdout.replace(/^\-\- Dumped by .+$/m, "\n"); // remove 'Dumped by ...'
       stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
       stdout = stdout.trim(); // remove padding spaces
-      callback(stdout, result ? undefined : stderr);
+
+      // some views craeted by extensions can't be dumped
+      if (stdout.length == 0) {
+        this.getTableType((tableType) => {
+
+          if (tableType == 'VIEW') {
+            this.q(`select pg_get_viewdef('${this.schema}.${this.table}', true);`, (defFesult, error) => {
+              callback(defFesult.rows[0].pg_get_viewdef, error && error.message);
+            });
+          } else {
+            callback(stdout, result ? undefined : stderr);
+          }
+        });
+      } else {
+        callback(stdout, result ? undefined : stderr);
+      }
     });
   },
 
