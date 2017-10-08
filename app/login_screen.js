@@ -185,7 +185,7 @@ global.LoginScreen = jClass.extend({
   },
 
   fillForm: function (name, params) {
-    params = node.util._extend({host: "localhost", user: "", password: "", database: "", query: ""}, params);
+    params = Object.assign({}, {host: "localhost", user: "", password: "", database: "", query: ""}, params);
 
     Object.forEach(params, (k, v) => {
       var field = this.form.find('input[name=' + k + ']');
@@ -299,7 +299,7 @@ global.LoginScreen = jClass.extend({
 
     if (autoConnect) {
       console.log("Connecting to auto-connect saved connection: " + autoConnect, this.savedConnections[autoConnect]);
-      this.fillForm(this.savedConnections[autoConnect], autoConnect);
+      this.fillForm(autoConnect, this.savedConnections[autoConnect]);
       this.onFormSubmit();
     }
   }
