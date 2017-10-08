@@ -11,8 +11,8 @@
     "node": "8.6.0"
   },
   "devDependencies": {
-    "electron-packager": "9.1.0",
     "electron": "1.7.8",
+    "electron-packager": "9.1.0",
     "electron-rebuild": "1.6.0",
     "node-sass": "4.5.3"
   },
@@ -27,7 +27,7 @@
     "pg-native": "2.2.0",
     "pug": "2.0.0-rc.4",
     "raven": "2.2.1",
-    "semver": "^5.1.0",
+    "semver": "^5.4.1",
     "sprintf-js": "1.1.1",
     "strftime": "0.10.0"
   }

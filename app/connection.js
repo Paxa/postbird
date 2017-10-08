@@ -1,6 +1,8 @@
 //process.env.PGSSLMODE = 'prefer';
 
 var pg = require('pg');
+const semver = require('semver');
+
 try {
   if (process.platform == "darwin") {
     var pg = pg.native;
@@ -242,7 +244,7 @@ global.Connection = jClass.extend({
   },
 
   supportMatViews: function () {
-    return this._serverVersion >= "9.3";
+    return semver.gt(this._serverVersion, "9.3.0");
   },
 
   getVariable: function(variable, callback) {
