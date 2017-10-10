@@ -53,6 +53,7 @@ require('./app/views/dialogs/export_file');
 require('./app/views/dialogs/show_sql');
 require('./app/views/dialogs/edit_procedure');
 require('./app/views/dialogs/def_procedure');
+require('./app/views/dialogs/user_grants');
 
 require('./app/models/base');
 require('./app/models/table');
@@ -62,6 +63,7 @@ require('./app/models/last_query');
 require('./app/models/procedure');
 require('./app/models/trigger');
 require('./app/models/user');
+require('./app/models/server');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');

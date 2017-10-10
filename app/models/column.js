@@ -1,4 +1,4 @@
-global.Model.Column = Model.base.extend({
+var Column = global.Model.Column = Model.base.extend({
   init: function (name, data) {
     if (typeof name == 'object') {
       this._super({});
@@ -212,3 +212,5 @@ Model.Column.availableTypes = function (callback) {
     callback(data.rows);
   });
 };
+
+module.exports = Column;

@@ -26,6 +26,8 @@
               a(exec="editUser('" + user.rolname + "')") Edit
               = " "
               a(exec="deleteUser('" + user.rolname + "')") Delete
+              = " "
+              a(exec="getGrants('" + user.rolname + "')") Grants
 
 footer
   button.native-look.createUserBtn(exec="newUserDialog") Create new user

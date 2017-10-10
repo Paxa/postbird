@@ -32,7 +32,7 @@ global.DbScreen = jClass.extend({
   },
 
   omit: function (event) {
-    if (this.view.currentTab == 'users' && (event == 'user.created' || event == 'user.deleted')) {
+    if (this.view.currentTab == 'users' && (event == 'user.created' || event == 'user.deleted' || event == 'user.updated')) {
       this.usersTabActivate();
     }
 
@@ -50,14 +50,14 @@ global.DbScreen = jClass.extend({
   },
 
   fetchDbList: function (callback) {
-    this.connection.listDatabases((databases) => {
+    this.connection.server.listDatabases((databases) => {
       this.view.renderDbList(databases);
       callback && callback();
     });
   },
 
   listDatabases: function(callback){
-    this.connection.listDatabases(callback);
+    this.connection.server.listDatabases(callback);
   },
 
   selectDatabase: function (database, callback) {
@@ -217,7 +217,21 @@ global.DbScreen = jClass.extend({
 
     Model.User.create(data, (data, error) => {
       if (!error) {
-        this.omit('user.created')
+        this.omit('user.created');
+      }
+      callback(data, error);
+    });
+  },
+
+  updateUser: function(username, data, callback) {
+    if (data.admin == '1') {
+      delete data.admin;
+      data.superuser = true;
+    }
+
+    return new Model.User(username).update(data, (data, error) => {
+      if (!error) {
+        this.omit('user.updated');
       }
       callback(data, error);
     });
@@ -498,14 +512,14 @@ global.DbScreen = jClass.extend({
     table.getSourceSql((code, dumpError) => {
       table.diskSummary((relType, estimateCount, diskUsage, error) => {
         if (dumpError) {
-          window.alert("Running pg_dump failed:\n" + dumpError);
-          global.errorReporter(dumpError, false);
+          //window.alert("Running pg_dump failed:\n" + dumpError);
+          //global.errorReporter(dumpError, false);
         }
         if (error) {
           global.errorReporter(error, false);
         }
         App.stopLoading();
-        this.view.info.renderTab(code, relType, estimateCount, diskUsage);
+        this.view.info.renderTab({source: code, error: dumpError}, relType, estimateCount, diskUsage);
         this.currentTab = 'info';
       });
     });

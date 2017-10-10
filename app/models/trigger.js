@@ -1,4 +1,4 @@
-global.Model.Trigger = Model.base.extend({
+var Trigger = global.Model.Trigger = Model.base.extend({
   klassExtend: {
     findAll: function (callback) {
       var sql = `
@@ -109,3 +109,4 @@ global.Model.Trigger = Model.base.extend({
 
 }();
 
+module.exports = Trigger;

@@ -1,6 +1,6 @@
 var sprintf = require("sprintf-js").sprintf;
 
-global.Model.Table = Model.base.extend({
+var Table = global.Model.Table = Model.base.extend({
 
   tableType: null,
   types: {
@@ -474,13 +474,13 @@ global.Model.Table = Model.base.extend({
 
       var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
 
-      this.q(sql, (data, error) => {
+      return this.q(sql, (data, error) => {
         if (data) {
           data.limit = limit;
           data.offset = offset;
         }
         // remove columns if we selected extra columns
-        if (options.extraColumns) {
+        if (data && options.extraColumns) {
           data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
         }
         callback(data, error);
@@ -679,4 +679,4 @@ Model.Table.l = function (schema, table_name) {
   return new Model.Table(schema, table_name);
 };
 
-
+module.exports = Table;

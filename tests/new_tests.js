@@ -18,7 +18,7 @@ describe('Connection', () => {
     connection.logging = false;
 
     try {
-      await connection.createDatabase('postbird_test');
+      await connection.server.createDatabase('postbird_test');
     } catch (err) {
       if (err.message != 'database "postbird_test" already exists') {
         throw err;
@@ -47,7 +47,7 @@ describe('Connection', () => {
   });
 
   it("should get variable", async () => {
-    var result = await connection.getVariable('unix_socket_permissions');
-    assert.equal(result.rows[0].unix_socket_permissions, '0777');
+    var result = await connection.server.getVariable('unix_socket_permissions');
+    assert.equal(result, '0777');
   });
 });

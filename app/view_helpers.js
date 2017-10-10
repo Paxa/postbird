@@ -1,6 +1,23 @@
 var strftime = require('strftime');
 var sprintf = require("sprintf-js").sprintf;
 
+var GRANTS_ABBR = {
+  r: 'SELECT',
+  w: 'UPDATE',
+  a: 'INSERT',
+  d: 'DELETE',
+  D: 'TRUNCATE',
+  R: 'RULE',
+  x: 'REFERENCES',
+  t: 'TRIGGER',
+  X: 'EXECUTE',
+  U: 'USAGE',
+  C: 'CREATE',
+  c: 'CONNECT',
+  T: 'TEMPORARY'
+};
+
+
 var helpers = global.ViewHelpers = {
   formatCell: function (value, format, dataType) {
     if (typeof value == 'string') {
@@ -181,5 +198,40 @@ var helpers = global.ViewHelpers = {
       .replace(/timestamp with time zone/, 'timestampz')
       .replace(/time without time zone/, 'time')
       .replace(/time with time zone/, 'timez');
+  },
+
+  relType(type) {
+    // r = ordinary table, i = index, S = sequence, t = TOAST table, v = view, m = materialized view, c = composite type, f = foreign table, p = partitioned table
+    if (type == 'r') return 'table';
+    if (type == 'i') return 'index';
+    if (type == 'S') return 'sequence';
+    if (type == 't') return 'TOAST table';
+    if (type == 'v') return 'view';
+    if (type == 'm') return 'mat. view';
+    if (type == 'c') return 'composite type';
+    if (type == 'f') return 'foreign table';
+    if (type == 'p') return 'partitioned table';
+    return type;
+  },
+
+  tableGrantsDesc(permissions) {
+    var allPerms = 'arwdDxt';
+    if (permissions == 'arwdDxt') {
+      return "Full Access";
+    } else if (permissions.length > 4) {
+      var actions = [];
+      allPerms.split('').forEach(letter => {
+        if (!permissions.includes(letter)) {
+          actions.push(GRANTS_ABBR[letter] || letter);
+        }
+      });
+      return `All except ${actions.join(", ")}`;
+    } else {
+      var actions = [];
+      permissions.split('').forEach(letter => {
+        actions.push(GRANTS_ABBR[letter] || letter);
+      });
+      return actions.join(", ");
+    }
   }
 };

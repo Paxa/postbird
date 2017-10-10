@@ -3,11 +3,12 @@ global.Dialog.NewUser = global.Dialog.extend({
 
   init: function (handler) {
     this.handler = handler;
+    this.user = this.user || {};
     this.showWindow();
   },
 
   showWindow: function () {
-    var nodes = App.renderView('dialogs/user_form');
+    var nodes = App.renderView('dialogs/user_form', {user: this.user, buttonText: this.buttonText});
 
     this.content = this.renderWindow(this.title, nodes);
     this.bindFormSubmitting();
@@ -28,16 +29,16 @@ global.Dialog.NewUser = global.Dialog.extend({
     });
   },
 
-  validate: function (data) {
-    var fail = function (msg) {
-      setTimeout(() => {
-        window.alert(msg);
-      }, 100);
-      return false;
-    };
+  fail: function (msg) {
+    setTimeout(() => {
+      window.alert(msg);
+    }, 100);
+    return false;
+  },
 
-    if (!data.username || data.username.length == 0) return fail('Please type username');
-    if (data.username.length > 63) return fail("Username is too long, maximum is 63, " +
+  validate: function (data) {
+    if (!data.username || data.username.length == 0) return this.fail('Please type username');
+    if (data.username.length > 63) return this.fail("Username is too long, maximum is 63, " +
                                                "you typed " + data.username.length);
 
     return true;

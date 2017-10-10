@@ -1,6 +1,6 @@
 var sprintf = require("sprintf-js").sprintf;
 
-global.Model.Schema = Model.base.extend({
+var Schema = global.Model.Schema = Model.base.extend({
   className: 'Model.Schema',
 
   init: function (schemaName) {
@@ -66,3 +66,4 @@ global.Model.Schema.findAll = function (callback) {
   });
 };
 
+module.exports = Schema;

@@ -1,7 +1,7 @@
 form
   p
     label Name
-    input(name="username")
+    input(name="username", value=user.rolname)
   p
     label Password
     input(name="password")
@@ -10,9 +10,9 @@ form
   //  input(name="password_again")
   p
     label
-      input(type="checkbox" name="admin" value="1")
+      input(type="checkbox" name="admin" value="1" checked=!!user.rolsuper)
       = "Admin?"
   input.pseudo-hidden(type="submit")
   p.buttons
-    button.ok Create user
+    button.ok= buttonText || "Create User"
     button.cancel cancel

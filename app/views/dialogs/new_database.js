@@ -3,7 +3,9 @@ global.Dialog.NewDatabase = global.Dialog.extend({
 
   init: function (handler) {
     this.handler = handler;
-    this.prepareData(this.showWindow.bind(this));
+    this.prepareData().then(() => {
+      this.showWindow();
+    });
   },
 
   showWindow: function () {
@@ -47,22 +49,12 @@ global.Dialog.NewDatabase = global.Dialog.extend({
     });
   },
 
-  prepareData: function (callback) {
-    var _this = this, c = this.handler.connection;
-    with (this.handler.connection) {
-      databaseTemplatesList((data) => {
-        _this.templates = data;
-        avaliableEncodings((encodings) => {
-          _this.encodings = encodings;
-          getVariable('CLIENT_ENCODING', (result) => {
-            _this.clientEncoding = result;
-            getVariable('SERVER_ENCODING', (result) => {
-              _this.serverEncoding = result;
-              callback();
-            }); // SERVER_ENCODING
-          }); // CLIENT_ENCODING
-        }); // avaliableEncodings
-      }); // databaseTemplatesList
-    } // with
+  prepareData: async function (callback) {
+    var server = this.handler.connection.server;
+
+    this.templates = await server.databaseTemplatesList();
+    this.encodings = await server.avaliableEncodings();
+    this.clientEncoding = await server.getVariable('CLIENT_ENCODING');
+    this.serverEncoding = await server.getVariable('SERVER_ENCODING');
   },
 });

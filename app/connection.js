@@ -5,6 +5,10 @@ const semver = require('semver');
 const colors = require('colors/safe');
 colors.enabled = true;
 
+const Model = require('./models');
+
+console.log(Model);
+
 try {
   if (process.platform == "darwin") {
     var pg = pg.native;
@@ -27,6 +31,7 @@ class Connection {
     this.history = []
     this.logging = true;
     this.printTestingError = true;
+    this.server = new Model.Server(this);
 
     //this.options = options;
     this.connection = null;
@@ -81,33 +86,36 @@ class Connection {
 
     this.connection = new pg.Client({connectionString: connectString});
 
-    return this.connection.connect((error, b) => {
-      if (error) {
-        callback && callback(false, error.message);
-        console.log(error);
-        App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
-      } else {
-        this.connection.on('notification', (msg) => {
-          this.notificationCallbacks.forEach((fn) => {
-            fn(msg);
+    return new Promise((resolve, reject) => {
+      this.connection.connect((error, b) => {
+        if (error) {
+          callback && callback(false, error.message);
+          App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
+          reject(error);
+        } else {
+          this.connection.on('notification', (msg) => {
+            this.notificationCallbacks.forEach((fn) => {
+              fn(msg);
+            });
+            App.log("notification.recieved", msg);
           });
-          App.log("notification.recieved", msg);
-        });
 
-        this.connection.on('error', (error) => {
-          var dialog = electron.remote.dialog;
-          var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
-          dialog.showErrorBox("Server Connection Error", message);
-        });
+          this.connection.on('error', (error) => {
+            var dialog = electron.remote.dialog;
+            var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
+            dialog.showErrorBox("Server Connection Error", message);
+          });
 
-        this.serverVersion((version) => {
-          if (this.logging) {
-            console.log("Server version is", version);
-          }
-          callback && callback(true);
-        });
-        App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
-      }
+          this.serverVersion((version) => {
+            if (this.logging) {
+              console.log("Server version is", version);
+            }
+            callback && callback(true);
+            resolve();
+          });
+          App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
+        }
+      });
     });
   }
 
@@ -167,50 +175,13 @@ class Connection {
     });
   }
 
-  q(sql) {
-    var params = [], i;
-    var callback = arguments[arguments.length - 1];
-    for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
+  q(sql, ...params) {
+    var callback = undefined;
+    if (typeof params[params.length - 1] == 'function') {
+      callback = params.pop();
+    }
 
     return this.query(vsprintf(sql, params), callback);
-  }
-
-  serialize(sql) {
-    var params = [], i;
-    var callback = arguments[arguments.length - 1];
-    for (i = 1; i < arguments.length - 1; i++) params.push(arguments[i]);
-
-    return vsprintf(sql, params)
-  }
-
-  listDatabases(callback) {
-    var databases = [];
-    return this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', (rows) => {
-      rows.rows.forEach((dbrow) => {
-        databases.push(dbrow.datname);
-      });
-      callback(databases);
-    });
-  }
-
-  databaseTemplatesList(callback) {
-    var databases = [];
-    return this.query('SELECT datname FROM pg_database WHERE datistemplate = true;', (rows) => {
-      rows.rows.forEach((dbrow) => {
-        databases.push(dbrow.datname);
-      });
-      callback(databases);
-    });
-  }
-
-  avaliableEncodings(callback) {
-    var encodings = [];
-    return this.query('select pg_encoding_to_char(i) as encoding from generate_series(0,100) i', (rows) => {
-      rows.rows.forEach((dbrow) => {
-        if (dbrow.encoding != '') encodings.push(dbrow.encoding);
-      });
-      callback(encodings);
-    });
   }
 
   serverVersion(callback) {
@@ -230,23 +201,18 @@ class Connection {
     }
 
     console.log("Client don't support serverVersion, getting it with sql");
-    this.query('SELECT version()', (result, error) => {
-      var version = result.rows[0].version.split(" ")[1];
-      this._serverVersion = version;
-      this._serverVersionFull = result.rows[0].version;
+    this.server.fetchServerVersion((version, error) => {
+      this._serverVersion = version.split(" ")[1];
+      if (this._serverVersion.match(/^\d+\.\d+$/)) {
+        this._serverVersion += '.0';
+      }
+      this._serverVersionFull = version;
       callback(this._serverVersion, this._serverVersionFull);
     });
   }
 
   supportMatViews() {
     return semver.gt(this._serverVersion, "9.3.0");
-  }
-
-  getVariable(variable, callback) {
-    return this.q('show %s', variable, (data, error) => {
-      var vname = Object.keys(data.rows[0])[0];
-      callback && callback(data.rows[0][vname]);
-    });
   }
 
   publicTables(callback) {
@@ -316,32 +282,6 @@ class Connection {
 
   uninstallExtension(extension, callback) {
     return this.q('DROP EXTENSION "%s"', extension, callback);
-  }
-
-  createDatabase(dbname, template, encoding, callback) {
-    var sql = "CREATE DATABASE %s";
-    if (encoding) sql += " ENCODING '" + encoding + "'";
-    if (template) sql += " TEMPLATE " + template;
-    return this.q(sql, dbname, callback);
-  }
-
-  dropDatabase(dbname, callback) {
-    return this.switchDb('postgres', () => {
-      return this.q('drop database "%s"', dbname, (result, error) => {
-        callback(result, error);
-      });
-    });
-  }
-
-  renameDatabase(dbname, newDbname, callback) {
-    this.switchDb('postgres', () => {
-      var sql = 'ALTER DATABASE "%s" RENAME TO "%s";'
-      this.q(sql, dbname, newDbname, (result, error) => {
-        this.switchDb(error ? dbname : newDbname, () => {
-          callback(result, error);
-        });
-      });
-    });
   }
 
   queryMultiple(queries, callback) {
@@ -443,6 +383,8 @@ class Connection {
     if (
       error.message.indexOf("server closed the connection unexpectedly") != -1 ||
       error.message.indexOf("Unable to set non-blocking to true") != -1) {
+
+      console.error(error);
 
       window.alertify.confirm("Seems like disconnected, reconnect?<br><small>" + error.message, (is_yes) => {
         window.alertify.hide();

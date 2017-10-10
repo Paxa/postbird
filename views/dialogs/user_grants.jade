@@ -1,0 +1,20 @@
+.rescol-wrapper.with-borders
+  .rescol-header-wrapper
+  .rescol-content-wrapper
+    table
+      thead
+        tr
+          th Schema
+          th Name
+          th Type
+          th Permissions
+      tbody
+        each table in grants
+          tr
+            td= table.table_schema
+            td= table.table_name
+            td= relType(table.table_type)
+            td= tableGrantsDesc(table.privileges)
+
+p.buttons
+  button.cancel OK

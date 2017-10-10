@@ -1,7 +1,7 @@
 global.Panes.Info = global.Pane.extend({
-  renderTab: function(code, relType, recordsCount, tableSize) {
+  renderTab: function(source, relType, recordsCount, tableSize) {
     this.renderViewToPane('info', 'info_tab', {
-      code: code,
+      source: source,
       tableSize: tableSize,
       recordsCount: recordsCount,
       relType: relType

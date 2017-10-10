@@ -39,3 +39,42 @@ global.Model.base = jClass.extend({
 
   }
 });
+
+class ModelVanillaBase {
+  constructor(data) {
+    this.data = data;
+  }
+
+  q() {
+    if (this.connectionObj) {
+      this.connectionObj.q.apply(this.connectionObj, arguments);
+    } else if (App.currentTab.instance.connection) {
+      return Connection.prototype.q.apply(App.currentTab.instance.connection, arguments);
+    } else {
+      throw "Current tab is not connected yet";
+    }
+  }
+
+  query() {
+    return this.q.apply(this, arguments);
+  }
+
+  connection() {
+    return this.connectionObj || ModelVanillaBase.connection();
+  }
+
+  static connection() {
+    if (App.currentTab.instance.connection) {
+      return App.currentTab.instance.connection;
+    } else {
+      throw "Current tab is not connected yet";
+    }
+  }
+
+  static q() {
+    var connection = this.connection();
+    return connection.q.apply(connection, arguments);
+  }
+}
+
+module.exports = ModelVanillaBase;

@@ -1,4 +1,4 @@
-global.Model.Procedure = Model.base.extend({
+var Procedure = global.Model.Procedure = Model.base.extend({
   klassExtend: {
     findAll: function (callback) {
       var sql = `
@@ -176,3 +176,4 @@ global.Model.Procedure = Model.base.extend({
 
 }();
 
+module.exports = Procedure;
