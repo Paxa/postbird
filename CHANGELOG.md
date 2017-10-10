@@ -3,9 +3,11 @@
 * Update to electron 1.7.8
 * Update to PostgreSQL 10
 * Add Feature: Auto Connect
+* Add Feature: Show user grants
 * Better message for "server disconnected" error
 * Fix connecting to heroku
 * Move from ruby sass to node-sass
+* Fix editing users
 
 == Version 0.6.2 (01-may-2017)
 

@@ -47,7 +47,7 @@ class ModelVanillaBase {
 
   q() {
     if (this.connectionObj) {
-      this.connectionObj.q.apply(this.connectionObj, arguments);
+      return this.connectionObj.q.apply(this.connectionObj, arguments);
     } else if (App.currentTab.instance.connection) {
       return Connection.prototype.q.apply(App.currentTab.instance.connection, arguments);
     } else {

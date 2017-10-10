@@ -36,7 +36,7 @@ global.ImportController = jClass.extend({
       }
 
       this.dialog.addMessage("Creating database '" + data.new_database_name + "'\n");
-      this.handler.createDatabase({dbname: data.new_database_name}, (error, result) => {
+      this.handler.createDatabase({dbname: data.new_database_name}).then(result => {
         //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
       });

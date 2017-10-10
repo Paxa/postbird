@@ -66,8 +66,15 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   isMatView: function (callback) {
-    this.getTableType((tableType, error) => {
-      callback(tableType == "MATERIALIZED VIEW", error);
+    return new Promise((resolve, reject) => {
+      this.getTableType((tableType, error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(tableType == "MATERIALIZED VIEW");
+        }
+        callback && callback(tableType == "MATERIALIZED VIEW", error);
+      });
     });
   },
 
@@ -83,7 +90,7 @@ var Table = global.Model.Table = Model.base.extend({
       return;
     }
 
-    if (this.connection().supportMatViews()) {
+    if (this.connection().server.supportMatViews()) {
       var sql = `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
@@ -113,11 +120,11 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   getStructure: function (callback) {
-    this.isMatView((isMatView) => {
+    return this.isMatView().then(isMatView => {
       if (isMatView) {
-        this._getMatViewStructure(callback);
+        return this._getMatViewStructure(callback);
       } else {
-        this._getTableStructure(callback);
+        return this._getTableStructure(callback);
       }
     });
   },
@@ -146,31 +153,36 @@ var Table = global.Model.Table = Model.base.extend({
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
     `;
-    this.q(sql, (data, error) => {
-      if (error) {
-        callback(data && data.rows, error);
-        return;
-      }
-      this.hasOID((hasOID) => {
-        if (hasOID) {
-          data.rows.unshift({
-            column_name: "oid",
-            data_type: "oid",
-            column_default: null,
-            udt_name: "oid"
-          });
+    return new Promise((resolve, reject) => {
+      this.q(sql, (data, error) => {
+        if (error) {
+          callback(data && data.rows, error);
+          return;
         }
-        this.getPrimaryKey((rows, error) => {
-          if (!error) {
-            var keys = rows.map((r) => {
-              return r.attname;
-            });
-
-            data.rows.forEach((row) => {
-              row.is_primary_key = keys.indexOf(row.column_name) != -1;
+        this.hasOID((hasOID) => {
+          if (hasOID) {
+            data.rows.unshift({
+              column_name: "oid",
+              data_type: "oid",
+              column_default: null,
+              udt_name: "oid"
             });
           }
-          callback(data.rows);
+          this.getPrimaryKey((rows, error) => {
+            if (error) {
+              reject(error);
+            } else {
+              var keys = rows.map((r) => {
+                return r.attname;
+              });
+
+              data.rows.forEach((row) => {
+                row.is_primary_key = keys.indexOf(row.column_name) != -1;
+              });
+            }
+            resolve(data.rows);
+            callback && callback(data.rows);
+          });
         });
       });
     });
@@ -183,15 +195,19 @@ var Table = global.Model.Table = Model.base.extend({
                join pg_type t on a.atttypid = t.oid
                where relname = '%s' and attnum >= 1;`;
 
-    this.q(sql, this.table, (data, error) => {
-      if (data && data.rows) {
-        data.rows.forEach((row) => {
-          row.is_nullable = row.attnotnull ? "NO" : "YES";
-        });
-        callback(data.rows);
-      } else {
-        callback(null, error);
-      }
+    return new Promise((resolve, reject) => {
+      this.q(sql, this.table, (data, error) => {
+        if (data && data.rows) {
+          data.rows.forEach((row) => {
+            row.is_nullable = row.attnotnull ? "NO" : "YES";
+          });
+          resolve(data.rows);
+          callback && callback(data.rows);
+        } else {
+          if (error) reject(error);
+          callback(null, error);
+        }
+      });
     });
   },
 
@@ -425,19 +441,22 @@ var Table = global.Model.Table = Model.base.extend({
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
       ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;`;
 
-    var _this = this;
+    return new Promise((resolve, reject) => {
+      this.q(sql_find_oid, (oid_data, error) => {
+        if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
+          reject(new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
+          callback && callback(null, new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
+          return;
+        }
 
-    this.q(sql_find_oid, (oid_data, error) => {
-      if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
-        callback(null, new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
-        return;
-      }
-      var oid = oid_data.rows[0].oid;
-      //this.q(sql_find_types, oid, (types_data, error) => {
-        _this.q(sql_find_index, oid, (indexes_rows, error) => {
-          callback(indexes_rows.rows, error);
+        var oid = oid_data.rows[0].oid;
+        //this.q(sql_find_types, oid, (types_data, error) => {
+        this.q(sql_find_index, oid, (indexes_rows, error) => {
+          error ? reject(error) : resolve(indexes_rows.rows);
+          callback && callback(indexes_rows.rows, error);
         });
-      //});
+        //});
+      });
     });
   },
 
@@ -599,6 +618,7 @@ var Table = global.Model.Table = Model.base.extend({
       }
       var row = result.rows[0];
       var type = row.relkind;
+      // TODO: dry
       // http://www.postgresql.org/docs/9.4/static/catalog-pg-class.html
       switch (row.relkind) {
         case "r": type = "table"; break;
@@ -626,8 +646,8 @@ var Table = global.Model.Table = Model.base.extend({
       SELECT *, pg_get_constraintdef(oid, true) as pretty_source
       FROM pg_constraint WHERE conrelid = '${this.schema}.${this.table}'::regclass
     `;
-    this.q(sql, (data, error) => {
-      callback(data, error);
+    return this.q(sql, (data, error) => {
+      callback && callback(data, error);
     });
   },
 

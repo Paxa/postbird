@@ -9,7 +9,7 @@ class Server extends ModelVanillaBase {
   }
 
   supportMatViews() {
-    return semver.gt(this._serverVersion, "9.3.0");
+    return semver.gt(this.connectionObj._serverVersion, "9.3.0");
   }
 
   fetchServerVersion(callback) {
@@ -29,10 +29,15 @@ class Server extends ModelVanillaBase {
   listDatabases(callback) {
     var databases = [];
     return new Promise((resolve, reject) => {
-      this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', (rows) => {
+      this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;', (rows, error) => {
+        if (error) {
+          reject(error);
+        }
+
         rows.rows.forEach((dbrow) => {
           databases.push(dbrow.datname);
         });
+        resolve(databases);
         callback && callback(databases);
       });
     });
@@ -88,7 +93,7 @@ class Server extends ModelVanillaBase {
   }
 
   dropDatabase(dbname, callback) {
-    return this.switchDb('postgres').then(() => {
+    return this.connectionObj.switchDb('postgres').then(() => {
       return this.q('drop database "%s"', dbname, (result, error) => {
         callback && callback(result, error);
       });
@@ -96,10 +101,10 @@ class Server extends ModelVanillaBase {
   }
 
   renameDatabase(dbname, newDbname, callback) {
-    return this.switchDb('postgres').then(() => {
+    return this.connectionObj.switchDb('postgres').then(() => {
       var sql = 'ALTER DATABASE "%s" RENAME TO "%s";'
       return this.q(sql, dbname, newDbname).then((result, error) => {
-        return this.switchDb(error ? dbname : newDbname, () => {
+        return this.connectionObj.switchDb(error ? dbname : newDbname, () => {
           callback && callback(result, error);
         });
       });

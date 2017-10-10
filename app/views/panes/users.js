@@ -25,12 +25,19 @@ class Users extends global.Pane {
     new Dialog.NewUser(this.handler);
   }
 
-  deleteUser (username) {
-    window.alertify.confirm('Do you want to delete user "' + username + '"?', (res) => {
-      if (res) {
-        this.handler.deleteUser(username);
+  async deleteUser (username) {
+    var res = await window.alertify.confirm('Do you want to delete user "' + username + '"?');
+
+    if (res) {
+      App.startLoading(`Deleting user ${username}`);
+      try {
+        await this.handler.deleteUser(username);
+      } catch (error) {
+        console.error(error);
+        window.alert(error.message);
       }
-    });
+      App.stopLoading();
+    }
   }
 
   async getGrants (username) {

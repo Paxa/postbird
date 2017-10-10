@@ -50,7 +50,7 @@ global.DbScreen = jClass.extend({
   },
 
   fetchDbList: function (callback) {
-    this.connection.server.listDatabases((databases) => {
+    return this.connection.server.listDatabases((databases) => {
       this.view.renderDbList(databases);
       callback && callback();
     });
@@ -209,63 +209,46 @@ global.DbScreen = jClass.extend({
     this.currentTab = 'query';
   },
 
-  createUser: function(data, callback) {
+  createUser: async function(data, callback) {
     if (data.admin == '1') {
       delete data.admin;
       data.superuser = true;
     }
 
-    Model.User.create(data, (data, error) => {
-      if (!error) {
-        this.omit('user.created');
-      }
-      callback(data, error);
-    });
+    var result = await Model.User.create(data);
+    this.omit('user.created');
+    return result;
   },
 
-  updateUser: function(username, data, callback) {
+  updateUser: async function(username, data) {
     if (data.admin == '1') {
       delete data.admin;
       data.superuser = true;
     }
 
-    return new Model.User(username).update(data, (data, error) => {
-      if (!error) {
-        this.omit('user.updated');
-      }
-      callback(data, error);
-    });
+    var result = await new Model.User(username).update(data);
+    this.omit('user.updated');
+    return result;
   },
 
-  deleteUser: function(username, callback) {
-    App.startLoading(`Deleting user ${username}`);
-    Model.User.drop(username, (data, error) => {
-      App.stopLoading();
-      if (error) {
-        window.alert(error);
-      } else {
-        this.omit('user.deleted')
-      }
-      callback && callback(data, error);
-    });
+  deleteUser: async function(username) {
+    var result = await Model.User.drop(username);
+    this.omit('user.deleted');
+    return result;
   },
 
-  createDatabase: function (data, callback) {
-    this.connection.switchDb(this.connection.defaultDatabaseName, () => {
-      this.connection.createDatabase(data.dbname, data.template, data.encoding, (res, error) => {
-        if (!error) {
-          this.fetchDbList(() => {
-            this.view.databaseSelect.val(data.dbname).change();
-            //this.selectDatabase(data.dbname);
-          });
-        }
-        callback(res, error);
-      });
-    });
+  createDatabase: async function (data, callback) {
+    await this.connection.switchDb(this.connection.defaultDatabaseName);
+    var res = await this.connection.server.createDatabase(data.dbname, data.template, data.encoding);
+    await this.fetchDbList();
+    console.log('fetched');
+    this.view.databaseSelect.val(data.dbname).change();
+
+    return res;
   },
 
   dropDatabaseDialog: function () {
-    var msg = "Delete database and all tables in it?";
+    var msg = `Delete database <strong>${this.database}</strong> and all tables in it?`;
     var dialog = window.alertify.confirm(msg, (result) => {
       if (result) {
         this.dropDatabase();
@@ -275,7 +258,7 @@ global.DbScreen = jClass.extend({
 
   dropDatabase: function () {
     App.startLoading("Deleting database...");
-    this.connection.dropDatabase(this.database, (result, error) => {
+    this.connection.server.dropDatabase(this.database, (result, error) => {
       App.stopLoading();
       if (error) {
         window.alertify.alert(error.message);
@@ -307,7 +290,7 @@ global.DbScreen = jClass.extend({
 
   renameDatabase: function (databaseNewName) {
     App.startLoading("Renaming database...");
-    this.connection.renameDatabase(this.database, databaseNewName, (result, error) => {
+    this.connection.server.renameDatabase(this.database, databaseNewName, (result, error) => {
       App.stopLoading();
       if (error) {
         window.alertify.alert(error.message);
@@ -397,32 +380,48 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  structureTabActivate: function () {
+  structureTabActivate: async function () {
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
     }
     App.startLoading("Getting table structure...");
 
-    this.table.isMatView((isMatView, error) => {
-      if (error) errorReporter(error, false);
-      Model.Table(this.currentSchema, this.currentTable).getStructure((rows, columnsError) => {
-        if (columnsError) errorReporter(columnsError, false);
-        this.table.getIndexes((indexes, indexesError) => {
-          if (indexesError) errorReporter(indexesError, false);
-          this.table.getConstraints((constraints, constraintsError) => {
-            if (constraintsError) errorReporter(constraintsError, false);
-            this.view.structure.renderTab(rows, indexes, constraints, {
-              isMatView: isMatView,
-              columnsError: columnsError,
-              indexesError: indexesError,
-              constraintsError: constraintsError
-            });
-            App.stopLoading();
-          });
-        });
-      });
+    try {
+      var isMatView = await this.table.isMatView();
+    } catch (error) {
+      errorReporter(error, false);
+    }
+
+    try {
+      var rows = await this.table.getStructure();
+    } catch (error) {
+      var columnsError = error;
+      errorReporter(error, false);
+    }
+
+    try {
+      var indexes = await this.table.getIndexes();
+      console.log(indexes);
+    } catch (error) {
+      var indexesError = error;
+      errorReporter(error, false);
+    }
+
+    try {
+      var constraints = await this.table.getConstraints();
+    } catch (error) {
+      var constraintsError = error;
+      errorReporter(error, false);
+    }
+
+    this.view.structure.renderTab(rows, indexes, constraints, {
+      isMatView: isMatView,
+      columnsError: columnsError,
+      indexesError: indexesError,
+      constraintsError: constraintsError
     });
+    App.stopLoading();
   },
 
   proceduresTabActivate: function() {

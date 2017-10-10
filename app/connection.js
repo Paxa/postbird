@@ -7,8 +7,6 @@ colors.enabled = true;
 
 const Model = require('./models');
 
-console.log(Model);
-
 try {
   if (process.platform == "darwin") {
     var pg = pg.native;

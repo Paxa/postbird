@@ -9,17 +9,16 @@ class EditUser extends Dialog.NewUser {
     });
   }
 
-  processData (data) {
-    App.startLoading(`Updating user ${this.username}`);
+  async processData (data) {
+    try {
+      await this.handler.updateUser(this.username, data);
+      this.close();
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message);
+    }
 
-    this.handler.updateUser(this.username, data, (data, error) => {
-      App.stopLoading();
-
-      if (error)
-        window.alert(error.message);
-      else
-        this.close();
-    });
+    App.stopLoading();
   }
 
   validate (data) {

@@ -19,13 +19,14 @@ class NewUser extends Dialog {
     }
   }
 
-  processData (data) {
-    this.handler.createUser(data, (data, error) => {
-      if (error)
-        window.alert(error.message);
-      else
-        this.close();
-    });
+  async processData (data) {
+    try {
+      var result = await this.handler.createUser(data);
+      this.close();
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message);
+    }
   }
 
   fail (msg) {

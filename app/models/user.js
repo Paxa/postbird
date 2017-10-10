@@ -47,7 +47,7 @@ class User extends Model.base {
   update (data, callback) {
     var sql = '';
     if (this.username != data.username) {
-      sql += `alter user "${this.username}" RENAME TO ${data.username}; `;
+      sql += `ALTER USER "${this.username}" RENAME TO "${data.username}"; `;
     }
     if (data.password && data.password != '') {
       sql += `ALTER USER "${data.username}" WITH PASSWORD '${data.password}'; `;

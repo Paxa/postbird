@@ -37,18 +37,19 @@ class NewDatabase extends Dialog {
     this.setAutofocus();
   }
 
-  onSubmit (data) {
+  async onSubmit (data) {
     if (!data.dbname || data.dbname == '') {
       alert('Please fill database name');
       return;
     }
 
-    this.handler.createDatabase(data, (data, error) => {
-      if (error)
-        window.alert(error.message);
-      else
-        this.close();
-    });
+    try {
+      await this.handler.createDatabase(data);
+      this.close();
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message);
+    }
   }
 
   async prepareData (callback) {
