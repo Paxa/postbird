@@ -1,18 +1,23 @@
-global.Dialog.DefProcedure = global.Dialog.extend({
-  title: "Procedure Source",
-  dialogClass: "source-procedure-dialog",
+class DefProcedure extends Dialog {
 
-  init: function(handler, proc, source) {
-    this.proc = proc;
-    this.source = source;
+  constructor (handler, proc, source) {
+    super(handler, {
+      title: "Procedure Source",
+      dialogClass: "source-procedure-dialog",
+      proc: proc,
+      source: source
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/def_procedure', {proc: this.proc, source: this.source});
 
     this.content = this.renderWindow("Proc: " + this.proc.name, nodes);
     window.hljs.highlightBlock(this.content.find('code')[0]);
-  },
+  }
 
-});
+}
+
+global.Dialog.DefProcedure = DefProcedure;
+module.exports = DefProcedure;

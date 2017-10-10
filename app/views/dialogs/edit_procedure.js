@@ -1,13 +1,15 @@
-global.Dialog.EditProcedure = global.Dialog.extend({
-  title: "Edit Procedure",
-  dialogClass: "edit-procedure-dialog",
+class EditProcedure extends Dialog {
 
-  init: function(handler, proc) {
-    this.proc = proc;
+  constructor(handler, proc) {
+    super(handler, {
+      title: "Edit Procedure",
+      dialogClass: "edit-procedure-dialog",
+      proc: proc
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/edit_procedure', {proc: this.proc});
 
     this.content = this.renderWindow(this.title, nodes);
@@ -24,7 +26,7 @@ global.Dialog.EditProcedure = global.Dialog.extend({
         this.mime = 'text/x-pgsql';
     }
 
-    console.log(this.proc.language, 'this.mime', this.mime);
+    //console.log(this.proc.language, 'this.mime', this.mime);
 
     this.textarea = this.content.find('textarea.editor');
 
@@ -42,6 +44,9 @@ global.Dialog.EditProcedure = global.Dialog.extend({
     });
 
     this.bindFormSubmitting();
-  },
+  }
 
-});
+}
+
+global.Dialog.EditProcedure = EditProcedure;
+module.exports = EditProcedure;

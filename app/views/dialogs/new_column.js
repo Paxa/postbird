@@ -1,12 +1,28 @@
-global.Dialog.NewColumn = global.Dialog.extend({
-  title: "Create column",
+class NewColumn extends Dialog {
 
-  init: function (handler) {
-    this.handler = handler;
+  constructor (handler, params) {
+    params = Object.assign({title: "Create column"}, params || {});
+    super(handler, params);
+
+    this.groups = {
+      "Number":     ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal',
+                     'int2vector', 'int4range', 'int8range', 'numrange', ''],
+      "Text":       ['text', 'character varying', 'character', 'name', 'bit', 'bit varying'],
+      "ID column":  ['uuid', 'smallserial', 'serial', 'bigserial', 'oid'],
+      "Date":       ['date', 'timestamp without time zone', 'timestamp with time zone',
+                     'time without time zone', 'time with time zone'],
+      "Time Range": ['interval', 'tsrange', 'tstzrange', 'daterange', 'tinterval', 'reltime', 'abstime'],
+      "Boolean":    ['boolean'],
+      "JSON":       ['json', 'jsonb'],
+      "Network":    ['macaddr', 'macaddr8', 'cidr', 'inet'],
+      "Geometry":   ['point', 'line', 'lseg', 'box', 'path', 'polygon', 'circle'],
+      "Text Search": ['tsvector', 'tsquery', '']
+    };
+
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     Model.Column.availableTypes((types) => {
       this.addPseudoTypes(types);
       var groupedTypes = this.groupTypes(types);
@@ -14,9 +30,9 @@ global.Dialog.NewColumn = global.Dialog.extend({
       this.content = this.renderWindow(this.title, nodes);
       this.bindFormSubmitting();
     });
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     if (data.type == "") {
       window.alert("Please choose column type");
       return;
@@ -25,15 +41,15 @@ global.Dialog.NewColumn = global.Dialog.extend({
       data.is_null = true;
     }
     this.handler.addColumn(data, this.defaultServerResponse.bind(this));
-  },
+  }
 
-  addPseudoTypes: function (types) {
+  addPseudoTypes (types) {
     types.push({name: "smallserial", description: "small autoincrementing integer"});
     types.push({name: "serial", description: "autoincrementing integer"});
     types.push({name: "bigserial", description: "large autoincrementing integer"});
-  },
+  }
 
-  groupTypes: function (types) {
+  groupTypes (types) {
     var types = types.slice(0);
     var grouped = {};
     var groupName;
@@ -64,19 +80,8 @@ global.Dialog.NewColumn = global.Dialog.extend({
 
     grouped['Other'] = types;
     return grouped;
-  },
-
-  groups: {
-    "Number": ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal', 'int2vector', 'int4range', 'int8range', 'numrange', ''],
-    "Text": ['text', 'character varying', 'character', 'name', 'bit', 'bit varying'],
-    "ID column": ['uuid', 'smallserial', 'serial', 'bigserial', 'oid'],
-    "Date": ['date', 'timestamp without time zone', 'timestamp with time zone',
-             'time without time zone', 'time with time zone'],
-    "Time Range": ['interval', 'tsrange', 'tstzrange', 'daterange', 'tinterval', 'reltime', 'abstime'],
-    "Boolean": ['boolean'],
-    "JSON": ['json', 'jsonb'],
-    "Network": ['macaddr', 'macaddr8', 'cidr', 'inet'],
-    "Geometry": ['point', 'line', 'lseg', 'box', 'path', 'polygon', 'circle'],
-    "Text Search": ['tsvector', 'tsquery', '']
   }
-});
+}
+
+global.Dialog.NewColumn = NewColumn;
+module.exports = NewColumn;

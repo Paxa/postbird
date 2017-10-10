@@ -1,11 +1,15 @@
-global.Dialog = jClass.extend({
+class Dialog {
 
-  init: function(handler) {
+  constructor(handler, params) {
+    if (params) {
+      Object.forEach(params, (key, value) => {
+        this[key] = value;
+      });
+    }
     this.handler = handler;
-    this.showWindow();
-  },
+  }
 
-  renderWindow: function (title, nodes) {
+  renderWindow (title, nodes) {
     var el = $u('<div>').append(nodes);
 
     var titleHtml = $u('<h3>').addClass('window-title').text(title)[0].outerHTML;
@@ -32,24 +36,24 @@ global.Dialog = jClass.extend({
     this.initTables();
 
     return this.windowContent;
-  },
+  }
 
-  addClass: function (className) {
+  addClass (className) {
     this.windowContent.addClass(className);
-  },
+  }
 
-  setAutofocus: function () {
+  setAutofocus () {
     setTimeout(() => {
       var inputs = this.content.find('input[autofocus], input[type=text], input:not([type=hidden]), input[type=password]');
       inputs[0] && inputs[0].focus();
     }, 300);
-  },
+  }
 
-  close: function () {
+  close () {
     window.alertify.hide();
-  },
+  }
 
-  bindFormSubmitting: function () {
+  bindFormSubmitting () {
     var handler = (e) => {
       e && e.preventDefault();
       var data = $u.formValues(this.content.find('form'));
@@ -58,29 +62,29 @@ global.Dialog = jClass.extend({
 
     this.content.find('button.ok').bind('click', handler);
     this.content.find('form').bind('submit', handler);
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     console.log('onSubmit', data)
-  },
+  }
 
-  defaultServerResponse: function (data, error) {
+  defaultServerResponse (data, error) {
     if (error) {
       window.alert(error.message);
     } else {
       this.close();
     }
-  },
+  }
 
-  renderTemplate: function (template, locals, title) {
+  renderTemplate (template, locals, title) {
     title = title || this.title;
     locals = locals || {};
 
     var nodes = App.renderView(template, locals);
     this.content = this.renderWindow(title, nodes);
-  },
+  }
 
-  setInputFocus: function () {
+  setInputFocus () {
     var focusable = this.windowContent.find('[autofocus]');
     if (focusable.length) {
       setTimeout(() => {
@@ -94,10 +98,10 @@ global.Dialog = jClass.extend({
         if (firstInput) firstInput.focus();
       }, 120);
     }
-  },
+  }
 
   // TODO: dry
-  initTables: function () {
+  initTables () {
     // heavy stuff, run it with delay
     setTimeout(() => {
       this.content.find('.rescol-wrapper').forEach((table) => {
@@ -113,4 +117,8 @@ global.Dialog = jClass.extend({
       });
     }, 10);
   }
-});
+}
+
+Dialog.extend = jClass.extend;
+global.Dialog = Dialog;
+module.exports = Dialog;

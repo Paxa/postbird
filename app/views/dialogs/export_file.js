@@ -1,14 +1,15 @@
-global.Dialog.ExportFile = global.Dialog.extend({
-  title: "Export options",
-  dialogClass: "export-file-dialog",
+class ExportFile extends Dialog {
 
-  init: function (handler, callback) {
-    this.handler = handler;
-    this.onSubmitCallback = callback;
+  constructor (handler, callback) {
+    super(handler, {
+      title: "Export options",
+      dialogClass: "export-file-dialog",
+      onSubmitCallback: callback
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/export_file', {database: this.handler.database});
 
     this.content = this.renderWindow(this.title, nodes);
@@ -26,13 +27,13 @@ global.Dialog.ExportFile = global.Dialog.extend({
       });
     });
     this.bindFormSubmitting();
-  },
+  }
 
-  startExporting: function () {
+  startExporting () {
     this.addClass('exporting');
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     var exportToFile = this.content.find('[name="export_to_file"]').val();
     var exportData = this.content.find('[name="export_data"]').prop('checked');
     var exportStructure = this.content.find('[name="export_structure"]').prop('checked');
@@ -49,17 +50,21 @@ global.Dialog.ExportFile = global.Dialog.extend({
       exportOwners: exportOwners
     };
     this.onSubmitCallback && this.onSubmitCallback(exportToFile, options);
-  },
+  }
 
-  showCloseButton: function () {
+  showCloseButton () {
     this.content.find("p.buttons").hide();
     this.content.find("p.buttons.close-btn").show();
-  },
+  }
 
-  addMessage: function(message) {
+  addMessage(message) {
     message = message.replace(/\n/g, "<br>");
 
     var element = this.content.find('code.result')[0];
     element.innerHTML += message;
-  },
-});
+  }
+
+}
+
+global.Dialog.ExportFile = ExportFile;
+module.exports = ExportFile;

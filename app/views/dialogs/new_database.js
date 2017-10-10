@@ -1,14 +1,16 @@
-global.Dialog.NewDatabase = global.Dialog.extend({
-  title: "New database",
+class NewDatabase extends Dialog {
 
-  init: function (handler) {
-    this.handler = handler;
+  constructor (handler) {
+    super(handler, {
+      title: "New database"
+    });
+
     this.prepareData().then(() => {
       this.showWindow();
     });
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/new_database');
     this.content = this.renderWindow(this.title, nodes);
 
@@ -33,9 +35,9 @@ global.Dialog.NewDatabase = global.Dialog.extend({
 
     this.bindFormSubmitting();
     this.setAutofocus();
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     if (!data.dbname || data.dbname == '') {
       alert('Please fill database name');
       return;
@@ -47,14 +49,17 @@ global.Dialog.NewDatabase = global.Dialog.extend({
       else
         this.close();
     });
-  },
+  }
 
-  prepareData: async function (callback) {
+  async prepareData (callback) {
     var server = this.handler.connection.server;
 
     this.templates = await server.databaseTemplatesList();
     this.encodings = await server.avaliableEncodings();
     this.clientEncoding = await server.getVariable('CLIENT_ENCODING');
     this.serverEncoding = await server.getVariable('SERVER_ENCODING');
-  },
-});
+  }
+}
+
+global.Dialog.NewDatabase = NewDatabase;
+module.exports = NewDatabase;

@@ -1,20 +1,21 @@
-global.Dialog.NewIndex = global.Dialog.extend({
-  title: "Create index",
+class NewIndex extends Dialog {
 
-  init: function (handler) {
-    this.handler = handler;
+  constructor (handler) {
+    super(handler, {
+      title: "Create index"
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     this.handler.tableObj().getColumns((columns) => {
       var nodes = App.renderView('dialogs/index_form', {columns: columns});
       this.content = this.renderWindow(this.title, nodes);
       this.bindFormSubmitting();
     });
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     data.columns = [];
     for (var i in data) {
       if (i.match(/columns\[/)) {
@@ -27,4 +28,7 @@ global.Dialog.NewIndex = global.Dialog.extend({
     }
     this.handler.addIndex(data, this.defaultServerResponse.bind(this));
   }
-});
+}
+
+global.Dialog.NewIndex = NewIndex;
+module.exports = NewIndex;

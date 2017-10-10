@@ -1,15 +1,16 @@
-global.Dialog.ImportFile = global.Dialog.extend({
-  title: "Import options",
-  dialogClass: "import-file-dialog",
+class ImportFile extends Dialog {
 
-  init: function (handler, filename, onSubmit) {
-    this.filename = filename;
-    this.onSubmitCallback = onSubmit;
-    this.handler = handler;
+  constructor (handler, filename, onSubmit) {
+    super(handler, {
+      title: "Import options",
+      dialogClass: "import-file-dialog",
+      filename: filename,
+      onSubmitCallback: onSubmit
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     this.databaseList((databases) => {
       var nodes = App.renderView('dialogs/import_file', {
         filename: this.filename,
@@ -31,36 +32,35 @@ global.Dialog.ImportFile = global.Dialog.extend({
       });
       this.bindFormSubmitting();
     });
-  },
+  }
 
-  startImporting: function () {
+  startImporting () {
     this.addClass('importing');
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     this.onSubmitCallback && this.onSubmitCallback(data);
-  },
+  }
 
-  addMessage: function(message) {
+  addMessage(message) {
     message = message.replace(/\n/g, "<br>");
 
     var element = this.content.find('code.result')[0];
     element.innerHTML += message;
-  },
+  }
 
-  showCloseButton: function () {
+  showCloseButton () {
     this.content.find("p.buttons").hide();
     this.content.find("p.buttons.close-btn").show();
-  },
+  }
 
-  databaseList: function (callback) {
+  databaseList (callback) {
     this.handler.listDatabases((databases) => {
       callback(databases);
     });
   }
 
-});
+}
 
-global.Dialog.ImportFile.render = function (handler) {
-  new global.Dialog.ImportFile(handler);
-};
+global.Dialog.ImportFile = ImportFile;
+module.exports = ImportFile;

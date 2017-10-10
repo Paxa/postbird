@@ -1,16 +1,18 @@
-global.Dialog.HerokuConnection = global.Dialog.extend({
-  title: "Heroku Connection",
-  dialogClass: "heroku-connection-dialog",
+class HerokuConnection extends Dialog {
 
-  init: function (viewObj, name, databseUrl) {
-    this.viewObj = viewObj;
-    this.name = name;
-    this.databseUrl = databseUrl;
+  constructor (viewObj, name, databseUrl) {
+    super(null, {
+      title: "Heroku Connection",
+      dialogClass: "heroku-connection-dialog",
+      viewObj: viewObj,
+      name: name,
+      databseUrl: databseUrl
+    });
 
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     this.renderTemplate('dialogs/heroku_connection', {
       name: this.name,
       connectionUrl: this.databseUrl
@@ -21,9 +23,9 @@ global.Dialog.HerokuConnection = global.Dialog.extend({
     }
 
     this.content.find('.save-conn').bind('click', this.saveConnection.bind(this));
-  },
+  }
 
-  saveConnection: function () {
+  saveConnection () {
     var parsed = this.viewObj.handler.connection.parseConnectionString(this.databseUrl);
 
     Model.SavedConn.saveConnection(this.name, parsed);
@@ -31,6 +33,9 @@ global.Dialog.HerokuConnection = global.Dialog.extend({
 
     window.alertify.hide();
     window.alertify.alert("Saved!");
-  },
+  }
 
-});
+}
+
+global.Dialog.HerokuConnection = HerokuConnection;
+module.exports = HerokuConnection;

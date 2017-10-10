@@ -1,12 +1,13 @@
-global.Dialog.NewTable = global.Dialog.extend({
-  title: "New table",
-
-  init: function (handler) {
-    this.handler = handler;
+class NewTable extends Dialog {
+  constructor(handler) {
+    super(handler, {
+      title: "New table"
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+
+  showWindow () {
     this.handler.connection.tableSchemas((schemas) => {
       //console.log(schemas);
       var nodes = App.renderView('dialogs/new_table');
@@ -23,9 +24,12 @@ global.Dialog.NewTable = global.Dialog.extend({
       this.setAutofocus();
       this.bindFormSubmitting();
     });
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     this.handler.createTable(data, this.defaultServerResponse.bind(this));
   }
-});
+}
+
+global.Dialog.NewTable = NewTable;
+module.exports = NewTable;

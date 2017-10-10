@@ -1,6 +1,6 @@
-global.Panes.Users = global.Pane.extend({
+class Users extends global.Pane {
 
-  renderTab: function(rows) {
+  renderTab (rows) {
     this.users = {};
     rows.forEach((row) => {
       row.roles = [];
@@ -15,34 +15,39 @@ global.Panes.Users = global.Pane.extend({
 
     this.renderViewToPane('users', 'users_tab', {rows: rows, currentUser: this.currentUser});
     this.initTables();
-  },
+  }
 
-  editUser: function (username) {
-    console.log(username, this.users[username]);
+  editUser (username) {
     new Dialog.EditUser(this.handler, this.users[username]);
-  },
+  }
 
-  newUserDialog: function () {
+  newUserDialog () {
     new Dialog.NewUser(this.handler);
-  },
+  }
 
-  deleteUser: function (username) {
+  deleteUser (username) {
     window.alertify.confirm('Do you want to delete user "' + username + '"?', (res) => {
       if (res) {
         this.handler.deleteUser(username);
       }
     });
-  },
+  }
 
-  getGrants: function (username) {
+  async getGrants (username) {
     App.startLoading("Loading user grants...");
-    var user = new Model.User(username);
-    user.getGrants().then(result => {
+
+    try {
+      var user = new Model.User(username);
+      var result = await user.getGrants();
+
       App.stopLoading();
       new Dialog.UserGrants(`Grants for ${username}`, result.rows);
-    }).catch(error => {
+    } catch (error) {
       App.stopLoading();
       alert(error.message);
-    });
+    }
   }
-});
+}
+
+global.Panes.Users = Users;
+module.exports = Users;

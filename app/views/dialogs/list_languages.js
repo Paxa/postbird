@@ -1,16 +1,19 @@
-global.Dialog.ListLanguages = global.Dialog.extend({
-  title: "Languages",
-  dialogClass: "list-languages",
+class ListLanguages extends Dialog {
 
-  init: function (handler, langs) {
-    this.handler = handler;
-    this.langs = langs;
+  constructor (handler, langs) {
+    super(handler, {
+      title: "Languages",
+      dialogClass: "list-languages",
+      langs: langs
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/list_languages', {langs: this.langs});
-
     this.content = this.renderWindow(this.title, nodes);
   }
-});
+}
+
+global.Dialog.ListLanguages = ListLanguages;
+module.exports = ListLanguages;

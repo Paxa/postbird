@@ -1,14 +1,15 @@
-global.Dialog.EditUser = global.Dialog.NewUser.extend({
-  title: "Edit user",
+class EditUser extends Dialog.NewUser {
 
-  init: function(handler, user) {
-    this.username = user.rolname;
-    this.user = user;
-    this.buttonText = "Update User";
-    this._super(handler);
-  },
+  constructor(handler, user) {
+    super(handler, {
+      title: "Edit user",
+      user: user,
+      username: user.rolname,
+      buttonText: "Update User"
+    });
+  }
 
-  processData: function(data) {
+  processData (data) {
     App.startLoading(`Updating user ${this.username}`);
 
     this.handler.updateUser(this.username, data, (data, error) => {
@@ -19,10 +20,10 @@ global.Dialog.EditUser = global.Dialog.NewUser.extend({
       else
         this.close();
     });
-  },
+  }
 
-  validate: function (data) {
-    if (this._super(data) == true) {
+  validate (data) {
+    if (super.validate(data) == true) {
       if (this.username != data.username && data.password == '') {
         return this.fail('Password is required when renaming user');
       } else {
@@ -30,4 +31,7 @@ global.Dialog.EditUser = global.Dialog.NewUser.extend({
       }
     }
   }
-});
+}
+
+global.Dialog.EditUser = EditUser;
+module.exports = EditUser;

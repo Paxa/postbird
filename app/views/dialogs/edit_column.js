@@ -1,13 +1,14 @@
-global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
-  title: "Edit column",
+class EditColumn extends Dialog.NewColumn {
 
-  init: function(handler, columnName) {
-    this.handler = handler;
-    this.columnName = columnName;
+  constructor(handler, columnName) {
+    super(handler, {
+      title: "Edit column",
+      columnName: columnName
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     Model.Column.availableTypes((types) => {
       this.addPseudoTypes(types);
       var groupedTypes = this.groupTypes(types);
@@ -18,9 +19,9 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
         this.bindFormSubmitting();
       });
     });
-  },
+  }
 
-  onSubmit: function(data) {
+  onSubmit(data) {
     if (data.type == "") {
       window.alert("Please choose column type");
       return;
@@ -30,4 +31,7 @@ global.Dialog.EditColumn = global.Dialog.NewColumn.extend({
     }
     this.handler.editColumn(this.columnObj, data, this.defaultServerResponse.bind(this));
   }
-});
+}
+
+global.Dialog.EditColumn = EditColumn;
+module.exports = EditColumn;

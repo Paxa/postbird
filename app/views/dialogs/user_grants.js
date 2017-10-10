@@ -1,15 +1,19 @@
-global.Dialog.UserGrants = global.Dialog.extend({
-  title: "",
-  dialogClass: "user-grants-dialog",
+class UserGrants extends Dialog {
 
-  init: function (title, grants) {
-    this.title = title;
-    this.grants = grants;
+  constructor (title, grants) {
+    super(null, {
+      title: title,
+      dialogClass: "user-grants-dialog",
+      grants: grants
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/user_grants', {grants: this.grants});
     this.content = this.renderWindow(this.title, nodes);
   }
-});
+}
+
+global.Dialog.UserGrants = UserGrants;
+module.exports = UserGrants;

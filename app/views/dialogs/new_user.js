@@ -1,50 +1,49 @@
-global.Dialog.NewUser = global.Dialog.extend({
-  title: "Create user",
+class NewUser extends Dialog {
 
-  init: function (handler) {
-    this.handler = handler;
-    this.user = this.user || {};
+  constructor (handler, params) {
+    params = Object.assign({title: "Create user", user: {}}, params);
+    super(handler, params);
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/user_form', {user: this.user, buttonText: this.buttonText});
 
     this.content = this.renderWindow(this.title, nodes);
     this.bindFormSubmitting();
-  },
+  }
 
-  onSubmit: function (data) {
+  onSubmit (data) {
     if (this.validate(data)) {
       this.processData(data);
     }
-  },
+  }
 
-  processData: function (data) {
+  processData (data) {
     this.handler.createUser(data, (data, error) => {
       if (error)
         window.alert(error.message);
       else
         this.close();
     });
-  },
+  }
 
-  fail: function (msg) {
+  fail (msg) {
     setTimeout(() => {
       window.alert(msg);
     }, 100);
     return false;
-  },
+  }
 
-  validate: function (data) {
+  validate (data) {
     if (!data.username || data.username.length == 0) return this.fail('Please type username');
-    if (data.username.length > 63) return this.fail("Username is too long, maximum is 63, " +
-                                               "you typed " + data.username.length);
+    if (data.username.length > 63) {
+      return this.fail("Username is too long, maximum is 63, you typed " + data.username.length);
+    }
 
     return true;
   }
-});
+}
 
-global.Dialog.NewUser.render = function (handler) {
-  new global.Dialog.NewUser(handler);
-};
+global.Dialog.NewUser = NewUser;
+module.exports = NewUser;

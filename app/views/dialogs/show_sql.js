@@ -1,16 +1,20 @@
-global.Dialog.ShowSql = global.Dialog.extend({
-  title: "",
-  dialogClass: "show-sql-dialog",
+class ShowSql extends Dialog {
 
-  init: function (title, code) {
-    this.title = title;
-    this.code = code;
+  constructor (title, code) {
+    super(null, {
+      dialogClass: "show-sql-dialog",
+      title: title,
+      code: code
+    });
     this.showWindow();
-  },
+  }
 
-  showWindow: function () {
+  showWindow () {
     var nodes = App.renderView('dialogs/show_sql', {code: this.code});
     this.content = this.renderWindow(this.title, nodes);
     window.hljs.highlightBlock(this.content.find('code')[0]);
   }
-});
+}
+
+global.Dialog.ShowSql = ShowSql;
+module.exports = ShowSql;
