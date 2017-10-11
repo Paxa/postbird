@@ -145,7 +145,7 @@ global.DbScreen = jClass.extend({
 
   extensionsTabActivate: function () {
     this.connection.getExtensions((rows) => {
-      this.view.extensions.renderTab(rows);
+      this.view.extensionsPane.renderTab(rows);
       this.currentTab = 'extensions';
     });
   },
@@ -191,7 +191,7 @@ global.DbScreen = jClass.extend({
       });
       this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, (data, error) => {
         App.stopLoading();
-        this.view.contents.renderTab(data, columnTypes, error || error2);
+        this.view.contentPane.renderTab(data, columnTypes, error || error2);
         this.currentTab = 'content';
       });
     });
@@ -199,13 +199,13 @@ global.DbScreen = jClass.extend({
 
   usersTabActivate: function () {
     Model.User.findAll((rows, error) => {
-      this.view.users.renderTab(rows);
+      this.view.usersPane.renderTab(rows);
       this.currentTab = 'users';
     });
   },
 
   queryTabActivate: function () {
-    this.view.query.renderTab();
+    this.view.queryPane.renderTab();
     this.currentTab = 'query';
   },
 
@@ -415,7 +415,7 @@ global.DbScreen = jClass.extend({
       errorReporter(error, false);
     }
 
-    this.view.structure.renderTab(rows, indexes, constraints, {
+    this.view.structurePane.renderTab(rows, indexes, constraints, {
       isMatView: isMatView,
       columnsError: columnsError,
       indexesError: indexesError,
@@ -425,7 +425,7 @@ global.DbScreen = jClass.extend({
   },
 
   proceduresTabActivate: function() {
-    this.view.procedures.renderTab(() => {
+    this.view.proceduresPane.renderTab(() => {
       this.currentTab = 'procedures';
     });
   },
@@ -518,7 +518,7 @@ global.DbScreen = jClass.extend({
           global.errorReporter(error, false);
         }
         App.stopLoading();
-        this.view.info.renderTab({source: code, error: dumpError}, relType, estimateCount, diskUsage);
+        this.view.infoPane.renderTab({source: code, error: dumpError}, relType, estimateCount, diskUsage);
         this.currentTab = 'info';
       });
     });
@@ -558,4 +558,3 @@ global.DbScreen = jClass.extend({
   }
 });
 
-global.Panes = {};

@@ -1,5 +1,6 @@
-global.Panes.Query = global.Pane.extend({
-  renderTab: function(rows) {
+class Query extends Pane {
+
+  renderTab (rows) {
     if (this.content) return;
 
     this.renderViewToPane('query', 'query_tab');
@@ -38,9 +39,9 @@ global.Panes.Query = global.Pane.extend({
     this.statusLine = this.content.find('.result .status');
 
     new QueryTabResizer(this.content, this.editor);
-  },
+  }
 
-  saveLastQuery: function () {
+  saveLastQuery () {
     var value = this.editor.getValue();
     if (this.saveTimeout) {
       clearTimeout(this.saveTimeout);
@@ -51,9 +52,9 @@ global.Panes.Query = global.Pane.extend({
       delete this.saveTimeout;
     }, 700);
 
-  },
+  }
 
-  toggleButtonText: function () {
+  toggleButtonText () {
     var runLabel = "Run query";
     var selectedLabel = "Run selection";
 
@@ -63,17 +64,17 @@ global.Panes.Query = global.Pane.extend({
     } else {
       this.button.text(runLabel);
     }
-  },
+  }
 
-  toggleCleanButton: function () {
+  toggleCleanButton () {
     if (this.content.find('.result table tr').length) {
       this.cleanButton.show();
     } else {
       this.cleanButton.hide();
     }
-  },
+  }
 
-  runQuery: function () {
+  runQuery () {
     this.editor.save();
     this.statusLine.text('');
 
@@ -97,7 +98,7 @@ global.Panes.Query = global.Pane.extend({
     this.button.text("Running...");
 
     App.startLoading("Query still running...", 1000, {
-      cancel: function () {
+      cancel () {
         App.stopRunningQuery();
       }
     });
@@ -143,36 +144,38 @@ global.Panes.Query = global.Pane.extend({
       }
       this.editor.focus();
     });
-  },
+  }
 
-  cleanResult: function () {
+  cleanResult () {
     this.content.find('.result .rescol-wrapper').html("").hide();
     this.statusLine.text("");
-  },
+  }
 
-  cleanButtonClick: function () {
+  cleanButtonClick () {
     this.cleanResult();
     this.toggleCleanButton();
-  },
+  }
 
-  reloadTables: function () {
+  reloadTables () {
     this.handler.fetchTablesAndSchemas();
-  },
+  }
 
-  appendText: function (sql, lineOffset) {
+  appendText (sql, lineOffset) {
     if (lineOffset == undefined) lineOffset = 1;
 
     var lineNo = this.editor.lineCount();
     this.editor.setValue(this.editor.getValue() + sql);
     this.editor.setCursor(lineNo + lineOffset, 0);
     this.editor.focus();
-  },
+  }
 
-  openSnippets: function () {
+  openSnippets () {
     SnippetsWindow.init();
-  },
+  }
 
-  showHistory: function () {
+  showHistory () {
     global.HistoryWindow.init();
   }
-});
+}
+
+module.exports = Query;

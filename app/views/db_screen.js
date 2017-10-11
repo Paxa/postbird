@@ -81,8 +81,8 @@ global.DbScreenView = jClass.extend({
   },
 
   initializePanes: function () {
-    ['Users', 'Extensions', 'Query', 'Structure', 'Contents', 'Procedures', 'Info'].forEach((paneName) => {
-      this[paneName.toLowerCase()] = new global.Panes[paneName](this);
+    ['Users', 'Extensions', 'Query', 'Content', 'Structure', 'Procedures', 'Info'].forEach(paneName => {
+      this[paneName.toLowerCase() + "Pane"] = new Pane[paneName](this);
     });
   },
 

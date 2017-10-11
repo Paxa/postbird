@@ -160,7 +160,7 @@ var filterMatchers = (() => {
   };
 })();
 
-global.Panes.Contents = global.Pane.extend({
+class Content extends Pane {
 
   renderTab(data, columnTypes, error) {
     this.columnTypes = columnTypes;
@@ -187,7 +187,7 @@ global.Panes.Contents = global.Pane.extend({
       this.currentTableType = tableType;
       this.renderData(data);
     });
-  },
+  }
 
   renderData(data) {
     if (this.error) {
@@ -250,7 +250,7 @@ global.Panes.Contents = global.Pane.extend({
       this.footer.find('.info').text("Rows " + begin + " - " + ends + " of " + count);
     });
 
-  },
+  }
 
   totals(callback) {
     if (this.totalRows) {
@@ -261,7 +261,7 @@ global.Panes.Contents = global.Pane.extend({
         callback(count);
       });
     }
-  },
+  }
 
   nextPage() {
     App.startLoading("Getting next page...", 100, {
@@ -275,7 +275,7 @@ global.Panes.Contents = global.Pane.extend({
       this.scrollToTop();
       App.stopLoading();
     });
-  },
+  }
 
   prevPage() {
     App.startLoading("Getting previous page...", 100, {
@@ -289,7 +289,7 @@ global.Panes.Contents = global.Pane.extend({
       this.scrollToTop();
       App.stopLoading();
     });
-  },
+  }
 
   reloadData() {
     this.content.addClass('reloading');
@@ -315,14 +315,14 @@ global.Panes.Contents = global.Pane.extend({
       alert(error.message);
       App.stopLoading();
     }
-  },
+  }
 
   renderPage(data) {
     this.limit = data.limit;
     this.offset = data.offset;
     this.dataRowsCount = data.rows.length;
     this.renderData(data);
-  },
+  }
 
   initSortable() {
     var rotate = {
@@ -352,7 +352,7 @@ global.Panes.Contents = global.Pane.extend({
         });
       });
     });
-  },
+  }
 
   initContextMenu(event) {
     var table = this.content.find('.rescol-content-wrapper table');
@@ -390,7 +390,7 @@ global.Panes.Contents = global.Pane.extend({
       };
     }
     $u.contextMenu(table, contextMenuActions);
-  },
+  }
 
   deleteRow(row) {
     if (this.currentTableType != 'BASE TABLE') {
@@ -407,7 +407,7 @@ global.Panes.Contents = global.Pane.extend({
         }
       });
     }
-  },
+  }
 
   addRow() {
     var container = this.content.find('table tbody');
@@ -440,7 +440,7 @@ global.Panes.Contents = global.Pane.extend({
         this.cancelNewRow();
       }
     });
-  },
+  }
 
   saveNewRow() {
     var data = {};
@@ -462,7 +462,7 @@ global.Panes.Contents = global.Pane.extend({
         this.reloadData();
       }
     });
-  },
+  }
 
   cancelNewRow() {
     var nonEmptyValue = [];
@@ -478,7 +478,7 @@ global.Panes.Contents = global.Pane.extend({
     } else {
       this.newRowFields.remove();
     }
-  },
+  }
 
   initFilters() {
     this.filterField =   this.content.find('[name=filter-field]');
@@ -528,7 +528,7 @@ global.Panes.Contents = global.Pane.extend({
         this.reloadData();
       }
     });
-  },
+  }
 
   cancelFilters() {
     this.filterValue.val("").trigger('change');
@@ -538,9 +538,9 @@ global.Panes.Contents = global.Pane.extend({
       this.reloadData();
     }
   }
-});
+}
 
-global.Panes.Contents.insertSnippet = function (sql) {
+Content.insertSnippet = function (sql) {
   var tab = App.currentTab.instance;
   if (tab.currentTab != "query") {
     tab.view.showTab("query")
@@ -549,3 +549,5 @@ global.Panes.Contents.insertSnippet = function (sql) {
   electron.remote.BrowserWindow.mainWindow.focus();
   tab.view.query.appendText(sql, 2);
 };
+
+module.exports = Content;

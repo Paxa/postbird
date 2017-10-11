@@ -1,6 +1,6 @@
-global.Panes.Procedures = global.Pane.extend({
+class Procedures extends Pane {
 
-  renderTab: function (callback) {
+  renderTab (callback) {
     App.startLoading("Functions config...");
 
     Model.Procedure.findAllWithExtensions((procs) => {
@@ -17,32 +17,34 @@ global.Panes.Procedures = global.Pane.extend({
         if (callback) callback();
       });
     });
-  },
+  }
 
-  editProc: function (poid, procName) {
+  editProc (poid, procName) {
     Model.Procedure.find(poid, (proc) => {
       Dialog.EditProcedure(this.handler, proc);
     });
-  },
+  }
 
-  procDefinition: function (poid, name) {
+  procDefinition (poid, name) {
     Model.Procedure.find(poid, (proc) => {
       proc.getDefinition((data, error) => {
         Dialog.DefProcedure(this.handler, proc, data.source);
       });
     });
-  },
+  }
 
-  editTrigger: function (triggerName) {
+  editTrigger (triggerName) {
     throw "Not Implemented";
-  },
+  }
 
-  listLanguages: function () {
+  listLanguages () {
     App.startLoading("Fetching config...");
     Model.Procedure.listLanguages((langs) => {
       App.stopLoading();
       new Dialog.ListLanguages(this.hadler, langs);
     });
-  },
+  }
 
-});
+}
+
+module.exports = Procedures;

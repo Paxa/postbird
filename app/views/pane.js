@@ -1,37 +1,37 @@
-global.Pane = jClass.extend({
-  init: function (view) {
+class Pane {
+
+  constructor (view) {
     this.view = view;
     this.handler = view.handler;
-  },
+  }
 
-  initEvents: function (content) {
-    var $this = this;
-
+  initEvents (content) {
     $u(content).find('a[exec], button[exec], input[type=submit][exec]').each((i, el) => {
       $u(el).bind('click', (e) => {
         $u.stopEvent(e);
-        $this.lastEvent = e;
-        with($this) {
+        this.lastEvent = e;
+        //with(this) {
           var exec = el.getAttribute('exec');
-          if (!exec.match(/\(.*\)/)) exec = exec + '()'
-          eval(exec);
-        }
+          if (!exec.match(/\(.*\)/)) exec = exec + '()';
+          console.log('EXEC', `this.${exec}`);
+          eval(`this.${exec}`);
+        //}
       });
     });
-  },
+  }
 
-  setUnchangeable: function () {
+  setUnchangeable () {
     this.content.attr('unchangeable', true);
-  },
+  }
 
-  renderViewToPane: function(pane, view_file, options) {
+  renderViewToPane (pane, view_file, options) {
     var node = App.renderView(view_file, options);
     this.view.setTabContent(pane, node);
     this.content = this.view.tabContent(pane);
     this.initEvents(this.content);
-  },
+  }
 
-  initTables: function () {
+  initTables () {
     // heavy stuff, run it with delay
     setTimeout(() => {
       this.content.find('.rescol-wrapper').forEach((table) => {
@@ -46,9 +46,21 @@ global.Pane = jClass.extend({
         }
       });
     }, 10);
-  },
+  }
 
-  scrollToTop: function () {
+  scrollToTop () {
     this.content[0].scrollTop = 0;
-  },
-});
+  }
+}
+
+global.Pane = Pane;
+
+Pane.Procedures = require('./panes/procedures');
+Pane.Info       = require('./panes/info');
+Pane.Content    = require('./panes/content');
+Pane.Query      = require('./panes/query');
+Pane.Structure  = require('./panes/structure');
+Pane.Users      = require('./panes/users');
+Pane.Extensions = require('./panes/extensions');
+
+module.exports = Pane;

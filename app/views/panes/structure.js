@@ -1,6 +1,6 @@
-global.Panes.Structure = global.Pane.extend({
+class Structure extends Pane {
 
-  renderTab: function(columns, indexes, constraints, extra = {}) {
+  renderTab (columns, indexes, constraints, extra = {}) {
     this.constraints = constraints.rows;
     var neededConstraints = [];
     if (constraints && constraints.rows) {
@@ -20,51 +20,51 @@ global.Panes.Structure = global.Pane.extend({
       constraintsError: extra.constraintsError
     });
     this.initTables();
-  },
+  }
 
-  addColumnForm: function () {
+  addColumnForm () {
     new Dialog.NewColumn(this.handler);
-  },
+  }
 
-  addIndexForm: function () {
+  addIndexForm () {
     new Dialog.NewIndex(this.handler);
-  },
+  }
 
-  editColumn: function (column_name) {
+  editColumn (column_name) {
     new Dialog.EditColumn(this.handler, column_name);
-  },
+  }
 
-  deleteColumn: function (column_name) {
+  deleteColumn (column_name) {
     var msg = `Delete column <b>${column_name}</b>?`;
     window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteColumn(column_name);
       }
     });
-  },
+  }
 
-  doDeleteColumn: function (column_name) {
+  doDeleteColumn (column_name) {
     this.handler.deleteColumn(column_name, (result, error) => {
       if (error) window.alert(error.message);
     });
-  },
+  }
 
-  deleteIndex: function (indexName) {
+  deleteIndex (indexName) {
     var msg = `Delete index <b>${indexName}</b>?`;
     window.alertify.confirm(msg, (result) => {
       if (result) {
         this.doDeleteIndex(indexName);
       }
     });
-  },
+  }
 
-  doDeleteIndex: function (indexName) {
+  doDeleteIndex (indexName) {
     this.handler.deleteIndex(indexName, (result, error) => {
       if (error) window.alert(error.message);
     });
-  },
+  }
 
-  deleteConstraint: function (constraintName) {
+  deleteConstraint (constraintName) {
     var msg = `Delete constraint <b>${constraintName}</b>?`;
     var constraint = this.constraints.find((c) => { return c.conname == constraintName; });
     if (constraint) msg = msg + `<br><code>${constraint.pretty_source}</code>`;
@@ -76,4 +76,6 @@ global.Panes.Structure = global.Pane.extend({
       }
     });
   }
-});
+}
+
+module.exports = Structure;

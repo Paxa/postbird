@@ -56,5 +56,4 @@ class Users extends global.Pane {
   }
 }
 
-global.Panes.Users = Users;
 module.exports = Users;

@@ -30,13 +30,6 @@ require('./app/login_screen');
 require('./app/help_screen');
 require('./app/views/db_screen');
 require('./app/views/snippets');
-require('./app/views/panes/users');
-require('./app/views/panes/extensions');
-require('./app/views/panes/query');
-require('./app/views/panes/structure');
-require('./app/views/panes/contents');
-require('./app/views/panes/procedures');
-require('./app/views/panes/info');
 
 require('./app/views/dialog');
 require('./app/views/dialogs/new_user');
@@ -148,7 +141,7 @@ $(document).ready(function() {
 
   electron.ipcRenderer.on('Snippet.insert', function(event, message) {
     console.log('Snippet.insert', event, message);
-    Panes.Contents.insertSnippet(message);
+    Pane.Content.insertSnippet(message);
   });
 
   setTimeout(function () {

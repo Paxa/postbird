@@ -1,6 +1,6 @@
-global.Panes.Extensions = global.Pane.extend({
+class Extensions extends Pane {
 
-  renderTab: function (rows) {
+  renderTab (rows) {
     var scrollOffset = [0, 0];
     var selecredRow = null;
     if (this.content && this.handler.currentTab == 'extensions') {
@@ -30,10 +30,9 @@ global.Panes.Extensions = global.Pane.extend({
     }
 
     this.initTables();
+  }
 
-  },
-
-  install: function (extension) {
+  install (extension) {
 
     window.alertify.labels.ok = "Install";
     window.alertify.confirm("Install extension " + extension + "?", (res) => {
@@ -51,9 +50,9 @@ global.Panes.Extensions = global.Pane.extend({
         }, 550);
       });
     });
-  },
+  }
 
-  uninstall: function (extension) {
+  uninstall (extension) {
     window.alertify.labels.ok = "Uninstall";
     window.alertify.confirm("Delete extension " + extension + "?", (res) => {
       window.alertify.labels.ok = "OK";
@@ -76,4 +75,6 @@ global.Panes.Extensions = global.Pane.extend({
     });
   }
 
-});
+}
+
+module.exports = Extensions;

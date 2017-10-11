@@ -1,5 +1,6 @@
-global.Panes.Info = global.Pane.extend({
-  renderTab: function(source, relType, recordsCount, tableSize) {
+class Info extends Pane {
+
+  renderTab (source, relType, recordsCount, tableSize) {
     this.renderViewToPane('info', 'info_tab', {
       source: source,
       tableSize: tableSize,
@@ -9,4 +10,6 @@ global.Panes.Info = global.Pane.extend({
 
     window.hljs.highlightBlock(this.content.find('code')[0]);
   }
-});
+}
+
+module.exports = Info;
