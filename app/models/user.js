@@ -5,7 +5,7 @@ class User extends Model.base {
     this.username = username;
   }
 
-  static findAll (callback) {
+  static findAll () {
     var sql = `
       SELECT r.rolname, r.rolsuper, r.rolinherit,
         r.rolcreaterole, r.rolcreatedb, r.rolcanlogin,
@@ -21,30 +21,26 @@ class User extends Model.base {
       ORDER BY 1;
     `;
 
-    return Model.base.q(sql, (data, error) => {
-      callback && callback(data.rows, error);
-    });
+    return Model.base.q(sql);
   }
 
   // data: {username: ... password: ... superuser: ... }
-  static create (data, callback) {
+  static create (data) {
     var sql = `CREATE USER "${data.username}"`;
 
     if (data.password) sql += ` WITH PASSWORD '${data.password}'`;
     sql += ';'
     if (data.superuser) sql += `ALTER USER "${data.username}" WITH SUPERUSER;`;
 
-    return Model.base.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
+    return Model.base.q(sql);
   }
 
-  static drop (username, callback) {
-    return Model.base.q('DROP USER "%s"', username, callback);
+  static drop (username) {
+    return Model.base.q('DROP USER "%s"', username);
   }
 
   // data: {username: ... password: ... superuser: ... }
-  update (data, callback) {
+  update (data) {
     var sql = '';
     if (this.username != data.username) {
       sql += `ALTER USER "${this.username}" RENAME TO "${data.username}"; `;

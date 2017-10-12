@@ -3,6 +3,10 @@ var Menu = remote.Menu;
 var MenuItem = remote.MenuItem;
 var webFrame = require('electron').webFrame;
 
+var UpdatesController = require('./controllers/updates_controller');
+var ExportController = require('./controllers/export_controller');
+var ImportController = require('./controllers/import_controller');
+
 var template = [
   {
     label: 'File',
@@ -10,7 +14,7 @@ var template = [
       {
         label: 'Import .sql file',
         click: () => {
-          (new global.ImportController).doImport();
+          (new ImportController).doImport();
         },
         accelerator: 'Shift+CmdOrCtrl+i',
       },
@@ -57,7 +61,7 @@ var template = [
       {
         label: 'Export Database',
         click: () => {
-          (new global.ExportController).doExport();
+          (new ExportController).doExport();
         },
         enabled: false
       },

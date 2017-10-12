@@ -16,7 +16,8 @@
     "electron-mocha": "^4.0.3",
     "electron-packager": "9.1.0",
     "electron-rebuild": "1.6.0",
-    "node-sass": "4.5.3"
+    "node-sass": "4.5.3",
+    "spectron": "^3.7.2"
   },
   "dependencies": {
     "classy": "github:paxa/classy",

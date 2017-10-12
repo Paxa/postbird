@@ -1,5 +1,6 @@
-global.ImportController = jClass.extend({
-  init: function () {
+class ImportController {
+
+  constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
       throw new Error("Please connecto to database");
@@ -10,25 +11,25 @@ global.ImportController = jClass.extend({
         return App.currentTab.instance;
       }
     });
-  },
+  }
 
-  doImport: function () {
+  doImport () {
     $u.openFileDialog('.sql', (files) => {
       if (files && files.length > 0) {
         this.filename = files[0];
         this.showImportDialog();
       }
     });
-  },
+  }
 
-  showImportDialog: function () {
+  showImportDialog () {
     var shorterName = this.filename.replace(new RegExp("^" + process.env['HOME']), '~');
-    this.dialog = Dialog.ImportFile(this.handler, shorterName, (data) => {
+    this.dialog = new Dialog.ImportFile(this.handler, shorterName, (data) => {
       this.setOrCreateDatabase(data);
     });
-  },
+  }
 
-  setOrCreateDatabase: function(data) {
+  setOrCreateDatabase (data) {
     if (data.database == '**create-db**') {
       if (!data.new_database_name || data.new_database_name == '') {
         window.alert('Please fill database name');
@@ -47,9 +48,9 @@ global.ImportController = jClass.extend({
         this.loadSqlFile();
       });
     }
-  },
+  }
 
-  loadSqlFile: function() {
+  loadSqlFile () {
     this.dialog.startImporting();
     //this.dialog.addMessage("Importing " + this.filename + " ...");
     var importer = new SqlImporter(this.filename);
@@ -64,9 +65,11 @@ global.ImportController = jClass.extend({
       this.dialog.showCloseButton();
       this.handler.fetchTablesAndSchemas();
     });
-  },
+  }
 
-  currentTab: function () {
+  currentTab () {
     return App.currentTab.instance;
   }
-});
+}
+
+module.exports = ImportController;

@@ -1,24 +1,16 @@
-var libs = {};
-var loadedModules = {};
 var remote = require('electron').remote;
+var semver = require('semver');
+var needle = require('needle');
+var strftime = require('strftime');
 
-['semver', 'needle', 'strftime'].forEach((lib) => {
-  Object.defineProperty(libs, lib, {
-    get: function() {
-      if (!loadedModules[lib]) {
-        loadedModules[lib] = require(lib);
-      }
-      return loadedModules[lib];
-    }
-  });
-});
+class UpdatesController {
 
+  constructor() {
+    this.releasesUrl = "https://api.github.com/repos/paxa/Postbird/releases";
+    this.releasesPage = "https://github.com/Paxa/postbird/releases";
+  }
 
-global.UpdatesController = jClass.extend({
-  releasesUrl: "https://api.github.com/repos/paxa/Postbird/releases",
-  releasesPage: "https://github.com/Paxa/postbird/releases",
-
-  checkUpdates: function (options) {
+  checkUpdates (options) {
     if (options && options.showLoading) {
       App.startLoading("Getting latest version number");
     }
@@ -30,10 +22,10 @@ global.UpdatesController = jClass.extend({
       if (release) {
         var current = this.currentVersion();
         var remote = release.tag_name;
-        if (libs.semver.gt(remote, current)) {
+        if (semver.gt(remote, current)) {
           var date = new Date(release.published_at);
           var msg = `Newer version is available. ${remote} (You are currently using: ${current})
-                     <br>Released at: ${libs.strftime("%d %B %Y, %H:%M", date)}<br>`;
+                     <br>Released at: ${strftime("%d %B %Y, %H:%M", date)}<br>`;
           window.alertify.labels.ok = "Install";
           window.alertify.confirm(msg, (answer) => {
             window.alertify.labels.ok = "OK";
@@ -52,10 +44,10 @@ global.UpdatesController = jClass.extend({
       //if (release) console.log(release);
 
     });
-  },
+  }
 
-  fetchLatestRelease: function (callback) {
-    libs.needle.get(this.releasesUrl, {}, (err, resp) => {
+  fetchLatestRelease (callback) {
+    needle.get(this.releasesUrl, {}, (err, resp) => {
       if (err) {
         callback(err);
       } else {
@@ -65,9 +57,11 @@ global.UpdatesController = jClass.extend({
         callback(undefined, stableRelease);
       }
     });
-  },
+  }
 
-  currentVersion: function () {
+  currentVersion () {
     return remote.app.getVersion();
   }
-});
+}
+
+module.exports = UpdatesController;

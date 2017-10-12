@@ -1,13 +1,13 @@
-global.Model.LastQuery = jClass.extend({
-  klassExtend: {
-    load: function () {
-      return window.localStorage.lastQuery;
-    },
+var LastQuery = {
 
-    save: function (value) {
-      return window.localStorage.lastQuery = value;
-    }
+  load: () => {
+    return window.localStorage.lastQuery;
+  },
+
+  save: (value) => {
+    return window.localStorage.lastQuery = value;
   }
 
-});
+}
 
+module.exports = LastQuery;

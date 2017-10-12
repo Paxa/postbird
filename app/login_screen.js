@@ -1,7 +1,7 @@
 global.LoginScreen = jClass.extend({
   type: "login_screen",
 
-  init: function () {
+  init: function (cliConnectString) {
     this.content = App.renderView('login_screen');
     this.form = this.content.find('form');
     this.connections = this.content.find('ul.connections');
@@ -15,7 +15,11 @@ global.LoginScreen = jClass.extend({
       this.fillForm(null, {user: process.env.USER});
     }
 
-    this.checkAutoLogin();
+    if (cliConnectString) {
+      this.makeConnection(cliConnectString, {});
+    } else {
+      this.checkAutoLogin();
+    }
 
     this.initEvents(this.content);
   },

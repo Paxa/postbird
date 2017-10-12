@@ -148,7 +148,7 @@ global.App = {
   },
 
   addConnectionTab: function() {
-    this.loginScreen = new LoginScreen();
+    this.loginScreen = new LoginScreen(this.cliConnectString);
     var tab = this.addTab('Connection', this.loginScreen.content, this.loginScreen);
     tab.tabHandler.find('.close').hide();
     return tab;

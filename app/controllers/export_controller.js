@@ -1,5 +1,6 @@
-global.ExportController = jClass.extend({
-  init: function () {
+class ExportController {
+
+  constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
       throw new Error("Please connecto to database");
@@ -11,15 +12,15 @@ global.ExportController = jClass.extend({
       }
     });
 
-  },
+  }
 
-  doExport: function () {
-    this.dialog = Dialog.ExportFile(this.handler, (filename, options) => {
+  doExport () {
+    this.dialog = new Dialog.ExportFile(this.handler, (filename, options) => {
       this.runPgDump(filename, options);
     });
-  },
+  }
 
-  runPgDump: function (filename, options) {
+  runPgDump (filename, options) {
     var exporter = new SqlExporter({debug: false});
 
     if (options.exportData === false) {
@@ -50,9 +51,11 @@ global.ExportController = jClass.extend({
       }
       this.dialog.showCloseButton();
     });
-  },
+  }
 
-  currentTab: function () {
+  currentTab () {
     return App.currentTab.instance;
   }
-});
+}
+
+module.exports = ExportController;

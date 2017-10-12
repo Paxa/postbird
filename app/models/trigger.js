@@ -1,4 +1,4 @@
-var Trigger = global.Model.Trigger = Model.base.extend({
+var Trigger = Model.base.extend({
   klassExtend: {
     findAll: function (callback) {
       var sql = `
@@ -20,7 +20,7 @@ var Trigger = global.Model.Trigger = Model.base.extend({
         }
         var triggers = [];
         data.rows.forEach((row) => {
-          triggers.push(new Model.Trigger('public', row));
+          triggers.push(new Trigger('public', row));
         });
         callback(triggers);
       });
@@ -42,7 +42,7 @@ var Trigger = global.Model.Trigger = Model.base.extend({
           return;
         }
         if (data.rows[0]) {
-          callback( Model.Trigger('public', data.rows[0]) );
+          callback(Trigger('public', data.rows[0]));
         } else {
           callback();
         }
@@ -74,16 +74,14 @@ var Trigger = global.Model.Trigger = Model.base.extend({
   },
 
   typeDesc: function () {
-    return Model.Trigger.decodeTgType(this.data.tgtype);
+    return Trigger.decodeTgType(this.data.tgtype);
   },
 
   drop: function (callback) {
     var sql = "DROP TRIGGER %s on %s";
 
-    var fiber = global.Fiber && global.Fiber.current;
-
     this.q(sql, this.name, this.table_name, (result, error) => {
-      if (error && fiber) {
+      if (error) {
         throw error;
       }
       callback(result, error);
@@ -94,14 +92,14 @@ var Trigger = global.Model.Trigger = Model.base.extend({
 !function () {
   var props = ['table_name', 'proc_name', 'constraint_name'];
   props.forEach((prop) => {
-    Object.defineProperty(Model.Trigger.prototype, prop, {
+    Object.defineProperty(Trigger.prototype, prop, {
       get: function () {
         return this.data[prop];
       }
     });
   });
 
-  Object.defineProperty(Model.Trigger.prototype, 'name', {
+  Object.defineProperty(Trigger.prototype, 'name', {
     get: function () {
       return this.data.tgname;
     }

@@ -21,14 +21,14 @@ class Procedures extends Pane {
 
   editProc (poid, procName) {
     Model.Procedure.find(poid, (proc) => {
-      Dialog.EditProcedure(this.handler, proc);
+      new Dialog.EditProcedure(this.handler, proc);
     });
   }
 
   procDefinition (poid, name) {
     Model.Procedure.find(poid, (proc) => {
       proc.getDefinition((data, error) => {
-        Dialog.DefProcedure(this.handler, proc, data.source);
+        new Dialog.DefProcedure(this.handler, proc, data.source);
       });
     });
   }

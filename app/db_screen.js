@@ -50,7 +50,7 @@ global.DbScreen = jClass.extend({
   },
 
   fetchDbList: function (callback) {
-    return this.connection.server.listDatabases((databases) => {
+    return this.connection.server.listDatabases().then(databases => {
       this.view.renderDbList(databases);
       callback && callback();
     });
@@ -87,8 +87,8 @@ global.DbScreen = jClass.extend({
 
   fetchTablesAndSchemas: function (callback) {
     App.startLoading("Getting tables list...");
-    this.connection.tablesAndSchemas((data) => {
-      this.connection.mapViewsAsTables((matViews) => {
+    return this.connection.tablesAndSchemas((data) => {
+      return this.connection.mapViewsAsTables((matViews) => {
         // join tables with views
         Object.forEach(matViews, (schema, views) => {
           if (!data[schema]) data[schema] = [];
@@ -197,11 +197,10 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  usersTabActivate: function () {
-    Model.User.findAll((rows, error) => {
-      this.view.usersPane.renderTab(rows);
-      this.currentTab = 'users';
-    });
+  usersTabActivate: async function () {
+    var result = await Model.User.findAll();
+    this.view.usersPane.renderTab(result.rows);
+    this.currentTab = 'users';
   },
 
   queryTabActivate: function () {
@@ -241,7 +240,6 @@ global.DbScreen = jClass.extend({
     await this.connection.switchDb(this.connection.defaultDatabaseName);
     var res = await this.connection.server.createDatabase(data.dbname, data.template, data.encoding);
     await this.fetchDbList();
-    console.log('fetched');
     this.view.databaseSelect.val(data.dbname).change();
 
     return res;
@@ -256,19 +254,18 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  dropDatabase: function () {
+  dropDatabase: async function () {
     App.startLoading("Deleting database...");
-    this.connection.server.dropDatabase(this.database, (result, error) => {
-      App.stopLoading();
-      if (error) {
-        window.alertify.alert(error.message);
-      } else {
-        this.database = undefined;
-        this.view.hideDatabaseContent();
-        this.fetchDbList();
-        App.emit('database.changed', this.database);
-      }
-    });
+    try {
+      await this.connection.server.dropDatabase(this.database);
+      this.database = undefined;
+      this.view.hideDatabaseContent();
+      this.fetchDbList();
+      App.emit('database.changed', this.database);
+    } catch (error) {
+      window.alertify.alert(error.message);
+    }
+    App.stopLoading();
   },
 
   renameDatabaseDialog: function (defaultValue) {
@@ -288,18 +285,17 @@ global.DbScreen = jClass.extend({
     }, defaultValue || this.database);
   },
 
-  renameDatabase: function (databaseNewName) {
+  renameDatabase: async function (databaseNewName) {
     App.startLoading("Renaming database...");
-    this.connection.server.renameDatabase(this.database, databaseNewName, (result, error) => {
-      App.stopLoading();
-      if (error) {
-        window.alertify.alert(error.message);
-      } else {
-        this.database = databaseNewName;
-        this.fetchDbList();
-        App.emit('database.changed', this.database);
-      }
-    });
+    try {
+      await this.connection.server.renameDatabase(this.database, databaseNewName);
+      this.database = databaseNewName;
+      this.fetchDbList();
+      App.emit('database.changed', this.database);
+    } catch (error) {
+      window.alertify.alert(error.message);
+    }
+    App.stopLoading();
   },
 
   createTable: function (data, callback) {
@@ -402,7 +398,6 @@ global.DbScreen = jClass.extend({
 
     try {
       var indexes = await this.table.getIndexes();
-      console.log(indexes);
     } catch (error) {
       var indexesError = error;
       errorReporter(error, false);

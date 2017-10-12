@@ -40,7 +40,7 @@ global.Model.base = jClass.extend({
   }
 });
 
-class ModelVanillaBase {
+class ModelBase {
   constructor(data) {
     this.data = data;
   }
@@ -77,4 +77,6 @@ class ModelVanillaBase {
   }
 }
 
-module.exports = ModelVanillaBase;
+ModelBase.extend = jClass.extend;
+
+module.exports = ModelBase;

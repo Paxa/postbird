@@ -1,5 +1,4 @@
 var strftime = require('strftime');
-var sprintf = require("sprintf-js").sprintf;
 
 var GRANTS_ABBR = {
   r: 'SELECT',
@@ -86,7 +85,7 @@ var helpers = global.ViewHelpers = {
 
   icon: function(name, title) {
     title = title === undefined ? name.replace(/[\-_]/g, ' ') : title;
-    return sprintf('<img src="./public/icons/%s.png" width="20" height="20" class="app-icon" title="%s"/>', name, title);
+    return `<img src="./public/icons/${name}.png" width="20" height="20" class="app-icon" title="${title}"/>`;
   },
 
   column_type_label: function (column, short) {

@@ -24,7 +24,7 @@ global.SnippetsWindow = {
 
     newWindow.setTitle("Snippets");
 
-    if (process.env.NW_DEV == "true") {
+    if (process.env.NW_DEBUG == "true") {
       newWindow.webContents.toggleDevTools();
     }
 

@@ -48,19 +48,12 @@ require('./app/views/dialogs/edit_procedure');
 require('./app/views/dialogs/def_procedure');
 require('./app/views/dialogs/user_grants');
 
-require('./app/models/base');
-require('./app/models/table');
-require('./app/models/column');
-require('./app/models/saved_conn');
-require('./app/models/last_query');
-require('./app/models/procedure');
-require('./app/models/trigger');
-require('./app/models/user');
-require('./app/models/server');
+global.Model = require('./app/models/all');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');
-require('./app/controllers/updates_controller');
+var UpdatesController = require('./app/controllers/updates_controller');
+var ImportController = require('./app/controllers/import_controller');
 
 require('./app/heroku_client');
 require('./app/history_window');
@@ -96,7 +89,6 @@ electron.ipcRenderer.on('open-file', function(event, message) {
 });
 
 electron.ipcRenderer.on('open-url', function(event, url) {
-  console.log('open-url', event, url);
   CliUtil.resolveArg(url, (resultUrl) => {
     console.log('CliUtil.resolveArg', resultUrl);
     App.openConnection(resultUrl);
@@ -112,6 +104,16 @@ if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // w
   require('./app/top_menu');
 }
 
+var arguments = electron.remote.process.argv;
+if (arguments.length > 2) {
+  var connectionStr = arguments[2];
+  if (connectionStr.startsWith("postgres://")) {
+    App.cliConnectString = connectionStr;
+  } else {
+    window.alert(`Can't recognize argument ${arguments[2]}\nExpected postgres://user@server/dbname`);
+  }
+}
+
 $(document).ready(function() {
   global.App.init();
   //renderHome();
@@ -120,7 +122,7 @@ $(document).ready(function() {
   });
 
   $u.makeDroppable(document.body, function (path) {
-    var importer = new global.ImportController();
+    var importer = new ImportController();
     importer.filename = path;
     importer.showImportDialog();
   });

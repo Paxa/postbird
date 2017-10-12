@@ -1,5 +1,3 @@
-var sprintf = require("sprintf-js").sprintf;
-
 var Table = global.Model.Table = Model.base.extend({
 
   tableType: null,

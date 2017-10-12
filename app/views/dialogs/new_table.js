@@ -1,7 +1,8 @@
 class NewTable extends Dialog {
   constructor(handler) {
     super(handler, {
-      title: "New table"
+      title: "New table",
+      dialogClass: "new-table-dialog"
     });
     this.showWindow();
   }

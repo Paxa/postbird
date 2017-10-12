@@ -62,10 +62,7 @@ var Procedure = global.Model.Procedure = Model.base.extend({
 
       var sql = "CREATE FUNCTION %s(%s) RETURNS %s AS $$ BEGIN %s; END; $$ LANGUAGE %s";
 
-      //var fiber = global.Fiber && global.Fiber.current;
-
       Model.base.q(sql, name, args, return_type, body, options.lang, (data, error) => {
-        //if (error && fiber) throw error;
 
         if (!error) {
           this.find(name, callback);
@@ -90,7 +87,7 @@ var Procedure = global.Model.Procedure = Model.base.extend({
     },
 
     findAllWithExtensions: function (callback) {
-        var sql = `SELECT
+      var sql = `SELECT
             p.oid, p.*,
             proname as name, pg_namespace.nspname as schema_name, pg_authid.rolname as author,
             pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
@@ -127,10 +124,8 @@ var Procedure = global.Model.Procedure = Model.base.extend({
   getDefinition: function (callback) {
     var sql = "select proname, pg_get_functiondef(oid) as source from pg_proc where oid = '%s'";
 
-    var fiber = global.Fiber && global.Fiber.current;
-
     this.q(sql, this.oid, (result, error) => {
-      if (error && fiber) {
+      if (error) {
         throw error;
       }
       callback(result && result.rows[0], error);
@@ -141,12 +136,7 @@ var Procedure = global.Model.Procedure = Model.base.extend({
     var type = this.is_aggregate ? "AGGREGATE" : "FUNCTION";
     var sql = "drop %s %s.%s(%s)";
 
-    var fiber = global.Fiber && global.Fiber.current;
-
     this.q(sql, type, this.data.schema_name, this.name, this.arg_list, (result, error) => {
-      if (error && fiber) {
-        throw error;
-      }
       callback(result, error);
     });
   },

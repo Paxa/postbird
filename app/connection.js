@@ -5,7 +5,7 @@ const semver = require('semver');
 const colors = require('colors/safe');
 colors.enabled = true;
 
-const Model = require('./models');
+const Model = require('./models/all');
 
 try {
   if (process.platform == "darwin") {
@@ -21,7 +21,6 @@ var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
 class Connection {
-//global.Connection = jClass.extend({
 
   constructor(options) {
     this.className = 'Connection';
@@ -62,9 +61,10 @@ class Connection {
 
       if (!options.database) options.database = this.defaultDatabaseName;
 
-      var connectString = 'postgres://' + options.user + ':' + 
-        options.password + '@' + options.host + ':' + 
-        options.port + '/' + options.database;
+      var connectUser = options.user ? `${options.user}` : '';
+      if (options.password) connectUser += `:${options.password}`;
+      var connectString = `postgres://${connectUser ? connectUser + '@' : ''}${options.host}:${options.port}/${options.database}`;
+
       if (options.query) {
         connectString += "?" + options.query;
       }
@@ -115,14 +115,6 @@ class Connection {
         }
       });
     });
-  }
-
-  reconnect(callback) {
-    if (this.connection) {
-      this.connection.end();
-      this.connection = null;
-    }
-    return this.connectToServer(this.options, callback);
   }
 
   switchDb(database, callback) {
@@ -199,7 +191,7 @@ class Connection {
     }
 
     console.log("Client don't support serverVersion, getting it with sql");
-    this.server.fetchServerVersion((version, error) => {
+    this.server.fetchServerVersion().then(version => {
       this._serverVersion = version.split(" ")[1];
       if (this._serverVersion.match(/^\d+\.\d+$/)) {
         this._serverVersion += '.0';
