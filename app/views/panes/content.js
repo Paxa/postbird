@@ -199,7 +199,7 @@ class Content extends Pane {
       this.view.setTabContent('content', errorMsg);
       return;
     }
-    var sTime = Date.now();
+    //var sTime = Date.now();
     this.renderViewToPane('content', 'content_tab', {
       data: data,
       types: this.columnTypes,
@@ -367,7 +367,6 @@ class Content extends Pane {
       });
     }
 
-    var _this = this;
     table.on('contextmenu', (event) => {
       var genericTable = table.data('generic_table');
 

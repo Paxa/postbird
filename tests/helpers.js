@@ -76,7 +76,6 @@ Object.prototype.makeSync = function () {
 
 Object.prototype.makeSyncFn = function(methodName, errorArgNum) {
   var origFn = this[methodName];
-  var _this = this;
 
   if (origFn == undefined) {
     throw "Object don't have property '" + methodName + "'";

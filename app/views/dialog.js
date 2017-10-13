@@ -15,7 +15,7 @@ class Dialog {
     var titleHtml = $u('<h3>').addClass('window-title').text(title)[0].outerHTML;
     var windowHtml = titleHtml + el.html();
 
-    var dialog = window.alertify.alert(windowHtml, undefined, 'custom-window');
+    window.alertify.alert(windowHtml, undefined, 'custom-window');
 
     this.windowContent = $u('#alertify .alertify-inner');
 

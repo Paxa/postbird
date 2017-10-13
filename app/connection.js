@@ -17,8 +17,7 @@ try {
   errorReporter(error);
 }
 
-var sprintf = require("sprintf-js").sprintf,
-    vsprintf = require("sprintf-js").vsprintf;
+var vsprintf = require("sprintf-js").vsprintf;
 
 class Connection {
 
@@ -52,7 +51,7 @@ class Connection {
   }
 
   connectToServer(options, callback) {
-    var connectString;
+    //var connectString;
 
     if (typeof options == 'object') {
       // set defaults

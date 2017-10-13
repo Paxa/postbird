@@ -1,15 +1,14 @@
 class Structure extends Pane {
 
   renderTab (columns, indexes, constraints, extra = {}) {
-    this.constraints = constraints.rows;
     var neededConstraints = [];
-    if (constraints && constraints.rows) {
-      constraints.rows.forEach((constraint) => {
-        if (constraint.contype != "p") {
-          neededConstraints.push(constraint);
-        }
-      });
-    }
+    this.constraints = constraints ? constraints.rows : [];
+    this.constraints.forEach((constraint) => {
+      if (constraint.contype != "p") {
+        neededConstraints.push(constraint);
+      }
+    });
+
     this.renderViewToPane('structure', 'structure_tab', {
       columns: columns,
       indexes: indexes,

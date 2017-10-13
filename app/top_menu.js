@@ -332,7 +332,7 @@ App.on('tab.changed', (tabId) => {
 });
 
 App.on('table.changed', (schema, table) => {
-  checkTableMenu(schema, table);
+  checkTableMenu();
 });
 
 // change tab in window, such as table strunture, content, table info

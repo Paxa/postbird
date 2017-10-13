@@ -62,7 +62,7 @@ describe('application launch', function () {
   })
 
   it('should show new table dialog', async () => {
-    var result = await client.waitForValue('.sidebar .databases select', 5000);
+    await client.waitForValue('.sidebar .databases select', 5000);
 
     client.click('a.addTable');
     await client.waitForVisible('.new-table-dialog select[name="tablespace"]');

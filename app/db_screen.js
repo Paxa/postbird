@@ -247,7 +247,7 @@ global.DbScreen = jClass.extend({
 
   dropDatabaseDialog: function () {
     var msg = `Delete database <strong>${this.database}</strong> and all tables in it?`;
-    var dialog = window.alertify.confirm(msg, (result) => {
+    window.alertify.confirm(msg, (result) => {
       if (result) {
         this.dropDatabase();
       }
@@ -270,7 +270,7 @@ global.DbScreen = jClass.extend({
 
   renameDatabaseDialog: function (defaultValue) {
     var msg = "Renaming database '" + this.database + "'?";
-    var dialog = window.alertify.prompt(msg, (result, newName) => {
+    window.alertify.prompt(msg, (result, newName) => {
       if (result) {
         if (newName && newName.trim() != "" && newName != this.database) {
           this.renameDatabase(newName);

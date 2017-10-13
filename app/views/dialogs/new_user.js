@@ -21,7 +21,7 @@ class NewUser extends Dialog {
 
   async processData (data) {
     try {
-      var result = await this.handler.createUser(data);
+      await this.handler.createUser(data);
       this.close();
     } catch (error) {
       console.error(error);

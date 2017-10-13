@@ -144,10 +144,10 @@ var helpers = global.ViewHelpers = {
     var json;
     var wrongJson = false;
     if (typeof value == 'string') {
-      json = value;
+      //json = value;
       if (value.startsWith('{') && value.endsWith('}') || value.startsWith('[') && value.endsWith(']')) {
         try {
-          JSON.parse(value);
+          value = JSON.parse(value);
           wrongJson = true;
         } catch (e) {}
       }

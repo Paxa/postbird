@@ -93,20 +93,20 @@ var Column = global.Model.Column = Model.base.extend({
 
   save_alterDefault: function(callback) {
     if (this.changes['default_value']) {
+      var sql;
       if (this.default_value == undefined || this.default_value == '') {
-        var sql = "ALTER TABLE %s ALTER COLUMN %s DROP DEFAULT;";
-        this.q(sql, this.table.table, this.name, (data, error) => {
+        return this.q(`ALTER TABLE ${this.table.table} ALTER COLUMN ${this.name} DROP DEFAULT;`, (data, error) => {
           callback(data, error);
         });
       } else {
-        var default_sql = this._default_sql(this.default_value);
-        var sql = "ALTER TABLE %s ALTER COLUMN %s SET %s;"
-        this.q(sql, this.table.table, this.name, default_sql, (data, error) => {
+        var sql = `ALTER TABLE "${this.table.table}" ALTER COLUMN "${this.name}" SET ${this._default_sql(this.default_value)};`
+        return this.q(sql, (data, error) => {
           callback(data, error);
         });
       }
     } else {
       callback();
+      return Promise.resolve(null);
     }
   },
 

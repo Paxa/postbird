@@ -25,7 +25,7 @@ function Logger (level) {
     if (log_levels.indexOf(level) <= log_levels.indexOf(this.logLevel)) {
       var messages = [];
       for (var i = 0; i < mesg_args.length; i++) {
-        message = mesg_args[i];
+        var message = mesg_args[i];
         if (typeof message == 'object') {
           message = node.util.inspect(message, {depth: 5});
         }

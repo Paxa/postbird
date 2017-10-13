@@ -230,7 +230,7 @@ global.LoginScreen = jClass.extend({
     } else {
       var data = Model.SavedConn.savedConnections();
       var host = this.form.find('[name=host]').val();
-      var name = host;
+      name = host;
       var i = 1;
       while (data[name]) {
         i += 1;

@@ -1,5 +1,3 @@
-var base = require('./base');
-
 class Index extends Model.base {
   constructor (index_name) {
     super();
