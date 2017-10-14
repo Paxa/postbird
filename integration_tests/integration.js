@@ -73,7 +73,7 @@ describe('application launch', function () {
       });
     });
 
-    assert.deepEqual(options.value, ['public', 'pg_catalog', 'information_schema']);
+    assert.deepEqual(options.value.sort(), ['public', 'pg_catalog', 'information_schema'].sort());
 
     await client.setValue('.new-table-dialog input[name=name]', 'test_table');
 
