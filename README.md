@@ -16,6 +16,8 @@ Postbird is PostgreSQL GUI client for macOs, written in JavaScript, runs with El
 
 ## Development
 
+[ ![Codeship Status for Paxa/postbird](https://app.codeship.com/projects/68e6fa10-92f5-0135-89f9-2a194e5c1935/status?branch=master)](https://app.codeship.com/projects/250733)
+
 Pull requests and suggestions are welcome
 
 To run newest version, simply:
