@@ -19,7 +19,7 @@ describe('Model.Table', () => {
 
     await table.drop();
 
-    var tables = await Model.Table.publicTables();
+    tables = await Model.Table.publicTables();
     assert.deepEqual(tables, []);
   })
 
@@ -79,7 +79,7 @@ describe('Model.Table', () => {
     await table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}));
     await table.addColumnObj(Model.Column('some_column', {data_type: 'text'}));
 
-    var res = await table.insertRow({some_number: 123, some_column: 'bob'})
+    await table.insertRow({some_number: 123, some_column: 'bob'})
 
     var rows = await table.getRows()
     assert.equal(rows.rowCount, 1)
@@ -136,7 +136,7 @@ describe('Model.Table', () => {
     await table.insertRow({some_number: 123, some_column: 'bob'})
     assert.equal((await table.getRows()).rowCount, 1)
 
-    var res = await table.truncate()
+    await table.truncate()
 
     assert.equal((await table.getRows()).rowCount, 0)
     await table.drop()

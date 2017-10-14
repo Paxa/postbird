@@ -12,7 +12,7 @@ describe('SqlExporter', () => {
   })
 
   it("dump sql to file or stdout", async () => {
-    var runner = new PgDumpRunner();
+    new PgDumpRunner();
 
     var table = await Model.Table.create('public', 'test_table')
 
