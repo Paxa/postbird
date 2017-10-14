@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
-    "test": "electron-mocha tests/"
+    "test": "electron-mocha tests/",
+    "integration_test": "mocha integration_tests/integration.js"
   },
   "engines": {
     "node": "8.6.0"
