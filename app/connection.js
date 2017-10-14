@@ -8,7 +8,7 @@ colors.enabled = true;
 const Model = require('./models/all');
 
 try {
-  if (process.platform == "darwin") {
+  if (process.platform == "darwin" || process.platform == "linux") {
     var pg = pg.native;
   }
 } catch (error) {
@@ -108,7 +108,7 @@ class Connection {
               console.log("Server version is", version);
             }
             callback && callback(true);
-            resolve();
+            resolve(true);
           });
           App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
         }
@@ -400,6 +400,8 @@ class Connection {
       } catch (e) {
         console.error(e);
       }
+    } else {
+      console.log('no running query');
     }
   }
 }
