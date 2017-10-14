@@ -18,7 +18,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   rename: function (new_name, callback) {
-    var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO  ${new_name}`;
+    var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO ${new_name}`;
     return this.q(sql, (data, error) => {
       this.table = new_name;
       callback && callback(data, error);
@@ -300,11 +300,11 @@ var Table = global.Model.Table = Model.base.extend({
       name = undefined;
     }
 
-    this.isMatView((isMatView) => {
+    return this.isMatView().then(isMatView => {
       if (isMatView) {
-        this._matview_getColumns(callback);
+        return this._matview_getColumns(callback);
       } else {
-        this._table_getColumns(name, callback);
+        return this._table_getColumns(name, callback);
       }
     });
   },
@@ -317,20 +317,21 @@ var Table = global.Model.Table = Model.base.extend({
 
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;";
     var cond = name ? " and column_name = '" + name + "'" : '';
-    this.q(sql, this.schema, this.table, cond, (rows) => {
-      callback(rows.rows);
+    return this.q(sql, this.schema, this.table, cond).then(rows => {
+      callback && callback(rows.rows);
+      return Promise.resolve(rows.rows);
     });
   },
 
   _matview_getColumns: function (callback) {
-    this._getMatViewStructure(callback);
+    return this._getMatViewStructure(callback);
   },
 
   getColumnNames: function (callback) {
-    this.getColumns((rows) => {
-      var names = [];
-      rows.forEach((c) => { names.push(c.column_name); });
-      callback(names);
+    return this.getColumns().then(rows => {
+      var names = rows.map(c => { return c.column_name; });
+      callback && callback(names);
+      return Promise.resolve(names);
     });
   },
 
@@ -344,8 +345,11 @@ var Table = global.Model.Table = Model.base.extend({
         pg_attribute.attnum = any(pg_index.indkey)
         AND indisprimary;`;
 
-    this.q(sql, (data, error) => {
-      callback((data || {}).rows, error);
+    return new Promise((resolve, reject) => {
+      this.q(sql, (data, error) => {
+        callback && callback((data || {}).rows, error);
+        error ? reject(error) : resolve(data.rows);
+      });
     });
   },
 
@@ -358,30 +362,32 @@ var Table = global.Model.Table = Model.base.extend({
 
     var sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
     return this.q(sql, (data, error) => {
-      callback(data, error);
+      callback && callback(data, error);
     });
   },
 
   dropColumn: function (name, callback) {
     var column = new Model.Column(name, {});
     column.table = this;
-    column.drop((data, error) => {
+    return column.drop((data, error) => {
       callback(data, error);
     });
   },
 
   getColumnObj: function (name, callback) {
-    this.getColumns(name, (data) => {
+    return this.getColumns(name).then(data => {
       var row = new Model.Column(data[0].column_name, data[0]);
       row.table = this;
-      callback(row);
+      callback && callback(row);
+      return Promise.resolve(row);
     });
   },
 
   addColumnObj: function (columnObj, callback) {
-    return this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, () => {
+    return this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null).then(result => {
       columnObj.table = this;
       callback && callback(columnObj);
+      return Promise.resolve(columnObj);
     });
   },
 
@@ -392,8 +398,8 @@ var Table = global.Model.Table = Model.base.extend({
 
     var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON "${this.schema}"."${this.table}" USING ${method} (%s);`;
 
-    this.q(sql, columns_sql, (data, error) => {
-      callback(data, error);
+    return this.q(sql, columns_sql, (data, error) => {
+      callback && callback(data, error);
     });
   },
 
@@ -570,8 +576,8 @@ var Table = global.Model.Table = Model.base.extend({
 
   deleteRowByCtid: function (ctid, callback) {
     var sql = `delete from "${this.schema}"."${this.table}" where ctid='${ctid}'`;
-    this.q(sql, (data, error) => {
-      callback(data, error);
+    return this.q(sql, (data, error) => {
+      callback && callback(data, error);
     });
   },
 
@@ -582,34 +588,40 @@ var Table = global.Model.Table = Model.base.extend({
     exporter.addArgument("--schema-only");
     exporter.addArgument('--no-owner');
 
-    exporter.doExport(Model.base.connection(), (result, stdout, stderr, process) => {
-      if (!result) {
-        log.error("Run pg_dump failed");
-        log.error(stderr);
-      }
-      stdout = stdout.toString();
-      stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
-      stdout = stdout.replace(/(^|\n|\r)(\-\-\r?\n\-\-.+\r?\n\-\-)/g, "\n"); // remove comments
-      stdout = stdout.replace(/^\-\- Dumped from .+$/m, "\n"); // remove 'Dumped from ...'
-      stdout = stdout.replace(/^\-\- Dumped by .+$/m, "\n"); // remove 'Dumped by ...'
-      stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
-      stdout = stdout.trim(); // remove padding spaces
+    return new Promise((resolve, reject) => {
+      exporter.doExport(Model.base.connection(), (result, stdout, stderr, process) => {
+        if (!result) {
+          log.error("Run pg_dump failed");
+          log.error(stderr);
+        }
+        stdout = stdout.toString();
+        stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
+        stdout = stdout.replace(/(^|\n|\r)(\-\-\r?\n\-\-.+\r?\n\-\-)/g, "\n"); // remove comments
+        stdout = stdout.replace(/^\-\- Dumped from .+$/m, "\n"); // remove 'Dumped from ...'
+        stdout = stdout.replace(/^\-\- Dumped by .+$/m, "\n"); // remove 'Dumped by ...'
+        stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
+        stdout = stdout.trim(); // remove padding spaces
 
-      // some views craeted by extensions can't be dumped
-      if (stdout.length == 0) {
-        this.getTableType((tableType) => {
+        // some views craeted by extensions can't be dumped
+        if (stdout.length == 0) {
+          this.getTableType((tableType) => {
 
-          if (tableType == 'VIEW') {
-            this.q(`select pg_get_viewdef('${this.schema}.${this.table}', true);`, (defFesult, error) => {
-              callback(defFesult.rows[0].pg_get_viewdef, error && error.message);
-            });
-          } else {
-            callback(stdout, result ? undefined : stderr);
-          }
-        });
-      } else {
-        callback(stdout, result ? undefined : stderr);
-      }
+            if (tableType == 'VIEW') {
+              this.q(`select pg_get_viewdef('${this.schema}.${this.table}', true);`, (defFesult, error) => {
+                var source = defFesult.rows[0].pg_get_viewdef;
+                callback && callback(defFesult.rows[0].pg_get_viewdef, error && error.message);
+                error ? reject(error) : resolve(source);
+              });
+            } else {
+              callback && callback(stdout, result ? undefined : stderr);
+              result ? resolve(stdout) : reject(stderr);
+            }
+          });
+        } else {
+          callback && callback(stdout, result ? undefined : stderr);
+          result ? resolve(stdout) : reject(stderr);
+        }
+      });
     });
   },
 

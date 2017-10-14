@@ -12,17 +12,18 @@ class Schema extends Model.base {
       options = {};
     }
 
-    var sql = 'CREATE SCHEMA "${name}";';
+    var sql = `CREATE SCHEMA "${name}";`;
 
-    return this.query(sql, (res, error) => {
-      callback && callback(Model.Schema(name), error);
+    return Model.base.q(sql).then(res => {
+      callback && callback(new Model.Schema(name), error);
+      return Promise.resolve(new Model.Schema(name));
     });
   }
 
   static findAll (callback) {
     var sql = "select nspname as name from pg_catalog.pg_namespace;"
 
-    return this.query(sql, (res, error) => {
+    return Model.base.q(sql).then(res => {
       var schemas = [];
       if (res) {
         res.rows.forEach((row) => {
@@ -30,6 +31,7 @@ class Schema extends Model.base {
         });
       }
       callback(schemas, error);
+      return Promise.resolve(schemas);
     });
   }
 
@@ -54,12 +56,13 @@ class Schema extends Model.base {
   getTableNames (callback) {
     var sql = `SELECT * FROM information_schema.tables where table_schema = '${this.schemaName}';`;
 
-    return this.query(sql, (rows, error) => {
+    return this.query(sql).then(rows => {
       var names = [];
       if (rows.rows) {
         names = rows.rows.map((t) => { return t.table_name });
       }
       callback && callback(names, error);
+      return Promise.resolve(names);
     });
   }
 }

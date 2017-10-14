@@ -1,5 +1,5 @@
 require('./test_helper');
-require("../lib/pg_dump_runner");
+var PgDumpRunner = require("../lib/pg_dump_runner");
 
 describe("PgDumpRunner", () => {
 

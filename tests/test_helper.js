@@ -37,7 +37,8 @@ global.cleanupSchema = async (connection) => {
 
 global.testConnection = async () => {
   if (getConnection()) {
-    return cleanupSchema();
+    await cleanupSchema();
+    return getConnection();
   }
 
   var connection = new Connection();
