@@ -4,7 +4,6 @@ You gonna need any, not too old, version of nodejs and npm. Ruby (already instal
 
     npm install
     rake rebuild_ext
-    gem install sass
 
 ## Run from source code:
 

@@ -45,11 +45,12 @@ global.testConnection = async () => {
     user: process.env.PG_USER || process.env.USER || process.env.USERNAME,
     password: process.env.PG_PASSWORD || '',
     port: process.env.PG_PORT,
-    database: ''
+    database: 'postbird_test'
   });
 
   connection.logging = false;
 
+  /*
   try {
     await connection.server.createDatabase('postbird_test');
   } catch (err) {
@@ -59,6 +60,7 @@ global.testConnection = async () => {
   }
 
   await connection.switchDb('postbird_test');
+  */
   await cleanupSchema();
 
   App.tabs = [{ instance: { connection: connection} }];
