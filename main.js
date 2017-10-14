@@ -75,6 +75,9 @@ app.on('ready', function() {
     urlsToOpen.forEach((url) => {
       mainWindow.send('open-url', url);
     });
+
+    //electron.autoUpdater.setFeedURL("http://localhost:5000/update/osx/0.4");
+    //electron.autoUpdater.checkForUpdates();
   });
 
   // Emitted when the window is closed.

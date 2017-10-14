@@ -1,3 +1,5 @@
+var SqlExporter = require('../../lib/sql_exporter');
+
 var Table = global.Model.Table = Model.base.extend({
 
   tableType: null,
@@ -17,39 +19,39 @@ var Table = global.Model.Table = Model.base.extend({
 
   rename: function (new_name, callback) {
     var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO  ${new_name}`;
-    this.q(sql, (data, error) => {
+    return this.q(sql, (data, error) => {
       this.table = new_name;
-      callback(data, error);
+      callback && callback(data, error);
     });
   },
 
   remove: function(callback) {
-    this.getTableType((tableType) => {
+    return this.getTableType((tableType) => {
       if (tableType == this.types.VIEW) {
-        this.removeView(callback);
+        return this.removeView(callback);
       } else if (tableType == this.types.MAT_VIEW) {
-        this.removeMatView(callback);
+        return this.removeMatView(callback);
       } else {
-        this.q(`DROP TABLE "${this.schema}"."${this.table}"`, callback);
+        return this.q(`DROP TABLE "${this.schema}"."${this.table}"`, callback);
       }
     });
   },
 
   drop: function (callback) {
-    this.remove(callback);
+    return this.remove(callback);
   },
 
   removeView: function (callback) {
     var sql = `drop view "${this.schema}"."${this.table}"`;
-    this.q(sql, (result, error) => {
-      callback(error ? false : true, error);
+    return this.q(sql, (result, error) => {
+      callback && callback(error ? false : true, error);
     });
   },
 
   removeMatView: function (callback) {
     var sql = `drop materialized view "${this.schema}"."${this.table}"`;
-    this.q(sql, (result, error) => {
-      callback(error ? false : true, error);
+    return this.q(sql, (result, error) => {
+      callback && callback(error ? false : true, error);
     });
   },
 
@@ -77,15 +79,16 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   isView: function (callback) {
-    this.getTableType((tableType) => {
-      callback(tableType == "VIEW")
+    return this.getTableType().then(tableType => {
+      callback && callback(tableType == "VIEW");
+      return Promise.resolve(tableType == "VIEW");
     });
   },
 
   getTableType: function (callback) {
     if (this.tableType !== undefined && this.tableType !== null) {
-      callback(this.tableType);
-      return;
+      callback && callback(this.tableType);
+      return Promise.resolve(this.tableType);
     }
 
     if (this.connection().server.supportMatViews()) {
@@ -106,14 +109,18 @@ var Table = global.Model.Table = Model.base.extend({
       `
     }
 
-    this.q(sql, (data, error) => {
-      if (error) {
-        console.log('ERROR', error);
-        callback(this.tableType, error);
-        return;
-      }
-      this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
-      callback(this.tableType);
+    return new Promise((resolve, reject) => {
+      this.q(sql, (data, error) => {
+        if (error) {
+          console.log('ERROR', error);
+          callback && callback(this.tableType, error);
+          reject(error);
+          return;
+        }
+        this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
+        callback && callback(this.tableType);
+        resolve(this.tableType);
+      });
     });
   },
 
@@ -350,7 +357,7 @@ var Table = global.Model.Table = Model.base.extend({
     var default_sql = this._default_sql(default_value);
 
     var sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
-    this.q(sql, (data, error) => {
+    return this.q(sql, (data, error) => {
       callback(data, error);
     });
   },
@@ -372,9 +379,9 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   addColumnObj: function (columnObj, callback) {
-    this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, () => {
+    return this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null, () => {
       columnObj.table = this;
-      callback(columnObj);
+      callback && callback(columnObj);
     });
   },
 
@@ -467,52 +474,62 @@ var Table = global.Model.Table = Model.base.extend({
     if (!limit) limit = 100;
     if (!options) options = {};
 
-    this.isView((isView) => {
-      var sysColumns = [];
-      if (options.with_oid) sysColumns.push('oid');
-      if (!isView) sysColumns.push('ctid');
+    return new Promise((resolve, reject) => {
+      this.isView((isView) => {
+        var sysColumns = [];
+        if (options.with_oid) sysColumns.push('oid');
+        if (!isView) sysColumns.push('ctid');
 
-      //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
-      var selectColumns = sysColumns.concat(['*']);
-      if (options.extraColumns) {
-        selectColumns = selectColumns.concat(options.extraColumns);
-      }
-
-      var orderSql = "";
-      if (options.sortColumn) {
-        var direction = options.sortDirection || 'asc';
-        orderSql = ` order by "${options.sortColumn}" ${direction}`;
-      }
-
-      var condition = "";
-      if (options.conditions) {
-        condition = `where ${options.conditions.join(" and ")}`;
-      }
-
-      var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
-
-      return this.q(sql, (data, error) => {
-        if (data) {
-          data.limit = limit;
-          data.offset = offset;
+        //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
+        var selectColumns = sysColumns.concat(['*']);
+        if (options.extraColumns) {
+          selectColumns = selectColumns.concat(options.extraColumns);
         }
-        // remove columns if we selected extra columns
-        if (data && options.extraColumns) {
-          data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
+
+        var orderSql = "";
+        if (options.sortColumn) {
+          var direction = options.sortDirection || 'asc';
+          orderSql = ` order by "${options.sortColumn}" ${direction}`;
         }
-        callback(data, error);
+
+        var condition = "";
+        if (options.conditions) {
+          condition = `where ${options.conditions.join(" and ")}`;
+        }
+
+        var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
+
+        return this.q(sql, (data, error) => {
+          if (data) {
+            data.limit = limit;
+            data.offset = offset;
+          }
+          // remove columns if we selected extra columns
+          if (data && options.extraColumns) {
+            data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
+          }
+          callback && callback(data, error);
+          error ? reject(error) : resolve(data);
+        });
       });
     });
   },
 
   getTotalRows: function (callback) {
-    var sql = 'select count(*) as rows_count from "%s"."%s"';
-    this.q(sql, this.schema, this.table, (data, error) => {
-      if (error) {
-        log.error(error);
-      }
-      var count = parseInt(data.rows[0].rows_count, 10);
-      callback ? callback(count) : console.log("Table rows count: " + this.table + " " + count);
+    var sql = `select count(*) as rows_count from "${this.schema}"."${this.table}"`;
+
+    return new Promise((resolve, reject) => {
+      this.q(sql, (data, error) => {
+        if (error) {
+          log.error(error);
+          reject(error);
+          callback && callback(null, error);
+          return;
+        }
+        var count = parseInt(data.rows[0].rows_count, 10);
+        callback && callback(count);//: console.log("Table rows count: " + this.table + " " + count);
+        resolve(count);
+      });
     });
   },
 
@@ -535,8 +552,8 @@ var Table = global.Model.Table = Model.base.extend({
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, safeValues, (data, error) => {
-        callback(data, error);
+      return this.q(sql, safeValues, (data, error) => {
+        callback && callback(data, error);
       });
     } else {
       var columns = Object.keys(values);
@@ -545,8 +562,8 @@ var Table = global.Model.Table = Model.base.extend({
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      this.q(sql, safeValues, (data, error) => {
-        callback(data, error);
+      return this.q(sql, safeValues, (data, error) => {
+        callback && callback(data, error);
       });
     }
   },
@@ -634,8 +651,8 @@ var Table = global.Model.Table = Model.base.extend({
 
   truncate(cascade, callback) {
     var sql = `truncate table ${this.sqlTable()} ${cascade ? "CASCADE" : ""};`;
-    this.q(sql, (data, error) => {
-      callback(data, error);
+    return this.q(sql, (data, error) => {
+      callback && callback(data, error);
     });
   },
 
@@ -668,6 +685,10 @@ Model.Table.create = function create (schema, tableName, options, callback) {
     options = {};
   }
 
+  if (options == undefined) {
+    options = {};
+  }
+
   var columns = "()";
   if (!options.empty) {
     columns = "(id SERIAL PRIMARY KEY)";
@@ -676,20 +697,27 @@ Model.Table.create = function create (schema, tableName, options, callback) {
   var schemaSql = schema && schema != '' ? `"${schema}".` : '';
   var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
 
-  Model.base.q(sql, (res, error) => {
-    callback(Model.Table(schema, tableName), res, error);
+  return Model.base.q(sql).then(res => {
+    callback && callback(new Model.Table(schema, tableName), res);
+    return Promise.resolve(new Model.Table(schema, tableName));
+  }).catch((error) => {
+    callback && callback(new Model.Table(schema, tableName), null, error);
+    return Promise.reject((error));
   });
 };
 
 Model.Table.publicTables = function publicTables (callback) {
-  Model.base.connection().publicTables((tables, error) => {
+  return new Promise((resolve, reject) => {
+    Model.base.connection().publicTables((tables, error) => {
 
-    var data = [];
-    tables.forEach((e) => {
-      data.push('' + e.table_name);
+      var data = [];
+      tables.forEach((e) => {
+        data.push('' + e.table_name);
+      });
+
+      callback && callback(data);
+      error ? reject(error) : resolve(data);
     });
-
-    callback(data);
   });
 };
 

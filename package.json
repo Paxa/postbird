@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
-    "test": "electron-mocha tests/new_tests.js"
+    "test": "electron-mocha tests/"
   },
   "engines": {
     "node": "8.6.0"
@@ -16,6 +16,7 @@
     "electron-mocha": "^4.0.3",
     "electron-packager": "9.1.0",
     "electron-rebuild": "1.6.0",
+    "localStorage": "^1.0.3",
     "node-sass": "4.5.3",
     "spectron": "^3.7.2"
   },
