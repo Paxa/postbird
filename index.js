@@ -164,4 +164,12 @@ $(document).ready(function() {
     }
   });
   */
+
+  var mainWindow = electron.remote.BrowserWindow.mainWindow;
+  mainWindow.on('focus', () => {
+    document.body.classList.remove('unfocused');
+  });
+  mainWindow.on('blur', () => {
+    document.body.classList.add('unfocused');
+  });
 });

@@ -85,9 +85,9 @@ var template = [
           var tab = appTab.currentTab;
 
           if (tab == "content") {
-            appTab.view.contents.reloadData();
+            appTab.view.contentPane.reloadData();
           } else if (tab == "query") {
-            appTab.view.query.runQuery();
+            appTab.view.queryPane.runQuery();
           } else {
             appTab.activateTab(tab, 'force');
           }

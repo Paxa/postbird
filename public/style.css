@@ -363,8 +363,8 @@ input, textarea {
       .home-screen .heroku-oauth ul.apps li:hover {
         background: rgba(255, 255, 255, 0.4); }
   .home-screen .sidebar {
-    background: #f5f5f4;
-    border-right: 1px solid #ddddd9;
+    background: #f0f1ed;
+    border-right: 1px solid #dadbd7;
     position: absolute;
     left: 0;
     top: 0;
@@ -398,10 +398,8 @@ input, textarea {
       .home-screen .sidebar ul > li[table-type="FOREIGN TABLE"]:before {
         background-image: url("icons/foreign_table.png");
         opacity: 0.8; }
-      .home-screen .sidebar ul > li:hover {
-        background: rgba(0, 0, 0, 0.1); }
       .home-screen .sidebar ul > li.selected {
-        background: #116cd6;
+        background: #2c67d2;
         color: white; }
     .home-screen .sidebar ul li[data-auto-connect="true"]:after {
       content: 'AUTO';
@@ -463,7 +461,7 @@ input, textarea {
         .main-screen > .main .window-tabs > *:hover {
           background: rgba(100, 120, 155, 0.15); }
         .main-screen > .main .window-tabs > *.active {
-          background: rgba(69, 92, 130, 0.19); }
+          background: rgba(93, 99, 107, 0.19); }
     .main-screen > .main .window-content {
       display: none;
       overflow: auto; }
@@ -553,8 +551,8 @@ body.sidebar-resizing {
         max-width: 50%; }
 
 .main-screen > .sidebar {
-  background: #f5f5f4;
-  border-right: 1px solid #ddddd9;
+  background: #f0f1ed;
+  border-right: 1px solid #dadbd7;
   border-right: none;
   width: 20%;
   padding-top: 48px;
@@ -665,10 +663,8 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="FOREIGN TABLE"]:before {
               background-image: url("icons/foreign_table.png");
               opacity: 0.8; }
-            .main-screen > .sidebar > .tables > ul > li > ul > li:hover {
-              background: rgba(0, 0, 0, 0.1); }
             .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
-              background: #116cd6;
+              background: #2c67d2;
               color: white; }
         .main-screen > .sidebar > .tables > ul > li.open > ul {
           display: block; }
@@ -876,7 +872,7 @@ body.sidebar-resizing {
     background: #dcdcdc;
     color: black; }
   .rescol-wrapper .rescol-content-wrapper table.active tr.selected td {
-    background: #116cd6;
+    background: #2c67d2;
     color: white; }
     .rescol-wrapper .rescol-content-wrapper table.active tr.selected td a {
       color: white; }
@@ -1441,10 +1437,8 @@ body.new-window {
       .snippets-window > ul > li[table-type="FOREIGN TABLE"]:before {
         background-image: url("icons/foreign_table.png");
         opacity: 0.8; }
-      .snippets-window > ul > li:hover {
-        background: rgba(0, 0, 0, 0.1); }
       .snippets-window > ul > li.selected {
-        background: #116cd6;
+        background: #2c67d2;
         color: white; }
     .snippets-window > ul > li {
       padding-left: 12px; }
@@ -1790,3 +1784,29 @@ code.general {
 
 .hljs-chunk {
   color: #aaa; }
+
+body.unfocused #tabs {
+  background: #ececec; }
+  body.unfocused #tabs .tab {
+    background: #ececec;
+    border-color: #dbdbdb; }
+    body.unfocused #tabs .tab.active {
+      background: #f1f1f1; }
+  body.unfocused #tabs:after {
+    background: #dbdbdb; }
+
+body.unfocused .rescol-wrapper .rescol-content-wrapper table.active tr.selected td {
+  background: #dcdcdc;
+  color: #212121; }
+
+body.unfocused .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
+  background: #dcdcdc;
+  color: #212121; }
+
+body.unfocused .home-screen .sidebar ul > li.selected {
+  background: #dcdcdc;
+  color: #212121; }
+
+body.unfocused .main-screen > .sidebar, body.unfocused .home-screen .sidebar {
+  background: #f6f6f6;
+  border-right-color: #dfdfdf; }

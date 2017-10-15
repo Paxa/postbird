@@ -1,0 +1,37 @@
+$unfocus-list-item-bg: #dcdcdc;
+
+body.unfocused {
+  #tabs {
+    background: #ececec;
+    .tab {
+      background: #ececec;
+      border-color: #dbdbdb;
+      &.active {
+        background: #f1f1f1;
+      }
+    }
+    &:after {
+      background: #dbdbdb;
+    }
+  }
+
+  .rescol-wrapper .rescol-content-wrapper table.active tr.selected td {
+    background: $unfocus-list-item-bg;
+    color: #212121;
+  }
+
+  .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
+    background: $unfocus-list-item-bg;
+    color: #212121;
+  }
+
+  .home-screen .sidebar ul > li.selected {
+    background: $unfocus-list-item-bg;
+    color: #212121;
+  }
+
+  .main-screen > .sidebar, .home-screen .sidebar {
+    background: #f6f6f6;
+    border-right-color: #dfdfdf;
+  }
+}

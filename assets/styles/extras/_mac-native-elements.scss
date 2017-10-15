@@ -1,6 +1,6 @@
 $mac-window-background: #ececec;
 
-$mac-item-selected-bg: #116cd6;
+$mac-item-selected-bg: #2c67d2;
 $mac-item-selected-inactive-bg: #dcdcdc;
 $mac-table-even-row-dg: #f5f5f4;
 
@@ -9,7 +9,7 @@ $mac-sidebar-border-color: #ddddd9;
 $mac-footer-border-color: #c4c2c4;
 
 $mac-button-bg: #fcfcfc;
-$mac-button-gradient: linear-gradient(to bottom,#fcfcfc 0,#f1f1f1 100%);
+$mac-button-gradient: linear-gradient(to bottom, #fcfcfc 0, #f1f1f1 100%);
 $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
 
 @mixin native-items-list {
@@ -39,9 +39,9 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
       opacity: 0.8;
     }
 
-    &:hover {
-      background: rgba(#000, 0.1);
-    }
+    //&:hover {
+    //  background: rgba(#000, 0.1);
+    //}
 
     &.selected {
       background: $mac-item-selected-bg;
@@ -114,8 +114,8 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
 }
 
 @mixin native-sidebar() {
-  background: #f5f5f4;
-  border-right: 1px solid #ddddd9;
+  background: #f0f1ed; // #eff1ed; // #f5f5f4;
+  border-right: 1px solid #dadbd7;
 }
 
 @mixin native-panel-element() {
