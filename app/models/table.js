@@ -445,8 +445,11 @@ var Table = global.Model.Table = Model.base.extend({
       ORDER BY a.attnum;`
 
     var sql_find_index = `
-      SELECT c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid, pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
-        pg_catalog.pg_get_constraintdef(con.oid, true), contype, condeferrable, condeferred, c2.reltablespace
+      SELECT
+          c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid,
+          pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
+          pg_catalog.pg_get_constraintdef(con.oid, true), contype,
+          condeferrable, condeferred, c2.reltablespace, i.indisvalid
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
         LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid

@@ -1580,6 +1580,18 @@ code.general {
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   text-align: left; }
 
+span.tag.error {
+  font-size: 11px;
+  display: inline-block;
+  vertical-align: middle;
+  float: right;
+  background: rgba(243, 112, 112, 0.73);
+  line-height: 11px;
+  padding: 2px;
+  margin-left: 5px;
+  margin-right: 2px;
+  margin-top: 2px; }
+
 .import-file-dialog header, .export-file-dialog header {
   margin-bottom: 15px; }
   .import-file-dialog header code, .export-file-dialog header code {
