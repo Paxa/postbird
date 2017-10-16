@@ -205,8 +205,8 @@ global.DbScreen = jClass.extend({
   },
 
   usersTabActivate: async function () {
-    var result = await Model.User.findAll();
-    this.view.usersPane.renderTab(result.rows);
+    var users = await Model.User.findAll();
+    this.view.usersPane.renderTab(users);
     this.currentTab = 'users';
   },
 

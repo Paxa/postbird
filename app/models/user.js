@@ -21,22 +21,30 @@ class User extends Model.base {
       ORDER BY 1;
     `;
 
-    return Model.base.q(sql);
+    return Model.base.q(sql).then(result => {
+      return Promise.resolve(result.rows);
+    });
   }
 
   // data: {username: ... password: ... superuser: ... }
   static create (data) {
+    if (!data.username) {
+      throw new Error('username is required');
+    }
     var sql = `CREATE USER "${data.username}"`;
 
     if (data.password) sql += ` WITH PASSWORD '${data.password}'`;
     sql += ';'
     if (data.superuser) sql += `ALTER USER "${data.username}" WITH SUPERUSER;`;
 
-    return Model.base.q(sql);
+    return Model.base.q(sql).then(result => {
+      return Promise.resolve(new User(data.username));
+    });
   }
 
-  static drop (username) {
-    return Model.base.q('DROP USER "%s"', username);
+  static drop (username, options = {}) {
+    var sql = `DROP USER ${options.ifExists ? 'IF EXISTS' : ''} "${username}"`;
+    return Model.base.q(sql);
   }
 
   // data: {username: ... password: ... superuser: ... }
@@ -54,9 +62,7 @@ class User extends Model.base {
       sql += `ALTER USER "${data.username}" WITH NOSUPERUSER; `;
     }
 
-    return Model.base.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
+    return Model.base.q(sql);
   }
 
   getGrants () {

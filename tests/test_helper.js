@@ -19,7 +19,7 @@ global.cleanupSchema = async (connection) => {
   return connection.query("drop schema public cascade; create schema public;");
 }
 
-global.testConnection = async () => {
+global.testConnection = async (logging) => {
   if (getConnection()) {
     await cleanupSchema();
     return getConnection();
@@ -33,7 +33,9 @@ global.testConnection = async () => {
     database: 'postbird_test'
   });
 
-  connection.logging = false;
+  if (!logging) {
+    connection.logging = false;
+  }
 
   /*
   try {
