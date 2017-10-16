@@ -8,23 +8,7 @@ require('../app');
 require('../lib/jquery.class');
 require('../app/connection');
 
-global.assert = require('assert');
-
-assert.true = (value) => {
-  return assert(value);
-}
-
-assert.false = (value) => {
-  return assert.equal(value, false);
-}
-
-assert.match = (value, regex) => {
-  return assert(regex.test(value), `Value ${value} should match ${regex}`);
-}
-
-assert.contain = (string, value) => {
-  return assert(string.includes(value), `Value ${string} should include ${value}`);
-}
+global.assert = require('./assert_extras');
 
 global.Model = require('../app/models/all');
 

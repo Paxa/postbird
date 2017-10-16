@@ -11,3 +11,4 @@ My todo:
 
 * check indisvalid in list of indexes (indisvalid means index created with errors, there is record but no index actually)
 * select and drop multiple tables in left bar
+* Rewrite dialogs (replace alertify)
