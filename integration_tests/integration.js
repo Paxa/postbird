@@ -83,7 +83,7 @@ describe('application launch', function () {
     await client.waitForVisible('.tables li[table-name="test_table"]')
   })
 
-  it.only('should install and uninstall extension', async () => {
+  it.skip('should install and uninstall extension', async () => {
     await client.waitForValue('.sidebar .databases select', 5000);
 
     client.click('[tab="extensions"]');
