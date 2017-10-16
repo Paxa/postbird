@@ -13,7 +13,7 @@ describe('application launch', function () {
   before(() => {
     app = new Application({
       path: './node_modules/.bin/electron',
-      args: ['main.js', 'postgres://localhost/integration_test'],
+      args: ['main.js', `postgres://localhost:${process.env.PG_PORT || '5432'}/integration_test`],
       env: {NW_DEV: "true"}
     })
 
