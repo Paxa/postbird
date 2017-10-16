@@ -32,9 +32,9 @@ SET default_with_oids = false;
 ---
 
 
-DROP TABLE IF EXISTS customercustomerdemo;
-DROP TABLE IF EXISTS customerdemographics;
-DROP TABLE IF EXISTS employeeterritories;
+DROP TABLE IF EXISTS customer_customer_demo;
+DROP TABLE IF EXISTS customer_demographics;
+DROP TABLE IF EXISTS employee_territories;
 DROP TABLE IF EXISTS order_details;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS customers;
@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS shippers;
 DROP TABLE IF EXISTS suppliers;
 DROP TABLE IF EXISTS territories;
-DROP TABLE IF EXISTS usstates;
+DROP TABLE IF EXISTS us_states;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS region;
 DROP TABLE IF EXISTS employees;
@@ -52,30 +52,30 @@ DROP TABLE IF EXISTS employees;
 --
 
 CREATE TABLE categories (
-    categoryid smallint NOT NULL,
-    categoryname character varying(15) NOT NULL,
+    category_id smallint NOT NULL,
+    category_name character varying(15) NOT NULL,
     description text,
     picture bytea
 );
 
 
 --
--- Name: customercustomerdemo; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_customer_demo; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE customercustomerdemo (
-    customerid bpchar NOT NULL,
-    customertypeid bpchar NOT NULL
+CREATE TABLE customer_customer_demo (
+    customer_id bpchar NOT NULL,
+    customer_type_id bpchar NOT NULL
 );
 
 
 --
--- Name: customerdemographics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_demographics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE customerdemographics (
-    customertypeid bpchar NOT NULL,
-    customerdesc text
+CREATE TABLE customer_demographics (
+    customer_type_id bpchar NOT NULL,
+    customer_desc text
 );
 
 
@@ -84,14 +84,14 @@ CREATE TABLE customerdemographics (
 --
 
 CREATE TABLE customers (
-    customerid bpchar NOT NULL,
-    companyname character varying(40) NOT NULL,
-    contactname character varying(30),
-    contacttitle character varying(30),
+    customer_id bpchar NOT NULL,
+    company_name character varying(40) NOT NULL,
+    contact_name character varying(30),
+    contact_title character varying(30),
     address character varying(60),
     city character varying(15),
     region character varying(15),
-    postalcode character varying(10),
+    postal_code character varying(10),
     country character varying(15),
     phone character varying(24),
     fax character varying(24)
@@ -103,34 +103,34 @@ CREATE TABLE customers (
 --
 
 CREATE TABLE employees (
-    employeeid smallint NOT NULL,
-    lastname character varying(20) NOT NULL,
-    firstname character varying(10) NOT NULL,
+    employee_id smallint NOT NULL,
+    last_name character varying(20) NOT NULL,
+    first_name character varying(10) NOT NULL,
     title character varying(30),
-    titleofcourtesy character varying(25),
-    birthdate date,
-    hiredate date,
+    title_of_courtesy character varying(25),
+    birth_date date,
+    hire_date date,
     address character varying(60),
     city character varying(15),
     region character varying(15),
-    postalcode character varying(10),
+    postal_code character varying(10),
     country character varying(15),
-    homephone character varying(24),
+    home_phone character varying(24),
     extension character varying(4),
     photo bytea,
     notes text,
-    reportsto smallint,
-    photopath character varying(255)
+    reports_to smallint,
+    photo_path character varying(255)
 );
 
 
 --
--- Name: employeeterritories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: employee_territories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE employeeterritories (
-    employeeid smallint NOT NULL,
-    territoryid character varying(20) NOT NULL
+CREATE TABLE employee_territories (
+    employee_id smallint NOT NULL,
+    territory_id character varying(20) NOT NULL
 );
 
 
@@ -141,9 +141,9 @@ CREATE TABLE employeeterritories (
 --
 
 CREATE TABLE order_details (
-    orderid smallint NOT NULL,
-    productid smallint NOT NULL,
-    unitprice real NOT NULL,
+    order_id smallint NOT NULL,
+    product_id smallint NOT NULL,
+    unit_price real NOT NULL,
     quantity smallint NOT NULL,
     discount real NOT NULL
 );
@@ -154,20 +154,20 @@ CREATE TABLE order_details (
 --
 
 CREATE TABLE orders (
-    orderid smallint NOT NULL,
-    customerid bpchar,
-    employeeid smallint,
-    orderdate date,
-    requireddate date,
-    shippeddate date,
-    shipvia smallint,
+    order_id smallint NOT NULL,
+    customer_id bpchar,
+    employee_id smallint,
+    order_date date,
+    required_date date,
+    shipped_date date,
+    ship_via smallint,
     freight real,
-    shipname character varying(40),
-    shipaddress character varying(60),
-    shipcity character varying(15),
-    shipregion character varying(15),
-    shippostalcode character varying(10),
-    shipcountry character varying(15)
+    ship_name character varying(40),
+    ship_address character varying(60),
+    ship_city character varying(15),
+    ship_region character varying(15),
+    ship_postal_code character varying(10),
+    ship_country character varying(15)
 );
 
 
@@ -176,15 +176,15 @@ CREATE TABLE orders (
 --
 
 CREATE TABLE products (
-    productid smallint NOT NULL,
-    productname character varying(40) NOT NULL,
-    supplierid smallint,
-    categoryid smallint,
-    quantityperunit character varying(20),
-    unitprice real,
-    unitsinstock smallint,
-    unitsonorder smallint,
-    reorderlevel smallint,
+    product_id smallint NOT NULL,
+    product_name character varying(40) NOT NULL,
+    supplier_id smallint,
+    category_id smallint,
+    quantity_per_unit character varying(20),
+    unit_price real,
+    units_in_stock smallint,
+    units_on_order smallint,
+    reorder_level smallint,
     discontinued integer NOT NULL
 );
 
@@ -194,8 +194,8 @@ CREATE TABLE products (
 --
 
 CREATE TABLE region (
-    regionid smallint NOT NULL,
-    regiondescription bpchar NOT NULL
+    region_id smallint NOT NULL,
+    region_description bpchar NOT NULL
 );
 
 
@@ -204,8 +204,8 @@ CREATE TABLE region (
 --
 
 CREATE TABLE shippers (
-    shipperid smallint NOT NULL,
-    companyname character varying(40) NOT NULL,
+    shipper_id smallint NOT NULL,
+    company_name character varying(40) NOT NULL,
     phone character varying(24)
 );
 
@@ -216,14 +216,14 @@ CREATE TABLE shippers (
 --
 
 CREATE TABLE suppliers (
-    supplierid smallint NOT NULL,
-    companyname character varying(40) NOT NULL,
-    contactname character varying(30),
-    contacttitle character varying(30),
+    supplier_id smallint NOT NULL,
+    company_name character varying(40) NOT NULL,
+    contact_name character varying(30),
+    contact_title character varying(30),
     address character varying(60),
     city character varying(15),
     region character varying(15),
-    postalcode character varying(10),
+    postal_code character varying(10),
     country character varying(15),
     phone character varying(24),
     fax character varying(24),
@@ -236,21 +236,21 @@ CREATE TABLE suppliers (
 --
 
 CREATE TABLE territories (
-    territoryid character varying(20) NOT NULL,
-    territorydescription bpchar NOT NULL,
-    regionid smallint NOT NULL
+    territory_id character varying(20) NOT NULL,
+    territory_description bpchar NOT NULL,
+    region_id smallint NOT NULL
 );
 
 
 --
--- Name: usstates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: us_states; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE usstates (
-    stateid smallint NOT NULL,
-    statename character varying(100),
-    stateabbr character varying(2),
-    stateregion character varying(50)
+CREATE TABLE us_states (
+    state_id smallint NOT NULL,
+    state_name character varying(100),
+    state_abbr character varying(2),
+    state_region character varying(50)
 );
 
 
@@ -269,13 +269,13 @@ INSERT INTO categories VALUES (8, 'Seafood', 'Seaweed and fish', '\x');
 
 
 --
--- Data for Name: customercustomerdemo; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: customer_customer_demo; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: customerdemographics; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: customer_demographics; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
@@ -393,58 +393,58 @@ INSERT INTO employees VALUES (9, 'Dodsworth', 'Anne', 'Sales Representative', 'M
 
 
 --
--- Data for Name: employeeterritories; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: employee_territories; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO employeeterritories VALUES (1, '06897');
-INSERT INTO employeeterritories VALUES (1, '19713');
-INSERT INTO employeeterritories VALUES (2, '01581');
-INSERT INTO employeeterritories VALUES (2, '01730');
-INSERT INTO employeeterritories VALUES (2, '01833');
-INSERT INTO employeeterritories VALUES (2, '02116');
-INSERT INTO employeeterritories VALUES (2, '02139');
-INSERT INTO employeeterritories VALUES (2, '02184');
-INSERT INTO employeeterritories VALUES (2, '40222');
-INSERT INTO employeeterritories VALUES (3, '30346');
-INSERT INTO employeeterritories VALUES (3, '31406');
-INSERT INTO employeeterritories VALUES (3, '32859');
-INSERT INTO employeeterritories VALUES (3, '33607');
-INSERT INTO employeeterritories VALUES (4, '20852');
-INSERT INTO employeeterritories VALUES (4, '27403');
-INSERT INTO employeeterritories VALUES (4, '27511');
-INSERT INTO employeeterritories VALUES (5, '02903');
-INSERT INTO employeeterritories VALUES (5, '07960');
-INSERT INTO employeeterritories VALUES (5, '08837');
-INSERT INTO employeeterritories VALUES (5, '10019');
-INSERT INTO employeeterritories VALUES (5, '10038');
-INSERT INTO employeeterritories VALUES (5, '11747');
-INSERT INTO employeeterritories VALUES (5, '14450');
-INSERT INTO employeeterritories VALUES (6, '85014');
-INSERT INTO employeeterritories VALUES (6, '85251');
-INSERT INTO employeeterritories VALUES (6, '98004');
-INSERT INTO employeeterritories VALUES (6, '98052');
-INSERT INTO employeeterritories VALUES (6, '98104');
-INSERT INTO employeeterritories VALUES (7, '60179');
-INSERT INTO employeeterritories VALUES (7, '60601');
-INSERT INTO employeeterritories VALUES (7, '80202');
-INSERT INTO employeeterritories VALUES (7, '80909');
-INSERT INTO employeeterritories VALUES (7, '90405');
-INSERT INTO employeeterritories VALUES (7, '94025');
-INSERT INTO employeeterritories VALUES (7, '94105');
-INSERT INTO employeeterritories VALUES (7, '95008');
-INSERT INTO employeeterritories VALUES (7, '95054');
-INSERT INTO employeeterritories VALUES (7, '95060');
-INSERT INTO employeeterritories VALUES (8, '19428');
-INSERT INTO employeeterritories VALUES (8, '44122');
-INSERT INTO employeeterritories VALUES (8, '45839');
-INSERT INTO employeeterritories VALUES (8, '53404');
-INSERT INTO employeeterritories VALUES (9, '03049');
-INSERT INTO employeeterritories VALUES (9, '03801');
-INSERT INTO employeeterritories VALUES (9, '48075');
-INSERT INTO employeeterritories VALUES (9, '48084');
-INSERT INTO employeeterritories VALUES (9, '48304');
-INSERT INTO employeeterritories VALUES (9, '55113');
-INSERT INTO employeeterritories VALUES (9, '55439');
+INSERT INTO employee_territories VALUES (1, '06897');
+INSERT INTO employee_territories VALUES (1, '19713');
+INSERT INTO employee_territories VALUES (2, '01581');
+INSERT INTO employee_territories VALUES (2, '01730');
+INSERT INTO employee_territories VALUES (2, '01833');
+INSERT INTO employee_territories VALUES (2, '02116');
+INSERT INTO employee_territories VALUES (2, '02139');
+INSERT INTO employee_territories VALUES (2, '02184');
+INSERT INTO employee_territories VALUES (2, '40222');
+INSERT INTO employee_territories VALUES (3, '30346');
+INSERT INTO employee_territories VALUES (3, '31406');
+INSERT INTO employee_territories VALUES (3, '32859');
+INSERT INTO employee_territories VALUES (3, '33607');
+INSERT INTO employee_territories VALUES (4, '20852');
+INSERT INTO employee_territories VALUES (4, '27403');
+INSERT INTO employee_territories VALUES (4, '27511');
+INSERT INTO employee_territories VALUES (5, '02903');
+INSERT INTO employee_territories VALUES (5, '07960');
+INSERT INTO employee_territories VALUES (5, '08837');
+INSERT INTO employee_territories VALUES (5, '10019');
+INSERT INTO employee_territories VALUES (5, '10038');
+INSERT INTO employee_territories VALUES (5, '11747');
+INSERT INTO employee_territories VALUES (5, '14450');
+INSERT INTO employee_territories VALUES (6, '85014');
+INSERT INTO employee_territories VALUES (6, '85251');
+INSERT INTO employee_territories VALUES (6, '98004');
+INSERT INTO employee_territories VALUES (6, '98052');
+INSERT INTO employee_territories VALUES (6, '98104');
+INSERT INTO employee_territories VALUES (7, '60179');
+INSERT INTO employee_territories VALUES (7, '60601');
+INSERT INTO employee_territories VALUES (7, '80202');
+INSERT INTO employee_territories VALUES (7, '80909');
+INSERT INTO employee_territories VALUES (7, '90405');
+INSERT INTO employee_territories VALUES (7, '94025');
+INSERT INTO employee_territories VALUES (7, '94105');
+INSERT INTO employee_territories VALUES (7, '95008');
+INSERT INTO employee_territories VALUES (7, '95054');
+INSERT INTO employee_territories VALUES (7, '95060');
+INSERT INTO employee_territories VALUES (8, '19428');
+INSERT INTO employee_territories VALUES (8, '44122');
+INSERT INTO employee_territories VALUES (8, '45839');
+INSERT INTO employee_territories VALUES (8, '53404');
+INSERT INTO employee_territories VALUES (9, '03049');
+INSERT INTO employee_territories VALUES (9, '03801');
+INSERT INTO employee_territories VALUES (9, '48075');
+INSERT INTO employee_territories VALUES (9, '48084');
+INSERT INTO employee_territories VALUES (9, '48304');
+INSERT INTO employee_territories VALUES (9, '55113');
+INSERT INTO employee_territories VALUES (9, '55439');
 
 
 --
@@ -3645,60 +3645,60 @@ INSERT INTO territories VALUES ('98104', 'Seattle', 2);
 
 
 --
--- Data for Name: usstates; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: us_states; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO usstates VALUES (1, 'Alabama', 'AL', 'south');
-INSERT INTO usstates VALUES (2, 'Alaska', 'AK', 'north');
-INSERT INTO usstates VALUES (3, 'Arizona', 'AZ', 'west');
-INSERT INTO usstates VALUES (4, 'Arkansas', 'AR', 'south');
-INSERT INTO usstates VALUES (5, 'California', 'CA', 'west');
-INSERT INTO usstates VALUES (6, 'Colorado', 'CO', 'west');
-INSERT INTO usstates VALUES (7, 'Connecticut', 'CT', 'east');
-INSERT INTO usstates VALUES (8, 'Delaware', 'DE', 'east');
-INSERT INTO usstates VALUES (9, 'District of Columbia', 'DC', 'east');
-INSERT INTO usstates VALUES (10, 'Florida', 'FL', 'south');
-INSERT INTO usstates VALUES (11, 'Georgia', 'GA', 'south');
-INSERT INTO usstates VALUES (12, 'Hawaii', 'HI', 'west');
-INSERT INTO usstates VALUES (13, 'Idaho', 'ID', 'midwest');
-INSERT INTO usstates VALUES (14, 'Illinois', 'IL', 'midwest');
-INSERT INTO usstates VALUES (15, 'Indiana', 'IN', 'midwest');
-INSERT INTO usstates VALUES (16, 'Iowa', 'IO', 'midwest');
-INSERT INTO usstates VALUES (17, 'Kansas', 'KS', 'midwest');
-INSERT INTO usstates VALUES (18, 'Kentucky', 'KY', 'south');
-INSERT INTO usstates VALUES (19, 'Louisiana', 'LA', 'south');
-INSERT INTO usstates VALUES (20, 'Maine', 'ME', 'north');
-INSERT INTO usstates VALUES (21, 'Maryland', 'MD', 'east');
-INSERT INTO usstates VALUES (22, 'Massachusetts', 'MA', 'north');
-INSERT INTO usstates VALUES (23, 'Michigan', 'MI', 'north');
-INSERT INTO usstates VALUES (24, 'Minnesota', 'MN', 'north');
-INSERT INTO usstates VALUES (25, 'Mississippi', 'MS', 'south');
-INSERT INTO usstates VALUES (26, 'Missouri', 'MO', 'south');
-INSERT INTO usstates VALUES (27, 'Montana', 'MT', 'west');
-INSERT INTO usstates VALUES (28, 'Nebraska', 'NE', 'midwest');
-INSERT INTO usstates VALUES (29, 'Nevada', 'NV', 'west');
-INSERT INTO usstates VALUES (30, 'New Hampshire', 'NH', 'east');
-INSERT INTO usstates VALUES (31, 'New Jersey', 'NJ', 'east');
-INSERT INTO usstates VALUES (32, 'New Mexico', 'NM', 'west');
-INSERT INTO usstates VALUES (33, 'New York', 'NY', 'east');
-INSERT INTO usstates VALUES (34, 'North Carolina', 'NC', 'east');
-INSERT INTO usstates VALUES (35, 'North Dakota', 'ND', 'midwest');
-INSERT INTO usstates VALUES (36, 'Ohio', 'OH', 'midwest');
-INSERT INTO usstates VALUES (37, 'Oklahoma', 'OK', 'midwest');
-INSERT INTO usstates VALUES (38, 'Oregon', 'OR', 'west');
-INSERT INTO usstates VALUES (39, 'Pennsylvania', 'PA', 'east');
-INSERT INTO usstates VALUES (40, 'Rhode Island', 'RI', 'east');
-INSERT INTO usstates VALUES (41, 'South Carolina', 'SC', 'east');
-INSERT INTO usstates VALUES (42, 'South Dakota', 'SD', 'midwest');
-INSERT INTO usstates VALUES (43, 'Tennessee', 'TN', 'midwest');
-INSERT INTO usstates VALUES (44, 'Texas', 'TX', 'west');
-INSERT INTO usstates VALUES (45, 'Utah', 'UT', 'west');
-INSERT INTO usstates VALUES (46, 'Vermont', 'VT', 'east');
-INSERT INTO usstates VALUES (47, 'Virginia', 'VA', 'east');
-INSERT INTO usstates VALUES (48, 'Washington', 'WA', 'west');
-INSERT INTO usstates VALUES (49, 'West Virginia', 'WV', 'south');
-INSERT INTO usstates VALUES (50, 'Wisconsin', 'WI', 'midwest');
-INSERT INTO usstates VALUES (51, 'Wyoming', 'WY', 'west');
+INSERT INTO us_states VALUES (1, 'Alabama', 'AL', 'south');
+INSERT INTO us_states VALUES (2, 'Alaska', 'AK', 'north');
+INSERT INTO us_states VALUES (3, 'Arizona', 'AZ', 'west');
+INSERT INTO us_states VALUES (4, 'Arkansas', 'AR', 'south');
+INSERT INTO us_states VALUES (5, 'California', 'CA', 'west');
+INSERT INTO us_states VALUES (6, 'Colorado', 'CO', 'west');
+INSERT INTO us_states VALUES (7, 'Connecticut', 'CT', 'east');
+INSERT INTO us_states VALUES (8, 'Delaware', 'DE', 'east');
+INSERT INTO us_states VALUES (9, 'District of Columbia', 'DC', 'east');
+INSERT INTO us_states VALUES (10, 'Florida', 'FL', 'south');
+INSERT INTO us_states VALUES (11, 'Georgia', 'GA', 'south');
+INSERT INTO us_states VALUES (12, 'Hawaii', 'HI', 'west');
+INSERT INTO us_states VALUES (13, 'Idaho', 'ID', 'midwest');
+INSERT INTO us_states VALUES (14, 'Illinois', 'IL', 'midwest');
+INSERT INTO us_states VALUES (15, 'Indiana', 'IN', 'midwest');
+INSERT INTO us_states VALUES (16, 'Iowa', 'IO', 'midwest');
+INSERT INTO us_states VALUES (17, 'Kansas', 'KS', 'midwest');
+INSERT INTO us_states VALUES (18, 'Kentucky', 'KY', 'south');
+INSERT INTO us_states VALUES (19, 'Louisiana', 'LA', 'south');
+INSERT INTO us_states VALUES (20, 'Maine', 'ME', 'north');
+INSERT INTO us_states VALUES (21, 'Maryland', 'MD', 'east');
+INSERT INTO us_states VALUES (22, 'Massachusetts', 'MA', 'north');
+INSERT INTO us_states VALUES (23, 'Michigan', 'MI', 'north');
+INSERT INTO us_states VALUES (24, 'Minnesota', 'MN', 'north');
+INSERT INTO us_states VALUES (25, 'Mississippi', 'MS', 'south');
+INSERT INTO us_states VALUES (26, 'Missouri', 'MO', 'south');
+INSERT INTO us_states VALUES (27, 'Montana', 'MT', 'west');
+INSERT INTO us_states VALUES (28, 'Nebraska', 'NE', 'midwest');
+INSERT INTO us_states VALUES (29, 'Nevada', 'NV', 'west');
+INSERT INTO us_states VALUES (30, 'New Hampshire', 'NH', 'east');
+INSERT INTO us_states VALUES (31, 'New Jersey', 'NJ', 'east');
+INSERT INTO us_states VALUES (32, 'New Mexico', 'NM', 'west');
+INSERT INTO us_states VALUES (33, 'New York', 'NY', 'east');
+INSERT INTO us_states VALUES (34, 'North Carolina', 'NC', 'east');
+INSERT INTO us_states VALUES (35, 'North Dakota', 'ND', 'midwest');
+INSERT INTO us_states VALUES (36, 'Ohio', 'OH', 'midwest');
+INSERT INTO us_states VALUES (37, 'Oklahoma', 'OK', 'midwest');
+INSERT INTO us_states VALUES (38, 'Oregon', 'OR', 'west');
+INSERT INTO us_states VALUES (39, 'Pennsylvania', 'PA', 'east');
+INSERT INTO us_states VALUES (40, 'Rhode Island', 'RI', 'east');
+INSERT INTO us_states VALUES (41, 'South Carolina', 'SC', 'east');
+INSERT INTO us_states VALUES (42, 'South Dakota', 'SD', 'midwest');
+INSERT INTO us_states VALUES (43, 'Tennessee', 'TN', 'midwest');
+INSERT INTO us_states VALUES (44, 'Texas', 'TX', 'west');
+INSERT INTO us_states VALUES (45, 'Utah', 'UT', 'west');
+INSERT INTO us_states VALUES (46, 'Vermont', 'VT', 'east');
+INSERT INTO us_states VALUES (47, 'Virginia', 'VA', 'east');
+INSERT INTO us_states VALUES (48, 'Washington', 'WA', 'west');
+INSERT INTO us_states VALUES (49, 'West Virginia', 'WV', 'south');
+INSERT INTO us_states VALUES (50, 'Wisconsin', 'WI', 'midwest');
+INSERT INTO us_states VALUES (51, 'Wyoming', 'WY', 'west');
 
 
 --
@@ -3706,23 +3706,23 @@ INSERT INTO usstates VALUES (51, 'Wyoming', 'WY', 'west');
 --
 
 ALTER TABLE ONLY categories
-    ADD CONSTRAINT pk_categories PRIMARY KEY (categoryid);
+    ADD CONSTRAINT pk_categories PRIMARY KEY (category_id);
 
 
 --
--- Name: pk_customercustomerdemo; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_customer_customer_demo; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY customercustomerdemo
-    ADD CONSTRAINT pk_customercustomerdemo PRIMARY KEY (customerid, customertypeid);
+ALTER TABLE ONLY customer_customer_demo
+    ADD CONSTRAINT pk_customer_customer_demo PRIMARY KEY (customer_id, customer_type_id);
 
 
 --
--- Name: pk_customerdemographics; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_customer_demographics; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY customerdemographics
-    ADD CONSTRAINT pk_customerdemographics PRIMARY KEY (customertypeid);
+ALTER TABLE ONLY customer_demographics
+    ADD CONSTRAINT pk_customer_demographics PRIMARY KEY (customer_type_id);
 
 
 --
@@ -3730,7 +3730,7 @@ ALTER TABLE ONLY customerdemographics
 --
 
 ALTER TABLE ONLY customers
-    ADD CONSTRAINT pk_customers PRIMARY KEY (customerid);
+    ADD CONSTRAINT pk_customers PRIMARY KEY (customer_id);
 
 
 --
@@ -3738,15 +3738,15 @@ ALTER TABLE ONLY customers
 --
 
 ALTER TABLE ONLY employees
-    ADD CONSTRAINT pk_employees PRIMARY KEY (employeeid);
+    ADD CONSTRAINT pk_employees PRIMARY KEY (employee_id);
 
 
 --
--- Name: pk_employeeterritories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_employee_territories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY employeeterritories
-    ADD CONSTRAINT pk_employeeterritories PRIMARY KEY (employeeid, territoryid);
+ALTER TABLE ONLY employee_territories
+    ADD CONSTRAINT pk_employee_territories PRIMARY KEY (employee_id, territory_id);
 
 
 --
@@ -3754,7 +3754,7 @@ ALTER TABLE ONLY employeeterritories
 --
 
 ALTER TABLE ONLY order_details
-    ADD CONSTRAINT pk_order_details PRIMARY KEY (orderid, productid);
+    ADD CONSTRAINT pk_order_details PRIMARY KEY (order_id, product_id);
 
 
 --
@@ -3762,7 +3762,7 @@ ALTER TABLE ONLY order_details
 --
 
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT pk_orders PRIMARY KEY (orderid);
+    ADD CONSTRAINT pk_orders PRIMARY KEY (order_id);
 
 
 --
@@ -3770,7 +3770,7 @@ ALTER TABLE ONLY orders
 --
 
 ALTER TABLE ONLY products
-    ADD CONSTRAINT pk_products PRIMARY KEY (productid);
+    ADD CONSTRAINT pk_products PRIMARY KEY (product_id);
 
 
 --
@@ -3778,7 +3778,7 @@ ALTER TABLE ONLY products
 --
 
 ALTER TABLE ONLY region
-    ADD CONSTRAINT pk_region PRIMARY KEY (regionid);
+    ADD CONSTRAINT pk_region PRIMARY KEY (region_id);
 
 
 --
@@ -3786,7 +3786,7 @@ ALTER TABLE ONLY region
 --
 
 ALTER TABLE ONLY shippers
-    ADD CONSTRAINT pk_shippers PRIMARY KEY (shipperid);
+    ADD CONSTRAINT pk_shippers PRIMARY KEY (shipper_id);
 
 
 --
@@ -3794,7 +3794,7 @@ ALTER TABLE ONLY shippers
 --
 
 ALTER TABLE ONLY suppliers
-    ADD CONSTRAINT pk_suppliers PRIMARY KEY (supplierid);
+    ADD CONSTRAINT pk_suppliers PRIMARY KEY (supplier_id);
 
 
 --
@@ -3802,7 +3802,7 @@ ALTER TABLE ONLY suppliers
 --
 
 ALTER TABLE ONLY territories
-    ADD CONSTRAINT pk_territories PRIMARY KEY (territoryid);
+    ADD CONSTRAINT pk_territories PRIMARY KEY (territory_id);
 
 
 --
@@ -3810,7 +3810,7 @@ ALTER TABLE ONLY territories
 --
 
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT fk_orders_customers FOREIGN KEY (customerid) REFERENCES customers;
+    ADD CONSTRAINT fk_orders_customers FOREIGN KEY (customer_id) REFERENCES customers;
 
 
 --
@@ -3818,7 +3818,7 @@ ALTER TABLE ONLY orders
 --
 
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT fk_orders_employees FOREIGN KEY (employeeid) REFERENCES employees;
+    ADD CONSTRAINT fk_orders_employees FOREIGN KEY (employee_id) REFERENCES employees;
 
 
 --
@@ -3826,7 +3826,7 @@ ALTER TABLE ONLY orders
 --
 
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT fk_orders_shippers FOREIGN KEY (shipvia) REFERENCES shippers;
+    ADD CONSTRAINT fk_orders_shippers FOREIGN KEY (ship_via) REFERENCES shippers;
 
 
 --
@@ -3834,7 +3834,7 @@ ALTER TABLE ONLY orders
 --
 
 ALTER TABLE ONLY order_details
-    ADD CONSTRAINT fk_order_details_products FOREIGN KEY (productid) REFERENCES products;
+    ADD CONSTRAINT fk_order_details_products FOREIGN KEY (product_id) REFERENCES products;
 
 
 --
@@ -3842,7 +3842,7 @@ ALTER TABLE ONLY order_details
 --
 
 ALTER TABLE ONLY order_details
-    ADD CONSTRAINT fk_order_details_orders FOREIGN KEY (orderid) REFERENCES orders;
+    ADD CONSTRAINT fk_order_details_orders FOREIGN KEY (order_id) REFERENCES orders;
 
 
 --
@@ -3850,7 +3850,7 @@ ALTER TABLE ONLY order_details
 --
 
 ALTER TABLE ONLY products
-    ADD CONSTRAINT fk_products_categories FOREIGN KEY (categoryid) REFERENCES categories;
+    ADD CONSTRAINT fk_products_categories FOREIGN KEY (category_id) REFERENCES categories;
 
 
 --
@@ -3858,7 +3858,7 @@ ALTER TABLE ONLY products
 --
 
 ALTER TABLE ONLY products
-    ADD CONSTRAINT fk_products_suppliers FOREIGN KEY (supplierid) REFERENCES suppliers;
+    ADD CONSTRAINT fk_products_suppliers FOREIGN KEY (supplier_id) REFERENCES suppliers;
 
 
 --
@@ -3866,39 +3866,39 @@ ALTER TABLE ONLY products
 --
 
 ALTER TABLE ONLY territories
-    ADD CONSTRAINT fk_territories_region FOREIGN KEY (regionid) REFERENCES region;
+    ADD CONSTRAINT fk_territories_region FOREIGN KEY (region_id) REFERENCES region;
 
 
 --
--- Name: fk_employeeterritories_territories; Type: Constraint; Schema: -; Owner: -
+-- Name: fk_employee_territories_territories; Type: Constraint; Schema: -; Owner: -
 --
 
-ALTER TABLE ONLY employeeterritories
-    ADD CONSTRAINT fk_employeeterritories_territories FOREIGN KEY (territoryid) REFERENCES territories;
-
-
---
--- Name: fk_employeeterritories_employees; Type: Constraint; Schema: -; Owner: -
---
-
-ALTER TABLE ONLY employeeterritories
-    ADD CONSTRAINT fk_employeeterritories_employees FOREIGN KEY (employeeid) REFERENCES employees;
+ALTER TABLE ONLY employee_territories
+    ADD CONSTRAINT fk_employee_territories_territories FOREIGN KEY (territory_id) REFERENCES territories;
 
 
 --
--- Name: fk_customercustomerdemo_customerdemographics; Type: Constraint; Schema: -; Owner: -
+-- Name: fk_employee_territories_employees; Type: Constraint; Schema: -; Owner: -
 --
 
-ALTER TABLE ONLY customercustomerdemo
-    ADD CONSTRAINT fk_customercustomerdemo_customerdemographics FOREIGN KEY (customertypeid) REFERENCES customerdemographics;
+ALTER TABLE ONLY employee_territories
+    ADD CONSTRAINT fk_employee_territories_employees FOREIGN KEY (employee_id) REFERENCES employees;
 
 
 --
--- Name: fk_customercustomerdemo_customers; Type: Constraint; Schema: -; Owner: -
+-- Name: fk_customer_customer_demo_customer_demographics; Type: Constraint; Schema: -; Owner: -
 --
 
-ALTER TABLE ONLY customercustomerdemo
-    ADD CONSTRAINT fk_customercustomerdemo_customers FOREIGN KEY (customerid) REFERENCES customers;
+ALTER TABLE ONLY customer_customer_demo
+    ADD CONSTRAINT fk_customer_customer_demo_customer_demographics FOREIGN KEY (customer_type_id) REFERENCES customer_demographics;
+
+
+--
+-- Name: fk_customer_customer_demo_customers; Type: Constraint; Schema: -; Owner: -
+--
+
+ALTER TABLE ONLY customer_customer_demo
+    ADD CONSTRAINT fk_customer_customer_demo_customers FOREIGN KEY (customer_id) REFERENCES customers;
 
 
 --
@@ -3906,10 +3906,9 @@ ALTER TABLE ONLY customercustomerdemo
 --
 
 ALTER TABLE ONLY employees
-    ADD CONSTRAINT fk_employees_employees FOREIGN KEY (reportsto) REFERENCES employees;
+    ADD CONSTRAINT fk_employees_employees FOREIGN KEY (reports_to) REFERENCES employees;
 
     
 --
 -- PostgreSQL database dump complete
 --
-
