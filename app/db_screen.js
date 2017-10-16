@@ -73,6 +73,9 @@ global.DbScreen = jClass.extend({
       this.connection.switchDb(this.database, () => {
         this.fetchTablesAndSchemas();
         if (typeof callback == 'function') callback();
+        if (['extensions', 'procedures'].includes(this.view.currentTab)) {
+          this.view.showTab(this.view.currentTab);
+        }
       });
     } else {
       this.view.hideDatabaseContent();
@@ -126,7 +129,11 @@ global.DbScreen = jClass.extend({
     this.currentTableNode = $u(node);
     this.currentTableNode.addClass('selected');
 
-    this.view.showTab('structure');
+    if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
+      this.view.showTab(this.view.currentTab);
+    } else {
+      this.view.showTab('structure');
+    }
   },
 
   activateTab: function (tabName, force) {
