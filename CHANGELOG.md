@@ -2,12 +2,17 @@
 
 * Update to electron 1.7.8
 * Update to PostgreSQL 10
-* Add Feature: Auto Connect
-* Add Feature: Show user grants
+* Feature: Auto Connect
+* Feature: Show user grants
+* Feature: Preserve tab when switch between tables and databases
+* Feature: Add red label in list of indexes when index has `indisvalid`
 * Better message for "server disconnected" error
 * Fix connecting to heroku
 * Move from ruby sass to node-sass
 * Fix editing users
+* Change colors on focus leave
+* MIgrate big junk of code from callbacks to async/await
+* Add integration tests with spectron
 
 == Version 0.6.2 (01-may-2017)
 
