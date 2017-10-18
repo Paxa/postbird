@@ -5,7 +5,6 @@ class EditColumn extends Dialog.NewColumn {
       title: "Edit column",
       columnName: columnName
     });
-    this.showWindow();
   }
 
   showWindow () {

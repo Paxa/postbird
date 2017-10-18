@@ -37,11 +37,11 @@ var Column = global.Model.Column = Model.base.extend({
       callback();
       return;
     }
-    var _this = this;
-    _this.save_renameColumn((res1, err1) => {
-      _this.save_alterType((res2, err2) => {
-        _this.save_alterNullable((res3, err3) => {
-          _this.save_alterDefault((res4, err4) => {
+
+    this.save_renameColumn((res1, err1) => {
+      this.save_alterType((res2, err2) => {
+        this.save_alterNullable((res3, err3) => {
+          this.save_alterDefault((res4, err4) => {
             delete this.changes;
             callback(res4, err1 || err2 || err3 || err4);
           });
@@ -72,6 +72,10 @@ var Column = global.Model.Column = Model.base.extend({
       var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
       sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s USING %s::%s;"
       this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, (data, error) => {
+        if (!error) {
+          delete this.changes['type'];
+          delete this.changes['max_length'];
+        }
         callback(data, error);
       });
     } else {
@@ -208,8 +212,9 @@ Model.Column.availableTypes = function (callback) {
     ORDER BY 1, 2;
   `.trim();
 
-  Model.base.q(sql, (data) => {
-    callback(data.rows);
+  return Model.base.q(sql).then(data => {
+    callback && callback(data.rows);
+    return Promise.resolve(data.rows);
   });
 };
 

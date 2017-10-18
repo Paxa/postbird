@@ -150,4 +150,27 @@ describe('Model.Column', () => {
 
     await table.drop();
   })
+
+  it('should update column', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var columnData = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+
+    var column = await table.addColumnObj(columnData);
+
+    await new Promise((resolve, reject) => {
+      column.update({name: 'some_column2', type: 'text', allow_null: true, default_value: '123'}, (res, error) => {
+        error ? reject(error) : resolve(res);
+      });
+    });
+
+    var updated = await table.getColumnObj('some_column2');
+
+    // TODO: consistent properties
+    assert.equal(updated.data.column_name, 'some_column2');
+    assert.equal(updated.data.data_type, 'text');
+    assert.equal(updated.data.column_default, "'123'::text");
+    assert.equal(updated.data.is_nullable, 'YES');
+
+    await table.drop();
+  });
 })
