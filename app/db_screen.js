@@ -114,7 +114,7 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  tableSelected: function(schema, tableName, node) {
+  tableSelected: function(schema, tableName, node, showTab) {
     if (this.currentSchema == schema && this.currentTable == tableName) {
       return;
     }
@@ -129,7 +129,9 @@ global.DbScreen = jClass.extend({
     this.currentTableNode = $u(node);
     this.currentTableNode.addClass('selected');
 
-    if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
+    if (showTab) {
+      this.view.showTab(showTab);
+    } else if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
       this.view.showTab(this.view.currentTab);
     } else {
       this.view.showTab('structure');
@@ -204,15 +206,15 @@ global.DbScreen = jClass.extend({
     });
   },
 
+  queryTabActivate: function () {
+    this.view.queryPane.renderTab();
+    this.currentTab = 'query';
+  },
+
   usersTabActivate: async function () {
     var users = await Model.User.findAll();
     this.view.usersPane.renderTab(users);
     this.currentTab = 'users';
-  },
-
-  queryTabActivate: function () {
-    this.view.queryPane.renderTab();
-    this.currentTab = 'query';
   },
 
   createUser: async function(data, callback) {
@@ -314,7 +316,7 @@ global.DbScreen = jClass.extend({
         this.fetchTablesAndSchemas((tables) => {
           var tableElement = this.view.sidebar.find('[schema-name=' + data.tablespace + '] ' +
                                                       '[table-name=' + data.name + ']')[0];
-          this.tableSelected(data.tablespace, data.name, tableElement);
+          this.tableSelected(data.tablespace, data.name, tableElement, 'structure');
         });
       }
       callback(res, error);
