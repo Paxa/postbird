@@ -1,3 +1,5 @@
+var csvGenerate = require('csv-stringify');
+
 class Query extends Pane {
 
   renderTab (rows) {
@@ -7,6 +9,7 @@ class Query extends Pane {
 
     this.button = this.content.find('button:first');
     this.cleanButton = this.content.find('button.cleanButton');
+    this.saveButton = this.content.find('button.saveButton');
 
     this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
@@ -55,8 +58,8 @@ class Query extends Pane {
   }
 
   toggleButtonText () {
-    var runLabel = "Run query";
-    var selectedLabel = "Run selection";
+    var runLabel = "Run Query";
+    var selectedLabel = "Run Selection";
 
     var selectedText = this.editor.getSelection();
     if (selectedText && selectedText != "") {
@@ -73,6 +76,15 @@ class Query extends Pane {
       this.cleanButton.hide();
     }
   }
+
+  toggleSaveButton () {
+    if (this.content.find('.result table tr').length) {
+      this.saveButton.show();
+    } else {
+      this.saveButton.hide();
+    }
+  }
+
 
   runQuery () {
     this.editor.save();
@@ -112,6 +124,7 @@ class Query extends Pane {
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
         this.statusLine.text(message);
       } else {
+        this.lastResult = data;
         PgTypeNames.extendFields(data);
         if (data.rows.length > 500) {
           data.rows.length = 500;
@@ -139,6 +152,7 @@ class Query extends Pane {
         }
       }
       this.toggleCleanButton();
+      this.toggleSaveButton();
       if (needReloadTables) {
         this.reloadTables();
       }
@@ -149,11 +163,13 @@ class Query extends Pane {
   cleanResult () {
     this.content.find('.result .rescol-wrapper').html("").hide();
     this.statusLine.text("");
+    this.lastResult = null;
   }
 
   cleanButtonClick () {
     this.cleanResult();
     this.toggleCleanButton();
+    this.toggleSaveButton();
   }
 
   reloadTables () {
@@ -176,6 +192,54 @@ class Query extends Pane {
   showHistory () {
     global.HistoryWindow.init();
   }
+
+  saveQueryResult () {
+    var dialog = electron.remote.dialog;
+    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    dialog.showSaveDialog(mainWindow, {
+      title: "Save result as csv file",
+      defaultPath: "result.csv",
+      message: "aaaa",
+      filters: [
+        {name: 'CSV File', extensions: ['csv']},
+        {name: 'Other', extensions: ['*']}
+      ]
+    }, (filename) => {
+      console.log("selected", filename);
+      this.saveResultTo(filename);
+    });
+  }
+
+  saveResultTo(filename) {
+    App.startLoading("Saving file...", 100);
+
+    var fileWriter = node.fs.createWriteStream(filename);
+    //this.lastResult;
+
+    var generator = csvGenerate({delimiter: ','})
+    generator.on('readable', () => {
+      var row;
+      while (row = generator.read()) {
+        fileWriter.write(row);
+      }
+    });
+
+    generator.on('finish', () => {
+      fileWriter.end();
+      console.log('file saved');
+      App.stopLoading();
+    });
+
+    var columns = this.lastResult.fields.map(col => { return col.name });
+    generator.write(columns);
+
+    this.lastResult.rows.forEach(row => {
+      var values = columns.map(col => { return row[col] });
+      generator.write(values);
+    });
+    generator.end();
+  }
+
 }
 
 module.exports = Query;

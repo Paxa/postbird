@@ -11,3 +11,4 @@ My todo:
 
 * select and drop multiple tables in left bar
 * Rewrite dialogs (replace alertify)
+* Better sql error description for query pane

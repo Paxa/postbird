@@ -6,6 +6,7 @@
 * Feature: Show user grants
 * Feature: Preserve tab when switch between tables and databases
 * Feature: Add red label in list of indexes when index has `indisvalid`
+* Feature: Save query result as CSV
 * Better message for "server disconnected" error
 * Fix connecting to heroku
 * Move from ruby sass to node-sass

@@ -24,6 +24,7 @@
   "dependencies": {
     "classy": "github:paxa/classy",
     "colors": "^1.1.2",
+    "csv-stringify": "^2.0.0",
     "electron-window-state": "4.1.1",
     "eventemitter2": "4.1.2",
     "is-electron-renderer": "^2.0.1",
