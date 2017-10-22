@@ -1,6 +1,6 @@
 var jQuery = require(__dirname + '/../public/jquery.js');
 require(__dirname + '/../lib/node_lib');
-require('classy/object_extras').extendGlobal();
+require(__dirname + '/../lib/object_extras');
 
 require(__dirname + '/../lib/dominate');
 require(__dirname + '/../lib/jquery.class');

@@ -206,7 +206,9 @@ class Query extends Pane {
       ]
     }, (filename) => {
       console.log("selected", filename);
-      this.saveResultTo(filename);
+      if (filename) {
+        this.saveResultTo(filename);
+      }
     });
   }
 

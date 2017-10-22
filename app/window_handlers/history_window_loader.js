@@ -8,7 +8,7 @@ require(__dirname + '/../lib/widgets/generic_table');
 var RenderView = require(__dirname + '/../app/components/render_view');
 
 require(__dirname + '/../lib/error_reporter');
-require('classy/object_extras').extendGlobal();
+require(__dirname + '/../lib/object_extras');
 
 var remote = require('electron').remote;
 

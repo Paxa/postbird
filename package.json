@@ -9,9 +9,6 @@
     "test": "electron-mocha tests/",
     "integration_test": "mocha integration_tests/integration.js"
   },
-  "engines": {
-    "node": "8.6.0"
-  },
   "devDependencies": {
     "electron": "1.7.9",
     "electron-mocha": "^4.0.3",
@@ -22,7 +19,6 @@
     "spectron": "^3.7.2"
   },
   "dependencies": {
-    "classy": "github:paxa/classy",
     "colors": "^1.1.2",
     "csv-stringify": "^2.0.0",
     "electron-window-state": "4.1.1",

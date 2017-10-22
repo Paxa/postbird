@@ -1,5 +1,5 @@
 global.errorReporter = require('./lib/error_reporter');
-require('classy/object_extras').extendGlobal();
+require('./lib/object_extras');
 
 require('./lib/dominate');
 require('./lib/jquery.class');
@@ -14,7 +14,6 @@ require('./lib/sql_importer');
 require('./lib/pg_dump_runner');
 require('./lib/sql_exporter');
 require('./lib/pg_type_names');
-require('classy/object_ls');
 require('./lib/sql_snippets');
 require('./lib/resizable_columns');
 

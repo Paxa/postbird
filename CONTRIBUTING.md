@@ -27,8 +27,8 @@ Electron packager or npm has a bug, it may include developer dependecies to rele
 # make sure you have ran "rake rebuild_ext"
 # delete "devDependencies" from package.json
 npm prune
-npm install electron-packager@8.6.0
-sudo npm install -g electron@1.6.6
+npm install electron-packager@9.1.0
+sudo npm install -g electron@1.7.9
 node packager.js
 rake build_dmg
 ```
