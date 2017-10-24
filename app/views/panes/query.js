@@ -126,7 +126,8 @@ class Query extends Pane {
       } else {
         this.lastResult = data;
         PgTypeNames.extendFields(data);
-        if (data.rows.length > 500) {
+        data.completeRows = data.rows.slice();
+        if (data.rows && data.rows.length > 500) {
           data.rows.length = 500;
         }
         var node = App.renderView('db_rows_table', {data: data})[0];
@@ -235,7 +236,7 @@ class Query extends Pane {
     var columns = this.lastResult.fields.map(col => { return col.name });
     generator.write(columns);
 
-    this.lastResult.rows.forEach(row => {
+    this.lastResult.completeRows.forEach(row => {
       var values = columns.map(col => { return row[col] });
       generator.write(values);
     });
