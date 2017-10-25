@@ -34,9 +34,7 @@ class Extensions extends Pane {
 
   install (extension) {
 
-    window.alertify.labels.ok = "Install";
-    window.alertify.confirm("Install extension " + extension + "?", (res) => {
-      window.alertify.labels.ok = "OK";
+    $u.confirm(`Install extension ${extension}?`, {button: "Install"}, (res) => {
       if (!res) return;
 
       this.lastEvent.target.disabled = true;
@@ -46,16 +44,14 @@ class Extensions extends Pane {
           if (error) {
             this.lastEvent.target.disabled = false;
           }
-          window.alertify.alert(error && error.message || okMsg);
+          $u.alert(error && error.message || okMsg);
         }, 550);
       });
     });
   }
 
   uninstall (extension) {
-    window.alertify.labels.ok = "Uninstall";
-    window.alertify.confirm("Delete extension " + extension + "?", (res) => {
-      window.alertify.labels.ok = "OK";
+    $u.confirm(`Delete extension ${extension}?`, {button: "Uninstall"}, (res) => {
       if (!res) return;
       this.lastEvent.target.disabled = true;
 
@@ -68,7 +64,7 @@ class Extensions extends Pane {
           if (error) {
             this.lastEvent.target.disabled = false;
           }
-          window.alertify.alert(error && error.message || okMsg);
+          $u.alert(error && error.message || okMsg);
         }, 550);
 
       });

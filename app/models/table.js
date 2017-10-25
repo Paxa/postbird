@@ -263,7 +263,7 @@ var Table = global.Model.Table = Model.base.extend({
       select * from information_schema.columns
       where table_schema = '${this.schema}' and table_name = '${this.table}';
     `;
-    this.q(sql, (data) => {
+    this.q(sql, (data, error) => {
       this.hasOID((hasOID) => {
         var types = {};
         if (hasOID) {
@@ -274,11 +274,13 @@ var Table = global.Model.Table = Model.base.extend({
             udt_name: "oid"
           };
         }
-        data.rows.forEach((row) => {
-          types[row.column_name] = row;
-          types[row.column_name].real_format = row.udt_name;
-        });
-        callback(types);
+        if (data.rows) {
+          data.rows.forEach((row) => {
+            types[row.column_name] = row;
+            types[row.column_name].real_format = row.udt_name;
+          });
+        }
+        callback(types, error);
       })
     });
   },

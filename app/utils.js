@@ -176,13 +176,53 @@ $u.openFileDialog = function (fileExt, callback) {
     fileExt = undefined;
   }
 
-  electron.remote.dialog.showOpenDialog({
+  var mainWindow = electron.remote.BrowserWindow.mainWindow;
+  electron.remote.dialog.showOpenDialog(mainWindow, {
     properties: [ 'openFile' ],
     filters: [
       { name: 'SQL Files', extensions: [fileExt, 'sql', 'pgsql'] },
     ]
   }, callback);
 };
+
+$u.confirm = function (text, options, callback) {
+  options = options || {};
+
+  return new Promise((resolve, reject) => {
+    var dialog = electron.remote.dialog;
+    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    dialog.showMessageBox(mainWindow, {
+      type: "question",
+      message: text,
+      detail: options.detail,
+      buttons: [options.button || "Ok", "Cancel"],
+      defaultId: options.defaultId
+    }, (res) => {
+      resolve(res == 0);
+      callback && callback(res == 0);
+    });
+  });
+};
+
+$u.alert = function (text, options, callback) {
+  options = options || {};
+
+  return new Promise((resolve, reject) => {
+    var dialog = electron.remote.dialog;
+    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    dialog.showMessageBox(mainWindow, {
+      type: "question",
+      message: text,
+      detail: options.detail,
+      buttons: [options.button || "Ok"],
+      defaultId: options.defaultId
+    }, (res) => {
+      resolve(res);
+      callback && callback(res);
+    });
+  });
+};
+
 
 // Make an area droppable
 // from here https://github.com/micc83/Nuwk/blob/master/js/controllers.js

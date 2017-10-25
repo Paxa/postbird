@@ -254,13 +254,17 @@ global.DbScreen = jClass.extend({
     return res;
   },
 
-  dropDatabaseDialog: function () {
-    var msg = `Delete database <strong>${this.database}</strong> and all tables in it?`;
-    window.alertify.confirm(msg, (result) => {
-      if (result) {
-        this.dropDatabase();
-      }
+  dropDatabaseDialog: async function () {
+    var msg = `Delete database ${this.database}?`;
+    var result = await $u.confirm(msg, {
+      detail: "It will delete all tables in it",
+      button: "Drop Database",
+      defaultId: 1
     });
+
+    if (result) {
+      this.dropDatabase();
+    }
   },
 
   dropDatabase: async function () {
