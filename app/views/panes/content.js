@@ -395,7 +395,7 @@ class Content extends Pane {
     if (this.currentTableType != 'BASE TABLE') {
       alert("Can't delete from " + this.currentTableType);
     }
-    if (confirm("Are you sure wanna delete row?")) {
+    if (confirm("Are you sure want to delete this row?")) {
       var ctid = $u(row).attr('data-ctid');
       this.handler.table.deleteRowByCtid(ctid, (result, error) => {
         if (error) {
