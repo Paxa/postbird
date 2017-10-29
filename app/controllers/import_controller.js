@@ -3,23 +3,21 @@ class ImportController {
   constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
-      throw new Error("Please connecto to database");
+      $u.alert("Please connecto to database", {type: "warning"});
     }
-
-    Object.defineProperty(this, "handler", {
-      get: function () {
-        return App.currentTab.instance;
-      }
-    });
   }
 
-  doImport () {
-    $u.openFileDialog('.sql', (files) => {
-      if (files && files.length > 0) {
-        this.filename = files[0];
-        this.showImportDialog();
-      }
-    });
+  get handler () {
+    return App.currentTab.instance;
+  }
+
+  async doImport () {
+    var files = await $u.openFileDialog('.sql');
+
+    if (files && files.length > 0) {
+      this.filename = files[0];
+      this.showImportDialog();
+    }
   }
 
   showImportDialog () {
@@ -65,10 +63,6 @@ class ImportController {
       this.dialog.showCloseButton();
       this.handler.fetchTablesAndSchemas();
     });
-  }
-
-  currentTab () {
-    return App.currentTab.instance;
   }
 }
 

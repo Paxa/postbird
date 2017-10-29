@@ -10,52 +10,49 @@ class UpdatesController {
     this.releasesPage = "https://github.com/Paxa/postbird/releases";
   }
 
-  checkUpdates (options) {
+  async checkUpdates (options) {
     if (options && options.showLoading) {
-      App.startLoading("Getting latest version number");
+      App.startLoading("Getting latest version info");
     }
 
-    this.fetchLatestRelease((err, release) => {
-      if (options && options.showLoading) {
-        App.stopLoading();
-      }
-      if (release) {
-        var current = this.currentVersion();
-        var remote = release.tag_name;
-        if (semver.gt(remote, current)) {
-          var date = new Date(release.published_at);
-          var msg = `Newer version is available. ${remote} (You are currently using: ${current})
-                     <br>Released at: ${strftime("%d %B %Y, %H:%M", date)}<br>`;
-          window.alertify.labels.ok = "Install";
-          window.alertify.confirm(msg, (answer) => {
-            window.alertify.labels.ok = "OK";
-            if (answer) {
-              electron.shell.openExternal(this.releasesPage);
-            }
-          }, 'grey-cancel-button');
-        } else {
-          if (options && options.showAlreadyLatest) {
-            window.alertify.alert("You are using latest version");
-          }
+    var release = await this.fetchLatestRelease();
+
+    if (options && options.showLoading) {
+      App.stopLoading();
+    }
+
+    if (release) {
+      var current = this.currentVersion();
+      var remote = release.tag_name;
+      if (semver.gt(remote, current)) {
+        this.showInstallDialog(remote, current, release.published_at);
+      } else {
+        if (options && options.showAlreadyLatest) {
+          $u.alert(`You are using the latest version (${current})`);
         }
       }
+    }
+  }
 
-      //if (err) console.error(err);
-      //if (release) console.log(release);
-
-    });
+  showInstallDialog (remote, current, date) {
+    var date = new Date(date);
+    var msg = `Newer version is available. ${remote} (You are currently using: ${current})
+               <br>Released at: ${strftime("%d %B %Y, %H:%M", date)}<br>`;
+    window.alertify.labels.ok = "Install";
+    window.alertify.confirm(msg, (answer) => {
+      window.alertify.labels.ok = "OK";
+      if (answer) {
+        electron.shell.openExternal(this.releasesPage);
+      }
+    }, 'grey-cancel-button');
   }
 
   fetchLatestRelease (callback) {
-    needle.get(this.releasesUrl, {}, (err, resp) => {
-      if (err) {
-        callback(err);
-      } else {
-        var stableRelease = resp.body.filter((rel) => {
-          return !rel.prerelease;
-        })[0];
-        callback(undefined, stableRelease);
-      }
+    return needle("get", this.releasesUrl, {}).then(resp => {
+      var stableRelease = resp.body.filter((rel) => {
+        return !rel.prerelease;
+      })[0];
+      return Promise.resolve(stableRelease);
     });
   }
 

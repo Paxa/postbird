@@ -176,13 +176,17 @@ $u.openFileDialog = function (fileExt, callback) {
     fileExt = undefined;
   }
 
-  var mainWindow = electron.remote.BrowserWindow.mainWindow;
-  electron.remote.dialog.showOpenDialog(mainWindow, {
-    properties: [ 'openFile' ],
-    filters: [
-      { name: 'SQL Files', extensions: [fileExt, 'sql', 'pgsql'] },
-    ]
-  }, callback);
+  return new Promise((resolve, reject) => {
+    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    electron.remote.dialog.showOpenDialog(mainWindow, {
+      properties: [ 'openFile' ],
+      filters: [
+        { name: 'SQL Files', extensions: [fileExt, 'sql', 'pgsql'] },
+      ]
+    }, (files) => {
+      resolve(files);
+    });
+  });
 };
 
 $u.confirm = function (text, options, callback) {
@@ -211,7 +215,7 @@ $u.alert = function (text, options, callback) {
     var dialog = electron.remote.dialog;
     var mainWindow = electron.remote.BrowserWindow.mainWindow;
     dialog.showMessageBox(mainWindow, {
-      type: "question",
+      type: options.type || "question",
       message: text,
       detail: options.detail,
       buttons: [options.button || "Ok"],

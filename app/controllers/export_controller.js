@@ -3,15 +3,13 @@ class ExportController {
   constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
-      throw new Error("Please connecto to database");
+      $u.alert("Please connecto to database", {type: "warning"});
     }
 
-    Object.defineProperty(this, "handler", {
-      get: function () {
-        return App.currentTab.instance;
-      }
-    });
+  }
 
+  get handler () {
+    return App.currentTab.instance;
   }
 
   doExport () {
@@ -20,7 +18,7 @@ class ExportController {
     });
   }
 
-  runPgDump (filename, options) {
+  async runPgDump (filename, options) {
     var exporter = new SqlExporter({debug: false});
 
     if (options.exportData === false) {
@@ -43,18 +41,18 @@ class ExportController {
     });
 
     App.startLoading(`Saving dump to ${filename}`);
-    exporter.doExport(this.handler.connection, filename, (success, result) => {
-      App.stopLoading();
-      this.dialog.addMessage(success ? "SUCCESS\n" : "FAILED\n");
-      if (filename && success) {
+    try {
+      var result = await exporter.doExport(this.handler.connection, filename);
+      this.dialog.addMessage("SUCCESS\n");
+      if (filename) {
         this.dialog.addMessage("Saved to file " + filename);
       }
       this.dialog.showCloseButton();
-    });
-  }
-
-  currentTab () {
-    return App.currentTab.instance;
+    } catch (error) {
+      this.dialog.addMessage("FAILED\n");
+    }
+    App.stopLoading();
+    this.dialog.showCloseButton();
   }
 }
 
