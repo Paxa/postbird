@@ -1,7 +1,8 @@
-var Column = global.Model.Column = Model.base.extend({
-  init: function (name, data) {
+class Column extends Model.base {
+
+  constructor (name, data) {
     if (typeof name == 'object') {
-      this._super({});
+      super({});
       Object.keys(name).forEach((attr) => {
         this[attr] = name[attr];
       });
@@ -15,137 +16,150 @@ var Column = global.Model.Column = Model.base.extend({
       this.changes = {};
 
     } else {
-      this._super(data);
+      super(data);
+      if (data.table) {
+        this.table = data.table;
+      }
       this.name = name;
     }
     //this.is_primary_key = this. //
-  },
+  }
 
-  update: function(formData, callback) {
+  static async create(data) {
+    var column = new Column(data);
+    return await column.create();
+  }
+
+  async create() {
+    this.shouldHaveTable();
+
+    var type_with_length = this.max_length ? `${this.type}(${this.max_length})` : this.type;
+    var null_sql = this.allow_null ? "NULL" : "NOT NULL";
+    var default_sql = this._default_sql(this.default_value);
+
+    var sql = `ALTER TABLE ${this.table.sqlTable()} ADD ${this.name} ${type_with_length} ${default_sql} ${null_sql};`;
+
+    await this.q(sql);
+
+    return this;
+  }
+
+  async update(formData) {
     for (var attr in formData) {
       this[attr] = formData[attr];
     }
 
-    this.save(callback);
+    return this.save();
     // TODO: finish here
-  },
+  }
 
-  save: function(callback) {
+  async save() {
     this.shouldHaveTable();
+
     if (!this.changes || Object.keys(this.changes).length == 0) {
-      //console.log("no changes");
-      callback();
       return;
     }
 
-    this.save_renameColumn((res1, err1) => {
-      this.save_alterType((res2, err2) => {
-        this.save_alterNullable((res3, err3) => {
-          this.save_alterDefault((res4, err4) => {
-            delete this.changes;
-            callback(res4, err1 || err2 || err3 || err4);
-          });
-        });
-      });
-    });
-  },
+    await this.save_renameColumn();
+    await this.save_alterType();
+    await this.save_alterNullable();
+    await this.save_alterDefault();
+    delete this.changes;
+  }
 
-  save_renameColumn: function (callback) {
+  async save_renameColumn () {
     if (this.changes['name']) {
       var oldName = this.changes['name'][0];
       var newName = this.changes['name'][1];
-      this.q('ALTER TABLE %s RENAME COLUMN %s TO %s;', this.table.table, oldName, newName, (rows, error) => {
-        if (!error) {
-          delete this.changes['name'];
-        }
-        callback(rows, error);
-      });
-    } else {
-      callback();
+
+      var res = await this.q(`ALTER TABLE ${this.table.sqlTable()} RENAME COLUMN ${oldName} TO ${newName}`);
+      delete this.changes['name'];
+      return res;
     }
-  },
+  }
 
   // TODO: http://www.postgresql.org/docs/9.1/static/sql-altertable.html
-  save_alterType: function (callback) {
+  async save_alterType () {
     if (this.changes['type'] || this.changes['max_length']) {
       this.shouldHaveTable();
-      var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
-      sql = "ALTER TABLE %s ALTER COLUMN %s TYPE %s USING %s::%s;"
-      this.q(sql, this.table.table, this.name, type_with_length, this.name, this.type, (data, error) => {
-        if (!error) {
-          delete this.changes['type'];
-          delete this.changes['max_length'];
-        }
-        callback(data, error);
-      });
-    } else {
-      callback();
-    }
-  },
 
-  save_alterNullable: function(callback) {
+      var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
+      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} TYPE ${type_with_length} USING ${this.name}::${this.type};`;
+
+      var res = await this.q(sql);
+      delete this.changes['type'];
+      delete this.changes['max_length'];
+      return res;
+    }
+  }
+
+  async save_alterNullable () {
     if (this.changes['allow_null']) {
       var null_sql = this.allow_null ? "DROP NOT NULL" : "SET NOT NULL";
-      sql = "ALTER TABLE %s ALTER COLUMN %s %s;"
-      this.q(sql, this.table.table, this.name, null_sql, (data, error) => {
-        callback(data, error);
-      });
-    } else {
-      callback();
+      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} ${null_sql};`;
+      return await this.q(sql);
     }
-  },
+  }
 
-  save_alterDefault: function(callback) {
+  async save_alterDefault () {
     if (this.changes['default_value']) {
-      var sql;
       if (this.default_value == undefined || this.default_value == '') {
-        return this.q(`ALTER TABLE ${this.table.table} ALTER COLUMN ${this.name} DROP DEFAULT;`, (data, error) => {
-          callback(data, error);
-        });
+        return await this.q(`ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} DROP DEFAULT;`);
       } else {
-        var sql = `ALTER TABLE "${this.table.table}" ALTER COLUMN "${this.name}" SET ${this._default_sql(this.default_value)};`
-        return this.q(sql, (data, error) => {
-          callback(data, error);
-        });
+        return await this.q(`ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN "${this.name}" SET ${this._default_sql(this.default_value)};`);
       }
-    } else {
-      callback();
-      return Promise.resolve(null);
     }
-  },
+  }
 
-  drop: function (callback) {
+  async drop () {
     this.shouldHaveTable();
-    this.q("ALTER TABLE %s DROP COLUMN %s", this.table.table, this.name, (data, error) => {
-      callback(data, error);
-    });
-  },
+    await this.q(`ALTER TABLE ${this.table.sqlTable()} DROP COLUMN ${this.name}`);
+  }
 
-  shouldHaveTable: function() {
+  shouldHaveTable () {
     if (!this.table) {
       throw new Error("Column should be attached to table. column.table property should be set.");
     }
-  },
+  }
 
-  _default_sql: function (default_value) {
+  _default_sql (default_value) {
     if (default_value !== undefined && default_value !== '') {
       return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'")
     } else {
       return '';
     }
   }
-});
 
-Model.Column.attributesAliases = {
+  static availableTypes (callback) {
+    var sql = `
+      SELECT n.nspname as "schema",
+        pg_catalog.format_type(t.oid, NULL) AS "name",
+        pg_catalog.obj_description(t.oid, 'pg_type') as "description"
+      FROM pg_catalog.pg_type t
+           LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+      WHERE (t.typrelid = 0 OR (SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid))
+        AND NOT EXISTS(SELECT 1 FROM pg_catalog.pg_type el WHERE el.oid = t.typelem AND el.typarray = t.oid)
+        AND pg_catalog.pg_type_is_visible(t.oid)
+      ORDER BY 1, 2;
+    `.trim();
+
+    return Model.base.q(sql).then(data => {
+      callback && callback(data.rows);
+      return Promise.resolve(data.rows);
+    });
+  }
+}
+
+Column.attributesAliases = {
   name: 'column_name',
   type: 'data_type',
   default_value: 'column_default',
   max_length: 'character_maximum_length'
 };
 
-Object.keys(Model.Column.attributesAliases).forEach((attr) => {
-  var data_attr = Model.Column.attributesAliases[attr];
-  Object.defineProperty(Model.Column.prototype, attr, {
+Object.keys(Column.attributesAliases).forEach((attr) => {
+  var data_attr = Column.attributesAliases[attr];
+  Object.defineProperty(Column.prototype, attr, {
     get: function () {
       return this.data[data_attr];
     },
@@ -168,7 +182,7 @@ Object.keys(Model.Column.attributesAliases).forEach((attr) => {
 // accept and return true/false
 // handle inside "YES" and "FALSE"
 
-Object.defineProperty(Model.Column.prototype, "allow_null", {
+Object.defineProperty(Column.prototype, "allow_null", {
   get: function () {
     return (this.data.is_nullable == 'YES');
   },
@@ -187,7 +201,7 @@ Object.defineProperty(Model.Column.prototype, "allow_null", {
   }
 });
 
-Object.defineProperty(Model.Column.prototype, "attributes", {
+Object.defineProperty(Column.prototype, "attributes", {
   get: function () {
     return {
       name: this.name,
@@ -198,24 +212,5 @@ Object.defineProperty(Model.Column.prototype, "attributes", {
     };
   }
 });
-
-Model.Column.availableTypes = function (callback) {
-  var sql = `
-    SELECT n.nspname as "schema",
-      pg_catalog.format_type(t.oid, NULL) AS "name",
-      pg_catalog.obj_description(t.oid, 'pg_type') as "description"
-    FROM pg_catalog.pg_type t
-         LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
-    WHERE (t.typrelid = 0 OR (SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid))
-      AND NOT EXISTS(SELECT 1 FROM pg_catalog.pg_type el WHERE el.oid = t.typelem AND el.typarray = t.oid)
-      AND pg_catalog.pg_type_is_visible(t.oid)
-    ORDER BY 1, 2;
-  `.trim();
-
-  return Model.base.q(sql).then(data => {
-    callback && callback(data.rows);
-    return Promise.resolve(data.rows);
-  });
-};
 
 module.exports = Column;

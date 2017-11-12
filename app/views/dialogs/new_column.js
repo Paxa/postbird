@@ -32,15 +32,18 @@ class NewColumn extends Dialog {
     });
   }
 
-  onSubmit (data) {
+  async onSubmit (data) {
     if (data.type == "") {
       window.alert("Please choose column type");
       return;
     }
-    if (data.allow_null == "1") {
-      data.is_null = true;
+    try {
+      await this.handler.addColumn(data);
+      this.close();
+    } catch (error) {
+      this.defaultServerResponse(null, error);
+      //$u.alert(`SQL Error: ${error.message}`, {type: "error"});
     }
-    this.handler.addColumn(data, this.defaultServerResponse.bind(this));
   }
 
   addPseudoTypes (types) {

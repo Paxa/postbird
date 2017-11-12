@@ -1,14 +1,40 @@
-require('./test_helper');
+require('./test_helper')
 
 describe('Model.Column', () => {
 
   before(async () => {
-    await testConnection();
-  });
+    await testConnection()
+  })
 
   afterEach(async () => {
-    await cleanupSchema();
-  });
+    await cleanupSchema()
+  })
+
+  it('should create column', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({
+      table: table,
+      name: 'some_column',
+      type: 'character varying',
+      max_length: 100,
+      default_value: "foo",
+      allow_null: false
+    })
+
+    await column.create()
+
+    column = await table.getColumnObj(column.name)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'character varying',
+      default_value: "'foo'::character varying",
+      max_length: 100,
+      allow_null: false
+    })
+
+    await table.drop()
+  })
 
   it('should make virtual attributes', () => {
     var column = new Model.Column({
@@ -26,119 +52,97 @@ describe('Model.Column', () => {
     assert.equal(column.data.is_nullable, 'YES')
   })
 
-  it('table.addColumnObj should return column object', (done) => {
-    Model.Table.create('public', 'test_table', (table, res, error) => {
-      var column = Model.Column({
-        name: 'some_column',
-        type: 'integer',
-        default_value: 0,
-        allow_null: true
-      })
-
-      table.addColumnObj(column, (column) => {
-        table.getColumnNames((names) => {
-          assert.deepEqual(names, ['id', 'some_column'])
-          table.drop(() => { done() });
-        })
-      })
-    })
-  })
-
-  it('table.addColumnObj should return correct column object', (done) => {
-    Model.Table.create('public', 'test_table', (table, res, error) => {
-      var column = Model.Column({ name: 'some_column', type: 'integer' })
-      table.addColumnObj(column, (column) => {
-        table.getColumnObj(column.name, (other_column) => {
-
-          // table deference
-          assert.equal(other_column.table, table)
-
-          // attributes
-          assert.equal(other_column.name,           column.name)
-          assert.equal(other_column.type,           column.type)
-          assert.equal(other_column.allow_null,     column.allow_null)
-          // TODO: Make sure it always null or always undefined
-          //assert.equal(other_column.default_value,  column.default_value)
-
-          table.drop(() => { done() });
-        });
-      })
-    })
-  })
-
-  it('column.drop should remove column', (done) => {
-    Model.Table.create('public', 'test_table', (table, res, error) => {
-      var column = Model.Column({ name: 'some_column', type: 'integer' })
-      table.addColumnObj(column, (column) => {
-        column.drop(() => {
-          table.getColumnNames((names) => {
-            assert.deepEqual(names, ['id'])
-            table.drop(() => { done() });
-          })
-        })
-      })
-    })
-  })
-
-  it('should update column attributes', (done) => {
-    Model.Table.create('public', 'test_table', (table, res, error) => {
-      var column = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
-      table.addColumnObj(column, (column) => {
-        column.name = 'some_column2'
-        column.allow_null = true
-        column.type = 'character varying'
-        column.default_value = "Foo"
-        column.max_length = 30
-
-        assert.deepEqual(column.changes, {
-          name: ["some_column", "some_column2"],
-          allow_null: [false, true],
-          type: ["integer", "character varying"],
-          default_value: [undefined, "Foo"],
-          max_length: [undefined, 30]
-        })
-
-        column.save(() => {
-          table.getColumnNames((names) => {
-            assert.deepEqual(names, ['id', 'some_column2'])
-            table.getColumnObj('some_column2', (column2) => {
-              assert.equal(column2.type, 'character varying')
-              assert.equal(column2.max_length, 30)
-              // here is little magic with default value, it comes with type in postgres
-              assert.equal(column2.default_value, "'Foo'::character varying")
-              assert(column2.allow_null)
-              table.drop(() => { done() });
-            })
-          })
-        })
-      })
-    })
-  })
-
-  it('should have getter "attributes"', (done) => {
-    Model.Table.create('public', 'test_table', (table, res, error) => {
-      var column = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
-      table.addColumnObj(column, (column) => {
-        assert.deepEqual(column.attributes, {
-          name: 'some_column',
-          type: 'integer',
-          default_value: undefined,
-          max_length: undefined,
-          allow_null: false
-        })
-        table.drop(() => { done() });
-      })
-    })
-  })
-
-  it('should make it syncroniously', async () => {
+  // deprecated, use Model.Column.create
+  it('table.addColumnObj should create column', async () => {
     var table = await Model.Table.create('public', 'test_table')
+    var column = await Model.Column.create({
+      table: table,
+      name: 'some_column',
+      type: 'integer',
+      default_value: 0,
+      allow_null: true
+    })
 
-    assert.equal(table.table, 'test_table')
+    var names = await table.getColumnNames()
+    assert.deepEqual(names, ['id', 'some_column'])
+    await table.drop()
+  })
 
-    var columnData = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+  it('Column.create should return correct column object', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = await Model.Column.create({ name: 'some_column', table: table, type: 'integer' })
 
-    var column = await table.addColumnObj(columnData);
+    var otherColumn = await table.getColumnObj(column.name)
+
+    // table deference
+    assert.equal(otherColumn.table, table)
+
+    // attributes
+    assert.equal(otherColumn.name,           column.name)
+    assert.equal(otherColumn.type,           column.type)
+    assert.equal(otherColumn.allow_null,     column.allow_null)
+    // TODO: Make sure it always null or always undefined
+    //assert.equal(other_column.default_value,  column.default_value)
+
+    await table.drop()
+  })
+
+  it('should delete column', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({ name: 'some_column', type: 'integer' })
+
+    await table.addColumnObj(column)
+
+    assert.deepEqual(await table.getColumnNames(), ['id', 'some_column'])
+
+    await column.drop()
+
+    assert.deepEqual(await table.getColumnNames(), ['id'])
+
+    await table.drop()
+  })
+
+  it('should update column attributes', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+
+    column = await table.addColumnObj(column)
+
+    column.name = 'some_column2'
+    column.allow_null = true
+    column.type = 'character varying'
+    column.default_value = "Foo"
+    column.max_length = 30
+
+    assert.deepEqual(column.changes, {
+      name: ["some_column", "some_column2"],
+      allow_null: [false, true],
+      type: ["integer", "character varying"],
+      default_value: [undefined, "Foo"],
+      max_length: [undefined, 30]
+    })
+
+    await column.save()
+
+    var names = await table.getColumnNames()
+    assert.deepEqual(names, ['id', 'some_column2'])
+
+    var column2 = await table.getColumnObj('some_column2')
+
+    assert.equal(column2.type, 'character varying')
+    assert.equal(column2.max_length, 30)
+    // here is little magic with default value, it comes with type in postgres
+    assert.equal(column2.default_value, "'Foo'::character varying")
+    assert(column2.allow_null)
+
+    await table.drop()
+  })
+
+  it('should have getter "attributes"', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+
+    column = await table.addColumnObj(column)
 
     assert.deepEqual(column.attributes, {
       name: 'some_column',
@@ -148,29 +152,78 @@ describe('Model.Column', () => {
       allow_null: false
     })
 
-    await table.drop();
+    await table.drop()
+  })
+
+  it('should make it syncroniously', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+
+    assert.equal(table.table, 'test_table')
+
+    var columnData = new Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+
+    var column = await table.addColumnObj(columnData)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'integer',
+      default_value: undefined,
+      max_length: undefined,
+      allow_null: false
+    })
+
+    await table.drop()
   })
 
   it('should update column', async () => {
     var table = await Model.Table.create('public', 'test_table')
-    var columnData = Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
+    var columnData = new Model.Column({ name: 'some_column', type: 'integer', allow_null: false })
 
-    var column = await table.addColumnObj(columnData);
+    var column = await table.addColumnObj(columnData)
 
-    await new Promise((resolve, reject) => {
-      column.update({name: 'some_column2', type: 'text', allow_null: true, default_value: '123'}, (res, error) => {
-        error ? reject(error) : resolve(res);
-      });
-    });
+    await column.update({name: 'some_column2', type: 'text', allow_null: true, default_value: '123'})
 
-    var updated = await table.getColumnObj('some_column2');
+    var updated = await table.getColumnObj('some_column2')
 
     // TODO: consistent properties
-    assert.equal(updated.data.column_name, 'some_column2');
-    assert.equal(updated.data.data_type, 'text');
-    assert.equal(updated.data.column_default, "'123'::text");
-    assert.equal(updated.data.is_nullable, 'YES');
+    assert.equal(updated.data.column_name, 'some_column2')
+    assert.equal(updated.data.data_type, 'text')
+    assert.equal(updated.data.column_default, "'123'::text")
+    assert.equal(updated.data.is_nullable, 'YES')
 
-    await table.drop();
-  });
+    await table.drop()
+  })
+
+  it('should update varchar length', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = await Model.Column.create({
+      table: table,
+      name: 'some_column',
+      type: 'character varying',
+      max_length: 100,
+      default_value: "foo",
+      allow_null: true
+    })
+
+    column.max_length = 200;
+    await column.save()
+
+    var updated = await table.getColumnObj('some_column')
+
+    assert.equal(updated.max_length, 200)
+
+    await table.drop()
+  })
+
+  it("should get list of types", async () => {
+    var types = await Model.Column.availableTypes()
+
+    assert.deepEqual(
+      types.find(t => { return t.name == 'text' }),
+      { schema: 'pg_catalog',
+        name: 'text',
+        description: 'variable-length string, no limit specified'
+      }
+    )
+  })
 })

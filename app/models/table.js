@@ -355,27 +355,6 @@ var Table = global.Model.Table = Model.base.extend({
     });
   },
 
-  // ALTER TABLE mytable ADD COLUMN mycolumn character varying(50) NOT NULL DEFAULT 'foo';
-  // TODO: Somewhere here is wrong
-  addColumn: function (name, type, max_length, default_value, is_null, callback) {
-    var type_with_length = max_length ? type + "(" + max_length + ")" : type;
-    var null_sql = is_null ? "NULL" : "NOT NULL";
-    var default_sql = this._default_sql(default_value);
-
-    var sql = `ALTER TABLE "${this.schema}"."${this.table}" ADD ${name} ${type_with_length} ${default_sql} ${null_sql};`;
-    return this.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
-  },
-
-  dropColumn: function (name, callback) {
-    var column = new Model.Column(name, {});
-    column.table = this;
-    return column.drop((data, error) => {
-      callback(data, error);
-    });
-  },
-
   getColumnObj: function (name, callback) {
     return this.getColumns(name).then(data => {
       var row = new Model.Column(data[0].column_name, data[0]);
@@ -385,12 +364,9 @@ var Table = global.Model.Table = Model.base.extend({
     });
   },
 
-  addColumnObj: function (columnObj, callback) {
-    return this.addColumn(columnObj.name, columnObj.type, columnObj.max_length, columnObj.default_value, columnObj.allow_null).then(result => {
-      columnObj.table = this;
-      callback && callback(columnObj);
-      return Promise.resolve(columnObj);
-    });
+  addColumnObj: function (column) {
+    column.table = this;
+    return column.create();
   },
 
   addIndex: function (name, uniq, columns, method, callback) {
@@ -410,14 +386,6 @@ var Table = global.Model.Table = Model.base.extend({
     this.q(sql, (data, error) => {
       callback(data, error);
     });
-  },
-
-  _default_sql: function (default_value) {
-    if (default_value !== undefined && default_value !== '') {
-      return 'DEFAULT ' + JSON.stringify(default_value).replace(/^"/, "'").replace(/"$/, "'");
-    } else {
-      return '';
-    }
   },
 
   // find indexes

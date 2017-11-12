@@ -438,38 +438,47 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  addColumn: function (data, callback) {
+  addColumn: async function (data, callback) {
     App.startLoading(`Adding column ${data.name}`);
-    this.table.addColumn(data.name, data.type, data.max_length, data.default_value, data.is_null, (result, error) => {
-      App.stopLoading();
-      if (!error) {
-        this.structureTabActivate();
-      }
-      callback(result, error);
+    var column = new Model.Column({
+      table: this.table,
+      name: data.name,
+      type: data.type,
+      max_length: data.max_length,
+      default_value: data.default_value,
+      allow_null: data.allow_null
     });
+
+    console.log(column);
+
+    try {
+      await column.create();
+      this.structureTabActivate();
+    } finally {
+      App.stopLoading();
+    }
   },
 
-  editColumn: function (columnObj, data, callback) {
+  updateColumn: async function (columnObj, data, callback) {
     App.startLoading(`Updating column ${columnObj.data.column_name}`);
-    columnObj.update(data, (result, error) => {
+
+    try {
+      await columnObj.update(data);
+      this.structureTabActivate();
+    } finally {
       App.stopLoading();
-      if (!error) {
-        this.structureTabActivate();
-      }
-      callback(result, error);
-    });
+    }
   },
 
-  deleteColumn: function (columnName, callback) {
+  deleteColumn: async function (columnName) {
     App.startLoading(`Deleting column ${columnName}`);
-    this.table.dropColumn(columnName, (result, error) => {
+    var column = new Model.Column(columnName, {table: this.table});
+    try {
+      await column.drop();
+      this.structureTabActivate();
+    } finally {
       App.stopLoading();
-      if (!error) {
-        this.structureTabActivate();
-      }
-      console.log(result, error);
-      callback(result, error);
-    });
+    }
   },
 
   addIndex: function (data, callback) {

@@ -20,15 +20,18 @@ class EditColumn extends Dialog.NewColumn {
     });
   }
 
-  onSubmit(data) {
+  async onSubmit(data) {
     if (data.type == "") {
       window.alert("Please choose column type");
       return;
     }
-    if (data.allow_null == "1") {
-      data.is_null = true;
+
+    try {
+      await this.handler.updateColumn(this.columnObj, data);
+      this.close();
+    } catch (error) {
+      this.defaultServerResponse(null, error);
     }
-    this.handler.editColumn(this.columnObj, data, this.defaultServerResponse.bind(this));
   }
 }
 

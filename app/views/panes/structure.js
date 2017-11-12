@@ -42,10 +42,12 @@ class Structure extends Pane {
     });
   }
 
-  doDeleteColumn (column_name) {
-    this.handler.deleteColumn(column_name, (result, error) => {
-      if (error) window.alert(error.message);
-    });
+  async doDeleteColumn (column_name) {
+    try {
+      await this.handler.deleteColumn(column_name);
+    } catch (error) {
+      window.alert(error.message);
+    }
   }
 
   deleteIndex (indexName) {

@@ -56,5 +56,7 @@ describe('Model.User', () => {
       privileges: 'rwd',
       table_type: 'r'
     }]);
+
+    await table.drop()
   });
 });

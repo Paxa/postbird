@@ -59,3 +59,9 @@ global.testConnection = async (logging) => {
 global.getConnection = () => {
   return Connection.instances[0];
 }
+
+/*
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+*/

@@ -29,11 +29,11 @@ describe('Model.Table and Model.Schema', () => {
     var schema2 = await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table', {empty: true})
-    await table1.addColumnObj(Model.Column('foo', {data_type: 'integer', null: true}))
+    await table1.addColumnObj(new Model.Column('foo', {data_type: 'integer', null: true}))
     await table1.addIndex('idx_foo', false, 'foo', 'btree')
 
     var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
-    await table2.addColumnObj(Model.Column('bar', {data_type: 'text', null: true}))
+    await table2.addColumnObj(new Model.Column('bar', {data_type: 'text', null: true}))
     await table2.addIndex('idx_bar_123', false, 'bar', 'btree')
 
     assert.deepEqual(await table1.getColumnNames(), ['foo'])

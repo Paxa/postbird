@@ -27,6 +27,8 @@ describe('SqlExporter', () => {
     assert.contain(result, "PostgreSQL database dump")
     assert.contain(result, "CREATE TABLE test_table")
     assert.contain(result, "COPY test_table (id) FROM stdin;")
+
+    await table.drop()
   })
 
 })

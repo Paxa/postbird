@@ -50,7 +50,7 @@ describe('Model.Table', () => {
 
   it("should count rows", async () => {
     var table = await Model.Table.create('public', 'test_table', {empty: true})
-    await table.addColumnObj(Model.Column('some_column', {data_type: 'integer', null: true}));
+    await table.addColumnObj(new Model.Column('some_column', {data_type: 'integer', null: true}));
 
     await table.insertRow([1])
     await table.insertRow([2])
@@ -63,7 +63,7 @@ describe('Model.Table', () => {
 
   it("should generate source sql", async () => {
     var table = await Model.Table.create('public', 'test_table', {empty: true})
-    await table.addColumnObj(Model.Column('some_column', {data_type: 'integer'}));
+    await table.addColumnObj(new Model.Column('some_column', {data_type: 'integer'}));
 
     var sql = await new Promise((resolve, reject) => {
       table.getSourceSql(resolve);
@@ -76,8 +76,8 @@ describe('Model.Table', () => {
 
   it("should insert row", async () => {
     var table = await Model.Table.create('public', 'test_table', {empty: true})
-    await table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}));
-    await table.addColumnObj(Model.Column('some_column', {data_type: 'text'}));
+    await table.addColumnObj(new Model.Column('some_number', {data_type: 'integer'}));
+    await table.addColumnObj(new Model.Column('some_column', {data_type: 'text'}));
 
     await table.insertRow({some_number: 123, some_column: 'bob'})
 
@@ -130,8 +130,8 @@ describe('Model.Table', () => {
 
   it("should truncate table", async () => {
     var table = await Model.Table.create('public', 'test_table', {empty: true})
-    await table.addColumnObj(Model.Column('some_number', {data_type: 'integer'}))
-    await table.addColumnObj(Model.Column('some_column', {data_type: 'text'}))
+    await table.addColumnObj(new Model.Column('some_number', {data_type: 'integer'}))
+    await table.addColumnObj(new Model.Column('some_column', {data_type: 'text'}))
 
     await table.insertRow({some_number: 123, some_column: 'bob'})
     assert.equal((await table.getRows()).rowCount, 1)

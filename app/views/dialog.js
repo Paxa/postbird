@@ -70,7 +70,7 @@ class Dialog {
 
   defaultServerResponse (data, error) {
     if (error) {
-      window.alert(error.message);
+      $u.alert(error.message, {type: "warning", detail: error.query});
     } else {
       this.close();
     }
