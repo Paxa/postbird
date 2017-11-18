@@ -169,6 +169,27 @@ describe('Model.Table', () => {
     )
 
     await table.drop()
-  });
+  })
+
+  it("should rename table", async () => {
+    var table = await Model.Table.create('public', 'Test_Table')
+
+    await table.rename("Test_Table2")
+
+    assert.equal(table.table, "Test_Table2")
+    await table.drop()
+  })
+
+  it("should rename view", async () => {
+    var sql = `CREATE VIEW "Test_View" AS SELECT * FROM pg_available_extensions`
+    await Model.base.q(sql)
+
+    var view = new Model.Table('public', 'Test_View')
+
+    await view.rename("Test_View2")
+
+    assert.equal(view.table, "Test_View2")
+    await view.drop()
+  })
 
 })

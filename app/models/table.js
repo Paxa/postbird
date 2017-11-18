@@ -9,24 +9,36 @@ var Table = global.Model.Table = Model.base.extend({
     MAT_VIEW: 'MATERIALIZED VIEW'
   },
 
-  init: function (schema, table_name, tableType) {
+  init: function (schema, tableName, tableType) {
     this.schema = schema;
-    this.table = table_name;
+    this.table = tableName;
     if (tableType) {
       this.tableType = tableType;
     }
   },
 
-  rename: function (new_name, callback) {
-    var sql = `ALTER INDEX ${this.sqlTable()} RENAME TO ${new_name}`;
-    return this.q(sql, (data, error) => {
-      this.table = new_name;
-      callback && callback(data, error);
+  rename: function (newName, callback) {
+    return this.getTableType().then(tableType => {
+      var sql;
+      if (tableType == this.types.VIEW) {
+        sql = `ALTER VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
+      } else if (tableType == this.types.MAT_VIEW) {
+        sql = `ALTER MATERIALIZED VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
+      } else if (tableType == this.types.TABLE) {
+        sql = `ALTER TABLE ${this.sqlTable()} RENAME TO "${newName}"`;
+      } else {
+        throw new Error(`Can not rename ${tableType} (not supported or not implemented)`);
+      }
+
+      return this.q(sql).then((res) => {
+        this.table = newName;
+        return Promise.resolve(res);
+      });
     });
   },
 
   remove: function(callback) {
-    return this.getTableType((tableType) => {
+    return this.getTableType().then(tableType => {
       if (tableType == this.types.VIEW) {
         return this.removeView(callback);
       } else if (tableType == this.types.MAT_VIEW) {
@@ -95,17 +107,17 @@ var Table = global.Model.Table = Model.base.extend({
       var sql = `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
-        where table_schema = '${this.schema}' and table_name = '${this.table}'
-        union
-        select schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
-        from pg_matviews
-        where schemaname = '${this.schema}' and matviewname = '${this.table}'
+        WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
+        UNION
+        SELECT schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
+        FROM pg_matviews
+        WHERE schemaname = '${this.schema}' AND matviewname = '${this.table}'
       `
     } else {
       var sql = `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
-        where table_schema = '${this.schema}' and table_name = '${this.table}'
+        WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
       `
     }
 
@@ -374,7 +386,10 @@ var Table = global.Model.Table = Model.base.extend({
     var columns_sql = Array.isArray(columns) ? columns.map(col => { return `"${col}"` }).join(', ') : `"${columns.toString()}"`;
     if (!method) method = 'btree';
 
-    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY "${name}" ON ${this.sqlTable()} USING ${method} (${columns_sql});`;
+    if (name && name != '') {
+      name = `"${name}"`;
+    }
+    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON ${this.sqlTable()} USING ${method} (${columns_sql});`;
 
     return this.q(sql, (data, error) => {
       callback && callback(data, error);
@@ -382,7 +397,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   dropIndex: function (indexName, callback) {
-    var sql = `DROP INDEX CONCURRENTLY ${this.sqlTable()};`;
+    var sql = `DROP INDEX CONCURRENTLY "${indexName}";`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });
@@ -662,6 +677,10 @@ var Table = global.Model.Table = Model.base.extend({
 
   sqlTable() {
     return `"${this.schema}"."${this.table}"`;
+  },
+
+  refreshMatView() {
+    return this.q(`REFRESH MATERIALIZED VIEW ${this.sqlTable()}`);
   }
 });
 
@@ -711,5 +730,7 @@ Model.Table.publicTables = function publicTables (callback) {
 Model.Table.l = function (schema, table_name) {
   return new Model.Table(schema, table_name);
 };
+
+Model.Table.types = Model.Table.prototype.types;
 
 module.exports = Table;

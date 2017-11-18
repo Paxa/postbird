@@ -237,4 +237,17 @@ describe('Model.Column', () => {
 
     assert.deepEqual(await table.getColumnNames(), ['id', 'Some_Column'])
   })
+
+  it('should alter column with upper name', async () => {
+    var table = await Model.Table.create('public', 'Test_Table')
+    var columnData = new Model.Column({ name: 'Some_Column', type: 'integer', allow_null: false })
+
+    var column = await table.addColumnObj(columnData)
+
+    await column.update({name: 'Some_Column2', type: 'text', allow_null: true, default_value: '123'})
+
+    var updated = await table.getColumnObj('Some_Column2')
+
+    await table.drop()
+  })
 })

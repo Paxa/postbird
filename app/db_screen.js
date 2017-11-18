@@ -327,66 +327,63 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  dropTable: function (schema, table, callback) {
-    window.alertify.confirm("Delete table " + schema + '.' + table + "?", (agreed) => {
-      if (!agreed) return;
-      App.startLoading(`Dropping table ${table}`);
-      Model.Table(schema, table).remove((res, error) => {
-        App.stopLoading();
-        this.omit('table.deleted');
-        this.fetchTablesAndSchemas();
-        callback && callback(res, error);
-      });
-    });
+  _relationTitle: function (type) {
+    return {
+      "VIEW": 'view',
+      "BASE TABLE": 'table',
+      "MATERIALIZED VIEW": 'materialized view',
+      'FOREIGN TABLE': 'foreign table'
+    }[type] || type;
   },
 
-  dropView: function (schema, table, callback) {
-    window.alertify.confirm("Delete view " + schema + '.' + table + "?", (agreed) => {
-      if (!agreed) return;
-      App.startLoading(`Dropping view ${table}`);
-      Model.Table(schema, table).removeView((success, error) => {
-        App.stopLoading();
-        if (success) {
-          this.omit('table.deleted');
-          this.fetchTablesAndSchemas();
-        }
-        callback && callback(success, error);
-      });
-    });
+  dropRelation: async function (schema, tableName, callback) {
+    var table = new Model.Table(schema, tableName);
+
+    var type = await table.getTableType();
+    var tableTitle = this._relationTitle(type);
+
+    var message = `Delete ${tableTitle} ${schema}.${tableName}?`;
+    if (await $u.confirm(message)) {
+      await table.remove();
+      this.omit('table.deleted');
+      this.fetchTablesAndSchemas();
+    }
   },
 
-  dropForeignTable: function (schema, table, callback) {
-    window.alertify.confirm("Delete foreign " + schema + '.' + table + "?", (agreed) => {
-      if (!agreed) return;
-      App.startLoading(`Dropping foreign table ${table}`);
-      Model.Table(schema, table).dropFereign((success, error) => {
-        App.stopLoading();
-        if (success) {
-          this.omit('table.deleted');
-          this.fetchTablesAndSchemas();
-        }
-        callback && callback(success, error);
-      });
-    });
+  refreshMatView: async function (schema, tableName) {
+    var table = new Model.Table(schema, tableName);
+
+    App.startLoading(`Refreshing ${schema}.${tableName}...`);
+    var res = await table.refreshMatView();
+    App.stopLoading();
+
+    return res;
   },
 
-  renameTable: function (schema, tableName, newName, callback) {
+  renameTable: async function (schema, tableName, newName) {
     if (tableName == newName) {
       console.log("Try rename table '" + tableName + "' -> '" + newName + "', canceled, same value");
-      callback && callback();
       return;
     }
 
-    App.startLoading(`Renaming table ${tableName} to ${newName}`);
-    Model.Table(schema, tableName).rename(newName, (res, error) => {
-      App.stopLoading();
-      if (this.currentTable == tableName) {
-        this.currentTable = newName;
-      }
-      this.omit('table.renamed');
-      this.fetchTablesAndSchemas();
-      callback && callback(res, error);
-    });
+    var table = new Model.Table(schema, tableName);
+
+    var type = await table.getTableType();
+    var tableTitle = this._relationTitle(type);
+
+    App.startLoading(`Renaming ${tableTitle} ${tableName} to ${newName}`);
+
+    var result = await table.rename(newName);
+
+    App.stopLoading();
+
+    if (this.currentTable == tableName) {
+      this.currentTable = newName;
+    }
+    this.omit('table.renamed');
+    this.fetchTablesAndSchemas();
+
+    return result;
   },
 
   structureTabActivate: async function () {

@@ -101,7 +101,7 @@ global.DbScreenView = jClass.extend({
     ));
 
     this.databaseSelect.append($dom(
-      ['option', {value: '**create-db**'}, 'Create database']
+      ['option', {value: '**create-db**'}, 'Create Database']
     ));
 
     if (this.handler.database) {
@@ -138,93 +138,68 @@ global.DbScreenView = jClass.extend({
           this.renameTable(tableNode, schema, table.table_name);
         }, 170);
 
-        if (table.table_type == "BASE TABLE") {
-          $u.contextMenu(tableNode, {
-            'View': () => {
-              this.handler.tableSelected(schema, table.table_name, tableNode);
-            },
-            'separator': 'separator',
-            'Rename': () => {
-              this.renameTable(tableNode, schema, table.table_name);
-            },
-            'Truncate table' : () => {
-              this.truncateTable(schema, table.table_name);
-            },
-            'Drop table': () => {
-              this.handler.dropTable(schema, table.table_name, (res, error) => {
-                if (error) {
-                  var errorMsg = "" + error.toString();
-                  if (error.detail) errorMsg += "\n----\n" + error.detail;
-                  if (error.hint) errorMsg += "\n----\n" + error.hint;
-                  window.alert(errorMsg);
-                } else {
-                  if (this.handler.currentTable == table.table_name) {
-                    this.eraseCurrentContent();
-                  }
-                }
-              });
-            },
-            'Show table SQL': () => {
-              this.showTableSql(schema, table.table_name);
-            }
-          });
-        } else if (table.table_type == "VIEW" || table.table_type == "MATERIALIZED VIEW") {
-          $u.contextMenu(tableNode, {
-            'View': () => {
-              this.handler.tableSelected(schema, table.table_name, tableNode);
-            },
-            'separator': 'separator',
-            'Rename': () => {
-              this.renameTable(tableNode, schema, table.table_name);
-            },
-            'Drop view': () => {
-              this.handler.dropView(schema, table.table_name, (res, error) => {
-                if (error) {
-                  var errorMsg = "" + error.toString();
-                  if (error.detail) errorMsg += "\n----\n" + error.detail;
-                  if (error.hint) errorMsg += "\n----\n" + error.hint;
-                  window.alert(errorMsg);
-                } else {
-                  if (this.handler.currentTable == table.table_name) {
-                    this.eraseCurrentContent();
-                  }
-                }
-              });
-            },
-            'Show view SQL': () => {
-              this.showViewSql(schema, table.table_name);
-            }
-          });
-        } else if (table.table_type == "FOREIGN TABLE") {
-          $u.contextMenu(tableNode, {
-            'View': () => {
-              this.handler.tableSelected(schema, table.table_name, tableNode);
-            },
-            'separator': 'separator',
-            'Rename': () => {
-              this.renameTable(tableNode, schema, table.table_name);
-            },
-            'Drop foreign table': () => {
-              this.handler.dropForeignTable(schema, table.table_name, (res, error) => {
-                if (error) {
-                  var errorMsg = "" + error.toString();
-                  if (error.detail) errorMsg += "\n----\n" + error.detail;
-                  if (error.hint) errorMsg += "\n----\n" + error.hint;
-                  window.alert(errorMsg);
-                } else {
-                  if (this.handler.currentTable == table.table_name) {
-                    this.eraseCurrentContent();
-                  }
-                }
-              });
-            },
-            'Show view SQL': () => {
-              this.showViewSql(schema, table.table_name);
-            }
-          });
-        } else {
-          console.log("Unknown table type: ", table.table_type, schema, table);
+        var tableTypes = {
+          "VIEW": 'View',
+          "BASE TABLE": 'Table',
+          "MATERIALIZED VIEW": 'Mat. View',
+          "FOREIGN TABLE": "Foreign Table"
+        };
+        var tableTitle = tableTypes[table.table_type] || table.table_type;
+
+        if (!tableTypes[table.table_type]) {
+          try {
+            throw new Error(`Unknown table type: ${table.table_type}`);
+          } catch (error) {
+            errorReporter(error, false);
+          }
         }
+
+        var actions = {
+          'View': () => {
+            this.handler.tableSelected(schema, table.table_name, tableNode);
+          },
+          'separator1': 'separator',
+          'Rename': () => {
+            this.renameTable(tableNode, schema, table.table_name);
+          }
+        };
+
+        if (table.table_type == "BASE TABLE") {
+          actions['Truncate Table'] = () => {
+            this.truncateTable(schema, table.table_name);
+          };
+        }
+
+        actions[`Show ${tableTitle} SQL`] = () => {
+          this.showViewSql(schema, table.table_name);
+        };
+        if (table.table_type == 'MATERIALIZED VIEW') {
+          actions[`Refresh Mat. View`] = () => {
+            this.handler.refreshMatView(schema, table.table_name).then(res => {
+              $u.alert(`Refreshed materialized view ${table.table_name}`, {info: 'info'});
+            });
+          };
+        }
+        actions[`separator2`] = 'separator';
+        actions[`Drop ${tableTitle}`] = () => {
+          this.handler.dropRelation(schema, table.table_name, (res, error) => {
+            if (error) {
+              var errorMsg = "" + error.toString();
+              if (error.detail) errorMsg += "\n----\n" + error.detail;
+              if (error.hint) errorMsg += "\n----\n" + error.hint;
+              window.alert(errorMsg);
+            } else {
+              if (this.handler.currentTable == table.table_name) {
+                this.eraseCurrentContent();
+              }
+            }
+          });
+        };
+
+        $u.contextMenu(tableNode, actions);
+        tableNode.addEventListener('contextmenu', (event) => {
+          this.handler.tableSelected(schema, table.table_name, tableNode);
+        });
 
         $u(schemaTree.list).append(tableNode);
 
@@ -255,7 +230,12 @@ global.DbScreenView = jClass.extend({
       }
     });
 
+    var submitted = false;
+
     $u.listenClickOutside(input, (action) => {
+      if (submitted) {
+        return;
+      }
       if (action == 'click') {
         var newValue = input.val();
         if (newValue != tableName) {
@@ -272,6 +252,7 @@ global.DbScreenView = jClass.extend({
         var newValue = e.target.value;
         node.html(e.target.value);
         this.handler.renameTable(schema, tableName, newValue);
+        submitted = true;
       }
     });
   },

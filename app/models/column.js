@@ -72,7 +72,7 @@ class Column extends Model.base {
       var oldName = this.changes['name'][0];
       var newName = this.changes['name'][1];
 
-      var res = await this.q(`ALTER TABLE ${this.table.sqlTable()} RENAME COLUMN ${oldName} TO ${newName}`);
+      var res = await this.q(`ALTER TABLE ${this.table.sqlTable()} RENAME COLUMN "${oldName}" TO "${newName}"`);
       delete this.changes['name'];
       return res;
     }
@@ -84,7 +84,7 @@ class Column extends Model.base {
       this.shouldHaveTable();
 
       var type_with_length = this.max_length ? this.type + "(" + this.max_length + ")" : this.type;
-      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} TYPE ${type_with_length} USING ${this.name}::${this.type};`;
+      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN "${this.name}" TYPE ${type_with_length} USING "${this.name}"::${this.type};`;
 
       var res = await this.q(sql);
       delete this.changes['type'];
@@ -96,7 +96,7 @@ class Column extends Model.base {
   async save_alterNullable () {
     if (this.changes['allow_null']) {
       var null_sql = this.allow_null ? "DROP NOT NULL" : "SET NOT NULL";
-      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} ${null_sql};`;
+      var sql = `ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN "${this.name}" ${null_sql};`;
       return await this.q(sql);
     }
   }
@@ -104,7 +104,7 @@ class Column extends Model.base {
   async save_alterDefault () {
     if (this.changes['default_value']) {
       if (this.default_value == undefined || this.default_value == '') {
-        return await this.q(`ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN ${this.name} DROP DEFAULT;`);
+        return await this.q(`ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN "${this.name}" DROP DEFAULT;`);
       } else {
         return await this.q(`ALTER TABLE ${this.table.sqlTable()} ALTER COLUMN "${this.name}" SET ${this._default_sql(this.default_value)};`);
       }
@@ -113,7 +113,7 @@ class Column extends Model.base {
 
   async drop () {
     this.shouldHaveTable();
-    await this.q(`ALTER TABLE ${this.table.sqlTable()} DROP COLUMN ${this.name}`);
+    await this.q(`ALTER TABLE ${this.table.sqlTable()} DROP COLUMN "${this.name}"`);
   }
 
   shouldHaveTable () {
