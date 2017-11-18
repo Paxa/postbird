@@ -1,4 +1,13 @@
-== Version 0.7.0
+== Version 0.7.1
+
+* Fix CSV export, save more then 500 rows
+* Better text for deletting rows (Thanks to @nickheiner-usds)
+* Support Upper case for table names, columns, indexes
+* Add refreshing mat. view
+* Fix renaming tables
+* More async/await
+
+== Version 0.7.0 (22-oct-2017)
 
 * Update to electron 1.7.8
 * Update to PostgreSQL 10

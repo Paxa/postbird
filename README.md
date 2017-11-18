@@ -1,6 +1,6 @@
 # Postbird
 
-Postbird is PostgreSQL GUI client for macOs, written in JavaScript, runs with Electron
+Postbird is PostgreSQL GUI client for macOS, written in JavaScript, runs with Electron
 
 ![postbird-screenshot](https://cloud.githubusercontent.com/assets/26019/24329271/0758103e-1234-11e7-916c-40d407799580.png)
 
