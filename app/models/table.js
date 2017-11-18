@@ -18,7 +18,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   rename: function (new_name, callback) {
-    var sql = `ALTER INDEX "${this.schema}"."${this.table}" RENAME TO ${new_name}`;
+    var sql = `ALTER INDEX ${this.sqlTable()} RENAME TO ${new_name}`;
     return this.q(sql, (data, error) => {
       this.table = new_name;
       callback && callback(data, error);
@@ -32,7 +32,7 @@ var Table = global.Model.Table = Model.base.extend({
       } else if (tableType == this.types.MAT_VIEW) {
         return this.removeMatView(callback);
       } else {
-        return this.q(`DROP TABLE "${this.schema}"."${this.table}"`, callback);
+        return this.q(`DROP TABLE ${this.sqlTable()}`, callback);
       }
     });
   },
@@ -42,27 +42,27 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   removeView: function (callback) {
-    var sql = `drop view "${this.schema}"."${this.table}"`;
+    var sql = `DROP VIEW ${this.sqlTable()}`;
     return this.q(sql, (result, error) => {
       callback && callback(error ? false : true, error);
     });
   },
 
   removeMatView: function (callback) {
-    var sql = `drop materialized view "${this.schema}"."${this.table}"`;
+    var sql = `DROP MATERIALIZED VIEW ${this.sqlTable()}`;
     return this.q(sql, (result, error) => {
       callback && callback(error ? false : true, error);
     });
   },
 
   dropFereign: function (callback) {
-    this.q(`DROP FOREIGN TABLE "${this.schema}"."${this.table}"`, (result, error) => {
+    this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`, (result, error) => {
       callback(error ? false : true, error);
     });
   },
 
   safeDrop: function (callback) {
-    this.q(`DROP TABLE IF EXISTS "${this.schema}"."${this.table}" CASCADE`, callback);
+    this.q(`DROP TABLE IF EXISTS ${this.sqlTable()} CASCADE`, callback);
   },
 
   isMatView: function (callback) {
@@ -218,8 +218,8 @@ var Table = global.Model.Table = Model.base.extend({
 
   hasOID: function (callback) {
     //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
-    var sql = `select relhasoids from pg_catalog.pg_class, pg_catalog.pg_namespace n
-      where n.oid = pg_class.relnamespace and nspname = '${this.schema}' and relname = '${this.table}'`
+    var sql = `SELECT relhasoids FROM pg_catalog.pg_class, pg_catalog.pg_namespace n
+      WHERE n.oid = pg_class.relnamespace AND nspname = '${this.schema}' AND relname = '${this.table}'`
     this.q(sql, (data, error) => {
       if (error) {
         callback(undefined, error);
@@ -341,7 +341,7 @@ var Table = global.Model.Table = Model.base.extend({
     var sql = `SELECT pg_attribute.attname
       FROM pg_index, pg_class, pg_attribute
       WHERE
-        pg_class.oid = '${this.schema}.${this.table}'::regclass AND
+        pg_class.oid = '${this.sqlTable()}'::regclass AND
         indrelid = pg_class.oid AND
         pg_attribute.attrelid = pg_class.oid AND
         pg_attribute.attnum = any(pg_index.indkey)
@@ -371,18 +371,18 @@ var Table = global.Model.Table = Model.base.extend({
 
   addIndex: function (name, uniq, columns, method, callback) {
     var uniq_sql = uniq ? 'UNIQUE' : '';
-    var columns_sql = Array.isArray(columns) ? columns.join(', ') : columns.toString();
+    var columns_sql = Array.isArray(columns) ? columns.map(col => { return `"${col}"` }).join(', ') : `"${columns.toString()}"`;
     if (!method) method = 'btree';
 
-    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON "${this.schema}"."${this.table}" USING ${method} (%s);`;
+    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY "${name}" ON ${this.sqlTable()} USING ${method} (${columns_sql});`;
 
-    return this.q(sql, columns_sql, (data, error) => {
+    return this.q(sql, (data, error) => {
       callback && callback(data, error);
     });
   },
 
   dropIndex: function (indexName, callback) {
-    var sql = `DROP INDEX CONCURRENTLY ${this.schema}.${indexName};`;
+    var sql = `DROP INDEX CONCURRENTLY ${this.sqlTable()};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });
@@ -428,8 +428,8 @@ var Table = global.Model.Table = Model.base.extend({
     return new Promise((resolve, reject) => {
       this.q(sql_find_oid, (oid_data, error) => {
         if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
-          reject(new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
-          callback && callback(null, new Error(`Relation "${this.schema}"."${this.table}" does not exist`));
+          reject(new Error(`Relation ${this.sqlTable()} does not exist`));
+          callback && callback(null, new Error(`Relation ${this.sqlTable()} does not exist`));
           return;
         }
 
@@ -476,7 +476,7 @@ var Table = global.Model.Table = Model.base.extend({
           condition = `where ${options.conditions.join(" and ")}`;
         }
 
-        var sql = `select ${selectColumns.join(', ')} from "${this.schema}"."${this.table}" ${condition} ${orderSql} limit ${limit} offset ${offset}`;
+        var sql = `select ${selectColumns.join(', ')} from ${this.sqlTable()} ${condition} ${orderSql} limit ${limit} offset ${offset}`;
 
         return this.q(sql, (data, error) => {
           if (data) {
@@ -495,7 +495,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   getTotalRows: function (callback) {
-    var sql = `select count(*) as rows_count from "${this.schema}"."${this.table}"`;
+    var sql = `select count(*) as rows_count from ${this.sqlTable()}`;
 
     return new Promise((resolve, reject) => {
       this.q(sql, (data, error) => {
@@ -515,9 +515,9 @@ var Table = global.Model.Table = Model.base.extend({
   getTotalRowsEstimate: function (callback) {
     var sql = `SELECT reltuples::bigint AS estimate
       FROM   pg_class
-      WHERE  oid = '%s.%s'::regclass`
+      WHERE  oid = '${this.sqlTable()}'::regclass`
 
-    this.q(sql, this.schema, this.table, (res) => {
+    this.q(sql, (res) => {
       var row = res.rows[0];
       callback(row.estimate);
     });
@@ -525,7 +525,7 @@ var Table = global.Model.Table = Model.base.extend({
 
   insertRow: function (values, callback) {
     if (Array.isArray(values)) {
-      var sql = `insert into "${this.schema}"."${this.table}" values (%s)`;
+      var sql = `INSERT INTO ${this.sqlTable()} VALUES (%s)`;
 
       var safeValues = values.map((val) => {
         return "'" + val.toString() + "'";
@@ -535,8 +535,10 @@ var Table = global.Model.Table = Model.base.extend({
         callback && callback(data, error);
       });
     } else {
-      var columns = Object.keys(values);
-      var sql = `insert into "${this.schema}"."${this.table}" (${columns.join(", ")}) values (%s)`;
+      var columns = Object.keys(values).map(col => {
+        return `"${col}"`;
+      });
+      var sql = `insert into ${this.sqlTable()} (${columns.join(", ")}) values (%s)`;
       var safeValues = Object.values(values).map((val) => {
         return "'" + val.toString() + "'";
       }).join(", ");
@@ -548,7 +550,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   deleteRowByCtid: function (ctid, callback) {
-    var sql = `delete from "${this.schema}"."${this.table}" where ctid='${ctid}'`;
+    var sql = `delete from ${this.sqlTable()} where ctid='${ctid}'`;
     return this.q(sql, (data, error) => {
       callback && callback(data, error);
     });
@@ -557,7 +559,7 @@ var Table = global.Model.Table = Model.base.extend({
   getSourceSql: function (callback) {
     var exporter = new SqlExporter({debug: true});
     // TODO: include schema
-    exporter.addArgument('--table=' + this.schema + '.' + this.table);
+    exporter.addArgument('--table=' + this.sqlTable());
     exporter.addArgument("--schema-only");
     exporter.addArgument('--no-owner');
 
@@ -644,7 +646,7 @@ var Table = global.Model.Table = Model.base.extend({
   getConstraints(callback) {
     var sql = `
       SELECT *, pg_get_constraintdef(oid, true) as pretty_source
-      FROM pg_constraint WHERE conrelid = '${this.schema}.${this.table}'::regclass
+      FROM pg_constraint WHERE conrelid = '${this.sqlTable()}'::regclass
     `;
     return this.q(sql, (data, error) => {
       callback && callback(data, error);
@@ -652,7 +654,7 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   dropConstraint(constraintName, callback) {
-    var sql = `ALTER TABLE "${this.schema}"."${this.table}" DROP CONSTRAINT ${constraintName};`;
+    var sql = `ALTER TABLE ${this.sqlTable()} DROP CONSTRAINT ${constraintName};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });

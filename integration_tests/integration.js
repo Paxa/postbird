@@ -34,7 +34,7 @@ describe('application launch', function () {
       return client.execute(() => {
         try {
           var connection = Connection.instances[0];
-          return connection.query("drop schema public cascade; create schema public;").then(() => {
+          return connection.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;").then(() => {
             return App.tabs[0].instance.fetchTablesAndSchemas();
           })
         } catch (error) {

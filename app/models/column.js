@@ -37,7 +37,7 @@ class Column extends Model.base {
     var null_sql = this.allow_null ? "NULL" : "NOT NULL";
     var default_sql = this._default_sql(this.default_value);
 
-    var sql = `ALTER TABLE ${this.table.sqlTable()} ADD ${this.name} ${type_with_length} ${default_sql} ${null_sql};`;
+    var sql = `ALTER TABLE ${this.table.sqlTable()} ADD "${this.name}" ${type_with_length} ${default_sql} ${null_sql};`;
 
     await this.q(sql);
 

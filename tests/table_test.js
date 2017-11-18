@@ -142,4 +142,33 @@ describe('Model.Table', () => {
     await table.drop()
   })
 
+  it("should handle upper case in names", async () => {
+    var table = await Model.Table.create('public', 'Test_Table')
+    await table.addColumnObj(new Model.Column('Some_Number', {data_type: 'integer'}))
+    await table.addColumnObj(new Model.Column('Some_Column', {data_type: 'text'}))
+
+    await table.insertRow({Some_Number: 123, Some_Column: 'bob'})
+
+    assert.equal(await table.isView(), false)
+    assert.equal(await table.isMatView(), false)
+    assert.equal(await table.getTableType(), 'BASE TABLE')
+
+    assert.deepEqual(await table.getColumnNames(), ['id', 'Some_Number', 'Some_Column'])
+    assert.deepEqual(
+      (await table.getStructure()).map(col => { return col.column_name }),
+      ['id', 'Some_Number', 'Some_Column']
+    )
+
+    assert.deepEqual(await table.getPrimaryKey(), [{attname: 'id'}])
+
+    await table.addIndex('Test_Index', false, ['Some_Number'])
+
+    assert.deepEqual(
+      (await table.getIndexes()).map(idx => { return idx.relname }),
+      ['Test_Table_pkey', 'Test_Index']
+    )
+
+    await table.drop()
+  });
+
 })

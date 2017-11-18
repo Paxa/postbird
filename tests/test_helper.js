@@ -16,7 +16,7 @@ global.cleanupSchema = async (connection) => {
   if (!connection) {
     connection = Connection.instances[0];
   }
-  return connection.query("drop schema public cascade; create schema public;");
+  return connection.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
 }
 
 global.testConnection = async (logging) => {

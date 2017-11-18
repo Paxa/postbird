@@ -226,4 +226,15 @@ describe('Model.Column', () => {
       }
     )
   })
+
+  it('should create column with upper case', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = await Model.Column.create({
+      table: table,
+      name: 'Some_Column',
+      type: 'character varying',
+    })
+
+    assert.deepEqual(await table.getColumnNames(), ['id', 'Some_Column'])
+  })
 })
