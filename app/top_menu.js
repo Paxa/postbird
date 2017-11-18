@@ -45,6 +45,13 @@ var template = [
     label: 'Database',
     submenu: [
       {
+        label: 'Create Database',
+        click: () => {
+          new Dialog.NewDatabase(global.App.currentTab.instance);
+        },
+        enabled: false
+      },
+      {
         label: 'Refresh Database',
         click: () => {
           global.App.currentTab.instance.fetchTablesAndSchemas();
@@ -297,15 +304,17 @@ function disableItem(topLabel, itemLable) {
 var checkDbMenu = function () {
   var db = global.App.currentTab.instance.database;
   if (db) {
-    enableItem("Database", "Drop Database");
+    enableItem("Database", "Create Database");
     enableItem("Database", "Refresh Database");
     enableItem("Database", "Rename Database");
     enableItem("Database", "Export Database");
+    enableItem("Database", "Drop Database");
   } else {
-    disableItem("Database", "Drop Database");
+    disableItem("Database", "Create Database");
     disableItem("Database", "Refresh Database");
     disableItem("Database", "Rename Database");
     disableItem("Database", "Export Database");
+    disableItem("Database", "Drop Database");
   }
 };
 
