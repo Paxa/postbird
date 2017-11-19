@@ -6,7 +6,8 @@ var Table = global.Model.Table = Model.base.extend({
   types: {
     VIEW: 'VIEW',
     TABLE: 'BASE TABLE',
-    MAT_VIEW: 'MATERIALIZED VIEW'
+    MAT_VIEW: 'MATERIALIZED VIEW',
+    FOREIGN_TABLE: 'FOREIGN TABLE'
   },
 
   init: function (schema, tableName, tableType) {
@@ -24,6 +25,8 @@ var Table = global.Model.Table = Model.base.extend({
         sql = `ALTER VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
       } else if (tableType == this.types.MAT_VIEW) {
         sql = `ALTER MATERIALIZED VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
+      } else if (tableType == this.types.FOREIGN_TABLE) {
+        sql = `ALTER FOREIGN TABLE ${this.sqlTable()} RENAME TO "${newName}"`;
       } else if (tableType == this.types.TABLE) {
         sql = `ALTER TABLE ${this.sqlTable()} RENAME TO "${newName}"`;
       } else {
@@ -39,10 +42,13 @@ var Table = global.Model.Table = Model.base.extend({
 
   remove: function(callback) {
     return this.getTableType().then(tableType => {
+
       if (tableType == this.types.VIEW) {
         return this.removeView(callback);
       } else if (tableType == this.types.MAT_VIEW) {
         return this.removeMatView(callback);
+      } else if (tableType == this.types.FOREIGN_TABLE) {
+        return this.removeFereignTable(callback);
       } else {
         return this.q(`DROP TABLE ${this.sqlTable()}`, callback);
       }
@@ -67,14 +73,10 @@ var Table = global.Model.Table = Model.base.extend({
     });
   },
 
-  dropFereign: function (callback) {
-    this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`, (result, error) => {
-      callback(error ? false : true, error);
+  removeFereignTable: function (callback) {
+    return this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`, (result, error) => {
+      callback && callback(error ? false : true, error);
     });
-  },
-
-  safeDrop: function (callback) {
-    this.q(`DROP TABLE IF EXISTS ${this.sqlTable()} CASCADE`, callback);
   },
 
   isMatView: function (callback) {
