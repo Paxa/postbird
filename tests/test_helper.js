@@ -56,6 +56,16 @@ global.testConnection = async (logging) => {
   return connection;
 }
 
+global.TestHelper = {
+  publicTables: async () => {
+    var result = await Connection.instances[0].query("SELECT * FROM information_schema.tables where table_schema = 'public';");
+
+    return result.rows.map(row => {
+      return '' + row.table_name
+    });
+  }
+};
+
 global.getConnection = () => {
   return Connection.instances[0];
 }

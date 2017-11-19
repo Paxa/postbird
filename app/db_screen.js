@@ -407,7 +407,7 @@ global.DbScreen = jClass.extend({
     }
 
     try {
-      var indexes = await this.table.getIndexes();
+      var indexes = await Model.Index.list(this.table);
     } catch (error) {
       var indexesError = error;
       errorReporter(error, false);
@@ -478,22 +478,32 @@ global.DbScreen = jClass.extend({
     }
   },
 
-  addIndex: function (data, callback) {
+  addIndex: async function (data, callback) {
     App.startLoading(`Adding index ${data.name}`);
-    this.table.addIndex(data.name, data.uniq, data.columns, data.method, (result, error) => {
+
+    try {
+      var result = await Model.Index.create(this.table, data.name, {
+        uniq: data.uniq,
+        columns: data.columns,
+        method: data.method
+      })
+      this.structureTabActivate()
+      return result;
+    } finally {
       App.stopLoading();
-      if (!error) this.structureTabActivate();
-      callback(result, error);
-    });
+    }
   },
 
-  deleteIndex: function (indexName, callback) {
+  deleteIndex: async function (indexName, callback) {
     App.startLoading(`Deleting index ${indexName}`);
-    this.table.dropIndex(indexName, (result, error) => {
+
+    try {
+      var index = new Model.Index(indexName, this.table);
+      await index.drop()
+      this.structureTabActivate()
+    } finally {
       App.stopLoading();
-      if (!error) this.structureTabActivate();
-      callback(result, error);
-    });
+    }
   },
 
   deleteConstraint: function (constraintName, callback) {

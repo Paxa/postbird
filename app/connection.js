@@ -204,12 +204,6 @@ class Connection {
     return semver.gt(this._serverVersion, "9.3.0");
   }
 
-  publicTables(callback) {
-    return this.query("SELECT * FROM information_schema.tables where table_schema = 'public';", (rows, error) => {
-      callback(rows.rows, error);
-    });
-  }
-
   tablesAndSchemas(callback) {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
@@ -248,8 +242,8 @@ class Connection {
   }
 
   tableSchemas(callback) {
-    var sql = "select table_schema from information_schema.tables group by table_schema " +
-              "order by table_schema != 'public'";
+    var sql = "SELECT table_schema FROM information_schema.tables GROUP BY table_schema " +
+              "ORDER BY table_schema != 'public'";
     return this.query(sql, (rows) => {
       var data = rows.rows.map((dbrow) => {
         return dbrow.table_schema;

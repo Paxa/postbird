@@ -27,7 +27,7 @@ require('./app/view_helpers');
 require('./app/db_screen');
 require('./app/login_screen');
 require('./app/help_screen');
-require('./app/views/db_screen');
+require('./app/views/db_screen_view');
 require('./app/views/snippets');
 
 require('./app/views/dialog');

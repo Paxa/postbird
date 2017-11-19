@@ -52,17 +52,19 @@ class Structure extends Pane {
 
   deleteIndex (indexName) {
     var msg = `Delete index <b>${indexName}</b>?`;
-    window.alertify.confirm(msg, (result) => {
+    $u.confirm(msg, (result) => {
       if (result) {
         this.doDeleteIndex(indexName);
       }
     });
   }
 
-  doDeleteIndex (indexName) {
-    this.handler.deleteIndex(indexName, (result, error) => {
-      if (error) window.alert(error.message);
-    });
+  async doDeleteIndex (indexName) {
+    try {
+      await this.handler.deleteIndex(indexName);
+    } catch (error) {
+      $u.alert(error.message);
+    }
   }
 
   deleteConstraint (constraintName) {

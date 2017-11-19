@@ -343,6 +343,7 @@ var Table = global.Model.Table = Model.base.extend({
     return this._getMatViewStructure(callback);
   },
 
+  // For tests only
   getColumnNames: function (callback) {
     return this.getColumns().then(rows => {
       var names = rows.map(c => { return c.column_name; });
@@ -381,84 +382,6 @@ var Table = global.Model.Table = Model.base.extend({
   addColumnObj: function (column) {
     column.table = this;
     return column.create();
-  },
-
-  addIndex: function (name, uniq, columns, method, callback) {
-    var uniq_sql = uniq ? 'UNIQUE' : '';
-    var columns_sql = Array.isArray(columns) ? columns.map(col => { return `"${col}"` }).join(', ') : `"${columns.toString()}"`;
-    if (!method) method = 'btree';
-
-    if (name && name != '') {
-      name = `"${name}"`;
-    }
-    var sql = `CREATE ${uniq_sql} INDEX CONCURRENTLY ${name} ON ${this.sqlTable()} USING ${method} (${columns_sql});`;
-
-    return this.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
-  },
-
-  dropIndex: function (indexName, callback) {
-    var sql = `DROP INDEX CONCURRENTLY "${indexName}";`;
-    this.q(sql, (data, error) => {
-      callback(data, error);
-    });
-  },
-
-  // find indexes
-  getIndexes: function (callback) {
-    var sql_find_oid = `
-      SELECT c.oid,
-        n.nspname,
-        c.relname
-      FROM pg_catalog.pg_class c
-           LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-      WHERE n.nspname = '${this.schema}' and c.relname = '${this.table}'
-      ORDER BY 2, 3;`;
-
-    var sql_find_types = `
-      SELECT a.attname,
-        pg_catalog.format_type(a.atttypid, a.atttypmod),
-        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
-         FROM pg_catalog.pg_attrdef d
-         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef),
-        a.attnotnull, a.attnum,
-        (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t
-         WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation,
-        NULL AS indexdef,
-        NULL AS attfdwoptions
-      FROM pg_catalog.pg_attribute a
-      WHERE a.attrelid = '%d' AND a.attnum > 0 AND NOT a.attisdropped
-      ORDER BY a.attnum;`
-
-    var sql_find_index = `
-      SELECT
-          c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid,
-          pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
-          pg_catalog.pg_get_constraintdef(con.oid, true), contype,
-          condeferrable, condeferred, c2.reltablespace, i.indisvalid
-      FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
-        LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
-      WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
-      ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;`;
-
-    return new Promise((resolve, reject) => {
-      this.q(sql_find_oid, (oid_data, error) => {
-        if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
-          reject(new Error(`Relation ${this.sqlTable()} does not exist`));
-          callback && callback(null, new Error(`Relation ${this.sqlTable()} does not exist`));
-          return;
-        }
-
-        var oid = oid_data.rows[0].oid;
-        //this.q(sql_find_types, oid, (types_data, error) => {
-        this.q(sql_find_index, oid, (indexes_rows, error) => {
-          error ? reject(error) : resolve(indexes_rows.rows);
-          callback && callback(indexes_rows.rows, error);
-        });
-        //});
-      });
-    });
   },
 
   getRows: function (offset, limit, options, callback) {
@@ -712,25 +635,6 @@ Model.Table.create = function create (schema, tableName, options, callback) {
     callback && callback(new Model.Table(schema, tableName), null, error);
     return Promise.reject((error));
   });
-};
-
-Model.Table.publicTables = function publicTables (callback) {
-  return new Promise((resolve, reject) => {
-    Model.base.connection().publicTables((tables, error) => {
-
-      var data = [];
-      tables.forEach((e) => {
-        data.push('' + e.table_name);
-      });
-
-      callback && callback(data);
-      error ? reject(error) : resolve(data);
-    });
-  });
-};
-
-Model.Table.l = function (schema, table_name) {
-  return new Model.Table(schema, table_name);
 };
 
 Model.Table.types = Model.Table.prototype.types;

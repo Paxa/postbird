@@ -13,13 +13,13 @@ describe('Model.Table', () => {
   it('should create and drop table', async () => {
     var table = await Model.Table.create('public', 'test_table');
 
-    var tables = await Model.Table.publicTables();
+    var tables = await TestHelper.publicTables();
 
     assert.deepEqual(tables, ['test_table']);
 
     await table.drop();
 
-    tables = await Model.Table.publicTables();
+    tables = await TestHelper.publicTables();
     assert.deepEqual(tables, []);
   })
 
@@ -28,22 +28,10 @@ describe('Model.Table', () => {
 
     await table.rename('test_table2');
 
-    var tables = await Model.Table.publicTables();
+    var tables = await TestHelper.publicTables();
 
     assert.deepEqual(tables, ['test_table2']);
     assert.equal(table.table, 'test_table2');
-
-    await table.drop();
-  })
-
-  it('should show describe table', async () => {
-    var table = await Model.Table.create('public', 'test_table');
-
-    var indexes = await table.getIndexes();
-
-    assert.equal(indexes[0].indisprimary, true)
-    assert.equal(indexes[0].indisunique, true)
-    assert.equal(indexes[0].pg_get_indexdef, 'CREATE UNIQUE INDEX test_table_pkey ON test_table USING btree (id)')
 
     await table.drop();
   })
@@ -160,13 +148,6 @@ describe('Model.Table', () => {
     )
 
     assert.deepEqual(await table.getPrimaryKey(), [{attname: 'id'}])
-
-    await table.addIndex('Test_Index', false, ['Some_Number'])
-
-    assert.deepEqual(
-      (await table.getIndexes()).map(idx => { return idx.relname }),
-      ['Test_Table_pkey', 'Test_Index']
-    )
 
     await table.drop()
   })

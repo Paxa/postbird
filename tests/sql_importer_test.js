@@ -32,7 +32,7 @@ describe('SqlRunner', () => {
 
     assert.ok(result);
 
-    var tables = await Model.Table.publicTables();
+    var tables = await TestHelper.publicTables();
     assert.deepEqual(tables, ['city', 'country', 'countrylanguage']);
   })
 
@@ -58,7 +58,7 @@ describe('SqlRunner', () => {
 
     //assert(onMessageCount, 101);
 
-    var tables = await Model.Table.publicTables();
+    var tables = await TestHelper.publicTables();
     assert.deepEqual(tables.sort(),
       ['states', 'my_list', 'employees', 'schedules', 'editions',
         'books', 'publishers', 'shipments', 'stock', 'numeric_values',

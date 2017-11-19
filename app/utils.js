@@ -227,6 +227,12 @@ $u.alert = function (text, options, callback) {
   });
 };
 
+$u.alertError = function (text, options, callback) {
+  options = options || {};
+  options.type = 'warning';
+  return $u.alert(text, options, callback);
+};
+
 
 // Make an area droppable
 // from here https://github.com/micc83/Nuwk/blob/master/js/controllers.js

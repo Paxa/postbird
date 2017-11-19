@@ -15,7 +15,7 @@ class NewIndex extends Dialog {
     });
   }
 
-  onSubmit (data) {
+  async onSubmit (data) {
     data.columns = [];
     for (var i in data) {
       if (i.match(/columns\[/)) {
@@ -23,10 +23,15 @@ class NewIndex extends Dialog {
       }
     }
     if (data.columns.length == 0) {
-      window.alert("Please selectec at least 1 column");
+      $u.alertError("Please selectec at least 1 column");
       return;
     }
-    this.handler.addIndex(data, this.defaultServerResponse.bind(this));
+    try {
+      var result = await this.handler.addIndex(data);
+      this.defaultServerResponse(result);
+    } catch (error) {
+      this.defaultServerResponse(null, error);
+    }
   }
 }
 

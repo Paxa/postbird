@@ -61,7 +61,7 @@ h4 Indexes
                 span.tag.error(title="This usually means that error happen while creating index with 'CONCURRENTLY'") invalid
             td= index.indisprimary ? 'Yes' : 'No'
             td= index.indisunique ? 'Yes' : 'No'
-            td= index.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1]
+            td= index.columns().join(", ")
             td= getIndexType(index.pg_get_indexdef)
             td
               a(exec="deleteIndex('" + index.relname + "')") Delete

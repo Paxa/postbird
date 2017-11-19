@@ -30,17 +30,17 @@ describe('Model.Table and Model.Schema', () => {
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table', {empty: true})
     await table1.addColumnObj(new Model.Column('foo', {data_type: 'integer', null: true}))
-    await table1.addIndex('idx_foo', false, 'foo', 'btree')
+    await Model.Index.create(table1, 'idx_foo', {columns: ['foo']})
 
     var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
     await table2.addColumnObj(new Model.Column('bar', {data_type: 'text', null: true}))
-    await table2.addIndex('idx_bar_123', false, 'bar', 'btree')
+    await Model.Index.create(table2, 'idx_bar_123', {columns: ['bar']})
 
     assert.deepEqual(await table1.getColumnNames(), ['foo'])
     assert.deepEqual(await table2.getColumnNames(), ['bar'])
 
-    var result1 = await table1.getIndexes()
-    var result2 = await table2.getIndexes()
+    var result1 = await Model.Index.list(table1)
+    var result2 = await Model.Index.list(table2)
 
     assert.deepEqual(result1.map(r => { return r.relname; }), ['idx_foo'])
     assert.deepEqual(result2.map(r => { return r.relname; }), ['idx_bar_123'])
