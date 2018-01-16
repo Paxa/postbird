@@ -7,30 +7,34 @@
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
     "test": "electron-mocha tests/",
-    "integration_test": "mocha integration_tests/integration.js"
+    "integration_test": "mocha integration_tests/integration.js",
+    "start": "NW_DEV=true NW_DEBUG=true electron . $@",
+    "rebuild_ext": "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 54"
   },
   "devDependencies": {
-    "electron": "1.7.9",
+    "electron": "1.7.10",
     "electron-mocha": "^5.0.0",
-    "electron-packager": "9.1.0",
-    "electron-rebuild": "1.6.0",
+    "electron-packager": "10.1.1",
+    "electron-rebuild": "1.7.3",
     "localStorage": "^1.0.3",
-    "node-sass": "4.7.1",
+    "node-sass": "4.7.2",
     "spectron": "^3.7.2"
   },
   "dependencies": {
     "colors": "^1.1.2",
     "csv-stringify": "^2.0.0",
     "electron-window-state": "4.1.1",
-    "eventemitter2": "4.1.2",
+    "eventemitter2": "5.0.1",
     "is-electron-renderer": "^2.0.1",
-    "needle": "2.0.1",
-    "pg": "7.4.0",
-    "pg-native": "2.2.0",
+    "needle": "2.1.0",
+    "pg": "7.4.1",
     "pug": "2.0.0-rc.4",
-    "raven": "2.2.1",
+    "raven": "2.3.0",
     "semver": "^5.4.1",
     "sprintf-js": "1.1.1",
     "strftime": "0.10.0"
+  },
+  "optionalDependencies": {
+    "pg-native": "2.2.0"
   }
 }

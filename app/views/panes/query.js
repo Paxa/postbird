@@ -126,9 +126,11 @@ class Query extends Pane {
       } else {
         this.lastResult = data;
         PgTypeNames.extendFields(data);
-        data.completeRows = data.rows.slice();
-        if (data.rows && data.rows.length > 500) {
-          data.rows.length = 500;
+        if (data.rows) {
+          data.completeRows = data.rows.slice();
+          if (data.rows.length > 500) {
+            data.rows.length = 500;
+          }
         }
         var node = App.renderView('db_rows_table', {data: data})[0];
         $u(node).addClass('command_' + data.command);

@@ -22,9 +22,13 @@ Pull requests and suggestions are welcome
 
 To run newest version, simply:
 
-    git clone git@github.com:Paxa/postbird.git
-    cd postbird
-    npm install
-    ./run
+```sh
+git clone git@github.com:Paxa/postbird.git
+cd postbird
+PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin/ # to compile postgres native extension
+npm install
+npm run rebuild_ext
+./run
+```
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details
