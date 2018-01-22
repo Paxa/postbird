@@ -140,10 +140,7 @@ var template = [
           else
             return 'Ctrl+Shift+I';
         })(),
-        click: (item, focusedWindow) => {
-          if (focusedWindow)
-            focusedWindow.toggleDevTools();
-        }
+        role: 'toggledevtools'
       },
       {
         label: 'Zoom In',
@@ -157,9 +154,7 @@ var template = [
       },
       {
         label: 'Zoom to Normal',
-        click: () => {
-          webFrame.setZoomFactor(1);
-        },
+        role: 'resetzoom',
         accelerator: 'CmdOrCtrl+0'
       },
     ]
