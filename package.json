@@ -12,7 +12,7 @@
     "rebuild_ext": "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 54"
   },
   "devDependencies": {
-    "electron": "1.7.10",
+    "electron": "1.7.11",
     "electron-mocha": "^5.0.0",
     "electron-packager": "10.1.1",
     "electron-rebuild": "1.7.3",
@@ -26,11 +26,11 @@
     "electron-window-state": "4.1.1",
     "eventemitter2": "5.0.1",
     "is-electron-renderer": "^2.0.1",
-    "needle": "2.1.0",
+    "needle": "2.1.1",
     "pg": "7.4.1",
     "pug": "2.0.0-rc.4",
     "raven": "2.3.0",
-    "semver": "^5.4.1",
+    "semver": "^5.5.0",
     "sprintf-js": "1.1.1",
     "strftime": "0.10.0"
   },
