@@ -14,7 +14,7 @@ try {
 } catch (error) {
   console.log("can not load pg-native, using pg");
   console.error(error);
-  errorReporter(error);
+  //errorReporter(error);
 }
 
 var vsprintf = require("sprintf-js").vsprintf;
