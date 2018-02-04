@@ -93,7 +93,7 @@ class Dialog {
       }, 120);
       focusable[0].focus();
     } else {
-      var firstInput = this.windowContent.find('input, select, textare')[0];
+      var firstInput = this.windowContent.find('input, select, textarea')[0];
       if (firstInput) firstInput.focus();
       setTimeout(() => {
         if (firstInput) firstInput.focus();

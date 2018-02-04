@@ -85,3 +85,26 @@
     text-align: left;
   }
 }
+
+.alertify-inner.edit-value {
+  input.number-value, input.date-value, textarea {
+    width: 100%;
+    font-size: 13px;
+  }
+  input.number-value, input.date-value, textarea, select {
+    &[disabled] {
+      background: #f5f5f5;
+    }
+  }
+
+  textarea {
+    min-height: 50px;
+    max-height: calc(100vh - 250px);
+    line-height: 1.5em;
+  }
+  &.edit-value-wide {
+    textarea {
+      min-width: 800px;
+    }
+  }
+}

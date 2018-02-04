@@ -84,10 +84,12 @@ $u.fn.single_double_click = function single_double_click (single_click_callback,
 $u.fn.single_double_click_nowait = function single_double_click (single_click_callback, double_click_callback, timeout) {
   return this.each(function(){
     var clicks = 0, self = this;
-    $u(this).click(function(event){
+    $u(this).click(function(event) {
       clicks++;
       if (clicks == 1) {
-        single_click_callback.call(self, event);
+        if (typeof single_click_callback == "function") {
+          single_click_callback.call(self, event);
+        }
         setTimeout(function(){
           if (clicks == 2) {
             double_click_callback.call(self, event);
@@ -328,4 +330,26 @@ $u.textContextMenu = function (element, currentWindow) {
       (currentWindow || window).document.execCommand("copy");
     },
   }, {onShow: onShow});
+};
+
+$u.textareaAutoSize = function (element) {
+  console.log('textareaAutoSize', element);
+  function resize (event) {
+    event.target.style.height = 'auto';
+    event.target.style.height = event.target.scrollHeight+'px';
+  }
+
+  /* 0-timeout to get the already changed text */
+  function delayedResize (event) {
+    window.setTimeout(resize, 0, event);
+  }
+
+  element.addEventListener('change',  resize, false);
+  element.addEventListener('cut',     delayedResize, false);
+  element.addEventListener('paste',   delayedResize, false);
+  element.addEventListener('drop',    delayedResize, false);
+  element.addEventListener('keydown', delayedResize, false);
+
+  element.style.height = 'auto';
+  element.style.height = element.scrollHeight + 'px';
 };

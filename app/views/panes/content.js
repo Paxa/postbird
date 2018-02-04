@@ -209,6 +209,8 @@ class Content extends Pane {
       matchers: filterMatchers
     });
 
+    this.currentData = data;
+
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
 
     this.content.find('span.text').bind('dblclick', (e) => {
@@ -376,6 +378,11 @@ class Content extends Pane {
       genericTable.setSelectedRow(el);
     });
 
+    table.single_double_click_nowait(null, event => {
+      var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
+      this.editField(el);
+    });
+
     var contextMenuActions = {
       'Copy'() {
         window.document.execCommand("copy");
@@ -386,6 +393,12 @@ class Content extends Pane {
         var event = table[0].contextmenu.clickEvent;
         var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
         this.deleteRow(el);
+      };
+
+      contextMenuActions['Edit Value'] = (menuItem, bwin) => {
+        var event = table[0].contextmenu.clickEvent;
+        var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
+        this.editField(el);
       };
     }
     $u.contextMenu(table, contextMenuActions);
@@ -406,6 +419,34 @@ class Content extends Pane {
         }
       });
     }
+  }
+
+  editField(field) {
+    var position = $u(field).prevAll('td').length;
+    var ctid = $u(field).closest('tr').attr('data-ctid');
+
+
+    var fieldName = this.currentData.fields.filter(f => f.name != 'ctid')[position];
+    fieldName = fieldName && fieldName.name;
+
+    var fieldType = this.columnTypes[fieldName];
+
+    var value = null;
+    this.currentData.rows.forEach(row => {
+      if (row.ctid == ctid) {
+        value = row[fieldName];
+      }
+    });
+
+    console.log({position, ctid, fieldName, fieldType, value});
+
+    global.editValue = value;
+
+    new Dialog.EditValue(this.handler, {
+      value: value,
+      fieldName: fieldName,
+      fieldType: fieldType
+    });
   }
 
   addRow() {

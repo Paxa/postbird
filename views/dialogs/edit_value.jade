@@ -1,0 +1,23 @@
+form
+  - valueIsNull = fieldType.is_nullable && value === null
+
+  p
+    if fieldType.data_type == "integer" || fieldType.udt_name == "float8"
+      input.number-value(name="value" type="number" value=value disabled=valueIsNull)
+    else if fieldType.udt_name == "timestamp" || fieldType.udt_name == "timestamptz"
+      input.date-value(name="value" type="text" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)
+    else if fieldType.udt_name == "bool"
+      select(name="value" disabled=valueIsNull)
+        option(value="true"  selected=value) true
+        option(value="false" selected=(value === false) ) false
+    else
+      textarea(name="value" placeholder=fieldType.column_default disabled=valueIsNull)= value
+
+  if fieldType.is_nullable
+    label
+      = "Null"
+      input.value-is-null(type="checkbox" name="value_is_null" value="true" checked=valueIsNull )
+
+  p.buttons
+    button.ok Update
+    button.cancel Cancel

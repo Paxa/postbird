@@ -122,6 +122,15 @@ var helpers = global.ViewHelpers = {
     }
   },
 
+  editDateFormat: function (value, format) {
+    var date = new Date(Date.parse(value));
+    if (format == "timestamptz") {
+      return strftime('%F %T.%L%z', date).replace(/00$/, '');
+    } else {
+      return strftime('%F %T.%L', date);
+    }
+  },
+
   // 1999-01-08
   betterDate: function (value) {
     var date = new Date(Date.parse(value));

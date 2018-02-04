@@ -46,6 +46,7 @@ require('./app/views/dialogs/show_sql');
 require('./app/views/dialogs/edit_procedure');
 require('./app/views/dialogs/def_procedure');
 require('./app/views/dialogs/user_grants');
+require('./app/views/dialogs/edit_value');
 
 global.Model = require('./app/models/all');
 

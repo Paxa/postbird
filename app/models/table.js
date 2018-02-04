@@ -259,6 +259,7 @@ var Table = global.Model.Table = Model.base.extend({
         a.attname as column_name,
         pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type,
         t.typname as udt_name,
+        NOT a.attnotnull as is_nullable,
         (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
          FROM pg_catalog.pg_attrdef d
          WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default

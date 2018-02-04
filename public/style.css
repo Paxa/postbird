@@ -1660,6 +1660,21 @@ span.tag.error {
   min-height: 368px;
   text-align: left; }
 
+.alertify-inner.edit-value input.number-value, .alertify-inner.edit-value input.date-value, .alertify-inner.edit-value textarea {
+  width: 100%;
+  font-size: 13px; }
+
+.alertify-inner.edit-value input.number-value[disabled], .alertify-inner.edit-value input.date-value[disabled], .alertify-inner.edit-value textarea[disabled], .alertify-inner.edit-value select[disabled] {
+  background: #f5f5f5; }
+
+.alertify-inner.edit-value textarea {
+  min-height: 50px;
+  max-height: calc(100vh - 250px);
+  line-height: 1.5em; }
+
+.alertify-inner.edit-value.edit-value-wide textarea {
+  min-width: 800px; }
+
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
 .hljs {
