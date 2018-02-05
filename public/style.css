@@ -855,7 +855,7 @@ body.sidebar-resizing {
     top: 3px; }
 
 .rescol-wrapper table td {
-  padding: 2px 3px; }
+  padding: 2px 5px; }
 
 .rescol-wrapper table tr:nth-child(even) td {
   background: #f5f5f4; }
@@ -1280,6 +1280,11 @@ body.sidebar-resizing {
       display: inline-block;
       vertical-align: top;
       min-width: 55px; }
+    .window-content.content table tr td i.null {
+      font-style: normal;
+      color: #b8b8b8;
+      font-size: 12px;
+      opacity: 0.75; }
   .window-content.content .summary-and-pages {
     position: absolute;
     bottom: 0;

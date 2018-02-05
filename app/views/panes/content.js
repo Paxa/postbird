@@ -275,7 +275,9 @@ class Content extends Pane {
     this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
       this.renderPage(data);
       this.scrollToTop();
-      App.stopLoading();
+      setTimeout(() => {
+        App.stopLoading();
+      }, 50);
     });
   }
 
@@ -289,11 +291,13 @@ class Content extends Pane {
     this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
       this.renderPage(data);
       this.scrollToTop();
-      App.stopLoading();
+      setTimeout(() => {
+        App.stopLoading();
+      }, 50);
     });
   }
 
-  reloadData() {
+  async reloadData() {
     this.content.addClass('reloading');
 
     App.startLoading("Reloading page...", 100, {
@@ -302,17 +306,11 @@ class Content extends Pane {
       }
     });
     try {
-      this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data, error) => {
-        if (error) {
-          alert(error.message);
-          App.stopLoading();
-          return;
-        }
-        this.renderPage(data);
-        this.scrollToTop();
-        App.stopLoading();
-        this.content.removeClass('reloading');
-      });
+      var data = await this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions);
+      this.renderPage(data);
+      this.scrollToTop();
+      App.stopLoading();
+      this.content.removeClass('reloading');
     } catch (error) {
       alert(error.message);
       App.stopLoading();
@@ -421,10 +419,9 @@ class Content extends Pane {
     }
   }
 
-  editField(field) {
+  async editField(field) {
     var position = $u(field).prevAll('td').length;
     var ctid = $u(field).closest('tr').attr('data-ctid');
-
 
     var fieldName = this.currentData.fields.filter(f => f.name != 'ctid')[position];
     fieldName = fieldName && fieldName.name;
@@ -432,20 +429,37 @@ class Content extends Pane {
     var fieldType = this.columnTypes[fieldName];
 
     var value = null;
-    this.currentData.rows.forEach(row => {
+    var valueIndex = null;
+    this.currentData.rows.forEach((row, index) => {
       if (row.ctid == ctid) {
+        valueIndex = index;
         value = row[fieldName];
       }
     });
 
-    console.log({position, ctid, fieldName, fieldType, value});
-
     global.editValue = value;
 
-    new Dialog.EditValue(this.handler, {
+    var dialog = new Dialog.EditValue(this.handler, {
       value: value,
       fieldName: fieldName,
-      fieldType: fieldType
+      fieldType: fieldType,
+      onSave: async (value, isNull) => {
+        App.startLoading(`Updating value for ${fieldName}...`);
+        try {
+          var res = await this.handler.table.updateValue(ctid, fieldName, value, isNull);
+          dialog.close();
+        } catch (error) {
+          console.error(error);
+          var sql = error.query ? `\nSQL: ${error.query}` : '';
+          var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
+          $u.alertError("Error while updating value", {detail: error.message + hint + sql});
+          return;
+        } finally {
+          App.stopLoading();
+        }
+        await this.reloadData();
+        //this.content.find(`.rescol-content-wrapper table tbody:nth-child(${valueIndex + 1})`).click();
+      }
     });
   }
 

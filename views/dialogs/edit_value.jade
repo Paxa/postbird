@@ -4,13 +4,15 @@ form
   p
     if fieldType.data_type == "integer" || fieldType.udt_name == "float8"
       input.number-value(name="value" type="number" value=value disabled=valueIsNull)
-    else if fieldType.udt_name == "timestamp" || fieldType.udt_name == "timestamptz"
+    else if fieldType.udt_name == "timestamp" || fieldType.udt_name == "timestamptz" || fieldType.udt_name == "date" || fieldType.udt_name == "timetz"
       input.date-value(name="value" type="text" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)
     else if fieldType.udt_name == "bool"
       select(name="value" disabled=valueIsNull)
         option(value="true"  selected=value) true
         option(value="false" selected=(value === false) ) false
     else
+      if fieldType.udt_name == "json" || fieldType.udt_name == "jsonb"
+        - value = JSON.stringify(value, null, 2)
       textarea(name="value" placeholder=fieldType.column_default disabled=valueIsNull)= value
 
   if fieldType.is_nullable

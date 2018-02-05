@@ -19,6 +19,9 @@ var GRANTS_ABBR = {
 
 var helpers = global.ViewHelpers = {
   formatCell: function (value, format, dataType) {
+    if (value === null) {
+      return '<i class="null">NULL</i>';
+    }
     if (typeof value == 'string') {
       value = this.escapeHTML(value);
     }
@@ -49,6 +52,12 @@ var helpers = global.ViewHelpers = {
         break;
       case 'jsonb': case 'json':
         formated = this.formatJson(value);
+        break;
+      case 'bytea':
+        var str = value.toString('ascii', 0, 100);
+        formated = str;
+        //console.log(value);
+        //formated = value.length > 100 ? value.substr(0, 100) : value;
         break;
     }
 
@@ -124,8 +133,13 @@ var helpers = global.ViewHelpers = {
 
   editDateFormat: function (value, format) {
     var date = new Date(Date.parse(value));
+
     if (format == "timestamptz") {
       return strftime('%F %T.%L%z', date).replace(/00$/, '');
+    } else if (format == "date") {
+      return strftime('%F', date);
+    } else if (format == "timetz") {
+      return value;
     } else {
       return strftime('%F %T.%L', date);
     }

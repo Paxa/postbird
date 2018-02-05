@@ -148,13 +148,19 @@
 
         span.type-xml {
           //white-space: pre-line
-       
         }
 
         time {
           @include inline-block;
 
           min-width: 55px;
+        }
+
+        i.null {
+          font-style: normal;
+          color: #b8b8b8;
+          font-size: 12px;
+          opacity: 0.75;
         }
       }
     }

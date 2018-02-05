@@ -1,4 +1,5 @@
 var SqlExporter = require('../../lib/sql_exporter');
+var pgEscape = require('pg-escape');
 
 var Table = global.Model.Table = Model.base.extend({
 
@@ -386,10 +387,6 @@ var Table = global.Model.Table = Model.base.extend({
   },
 
   getRows: function (offset, limit, options, callback) {
-    if (callback == undefined) callback = options, options = undefined;
-    if (callback == undefined) callback = limit, limit = undefined;
-    if (callback == undefined) callback = offset, offset = undefined;
-
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
@@ -607,6 +604,17 @@ var Table = global.Model.Table = Model.base.extend({
 
   refreshMatView() {
     return this.q(`REFRESH MATERIALIZED VIEW ${this.sqlTable()}`);
+  },
+
+  updateValue(ctid, field, value, isNull) {
+    var sql;
+    if (isNull) {
+      sql = `UPDATE ${this.sqlTable()} SET "${field}" = NULL WHERE ctid = '${ctid}';`;
+    } else {
+      sql = pgEscape(`UPDATE ${this.sqlTable()} SET "${field}" = %L WHERE ctid = '${ctid}';`, value);
+    }
+
+    return this.q(sql);
   }
 });
 

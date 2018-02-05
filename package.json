@@ -28,6 +28,7 @@
     "is-electron-renderer": "^2.0.1",
     "needle": "2.1.1",
     "pg": "7.4.1",
+    "pg-escape": "^0.2.0",
     "pug": "2.0.0-rc.4",
     "raven": "2.4.0",
     "semver": "^5.5.0",

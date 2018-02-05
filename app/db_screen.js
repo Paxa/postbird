@@ -177,7 +177,7 @@ global.DbScreen = jClass.extend({
     });
   },
 
-  contentTabLimit: 300,
+  contentTabLimit: 200,
 
   contentTabActivate: function() {
     if (!this.currentTable) {

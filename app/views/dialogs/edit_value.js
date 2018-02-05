@@ -46,8 +46,7 @@ class EditValue extends Dialog {
   }
 
   async processData (data) {
-    console.log('processData', data);
-    App.stopLoading();
+    this.onSave(data.value, data.value_is_null === "true");
   }
 
   validate (data) {
