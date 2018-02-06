@@ -27,7 +27,6 @@ class EditValue extends Dialog {
     var input = this.content.find('[name=value]');
 
     this.content.find('.value-is-null').on('change', event => {
-      console.log('value-is-null', event.target.checked);
       if (event.target.checked) {
         valueBeforeNull = input.val();
         input.val("").prop('disabled', true);

@@ -3,7 +3,7 @@
 You gonna need any, not too old, version of nodejs and npm. Ruby (already installed in Mac), command line tools from Apple for compiling Postgres native extension.
 
     npm install
-    rake rebuild_ext
+    npm run rebuild_ext
 
 ## Run from source code:
 
@@ -30,8 +30,9 @@ As a workaround, before creating package need to delete developer dependecies fr
 # make sure you have ran "rake rebuild_ext"
 # delete "devDependencies" from package.json
 npm prune
-npm install electron-packager@10.1.1
-sudo npm install -g electron@1.7.10
+npm install -g electron-packager@10.1.1
+npm install -g requireg
+sudo npm install -g electron@1.7.12
 node packager.js
 rake build_dmg
 ```

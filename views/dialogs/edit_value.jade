@@ -2,7 +2,8 @@ form
   - valueIsNull = fieldType.is_nullable && value === null
 
   p
-    if fieldType.data_type == "integer" || fieldType.udt_name == "float8"
+    - numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']
+    if fieldType.data_type == "integer" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)
       input.number-value(name="value" type="number" value=value disabled=valueIsNull)
     else if fieldType.udt_name == "timestamp" || fieldType.udt_name == "timestamptz" || fieldType.udt_name == "date" || fieldType.udt_name == "timetz"
       input.date-value(name="value" type="text" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)

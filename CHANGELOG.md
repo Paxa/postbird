@@ -1,10 +1,17 @@
 == Version 0.7.1
 
+* Feature: Updating values in table
+* Show NULL as “NULL”
 * Fix CSV export, save more then 500 rows
 * Better text for deletting rows (Thanks to @nickheiner-usds)
 * Support Upper case for table names, columns, indexes
+* Reduce content pagination to 200
+* Add “Create Database” in top menu
 * Add refreshing mat. view
 * Fix renaming tables
+* Skip alert when pg native exception not compiled
+* Fix reset zoom & reload
+* Update readme and contributing guide
 * More async/await
 
 == Version 0.7.0 (22-oct-2017)

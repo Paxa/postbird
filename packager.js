@@ -5,7 +5,7 @@ var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  electronVersion: '1.7.9',
+  electronVersion: '1.7.12',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
@@ -25,7 +25,8 @@ var opts = {
     'node_modules/pug/test',
     'node_modules/pug-lexer/test',
     'node_modules/pug-parser/test',
-    'node_modules/pug-linker/test'
+    'node_modules/pug-linker/test',
+    'node_modules/uglify-js'
   ],
   asar: false,
   afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {

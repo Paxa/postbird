@@ -13,7 +13,7 @@ class Pane {
         //with(this) {
           var exec = el.getAttribute('exec');
           if (!exec.match(/\(.*\)/)) exec = exec + '()';
-          console.log('EXEC', `this.${exec}`);
+          //console.log('EXEC', `this.${exec}`);
           eval(`this.${exec}`);
         //}
       });

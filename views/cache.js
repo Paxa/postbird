@@ -619,8 +619,8 @@ pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fedit_procedure.jade";
 pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"proc" in locals_for_with?locals_for_with.proc:typeof proc!=="undefined"?proc:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/edit_procedure"].content = "textarea.editor= proc.source\n\np.buttons.close-btn\n  button.cancel Close";
-exports["dialogs/edit_value"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fedit_value.jade":"form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    if fieldType.data_type == \"integer\" || fieldType.udt_name == \"float8\"\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if fieldType.udt_name == \"json\" || fieldType.udt_name == \"jsonb\"\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n"};
-;var locals_for_with = (locals || {});(function (JSON, editDateFormat, fieldType, value, valueIsNull) {var pug_indent = [];
+exports["dialogs/edit_value"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fedit_value.jade":"form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    - numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']\n    if fieldType.data_type == \"integer\" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if fieldType.udt_name == \"json\" || fieldType.udt_name == \"jsonb\"\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n"};
+;var locals_for_with = (locals || {});(function (JSON, editDateFormat, fieldType, numericTypes, value, valueIsNull) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n\u003Cform\u003E";
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
@@ -628,60 +628,62 @@ valueIsNull = fieldType.is_nullable && value === null
 ;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n  \u003Cp\u003E";
 ;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-if (fieldType.data_type == "integer" || fieldType.udt_name == "float8") {
+numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']
 ;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+if (fieldType.data_type == "integer" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)) {
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cinput" + (" class=\"number-value\""+" name=\"value\" type=\"number\""+pug.attr("value", value, true, false)+pug.attr("disabled", valueIsNull, true, false)) + "\u002F\u003E";
 }
 else
 if (fieldType.udt_name == "timestamp" || fieldType.udt_name == "timestamptz" || fieldType.udt_name == "date" || fieldType.udt_name == "timetz") {
-;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cinput" + (" class=\"date-value\""+" name=\"value\" type=\"text\""+pug.attr("value", editDateFormat(value, fieldType.udt_name), true, false)+pug.attr("disabled", valueIsNull, true, false)) + "\u002F\u003E";
 }
 else
 if (fieldType.udt_name == "bool") {
-;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cselect" + (" name=\"value\""+pug.attr("disabled", valueIsNull, true, false)) + "\u003E";
-;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n      \u003Coption" + (" value=\"true\""+pug.attr("selected", value, true, false)) + "\u003E";
-;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "true\u003C\u002Foption\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n      \u003Coption" + (" value=\"false\""+pug.attr("selected", (value === false), true, false)) + "\u003E";
-;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "false\u003C\u002Foption\u003E\n    \u003C\u002Fselect\u003E";
 }
 else {
-;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-if (fieldType.udt_name == "json" || fieldType.udt_name == "jsonb") {
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+if (fieldType.udt_name == "json" || fieldType.udt_name == "jsonb") {
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 value = JSON.stringify(value, null, 2)
 }
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Ctextarea" + (" name=\"value\""+pug.attr("placeholder", fieldType.column_default, true, false)+pug.attr("disabled", valueIsNull, true, false)) + "\u003E";
-;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = value) ? "" : pug_interp)) + "\u003C\u002Ftextarea\u003E";
 }
 pug_html = pug_html + "\n  \u003C\u002Fp\u003E";
-;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-if (fieldType.is_nullable) {
 ;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-pug_html = pug_html + "\n  \u003Clabel\u003E";
+if (fieldType.is_nullable) {
 ;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = "Null") ? "" : pug_interp));
+pug_html = pug_html + "\n  \u003Clabel\u003E";
 ;pug_debug_line = 21;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Null") ? "" : pug_interp));
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cinput" + (" class=\"value-is-null\""+" type=\"checkbox\" name=\"value_is_null\" value=\"true\""+pug.attr("checked", valueIsNull, true, false)) + "\u002F\u003E\n  \u003C\u002Flabel\u003E";
 }
-;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "Update\u003C\u002Fbutton\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
 pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
-;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
-pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"editDateFormat" in locals_for_with?locals_for_with.editDateFormat:typeof editDateFormat!=="undefined"?editDateFormat:undefined,"fieldType" in locals_for_with?locals_for_with.fieldType:typeof fieldType!=="undefined"?fieldType:undefined,"value" in locals_for_with?locals_for_with.value:typeof value!=="undefined"?value:undefined,"valueIsNull" in locals_for_with?locals_for_with.valueIsNull:typeof valueIsNull!=="undefined"?valueIsNull:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["dialogs/edit_value"].content = "form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    if fieldType.data_type == \"integer\" || fieldType.udt_name == \"float8\"\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if fieldType.udt_name == \"json\" || fieldType.udt_name == \"jsonb\"\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fedit_value.jade";
+pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"JSON" in locals_for_with?locals_for_with.JSON:typeof JSON!=="undefined"?JSON:undefined,"editDateFormat" in locals_for_with?locals_for_with.editDateFormat:typeof editDateFormat!=="undefined"?editDateFormat:undefined,"fieldType" in locals_for_with?locals_for_with.fieldType:typeof fieldType!=="undefined"?fieldType:undefined,"numericTypes" in locals_for_with?locals_for_with.numericTypes:typeof numericTypes!=="undefined"?numericTypes:undefined,"value" in locals_for_with?locals_for_with.value:typeof value!=="undefined"?value:undefined,"valueIsNull" in locals_for_with?locals_for_with.valueIsNull:typeof valueIsNull!=="undefined"?valueIsNull:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/edit_value"].content = "form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    - numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']\n    if fieldType.data_type == \"integer\" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if fieldType.udt_name == \"json\" || fieldType.udt_name == \"jsonb\"\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n";
 exports["dialogs/export_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fexport_file.jade":"header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
 ;var locals_for_with = (locals || {});(function (database) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fexport_file.jade";

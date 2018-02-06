@@ -333,7 +333,6 @@ $u.textContextMenu = function (element, currentWindow) {
 };
 
 $u.textareaAutoSize = function (element) {
-  console.log('textareaAutoSize', element);
   function resize (event) {
     event.target.style.height = 'auto';
     event.target.style.height = event.target.scrollHeight+'px';
