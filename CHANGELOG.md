@@ -1,4 +1,4 @@
-== Version 0.7.1
+== Version 0.7.1 (06-feb-2018)
 
 * Feature: Updating values in table
 * Show NULL as “NULL”
