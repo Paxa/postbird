@@ -13,16 +13,19 @@ var Trigger = Model.base.extend({
         inner join pg_class on (pg_trigger.tgrelid = pg_class.oid)
       `;
 
-      Model.base.q(sql, (data, error) => {
-        if (error) {
-          callback([], error);
-          return;
-        }
-        var triggers = [];
-        data.rows.forEach((row) => {
-          triggers.push(new Trigger('public', row));
+      return new Promise((resolve, reject) => {
+        Model.base.q(sql, (data, error) => {
+          if (error) {
+            callback([], error);
+            return reject(error);
+          }
+          var triggers = [];
+          data.rows.forEach((row) => {
+            triggers.push(new Trigger('public', row));
+          });
+          callback && callback(triggers);
+          resolve(triggers);
         });
-        callback(triggers);
       });
     },
 

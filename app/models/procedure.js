@@ -10,7 +10,8 @@ class Procedure extends Model.base {
       INNER JOIN pg_authid ON (pg_proc.proowner = pg_authid.oid)
       INNER JOIN pg_language ON (pg_proc.prolang = pg_language.oid)
       INNER JOIN pg_type ret_type ON (pg_proc.prorettype = ret_type.oid)
-      WHERE ns.nspname = 'public' order by proname;
+      WHERE ns.nspname = 'public'
+      ORDER BY proname;
     `;
 
     return Model.base.q(sql).then(data => {
@@ -27,13 +28,14 @@ class Procedure extends Model.base {
     var sql = `
       SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
              pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
-            ret_type.typname as return_type
+             ret_type.typname as return_type, pg_get_functiondef(pg_proc.oid) as full_prosrc
       FROM pg_proc
       INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid)
       INNER JOIN pg_authid ON (pg_proc.proowner = pg_authid.oid)
       INNER JOIN pg_language ON (pg_proc.prolang = pg_language.oid)
       INNER JOIN pg_type ret_type ON (pg_proc.prorettype = ret_type.oid)
-      WHERE ns.nspname = 'public' AND proname = '${name}' ${name.match(/^\d+$/) ? `OR pg_proc.oid = '${name}'` : ''} order by proname;
+      WHERE ns.nspname = 'public' AND proname = '${name}' ${name.match(/^\d+$/) ? `OR pg_proc.oid = '${name}'` : ''}
+      ORDER BY proname;
     `;
 
     return Model.base.q(sql).then(data => {
@@ -82,13 +84,13 @@ class Procedure extends Model.base {
     });
   }
 
-  static listLanguages (callback) {
-    Model.base.q("select * from pg_language", (data, error) => {
-      callback(data.rows);
+  static listLanguages () {
+    return Model.base.q("SELECT * FROM pg_language", (data, error) => {
+      return Promise.resolve(data.rows);
     });
   }
 
-  static findAllWithExtensions (callback) {
+  static findAllWithExtensions () {
     var sql = `SELECT
           p.oid, p.*,
           proname as name, pg_namespace.nspname as schema_name, pg_authid.rolname as author,
@@ -96,25 +98,27 @@ class Procedure extends Model.base {
           ret_type.typname as return_type, e.extname as extension
       FROM pg_proc p
       JOIN pg_namespace ON pg_namespace.oid = p.pronamespace
-      left JOIN pg_language ON pg_language.oid = p.prolang
+      LEFT JOIN pg_language ON pg_language.oid = p.prolang
       LEFT JOIN pg_depend d ON d.objid = p.oid AND d.deptype = 'e' AND d.objid IS not NULL
       INNER JOIN pg_authid ON (p.proowner = pg_authid.oid)
       INNER JOIN pg_type ret_type ON (p.prorettype = ret_type.oid)
-      left join pg_extension e on refobjid = e.oid
-      where pg_namespace.nspname = 'public' or refobjid != 0
-      order by p.proname, arg_list`;
+      LEFT JOIN pg_extension e on refobjid = e.oid
+      WHERE pg_namespace.nspname = 'public' OR refobjid != 0
+      ORDER BY p.proname, arg_list`;
 
-    Model.base.q(sql, (data, error) => {
-      if (error) {
-        callback([]);
-        return;
-      }
+    return Model.base.q(sql).then(data => {
       var procedures = [];
       data.rows.forEach((row) => {
         procedures.push(new Model.Procedure('public', row));
       });
-      callback(procedures);
+      return Promise.resolve(procedures);
     });
+  }
+
+  static async update (oldProcId, source) {
+    var proc = await this.find(oldProcId);
+    proc.drop();
+    return this.q(source);
   }
 
   constructor (schema, proc_data) {
@@ -123,20 +127,17 @@ class Procedure extends Model.base {
     this.data = proc_data;
   }
 
-  getDefinition (callback) {
-    var sql = "select proname, pg_get_functiondef(oid) as source from pg_proc where oid = '%s'";
+  getDefinition () {
+    var sql = "SELECT proname, pg_get_functiondef(oid) AS source FROM pg_proc WHERE oid = '%s'";
 
-    this.q(sql, this.oid, (result, error) => {
-      if (error) {
-        throw error;
-      }
-      callback && callback(result && result.rows[0], error);
+    return this.q(sql, this.oid).then((result) => {
+      return Promise.resolve(result.rows[0]);
     });
   }
 
   drop (callback) {
     var type = this.is_aggregate ? "AGGREGATE" : "FUNCTION";
-    var sql = "drop %s %s.%s(%s)";
+    var sql = "DROP %s %s.%s(%s)";
 
     return this.q(sql, type, this.data.schema_name, this.name, this.arg_list, (result, error) => {
       callback && callback(result, error);
@@ -145,7 +146,7 @@ class Procedure extends Model.base {
 };
 
 !function () {
-  var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension'];
+  var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension', 'full_prosrc'];
   props.forEach((prop) => {
     Object.defineProperty(Procedure.prototype, prop, {
       get () {

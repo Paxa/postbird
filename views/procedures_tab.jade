@@ -18,7 +18,8 @@ h4 Procedures
             td
               strong= proc.name
             td= proc.return_type
-            td= proc.arg_list
+            td
+              span.proc-arg-list= proc.arg_list
             td= proc.language
             td= proc.extension
             td
@@ -27,7 +28,7 @@ h4 Procedures
                 != "&nbsp;"
                 a(exec="procDefinition('" + proc.oid + "', '" + proc.name + "')") Source
                 != "&nbsp;"
-              a(exec="removeProc('" + proc.name + "')") Delete
+              a(exec="removeProc('" + proc.oid + "', '" + proc.name + "')") Delete
 
 footer
   - //button.native-look(exec="addColumnForm") Create Procedure

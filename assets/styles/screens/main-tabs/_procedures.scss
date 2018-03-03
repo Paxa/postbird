@@ -19,3 +19,16 @@
     margin-bottom: 5px;
   }
 }
+
+span.proc-arg-list {
+  max-width: 400px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.alertify-inner.source-procedure-dialog {
+  code {
+    max-height: calc(100vh - 250px);
+    max-width: calc(100vw - 250px);
+  }
+}

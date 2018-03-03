@@ -1,12 +1,13 @@
 class EditProcedure extends Dialog {
 
-  constructor(handler, proc) {
+  constructor(handler, proc, callback) {
     super(handler, {
       title: "Edit Procedure",
       dialogClass: "edit-procedure-dialog",
       proc: proc
     });
     this.showWindow();
+    this.onSave = callback;
   }
 
   showWindow () {
@@ -44,6 +45,10 @@ class EditProcedure extends Dialog {
     });
 
     this.bindFormSubmitting();
+  }
+
+  onSubmit (data) {
+    this.onSave(this.editor.getValue());
   }
 
 }
