@@ -1,4 +1,4 @@
-class Procedure extends Model.base {
+class Procedure extends ModelBase {
 
   static findAll (callback) {
     var sql = `
@@ -14,7 +14,7 @@ class Procedure extends Model.base {
       ORDER BY proname;
     `;
 
-    return Model.base.q(sql).then(data => {
+    return this.q(sql).then(data => {
       var procedures = [];
       data.rows.forEach((row) => {
         procedures.push(new Model.Procedure('public', row));
@@ -38,7 +38,7 @@ class Procedure extends Model.base {
       ORDER BY proname;
     `;
 
-    return Model.base.q(sql).then(data => {
+    return this.q(sql).then(data => {
       if (data.rows[0]) {
         var proc = new Model.Procedure('public', data.rows[0]);
         callback && callback(proc);
@@ -50,7 +50,7 @@ class Procedure extends Model.base {
   }
 
   // createFunction('my_inc1', 'integer val', 'integer', 'return val + 1;');
-  static createFunction (name, args, return_type, body, options, callback) {
+  static createFunction (name, args, return_type, body, options) {
     if (typeof callback == 'undefined' && typeof options == 'function') {
       callback = options;
       options = {};
@@ -61,31 +61,24 @@ class Procedure extends Model.base {
     var sql = "CREATE FUNCTION %s(%s) RETURNS %s AS $$ BEGIN %s; END; $$ LANGUAGE %s";
 
     return new Promise((resolve, reject) => {
-      Model.base.q(sql, name, args, return_type, body, options.lang, (data, error) => {
-        try {
-          if (!error) {
-            resolve(this.find(name, callback));
-          } else {
-            var obj = new Model.Procedure('public', {
-              name: name,
-              language: options.lang,
-              arg_list: args,
-              return_type: return_type,
-              proisagg: false
-            });
-            obj.error = error;
-            callback && callback(obj);
-            resolve(obj);
-          }
-        } catch (error) {
-          reject(error);
-        }
+      this.q(sql, name, args, return_type, body, options.lang).then(data => {
+        resolve(this.find(name));
+      }).catch(error => {
+        var obj = new Model.Procedure('public', {
+          name: name,
+          language: options.lang,
+          arg_list: args,
+          return_type: return_type,
+          proisagg: false
+        });
+        obj.error = error;
+        resolve(obj);
       });
     });
   }
 
   static listLanguages () {
-    return Model.base.q("SELECT * FROM pg_language", (data, error) => {
+    return this.q("SELECT * FROM pg_language", (data, error) => {
       return Promise.resolve(data.rows);
     });
   }
@@ -106,7 +99,7 @@ class Procedure extends Model.base {
       WHERE pg_namespace.nspname = 'public' OR refobjid != 0
       ORDER BY p.proname, arg_list`;
 
-    return Model.base.q(sql).then(data => {
+    return this.q(sql).then(data => {
       var procedures = [];
       data.rows.forEach((row) => {
         procedures.push(new Model.Procedure('public', row));

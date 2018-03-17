@@ -1,7 +1,7 @@
 require("../lib/psql_runner")
 require("../lib/sql_importer")
 
-describe('SqlRunner', () => {
+describe('SqlImporter', () => {
 
   before(async () => {
     await testConnection();

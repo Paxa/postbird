@@ -1,4 +1,4 @@
-class Index extends Model.base {
+class Index extends ModelBase {
   constructor (name, table, data = {}) {
     if (name) {
       data.relname = data.name = name;

@@ -75,8 +75,8 @@ describe('Model.Table and Model.Schema', () => {
   it("should delete views and mat views in schemas", async () => {
     if (getConnection().supportMatViews()) {
       var schema1 = await Model.Schema.create("my_schema_1")
-      await Model.base.q("create view my_schema_1.my_view as select * from pg_available_extensions")
-      await Model.base.q("create materialized view my_schema_1.my_mat_view as select * from pg_available_extensions")
+      await ModelBase.q("create view my_schema_1.my_view as select * from pg_available_extensions")
+      await ModelBase.q("create materialized view my_schema_1.my_mat_view as select * from pg_available_extensions")
 
       await new Model.Table('my_schema_1', 'my_view').drop()
       await new Model.Table('my_schema_1', 'my_mat_view').drop()

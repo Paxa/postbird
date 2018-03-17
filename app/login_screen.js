@@ -1,7 +1,8 @@
-global.LoginScreen = jClass.extend({
-  type: "login_screen",
+class LoginScreen {
 
-  init: function (cliConnectString) {
+  constructor (cliConnectString) {
+    this.type = "login_screen";
+
     this.content = App.renderView('login_screen');
     this.form = this.content.find('form');
     this.connections = this.content.find('ul.connections');
@@ -22,9 +23,9 @@ global.LoginScreen = jClass.extend({
     }
 
     this.initEvents(this.content);
-  },
+  }
 
-  bindFormEvents: function () {
+  bindFormEvents () {
     this.form.bind('submit', this.onFormSubmit.bind(this));
 
     this.form.find('input[type=text], input[type=password]').bind('keypress', (event) => {
@@ -46,43 +47,43 @@ global.LoginScreen = jClass.extend({
       var help = HelpScreen.open();
       help.activatePage("get-postgres");
     });
-  },
+  }
 
-  showPart: function (name) {
+  showPart (name) {
     this.content.find('.middle-window').hide();
     this.content.find('.middle-window.' + name).show();
-  },
+  }
 
-  showPlainPane: function() {
+  showPlainPane () {
     this.content.find('.login-with-password').hide();
     this.content.find('.login-with-heroku').show();
     this.showPart('plain');
-  },
+  }
 
-  showHerokuPane1: function () {
+  showHerokuPane1 () {
     this.content.find('.login-with-password').show();
     this.content.find('.login-with-heroku').hide();
     this.showPart('heroku-1');
-  },
+  }
 
-  showHerokuOAuthPane: function () {
+  showHerokuOAuthPane () {
     this.showPart('heroku-oauth');
-  },
+  }
 
-  showHerokuCLPane: function () {
+  showHerokuCLPane () {
     this.showPart('heroku-cl');
-  },
+  }
 
-  startHerokuOAuth: function () {
+  startHerokuOAuth () {
     this.showHerokuOAuthPane();
     var steps = this.content.find('.heroku-oauth ul.steps');
     var options = {
-      onAccessTokenStart:  function() { steps.find('.access-token').addClass('started'); },
-      onAccessTokenDone:   function() { steps.find('.access-token').addClass('done'); },
-      onRequestTokenStart: function() { steps.find('.request-token').addClass('started'); },
-      onRequestTokenDone:  function() { steps.find('.request-token').addClass('done'); },
-      onGetAppsStarted:    function() { steps.find('.get-apps').addClass('started'); },
-      onGetAppsDone:       function() { steps.find('.get-apps').addClass('done'); }
+      onAccessTokenStart:  () => { steps.find('.access-token').addClass('started'); },
+      onAccessTokenDone:   () => { steps.find('.access-token').addClass('done'); },
+      onRequestTokenStart: () => { steps.find('.request-token').addClass('started'); },
+      onRequestTokenDone:  () => { steps.find('.request-token').addClass('done'); },
+      onGetAppsStarted:    () => { steps.find('.get-apps').addClass('started'); },
+      onGetAppsDone:       () => { steps.find('.get-apps').addClass('done'); }
     };
 
     var appsList = this.content.find('ul.apps').html('');
@@ -96,9 +97,9 @@ global.LoginScreen = jClass.extend({
         });
       });
     }, options);
-  },
+  }
 
-  connectToHeroku: function (heroku_app) {
+  connectToHeroku (heroku_app) {
     App.startLoading("Fetching config...");
     HerokuClient.getDatabaseUrl(heroku_app.id, (db_url) => {
       if (!db_url) {
@@ -115,15 +116,15 @@ global.LoginScreen = jClass.extend({
         console.log('connected to heroku');
       });
     });
-  },
+  }
 
-  openHerokuLoginWindow: function(link) {
+  openHerokuLoginWindow (link) {
     HerokuClient.auth(() => {
       console.log("authenticated");
     });
-  },
+  }
 
-  fillSavedConnections: function () {
+  fillSavedConnections () {
     this.connections.empty();
     this.savedConnections = Model.SavedConn.savedConnections();
     var currentConnection = this.connectionName;
@@ -134,7 +135,7 @@ global.LoginScreen = jClass.extend({
 
       $u.contextMenu(line, {
         "Fill form with ...": _this.fillForm.bind(_this, name, params),
-        "Connect": function () {
+        "Connect" () {
           _this.fillForm(params, name);
           _this.onFormSubmit();
         },
@@ -156,17 +157,17 @@ global.LoginScreen = jClass.extend({
 
       _this.connections.append(line)
     });
-  },
+  }
 
-  connectionSelected: function (name, params, line) {
+  connectionSelected (name, params, line) {
     this.connections.find('.selected').removeClass('selected');
     $u(line).addClass('selected');
     this.connectionName = name;
     this.fillForm(name, params);
     this.setButtonShown(false);
-  },
+  }
 
-  testConnection: function () {
+  testConnection () {
     App.startLoading("Connecting...");
 
     var options = this.getFormData();
@@ -180,16 +181,16 @@ global.LoginScreen = jClass.extend({
         window.alertify.alert(App.humanErrorMessage(message));
       }
     });
-  },
+  }
 
-  addNewConnection: function () {
+  addNewConnection () {
     this.connectionName = "**new**";
     this.fillForm(undefined, {host: "localhost", user: "", password: "", database: ""});
     this.form.find('[name=host]').focus();
     this.setButtonShown(true);
-  },
+  }
 
-  fillForm: function (name, params) {
+  fillForm (name, params) {
     params = Object.assign({}, {host: "localhost", user: "", password: "", database: "", query: ""}, params);
 
     Object.forEach(params, (k, v) => {
@@ -200,18 +201,18 @@ global.LoginScreen = jClass.extend({
         field.val(v);
       }
     });
-  },
+  }
 
-  renameConnection: function (name) {
+  renameConnection (name) {
     window.alertify.prompt("Rename connection?", (confirm, newName) => {
       if (confirm) {
         Model.SavedConn.renameConnection(name, newName);
         this.fillSavedConnections();
       }
     }, name);
-  },
+  }
 
-  deleteConnection: function (name) {
+  deleteConnection (name) {
     window.alertify.labels.ok = "Remove";
     window.alertify.confirm("Remove connection " + name + "?", (res) => {
       window.alertify.labels.ok = "OK";
@@ -220,9 +221,9 @@ global.LoginScreen = jClass.extend({
         this.fillSavedConnections();
       }
     });
-  },
+  }
 
-  saveAndConnect: function (e) {
+  saveAndConnect (e) {
     $u.stopEvent(e);
     var name;
 
@@ -245,9 +246,9 @@ global.LoginScreen = jClass.extend({
       this.fillSavedConnections();
       this.setButtonShown(false);
     });
-  },
+  }
 
-  onFormSubmit: function (e, callback) {
+  onFormSubmit (e, callback) {
     var button = this.form.find('input[type=submit]');
     var buttonText = button.val();
     button.attr('disabled', true).val("Connecting...");
@@ -259,9 +260,9 @@ global.LoginScreen = jClass.extend({
       button.removeAttr('disabled').val(buttonText);
       if (callback && tab) callback(tab);
     });
-  },
+  }
 
-  getFormData: function () {
+  getFormData () {
     return {
       host: this.form.find('[name=host]').val(),
       port: this.form.find('[name=port]').val(),
@@ -271,9 +272,9 @@ global.LoginScreen = jClass.extend({
       database: this.form.find('[name=database]').val(),
       auto_connect: this.form.find('[name=auto_connect]').prop('checked')
     };
-  },
+  }
 
-  formChanged: function (event) {
+  formChanged (event) {
     if (this.connectionName == "**new**") return;
 
     var formData = this.getFormData();
@@ -284,17 +285,17 @@ global.LoginScreen = jClass.extend({
     } else {
       this.setButtonShown(false);
     }
-  },
+  }
 
-  setButtonShown: function (isShown) {
+  setButtonShown (isShown) {
     this.form.find("button")[isShown ? 'show' : 'hide']();
-  },
+  }
 
-  makeConnection: function (connectionOptions, options, callback) {
+  makeConnection (connectionOptions, options, callback) {
     App.openConnection(connectionOptions, options.name || this.connectionName, callback);
-  },
+  }
 
-  checkAutoLogin: function () {
+  checkAutoLogin () {
     var autoConnect = null;
     Object.forEach(this.savedConnections, (key, connection) => {
       if (!autoConnect && connection.auto_connect) {
@@ -310,6 +311,7 @@ global.LoginScreen = jClass.extend({
       this.onFormSubmit();
     }
   }
-});
+}
 
 LoginScreen.prototype.initEvents = Pane.prototype.initEvents;
+global.LoginScreen = LoginScreen;

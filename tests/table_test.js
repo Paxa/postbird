@@ -78,7 +78,7 @@ describe('Model.Table', () => {
 
   it("should select from views", async () => {
     var sql = "create view myview as select * from pg_available_extensions"
-    await Model.base.q(sql)
+    await ModelBase.q(sql)
 
     var table = new Model.Table('public', 'myview')
 
@@ -90,7 +90,7 @@ describe('Model.Table', () => {
 
   it("should detect if relation is view", async () => {
     var sql = "create view myview as select * from pg_available_extensions"
-    await Model.base.q(sql)
+    await ModelBase.q(sql)
 
     var table = new Model.Table('public', 'myview')
 
@@ -103,7 +103,7 @@ describe('Model.Table', () => {
   it("should detect if relation is view", async () => {
     if (Connection.instances[0].supportMatViews()) {
       var sql = "create materialized view myview as select * from pg_available_extensions"
-      await Model.base.q(sql)
+      await ModelBase.q(sql)
 
       var table = new Model.Table('public', 'myview')
 
@@ -163,7 +163,7 @@ describe('Model.Table', () => {
 
   it("should rename view", async () => {
     var sql = `CREATE VIEW "Test_View" AS SELECT * FROM pg_available_extensions`
-    await Model.base.q(sql)
+    await ModelBase.q(sql)
 
     var view = new Model.Table('public', 'Test_View')
 

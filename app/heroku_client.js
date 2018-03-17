@@ -182,12 +182,11 @@ global.HerokuClient = {
   },
 };
 
-global.HerokuCatcher = jClass.extend({
-  isRunning: false,
+class HerokuCatcher {
 
-  init: function (doneCallback) {
+  constructor (doneCallback) {
+    this.isRunning = false;
     this.doneCallback = doneCallback;
-    var _this = this;
     this.server = libs.http.createServer((request, response) => {
       //console.dir(request);
 
@@ -195,28 +194,30 @@ global.HerokuCatcher = jClass.extend({
       var query = libs.querystring.parse(parsed.query);
       //console.log(query.code);
       HerokuClient.setRequestToken(query.code);
-      _this.doneCallback();
+      this.doneCallback();
 
       response.writeHead(200, {"Content-Type": "text/html"});
       response.end("<script type='text/javascript'>window.close();</script>");
 
       setTimeout(() => {
-        _this.stop();
+        this.stop();
       }, 100);
     });
-  },
+  }
 
-  start: function () {
+  start () {
     this.isRunning = true;
     console.log('server started at http://localhost:12001/');
     this.server.listen(12001);
-  },
+  }
 
-  stop: function () {
+  stop () {
     if (this.isRunning) {
       console.log("Stopping server");
       this.server.close();
       this.isRunning = false;
     }
   }
-});
+}
+
+global.HerokuCatcher = HerokuCatcher;

@@ -54,7 +54,11 @@ class Procedures extends Pane {
   }
 
   editTrigger (triggerName) {
-    throw "Not Implemented";
+    throw new Error("Not Implemented");
+  }
+
+  removeTrigger (triggerName) {
+    throw new Error("Not Implemented");
   }
 
   async listLanguages () {

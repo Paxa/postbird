@@ -1,7 +1,6 @@
-const ModelVanillaBase = require('./base');
 const semver = require('semver');
 
-class Server extends ModelVanillaBase {
+class Server extends ModelBase {
 
   constructor(connection) {
     super();

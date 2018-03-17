@@ -120,6 +120,5 @@ class Dialog {
   }
 }
 
-Dialog.extend = jClass.extend;
 global.Dialog = Dialog;
 module.exports = Dialog;

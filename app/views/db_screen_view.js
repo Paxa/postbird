@@ -1,7 +1,8 @@
 const {dialog} = require('electron').remote;
 
-global.DbScreenView = jClass.extend({
-  init: function (handler) {
+class DbScreenView {
+
+  constructor (handler) {
     this.handler = handler;
 
     this.content = $u(App.renderView('main'));
@@ -15,9 +16,9 @@ global.DbScreenView = jClass.extend({
 
     this.initializePanes();
     this.initEvents();
-  },
+  }
 
-  initEvents: function() {
+  initEvents () {
     this.topTabs.forEach((el) => {
       $u(el).bind('click', (e) => {
         var tabName = el.getAttribute('tab');
@@ -63,30 +64,30 @@ global.DbScreenView = jClass.extend({
     });
 
     new SidebarResize(this.content.find('.resize-handler'));
-  },
+  }
 
   // Public API
-  setDabase: function (database, callback) {
+  setDabase (database, callback) {
     this.databaseSelect.val(database);
     this.showDatabaseContent();
     this.handler.selectDatabase(database, callback);
-  },
+  }
 
-  showDatabaseContent: function () {
+  showDatabaseContent () {
     this.sidebar.addClass('database-selected');
-  },
+  }
 
-  hideDatabaseContent: function() {
+  hideDatabaseContent () {
     this.sidebar.removeClass('database-selected');
-  },
+  }
 
-  initializePanes: function () {
+  initializePanes () {
     ['Users', 'Extensions', 'Query', 'Content', 'Structure', 'Procedures', 'Info'].forEach(paneName => {
       this[paneName.toLowerCase() + "Pane"] = new Pane[paneName](this);
     });
-  },
+  }
 
-  renderDbList: function (databases) {
+  renderDbList (databases) {
     this.databaseSelect.empty();
     this.databaseSelect.append($u('<option>'))
 
@@ -107,10 +108,17 @@ global.DbScreenView = jClass.extend({
     if (this.handler.database) {
       this.databaseSelect.val(this.handler.database);
     }
-  },
+  }
 
-  renderTablesAndSchemas: function (data, currentSchema, currentTable) {
+  renderTablesAndSchemas (data, currentSchema, currentTable) {
     this.tablesList.empty();
+
+    var tableTypes = {
+      "VIEW": 'View',
+      "BASE TABLE": 'Table',
+      "MATERIALIZED VIEW": 'Mat. View',
+      "FOREIGN TABLE": "Foreign Table"
+    };
 
     $u.each(data, (schema, tables) => {
       var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
@@ -126,7 +134,13 @@ global.DbScreenView = jClass.extend({
       }
 
       data[schema].forEach((table) => {
-        var tableNode = $dom(['li', table.table_name, {'table-name': table.table_name, 'table-type': table.table_type}]);
+        var tableTitle = tableTypes[table.table_type] || table.table_type;
+
+        var tableNode = $dom(['li', table.table_name, {
+          title: tableTitle,
+          'table-name': table.table_name,
+          'table-type': table.table_type
+        }]);
 
         $u(tableNode).single_double_click((e) => {
           if (e.target.tagName == "INPUT") return;
@@ -137,14 +151,6 @@ global.DbScreenView = jClass.extend({
           e.preventDefault();
           this.renameTable(tableNode, schema, table.table_name);
         }, 170);
-
-        var tableTypes = {
-          "VIEW": 'View',
-          "BASE TABLE": 'Table',
-          "MATERIALIZED VIEW": 'Mat. View',
-          "FOREIGN TABLE": "Foreign Table"
-        };
-        var tableTitle = tableTypes[table.table_type] || table.table_type;
 
         if (!tableTypes[table.table_type]) {
           try {
@@ -211,13 +217,13 @@ global.DbScreenView = jClass.extend({
 
       this.tablesList.append(schemaTree[0]);
     });
-  },
+  }
 
-  reloadStructure: function() {
+  reloadStructure () {
     this.handler.fetchTablesAndSchemas();
-  },
+  }
 
-  renameTable: function (node, schema, tableName) {
+  renameTable (node, schema, tableName) {
     node = $u(node);
     node.html('<input value="' + tableName + '" type=text>');
     var input = node.find('input');
@@ -255,9 +261,9 @@ global.DbScreenView = jClass.extend({
         submitted = true;
       }
     });
-  },
+  }
 
-  showTab: function(name) {
+  showTab (name) {
     if (this.currentTab) {
       this.topTabs.filter('.' + this.currentTab).removeClass('active');
       this.tabContents.filter('.' + this.currentTab).removeClass('active');
@@ -273,9 +279,9 @@ global.DbScreenView = jClass.extend({
     }
 
     this.handler.activateTab(name, true);
-  },
+  }
 
-  truncateTable: function (schema, tableName) {
+  truncateTable (schema, tableName) {
     dialog.showMessageBox({
       type: 'question',
       buttons: ['Truncate', 'Cancel'],
@@ -310,9 +316,9 @@ global.DbScreenView = jClass.extend({
         }
       });
     });
-  },
+  }
 
-  setTabMessage: function (message) {
+  setTabMessage (message) {
     if (!this.currentTab) return;
 
     var currentTabEl = this.tabContents.filter('.' + this.currentTab);
@@ -320,46 +326,46 @@ global.DbScreenView = jClass.extend({
     if (!currentTabEl.attr('unchangeable')) {
       currentTabEl.empty().html('<span class="tab-message">' + message + '</span>');
     }
-  },
+  }
 
-  setTabContent: function (tabName, content) {
+  setTabContent (tabName, content) {
     var container = this.tabContents.filter('.' + tabName);
     //container.empty().append(content);
     container.removeChildren().fasterAppend(content);
-  },
+  }
 
-  eraseCurrentContent: function () {
+  eraseCurrentContent () {
     if (this.currentTab) {
       this.topTabs.filter('.' + this.currentTab).removeClass('active');
       this.tabContents.filter('.' + this.currentTab).removeClass('active').html("");
     }
-  },
+  }
 
-  tabContent: function (tabName) {
+  tabContent (tabName) {
     return this.tabContents.filter('.' + tabName);
-  },
+  }
 
-  newTableDialog: function () {
+  newTableDialog () {
     new Dialog.NewTable(this.handler);
-  },
+  }
 
-  showTableSql: function (schema, table) {
+  showTableSql (schema, table) {
     App.startLoading("Getting table sql...");
     this.handler.getTableSql(schema, table, (source) => {
       App.stopLoading();
       new Dialog.ShowSql("Table " + table, source);
     });
-  },
+  }
 
-  showViewSql: function (schema, table) {
+  showViewSql (schema, table) {
     App.startLoading("Getting view sql...");
     this.handler.getTableSql(schema, table, (source) => {
       App.stopLoading();
       new Dialog.ShowSql("View " + table, source);
     });
-  },
+  }
 
-  switchToHerokuMode: function (name, databseUrl) {
+  switchToHerokuMode (name, databseUrl) {
     this.content.find('.databases > *').hide();
     var herokuHeader = DOMinate(['div.heroku-mode',
       ['span', "Heroku app:"],
@@ -373,4 +379,6 @@ global.DbScreenView = jClass.extend({
 
     this.content.find('.databases').append(herokuHeader[0]);
   }
-});
+}
+
+global.DbScreenView = DbScreenView;

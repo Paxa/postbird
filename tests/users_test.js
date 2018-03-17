@@ -45,7 +45,7 @@ describe('Model.User', () => {
     var user = await Model.User.create({username: 'postbird_tester', superuser: true});
     var table = await Model.Table.create('public', 'test_table');
 
-    await Model.base.q('GRANT UPDATE,SELECT,DELETE ON test_table TO postbird_tester;');
+    await ModelBase.q('GRANT UPDATE,SELECT,DELETE ON test_table TO postbird_tester;');
 
     var grants = await user.getGrants();
 

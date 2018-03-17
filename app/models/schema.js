@@ -1,4 +1,4 @@
-class Schema extends Model.base {
+class Schema extends ModelBase {
 
   constructor (schemaName) {
     super();
@@ -14,7 +14,7 @@ class Schema extends Model.base {
 
     var sql = `CREATE SCHEMA "${name}";`;
 
-    return Model.base.q(sql).then(res => {
+    return this.q(sql).then(res => {
       callback && callback(new Model.Schema(name), error);
       return Promise.resolve(new Model.Schema(name));
     });
@@ -23,7 +23,7 @@ class Schema extends Model.base {
   static findAll (callback) {
     var sql = "select nspname as name from pg_catalog.pg_namespace;"
 
-    return Model.base.q(sql).then(res => {
+    return this.q(sql).then(res => {
       var schemas = [];
       if (res) {
         res.rows.forEach((row) => {

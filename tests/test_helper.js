@@ -20,9 +20,13 @@ global.cleanupSchema = async (connection) => {
 }
 
 global.testConnection = async (logging) => {
-  if (getConnection()) {
+  var existingConn = getConnection();
+  if (existingConn) {
+    if (existingConn.hasRunningQuery()) {
+      existingConn.stopRunningQuery();
+    }
     await cleanupSchema();
-    return getConnection();
+    return existingConn;
   }
 
   var connection = new Connection();

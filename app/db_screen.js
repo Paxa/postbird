@@ -1,12 +1,9 @@
-global.DbScreen = jClass.extend({
-  type: "db_screen",
+class DbScreen {
 
-  options: {
-    fetchDbList: true
-  },
-
-  init: function(connection, options) {
-    node.util._extend(this.options, options);
+  constructor (connection, options) {
+    this.type = "db_screen";
+    this.contentTabLimit = 200;
+    this.options = Object.assign({fetchDbList: true}, options)
 
     this.connection = connection;
     this.view = new DbScreenView(this);
@@ -24,14 +21,14 @@ global.DbScreen = jClass.extend({
     this.connection.onNotification((message) => {
       window.alertify.alert("Recieve Message:<br>" + JSON.stringify(message));
     });
-  },
+  }
 
   // short cut
-  query: function(sql, callback){
+  query (sql, callback) {
     return this.connection.query(sql, callback);
-  },
+  }
 
-  omit: function (event) {
+  omit (event) {
     if (this.view.currentTab == 'users' && (event == 'user.created' || event == 'user.deleted' || event == 'user.updated')) {
       this.usersTabActivate();
     }
@@ -43,24 +40,24 @@ global.DbScreen = jClass.extend({
     if (event == 'table.created') {
       //
     }
-  },
+  }
 
-  listen: function (event, callback) {
+  listen (event, callback) {
     
-  },
+  }
 
-  fetchDbList: function (callback) {
+  fetchDbList (callback) {
     return this.connection.server.listDatabases().then(databases => {
       this.view.renderDbList(databases);
       callback && callback();
     });
-  },
+  }
 
-  listDatabases: function(callback){
+  listDatabases (callback) {
     this.connection.server.listDatabases(callback);
-  },
+  }
 
-  selectDatabase: function (database, callback) {
+  selectDatabase (database, callback) {
     if (database == '') database = undefined;
 
     this.database = database;
@@ -81,14 +78,14 @@ global.DbScreen = jClass.extend({
       this.view.hideDatabaseContent();
       this.connection.close();
     }
-  },
+  }
 
   // Public API
-  setDatabase: function (database, callback) {
+  setDatabase (database, callback) {
     this.view.setDabase(database, callback);
-  },
+  }
 
-  fetchTablesAndSchemas: function (callback) {
+  fetchTablesAndSchemas (callback) {
     App.startLoading("Getting tables list...");
     return this.connection.tablesAndSchemas((data) => {
       return this.connection.mapViewsAsTables((matViews) => {
@@ -112,9 +109,9 @@ global.DbScreen = jClass.extend({
         callback && callback(data);
       });
     });
-  },
+  }
 
-  tableSelected: function(schema, tableName, node, showTab) {
+  tableSelected (schema, tableName, node, showTab) {
     if (this.currentSchema == schema && this.currentTable == tableName) {
       return;
     }
@@ -136,9 +133,9 @@ global.DbScreen = jClass.extend({
     } else {
       this.view.showTab('structure');
     }
-  },
+  }
 
-  activateTab: function (tabName, force) {
+  activateTab (tabName, force) {
     console.log(tabName + 'TabActivate', typeof this[tabName + 'TabActivate']);
 
     if (this.currentTab == tabName && !force) {
@@ -150,43 +147,41 @@ global.DbScreen = jClass.extend({
       App.emit('dbtab.changed', this.currentTab);
       this[tabName + 'TabActivate']();
     }
-  },
+  }
 
-  extensionsTabActivate: function () {
+  extensionsTabActivate () {
     this.connection.getExtensions((rows) => {
       this.view.extensionsPane.renderTab(rows);
       this.currentTab = 'extensions';
     });
-  },
+  }
 
-  installExtension: function (extension, callback) {
+  installExtension (extension, callback) {
     App.startLoading(`Installing extension ${extension}`);
     this.connection.installExtension(extension, (data, error) => {
       App.stopLoading();
       if (!error) this.omit('extension.installed');
       callback(data, error);
     });
-  },
+  }
 
-  uninstallExtension: function (extension, callback) {
+  uninstallExtension (extension, callback) {
     App.startLoading(`Removing extension ${extension}`);
     this.connection.uninstallExtension(extension, (data, error) => {
       App.stopLoading();
       if (!error) this.omit('extension.uninstalled');
       callback(data, error);
     });
-  },
+  }
 
-  contentTabLimit: 200,
-
-  contentTabActivate: function() {
+  contentTabActivate () {
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
     }
 
     App.startLoading("Fetching data ...", {
-      cancel: function () {
+      cancel: () => {
         App.stopRunningQuery();
       }
     });
@@ -204,20 +199,20 @@ global.DbScreen = jClass.extend({
         this.currentTab = 'content';
       });
     });
-  },
+  }
 
-  queryTabActivate: function () {
+  queryTabActivate () {
     this.view.queryPane.renderTab();
     this.currentTab = 'query';
-  },
+  }
 
-  usersTabActivate: async function () {
+  async usersTabActivate () {
     var users = await Model.User.findAll();
     this.view.usersPane.renderTab(users);
     this.currentTab = 'users';
-  },
+  }
 
-  createUser: async function(data, callback) {
+  async createUser (data) {
     if (data.admin == '1') {
       delete data.admin;
       data.superuser = true;
@@ -226,9 +221,9 @@ global.DbScreen = jClass.extend({
     var result = await Model.User.create(data);
     this.omit('user.created');
     return result;
-  },
+  }
 
-  updateUser: async function(username, data) {
+  async updateUser (username, data) {
     if (data.admin == '1') {
       delete data.admin;
       data.superuser = true;
@@ -237,24 +232,24 @@ global.DbScreen = jClass.extend({
     var result = await new Model.User(username).update(data);
     this.omit('user.updated');
     return result;
-  },
+  }
 
-  deleteUser: async function(username) {
+  async deleteUser (username) {
     var result = await Model.User.drop(username);
     this.omit('user.deleted');
     return result;
-  },
+  }
 
-  createDatabase: async function (data, callback) {
+  async createDatabase (data, callback) {
     await this.connection.switchDb(this.connection.defaultDatabaseName);
     var res = await this.connection.server.createDatabase(data.dbname, data.template, data.encoding);
     await this.fetchDbList();
     this.view.databaseSelect.val(data.dbname).change();
 
     return res;
-  },
+  }
 
-  dropDatabaseDialog: async function () {
+  async dropDatabaseDialog () {
     var msg = `Delete database ${this.database}?`;
     var result = await $u.confirm(msg, {
       detail: "It will delete all tables in it",
@@ -265,9 +260,9 @@ global.DbScreen = jClass.extend({
     if (result) {
       this.dropDatabase();
     }
-  },
+  }
 
-  dropDatabase: async function () {
+  async dropDatabase () {
     App.startLoading("Deleting database...");
     try {
       await this.connection.server.dropDatabase(this.database);
@@ -279,9 +274,9 @@ global.DbScreen = jClass.extend({
       window.alertify.alert(error.message);
     }
     App.stopLoading();
-  },
+  }
 
-  renameDatabaseDialog: function (defaultValue) {
+  renameDatabaseDialog (defaultValue) {
     var msg = "Renaming database '" + this.database + "'?";
     window.alertify.prompt(msg, (result, newName) => {
       if (result) {
@@ -296,9 +291,9 @@ global.DbScreen = jClass.extend({
         }
       }
     }, defaultValue || this.database);
-  },
+  }
 
-  renameDatabase: async function (databaseNewName) {
+  async renameDatabase (databaseNewName) {
     App.startLoading("Renaming database...");
     try {
       await this.connection.server.renameDatabase(this.database, databaseNewName);
@@ -309,9 +304,9 @@ global.DbScreen = jClass.extend({
       window.alertify.alert(error.message);
     }
     App.stopLoading();
-  },
+  }
 
-  createTable: function (data, callback) {
+  createTable (data, callback) {
     App.startLoading(`Creating table table ${data.name}`);
     Model.Table.create(data.tablespace, data.name, (table, res, error) => {
       App.stopLoading();
@@ -325,18 +320,18 @@ global.DbScreen = jClass.extend({
       }
       callback(res, error);
     });
-  },
+  }
 
-  _relationTitle: function (type) {
+  _relationTitle (type) {
     return {
       "VIEW": 'view',
       "BASE TABLE": 'table',
       "MATERIALIZED VIEW": 'materialized view',
       'FOREIGN TABLE': 'foreign table'
     }[type] || type;
-  },
+  }
 
-  dropRelation: async function (schema, tableName, callback) {
+  async dropRelation (schema, tableName, callback) {
     var table = new Model.Table(schema, tableName);
 
     var type = await table.getTableType();
@@ -348,9 +343,9 @@ global.DbScreen = jClass.extend({
       this.omit('table.deleted');
       this.fetchTablesAndSchemas();
     }
-  },
+  }
 
-  refreshMatView: async function (schema, tableName) {
+  async refreshMatView (schema, tableName) {
     var table = new Model.Table(schema, tableName);
 
     App.startLoading(`Refreshing ${schema}.${tableName}...`);
@@ -358,9 +353,9 @@ global.DbScreen = jClass.extend({
     App.stopLoading();
 
     return res;
-  },
+  }
 
-  renameTable: async function (schema, tableName, newName) {
+  async renameTable (schema, tableName, newName) {
     if (tableName == newName) {
       console.log("Try rename table '" + tableName + "' -> '" + newName + "', canceled, same value");
       return;
@@ -384,9 +379,9 @@ global.DbScreen = jClass.extend({
     this.fetchTablesAndSchemas();
 
     return result;
-  },
+  }
 
-  structureTabActivate: async function () {
+  async structureTabActivate () {
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
@@ -427,15 +422,15 @@ global.DbScreen = jClass.extend({
       constraintsError: constraintsError
     });
     App.stopLoading();
-  },
+  }
 
-  proceduresTabActivate: function() {
+  proceduresTabActivate () {
     this.view.proceduresPane.renderTab(() => {
       this.currentTab = 'procedures';
     });
-  },
+  }
 
-  addColumn: async function (data, callback) {
+  async addColumn (data, callback) {
     App.startLoading(`Adding column ${data.name}`);
     var column = new Model.Column({
       table: this.table,
@@ -454,9 +449,9 @@ global.DbScreen = jClass.extend({
     } finally {
       App.stopLoading();
     }
-  },
+  }
 
-  updateColumn: async function (columnObj, data, callback) {
+  async updateColumn (columnObj, data, callback) {
     App.startLoading(`Updating column ${columnObj.data.column_name}`);
 
     try {
@@ -465,9 +460,9 @@ global.DbScreen = jClass.extend({
     } finally {
       App.stopLoading();
     }
-  },
+  }
 
-  deleteColumn: async function (columnName) {
+  async deleteColumn (columnName) {
     App.startLoading(`Deleting column ${columnName}`);
     var column = new Model.Column(columnName, {table: this.table});
     try {
@@ -476,9 +471,9 @@ global.DbScreen = jClass.extend({
     } finally {
       App.stopLoading();
     }
-  },
+  }
 
-  addIndex: async function (data, callback) {
+  async addIndex (data, callback) {
     App.startLoading(`Adding index ${data.name}`);
 
     try {
@@ -492,9 +487,9 @@ global.DbScreen = jClass.extend({
     } finally {
       App.stopLoading();
     }
-  },
+  }
 
-  deleteIndex: async function (indexName, callback) {
+  async deleteIndex (indexName, callback) {
     App.startLoading(`Deleting index ${indexName}`);
 
     try {
@@ -504,24 +499,24 @@ global.DbScreen = jClass.extend({
     } finally {
       App.stopLoading();
     }
-  },
+  }
 
-  deleteConstraint: function (constraintName, callback) {
+  deleteConstraint (constraintName, callback) {
     App.startLoading(`Deleting constraint ${constraintName}`);
     this.table.dropConstraint(constraintName, (result, error) => {
       App.stopLoading();
       if (!error) this.structureTabActivate();
       callback(result, error);
     });
-  },
+  }
 
-  getTableSql: function (schema, table, callback) {
+  getTableSql (schema, table, callback) {
     Model.Table(schema, table).getSourceSql((source) => {
       callback(source);
     });
-  },
+  }
 
-  infoTabActivate: function () {
+  infoTabActivate () {
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
@@ -546,22 +541,22 @@ global.DbScreen = jClass.extend({
         this.currentTab = 'info';
       });
     });
-  },
+  }
 
   // TODO: add caching
-  tableObj: function() {
+  tableObj () {
     return Model.Table(this.currentSchema, this.currentTable);
-  },
+  }
 
-  switchToHerokuMode: function (appName, dbUrl) {
+  switchToHerokuMode (appName, dbUrl) {
     this.view.switchToHerokuMode(appName, dbUrl);
-  },
+  }
 
-  destroy: function () {
+  destroy () {
     this.connection.close();
-  },
+  }
 
-  reconnect: function (callback) {
+  reconnect (callback) {
     this.connection.reconnect((success, error) => {
       if (success) {
         window.alertify.alert('Reconnected!');
@@ -571,14 +566,15 @@ global.DbScreen = jClass.extend({
         if (callback) callback(false);
       }
     });
-  },
+  }
 
-  truncateTable(schema, table, cascade, callback) {
+  truncateTable (schema, table, cascade, callback) {
     App.startLoading(`Truncating ${table}`);
     Model.Table(schema, table).truncate(cascade, (result, error) => {
       App.stopLoading();
       callback(result, error);
     });
   }
-});
+}
 
+global.DbScreen = DbScreen;

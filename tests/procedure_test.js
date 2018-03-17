@@ -14,7 +14,7 @@ describe('Model.Procedure', () => {
     var sql = "CREATE FUNCTION my_inc(val integer) RETURNS integer AS $$" +
               "BEGIN RETURN val + 1; END; $$ LANGUAGE PLPGSQL;"
 
-    await Model.base.q(sql)
+    await ModelBase.q(sql)
     var procs = await Model.Procedure.findAll();
 
     assert.equal(procs.length, 1)
@@ -74,7 +74,7 @@ describe('Model.Procedure', () => {
   it("Drop procedure", async () => {
     var sql = "CREATE FUNCTION my_inc3(val integer) RETURNS integer AS $$" +
               "BEGIN RETURN val + 1; END; $$ LANGUAGE PLPGSQL;"
-    await Model.base.q(sql)
+    await ModelBase.q(sql)
 
     var procs = await Model.Procedure.findAll()
 

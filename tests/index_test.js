@@ -1,9 +1,9 @@
 require('./test_helper');
 
-describe('Model.User', () => {
+describe('Model.Index', () => {
 
   before(async () => {
-    await testConnection(1)
+    await testConnection()
   });
 
   afterEach(async () => {

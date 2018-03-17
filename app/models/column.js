@@ -1,4 +1,4 @@
-class Column extends Model.base {
+class Column extends ModelBase {
 
   constructor (name, data) {
     if (typeof name == 'object') {
@@ -143,7 +143,7 @@ class Column extends Model.base {
       ORDER BY 1, 2;
     `.trim();
 
-    return Model.base.q(sql).then(data => {
+    return this.q(sql).then(data => {
       callback && callback(data.rows);
       return Promise.resolve(data.rows);
     });

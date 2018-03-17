@@ -1,4 +1,4 @@
-class User extends Model.base {
+class User extends ModelBase {
 
   constructor(username) {
     super();
@@ -21,7 +21,7 @@ class User extends Model.base {
       ORDER BY 1;
     `;
 
-    return Model.base.q(sql).then(result => {
+    return this.q(sql).then(result => {
       return Promise.resolve(result.rows);
     });
   }
@@ -37,14 +37,14 @@ class User extends Model.base {
     sql += ';'
     if (data.superuser) sql += `ALTER USER "${data.username}" WITH SUPERUSER;`;
 
-    return Model.base.q(sql).then(result => {
+    return this.q(sql).then(result => {
       return Promise.resolve(new User(data.username));
     });
   }
 
   static drop (username, options = {}) {
     var sql = `DROP USER ${options.ifExists ? 'IF EXISTS' : ''} "${username}"`;
-    return Model.base.q(sql);
+    return this.q(sql);
   }
 
   // data: {username: ... password: ... superuser: ... }
@@ -62,7 +62,7 @@ class User extends Model.base {
       sql += `ALTER USER "${data.username}" WITH NOSUPERUSER; `;
     }
 
-    return Model.base.q(sql);
+    return this.q(sql);
   }
 
   getGrants () {

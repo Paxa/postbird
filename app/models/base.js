@@ -1,5 +1,6 @@
 global.Model = {};
 
+
 global.Model.base = jClass.extend({
   className: 'Model.base',
 
@@ -60,7 +61,7 @@ class ModelBase {
   }
 
   connection() {
-    return this.connectionObj || ModelVanillaBase.connection();
+    return this.connectionObj || ModelBase.connection();
   }
 
   static connection() {
@@ -77,6 +78,8 @@ class ModelBase {
   }
 }
 
-ModelBase.extend = jClass.extend;
+//ModelBase.extend = jClass.extend;
 
 module.exports = ModelBase;
+
+global.ModelBase = ModelBase;
