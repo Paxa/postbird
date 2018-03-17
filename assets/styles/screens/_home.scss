@@ -135,16 +135,7 @@
     width: $sidebar-width;
 
     h4 {
-      font: {
-        size: 13px;
-        weight: bold;
-      }
-      color: #666;
-      padding: 7px;
-      text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
-      border-bottom: 1px dotted #abc;
-
-      @include system-text;
+      @include native-sidebar-title;
     }
 
     ul {

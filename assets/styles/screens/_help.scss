@@ -1,11 +1,8 @@
 .help-screen {
-  background: darken(#e5f1f8, 1%);
-  background: #e1eff7;
+  background: #fff;
   height: 100%;
   margin: 0;
-  padding: {
-    left: 173px;
-  };
+  padding-left: 223px;
   position: relative;
   overflow: hidden;
 
@@ -14,32 +11,26 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 150px;
-    padding: 10px 0;
-    background: rgba(50, 70, 90, 0.05);
+    width: 200px;
+    @include native-sidebar;
+
+    h4 {
+      @include native-sidebar-title;
+    }
 
     ul {
-      padding: 0 10px 0 15px;
+      @include native-items-list;
 
       li {
-        margin: 4px -5px;
-        padding: 1px 5px;
         cursor: pointer;
-
         @include system-text;
 
-        &:hover {
-          background: rgba(0, 70, 100, 0.1);
+        a {
+          display: block;
         }
 
-        &.current {
-          background: rgba(114, 160, 197, 0.15);
-          font-weight: bold;
-
-          a {
-            cursor: default;
-            text-decoration: none;
-          }
+        &.selected a {
+          color: white;
         }
       }
     }
@@ -106,7 +97,7 @@
         margin: 10px 0;
 
         img {
-          max-width: 50%;
+          max-width: 100px;
         }
       }
     }

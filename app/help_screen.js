@@ -1,8 +1,10 @@
-global.HelpScreen = jClass.extend({
-  type: "login_screen",
+class HelpScreen {
 
-  init: function () {
+  constructor () {
+    this.type = "login_screen";
+
     this.content = App.renderView('help');
+
     this.content.find(".sidebar a[page]").bind('click', (e) => {
       $u.stopEvent(e);
       var link = $u(e.target);
@@ -12,31 +14,39 @@ global.HelpScreen = jClass.extend({
     this.content.find('.page a.external').bind('click', (e) => {
       $u.stopEvent(e);
       var url = e.target.href;
-      eletron.shell.openExternal(url);
+      electron.remote.shell.openExternal(url);
     });
-  },
 
-  activatePage: function (pageName) {
+    new PgDumpRunner().version().then(version => {
+      this.content.find('.pg_dump_version').text(version);
+    });
+    new PsqlRunner().version().then(version => {
+      this.content.find('.psql_version').text(version);
+    });
+  }
+
+  activatePage (pageName) {
     this.content.find('.page').hide();
     this.content.find('.page.' + pageName).show();
 
-    this.content.find('.sidebar li.current').removeClass('current');
-    this.content.find('a[page="' + pageName + '"]').parent().addClass('current');
+    this.content.find('.sidebar li.selected').removeClass('selected');
+    this.content.find('a[page="' + pageName + '"]').parent().addClass('selected');
   }
 
-});
-
-HelpScreen.open = function (e) {
-  $u.stopEvent(e);
-  if (!App.helpScreenOpen()) {
-    App.addHelpScreen();
-  }
-
-  App.tabs.forEach((tab) => {
-    if (tab.instance === App.helpScreen) {
-      tab.activate();
+  static open (e) {
+    $u.stopEvent(e);
+    if (!App.helpScreenOpen()) {
+      App.addHelpScreen();
     }
-  });
 
-  return App.helpScreen;
-};
+    App.tabs.forEach((tab) => {
+      if (tab.instance === App.helpScreen) {
+        tab.activate();
+      }
+    });
+
+    return App.helpScreen;
+  }
+}
+
+global.HelpScreen = HelpScreen;

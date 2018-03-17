@@ -14,30 +14,8 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
 
 @mixin native-items-list {
   > li {
-    padding: 2px 8px 2px 35px;
+    padding: 2px 8px 2px 8px;
     position: relative;
-
-    &:before {
-      display: block;
-      content: "";
-      background: url("icons/table2.png") no-repeat;
-      background-size: 15px 15px;
-      width: 15px;
-      height: 15px;
-      left: 13px;
-      top: 4px;
-      position: absolute;
-    }
-
-    &[table-type=VIEW]:before, &[table-type="MATERIALIZED VIEW"]:before {
-      background-image: url("icons/db_view.png");
-      opacity: 0.8;
-    }
-
-    &[table-type="FOREIGN TABLE"]:before {
-      background-image: url("icons/foreign_table.png");
-      opacity: 0.8;
-    }
 
     //&:hover {
     //  background: rgba(#000, 0.1);
@@ -123,4 +101,15 @@ $mac-button-border-color: #c2c0c2 #c2c0c2 #a19fa1;
   border-radius: 5px;
   border: 1px solid #dfdfdf;
   border-top: 1px solid #d3d3d3;
+}
+
+@mixin native-sidebar-title() {
+  font-size: 13px;
+  font-weight: bold;
+  color: #666;
+  padding: 7px;
+  text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
+  border-bottom: 1px dotted #abc;
+
+  @include system-text;
 }

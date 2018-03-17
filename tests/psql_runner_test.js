@@ -7,7 +7,7 @@ describe('PsqlRunner', () => {
     it("should return absolute path to psql", (done) => {
       var runner = new PsqlRunner();
 
-      node.fs.exists(runner.psqlPath(), (exists) => {
+      node.fs.exists(runner.binaryPath(), (exists) => {
         assert.equal(exists, true);
         done();
       })

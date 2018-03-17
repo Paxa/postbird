@@ -1,5 +1,6 @@
 .help-screen
   .sidebar
+    h4 Help
     ul
       li
         a(page="about-postbird") About Postbird
@@ -15,10 +16,22 @@
       p.logo
         img(src="public/images/icon.png")
       p.
-        It's open source client for postgresql, written in JavaScript, run with Electron.
+        Postbird is PostgreSQL GUI client for macOS, written in JavaScript, runs with Electron.
       p
         = "Source code at "
         != link_to("github.com/paxa/postbird", "https://github.com/paxa/postbird", {class: "external"})
+
+      br
+      p
+        = `Postbird version: ${electron.remote.app.getVersion()}`
+        br
+        = `Electron version: ${process.versions.electron}`
+        br
+        = `Node version: ${process.versions.node}`
+        br
+        != `pg_dump version: <span class="pg_dump_version">...</span>`
+        br
+        != `psql version: <span class="psql_version">...</span>`
 
     .page.get-postgres
       h2 Get Postgres
@@ -26,9 +39,9 @@
       article
         h5 Postgres.app
         p
-          = "Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer."
-          = "Open the app, and you have a PostgreSQL server ready and awaiting new connections."
-          = "Close the app, and the server shuts down."
+          = "Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer. "
+          = "Open the app, and you have a PostgreSQL server ready and awaiting new connections. "
+          = "Close the app, and the server shuts down. "
         a.download.external(href="http://postgresapp.com/") Download
 
       article

@@ -198,7 +198,7 @@ var template = [
     role: 'help',
     submenu: [
       {
-        label: "Postbird help",
+        label: "Postbird Help",
         accelerator: 'CmdOrCtrl+Shift+/',
         click: () => {
           var help = global.HelpScreen.open();

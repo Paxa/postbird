@@ -380,24 +380,8 @@ input, textarea {
       user-select: none;
       cursor: default; }
     .home-screen .sidebar ul > li {
-      padding: 2px 8px 2px 35px;
+      padding: 2px 8px 2px 8px;
       position: relative; }
-      .home-screen .sidebar ul > li:before {
-        display: block;
-        content: "";
-        background: url("icons/table2.png") no-repeat;
-        background-size: 15px 15px;
-        width: 15px;
-        height: 15px;
-        left: 13px;
-        top: 4px;
-        position: absolute; }
-      .home-screen .sidebar ul > li[table-type=VIEW]:before, .home-screen .sidebar ul > li[table-type="MATERIALIZED VIEW"]:before {
-        background-image: url("icons/db_view.png");
-        opacity: 0.8; }
-      .home-screen .sidebar ul > li[table-type="FOREIGN TABLE"]:before {
-        background-image: url("icons/foreign_table.png");
-        opacity: 0.8; }
       .home-screen .sidebar ul > li.selected {
         background: #2c67d2;
         color: white; }
@@ -481,11 +465,10 @@ body.sidebar-resizing {
     user-select: none; }
 
 .help-screen {
-  background: #e1eff7;
-  background: #e1eff7;
+  background: #fff;
   height: 100%;
   margin: 0;
-  padding-left: 173px;
+  padding-left: 223px;
   position: relative;
   overflow: hidden; }
   .help-screen > .sidebar {
@@ -493,25 +476,32 @@ body.sidebar-resizing {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 150px;
-    padding: 10px 0;
-    background: rgba(50, 70, 90, 0.05); }
-    .help-screen > .sidebar ul {
-      padding: 0 10px 0 15px; }
-      .help-screen > .sidebar ul li {
-        margin: 4px -5px;
-        padding: 1px 5px;
-        cursor: pointer;
-        user-select: none;
-        cursor: default; }
-        .help-screen > .sidebar ul li:hover {
-          background: rgba(0, 70, 100, 0.1); }
-        .help-screen > .sidebar ul li.current {
-          background: rgba(114, 160, 197, 0.15);
-          font-weight: bold; }
-          .help-screen > .sidebar ul li.current a {
-            cursor: default;
-            text-decoration: none; }
+    width: 200px;
+    background: #f0f1ed;
+    border-right: 1px solid #dadbd7; }
+    .help-screen > .sidebar h4 {
+      font-size: 13px;
+      font-weight: bold;
+      color: #666;
+      padding: 7px;
+      text-shadow: rgba(255, 255, 255, 0.3) 0px 2px 2px;
+      border-bottom: 1px dotted #abc;
+      user-select: none;
+      cursor: default; }
+    .help-screen > .sidebar ul > li {
+      padding: 2px 8px 2px 8px;
+      position: relative; }
+      .help-screen > .sidebar ul > li.selected {
+        background: #2c67d2;
+        color: white; }
+    .help-screen > .sidebar ul li {
+      cursor: pointer;
+      user-select: none;
+      cursor: default; }
+      .help-screen > .sidebar ul li a {
+        display: block; }
+      .help-screen > .sidebar ul li.selected a {
+        color: white; }
   .help-screen > .content {
     padding: 10px 0 10px 0;
     box-sizing: border-box;
@@ -548,7 +538,7 @@ body.sidebar-resizing {
     .help-screen > .content .page.about-postbird .logo {
       margin: 10px 0; }
       .help-screen > .content .page.about-postbird .logo img {
-        max-width: 50%; }
+        max-width: 100px; }
 
 .main-screen > .sidebar {
   background: #f0f1ed;
@@ -645,8 +635,13 @@ body.sidebar-resizing {
         .main-screen > .sidebar > .tables > ul > li > ul {
           display: none; }
           .main-screen > .sidebar > .tables > ul > li > ul > li {
-            padding: 2px 8px 2px 35px;
+            padding: 2px 8px 2px 8px;
             position: relative; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
+              background: #2c67d2;
+              color: white; }
+          .main-screen > .sidebar > .tables > ul > li > ul > li {
+            padding-left: 35px; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
@@ -663,9 +658,6 @@ body.sidebar-resizing {
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="FOREIGN TABLE"]:before {
               background-image: url("icons/foreign_table.png");
               opacity: 0.8; }
-            .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
-              background: #2c67d2;
-              color: white; }
         .main-screen > .sidebar > .tables > ul > li.open > ul {
           display: block; }
   .main-screen > .sidebar > ul.extras {
@@ -1433,24 +1425,8 @@ body.new-window {
     vertical-align: top;
     overflow-y: auto; }
     .snippets-window > ul > li {
-      padding: 2px 8px 2px 35px;
+      padding: 2px 8px 2px 8px;
       position: relative; }
-      .snippets-window > ul > li:before {
-        display: block;
-        content: "";
-        background: url("icons/table2.png") no-repeat;
-        background-size: 15px 15px;
-        width: 15px;
-        height: 15px;
-        left: 13px;
-        top: 4px;
-        position: absolute; }
-      .snippets-window > ul > li[table-type=VIEW]:before, .snippets-window > ul > li[table-type="MATERIALIZED VIEW"]:before {
-        background-image: url("icons/db_view.png");
-        opacity: 0.8; }
-      .snippets-window > ul > li[table-type="FOREIGN TABLE"]:before {
-        background-image: url("icons/foreign_table.png");
-        opacity: 0.8; }
       .snippets-window > ul > li.selected {
         background: #2c67d2;
         color: white; }
