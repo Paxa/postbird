@@ -62,17 +62,17 @@ class Connection {
 
       var connectUser = options.user ? `${options.user}` : '';
       if (options.password) connectUser += `:${options.password}`;
-      var connectString = `postgres://${connectUser ? connectUser + '@' : ''}${options.host}:${options.port}/${options.database}`;
+      this.connectString = `postgres://${connectUser ? connectUser + '@' : ''}${options.host}:${options.port}/${options.database}`;
 
       if (options.query) {
-        connectString += "?" + options.query;
+        this.connectString += "?" + options.query;
       }
     } else {
-      connectString = options;
-      options = this.parseConnectionString(connectString);
+      this.connectString = options;
+      options = this.parseConnectionString(this.connectString);
     }
 
-    log.info('Connecting to', connectString);
+    log.info('Connecting to', this.connectString);
 
     if (this.connection) {
       this.connection.end();
@@ -81,7 +81,7 @@ class Connection {
 
     this.options = options;
 
-    this.connection = new pg.Client({connectionString: connectString});
+    this.connection = new pg.Client({connectionString: this.connectString});
 
     return new Promise((resolve, reject) => {
       this.connection.connect((error, b) => {
@@ -382,20 +382,52 @@ class Connection {
     }
   }
 
+  hasRunningQuery () {
+    if (this.connection.native) {
+      return !!this.connection._activeQuery;
+    } else {
+      return this.connection.activeQuery;
+    }
+  }
+
   stopRunningQuery() {
-    var query = this.connection._activeQuery;
-    if (query) {
-      try {
-        query.native.cancel((error) => {
-          if (this.logging) {
-            console.log('canceled', error);
-          }
-        });
-      } catch (e) {
-        console.error(e);
+    if (this.connection.native) {
+      var query = this.connection._activeQuery;
+      if (query) {
+        try {
+          query.native.cancel((error) => {
+            if (this.logging) {
+              console.log('canceled', error);
+            }
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        console.log('no running query');
       }
     } else {
-      console.log('no running query');
+      var query = this.connection.activeQuery;
+      if (query) {
+        var otherConn = new pg.Client({connectionString: this.connectString});
+        otherConn.connect((error, b) => {
+          if (error) {
+            console.log(error);
+            return;
+          }
+
+          console.log("Stopping query via sql. PID:", this.connection.processID);
+          var sql = `select pg_cancel_backend(${this.connection.processID})`;
+          otherConn.query(sql).then(res => {
+            otherConn.end();
+          }).catch(err => {
+            console.error(res);
+            otherConn.end();
+          });
+        });
+      } else {
+        console.log('no running query');
+      }
     }
   }
 }
