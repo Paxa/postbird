@@ -64,7 +64,7 @@ describe('Model.Table and Model.Schema', () => {
     var schema2 = await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table', {empty: true})
-    var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
+    await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
     await table1.remove()
 
