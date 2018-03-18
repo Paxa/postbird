@@ -162,7 +162,7 @@ var filterMatchers = (() => {
 
 class Content extends Pane {
 
-  renderTab(data, columnTypes, error) {
+  renderTab (data, columnTypes, error) {
     this.columnTypes = columnTypes;
     this.queryOptions = {
       with_oid: !!columnTypes.oid
@@ -183,13 +183,13 @@ class Content extends Pane {
 
     this.state = {};
 
-    this.handler.table.getTableType((tableType) => {
+    this.handler.table.getTableType().then(tableType => {
       this.currentTableType = tableType;
       this.renderData(data);
     });
   }
 
-  renderData(data) {
+  renderData (data) {
     if (this.error) {
       var errorMsg = $dom(['div.error',
         ['h4', "Error happen"],
@@ -254,25 +254,25 @@ class Content extends Pane {
 
   }
 
-  totals(callback) {
+  totals (callback) {
     if (this.totalRows) {
       callback(this.totalRows);
     } else {
-      this.handler.table.getTotalRows((count) => {
+      this.handler.table.getTotalRows().then(count => {
         this.totalRows = count;
         callback(count);
       });
     }
   }
 
-  nextPage() {
+  nextPage () {
     App.startLoading("Getting next page...", 100, {
       cancel() {
         App.stopRunningQuery();
       }
     });
     this.offset += this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions).then(data => {
       this.renderPage(data);
       this.scrollToTop();
       setTimeout(() => {
@@ -281,14 +281,14 @@ class Content extends Pane {
     });
   }
 
-  prevPage() {
+  prevPage () {
     App.startLoading("Getting previous page...", 100, {
       cancel() {
         App.stopRunningQuery();
       }
     });
     this.offset -= this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions, (data) => {
+    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions).then(data => {
       this.renderPage(data);
       this.scrollToTop();
       setTimeout(() => {
@@ -297,7 +297,7 @@ class Content extends Pane {
     });
   }
 
-  async reloadData() {
+  async reloadData () {
     this.content.addClass('reloading');
 
     App.startLoading("Reloading page...", 100, {
@@ -317,14 +317,14 @@ class Content extends Pane {
     }
   }
 
-  renderPage(data) {
+  renderPage (data) {
     this.limit = data.limit;
     this.offset = data.offset;
     this.dataRowsCount = data.rows.length;
     this.renderData(data);
   }
 
-  initSortable() {
+  initSortable () {
     var rotate = {
       '': 'asc',
       'asc': 'desc',
@@ -354,7 +354,7 @@ class Content extends Pane {
     });
   }
 
-  initContextMenu(event) {
+  initContextMenu (event) {
     var table = this.content.find('.rescol-content-wrapper table');
 
     // bind for delete button
@@ -402,24 +402,22 @@ class Content extends Pane {
     $u.contextMenu(table, contextMenuActions);
   }
 
-  deleteRow(row) {
+  async deleteRow (row) {
     if (this.currentTableType != 'BASE TABLE') {
       alert("Can't delete from " + this.currentTableType);
     }
     if (confirm("Are you sure want to delete this row?")) {
       var ctid = $u(row).attr('data-ctid');
-      this.handler.table.deleteRowByCtid(ctid, (result, error) => {
-        if (error) {
-          alert(error.message);
-        }
-        if (result) {
-          this.reloadData();
-        }
-      });
+      try {
+        var result = await this.handler.table.deleteRowByCtid(ctid);
+        this.reloadData();
+      } catch (error) {
+        $u.alert(error.message);
+      }
     }
   }
 
-  async editField(field) {
+  async editField (field) {
     var position = $u(field).prevAll('td').length;
     var ctid = $u(field).closest('tr').attr('data-ctid');
 
@@ -463,7 +461,7 @@ class Content extends Pane {
     });
   }
 
-  addRow() {
+  addRow () {
     var container = this.content.find('table tbody');
     var sortedColumns = Object.values(this.columnTypes).sort((a, b) => {
       return (a.ordinal_position > b.ordinal_position) ? 1 : (a.ordinal_position < b.ordinal_position) ? -1 : 0;
@@ -496,7 +494,7 @@ class Content extends Pane {
     });
   }
 
-  saveNewRow() {
+  async saveNewRow () {
     var data = {};
     this.newRowFields.find('input').each((i, el) => {
       var field = el.getAttribute('fieldname');
@@ -507,18 +505,16 @@ class Content extends Pane {
       }
     });
 
-    this.handler.table.insertRow(data, (result, error) => {
-      if (error) {
-        alert(error.message);
-      }
-      if (result) {
-        this.newRowFields.remove();
-        this.reloadData();
-      }
-    });
+    try {
+      await this.handler.table.insertRow(data);
+      this.newRowFields.remove();
+      this.reloadData();
+    } catch (error) {
+      $u.alert(error.message);
+    }
   }
 
-  cancelNewRow() {
+  cancelNewRow () {
     var nonEmptyValue = [];
     this.newRowFields.find('input').forEach((input) => {
       if (input.value && input.value !== '') {
@@ -534,7 +530,7 @@ class Content extends Pane {
     }
   }
 
-  initFilters() {
+  initFilters () {
     this.filterField =   this.content.find('[name=filter-field]');
     this.filterMatcher = this.content.find('[name=filter-matcher]');
     this.filterValue =   this.content.find('[name=filter-value]');
@@ -584,7 +580,7 @@ class Content extends Pane {
     });
   }
 
-  cancelFilters() {
+  cancelFilters () {
     this.filterValue.val("").trigger('change');
     if (this.state.filtered) {
       this.state.filtered = false;

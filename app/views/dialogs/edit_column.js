@@ -11,7 +11,7 @@ class EditColumn extends Dialog.NewColumn {
     Model.Column.availableTypes((types) => {
       this.addPseudoTypes(types);
       var groupedTypes = this.groupTypes(types);
-      this.handler.tableObj().getColumnObj(this.columnName, (column) => {
+      this.handler.tableObj().getColumnObj(this.columnName).then(column => {
         this.columnObj = column;
         var nodes = App.renderView('dialogs/column_form', {groupedTypes: groupedTypes, data: column.data, action: "edit"});
         this.content = this.renderWindow(this.title, nodes);

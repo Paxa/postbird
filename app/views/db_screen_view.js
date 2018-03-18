@@ -145,7 +145,7 @@ class DbScreenView {
         $u(tableNode).single_double_click((e) => {
           if (e.target.tagName == "INPUT") return;
           e.preventDefault();
-          this.handler.tableSelected(schema, table.table_name, tableNode);
+          this.handler.tableSelected(schema, table.table_name);
         }, (e) => {
           if (e.target.tagName == "INPUT") return;
           e.preventDefault();
@@ -162,7 +162,7 @@ class DbScreenView {
 
         var actions = {
           'View': () => {
-            this.handler.tableSelected(schema, table.table_name, tableNode);
+            this.handler.tableSelected(schema, table.table_name);
           },
           'separator1': 'separator',
           'Rename': () => {
@@ -204,7 +204,7 @@ class DbScreenView {
 
         $u.contextMenu(tableNode, actions);
         tableNode.addEventListener('contextmenu', (event) => {
-          this.handler.tableSelected(schema, table.table_name, tableNode);
+          this.handler.tableSelected(schema, table.table_name);
         });
 
         $u(schemaTree.list).append(tableNode);
@@ -217,6 +217,16 @@ class DbScreenView {
 
       this.tablesList.append(schemaTree[0]);
     });
+  }
+
+  setSelected (schema, relation) {
+    var node = this.sidebar.find(`[schema-name='${schema}'] [table-name='${relation}']`);
+
+    if (this.currentTableNode) {
+      this.currentTableNode.removeClass('selected');
+    }
+    this.currentTableNode = node;
+    this.currentTableNode.addClass('selected');
   }
 
   reloadStructure () {

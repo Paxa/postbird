@@ -5,10 +5,14 @@ function sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+
 describe('application launch', function () {
   this.timeout(10000)
 
-  var app, client;
+  var app, client, execSql;
 
   before(() => {
     app = new Application({
@@ -19,32 +23,55 @@ describe('application launch', function () {
 
     return app.start().then((result) => {
       client = app.client;
-      app.client.getMainProcessLogs().then(logs => {
+      client.getMainProcessLogs().then(logs => {
         logs.forEach(log => {
           console.log(log)
         })
       })
 
-      app.client.getRenderProcessLogs().then(logs => {
+      client.getRenderProcessLogs().then(logs => {
         logs.forEach(log => {
           console.log(`${log.level} ${log.message} -> ${log.source}`);
         })
       })
 
-      return client.execute(() => {
-        try {
-          var connection = Connection.instances[0];
-          return connection.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;").then(() => {
-            return App.tabs[0].instance.fetchTablesAndSchemas();
-          })
-        } catch (error) {
+      execSql = (sql) => {
+        return client.execute((sql) => {
+          try {
+            var connection = Connection.instances[0];
+            return connection.query(sql).then(() => {
+              return App.tabs[0].instance.fetchTablesAndSchemas();
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }, sql).then(() => {
+          return Promise.resolve(result)
+        }).catch(error => {
           console.error(error);
+        });
+      }
+
+      client.waitValueEq = async (selector, value, ms = 1000, debug = false) => {
+        while (true) {
+          var value = await client.getValue(selector);
+          if (debug) {
+            console.log("waitValueEq", selector, value);
+          }
+          if (value == value) break;
+          await sleep(ms);
         }
-      }).then(() => {
-        return Promise.resolve(result)
-      }).catch(error => {
-        console.error(error);
+      }
+
+      /*
+      client.execute(() => {
+        process.on('unhandledRejection', (reason, p) => {
+          console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+        });
       });
+      */
+
+      execSql("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
     })
   })
 
@@ -60,6 +87,35 @@ describe('application launch', function () {
 
     var count = await client.getWindowCount();
     assert.equal(count, 1);
+  })
+
+  it('should create and delete database', async () => {
+    await execSql("DROP DATABASE IF EXISTS int_testing;");
+
+    await client.waitForValue('.sidebar .databases select', 5000);
+
+    await client.execute(() => {
+      var menu = electron.remote.Menu.getApplicationMenu();
+      menu.getItemByNames('Database', 'Create Database').click();
+    });
+
+    await client.waitForVisible('.alertify-dialog input[name="dbname"]', 10000);
+
+    await client.setValue('.alertify-dialog input[name="dbname"]', 'int_testing');
+
+    await client.click('.alertify-dialog button.ok');
+
+    client.waitValueEq('.sidebar .databases select', "int_testing");
+
+    // This will open dialog and block all window
+    /*
+    await client.execute(() => {
+      var menu = electron.remote.Menu.getApplicationMenu();
+      menu.getItemByNames('Database', 'Drop Database').click();
+    });
+
+    client.waitValueEq('.sidebar .databases select', "", 1000, true);
+    */
   })
 
   it('should create new table dialog', async () => {

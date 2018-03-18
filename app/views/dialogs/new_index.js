@@ -8,7 +8,7 @@ class NewIndex extends Dialog {
   }
 
   showWindow () {
-    this.handler.tableObj().getColumns((columns) => {
+    this.handler.tableObj().getColumns().then(columns => {
       var nodes = App.renderView('dialogs/index_form', {columns: columns});
       this.content = this.renderWindow(this.title, nodes);
       this.bindFormSubmitting();

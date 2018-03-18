@@ -27,8 +27,13 @@ class NewTable extends Dialog {
     });
   }
 
-  onSubmit (data) {
-    this.handler.createTable(data, this.defaultServerResponse.bind(this));
+  async onSubmit (data) {
+    try {
+      var data = await this.handler.createTable(data);
+      this.defaultServerResponse(data);
+    } catch (error) {
+      this.defaultServerResponse(null, error);
+    }
   }
 }
 

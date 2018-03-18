@@ -111,7 +111,7 @@ class DbScreen {
     });
   }
 
-  tableSelected (schema, tableName, node, showTab) {
+  tableSelected (schema, tableName, showTab) {
     if (this.currentSchema == schema && this.currentTable == tableName) {
       return;
     }
@@ -120,11 +120,9 @@ class DbScreen {
 
     App.emit('table.changed', this.currentSchema, this.currentTable);
 
-    this.table = Model.Table(this.currentSchema, this.currentTable);
+    this.table = new Model.Table(this.currentSchema, this.currentTable);
 
-    if (this.currentTableNode) this.currentTableNode.removeClass('selected');
-    this.currentTableNode = $u(node);
-    this.currentTableNode.addClass('selected');
+    this.view.setSelected(schema, tableName);
 
     if (showTab) {
       this.view.showTab(showTab);
@@ -174,7 +172,7 @@ class DbScreen {
     });
   }
 
-  contentTabActivate () {
+  async contentTabActivate () {
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
@@ -185,7 +183,9 @@ class DbScreen {
         App.stopRunningQuery();
       }
     });
-    this.table.getColumnTypes((columnTypes, error2) => {
+
+    try {
+      var columnTypes = await this.table.getColumnTypes();
       var hasOid = !!columnTypes.oid;
       var extraColumns = [];
       Object.forEach(columnTypes, (key, col) => {
@@ -193,12 +193,15 @@ class DbScreen {
           extraColumns.push(`ST_AsText(${key}) as ${key}`);
         }
       });
-      this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns}, (data, error) => {
-        App.stopLoading();
-        this.view.contentPane.renderTab(data, columnTypes, error || error2);
-        this.currentTab = 'content';
-      });
-    });
+      var data = await this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns});
+      this.view.contentPane.renderTab(data, columnTypes);
+      this.currentTab = 'content';
+    } catch (error) {
+      this.view.contentPane.renderTab(null, null, error);
+      this.currentTab = 'content';
+    } finally {
+      App.stopLoading();
+    }
   }
 
   queryTabActivate () {
@@ -306,20 +309,19 @@ class DbScreen {
     App.stopLoading();
   }
 
-  createTable (data, callback) {
+  async createTable (data, callback) {
     App.startLoading(`Creating table table ${data.name}`);
-    Model.Table.create(data.tablespace, data.name, (table, res, error) => {
+    try {
+      var table = await Model.Table.create(data.tablespace, data.name);
+      this.omit('table.created');
+      this.fetchTablesAndSchemas(tables => {
+        this.tableSelected(data.tablespace, data.name, 'structure');
+      });
+    } catch (error) {
+      
+    } finally {
       App.stopLoading();
-      if (!error) {
-        this.omit('table.created');
-        this.fetchTablesAndSchemas((tables) => {
-          var tableElement = this.view.sidebar.find('[schema-name=' + data.tablespace + '] ' +
-                                                      '[table-name=' + data.name + ']')[0];
-          this.tableSelected(data.tablespace, data.name, tableElement, 'structure');
-        });
-      }
-      callback(res, error);
-    });
+    }
   }
 
   _relationTitle (type) {
@@ -511,7 +513,7 @@ class DbScreen {
   }
 
   getTableSql (schema, table, callback) {
-    Model.Table(schema, table).getSourceSql((source) => {
+    new Model.Table(schema, table).getSourceSql((source) => {
       callback(source);
     });
   }
@@ -528,16 +530,24 @@ class DbScreen {
 
     App.startLoading("Getting table info...");
     table.getSourceSql((code, dumpError) => {
-      table.diskSummary((relType, estimateCount, diskUsage, error) => {
+      table.diskSummary().then(result => {
         if (dumpError) {
           //window.alert("Running pg_dump failed:\n" + dumpError);
           //global.errorReporter(dumpError, false);
         }
-        if (error) {
-          global.errorReporter(error, false);
-        }
+        this.view.infoPane.renderTab(
+          {source: code, error: dumpError},
+          result.type, result.estimateCount, result.diskUsage
+        );
         App.stopLoading();
-        this.view.infoPane.renderTab({source: code, error: dumpError}, relType, estimateCount, diskUsage);
+        this.currentTab = 'info';
+      }).catch(error => {
+        global.errorReporter(error, false);
+        this.view.infoPane.renderTab(
+          {source: code, error: dumpError},
+          'error getting talbe info', '', ''
+        );
+        App.stopLoading();
         this.currentTab = 'info';
       });
     });
@@ -545,7 +555,7 @@ class DbScreen {
 
   // TODO: add caching
   tableObj () {
-    return Model.Table(this.currentSchema, this.currentTable);
+    return new Model.Table(this.currentSchema, this.currentTable);
   }
 
   switchToHerokuMode (appName, dbUrl) {
@@ -570,7 +580,7 @@ class DbScreen {
 
   truncateTable (schema, table, cascade, callback) {
     App.startLoading(`Truncating ${table}`);
-    Model.Table(schema, table).truncate(cascade, (result, error) => {
+    new Model.Table(schema, table).truncate(cascade, (result, error) => {
       App.stopLoading();
       callback(result, error);
     });

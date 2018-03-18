@@ -1,34 +1,60 @@
 var SqlExporter = require('../../lib/sql_exporter');
 var pgEscape = require('pg-escape');
 
-var Table = global.Model.Table = Model.base.extend({
+var TABLE_TYPES = {
+  VIEW: 'VIEW',
+  TABLE: 'BASE TABLE',
+  MAT_VIEW: 'MATERIALIZED VIEW',
+  FOREIGN_TABLE: 'FOREIGN TABLE'
+};
 
-  tableType: null,
-  types: {
-    VIEW: 'VIEW',
-    TABLE: 'BASE TABLE',
-    MAT_VIEW: 'MATERIALIZED VIEW',
-    FOREIGN_TABLE: 'FOREIGN TABLE'
-  },
 
-  init: function (schema, tableName, tableType) {
+class Table extends ModelBase {
+
+  static create (schema, tableName, options) {
+
+    if (typeof options == 'function' && callback == undefined) {
+      callback = options;
+      options = {};
+    }
+
+    if (options == undefined) {
+      options = {};
+    }
+
+    var columns = "()";
+    if (!options.empty) {
+      columns = "(id SERIAL PRIMARY KEY)";
+    }
+
+    var schemaSql = schema && schema != '' ? `"${schema}".` : '';
+    var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
+
+    return Model.base.q(sql).then(res => {
+      return Promise.resolve(new Model.Table(schema, tableName));
+    }).catch((error) => {
+      return Promise.reject((error));
+    });
+  }
+
+  constructor (schema, tableName, tableType) {
+    super();
+    this.tableType = tableType || null;
+
     this.schema = schema;
     this.table = tableName;
-    if (tableType) {
-      this.tableType = tableType;
-    }
-  },
+  }
 
-  rename: function (newName, callback) {
+  rename (newName) {
     return this.getTableType().then(tableType => {
       var sql;
-      if (tableType == this.types.VIEW) {
+      if (tableType == TABLE_TYPES.VIEW) {
         sql = `ALTER VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
-      } else if (tableType == this.types.MAT_VIEW) {
+      } else if (tableType == TABLE_TYPES.MAT_VIEW) {
         sql = `ALTER MATERIALIZED VIEW ${this.sqlTable()} RENAME TO "${newName}"`;
-      } else if (tableType == this.types.FOREIGN_TABLE) {
+      } else if (tableType == TABLE_TYPES.FOREIGN_TABLE) {
         sql = `ALTER FOREIGN TABLE ${this.sqlTable()} RENAME TO "${newName}"`;
-      } else if (tableType == this.types.TABLE) {
+      } else if (tableType == TABLE_TYPES.TABLE) {
         sql = `ALTER TABLE ${this.sqlTable()} RENAME TO "${newName}"`;
       } else {
         throw new Error(`Can not rename ${tableType} (not supported or not implemented)`);
@@ -39,70 +65,51 @@ var Table = global.Model.Table = Model.base.extend({
         return Promise.resolve(res);
       });
     });
-  },
+  }
 
-  remove: function(callback) {
+  remove () {
     return this.getTableType().then(tableType => {
 
-      if (tableType == this.types.VIEW) {
-        return this.removeView(callback);
-      } else if (tableType == this.types.MAT_VIEW) {
-        return this.removeMatView(callback);
-      } else if (tableType == this.types.FOREIGN_TABLE) {
-        return this.removeFereignTable(callback);
+      if (tableType == TABLE_TYPES.VIEW) {
+        return this.removeView();
+      } else if (tableType == TABLE_TYPES.MAT_VIEW) {
+        return this.removeMatView();
+      } else if (tableType == TABLE_TYPES.FOREIGN_TABLE) {
+        return this.removeFereignTable();
       } else {
-        return this.q(`DROP TABLE ${this.sqlTable()}`, callback);
+        return this.q(`DROP TABLE ${this.sqlTable()}`);
       }
     });
-  },
+  }
 
-  drop: function (callback) {
-    return this.remove(callback);
-  },
+  drop () {
+    return this.remove();
+  }
 
-  removeView: function (callback) {
+  removeView () {
     var sql = `DROP VIEW ${this.sqlTable()}`;
-    return this.q(sql, (result, error) => {
-      callback && callback(error ? false : true, error);
-    });
-  },
+    return this.q(sql);
+  }
 
-  removeMatView: function (callback) {
+  removeMatView () {
     var sql = `DROP MATERIALIZED VIEW ${this.sqlTable()}`;
-    return this.q(sql, (result, error) => {
-      callback && callback(error ? false : true, error);
-    });
-  },
+    return this.q(sql);
+  }
 
-  removeFereignTable: function (callback) {
-    return this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`, (result, error) => {
-      callback && callback(error ? false : true, error);
-    });
-  },
+  removeFereignTable () {
+    return this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`);
+  }
 
-  isMatView: function (callback) {
-    return new Promise((resolve, reject) => {
-      this.getTableType((tableType, error) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(tableType == "MATERIALIZED VIEW");
-        }
-        callback && callback(tableType == "MATERIALIZED VIEW", error);
-      });
-    });
-  },
+  async isMatView () {
+    return (await this.getTableType()) == "MATERIALIZED VIEW";
+  }
 
-  isView: function (callback) {
-    return this.getTableType().then(tableType => {
-      callback && callback(tableType == "VIEW");
-      return Promise.resolve(tableType == "VIEW");
-    });
-  },
+  async isView () {
+    return (await this.getTableType()) == "VIEW";
+  }
 
-  getTableType: function (callback) {
+  async getTableType () {
     if (this.tableType !== undefined && this.tableType !== null) {
-      callback && callback(this.tableType);
       return Promise.resolve(this.tableType);
     }
 
@@ -124,32 +131,22 @@ var Table = global.Model.Table = Model.base.extend({
       `
     }
 
-    return new Promise((resolve, reject) => {
-      this.q(sql, (data, error) => {
-        if (error) {
-          console.log('ERROR', error);
-          callback && callback(this.tableType, error);
-          reject(error);
-          return;
-        }
-        this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
-        callback && callback(this.tableType);
-        resolve(this.tableType);
-      });
-    });
-  },
+    var data = await this.q(sql);
+    this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
+    return this.tableType;
+  }
 
-  getStructure: function (callback) {
+  getStructure () {
     return this.isMatView().then(isMatView => {
       if (isMatView) {
-        return this._getMatViewStructure(callback);
+        return this._getMatViewStructure();
       } else {
-        return this._getTableStructure(callback);
+        return this._getTableStructure();
       }
     });
-  },
+  }
 
-  _getTableStructure: function (callback) {
+  async _getTableStructure () {
     var sql = `
       SELECT
         a.attname as column_name,
@@ -173,88 +170,65 @@ var Table = global.Model.Table = Model.base.extend({
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
     `;
-    return new Promise((resolve, reject) => {
-      this.q(sql, (data, error) => {
-        if (error) {
-          callback(data && data.rows, error);
-          return;
-        }
-        this.hasOID((hasOID) => {
-          if (hasOID) {
-            data.rows.unshift({
-              column_name: "oid",
-              data_type: "oid",
-              column_default: null,
-              udt_name: "oid"
-            });
-          }
-          this.getPrimaryKey((rows, error) => {
-            if (error) {
-              reject(error);
-            } else {
-              var keys = rows.map((r) => {
-                return r.attname;
-              });
 
-              data.rows.forEach((row) => {
-                row.is_primary_key = keys.indexOf(row.column_name) != -1;
-              });
-            }
-            resolve(data.rows);
-            callback && callback(data.rows);
-          });
-        });
+    var data = await this.q(sql);
+    var hasOID = await this.hasOID();
+
+    if (hasOID) {
+      data.rows.unshift({
+        column_name: "oid",
+        data_type: "oid",
+        column_default: null,
+        udt_name: "oid"
       });
-    });
-  },
+    }
 
-  _getMatViewStructure: function (callback) {
+    var rows = await this.getPrimaryKey();
+    var keys = rows.map((r) => {
+      return r.attname;
+    });
+
+    data.rows.forEach((row) => {
+      row.is_primary_key = keys.indexOf(row.column_name) != -1;
+    });
+
+    return data.rows;
+  }
+
+  async _getMatViewStructure () {
     var sql = `select attname as column_name, typname as udt_name, attnotnull, typdefault as column_default
                from pg_attribute a
                join pg_class c on a.attrelid = c.oid
                join pg_type t on a.atttypid = t.oid
-               where relname = '%s' and attnum >= 1;`;
+               where relname = '${this.table}' and attnum >= 1;`;
 
-    return new Promise((resolve, reject) => {
-      this.q(sql, this.table, (data, error) => {
-        if (data && data.rows) {
-          data.rows.forEach((row) => {
-            row.is_nullable = row.attnotnull ? "NO" : "YES";
-          });
-          resolve(data.rows);
-          callback && callback(data.rows);
-        } else {
-          if (error) reject(error);
-          callback(null, error);
-        }
-      });
+    var data = await this.q(sql);
+
+    data.rows.forEach((row) => {
+      row.is_nullable = row.attnotnull ? "NO" : "YES";
     });
-  },
 
-  hasOID: function (callback) {
+    return data.rows;
+  }
+
+  async hasOID () {
     //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
     var sql = `SELECT relhasoids FROM pg_catalog.pg_class, pg_catalog.pg_namespace n
       WHERE n.oid = pg_class.relnamespace AND nspname = '${this.schema}' AND relname = '${this.table}'`
-    this.q(sql, (data, error) => {
-      if (error) {
-        callback(undefined, error);
-      } else {
-        callback(data && data.rows[0] && data.rows[0].relhasoids);
-      }
-    });
-  },
 
-  getColumnTypes: function (callback) {
-    this.isMatView((isMatView) => {
-      if (isMatView) {
-        this._matview_getColumnTypes(callback);
-      } else {
-        this._table_getColumnTypes(callback);
-      }
-    });
-  },
+    var data = await this.q(sql);
+    return data && data.rows[0] && data.rows[0].relhasoids;
+  }
 
-  _table_getColumnTypes: function (callback) {
+  async getColumnTypes () {
+    if (await this.isMatView()) {
+      return this._matview_getColumnTypes();
+    } else {
+      return this._table_getColumnTypes();
+    }
+  }
+
+  async _table_getColumnTypes () {
     var sql = `
       SELECT
         a.attname as column_name,
@@ -279,82 +253,68 @@ var Table = global.Model.Table = Model.base.extend({
       select * from information_schema.columns
       where table_schema = '${this.schema}' and table_name = '${this.table}';
     `;
-    this.q(sql, (data, error) => {
-      this.hasOID((hasOID) => {
-        var types = {};
-        if (hasOID) {
-          types["oid"] = {
-            column_name: "oid",
-            data_type: "oid",
-            column_default: null,
-            udt_name: "oid"
-          };
-        }
-        if (data.rows) {
-          data.rows.forEach((row) => {
-            types[row.column_name] = row;
-            types[row.column_name].real_format = row.udt_name;
-          });
-        }
-        callback(types, error);
-      })
-    });
-  },
 
-  _matview_getColumnTypes: function (callback) {
-    this._getMatViewStructure((columns) => {
-      var types = {};
-      columns.forEach((row) => {
+    var data = await this.q(sql)
+    var types = {};
+    if (await this.hasOID()) {
+      types["oid"] = {
+        column_name: "oid",
+        data_type: "oid",
+        column_default: null,
+        udt_name: "oid"
+      };
+    }
+
+    if (data.rows) {
+      data.rows.forEach((row) => {
         types[row.column_name] = row;
         types[row.column_name].real_format = row.udt_name;
       });
-      callback(types);
-    });
-  },
-
-  getColumns: function (name, callback) {
-    if (callback == undefined && typeof name == 'function') {
-      callback = name;
-      name = undefined;
     }
 
-    return this.isMatView().then(isMatView => {
-      if (isMatView) {
-        return this._matview_getColumns(callback);
-      } else {
-        return this._table_getColumns(name, callback);
-      }
+    return types;
+  }
+
+  async _matview_getColumnTypes () {
+    var columns = await this._getMatViewStructure();
+    var types = {};
+    columns.forEach((row) => {
+      types[row.column_name] = row;
+      types[row.column_name].real_format = row.udt_name;
     });
-  },
+    return types;
+  }
 
-  _table_getColumns: function (name, callback) {
-    if (callback == undefined && typeof name == 'function') {
-      callback = name;
-      name = undefined;
+  async getColumns (name) {
+    if (await this.isMatView()) {
+      return this._matview_getColumns();
+    } else {
+      return this._table_getColumns(name);
     }
+  }
 
+  _table_getColumns (name) {
     var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;";
     var cond = name ? " and column_name = '" + name + "'" : '';
+
     return this.q(sql, this.schema, this.table, cond).then(rows => {
-      callback && callback(rows.rows);
       return Promise.resolve(rows.rows);
     });
-  },
+  }
 
-  _matview_getColumns: function (callback) {
-    return this._getMatViewStructure(callback);
-  },
+  _matview_getColumns () {
+    return this._getMatViewStructure();
+  }
 
   // For tests only
-  getColumnNames: function (callback) {
+  getColumnNames () {
     return this.getColumns().then(rows => {
       var names = rows.map(c => { return c.column_name; });
-      callback && callback(names);
       return Promise.resolve(names);
     });
-  },
+  }
 
-  getPrimaryKey: function (callback) {
+  getPrimaryKey () {
     var sql = `SELECT pg_attribute.attname
       FROM pg_index, pg_class, pg_attribute
       WHERE
@@ -364,104 +324,81 @@ var Table = global.Model.Table = Model.base.extend({
         pg_attribute.attnum = any(pg_index.indkey)
         AND indisprimary;`;
 
-    return new Promise((resolve, reject) => {
-      this.q(sql, (data, error) => {
-        callback && callback((data || {}).rows, error);
-        error ? reject(error) : resolve(data.rows);
-      });
+    return this.q(sql).then(data => {
+      return Promise.resolve(data.rows);
     });
-  },
+  }
 
-  getColumnObj: function (name, callback) {
+  getColumnObj (name) {
     return this.getColumns(name).then(data => {
       var row = new Model.Column(data[0].column_name, data[0]);
       row.table = this;
-      callback && callback(row);
       return Promise.resolve(row);
     });
-  },
+  }
 
-  addColumnObj: function (column) {
+  addColumnObj (column) {
     column.table = this;
     return column.create();
-  },
+  }
 
-  getRows: function (offset, limit, options, callback) {
+  async getRows (offset, limit, options) {
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
 
-    return new Promise((resolve, reject) => {
-      this.isView((isView) => {
-        var sysColumns = [];
-        if (options.with_oid) sysColumns.push('oid');
-        if (!isView) sysColumns.push('ctid');
+    var sysColumns = [];
+    if (options.with_oid) sysColumns.push('oid');
+    if (!await this.isView()) sysColumns.push('ctid');
 
-        //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
-        var selectColumns = sysColumns.concat(['*']);
-        if (options.extraColumns) {
-          selectColumns = selectColumns.concat(options.extraColumns);
-        }
+    //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
+    var selectColumns = sysColumns.concat(['*']);
+    if (options.extraColumns) {
+      selectColumns = selectColumns.concat(options.extraColumns);
+    }
 
-        var orderSql = "";
-        if (options.sortColumn) {
-          var direction = options.sortDirection || 'asc';
-          orderSql = ` order by "${options.sortColumn}" ${direction}`;
-        }
+    var orderSql = "";
+    if (options.sortColumn) {
+      var direction = options.sortDirection || 'asc';
+      orderSql = ` ORDER BY "${options.sortColumn}" ${direction}`;
+    }
 
-        var condition = "";
-        if (options.conditions) {
-          condition = `where ${options.conditions.join(" and ")}`;
-        }
+    var condition = "";
+    if (options.conditions) {
+      condition = `WHERE ${options.conditions.join(" AND ")}`;
+    }
 
-        var sql = `select ${selectColumns.join(', ')} from ${this.sqlTable()} ${condition} ${orderSql} limit ${limit} offset ${offset}`;
+    var sql = `SELECT ${selectColumns.join(', ')} FROM ${this.sqlTable()} ${condition} ${orderSql} LIMIT ${limit} OFFSET ${offset}`;
 
-        return this.q(sql, (data, error) => {
-          if (data) {
-            data.limit = limit;
-            data.offset = offset;
-          }
-          // remove columns if we selected extra columns
-          if (data && options.extraColumns) {
-            data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
-          }
-          callback && callback(data, error);
-          error ? reject(error) : resolve(data);
-        });
-      });
+    return this.q(sql).then(data => {
+      if (data) {
+        data.limit = limit;
+        data.offset = offset;
+      }
+      // remove columns if we selected extra columns
+      if (data && options.extraColumns) {
+        data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
+      }
+      return Promise.resolve(data);
     });
-  },
+  }
 
-  getTotalRows: function (callback) {
-    var sql = `select count(*) as rows_count from ${this.sqlTable()}`;
+  async getTotalRows () {
+    var sql = `SELECT count(*) AS rows_count FROM ${this.sqlTable()}`;
+    var data = await this.q(sql);
+    return parseInt(data.rows[0].rows_count, 10);
+  }
 
-    return new Promise((resolve, reject) => {
-      this.q(sql, (data, error) => {
-        if (error) {
-          log.error(error);
-          reject(error);
-          callback && callback(null, error);
-          return;
-        }
-        var count = parseInt(data.rows[0].rows_count, 10);
-        callback && callback(count);//: console.log("Table rows count: " + this.table + " " + count);
-        resolve(count);
-      });
-    });
-  },
-
-  getTotalRowsEstimate: function (callback) {
+  // unused
+  async getTotalRowsEstimate () {
     var sql = `SELECT reltuples::bigint AS estimate
       FROM   pg_class
       WHERE  oid = '${this.sqlTable()}'::regclass`
 
-    this.q(sql, (res) => {
-      var row = res.rows[0];
-      callback(row.estimate);
-    });
-  },
+    return (await this.q(sql)).rows[0].estimate;
+  }
 
-  insertRow: function (values, callback) {
+  insertRow (values) {
     if (Array.isArray(values)) {
       var sql = `INSERT INTO ${this.sqlTable()} VALUES (%s)`;
 
@@ -469,32 +406,26 @@ var Table = global.Model.Table = Model.base.extend({
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      return this.q(sql, safeValues, (data, error) => {
-        callback && callback(data, error);
-      });
+      return this.q(sql, safeValues);
     } else {
       var columns = Object.keys(values).map(col => {
         return `"${col}"`;
       });
       var sql = `insert into ${this.sqlTable()} (${columns.join(", ")}) values (%s)`;
-      var safeValues = Object.values(values).map((val) => {
+      var safeValues = Object.values(values).map(val => {
         return "'" + val.toString() + "'";
       }).join(", ");
 
-      return this.q(sql, safeValues, (data, error) => {
-        callback && callback(data, error);
-      });
+      return this.q(sql, safeValues);
     }
-  },
+  }
 
-  deleteRowByCtid: function (ctid, callback) {
-    var sql = `delete from ${this.sqlTable()} where ctid='${ctid}'`;
-    return this.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
-  },
+  deleteRowByCtid (ctid) {
+    var sql = `DELETE FROM ${this.sqlTable()} WHERE ctid='${ctid}'`;
+    return this.q(sql);
+  }
 
-  getSourceSql: function (callback) {
+  getSourceSql (callback) {
     var exporter = new SqlExporter({debug: true});
     // TODO: include schema
     exporter.addArgument('--table=' + this.sqlTable());
@@ -517,7 +448,7 @@ var Table = global.Model.Table = Model.base.extend({
 
         // some views craeted by extensions can't be dumped
         if (stdout.length == 0) {
-          this.getTableType((tableType) => {
+          this.getTableType().then(tableType => {
 
             if (tableType == 'VIEW') {
               this.q(`select pg_get_viewdef('${this.schema}.${this.table}', true);`, (defFesult, error) => {
@@ -536,9 +467,9 @@ var Table = global.Model.Table = Model.base.extend({
         }
       });
     });
-  },
+  }
 
-  diskSummary: function (callback) {
+  async diskSummary () {
     var sql = `
       select
         pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size",
@@ -547,41 +478,49 @@ var Table = global.Model.Table = Model.base.extend({
       FROM pg_class C
       LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
       WHERE
-        nspname = '%s' and
-        relname = '%s'
+        nspname = '${this.schema}' AND relname = '${this.table}'
     `;
 
-    this.q(sql, this.schema, this.table, (result, error) => {
+    /*
       if (!result) {
         callback("error getting talbe info", '', '', error);
         return;
       }
-      var row = result.rows[0];
-      var type = row.relkind;
-      // TODO: dry
-      // http://www.postgresql.org/docs/9.4/static/catalog-pg-class.html
-      switch (row.relkind) {
-        case "r": type = "table"; break;
-        case "i": type = "index"; break;
-        case "s": type = "sequence"; break;
-        case "v": type = "view"; break;
-        case "m": type = "materialized view"; break;
-        case "c": type = "composite type"; break;
-        case "t": type = "TOAST table"; break;
-        case "f": type = "foreign table"; break;
-      }
-      callback(type, row.estimate_count, row.total_size);
-    });
-  },
+    */
 
-  truncate(cascade, callback) {
+    var result = await this.q(sql);
+
+    var row = result.rows[0];
+    var type = row.relkind;
+    // TODO: dry
+    // https://www.postgresql.org/docs/10/static/catalog-pg-class.html
+    switch (row.relkind) {
+      case "r": type = "table"; break;
+      case "i": type = "index"; break;
+      case "s": type = "sequence"; break;
+      case "v": type = "view"; break;
+      case "m": type = "materialized view"; break;
+      case "c": type = "composite type"; break;
+      case "t": type = "TOAST table"; break;
+      case "f": type = "foreign table"; break;
+      case "p": type = "partitioned table"; break;
+    }
+
+    return {
+      type: type,
+      estimateCount: row.estimate_count,
+      diskUsage: row.total_size
+    };
+  }
+
+  truncate (cascade, callback) {
     var sql = `truncate table ${this.sqlTable()} ${cascade ? "CASCADE" : ""};`;
     return this.q(sql, (data, error) => {
       callback && callback(data, error);
     });
-  },
+  }
 
-  getConstraints(callback) {
+  getConstraints (callback) {
     var sql = `
       SELECT *, pg_get_constraintdef(oid, true) as pretty_source
       FROM pg_constraint WHERE conrelid = '${this.sqlTable()}'::regclass
@@ -589,24 +528,24 @@ var Table = global.Model.Table = Model.base.extend({
     return this.q(sql, (data, error) => {
       callback && callback(data, error);
     });
-  },
+  }
 
-  dropConstraint(constraintName, callback) {
+  dropConstraint (constraintName, callback) {
     var sql = `ALTER TABLE ${this.sqlTable()} DROP CONSTRAINT ${constraintName};`;
     this.q(sql, (data, error) => {
       callback(data, error);
     });
-  },
+  }
 
-  sqlTable() {
+  sqlTable () {
     return `"${this.schema}"."${this.table}"`;
-  },
+  }
 
-  refreshMatView() {
+  refreshMatView () {
     return this.q(`REFRESH MATERIALIZED VIEW ${this.sqlTable()}`);
-  },
+  }
 
-  updateValue(ctid, field, value, isNull) {
+  updateValue (ctid, field, value, isNull) {
     var sql;
     if (isNull) {
       sql = `UPDATE ${this.sqlTable()} SET "${field}" = NULL WHERE ctid = '${ctid}';`;
@@ -616,36 +555,8 @@ var Table = global.Model.Table = Model.base.extend({
 
     return this.q(sql);
   }
-});
+}
 
-Model.Table.create = function create (schema, tableName, options, callback) {
-
-  if (typeof options == 'function' && callback == undefined) {
-    callback = options;
-    options = {};
-  }
-
-  if (options == undefined) {
-    options = {};
-  }
-
-  var columns = "()";
-  if (!options.empty) {
-    columns = "(id SERIAL PRIMARY KEY)";
-  }
-
-  var schemaSql = schema && schema != '' ? `"${schema}".` : '';
-  var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
-
-  return Model.base.q(sql).then(res => {
-    callback && callback(new Model.Table(schema, tableName), res);
-    return Promise.resolve(new Model.Table(schema, tableName));
-  }).catch((error) => {
-    callback && callback(new Model.Table(schema, tableName), null, error);
-    return Promise.reject((error));
-  });
-};
-
-Model.Table.types = Model.Table.prototype.types;
+Table.types = TABLE_TYPES;
 
 module.exports = Table;
