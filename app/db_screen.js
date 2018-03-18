@@ -312,7 +312,7 @@ class DbScreen {
   async createTable (data, callback) {
     App.startLoading(`Creating table table ${data.name}`);
     try {
-      var table = await Model.Table.create(data.tablespace, data.name);
+      await Model.Table.create(data.tablespace, data.name);
       this.omit('table.created');
       this.fetchTablesAndSchemas(tables => {
         this.tableSelected(data.tablespace, data.name, 'structure');

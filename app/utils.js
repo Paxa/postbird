@@ -172,12 +172,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
 // <input type="file" accept=".doc,.docx,.xml,application/msword">
 
-$u.openFileDialog = function (fileExt, callback) {
-  if (typeof fileExt == 'function' && callback === undefined) {
-    callback = fileExt;
-    fileExt = undefined;
-  }
-
+$u.openFileDialog = function (fileExt) {
   return new Promise((resolve, reject) => {
     var mainWindow = electron.remote.BrowserWindow.mainWindow;
     electron.remote.dialog.showOpenDialog(mainWindow, {

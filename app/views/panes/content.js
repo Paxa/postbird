@@ -409,7 +409,7 @@ class Content extends Pane {
     if (confirm("Are you sure want to delete this row?")) {
       var ctid = $u(row).attr('data-ctid');
       try {
-        var result = await this.handler.table.deleteRowByCtid(ctid);
+        await this.handler.table.deleteRowByCtid(ctid);
         this.reloadData();
       } catch (error) {
         $u.alert(error.message);
@@ -427,10 +427,8 @@ class Content extends Pane {
     var fieldType = this.columnTypes[fieldName];
 
     var value = null;
-    var valueIndex = null;
     this.currentData.rows.forEach((row, index) => {
       if (row.ctid == ctid) {
-        valueIndex = index;
         value = row[fieldName];
       }
     });
@@ -444,7 +442,7 @@ class Content extends Pane {
       onSave: async (value, isNull) => {
         App.startLoading(`Updating value for ${fieldName}...`);
         try {
-          var res = await this.handler.table.updateValue(ctid, fieldName, value, isNull);
+          await this.handler.table.updateValue(ctid, fieldName, value, isNull);
           dialog.close();
         } catch (error) {
           console.error(error);

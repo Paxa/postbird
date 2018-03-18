@@ -113,8 +113,9 @@ class Table extends ModelBase {
       return Promise.resolve(this.tableType);
     }
 
+    var sql;
     if (this.connection().server.supportMatViews()) {
-      var sql = `
+      sql = `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
         WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
@@ -124,7 +125,7 @@ class Table extends ModelBase {
         WHERE schemaname = '${this.schema}' AND matviewname = '${this.table}'
       `
     } else {
-      var sql = `
+      sql = `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
         WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
@@ -248,10 +249,6 @@ class Table extends ModelBase {
         ) AND
         a.attnum > 0 AND NOT a.attisdropped
       ORDER BY a.attnum;
-    `;
-    var sql1 = `
-      select * from information_schema.columns
-      where table_schema = '${this.schema}' and table_name = '${this.table}';
     `;
 
     var data = await this.q(sql)
@@ -411,7 +408,7 @@ class Table extends ModelBase {
       var columns = Object.keys(values).map(col => {
         return `"${col}"`;
       });
-      var sql = `insert into ${this.sqlTable()} (${columns.join(", ")}) values (%s)`;
+      var sql = `INSERT INTO ${this.sqlTable()} (${columns.join(", ")}) VALUES (%s)`;
       var safeValues = Object.values(values).map(val => {
         return "'" + val.toString() + "'";
       }).join(", ");

@@ -22,7 +22,7 @@ class Procedures extends Pane {
 
     var dialog = new Dialog.EditProcedure(this.handler, proc, async (updated) => {
       if (updated != proc.full_prosrc) {
-        var res = await this.updateProc(poid, updated);
+        await this.updateProc(poid, updated);
         $u.alert(`Procedure ${proc.name}(${proc.arg_list}) updated`);
         dialog.close();
         this.renderTab();

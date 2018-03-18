@@ -25,8 +25,8 @@ describe('Model.Table and Model.Schema', () => {
   });
 
   it("should run describe within schema", async () => {
-    var schema1 = await Model.Schema.create("my_schema_1")
-    var schema2 = await Model.Schema.create("my_schema_2")
+    await Model.Schema.create("my_schema_1")
+    await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table', {empty: true})
     await table1.addColumnObj(new Model.Column('foo', {data_type: 'integer', null: true}))
@@ -51,7 +51,7 @@ describe('Model.Table and Model.Schema', () => {
     var schema2 = await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table', {empty: true})
-    var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
+    await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
     await table1.rename('test_table_renamed')
 
@@ -86,8 +86,8 @@ describe('Model.Table and Model.Schema', () => {
   })
 
   it("should fetch primary key in schemas", async () => {
-    var schema1 = await Model.Schema.create("my_schema_1")
-    var schema2 = await Model.Schema.create("my_schema_2")
+    await Model.Schema.create("my_schema_1")
+    await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table')
     var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
@@ -98,23 +98,23 @@ describe('Model.Table and Model.Schema', () => {
   })
 
   it("should get source sql", async () => {
-    var schema1 = await Model.Schema.create("my_schema_1")
-    var schema2 = await Model.Schema.create("my_schema_2")
+    await Model.Schema.create("my_schema_1")
+    await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table')
-    var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
+    await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
     assert.contain(await table1.getSourceSql(), 'CREATE TABLE test_table')
   })
 
   it("should insert and select", async () => {
-    var schema1 = await Model.Schema.create("my_schema_1")
-    var schema2 = await Model.Schema.create("my_schema_2")
+    await Model.Schema.create("my_schema_1")
+    await Model.Schema.create("my_schema_2")
 
     var table1 = await Model.Table.create('my_schema_1', 'test_table')
     await table1.addColumnObj(new Model.Column('foo', {data_type: 'integer', null: true}))
 
-    var table2 = await Model.Table.create('my_schema_2', 'test_table', {empty: true})
+    await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
     await table1.insertRow({foo: 123})
     assert.equal(await table1.getTotalRows(), 1)

@@ -42,7 +42,7 @@ class ExportController {
 
     App.startLoading(`Saving dump to ${filename}`);
     try {
-      var result = await exporter.doExport(this.handler.connection, filename);
+      await exporter.doExport(this.handler.connection, filename);
       this.dialog.addMessage("SUCCESS\n");
       if (filename) {
         this.dialog.addMessage("Saved to file " + filename);

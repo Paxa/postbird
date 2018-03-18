@@ -391,8 +391,9 @@ class Connection {
   }
 
   stopRunningQuery() {
+    var query;
     if (this.connection.native) {
-      var query = this.connection._activeQuery;
+      query = this.connection._activeQuery;
       if (query) {
         try {
           query.native.cancel((error) => {
@@ -407,7 +408,7 @@ class Connection {
         console.log('no running query');
       }
     } else {
-      var query = this.connection.activeQuery;
+      query = this.connection.activeQuery;
       if (query) {
         var otherConn = new pg.Client({connectionString: this.connectString});
         otherConn.connect((error, b) => {

@@ -55,7 +55,7 @@ describe('Model.Column', () => {
   // deprecated, use Model.Column.create
   it('table.addColumnObj should create column', async () => {
     var table = await Model.Table.create('public', 'test_table')
-    var column = await Model.Column.create({
+    await Model.Column.create({
       table: table,
       name: 'some_column',
       type: 'integer',
@@ -229,7 +229,7 @@ describe('Model.Column', () => {
 
   it('should create column with upper case', async () => {
     var table = await Model.Table.create('public', 'test_table')
-    var column = await Model.Column.create({
+    await Model.Column.create({
       table: table,
       name: 'Some_Column',
       type: 'character varying',
@@ -247,6 +247,9 @@ describe('Model.Column', () => {
     await column.update({name: 'Some_Column2', type: 'text', allow_null: true, default_value: '123'})
 
     var updated = await table.getColumnObj('Some_Column2')
+    assert.equal(updated.type, 'text');
+    assert.equal(updated.allow_null, true);
+    assert.equal(updated.default_value, "'123'::text");
 
     await table.drop()
   })
