@@ -298,6 +298,55 @@ input, textarea {
     margin: 40px auto 0;
     margin-top: calc(50vh - 163px);
     padding: 16px 20px; }
+    .home-screen .middle-window .header-tabs {
+      position: relative;
+      top: -27px;
+      background: #fff;
+      border: 1px solid #c1c1c1;
+      border-top-color: #c8c8c8;
+      border-bottom-color: #a7a7a7;
+      border-radius: 4px;
+      height: 19px;
+      width: auto;
+      display: inline-block;
+      margin: 0 auto; }
+      .home-screen .middle-window .header-tabs a {
+        font-size: 12px;
+        line-height: 20px;
+        height: 19px;
+        padding: 0 11px;
+        color: #000;
+        vertical-align: top;
+        display: inline-block;
+        border-left: 1px solid #e5e5e5;
+        box-sizing: border-box; }
+        .home-screen .middle-window .header-tabs a:hover {
+          cursor: default;
+          text-decoration: none; }
+        .home-screen .middle-window .header-tabs a:first-child {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          border-left: none; }
+        .home-screen .middle-window .header-tabs a:last-child {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px; }
+        .home-screen .middle-window .header-tabs a.selected {
+          background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAIAAACK3mZQAAAATUlEQVQIHQXBwQHCABDDsJz3ZqcOxw/iVOLzfNnCcvwd4dBDhzl01KHBhDa4oNANDXq48OuYwQUNXbChCemhRzduh44O5uhCEjTcwrYXfElK9rAH9acAAAAASUVORK5CYII=");
+          background-size: contain;
+          position: relative;
+          color: white;
+          border-top: 1px solid #719fec;
+          border-bottom: 1px solid #3359ed;
+          margin-top: -1px;
+          margin-bottom: -1px;
+          height: 21px; }
+        .home-screen .middle-window .header-tabs a:last-child.selected {
+          border-right: 1px solid #4c77ec;
+          margin-right: -1px;
+          border-left-color: transparent; }
+        .home-screen .middle-window .header-tabs a:first-child.selected {
+          border-left: 1px solid #4c77ec;
+          margin-left: -1px; }
     .home-screen .middle-window p {
       margin: 12px 0; }
       .home-screen .middle-window p.buttons {
@@ -325,9 +374,9 @@ input, textarea {
       width: auto; }
       .home-screen .middle-window label + label input[type=checkbox] {
         margin-left: 0; }
-  .home-screen .middle-window {
+  .home-screen .middle-window-content {
     display: none; }
-    .home-screen .middle-window.plain {
+    .home-screen .middle-window-content.plain {
       display: block; }
   .home-screen .heroku-oauth ul.steps {
     padding-left: 13px; }
@@ -349,7 +398,16 @@ input, textarea {
         background: green; }
   .home-screen .heroku-oauth ul.apps {
     margin: 10px 0;
-    border-top: 1px solid #ccc; }
+    border-top: 1px solid #c5c5c5;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff; }
+    .home-screen .heroku-oauth ul.apps > li {
+      padding: 2px 8px 2px 8px;
+      position: relative; }
+      .home-screen .heroku-oauth ul.apps > li.selected {
+        background: #2c67d2;
+        color: white; }
     .home-screen .heroku-oauth ul.apps li {
       padding: 3px 10px;
       border-bottom: 1px solid #ccc; }

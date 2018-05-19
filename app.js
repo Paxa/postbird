@@ -1,12 +1,46 @@
 var remote = require('electron').remote;
+var events = require('events');
 
 require('./lib/node_lib');
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require('./app/logger').make('info');
 
-//require('./sugar/sugar');
-
 var RenderView = require('./app/components/render_view');
+
+/*::
+interface App {
+  root: string
+  activeTab: number
+  tabs: any[]
+  init: () => void;
+  addTab: (name: string, contentHtml: string, instance: any) => void;
+  closeCurrentTab: () => void;
+  activateLoginTab: () => void;
+  lastAddedTab: () => void;
+  activeTabObj: () => any;
+  addConnectionTab: () => any;
+  addDbScreen: (connection: Connection, connectionName: any, options: any) => void;
+  addHelpScreen: () => void;
+  helpScreenOpen: () => void;
+  renderView: (viewName: string) => JQuery<HTMLElement>;
+  setSizes: () => void;
+  startLoading: (message: string, timeout?: number, options?: any) => void;
+  stopLoading: () => void;
+  stopRunningQuery: () => void;
+  openConnection: (options: any, connectionName: string, callback: Function) => void;
+  humanErrorMessage: (error: any) => string;
+
+  activateTab: (index: number) => void;
+  closeTab: (index) => void;
+
+  log?: any;
+  logger?: any;
+  remote?: Electron.Remote;
+  emit?: (eventName, ...any) => void;
+  logEvents?: any[];
+  helpScreen?: HelpScreen;
+}
+*/
 
 global.App = {
   root: process.mainModule.filename.replace(/\/index.html/, ''),
@@ -21,8 +55,8 @@ global.App = {
     this.addConnectionTab();
     this.activateTab(0);
 
-    log.info('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
-    console.log('Loaded in ' + (Date.now() - remote.BrowserWindow.ApplicationStart) + 'ms');
+    log.info('Loaded in ' + (Date.now() - remote.app.ApplicationStart) + 'ms');
+    console.log('Loaded in ' + (Date.now() - remote.app.ApplicationStart) + 'ms');
     /* auto connect, for development *\/
 
     this.loginScreen.onFormSubmit(false, () => {
@@ -56,7 +90,13 @@ global.App = {
       name: name,
       tabHandler: $u(tree[0]),
       content: $u(contentTree[0]),
-      is_active: false
+      is_active: false,
+      activate: () => {
+        if (App.tabs.indexOf(tabData) == -1) {
+          log.info('Try to activate removed tab', tabData);
+        }
+        App.activateTab(App.tabs.indexOf(tabData));
+      }
     };
 
     this.tabs.unshift(tabData);
@@ -65,13 +105,6 @@ global.App = {
     tabData.tabHandler.bind('click', () => {
       tabData.activate();
     });
-
-    tabData.activate = function () {
-      if (App.tabs.indexOf(tabData) == -1) {
-        log.info('Try to activate removed tab', tabData);
-      }
-      App.activateTab(App.tabs.indexOf(tabData));
-    };
 
     $u(tree.close).bind('click', (e) => {
       e.preventDefault();
@@ -154,8 +187,7 @@ global.App = {
     return tab;
   },
 
-  addDbScreen: function(connection, connectionName, options, do_activate) {
-    log.info(connectionName, do_activate);
+  addDbScreen: function(connection, connectionName, options) {
     if (connectionName == '') connectionName = false;
     var dbs = new DbScreen(connection, options);
     return this.addTab(connectionName || 'DB', dbs.view.content, dbs);
@@ -205,7 +237,7 @@ global.App = {
 
     $u(window.document.body).append(this.loader);
 
-    if (timeout === undefined) timeout = 300;
+    if (timeout === undefined || timeout === null) timeout = 300;
 
     this.loaderTimeout = setTimeout(() => {
       delete this.loaderTimeout;
@@ -294,20 +326,20 @@ Object.defineProperty(App, "currentTable", {
 });
 
 
-Object.setPrototypeOf(global.App, new node.events.EventEmitter);
+Object.setPrototypeOf(global.App, new events.EventEmitter);
 
 global.App.remote = remote;
 
 global.App.emit = function (eventName) {
-  if (!this._events[eventName]) {
-    console.log("Fire event '" + eventName + "' but no listeners");
-  }
-  var fn = node.events.EventEmitter.prototype.emit;
+  //if (!this._events[eventName]) {
+  //  console.log("Fire event '" + eventName + "' but no listeners");
+  //}
+  var fn = events.EventEmitter.prototype.emit;
   fn.apply(this, arguments);
 }
 
 global.App.logEvents = [];
-global.App.logger = new global.EventEmitter2({
+global.App.logger = new EventEmitter2({
   wildcard: true
 });
 
@@ -323,6 +355,8 @@ global.App.logger.onAny((ev, ...args) => {
   }
   var event = {type: ev, time: (new Date()), args: args};
   global.App.logEvents.push(event);
-  if (global.App._events["log.message"]) global.App.emit("log.message", event);
+  //if (global.App._events["log.message"]) {
+    global.App.emit("log.message", event);
+  //}
 });
 

@@ -594,7 +594,7 @@ Content.insertSnippet = function (sql) {
     tab.view.showTab("query")
   }
 
-  electron.remote.BrowserWindow.mainWindow.focus();
+  electron.remote.app.mainWindow.focus();
   tab.view.queryPane.appendText(sql, 2);
 };
 

@@ -50,19 +50,25 @@ class LoginScreen {
   }
 
   showPart (name) {
-    this.content.find('.middle-window').hide();
-    this.content.find('.middle-window.' + name).show();
+    this.content.find('.middle-window-content').hide();
+    this.content.find('.middle-window-content.' + name).show();
   }
 
   showPlainPane () {
-    this.content.find('.login-with-password').hide();
-    this.content.find('.login-with-heroku').show();
+    this.content.find('.header-tabs a').removeClass('selected');
+    this.content.find('.header-tabs .login-with-password').addClass('selected');
     this.showPart('plain');
   }
 
   showHerokuPane1 () {
-    this.content.find('.login-with-password').show();
-    this.content.find('.login-with-heroku').hide();
+    this.content.find('.header-tabs a').removeClass('selected');
+    this.content.find('.header-tabs .login-with-heroku').addClass('selected');
+    this.showPart('heroku-1');
+  }
+
+  enterPostgresUrl () {
+    this.content.find('.header-tabs a').removeClass('selected');
+    this.content.find('.header-tabs .enter-postgres-url').addClass('selected');
     this.showPart('heroku-1');
   }
 
@@ -88,6 +94,42 @@ class LoginScreen {
 
     var appsList = this.content.find('ul.apps').html('');
     HerokuClient.authAndGetApps((apps) => {
+      apps.forEach((app) => {
+        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
+        appsList.append(appEl);
+        $u(appEl).find('button').bind('click', (event) => {
+          event.preventDefault();
+          this.connectToHeroku(app);
+        });
+      });
+
+      apps.forEach((app) => {
+        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
+        appsList.append(appEl);
+        $u(appEl).find('button').bind('click', (event) => {
+          event.preventDefault();
+          this.connectToHeroku(app);
+        });
+      });
+
+      apps.forEach((app) => {
+        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
+        appsList.append(appEl);
+        $u(appEl).find('button').bind('click', (event) => {
+          event.preventDefault();
+          this.connectToHeroku(app);
+        });
+      });
+
+      apps.forEach((app) => {
+        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
+        appsList.append(appEl);
+        $u(appEl).find('button').bind('click', (event) => {
+          event.preventDefault();
+          this.connectToHeroku(app);
+        });
+      });
+
       apps.forEach((app) => {
         var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
         appsList.append(appEl);

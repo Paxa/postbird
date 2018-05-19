@@ -248,7 +248,7 @@ class DbScreenView {
 
     var submitted = false;
 
-    $u.listenClickOutside(input, (action) => {
+    $u.listenClickOutside(input, {}, (action) => {
       if (submitted) {
         return;
       }

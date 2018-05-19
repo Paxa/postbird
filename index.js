@@ -165,7 +165,7 @@ $(document).ready(function() {
   });
   */
 
-  var mainWindow = electron.remote.BrowserWindow.mainWindow;
+  var mainWindow = electron.remote.app.mainWindow;
   mainWindow.on('focus', () => {
     document.body.classList.remove('unfocused');
   });

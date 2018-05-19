@@ -3,7 +3,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const windowStateKeeper = require('electron-window-state');
 
-BrowserWindow.ApplicationStart = Date.now();
+electron.app.ApplicationStart = Date.now();
 
 // Report crashes to our server.
 //require('crash-reporter').start();
@@ -57,7 +57,7 @@ app.on('ready', () => {
 
   mainWindowState.manage(mainWindow);
 
-  BrowserWindow.mainWindow = mainWindow;
+  electron.app.mainWindow = mainWindow;
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');

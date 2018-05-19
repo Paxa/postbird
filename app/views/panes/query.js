@@ -198,7 +198,7 @@ class Query extends Pane {
 
   saveQueryResult () {
     var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    var mainWindow = electron.remote.app.mainWindow;
     dialog.showSaveDialog(mainWindow, {
       title: "Save result as csv file",
       defaultPath: "result.csv",

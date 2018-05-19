@@ -12,13 +12,19 @@
     "rebuild_ext": "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 59"
   },
   "devDependencies": {
+    "@types/alertify": "^0.3.30",
+    "@types/jquery": "^3.3.1",
+    "@types/mousetrap": "^1.6.0",
+    "@types/pg": "^7.4.9",
+    "@types/semver": "^5.5.0",
     "electron": "1.8.4",
     "electron-mocha": "^6.0.1",
     "electron-packager": "11.1.0",
     "electron-rebuild": "1.7.3",
     "localStorage": "^1.0.3",
     "node-sass": "4.7.2",
-    "spectron": "^3.8.0"
+    "spectron": "^3.8.0",
+    "typescript": "^2.8.3"
   },
   "dependencies": {
     "colors": "^1.2.1",

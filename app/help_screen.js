@@ -1,4 +1,8 @@
 class HelpScreen {
+  /*::
+  type: string
+  content: JQuery<HTMLElement>
+  */
 
   constructor () {
     this.type = "login_screen";
@@ -33,7 +37,7 @@ class HelpScreen {
     this.content.find('a[page="' + pageName + '"]').parent().addClass('selected');
   }
 
-  static open (e) {
+  static open (e /*::? : any */) {
     $u.stopEvent(e);
     if (!App.helpScreenOpen()) {
       App.addHelpScreen();

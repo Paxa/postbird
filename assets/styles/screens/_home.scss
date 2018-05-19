@@ -1,3 +1,5 @@
+$mac-block-tabs-radius: 4px;
+
 .home-screen {
   background: $mac-window-background;
   height: 100%;
@@ -16,6 +18,65 @@
     margin: 40px auto 0;
     margin-top: calc(50vh - 163px);
     padding: 16px 20px;
+
+    .header-tabs {
+      position: relative;
+      top: -27px;
+      background: #fff;
+      border: 1px solid #c1c1c1;
+      border-top-color: #c8c8c8;
+      border-bottom-color: #a7a7a7;
+      border-radius: $mac-block-tabs-radius;
+      height: 19px;
+      width: auto;
+      display: inline-block;
+      margin: 0 auto;
+      //overflow: hidden;
+      a {
+        font-size: 12px;
+        line-height: 20px;
+        height: 19px;
+        padding: 0 11px;
+        color: #000;
+        vertical-align: top;
+        display: inline-block;
+        border-left: 1px solid #e5e5e5;
+        box-sizing: border-box;
+        &:hover {
+          cursor: default;
+          text-decoration: none;
+        }
+        &:first-child {
+          border-top-left-radius: $mac-block-tabs-radius;
+          border-bottom-left-radius: $mac-block-tabs-radius;
+          border-left: none;
+        }
+        &:last-child {
+          border-top-right-radius: $mac-block-tabs-radius;
+          border-bottom-right-radius: $mac-block-tabs-radius;
+        }
+        &.selected {
+          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAIAAACK3mZQAAAATUlEQVQIHQXBwQHCABDDsJz3ZqcOxw/iVOLzfNnCcvwd4dBDhzl01KHBhDa4oNANDXq48OuYwQUNXbChCemhRzduh44O5uhCEjTcwrYXfElK9rAH9acAAAAASUVORK5CYII=');
+          background-size: contain;
+          position: relative;
+          color: white;
+          border-top: 1px solid #719fec;
+          border-bottom: 1px solid #3359ed;
+          margin-top: -1px;
+          margin-bottom: -1px;
+          height: 21px;
+        }
+        &:last-child.selected {
+          border-right: 1px solid #4c77ec;
+          margin-right: -1px;
+          border-left-color: transparent;
+        }
+        &:first-child.selected {
+          border-left: 1px solid #4c77ec;
+          margin-left: -1px;
+        }
+      }
+    }
 
     p {
       margin: 12px 0;
@@ -63,7 +124,7 @@
     }
   }
 
-  .middle-window {
+  .middle-window-content {
     display: none;
 
     &.plain {
@@ -102,7 +163,11 @@
 
     ul.apps {
       margin: 10px 0;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid #c5c5c5;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #fff;
+      @include native-items-list;
 
       li {
         padding: 3px 10px;

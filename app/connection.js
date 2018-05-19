@@ -1,14 +1,16 @@
 //process.env.PGSSLMODE = 'prefer';
 
+// @ts-ignore
 var pg = require('pg');
+const url = require('url');
 const semver = require('semver');
 const colors = require('colors/safe');
 colors.enabled = true;
-
-const Model = require('./models/all');
+const vsprintf = require("sprintf-js").vsprintf;
 
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
+    // @ts-ignore
     var pg = pg.native;
   }
 } catch (error) {
@@ -17,13 +19,27 @@ try {
   //errorReporter(error);
 }
 
-var vsprintf = require("sprintf-js").vsprintf;
-
 class Connection {
+  /*::
+    className: string
+    //defaultDatabaseName: string
+    history: HistoryRecord[]
+    logging: boolean
+    printTestingError: boolean
+    server: Model.Server // Model.Server
+    connection: pg.ClientExt
+    notificationCallbacks: Function[]
+    _serverVersionFull: string
+    _serverVersion: string
+    connectString: string
+    options: ConnectionOptions
 
-  constructor(options) {
+    static PG: any
+    public static instances: Connection[]
+  */
+
+  constructor() {
     this.className = 'Connection';
-    this.defaultDatabaseName = 'template1';
     this.history = []
     this.logging = true;
     this.printTestingError = true;
@@ -35,8 +51,12 @@ class Connection {
     this.notificationCallbacks = [];
   }
 
-  parseConnectionString(postgresUrl) {
-    var parsed = node.url.parse(postgresUrl);
+  static get defaultDatabaseName() {
+    return 'template1';
+  }
+
+  static parseConnectionString(postgresUrl /*: string */) {
+    var parsed = url.parse(postgresUrl);
     var auth = (parsed.auth || '').split(':');
     var dbname = !parsed.pathname || parsed.pathname == '/' ? this.defaultDatabaseName : parsed.pathname.replace(/^\//, '');
 
@@ -50,15 +70,13 @@ class Connection {
     };
   }
 
-  connectToServer(options, callback) {
-    //var connectString;
-
+  connectToServer(options /*: string | ConnectionOptions */, callback /*: (success: boolean, error?: Error) => void */) {
     if (typeof options == 'object') {
       // set defaults
       if (options.port == undefined) options.port = '5432';
       if (options.host == undefined) options.host = 'localhost';
 
-      if (!options.database) options.database = this.defaultDatabaseName;
+      if (!options.database) options.database = Connection.defaultDatabaseName;
 
       var connectUser = options.user ? `${options.user}` : '';
       if (options.password) connectUser += `:${options.password}`;
@@ -69,62 +87,57 @@ class Connection {
       }
     } else {
       this.connectString = options;
-      options = this.parseConnectionString(this.connectString);
+      options = Connection.parseConnectionString(this.connectString);
     }
 
     log.info('Connecting to', this.connectString);
 
     if (this.connection) {
       this.connection.end();
-      this.connection = null;
+      delete this.connection; // = null;
     }
 
     this.options = options;
 
-    this.connection = new pg.Client({connectionString: this.connectString});
+    this.connection = new pg.Client({connectionString: this.connectString}) /*:: as pg.ClientExt */;
 
-    return new Promise((resolve, reject) => {
-      this.connection.connect((error, b) => {
-        if (error) {
-          callback && callback(false, error.message);
-          App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
-          reject(error);
-        } else {
-          this.connection.on('notification', (msg) => {
-            this.notificationCallbacks.forEach((fn) => {
-              fn(msg);
-            });
-            App.log("notification.recieved", msg);
-          });
-
-          this.connection.on('error', (error) => {
-            var dialog = electron.remote.dialog;
-            var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
-            dialog.showErrorBox("Server Connection Error", message);
-          });
-
-          this.serverVersion((version) => {
-            if (this.logging) {
-              console.log("Server version is", version);
-            }
-            callback && callback(true);
-            resolve(true);
-          });
-          App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
-        }
+    return this.connection.connect().then(res => {
+      this.connection.on('notification', (msg) => {
+        this.notificationCallbacks.forEach((fn) => {
+          fn(msg);
+        });
+        App.log("notification.recieved", msg);
       });
+
+      this.connection.on('error', (error) => {
+        var dialog = electron.remote.dialog;
+        var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
+        dialog.showErrorBox("Server Connection Error", message);
+      });
+
+      this.serverVersion().then(version => {
+        if (this.logging) {
+          console.log("Server version is", version);
+        }
+        callback && callback(true);
+        Promise.resolve(true)
+      });
+      App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
+    }).catch(error => {
+      callback && callback(false, error.message);
+      App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
     });
   }
 
-  switchDb(database, callback) {
+  switchDb(database /*: string */, callback /*::? : (success: boolean, error?: Error) => void */) {
     this.options.database = database;
     return this.connectToServer(this.options, callback);
   }
 
-  query(sql, callback) {
+  query(sql, callback /*: Function */) {
     if (this.logging) logger.print("SQL: " + colors.green(sql) + "\n");
 
-    var historyRecord = { sql: sql, date: (new Date()), state: 'running' };
+    var historyRecord /*: HistoryRecord */ = { sql: sql, date: (new Date()), state: 'running', time: -1 };
     this.history.push(historyRecord);
     App.log("sql.start", historyRecord);
     var time = Date.now();
@@ -143,6 +156,7 @@ class Connection {
           historyRecord.error = error;
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
+          // @ts-ignore
           error.query = sql;
           if (this.logging) {
             console.error("SQL failed", sql);
@@ -155,6 +169,7 @@ class Connection {
         } else {
           historyRecord.state = 'success';
           App.log("sql.success", historyRecord);
+          // @ts-ignore
           result.time = historyRecord.time;
           //console.log(result);
           if (callback) callback(result);
@@ -164,7 +179,7 @@ class Connection {
     });
   }
 
-  q(sql, ...params) {
+  q(sql /*: string */, ...params /*: any[] */ ) {
     var callback = undefined;
     if (typeof params[params.length - 1] == 'function') {
       callback = params.pop();
@@ -173,10 +188,10 @@ class Connection {
     return this.query(vsprintf(sql, params), callback);
   }
 
-  serverVersion(callback) {
+  serverVersion(callback /*:: ?: Function */) {
     if (this._serverVersion != undefined) {
-      callback(this._serverVersion, this._serverVersionFull);
-      return;
+      callback && callback(this._serverVersion, this._serverVersionFull);
+      return Promise.resolve(this._serverVersion);
     }
 
     if (this.connection.native && this.connection.native.pq.serverVersion) {
@@ -185,18 +200,20 @@ class Connection {
       var minorVer = ~~ (intVersion % 10000 / 100);
       var patchVer = intVersion % 100;
       this._serverVersion = [majorVer, minorVer, patchVer].join(".");
-      callback(this._serverVersion);
-      return;
+      callback && callback(this._serverVersion);
+      return Promise.resolve(this._serverVersion);
     }
 
     console.log("Client don't support serverVersion, getting it with sql");
-    this.server.fetchServerVersion().then(version => {
+
+    return this.server.fetchServerVersion().then(version => {
       this._serverVersion = version.split(" ")[1];
       if (this._serverVersion.match(/^\d+\.\d+$/)) {
         this._serverVersion += '.0';
       }
       this._serverVersionFull = version;
-      callback(this._serverVersion, this._serverVersionFull);
+      callback && callback(this._serverVersion, this._serverVersionFull);
+      return Promise.resolve(this._serverVersion);
     });
   }
 
@@ -204,7 +221,7 @@ class Connection {
     return semver.gt(this._serverVersion, "9.3.0");
   }
 
-  tablesAndSchemas(callback) {
+  tablesAndSchemas(callback /*: Function */) {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
     return this.query(sql, (rows) => {
@@ -216,7 +233,7 @@ class Connection {
     });
   }
 
-  mapViewsAsTables(callback) {
+  mapViewsAsTables(callback /*: Function */) {
     if (!this.supportMatViews()) {
       callback([]);
       return;
@@ -241,7 +258,7 @@ class Connection {
     });
   }
 
-  tableSchemas(callback) {
+  tableSchemas(callback /*: Function */) {
     var sql = "SELECT table_schema FROM information_schema.tables GROUP BY table_schema " +
               "ORDER BY table_schema != 'public'";
     return this.query(sql, (rows) => {
@@ -252,22 +269,22 @@ class Connection {
     })
   }
 
-  getExtensions(callback) {
+  getExtensions(callback /*: Function */) {
     // 'select * from pg_available_extensions order by (installed_version is null), name;'
     return this.q('select * from pg_available_extensions order by name;', (data) => {
       callback(data.rows);
     });
   }
 
-  installExtension(extension, callback) {
+  installExtension(extension /*: string */, callback /*: Function */) {
     return this.q('CREATE EXTENSION "%s"', extension, callback);
   }
 
-  uninstallExtension(extension, callback) {
+  uninstallExtension(extension /*: string */, callback /*: Function */) {
     return this.q('DROP EXTENSION "%s"', extension, callback);
   }
 
-  queryMultiple(queries, callback) {
+  queryMultiple(queries /*: string[] */, callback /*: Function */) {
     var leftQueries = queries.slice();
     var conn = this;
 
@@ -293,14 +310,15 @@ class Connection {
     runner();
   }
 
-  dropUserFunctions(namespace, callback) {
+  dropUserFunctions(namespace /*: string */, callback /*: Function */) {
     if (typeof callback == 'undefined' && typeof namespace == 'function') {
       callback = namespace;
       namespace = undefined;
     }
     if (!namespace) namespace = 'public';
 
-      sql = "SELECT 'DROP ' || (CASE WHEN proisagg THEN 'AGGREGATE' ELSE 'FUNCTION' END) || ' IF EXISTS ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');' as cmd " +
+    var sql = "SELECT 'DROP ' || (CASE WHEN proisagg THEN 'AGGREGATE' ELSE 'FUNCTION' END) || " +
+          "' IF EXISTS ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');' as cmd " +
           "FROM pg_proc INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid) " +
           "WHERE ns.nspname = '%s'  order by proname;"
 
@@ -321,7 +339,7 @@ class Connection {
     });
   }
 
-  dropAllSequesnces(callback) {
+  dropAllSequesnces(callback /*: Function */) {
     var sql = "SELECT 'drop sequence ' || c.relname || ';' as cmd FROM pg_class c WHERE (c.relkind = 'S');";
 
     this.q(sql, (result, error) => {
@@ -341,7 +359,7 @@ class Connection {
     });
   }
 
-  close(callback) {
+  close(callback /*:: ?: Function */) {
     if (this.connection) {
       this.connection.end();
     }
@@ -352,17 +370,17 @@ class Connection {
     callback && callback();
   }
 
-  reconnect(callback) {
+  reconnect(callback /*: (success: boolean, error?: Error) => void */) {
     this.close(() => {
       this.connectToServer(this.options, callback);
     });
   }
 
-  onNotification(callback) {
+  onNotification(callback /*: Function */) {
     this.notificationCallbacks.push(callback);
   }
 
-  onConnectionError(error) {
+  onConnectionError(error /*: Error */) {
     if (
       error.message.indexOf("server closed the connection unexpectedly") != -1 ||
       error.message.indexOf("Unable to set non-blocking to true") != -1) {
@@ -411,7 +429,7 @@ class Connection {
       query = this.connection.activeQuery;
       if (query) {
         var otherConn = new pg.Client({connectionString: this.connectString});
-        otherConn.connect((error, b) => {
+        otherConn.connect((error) => {
           if (error) {
             console.log(error);
             return;
@@ -422,7 +440,7 @@ class Connection {
           otherConn.query(sql).then(res => {
             otherConn.end();
           }).catch(err => {
-            console.error(res);
+            console.error(err);
             otherConn.end();
           });
         });
@@ -437,7 +455,3 @@ global.Connection = Connection;
 
 global.Connection.PG = pg;
 global.Connection.instances = [];
-
-global.Connection.parseConnectionString = global.Connection.prototype.parseConnectionString;
-
-module.exports = global.Connection;

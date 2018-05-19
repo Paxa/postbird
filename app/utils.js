@@ -1,3 +1,31 @@
+/*::
+interface JQuery {
+  forEach: (handler: Function) => void;
+  single_double_click_nowait: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
+  single_double_click: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
+  removeChildren: () => void;
+  fasterAppend: (nodes: any) => void;
+}
+
+interface JQueryStatic {
+  textareaAutoSize: (element: any) => void;
+  stopEvent: (event: any) => void;
+  contextMenu: (element: any, options: any, params?: any) => void;
+  formValues: (selector_or_el: any) => void;
+  buildOption: (label: any, value: any, options: any) => void;
+  html2collection: (html: string) => JQuery<HTMLElement>;
+  listenClickOutside: (element: JQuery<HTMLElement>, Object, Function) => void;
+  openFileDialog: (fileExt: string) => Promise<string[]>;
+  confirm: (text: string, options?: any, callback?: Function) => Promise<boolean>;
+  alert: (text: string, options?: any, callback?: Function) => Promise<number>;
+  alertError: (text: string, options?: any, callback?: Function) => Promise<number>;
+  makeDroppable: (target: HTMLElement, callback: Function) => void;
+  selectedText: (element: any, currentWindow: any) => string;
+  textInputMenu: (element: HTMLInputElement, currentWindow: any) => void;
+  textContextMenu: (element: HTMLElement, currentWindow: any) => void;
+}
+*/
+
 var remote = require('electron').remote;
 var Menu = remote.Menu;
 var MenuItem = remote.MenuItem;
@@ -110,7 +138,7 @@ $u.fn.removeChildren = function removeChildren () {
   return this;
 };
 
-$u.fn.fasterAppend = function fasterAppend (nodes) {
+$u.fn.fasterAppend = function fasterAppend (nodes /*: any */) {
   if (nodes.tagName) nodes = [nodes];
   for (var i = 0; i < nodes.length; i++) {
     this[0].appendChild(nodes[i]);
@@ -124,17 +152,20 @@ $u.html2collection = function html2collection (html) {
   return $u(div).children();
 };
 
+// TODO: Check if still needed
+/*
 if (window.Object) {
   window.Object.forEach     = global.Object.forEach;
   window.Object.values      = global.Object.values;
   window.Object.ancestors   = global.Object.ancestors;
   window.Object.properties  = global.Object.properties;
 }
+*/
 
 $u.listenClickOutside = function listenClickOutside (element, options, callback) {
   element = $u(element);
-  if (callback === undefined) callback = options;
-  options = typeof options == 'object' ? options : {};
+  //if (callback === undefined) callback = options;
+  //options = typeof options == 'object' ? options : {};
 
   var carcher = window.document.body;
 
@@ -174,7 +205,7 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
 $u.openFileDialog = function (fileExt) {
   return new Promise((resolve, reject) => {
-    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    var mainWindow = electron.remote.app.mainWindow;
     electron.remote.dialog.showOpenDialog(mainWindow, {
       properties: [ 'openFile' ],
       filters: [
@@ -191,7 +222,7 @@ $u.confirm = function (text, options, callback) {
 
   return new Promise((resolve, reject) => {
     var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    var mainWindow = electron.remote.app.mainWindow;
     dialog.showMessageBox(mainWindow, {
       type: "question",
       message: text,
@@ -210,7 +241,7 @@ $u.alert = function (text, options, callback) {
 
   return new Promise((resolve, reject) => {
     var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    var mainWindow = electron.remote.app.mainWindow;
     dialog.showMessageBox(mainWindow, {
       type: options.type || "question",
       message: text,

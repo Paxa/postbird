@@ -61,17 +61,16 @@ global.HerokuClient = {
   },
 
   auth: function (callback, options) {
-    var _this = this;
     if (!options) options = {};
     //console.log('auth started');
     options.onAccessTokenStart && options.onAccessTokenStart();
-    _this.fetchRequestToken(() => {
+    this.fetchRequestToken(() => {
       options.onAccessTokenDone && options.onAccessTokenDone()
       options.onRequestTokenStart && options.onRequestTokenStart()
       //console.log('got request token ' + _this.getRequestToken());
-      _this.fetchAccessToken(() => {
+      this.fetchAccessToken(() => {
         options.onRequestTokenDone && options.onRequestTokenDone()
-        console.log(_this.getAccessToken());
+        console.log(this.getAccessToken());
         callback();
       }, options);
     }, options);
@@ -106,10 +105,14 @@ global.HerokuClient = {
     } else {
       var url = this.makeAuthUrl();
       if (this.catcher) this.catcher.stop();
-      this.catcher = new HerokuCatcher(callback);
+      this.catcher = new HerokuCatcher(() => {
+        electron.remote.app.mainWindow.focus();
+        callback();
+      });
       this.catcher.start();
       console.log("Opening url " + url);
-      libs.child_process.spawn('open', [url]);
+      electron.remote.shell.openExternal(url);
+      //libs.child_process.spawn('open', [url]);
     }
   },
 

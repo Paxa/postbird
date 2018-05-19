@@ -1,4 +1,16 @@
 class DbScreen {
+  /*::
+  type: string
+  contentTabLimit: number
+  options: any
+  connection: Connection
+  view: any // TODO
+  currentTab: string
+  database: string
+  currentTable: string
+  currentSchema: string
+  table: Model.Table
+  */
 
   constructor (connection, options) {
     this.type = "db_screen";
@@ -6,6 +18,7 @@ class DbScreen {
     this.options = Object.assign({fetchDbList: true}, options)
 
     this.connection = connection;
+    // @ts-ignore
     this.view = new DbScreenView(this);
 
     this.currentTab = null;
@@ -46,7 +59,7 @@ class DbScreen {
     
   }
 
-  fetchDbList (callback) {
+  fetchDbList (callback /*:: ?: () => void */) {
     return this.connection.server.listDatabases().then(databases => {
       this.view.renderDbList(databases);
       callback && callback();
@@ -85,7 +98,7 @@ class DbScreen {
     this.view.setDabase(database, callback);
   }
 
-  fetchTablesAndSchemas (callback) {
+  fetchTablesAndSchemas (callback /*:: ?: (data: any) => void */) {
     App.startLoading("Getting tables list...");
     return this.connection.tablesAndSchemas((data) => {
       return this.connection.mapViewsAsTables((matViews) => {
@@ -178,7 +191,7 @@ class DbScreen {
       return;
     }
 
-    App.startLoading("Fetching data ...", {
+    App.startLoading("Fetching data ...", undefined, {
       cancel: () => {
         App.stopRunningQuery();
       }
@@ -244,7 +257,7 @@ class DbScreen {
   }
 
   async createDatabase (data, callback) {
-    await this.connection.switchDb(this.connection.defaultDatabaseName);
+    await this.connection.switchDb(Connection.defaultDatabaseName);
     var res = await this.connection.server.createDatabase(data.dbname, data.template, data.encoding);
     await this.fetchDbList();
     this.view.databaseSelect.val(data.dbname).change();

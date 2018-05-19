@@ -3,18 +3,24 @@ class Procedures extends Pane {
   async renderTab (callback) {
     App.startLoading("Loading procedures...");
 
-    var procs = await Model.Procedure.findAllWithExtensions();
-    var triggers = await Model.Trigger.findAll();
+    try {
+      var procs = await Model.Procedure.findAllWithExtensions();
+      var triggers = await Model.Trigger.findAll();
 
-    App.stopLoading();
+      App.stopLoading();
 
-    this.renderViewToPane('procedures', 'procedures_tab', {
-      procs: procs,
-      triggers: triggers
-    });
+      this.renderViewToPane('procedures', 'procedures_tab', {
+        procs: procs,
+        triggers: triggers
+      });
 
-    this.initTables();
-    if (callback) callback();
+      this.initTables();
+      if (callback) callback();
+    } catch (error) {
+      App.stopLoading();
+      this.handler.view.setTabMessage(`Error: ${error.message}`);
+      errorReporter(error);
+    }
   }
 
   async editProc (poid, procName) {

@@ -82,7 +82,7 @@ var SnippetsWindow = {
   },
 
   sendToMainWindow: function (event, sql) {
-    var mainWindow = electron.remote.BrowserWindow.mainWindow;
+    var mainWindow = electron.remote.app.mainWindow;
     mainWindow.send(event, sql);
   }
 };

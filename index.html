@@ -10,7 +10,7 @@
   </head>
   <body>
     <script>
-      var win = require('electron').remote.BrowserWindow.mainWindow;
+      var win = require('electron').remote.app.mainWindow;
       if (!win.isFocused()) {
         document.body.classList.add('unfocused');
       }

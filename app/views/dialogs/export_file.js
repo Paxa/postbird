@@ -22,7 +22,7 @@ class ExportFile extends Dialog {
         message: `Postgres dump of '${this.handler.database}' database`,
         defaultPath: `${this.handler.database}.sql`,
       };
-      dialog.showSaveDialog(electron.remote.BrowserWindow.mainWindow, options, (selected) => {
+      dialog.showSaveDialog(electron.remote.app.mainWindow, options, (selected) => {
         fileInput.val(selected);
       });
     });
