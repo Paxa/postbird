@@ -3,7 +3,7 @@ interface JQuery {
   forEach: (handler: Function) => void;
   single_double_click_nowait: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
   single_double_click: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
-  removeChildren: () => void;
+  removeChildren: () => JQuery<HTMLElement>;
   fasterAppend: (nodes: any) => void;
 }
 

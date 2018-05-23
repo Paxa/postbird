@@ -2,6 +2,28 @@ const {dialog} = require('electron').remote;
 
 class DbScreenView {
 
+  /*::
+  handler: DbScreen
+  currentTab: string
+
+  content: JQuery<HTMLElement>
+  databaseSelect: JQuery<HTMLElement>
+  tablesList: JQuery<HTMLElement>
+  sidebar: JQuery<HTMLElement>
+  topTabs: JQuery<HTMLElement>
+  tabContents: JQuery<HTMLElement>
+  currentTableNode: JQuery<HTMLElement>
+
+  // TODO
+  extensionsPane: any
+  contentPane: any
+  queryPane: any
+  usersPane: any
+  structurePane: any
+  proceduresPane: any
+  infoPane: any
+  */
+
   constructor (handler) {
     this.handler = handler;
 
@@ -50,7 +72,7 @@ class DbScreenView {
 
     var tablesBlock = this.content.find('.sidebar .tables');
     this.content.find('.show-system-tables input').bind('change', (e) => {
-      var checkbox = e.target;
+      var checkbox = e.target /*:: as HTMLInputElement */;
       if (checkbox.checked) {
         tablesBlock.removeClass('without-system-tables');
       } else {
@@ -211,7 +233,7 @@ class DbScreenView {
 
         if (currentSchema == schema && table.table_name == currentTable) {
           $u(tableNode).addClass('selected');
-          this.handler.currentTableNode = $u(tableNode);
+          this.currentTableNode = $u(tableNode);
         }
       });
 

@@ -9,7 +9,8 @@
     "test": "electron-mocha tests/",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "NW_DEV=true NW_DEBUG=true electron . $@",
-    "rebuild_ext": "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 59"
+    "rebuild_ext": "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 59",
+    "ts": "node ts.js"
   },
   "devDependencies": {
     "@types/alertify": "^0.3.30",

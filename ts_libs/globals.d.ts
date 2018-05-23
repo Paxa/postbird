@@ -46,6 +46,7 @@ declare module NodeJS {
     HerokuClient: typeof HerokuClient;
     LoginPostgresUrlForm: typeof LoginPostgresUrlForm;
     LoginStandardForm: typeof LoginStandardForm;
+    DbScreenView: typeof DbScreenView;
     App: App;
     logger: any;
     log: any;
@@ -90,4 +91,6 @@ declare var ObjectKit: any;
 declare var logger: any;
 declare var PgDumpRunner: any;
 declare var PsqlRunner: any;
+declare var Dialog: any;
+declare var SidebarResize: any;
 declare var errorReporter: (exception: Error, showError?: boolean) => void;

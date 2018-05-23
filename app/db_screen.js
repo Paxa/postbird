@@ -4,7 +4,7 @@ class DbScreen {
   contentTabLimit: number
   options: any
   connection: Connection
-  view: any // TODO
+  view: DbScreenView
   currentTab: string
   database: string
   currentTable: string
@@ -70,7 +70,7 @@ class DbScreen {
     this.connection.server.listDatabases(callback);
   }
 
-  selectDatabase (database, callback) {
+  selectDatabase (database, callback /*:: ?: () => void */) {
     if (database == '') database = undefined;
 
     this.database = database;
@@ -124,7 +124,7 @@ class DbScreen {
     });
   }
 
-  tableSelected (schema, tableName, showTab) {
+  tableSelected (schema, tableName, showTab /*:: ?: string */) {
     if (this.currentSchema == schema && this.currentTable == tableName) {
       return;
     }

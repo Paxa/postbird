@@ -5,11 +5,11 @@ class LoginScreen {
 
   /*::
     type: string;
-    content: JQuery;
-    connections: JQuery;
+    content: JQuery<HTMLElement>;
+    connections: JQuery<HTMLElement>;
     standardForm: LoginStandardForm;
     urlForm: LoginPostgresUrlForm;
-    savedConnections: any // TODO
+    savedConnections: any; // Hash<string, SavedConn>;
     connectionName: string;
     herokuClient: HerokuClient;
     activeForm: string;
