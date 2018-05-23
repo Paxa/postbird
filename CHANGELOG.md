@@ -1,3 +1,14 @@
+== Version 0.8.0 (unrelease)
+
+* Feature: Connect with postgres:// URL
+* Redesign help screen
+* Make info page selectable
+* homebrew instructions typo fix (Thanks to @tzinmein)
+* Fix space closing dialog with custom inputs
+* Editing & deleting procedures
+* Implement stopRunningQuery for pure-js pg client
+* Add typescript hibrid validator
+
 == Version 0.7.1 (06-feb-2018)
 
 * Feature: Updating values in table
