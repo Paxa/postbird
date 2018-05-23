@@ -25,13 +25,23 @@ body.unfocused {
     color: #212121;
   }
 
-  .home-screen .sidebar ul > li.selected {
+  .login-screen .sidebar ul > li.selected {
     background: $unfocus-list-item-bg;
     color: #212121;
   }
 
-  .main-screen > .sidebar, .home-screen .sidebar {
+  .main-screen > .sidebar, .login-screen .sidebar {
     background: #f6f6f6;
     border-right-color: #dfdfdf;
+  }
+
+  .login-screen .middle-window .header-tabs {
+    a.selected {
+      color: #000;
+      background: #e5e5e5;
+      border-top-color: #c8c8c8;
+      border-bottom-color: #a7a7a7;
+      border-left-color: #c1c1c1;
+    }
   }
 }

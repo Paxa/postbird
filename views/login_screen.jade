@@ -1,4 +1,4 @@
-.home-screen
+.login-screen
   .sidebar
     h4 Saved connections
     ul.connections
@@ -7,11 +7,11 @@
   .main-window
     .middle-window
       .header-tabs
-        != link_to("Plain", '#', {exec: 'showPlainPane', class: 'login-with-password'})
-        != link_to("Connect URL", '#', {exec: 'enterPostgresUrl', class: 'enter-postgres-url'})
+        != link_to("Standard", '#', {exec: 'showStandardPane', class: 'login-with-password selected'})
+        != link_to("Connect URL", '#', {exec: 'showUrlPane', class: 'enter-postgres-url'})
         != link_to("Heroku", '#', {exec: 'showHerokuPane1', class: 'login-with-heroku'})
 
-      form.middle-window-content.plain
+      form.middle-window-content.standard
         p
           label(for="login_host") Host
           input#login_host(name='host', type='text', value='localhost', placeholder='localhost')
@@ -32,21 +32,37 @@
         p
           label
           label
-            input#auto_connect(name='auto_connect', type='checkbox', value='1')
+            input(name='auto_connect', type='checkbox', value='1')
             = "Connect on start"
 
         input(name="query", type="hidden")
 
         p.buttons
-          button.native-look(exec="testConnection") Test connection
-          button.native-look(exec="saveAndConnect") Save & connect
+          button.native-look(exec="std_testConnection") Test connection
+          button.native-look(exec="std_saveAndConnect") Save & connect
+          input.native-look(type="submit", value="Connect", autofocus=true)
+
+      form.middle-window-content.postgres-url
+        textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER}@localhost/${process.env.USER}`)
+          = `postgres://${process.env.USER}@localhost/${process.env.USER}`
+
+        p
+          label
+          label
+            input(name='auto_connect', type='checkbox', value='1')
+            = "Connect on start"
+
+        p.buttons
+          button.native-look(exec="url_testConnection") Test connection
+          button.native-look(exec="url_saveAndConnect") Save & connect
           input.native-look(type="submit", value="Connect", autofocus=true)
 
       .middle-window-content.heroku-1
-        h5 Heroku login
+        h5 Connect to Heroku PostgreSQL
 
         p!= link_to("Access with OAuth", '#', {exec: 'startHerokuOAuth'})
         - //p!= link_to('Access with "$ heroku" command line tool', '#')
+
 
       .middle-window-content.heroku-oauth
         ul.steps

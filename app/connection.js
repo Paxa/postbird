@@ -2,6 +2,7 @@
 
 // @ts-ignore
 var pg = require('pg');
+// @ts-ignore
 const url = require('url');
 const semver = require('semver');
 const colors = require('colors/safe');
@@ -71,7 +72,11 @@ class Connection {
   }
 
   connectToServer(options /*: string | ConnectionOptions */, callback /*: (success: boolean, error?: Error) => void */) {
-    if (typeof options == 'object') {
+    if (typeof options == 'object' && options.url) {
+      options = options.url;
+    }
+
+    if (typeof options == 'object' && !options.url) {
       // set defaults
       if (options.port == undefined) options.port = '5432';
       if (options.host == undefined) options.host = 'localhost';
@@ -85,7 +90,7 @@ class Connection {
       if (options.query) {
         this.connectString += "?" + options.query;
       }
-    } else {
+    } else if (typeof options == 'string') {
       this.connectString = options;
       options = Connection.parseConnectionString(this.connectString);
     }

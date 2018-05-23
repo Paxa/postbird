@@ -9,6 +9,8 @@ class Info extends Pane {
     });
 
     window.hljs.highlightBlock(this.content.find('code')[0]);
+
+    $u.textContextMenu(this.content);
   }
 }
 

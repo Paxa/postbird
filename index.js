@@ -25,6 +25,9 @@ require('./app/views/pane');
 require('./app/connection');
 require('./app/view_helpers');
 require('./app/db_screen');
+require('./app/login_components/heroku_client');
+require('./app/login_components/login_postgres_url_form');
+require('./app/login_components/login_standard_form');
 require('./app/login_screen');
 require('./app/help_screen');
 require('./app/views/db_screen_view');
@@ -55,7 +58,6 @@ require('./app/controllers/export_controller');
 var UpdatesController = require('./app/controllers/updates_controller');
 var ImportController = require('./app/controllers/import_controller');
 
-require('./app/heroku_client');
 require('./app/history_window');
 
 var CliUtil = require('./lib/cli_util');

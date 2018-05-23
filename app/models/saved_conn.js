@@ -34,7 +34,9 @@ var SavedConn = {
   },
 
   isEqualWithSaved(name, options) {
-    return JSON.stringify(this.savedConnection(name)) == JSON.stringify(options);
+    var savedVal = this.savedConnection(name);
+    if (!savedVal.type) savedVal.type = 'url';
+    return JSON.stringify(savedVal) == JSON.stringify(options);
     //return Object.is(this.savedConnection(name), options);
   }
 }

@@ -280,15 +280,15 @@ input, textarea {
     background-image: none;
     outline: none; }
 
-.home-screen {
+.login-screen {
   background: #ececec;
   height: 100%;
   margin: 0;
   position: relative;
   overflow: hidden; }
-  .home-screen .main-window {
+  .login-screen .main-window {
     padding-left: 20%; }
-  .home-screen .middle-window {
+  .login-screen .middle-window {
     background: #e2e2e2;
     border-radius: 5px;
     border: 1px solid #dfdfdf;
@@ -298,92 +298,85 @@ input, textarea {
     margin: 40px auto 0;
     margin-top: calc(50vh - 163px);
     padding: 16px 20px; }
-    .home-screen .middle-window .header-tabs {
+    .login-screen .middle-window .header-tabs {
       position: relative;
       top: -27px;
-      background: #fff;
-      border: 1px solid #c1c1c1;
-      border-top-color: #c8c8c8;
-      border-bottom-color: #a7a7a7;
       border-radius: 4px;
       height: 19px;
-      width: auto;
-      display: inline-block;
-      margin: 0 auto; }
-      .home-screen .middle-window .header-tabs a {
+      width: 100%;
+      text-align: center; }
+      .login-screen .middle-window .header-tabs a {
+        background: #fff;
+        border-top: 1px solid #c8c8c8;
+        border-bottom: 1px solid #a7a7a7;
+        border-left: 1px solid #e5e5e5;
+        border-right: none;
         font-size: 12px;
         line-height: 20px;
         height: 19px;
         padding: 0 11px;
         color: #000;
         vertical-align: top;
-        display: inline-block;
-        border-left: 1px solid #e5e5e5;
-        box-sizing: border-box; }
-        .home-screen .middle-window .header-tabs a:hover {
+        display: inline-block; }
+        .login-screen .middle-window .header-tabs a:hover {
           cursor: default;
           text-decoration: none; }
-        .home-screen .middle-window .header-tabs a:first-child {
+        .login-screen .middle-window .header-tabs a:first-child {
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
-          border-left: none; }
-        .home-screen .middle-window .header-tabs a:last-child {
+          border-left: 1px solid #c1c1c1; }
+        .login-screen .middle-window .header-tabs a:last-child {
           border-top-right-radius: 4px;
-          border-bottom-right-radius: 4px; }
-        .home-screen .middle-window .header-tabs a.selected {
+          border-bottom-right-radius: 4px;
+          border-right: 1px solid #c1c1c1; }
+        .login-screen .middle-window .header-tabs a.selected {
           background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAIAAACK3mZQAAAATUlEQVQIHQXBwQHCABDDsJz3ZqcOxw/iVOLzfNnCcvwd4dBDhzl01KHBhDa4oNANDXq48OuYwQUNXbChCemhRzduh44O5uhCEjTcwrYXfElK9rAH9acAAAAASUVORK5CYII=");
           background-size: contain;
-          position: relative;
           color: white;
           border-top: 1px solid #719fec;
           border-bottom: 1px solid #3359ed;
-          margin-top: -1px;
-          margin-bottom: -1px;
-          height: 21px; }
-        .home-screen .middle-window .header-tabs a:last-child.selected {
-          border-right: 1px solid #4c77ec;
-          margin-right: -1px;
           border-left-color: transparent; }
-        .home-screen .middle-window .header-tabs a:first-child.selected {
-          border-left: 1px solid #4c77ec;
-          margin-left: -1px; }
-    .home-screen .middle-window p {
+        .login-screen .middle-window .header-tabs a:last-child.selected {
+          border-right: 1px solid #4c77ec; }
+        .login-screen .middle-window .header-tabs a:first-child.selected {
+          border-left: 1px solid #4c77ec; }
+    .login-screen .middle-window p {
       margin: 12px 0; }
-      .home-screen .middle-window p.buttons {
+      .login-screen .middle-window p.buttons {
         text-align: right;
         margin-bottom: 1px;
         padding-right: 23px;
         padding-top: 3px; }
-        .home-screen .middle-window p.buttons button {
+        .login-screen .middle-window p.buttons button {
           display: none; }
-    .home-screen .middle-window input[type=text], .home-screen .middle-window input[type=password], .home-screen .middle-window input[type=email], .home-screen .middle-window input[type=number], .home-screen .middle-window input[type=url] {
+    .login-screen .middle-window input[type=text], .login-screen .middle-window input[type=password], .login-screen .middle-window input[type=email], .login-screen .middle-window input[type=number], .login-screen .middle-window input[type=url] {
       font-size: 12px;
       line-height: 18px;
       padding: 1px 4px;
       width: 186px; }
-    .home-screen .middle-window button {
+    .login-screen .middle-window button {
       height: 21px; }
-    .home-screen .middle-window label {
+    .login-screen .middle-window label {
       line-height: 22px;
       margin-right: 8px;
       display: inline-block;
       vertical-align: top;
       width: 88px;
       text-align: right; }
-    .home-screen .middle-window label + label {
+    .login-screen .middle-window label + label {
       width: auto; }
-      .home-screen .middle-window label + label input[type=checkbox] {
+      .login-screen .middle-window label + label input[type=checkbox] {
         margin-left: 0; }
-  .home-screen .middle-window-content {
+  .login-screen .middle-window-content {
     display: none; }
-    .home-screen .middle-window-content.plain {
+    .login-screen .middle-window-content.standard {
       display: block; }
-  .home-screen .heroku-oauth ul.steps {
+  .login-screen .heroku-oauth ul.steps {
     padding-left: 13px; }
-    .home-screen .heroku-oauth ul.steps li {
+    .login-screen .heroku-oauth ul.steps li {
       position: relative;
       line-height: 24px; }
-      .home-screen .heroku-oauth ul.steps li:before {
+      .login-screen .heroku-oauth ul.steps li:before {
         content: "";
         position: absolute;
         width: 6px;
@@ -392,35 +385,43 @@ input, textarea {
         background: #999;
         left: -12px;
         top: 9px; }
-      .home-screen .heroku-oauth ul.steps li.started:before {
+      .login-screen .heroku-oauth ul.steps li.started:before {
         background: orange; }
-      .home-screen .heroku-oauth ul.steps li.done:before {
+      .login-screen .heroku-oauth ul.steps li.done:before {
         background: green; }
-  .home-screen .heroku-oauth ul.apps {
+  .login-screen .heroku-oauth ul.apps {
     margin: 10px 0;
     border-top: 1px solid #c5c5c5;
     max-height: 200px;
     overflow-y: auto;
     background: #fff; }
-    .home-screen .heroku-oauth ul.apps > li {
+    .login-screen .heroku-oauth ul.apps > li {
       padding: 2px 8px 2px 8px;
       position: relative; }
-      .home-screen .heroku-oauth ul.apps > li.selected {
+      .login-screen .heroku-oauth ul.apps > li.selected {
         background: #2c67d2;
         color: white; }
-    .home-screen .heroku-oauth ul.apps li {
+    .login-screen .heroku-oauth ul.apps li {
       padding: 3px 10px;
       border-bottom: 1px solid #ccc; }
-      .home-screen .heroku-oauth ul.apps li button {
+      .login-screen .heroku-oauth ul.apps li button {
         margin-left: 11px;
         height: 20px;
         line-height: 16px; }
-      .home-screen .heroku-oauth ul.apps li span {
+      .login-screen .heroku-oauth ul.apps li span {
         line-height: 24px;
         font-weight: bold; }
-      .home-screen .heroku-oauth ul.apps li:hover {
+      .login-screen .heroku-oauth ul.apps li:hover {
         background: rgba(255, 255, 255, 0.4); }
-  .home-screen .sidebar {
+  .login-screen .middle-window-content.postgres-url textarea {
+    width: 100%;
+    min-height: 80px;
+    margin-top: -10px;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+  .login-screen .sidebar {
     background: #f0f1ed;
     border-right: 1px solid #dadbd7;
     position: absolute;
@@ -428,7 +429,7 @@ input, textarea {
     top: 0;
     bottom: 0;
     width: 20%; }
-    .home-screen .sidebar h4 {
+    .login-screen .sidebar h4 {
       font-size: 13px;
       font-weight: bold;
       color: #666;
@@ -437,13 +438,13 @@ input, textarea {
       border-bottom: 1px dotted #abc;
       user-select: none;
       cursor: default; }
-    .home-screen .sidebar ul > li {
+    .login-screen .sidebar ul > li {
       padding: 2px 8px 2px 8px;
       position: relative; }
-      .home-screen .sidebar ul > li.selected {
+      .login-screen .sidebar ul > li.selected {
         background: #2c67d2;
         color: white; }
-    .home-screen .sidebar ul li[data-auto-connect="true"]:after {
+    .login-screen .sidebar ul li[data-auto-connect="true"]:after {
       content: 'AUTO';
       font-size: 9px;
       display: inline-block;
@@ -453,9 +454,9 @@ input, textarea {
       line-height: 9px;
       padding: 2px;
       margin-top: 2.5px; }
-    .home-screen .sidebar ul li[data-auto-connect="true"].selected:after {
+    .login-screen .sidebar ul li[data-auto-connect="true"].selected:after {
       background: rgba(30, 165, 120, 0.9); }
-    .home-screen .sidebar button.add-connection {
+    .login-screen .sidebar button.add-connection {
       padding-left: 28px;
       background-color: #f9f9f9;
       background-image: url("icons/add-connection.png");
@@ -463,12 +464,12 @@ input, textarea {
       background-position: 7px 2px;
       background-size: 15px 15px;
       margin: 12px 0 0 8px; }
-  .home-screen footer {
+  .login-screen footer {
     text-align: center;
     margin-top: 3%; }
-    .home-screen footer a {
+    .login-screen footer a {
       text-decoration: underline; }
-    .home-screen footer .login-with-password {
+    .login-screen footer .login-with-password {
       display: none; }
 
 .main-screen {
@@ -1878,10 +1879,17 @@ body.unfocused .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
   background: #dcdcdc;
   color: #212121; }
 
-body.unfocused .home-screen .sidebar ul > li.selected {
+body.unfocused .login-screen .sidebar ul > li.selected {
   background: #dcdcdc;
   color: #212121; }
 
-body.unfocused .main-screen > .sidebar, body.unfocused .home-screen .sidebar {
+body.unfocused .main-screen > .sidebar, body.unfocused .login-screen .sidebar {
   background: #f6f6f6;
   border-right-color: #dfdfdf; }
+
+body.unfocused .login-screen .middle-window .header-tabs a.selected {
+  color: #000;
+  background: #e5e5e5;
+  border-top-color: #c8c8c8;
+  border-bottom-color: #a7a7a7;
+  border-left-color: #c1c1c1; }

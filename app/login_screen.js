@@ -1,13 +1,31 @@
+// @ts-ignore
+const url = require('url');
+
 class LoginScreen {
+
+  /*::
+    type: string;
+    content: JQuery;
+    connections: JQuery;
+    standardForm: LoginStandardForm;
+    urlForm: LoginPostgresUrlForm;
+    savedConnections: any // TODO
+    connectionName: string;
+    herokuClient: HerokuClient;
+    activeForm: string;
+  */
 
   constructor (cliConnectString) {
     this.type = "login_screen";
 
     this.content = App.renderView('login_screen');
-    this.form = this.content.find('form');
+    this.standardForm = new LoginStandardForm(this, this.content);
+    this.urlForm = new LoginPostgresUrlForm(this, this.content);
     this.connections = this.content.find('ul.connections');
 
-    this.bindFormEvents();
+    this.content.find('textarea').forEach(el => {
+      $u.textareaAutoSize(el);
+    });
 
     this.fillSavedConnections();
     if (this.connections.find('li:first').length) {
@@ -23,25 +41,13 @@ class LoginScreen {
     }
 
     this.initEvents(this.content);
+
+    this.herokuClient = new HerokuClient();
+    this.activeForm = 'standard';
   }
 
-  bindFormEvents () {
-    this.form.bind('submit', this.onFormSubmit.bind(this));
-
-    this.form.find('input[type=text], input[type=password]').bind('keypress', (event) => {
-      if (event.keyIdentifier == "Enter") {
-        $u.stopEvent(event);
-        this.onFormSubmit(event);
-      }
-    });
-
-    this.form.find('input[type=text], input[type=password]').bind('focus', (event) => {
-      this.formChanged(event);
-    });
-
-    this.form.find('input[type=text], input[type=password]').bind('keyup', this.formChanged.bind(this));
-
-    this.form.find('input[type=checkbox]').bind('change', this.formChanged.bind(this));
+  initEvents(content) {
+    Pane.prototype.initEvents.call(this, content);
 
     this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();
@@ -50,14 +56,15 @@ class LoginScreen {
   }
 
   showPart (name) {
+    this.activeForm = name;
     this.content.find('.middle-window-content').hide();
     this.content.find('.middle-window-content.' + name).show();
   }
 
-  showPlainPane () {
+  showStandardPane () {
     this.content.find('.header-tabs a').removeClass('selected');
     this.content.find('.header-tabs .login-with-password').addClass('selected');
-    this.showPart('plain');
+    this.showPart('standard');
   }
 
   showHerokuPane1 () {
@@ -66,18 +73,14 @@ class LoginScreen {
     this.showPart('heroku-1');
   }
 
-  enterPostgresUrl () {
+  showUrlPane () {
     this.content.find('.header-tabs a').removeClass('selected');
     this.content.find('.header-tabs .enter-postgres-url').addClass('selected');
-    this.showPart('heroku-1');
+    this.showPart('postgres-url');
   }
 
   showHerokuOAuthPane () {
     this.showPart('heroku-oauth');
-  }
-
-  showHerokuCLPane () {
-    this.showPart('heroku-cl');
   }
 
   startHerokuOAuth () {
@@ -93,7 +96,7 @@ class LoginScreen {
     };
 
     var appsList = this.content.find('ul.apps').html('');
-    HerokuClient.authAndGetApps((apps) => {
+    this.herokuClient.authAndGetApps(apps => {
       apps.forEach((app) => {
         var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
         appsList.append(appEl);
@@ -143,7 +146,7 @@ class LoginScreen {
 
   connectToHeroku (heroku_app) {
     App.startLoading("Fetching config...");
-    HerokuClient.getDatabaseUrl(heroku_app.id, (db_url) => {
+    this.herokuClient.getDatabaseUrl(heroku_app.id, (db_url) => {
       if (!db_url) {
         window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
         App.stopLoading();
@@ -160,30 +163,23 @@ class LoginScreen {
     });
   }
 
-  openHerokuLoginWindow (link) {
-    HerokuClient.auth(() => {
-      console.log("authenticated");
-    });
-  }
-
   fillSavedConnections () {
     this.connections.empty();
     this.savedConnections = Model.SavedConn.savedConnections();
     var currentConnection = this.connectionName;
 
-    var _this = this;
-    Object.forEach(this.savedConnections, (name, params) => {
+    ObjectKit.forEach(this.savedConnections, (name, params) => {
       var line = $dom(['li', {'data-auto-connect': params.auto_connect}, name]);
 
       $u.contextMenu(line, {
-        "Fill form with ...": _this.fillForm.bind(_this, name, params),
+        "Fill form with ...": () => { this.fillForm(name, params) },
         "Connect" () {
-          _this.fillForm(params, name);
-          _this.onFormSubmit();
+          this.fillForm(name, params);
+          this.submitCurrentForm();
         },
         'separator': 'separator',
-        "Rename": _this.renameConnection.bind(_this, name),
-        "Delete": _this.deleteConnection.bind(_this, name)
+        "Rename": this.renameConnection.bind(this, name),
+        "Delete": this.deleteConnection.bind(this, name)
       });
 
       if (name == currentConnection) {
@@ -191,13 +187,13 @@ class LoginScreen {
       }
 
       $u(line).single_double_click_nowait((e) => {
-        _this.connectionSelected(name, params, line);
+        this.connectionSelected(name, params, line);
       }, (e) => {
-        _this.connectionSelected(name, params, line);
-        _this.onFormSubmit(e);
+        this.connectionSelected(name, params, line);
+        this.submitCurrentForm();
       });
 
-      _this.connections.append(line)
+      this.connections.append(line)
     });
   }
 
@@ -206,43 +202,45 @@ class LoginScreen {
     $u(line).addClass('selected');
     this.connectionName = name;
     this.fillForm(name, params);
-    this.setButtonShown(false);
+    if (params.type == 'url') {
+      this.showUrlPane();
+      this.urlForm.setButtonShown(false);
+    } else {
+      this.showStandardPane();
+      this.standardForm.setButtonShown(false);
+    }
+    //this.setButtonShown(false);
   }
 
-  testConnection () {
-    App.startLoading("Connecting...");
+  std_testConnection () {
+    this.standardForm.testConnection();
+  }
 
-    var options = this.getFormData();
-    var conn = new Connection();
-    conn.connectToServer(options, (status, message) => {
-      App.stopLoading();
-      if (status) {
-        window.alertify.alert("Successfully connected!");
-        conn.close();
-      } else {
-        window.alertify.alert(App.humanErrorMessage(message));
-      }
-    });
+  url_testConnection () {
+    this.urlForm.testConnection();
   }
 
   addNewConnection () {
     this.connectionName = "**new**";
     this.fillForm(undefined, {host: "localhost", user: "", password: "", database: ""});
-    this.form.find('[name=host]').focus();
-    this.setButtonShown(true);
+    this.standardForm.form.find('[name=host]').focus(); // TODO
+    this.standardForm.setButtonShown(true);
   }
 
   fillForm (name, params) {
-    params = Object.assign({}, {host: "localhost", user: "", password: "", database: "", query: ""}, params);
+    if (params.type == "url") {
+      this.urlForm.fillForm(params);
+    } else {
+      this.standardForm.fillForm(params);
+    }
+  }
 
-    Object.forEach(params, (k, v) => {
-      var field = this.form.find('input[name=' + k + ']');
-      if (field.attr("type") == "checkbox") {
-        field.prop('checked', v);
-      } else {
-        field.val(v);
-      }
-    });
+  submitCurrentForm() {
+    if (this.activeForm == 'standard') {
+      this.standardForm.onFormSubmit();
+    } else {
+      this.urlForm.onFormSubmit();
+    }
   }
 
   renameConnection (name) {
@@ -265,81 +263,23 @@ class LoginScreen {
     });
   }
 
-  saveAndConnect (e) {
+  std_saveAndConnect (e) {
     $u.stopEvent(e);
-    var name;
-
-    if (this.connectionName) {
-      name = this.connectionName;
-    } else {
-      var data = Model.SavedConn.savedConnections();
-      var host = this.form.find('[name=host]').val();
-      name = host;
-      var i = 1;
-      while (data[name]) {
-        i += 1;
-        name = host + ' #' + i;
-      }
-    }
-
-    this.connectionName = name;
-    this.onFormSubmit(null, () => {
-      Model.SavedConn.saveConnection(name, this.getFormData());
-      this.fillSavedConnections();
-      this.setButtonShown(false);
-    });
+    this.standardForm.saveAndConnect();
   }
 
-  onFormSubmit (e, callback) {
-    var button = this.form.find('input[type=submit]');
-    var buttonText = button.val();
-    button.attr('disabled', true).val("Connecting...");
-
-    e && e.preventDefault();
-    var options = this.getFormData();
-
-    this.makeConnection(options, {}, (tab) => {
-      button.removeAttr('disabled').val(buttonText);
-      if (callback && tab) callback(tab);
-    });
+  url_saveAndConnect (e) {
+    $u.stopEvent(e);
+    this.urlForm.saveAndConnect();
   }
 
-  getFormData () {
-    return {
-      host: this.form.find('[name=host]').val(),
-      port: this.form.find('[name=port]').val(),
-      user: this.form.find('[name=user]').val(),
-      query: this.form.find('[name=query]').val(),
-      password: this.form.find('[name=password]').val(),
-      database: this.form.find('[name=database]').val(),
-      auto_connect: this.form.find('[name=auto_connect]').prop('checked')
-    };
-  }
-
-  formChanged (event) {
-    if (this.connectionName == "**new**") return;
-
-    var formData = this.getFormData();
-    var isChanged = !Model.SavedConn.isEqualWithSaved(this.connectionName, formData);
-
-    if (isChanged) {
-      this.setButtonShown(true);
-    } else {
-      this.setButtonShown(false);
-    }
-  }
-
-  setButtonShown (isShown) {
-    this.form.find("button")[isShown ? 'show' : 'hide']();
-  }
-
-  makeConnection (connectionOptions, options, callback) {
+  makeConnection (connectionOptions, options, callback /*:: ?: Function */) {
     App.openConnection(connectionOptions, options.name || this.connectionName, callback);
   }
 
   checkAutoLogin () {
     var autoConnect = null;
-    Object.forEach(this.savedConnections, (key, connection) => {
+    ObjectKit.forEach(this.savedConnections, (key, connection) => {
       if (!autoConnect && connection.auto_connect) {
         autoConnect = key;
       }
@@ -350,10 +290,17 @@ class LoginScreen {
       console.log("Connecting to auto-connect saved connection: " + autoConnect, connection);
       App.startLoading("Connecting...", 50);
       this.fillForm(autoConnect, connection);
-      this.onFormSubmit();
+      this.submitCurrentForm();
     }
+  }
+
+  isNewConnection () {
+    return this.connectionName == "**new**";
+  }
+
+  sameAsCurrent (formData) {
+    return Model.SavedConn.isEqualWithSaved(this.connectionName, formData);
   }
 }
 
-LoginScreen.prototype.initEvents = Pane.prototype.initEvents;
 global.LoginScreen = LoginScreen;

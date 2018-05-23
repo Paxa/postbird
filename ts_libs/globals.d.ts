@@ -43,6 +43,9 @@ declare module NodeJS {
     Connection: typeof Connection;
     HelpScreen: typeof HelpScreen;
     DbScreen: typeof DbScreen;
+    HerokuClient: typeof HerokuClient;
+    LoginPostgresUrlForm: typeof LoginPostgresUrlForm;
+    LoginStandardForm: typeof LoginStandardForm;
     App: App;
     logger: any;
     log: any;
@@ -82,9 +85,7 @@ declare var App: App;
 
 // TODO:
 
-//declare var DbScreen: any;
 declare var Pane: any;
-declare var HerokuClient: any;
 declare var ObjectKit: any;
 declare var logger: any;
 declare var PgDumpRunner: any;

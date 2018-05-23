@@ -22,6 +22,8 @@ interface ConnectionOptions {
   password?: string
   query?: string
   auto_connect?: boolean
+  url?: string
+  type?: string
 }
 
 interface HistoryRecord {

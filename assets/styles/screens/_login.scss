@@ -1,6 +1,6 @@
 $mac-block-tabs-radius: 4px;
 
-.home-screen {
+.login-screen {
   background: $mac-window-background;
   height: 100%;
   margin: 0;
@@ -22,17 +22,16 @@ $mac-block-tabs-radius: 4px;
     .header-tabs {
       position: relative;
       top: -27px;
-      background: #fff;
-      border: 1px solid #c1c1c1;
-      border-top-color: #c8c8c8;
-      border-bottom-color: #a7a7a7;
       border-radius: $mac-block-tabs-radius;
       height: 19px;
-      width: auto;
-      display: inline-block;
-      margin: 0 auto;
-      //overflow: hidden;
+      width: 100%;
+      text-align: center;
       a {
+        background: #fff;
+        border-top: 1px solid #c8c8c8;
+        border-bottom: 1px solid #a7a7a7;
+        border-left: 1px solid #e5e5e5;
+        border-right: none;
         font-size: 12px;
         line-height: 20px;
         height: 19px;
@@ -40,8 +39,6 @@ $mac-block-tabs-radius: 4px;
         color: #000;
         vertical-align: top;
         display: inline-block;
-        border-left: 1px solid #e5e5e5;
-        box-sizing: border-box;
         &:hover {
           cursor: default;
           text-decoration: none;
@@ -49,31 +46,26 @@ $mac-block-tabs-radius: 4px;
         &:first-child {
           border-top-left-radius: $mac-block-tabs-radius;
           border-bottom-left-radius: $mac-block-tabs-radius;
-          border-left: none;
+          border-left: 1px solid #c1c1c1;;
         }
         &:last-child {
           border-top-right-radius: $mac-block-tabs-radius;
           border-bottom-right-radius: $mac-block-tabs-radius;
+          border-right: 1px solid #c1c1c1;;
         }
         &.selected {
           background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAIAAACK3mZQAAAATUlEQVQIHQXBwQHCABDDsJz3ZqcOxw/iVOLzfNnCcvwd4dBDhzl01KHBhDa4oNANDXq48OuYwQUNXbChCemhRzduh44O5uhCEjTcwrYXfElK9rAH9acAAAAASUVORK5CYII=');
           background-size: contain;
-          position: relative;
           color: white;
           border-top: 1px solid #719fec;
           border-bottom: 1px solid #3359ed;
-          margin-top: -1px;
-          margin-bottom: -1px;
-          height: 21px;
+          border-left-color: transparent;
         }
         &:last-child.selected {
           border-right: 1px solid #4c77ec;
-          margin-right: -1px;
-          border-left-color: transparent;
         }
         &:first-child.selected {
           border-left: 1px solid #4c77ec;
-          margin-left: -1px;
         }
       }
     }
@@ -127,7 +119,7 @@ $mac-block-tabs-radius: 4px;
   .middle-window-content {
     display: none;
 
-    &.plain {
+    &.standard {
       display: block;
     }
   }
@@ -188,6 +180,18 @@ $mac-block-tabs-radius: 4px;
           background: rgba(255, 255, 255, 0.4);
         }
       }
+    }
+  }
+
+  .middle-window-content.postgres-url {
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      margin-top: -10px;
+      padding: 5px;
+      box-sizing: border-box;
+      font-size: 12px;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
     }
   }
 
