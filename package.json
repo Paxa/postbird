@@ -44,5 +44,8 @@
   },
   "optionalDependencies": {
     "pg-native": "3.0.0"
+  },
+  "resolutions": {
+    "node-abi": "^2.4.1"
   }
 }
