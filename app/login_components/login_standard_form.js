@@ -30,7 +30,7 @@ class LoginStandardForm {
 
   getFormData ()/*: ConnectionOptions */ {
     return {
-      type: 'hash',
+      type: 'standard',
       host: this.form.find('[name=host]').val().toString(),
       port: this.form.find('[name=port]').val().toString(),
       user: this.form.find('[name=user]').val().toString(),
