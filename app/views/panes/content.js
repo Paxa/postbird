@@ -442,8 +442,13 @@ class Content extends Pane {
       onSave: async (value, isNull) => {
         App.startLoading(`Updating value for ${fieldName}...`);
         try {
-          await this.handler.table.updateValue(ctid, fieldName, value, isNull);
+          var result await this.handler.table.updateValue(ctid, fieldName, value, isNull);
           dialog.close();
+          if (result.rowCount == 0) {
+            $u.alertError("No records updated, probably table content was changed since you started editing.",
+              {detail: "Try to refresh content and edit again"}
+            );
+          }
         } catch (error) {
           console.error(error);
           var sql = error.query ? `\nSQL: ${error.query}` : '';

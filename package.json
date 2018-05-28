@@ -14,35 +14,35 @@
   },
   "devDependencies": {
     "@types/alertify": "^0.3.30",
-    "@types/jquery": "^3.3.1",
+    "@types/jquery": "^3.3.2",
     "@types/mousetrap": "^1.6.0",
     "@types/pg": "^7.4.9",
     "@types/semver": "^5.5.0",
-    "electron": "1.8.4",
-    "electron-mocha": "^6.0.1",
-    "electron-packager": "11.1.0",
+    "electron": "2.0.2",
+    "electron-mocha": "^6.0.2",
+    "electron-packager": "12.1.0",
     "electron-rebuild": "1.7.3",
     "localStorage": "^1.0.3",
-    "node-sass": "4.7.2",
+    "node-sass": "4.9.0",
     "spectron": "^3.8.0",
     "typescript": "^2.8.3"
   },
   "dependencies": {
-    "colors": "^1.2.1",
-    "csv-stringify": "^2.0.4",
+    "colors": "^1.3.0",
+    "csv-stringify": "^3.0.0",
     "electron-window-state": "4.1.1",
     "eventemitter2": "5.0.1",
     "is-electron-renderer": "^2.0.1",
-    "needle": "2.2.0",
-    "pg": "7.4.1",
+    "needle": "2.2.1",
+    "pg": "7.4.3",
     "pg-escape": "^0.2.0",
-    "pug": "2.0.1",
-    "raven": "2.4.2",
+    "pug": "2.0.3",
+    "raven": "2.6.2",
     "semver": "^5.5.0",
     "sprintf-js": "1.1.1",
     "strftime": "0.10.0"
   },
   "optionalDependencies": {
-    "pg-native": "2.2.0"
+    "pg-native": "3.0.0"
   }
 }

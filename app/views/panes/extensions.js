@@ -12,7 +12,7 @@ class Extensions extends Pane {
 
     this.renderViewToPane('extensions', 'extensions_tab', {rows: rows});
 
-    if (scrollOffset != [0, 0]) {
+    if (scrollOffset[0] != 0 && scrollOffset[1] != 0) {
       var table = this.content.find('.rescol-content-wrapper table');
       if (table[0]) {
         table.on('generic-table-init', () => {

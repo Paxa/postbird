@@ -182,4 +182,18 @@ describe('Model.Table', () => {
     assert.match(summary.diskUsage, /\d+ bytes/);
   })
 
+  it("should updateValue with uuid", async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    await table.addColumnObj(new Model.Column('something', {data_type: 'uuid'}))
+
+    await table.insertRow({something: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"})
+    var data = await table.getRows(0, 10, this.queryOptions);
+
+    var res = await table.updateValue(data.rows[0].ctid, 'something', "eeeeaaaa-bbbb-4ef8-bb6d-6bb9bd380a11")
+    var data2 = await table.getRows(0, 10, this.queryOptions);
+
+    assert.equal(res.rowCount, 1)
+    assert.equal(data2.rows[0].something, "eeeeaaaa-bbbb-4ef8-bb6d-6bb9bd380a11")
+  })
+
 })
