@@ -110,7 +110,7 @@ describe('application launch', function () {
     })
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     if (app && app.isRunning()) {
       try {
         await app.stop()
