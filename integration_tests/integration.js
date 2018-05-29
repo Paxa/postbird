@@ -112,8 +112,13 @@ describe('application launch', function () {
 
   afterEach(() => {
     if (app && app.isRunning()) {
-      return app.stop()
+      try {
+        await app.stop()
+      } catch (e) {
+        console.error(e);
+      }
     }
+    return Promise.resolve(true);
   })
 
   it('shows an initial window', async () => {
