@@ -37,7 +37,7 @@ var getMenuItemByNames = function (currMenu, ...names) {
 
 
 describe('application launch', function () {
-  this.timeout(10000)
+  this.timeout(20000)
 
   var app, client, execSql;
 
@@ -49,12 +49,16 @@ describe('application launch', function () {
       startTimeout: 18000
     })
 
-    //setInterval(function () {
-    //  app.chromeDriver.getLogs().forEach(line => {
-    //    console.log('chromeDriver:', line);
-    //  })
-    //  app.chromeDriver.clearLogs()
-    //}, 100);
+    var i = setInterval(function () {
+      app.chromeDriver.getLogs().forEach(line => {
+        console.log('chromeDriver:', line)
+      })
+      app.chromeDriver.clearLogs()
+      if (!app.isRunning()) {
+        clearInterval(i);
+        return;
+      }
+    }, 100);
 
     return app.start().then((result) => {
       client = app.client;
