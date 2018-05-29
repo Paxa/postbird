@@ -104,7 +104,9 @@ describe('Model.Table and Model.Schema', () => {
     var table1 = await Model.Table.create('my_schema_1', 'test_table')
     await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
-    assert.contain(await table1.getSourceSql(), 'CREATE TABLE test_table')
+    var dump = await table1.getSourceSql();
+    dump = dump.replace(/public\.test_table/g, 'test_table')
+    assert.contain(dump, 'CREATE TABLE test_table')
   })
 
   it("should insert and select", async () => {

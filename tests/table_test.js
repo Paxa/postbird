@@ -57,6 +57,7 @@ describe('Model.Table', () => {
       table.getSourceSql(resolve);
     });
 
+    sql = sql.replace(/public\.test_table/g, 'test_table')
     assert.contain(sql, 'CREATE TABLE test_table');
 
     await table.drop();
