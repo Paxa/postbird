@@ -14,12 +14,20 @@ describe('application launch', function () {
 
   var app, client, execSql;
 
-  before(() => {
+  beforeEach(() => {
     app = new Application({
       path: './node_modules/.bin/electron',
       args: ['main.js', `postgres://localhost:${process.env.PG_PORT || '5432'}/integration_test`],
-      env: {NW_DEV: "true"}
+      env: {NW_DEV: "true"},
+      startTimeout: 18000
     })
+
+    //setInterval(function () {
+    //  app.chromeDriver.getLogs().forEach(line => {
+    //    console.log('chromeDriver:', line);
+    //  })
+    //  app.chromeDriver.clearLogs()
+    //}, 100);
 
     return app.start().then((result) => {
       client = app.client;
@@ -75,7 +83,7 @@ describe('application launch', function () {
     })
   })
 
-  after(() => {
+  afterEach(() => {
     if (app && app.isRunning()) {
       return app.stop()
     }
@@ -120,6 +128,8 @@ describe('application launch', function () {
 
   it('should create new table dialog', async () => {
     await client.waitForValue('.sidebar .databases select', 5000);
+
+    await client.waitForVisible('a.addTable');
 
     client.click('a.addTable');
     await client.waitForVisible('.new-table-dialog select[name="tablespace"]');
