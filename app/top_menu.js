@@ -275,32 +275,6 @@ if (process.platform == 'darwin') {
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-menu.getItemByNames = function (...names) {
-  var currMenu = this;
-  var parentLabels = [];
-  var result = null;
-
-  for (let name of names) {
-    parentLabels.push(name);
-    var foundMenu = null;
-    for (var i = 0; i <= currMenu.getItemCount(); i++) {
-      if (currMenu.getLabelAt(i) == name) {
-        foundMenu = currMenu.items[i];
-        console.log('found', parentLabels, foundMenu);
-        break;
-      }
-    }
-    if (foundMenu) {
-      result = foundMenu;
-      currMenu = foundMenu.submenu;
-    } else {
-      throw new Error(`Can not find item ${parentLabels.join(" -> ")}`);
-    }
-  }
-
-  return result;
-};
-
 function enableItem(topLabel, itemLable, enabled) {
   if (enabled === undefined) {
     enabled = true;

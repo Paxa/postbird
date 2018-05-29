@@ -9,6 +9,33 @@ process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 });
 
+
+var getMenuItemByNames = function (currMenu, ...names) {
+  var parentLabels = [];
+  var result = null;
+
+  for (let name of names) {
+    parentLabels.push(name);
+    var foundMenu = null;
+    for (var i = 0; i <= currMenu.getItemCount(); i++) {
+      if (currMenu.getLabelAt(i) == name) {
+        foundMenu = currMenu.items[i];
+        console.log('found', parentLabels, foundMenu);
+        break;
+      }
+    }
+    if (foundMenu) {
+      result = foundMenu;
+      currMenu = foundMenu.submenu;
+    } else {
+      throw new Error(`Can not find item ${parentLabels.join(" -> ")}`);
+    }
+  }
+
+  return result;
+};
+
+
 describe('application launch', function () {
   this.timeout(10000)
 
@@ -102,10 +129,12 @@ describe('application launch', function () {
 
     await client.waitForValue('.sidebar .databases select', 5000);
 
-    await client.execute(() => {
+    await client.execute((_getMenuItemByNames) => {
+      console.log(_getMenuItemByNames);
+      eval('var getMenuItemByNames = ' + _getMenuItemByNames);
       var menu = electron.remote.Menu.getApplicationMenu();
-      menu.getItemByNames('Database', 'Create Database').click();
-    });
+      getMenuItemByNames(menu, 'Database', 'Create Database').click();
+    }, getMenuItemByNames.toString());
 
     await client.waitForVisible('.alertify-dialog input[name="dbname"]', 10000);
 
@@ -119,7 +148,7 @@ describe('application launch', function () {
     /*
     await client.execute(() => {
       var menu = electron.remote.Menu.getApplicationMenu();
-      menu.getItemByNames('Database', 'Drop Database').click();
+      getMenuItemByNames(menu, 'Database', 'Drop Database').click();
     });
 
     client.waitValueEq('.sidebar .databases select', "", 1000, true);
