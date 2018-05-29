@@ -77,6 +77,10 @@ declare module alertify {
   }
 }
 
+declare class ObjectKit {
+  static forEach: (data: any, iterator: (k: any, v: any) => void) => void;
+}
+
 declare var log: any;
 declare var DOMinate: any;
 declare var $dom: any;
@@ -88,7 +92,6 @@ declare var App: App;
 // TODO:
 
 declare var Pane: any;
-declare var ObjectKit: any;
 declare var logger: any;
 declare var PgDumpRunner: any;
 declare var PsqlRunner: any;

@@ -221,9 +221,10 @@ class LoginScreen {
   }
 
   addNewConnection () {
+    this.connections.find('.selected').removeClass('selected');
     this.connectionName = "**new**";
     this.fillForm(undefined, {host: "localhost", user: "", password: "", database: ""});
-    this.standardForm.form.find('[name=host]').focus(); // TODO
+    this.standardForm.form.find('[name=host]').focus();
     this.standardForm.setButtonShown(true);
   }
 
