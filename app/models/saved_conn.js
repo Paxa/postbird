@@ -1,39 +1,39 @@
-var SavedConn = {
+class SavedConn {
 
-  savedConnections () {
+  static savedConnections () {
     if (window.localStorage.savedConnections) {
       return JSON.parse(window.localStorage.savedConnections);
     } else {
       return {};
     }
-  },
+  }
 
-  saveConnection (name, options) {
+  static saveConnection (name, options) {
     var newData = this.savedConnections();
     newData[name] = options;
     window.localStorage.savedConnections = JSON.stringify(newData);
-  },
+  }
 
-  renameConnection (oldName, newName) {
+  static renameConnection (oldName, newName) {
     var data = this.savedConnections();
     data[newName] = data[oldName];
     delete data[oldName];
     window.localStorage.savedConnections = JSON.stringify(data);
     return true;
-  },
+  }
 
-  removeConnection (name) {
+  static removeConnection (name) {
     var data = this.savedConnections();
     delete data[name];
     window.localStorage.savedConnections = JSON.stringify(data);
     return true;
-  },
+  }
 
-  savedConnection (name) {
+  static savedConnection (name) {
     return this.savedConnections()[name];
-  },
+  }
 
-  isEqualWithSaved(name, options) {
+  static isEqualWithSaved(name, options) {
     // add default field type=standard
     options = Object.assign({type: 'standard'}, options);
     var savedVal = Object.assign({type: 'standard'}, this.savedConnection(name));
@@ -41,5 +41,9 @@ var SavedConn = {
     //return Object.is(this.savedConnection(name), options);
   }
 }
+
+/*::
+declare var SavedConn__: typeof SavedConn
+*/
 
 module.exports = SavedConn;

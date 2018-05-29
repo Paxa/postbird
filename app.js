@@ -8,16 +8,26 @@ global.logger = global.log = require('./app/logger').make('info');
 var RenderView = require('./app/components/render_view');
 
 /*::
+
+interface AppTab {
+  instance: DbScreen,
+  name: string,
+  tabHandler: JQuery<HTMLElement>,
+  content: JQuery<HTMLElement>,
+  is_active: boolean,
+  activate: () => void
+}
+
 interface App {
   root: string
   activeTab: number
-  tabs: any[]
+  tabs: AppTab[]
   init: () => void;
   addTab: (name: string, contentHtml: string, instance: any) => void;
   closeCurrentTab: () => void;
   activateLoginTab: () => void;
   lastAddedTab: () => void;
-  activeTabObj: () => any;
+  activeTabObj: () => AppTab;
   addConnectionTab: () => any;
   addDbScreen: (connection: Connection, connectionName: any, options: any) => void;
   addHelpScreen: () => void;
@@ -32,6 +42,7 @@ interface App {
 
   activateTab: (index: number) => void;
   closeTab: (index) => void;
+  currentTab?: AppTab;
 
   log?: any;
   logger?: any;

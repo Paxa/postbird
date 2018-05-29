@@ -1,6 +1,17 @@
 class Column extends ModelBase {
 
-  constructor (name, data) {
+  /*::
+  default_value: string
+  changes: any
+  table: Model.Table
+  name: string
+  max_length: number
+  type: string
+  allow_null: boolean
+  static attributesAliases: any
+  */
+
+  constructor (name, data /*:: ?: any */) {
     if (typeof name == 'object') {
       super({});
       Object.keys(name).forEach((attr) => {
@@ -212,5 +223,9 @@ Object.defineProperty(Column.prototype, "attributes", {
     };
   }
 });
+
+/*::
+declare var Column__: typeof Column
+*/
 
 module.exports = Column;

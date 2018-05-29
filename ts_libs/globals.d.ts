@@ -47,6 +47,7 @@ declare module NodeJS {
     LoginPostgresUrlForm: typeof LoginPostgresUrlForm;
     LoginStandardForm: typeof LoginStandardForm;
     DbScreenView: typeof DbScreenView;
+    ModelBase: typeof ModelBase;
     App: App;
     logger: any;
     log: any;

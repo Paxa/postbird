@@ -67,6 +67,6 @@ class Schema extends ModelBase {
   }
 }
 
-global.Model.Schema = Schema;
+//global.Model.Schema = Schema;
 
 module.exports = Schema;

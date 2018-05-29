@@ -4,6 +4,7 @@
 var pg = require('pg');
 // @ts-ignore
 const url = require('url');
+// @ts-ignore
 const semver = require('semver');
 const colors = require('colors/safe');
 colors.enabled = true;

@@ -579,7 +579,7 @@ class DbScreen {
     this.connection.close();
   }
 
-  reconnect (callback) {
+  reconnect (callback /*:: ?: (success: boolean) => void */) {
     this.connection.reconnect((success, error) => {
       if (success) {
         window.alertify.alert('Reconnected!');

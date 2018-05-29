@@ -17,6 +17,14 @@ var fileNames = [
   'app/help_screen.js',
   'app/db_screen.js',
   'app/models/all.js',
+  'app/models/base.js',
+  'app/models/server.js',
+  'app/models/user.js',
+  'app/models/column.js',
+  'app/models/index.js',
+  'app/models/procedure.js',
+  'app/models/table.js',
+  'app/models/saved_conn.js',
   'app/views/db_screen_view.js'
 ];
 

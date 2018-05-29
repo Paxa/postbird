@@ -1,3 +1,4 @@
+// @ts-ignore
 const semver = require('semver');
 
 class Server extends ModelBase {
@@ -18,7 +19,7 @@ class Server extends ModelBase {
     });
   }
 
-  listDatabases(callback) {
+  listDatabases(callback /*:: ?: (dbs: string[]) => void */) {
     return this.query('SELECT datname FROM pg_database WHERE datistemplate = false order by datname;').then(rows => {
       var databases = rows.rows.map(dbrow => {
         return dbrow.datname;
@@ -77,5 +78,9 @@ class Server extends ModelBase {
     }
   }
 }
+
+/*::
+declare var Server__: typeof Server
+*/
 
 module.exports = Server;

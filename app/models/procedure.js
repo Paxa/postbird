@@ -1,6 +1,15 @@
 class Procedure extends ModelBase {
 
-  static findAll (callback) {
+  /*::
+  name: string
+  error: string
+  schema: string
+  oid: string
+  is_aggregate: boolean
+  arg_list: string
+  */
+
+  static findAll () {
     var sql = `
       SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
              pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
@@ -19,12 +28,11 @@ class Procedure extends ModelBase {
       data.rows.forEach((row) => {
         procedures.push(new Model.Procedure('public', row));
       });
-      callback && callback(procedures);
       return Promise.resolve(procedures);
     });
   }
 
-  static find (name, callback) {
+  static find (name) {
     var sql = `
       SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
              pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
@@ -41,20 +49,13 @@ class Procedure extends ModelBase {
     return this.q(sql).then(data => {
       if (data.rows[0]) {
         var proc = new Model.Procedure('public', data.rows[0]);
-        callback && callback(proc);
         return Promise.resolve(proc);
-      } else {
-        callback && callback();
       }
     });
   }
 
   // createFunction('my_inc1', 'integer val', 'integer', 'return val + 1;');
   static createFunction (name, args, return_type, body, options) {
-    if (typeof callback == 'undefined' && typeof options == 'function') {
-      callback = options;
-      options = {};
-    }
     if (!options) options = {};
     options.lang = options.lang || 'plpgsql';
 
@@ -161,5 +162,9 @@ class Procedure extends ModelBase {
   });
 
 }();
+
+/*::
+declare var Procedure__: typeof Procedure
+*/
 
 module.exports = Procedure;

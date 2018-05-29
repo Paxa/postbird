@@ -1,5 +1,10 @@
 class Index extends ModelBase {
-  constructor (name, table, data = {}) {
+  /*::
+  table: Model.Table
+  name: string
+  pg_get_indexdef: string
+  */
+  constructor (name, table, data = {} /*:: as any */) {
     if (name) {
       data.relname = data.name = name;
     }
@@ -45,7 +50,7 @@ class Index extends ModelBase {
     //return indexes_rows.rows;
   }
 
-  static async create (table, name, options = {}) {
+  static async create (table, name, options = {} /*:: as any */) {
     options = Object.assign({
       uniq: false,
       columns: [],
@@ -94,5 +99,9 @@ class Index extends ModelBase {
     }
   });
 });
+
+/*::
+declare var Index__: typeof Index
+*/
 
 module.exports = Index;

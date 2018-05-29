@@ -1,5 +1,9 @@
 class User extends ModelBase {
 
+  /*::
+  username: string
+  */
+
   constructor(username) {
     super();
     this.username = username;
@@ -42,7 +46,7 @@ class User extends ModelBase {
     });
   }
 
-  static drop (username, options = {}) {
+  static drop (username, options = {} /*:: as any */) {
     var sql = `DROP USER ${options.ifExists ? 'IF EXISTS' : ''} "${username}"`;
     return this.q(sql);
   }
@@ -88,6 +92,9 @@ class User extends ModelBase {
   }
 };
 
-global.Model.User = User;
+
+/*::
+declare var User__: typeof User
+*/
 
 module.exports = User;

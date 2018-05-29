@@ -10,13 +10,14 @@ var TABLE_TYPES = {
 
 
 class Table extends ModelBase {
+  /*::
+  tableType: string
+  schema: string
+  table: string
+  static types: any
+  */
 
-  static create (schema, tableName, options) {
-
-    if (typeof options == 'function' && callback == undefined) {
-      callback = options;
-      options = {};
-    }
+  static create (schema, tableName, options /*:: ?: any */) {
 
     if (options == undefined) {
       options = {};
@@ -30,14 +31,14 @@ class Table extends ModelBase {
     var schemaSql = schema && schema != '' ? `"${schema}".` : '';
     var sql = `CREATE TABLE ${schemaSql}"${tableName}" ${columns};`;
 
-    return Model.base.q(sql).then(res => {
+    return ModelBase.q(sql).then(res => {
       return Promise.resolve(new Model.Table(schema, tableName));
     }).catch((error) => {
       return Promise.reject((error));
     });
   }
 
-  constructor (schema, tableName, tableType) {
+  constructor (schema, tableName, tableType /*:: ?: string */) {
     super();
     this.tableType = tableType || null;
 
@@ -221,7 +222,7 @@ class Table extends ModelBase {
     return data && data.rows[0] && data.rows[0].relhasoids;
   }
 
-  async getColumnTypes () {
+  async getColumnTypes () /*: Promise<any> */ {
     if (await this.isMatView()) {
       return this._matview_getColumnTypes();
     } else {
@@ -282,7 +283,7 @@ class Table extends ModelBase {
     return types;
   }
 
-  async getColumns (name) {
+  async getColumns (name /*:: ?: string */) {
     if (await this.isMatView()) {
       return this._matview_getColumns();
     } else {
@@ -430,7 +431,7 @@ class Table extends ModelBase {
     exporter.addArgument('--no-owner');
 
     return new Promise((resolve, reject) => {
-      exporter.doExport(Model.base.connection(), (result, stdout, stderr, process) => {
+      exporter.doExport(ModelBase.connection(), (result, stdout, stderr, process) => {
         if (!result) {
           log.error("Run pg_dump failed");
           log.error(stderr);
@@ -517,14 +518,12 @@ class Table extends ModelBase {
     });
   }
 
-  getConstraints (callback) {
+  getConstraints () {
     var sql = `
       SELECT *, pg_get_constraintdef(oid, true) as pretty_source
       FROM pg_constraint WHERE conrelid = '${this.sqlTable()}'::regclass
     `;
-    return this.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
+    return this.q(sql);
   }
 
   dropConstraint (constraintName, callback) {
@@ -555,5 +554,9 @@ class Table extends ModelBase {
 }
 
 Table.types = TABLE_TYPES;
+
+/*::
+declare var Table__: typeof Table
+*/
 
 module.exports = Table;
