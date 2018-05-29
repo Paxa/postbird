@@ -105,7 +105,7 @@ describe('Model.Table and Model.Schema', () => {
     await Model.Table.create('my_schema_2', 'test_table', {empty: true})
 
     var dump = await table1.getSourceSql();
-    dump = dump.replace(/public\.test_table/g, 'test_table')
+    dump = dump.replace(/my_schema_1\.test_table/g, 'test_table')
     assert.contain(dump, 'CREATE TABLE test_table')
   })
 
