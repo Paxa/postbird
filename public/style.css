@@ -1151,18 +1151,18 @@ body.sidebar-resizing {
   background-image: linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); }
   .alertify-button:hover, .custom-window p.buttons button:hover {
     outline: none;
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), transparent); }
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)); }
   .alertify-button:focus, .custom-window p.buttons button:focus {
     outline: none;
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
-    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), transparent);
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
     box-shadow: 0 0 5px #2B72D5; }
   .alertify-button:active, .custom-window p.buttons button:active {
     position: relative;
@@ -1696,7 +1696,8 @@ span.tag.error {
   display: block;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   word-break: break-all;
-  margin: 10px 0; }
+  margin: 10px 0;
+  max-width: 700px; }
 
 .heroku-connection-dialog p {
   margin: 10px 0; }

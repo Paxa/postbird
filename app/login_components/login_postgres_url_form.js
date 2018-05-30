@@ -37,6 +37,7 @@ class LoginPostgresUrlForm {
 
   fillForm (params) {
     ObjectKit.forEach(params, (k, v) => {
+      if (k == 'url') k = 'connect_url';
       var field = this.form.find('input[name=' + k + '], textarea[name=' + k + ']');
       if (field.attr("type") == "checkbox") {
         field.prop('checked', v);

@@ -65,8 +65,8 @@
 .heroku-connection-dialog {
   code {
     @include dialog-code;
-
     margin: 10px 0;
+    max-width: 700px;
   }
 
   p {

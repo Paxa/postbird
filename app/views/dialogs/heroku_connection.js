@@ -26,9 +26,13 @@ class HerokuConnection extends Dialog {
   }
 
   saveConnection () {
-    var parsed = Connection.parseConnectionString(this.databseUrl);
+    var data = {
+      type: 'url',
+      url: this.databseUrl,
+      auto_connect: false
+    };
 
-    Model.SavedConn.saveConnection(this.name, parsed);
+    Model.SavedConn.saveConnection(this.name, data);
     App.loginScreen.fillSavedConnections();
 
     window.alertify.hide();

@@ -86,7 +86,6 @@ class HerokuClient {
       //console.log('got request token ' + _this.getRequestToken());
       this.fetchAccessToken(() => {
         options.onRequestTokenDone && options.onRequestTokenDone()
-        console.log(this.getAccessToken());
         callback();
       }, options);
     });

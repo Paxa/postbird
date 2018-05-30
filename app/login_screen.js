@@ -105,42 +105,6 @@ class LoginScreen {
           this.connectToHeroku(app);
         });
       });
-
-      apps.forEach((app) => {
-        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
-        appsList.append(appEl);
-        $u(appEl).find('button').bind('click', (event) => {
-          event.preventDefault();
-          this.connectToHeroku(app);
-        });
-      });
-
-      apps.forEach((app) => {
-        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
-        appsList.append(appEl);
-        $u(appEl).find('button').bind('click', (event) => {
-          event.preventDefault();
-          this.connectToHeroku(app);
-        });
-      });
-
-      apps.forEach((app) => {
-        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
-        appsList.append(appEl);
-        $u(appEl).find('button').bind('click', (event) => {
-          event.preventDefault();
-          this.connectToHeroku(app);
-        });
-      });
-
-      apps.forEach((app) => {
-        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
-        appsList.append(appEl);
-        $u(appEl).find('button').bind('click', (event) => {
-          event.preventDefault();
-          this.connectToHeroku(app);
-        });
-      });
     }, options);
   }
 
