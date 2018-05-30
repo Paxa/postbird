@@ -35,6 +35,7 @@ class Connection {
     _serverVersion: string
     connectString: string
     options: ConnectionOptions
+    startQuery: string
 
     static PG: any
     public static instances: Connection[]
@@ -78,6 +79,9 @@ class Connection {
     }
 
     if (typeof options == 'object' && !options.url) {
+      if (options.sql_query) {
+        this.startQuery = options.sql_query;
+      }
       // set defaults
       if (options.port == undefined) options.port = '5432';
       if (options.host == undefined) options.host = 'localhost';
@@ -125,12 +129,25 @@ class Connection {
         if (this.logging) {
           console.log("Server version is", version);
         }
-        callback && callback(true);
-        Promise.resolve(true)
+        if (this.startQuery) {
+          this.query(this.startQuery, (res, error) => {
+            if (error) {
+              var formattedError = new Error(`Start query: ${this.startQuery}\n\nError: ${error.message}${error.hint ? "\n----\n" + error.hint : ''}`);
+              callback && callback(false, formattedError);
+              Promise.reject(error);
+            } else {
+              callback && callback(true);
+              Promise.resolve(true);
+            }
+          });
+        } else {
+          callback && callback(true);
+          Promise.resolve(true);
+        }
       });
       App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
     }).catch(error => {
-      callback && callback(false, error.message);
+      callback && callback(false, error);
       App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
     });
   }

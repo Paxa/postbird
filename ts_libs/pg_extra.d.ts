@@ -24,6 +24,7 @@ interface ConnectionOptions {
   auto_connect?: boolean
   url?: string
   type?: string
+  sql_query?: string
 }
 
 interface HistoryRecord {

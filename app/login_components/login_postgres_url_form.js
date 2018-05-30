@@ -36,6 +36,7 @@ class LoginPostgresUrlForm {
   }
 
   fillForm (params) {
+    params = Object.assign({}, {url: "", auto_connect: false}, params);
     ObjectKit.forEach(params, (k, v) => {
       if (k == 'url') k = 'connect_url';
       var field = this.form.find('input[name=' + k + '], textarea[name=' + k + ']');
@@ -80,13 +81,13 @@ class LoginPostgresUrlForm {
 
     var options = this.getFormData();
     var conn = new Connection();
-    conn.connectToServer(options, (status, message) => {
+    conn.connectToServer(options, (status, error) => {
       App.stopLoading();
       if (status) {
         window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
-        window.alertify.alert(App.humanErrorMessage(message));
+        window.alertify.alert(App.humanErrorMessage(error));
       }
     });
   }

@@ -285,27 +285,30 @@ global.App = {
     }
 
     var conn = new Connection();
-    conn.connectToServer(options, (status, message) => {
+    conn.connectToServer(options, (status, error) => {
       this.stopLoading();
       if (status) {
         var tab = this.addDbScreen(conn, connectionName, options);
         tab.activate();
         if (callback) callback(tab);
       } else {
-        window.alertify.alert(this.humanErrorMessage(message));
+        $u.alertError("Connection error", {
+          detail: this.humanErrorMessage(error)
+        });
+        //window.alertify.alert(this.humanErrorMessage(message));
         if (callback) callback(false);
       }
     });
   },
 
   humanErrorMessage: (error) => {
-    if (error == "connect ECONNREFUSED") {
+    if (error.message == "connect ECONNREFUSED") {
       return "Connection refused.<br>Make sure postgres is running";
-    } else if (error.match(/^getaddrinfo ENOTFOUND/)) {
-      var host = error.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
+    } else if (error.message.match(/^getaddrinfo ENOTFOUND/)) {
+      var host = error.message.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
       return `Can not resolve host '${host[1]}'`;
     } else {
-      return error;
+      return error.message;
     }
   }
 };

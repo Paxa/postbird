@@ -195,8 +195,10 @@ class LoginScreen {
   fillForm (name, params) {
     if (params.type == "url") {
       this.urlForm.fillForm(params);
+      this.standardForm.fillForm({});
     } else {
       this.standardForm.fillForm(params);
+      this.urlForm.fillForm({});
     }
   }
 

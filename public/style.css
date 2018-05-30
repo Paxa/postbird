@@ -1641,6 +1641,37 @@ span.tag.error {
   margin-right: 2px;
   margin-top: 2px; }
 
+small.help-icon {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  line-height: 15px;
+  background: rgba(51, 51, 51, 0.08);
+  font-weight: 500;
+  color: #777;
+  border-radius: 15px;
+  text-align: center;
+  cursor: default;
+  margin-left: 2px; }
+  small.help-icon:after {
+    position: absolute;
+    content: attr(data-tooltip);
+    background-color: #333;
+    color: white;
+    bottom: 20px;
+    left: -75px;
+    width: 145px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: pre-line;
+    visibility: hidden;
+    opacity: 0; }
+  small.help-icon:hover:after {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.2s; }
+
 .import-file-dialog header, .export-file-dialog header {
   margin-bottom: 15px; }
   .import-file-dialog header code, .export-file-dialog header code {

@@ -166,6 +166,42 @@ span.tag.error {
   margin-top: 2px;
 }
 
+small.help-icon {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  line-height: 15px;
+  background: rgba(#333, 0.08);
+  font-weight: 500;
+  color: #777;
+  border-radius: 15px;
+  text-align: center;
+  cursor: default;
+  margin-left: 2px;
+  &:after {
+    position: absolute;
+    content: attr(data-tooltip);
+    background-color: #333;
+    color: white;
+    bottom: 20px;
+    left: -75px;
+    width: 145px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: pre-line;
+    visibility: hidden;
+    opacity: 0;
+  }
+  &:hover {
+    &:after {
+      visibility: visible;
+      opacity: 1;
+      transition: all 0.2s;
+    }
+  }
+}
+
 @import "elements/dialogs";
 @import "elements/github-highlight";
 @import "unfocused";

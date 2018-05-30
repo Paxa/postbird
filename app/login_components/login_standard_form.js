@@ -37,6 +37,7 @@ class LoginStandardForm {
       query: this.form.find('[name=query]').val().toString(),
       password: this.form.find('[name=password]').val().toString(),
       database: this.form.find('[name=database]').val().toString(),
+      sql_query: this.form.find('[name=sql_query]').val().toString(),
       auto_connect: this.form.find('[name=auto_connect]').prop('checked')
     };
   }
@@ -75,7 +76,15 @@ class LoginStandardForm {
   }
 
   fillForm (params) {
-    params = Object.assign({}, {host: "localhost", user: "", password: "", database: "", query: ""}, params);
+    params = Object.assign({}, {
+      host: "localhost",
+      user: "",
+      password: "",
+      database: "",
+      query: "",
+      sql_query: "",
+      auto_connect: false
+    }, params);
 
     ObjectKit.forEach(params, (k, v) => {
       var field = this.form.find('input[name=' + k + ']');
@@ -93,13 +102,16 @@ class LoginStandardForm {
 
     var options = this.getFormData();
     var conn = new Connection();
-    conn.connectToServer(options, (status, message) => {
+    conn.connectToServer(options, (status, error) => {
       App.stopLoading();
       if (status) {
         window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
-        window.alertify.alert(App.humanErrorMessage(message));
+        $u.alertError("Connection Error", {
+          detail: App.humanErrorMessage(error)
+        });
+        //window.alertify.alert(App.humanErrorMessage(message));
       }
     });
   }
