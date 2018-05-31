@@ -1,3 +1,5 @@
+$code-font: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+
 @import "extras/reset";
 @import "extras/mixins";
 
@@ -149,7 +151,7 @@ img.app-icon {
 code.general {
   margin-right: 9px;
   white-space: pre-wrap;
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: $code-font;
   text-align: left;
 }
 

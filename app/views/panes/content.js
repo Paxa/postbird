@@ -163,11 +163,18 @@ var filterMatchers = (() => {
 class Content extends Pane {
 
   renderTab (data, columnTypes, error) {
+
+    if (error) {
+      this.error = error;
+      this.renderData(data);
+      return;
+    }
+
     this.columnTypes = columnTypes;
     this.queryOptions = {
       with_oid: !!columnTypes.oid
     };
-    this.error = error;
+
     if (data) {
       this.limit = data.limit;
       this.offset = data.offset;
@@ -192,8 +199,11 @@ class Content extends Pane {
   renderData (data) {
     if (this.error) {
       var errorMsg = $dom(['div.error',
-        ['h4', "Error happen"],
-        ['code', ['pre', this.error.toString()]]
+        ['h4', "Can not load content"],
+        ['code',
+          ['pre', this.error.toString() + (this.error.hint ? "\n" + this.error.hint : "")],
+          ['pre', this.error.query ? `Query: ${this.error.query}` : '']
+        ]
       ]);
 
       this.view.setTabContent('content', errorMsg);

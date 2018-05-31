@@ -420,7 +420,7 @@ input, textarea {
     padding: 5px;
     box-sizing: border-box;
     font-size: 12px;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+    font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
   .login-screen .sidebar {
     background: #f0f1ed;
     border-right: 1px solid #dadbd7;
@@ -588,7 +588,7 @@ body.sidebar-resizing {
         text-decoration: underline; }
       .help-screen > .content .page.get-postgres article code {
         display: block;
-        font-family: Monaco, monospace;
+        font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
         border: 1px solid rgba(114, 160, 197, 0.5);
         padding: 3px 5px;
         background: rgba(114, 160, 197, 0.15);
@@ -1372,6 +1372,14 @@ body.sidebar-resizing {
       padding-left: 5px; }
     .window-content.content .native-footer-bar li.prev {
       display: none; }
+  .window-content.content div.error {
+    padding: 20px; }
+    .window-content.content div.error h4 {
+      margin-bottom: 10px; }
+    .window-content.content div.error pre {
+      font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+      background: #f5f5f5;
+      padding: 4px 6px; }
 
 .window-content.users {
   margin-bottom: -27px;
@@ -1394,7 +1402,7 @@ body.sidebar-resizing {
     margin-bottom: 9px; }
   .window-content.info code.result {
     white-space: pre-wrap;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+    font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
 
 .window-content.query {
   height: 100%;
@@ -1505,7 +1513,7 @@ body.new-window {
       margin-bottom: 12px; }
     .snippets-window .preview code.result {
       white-space: pre-wrap;
-      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
       margin-bottom: 12px; }
 
 body.new-window {
@@ -1557,7 +1565,7 @@ body.new-window {
         font-style: italic; }
   .history-window code.sql {
     white-space: pre-wrap;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+    font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
 
 .clearfix {
   clear: both; }
@@ -1626,7 +1634,7 @@ img.app-icon {
 code.general {
   margin-right: 9px;
   white-space: pre-wrap;
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   text-align: left; }
 
 span.tag.error {
@@ -1678,12 +1686,7 @@ small.help-icon {
     padding: 5px;
     background: #f5f5f5;
     display: block;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
-    word-break: break-all;
-    padding: 5px;
-    background: #f5f5f5;
-    display: block;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+    font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
     word-break: break-all; }
 
 .import-file-dialog form input[name="export_to_file"], .export-file-dialog form input[name="export_to_file"] {
@@ -1697,7 +1700,7 @@ small.help-icon {
   padding: 5px;
   background: #f5f5f5;
   display: block;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   word-break: break-all;
   display: none;
   overflow: auto;
@@ -1712,7 +1715,7 @@ small.help-icon {
   padding: 5px;
   background: #f5f5f5;
   display: block;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   word-break: break-all;
   overflow: auto;
   max-height: 400px;
@@ -1725,7 +1728,7 @@ small.help-icon {
   padding: 5px;
   background: #f5f5f5;
   display: block;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   word-break: break-all;
   margin: 10px 0;
   max-width: 700px; }

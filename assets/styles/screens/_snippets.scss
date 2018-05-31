@@ -47,7 +47,7 @@ body.new-window {
 
     code.result {
       white-space: pre-wrap;
-      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-family: $code-font;
       margin-bottom: 12px;
     }
   }

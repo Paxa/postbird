@@ -76,6 +76,6 @@ $history-time-width: 72px;
 
   code.sql {
     white-space: pre-wrap;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: $code-font;
   }
 }

@@ -210,6 +210,7 @@ class DbScreen {
       this.view.contentPane.renderTab(data, columnTypes);
       this.currentTab = 'content';
     } catch (error) {
+      $u.alertError("Can not load content", {detail: error.message});
       this.view.contentPane.renderTab(null, null, error);
       this.currentTab = 'content';
     } finally {

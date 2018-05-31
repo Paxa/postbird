@@ -192,4 +192,16 @@
       display: none;
     }
   }
+
+  div.error {
+    padding: 20px;
+    h4 {
+      margin-bottom: 10px;
+    }
+    pre {
+      font-family: $code-font;
+      background: #f5f5f5;
+      padding: 4px 6px;
+    }
+  }
 }
