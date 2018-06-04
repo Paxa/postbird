@@ -1,8 +1,6 @@
-var moment = require('moment');
 var strftime = require('strftime');
 
 /*::
-// @ts-ignore
 import * as moment from "moment"
 
 declare module "moment" {
