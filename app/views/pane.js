@@ -25,8 +25,20 @@ class Pane {
   }
 
   renderViewToPane (pane, view_file, options) {
-    var node = App.renderView(view_file, options);
-    this.view.setTabContent(pane, node);
+    try {
+      var node = App.renderView(view_file, options);
+      this.view.setTabContent(pane, node);
+    } catch (error) {
+      errorReporter(error, false);
+      var errorMsg = $dom(['div.error',
+        ['h4', "Can not render content"],
+        ['code',
+          ['pre', error.toString()]
+        ]
+      ]);
+
+      this.view.setTabContent('content', errorMsg);
+    }
     this.content = this.view.tabContent(pane);
     this.initEvents(this.content);
   }

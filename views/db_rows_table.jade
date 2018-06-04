@@ -12,7 +12,7 @@
           each row in data.rows
             tr
               each column in data.fields
-                td!= formatCell(row[column.name], column.udt_name, column.data_type)
+                td!= formatCellFromSelect(row[column.name], column)
     else
       table
         tbody

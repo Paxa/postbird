@@ -16,6 +16,7 @@ var fileNames = [
   'app/login_screen.js',
   'app/help_screen.js',
   'app/db_screen.js',
+  'app/view_helpers.js',
   'app/models/all.js',
   'app/models/base.js',
   'app/models/server.js',

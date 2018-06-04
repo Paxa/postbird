@@ -2,6 +2,8 @@
 
 * Feature: Connect with postgres:// URL
 * Redesign help screen
+* Display same timezone as received from server
+* Add original timestamp value in "title" attribute
 * Make info page selectable
 * homebrew instructions typo fix (Thanks to @tzinmein)
 * Fix space closing dialog with custom inputs

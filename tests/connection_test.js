@@ -1,4 +1,5 @@
 require('./test_helper')
+var moment = require('moment');
 
 describe('Connection', () => {
   let connection;
@@ -10,7 +11,7 @@ describe('Connection', () => {
   it("should exec query", async () => {
     var result = await connection.query("select now()");
     assert.equal(result.rows.length, 1);
-    assert(result.rows[0].now instanceof Date);
+    assert(result.rows[0].now instanceof moment);
   });
 
   it("should cancel query", (done) => {

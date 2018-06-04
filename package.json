@@ -33,6 +33,7 @@
     "electron-window-state": "4.1.1",
     "eventemitter2": "5.0.1",
     "is-electron-renderer": "^2.0.1",
+    "moment": "^2.22.2",
     "needle": "2.2.1",
     "pg": "7.4.3",
     "pg-escape": "^0.2.0",

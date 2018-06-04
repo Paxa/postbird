@@ -1,24 +1,6 @@
-//declare module 'eventemitter2' {
-//  declare var EventEmitter2: any
-//}
-//
-//declare module 'electron' {
-//  declare var remote: any
-//}
-//
-//declare module 'colors/safe' {
-//  declare var remote: any
-//  declare var enabled: boolean
-//  declare var yellow: any
-//  declare var green: any
-//}
-//
-//declare module 'sprintf-js' {
-//  declare var vsprintf: any
-//}
-
 /// <reference path="../node_modules/electron/electron.d.ts" />
 /// <reference path="../node_modules/colors/safe.d.ts" />
+/// <reference path="../node_modules/moment/moment.d.ts" />
 /// <reference path="./pg_extra.d.ts" />
 /// <reference path="./models.d.ts" />
 
@@ -48,6 +30,7 @@ declare module NodeJS {
     LoginStandardForm: typeof LoginStandardForm;
     DbScreenView: typeof DbScreenView;
     ModelBase: typeof ModelBase;
+    ViewHelpers: ViewHelpers;
     App: App;
     logger: any;
     log: any;

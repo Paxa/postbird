@@ -12,7 +12,11 @@ var RenderView = {
     var new_options = {};
     var i;
 
-    for (i in ViewHelpers) new_options[i] = ViewHelpers[i].bind(ViewHelpers);
+    for (i in ViewHelpers) {
+      if (typeof ViewHelpers[i] == 'function') {
+        new_options[i] = ViewHelpers[i].bind(ViewHelpers);
+      }
+    }
 
     if (options) {
       for (i in options) new_options[i] = options[i];

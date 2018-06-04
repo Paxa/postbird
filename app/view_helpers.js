@@ -1,4 +1,43 @@
+var moment = require('moment');
 var strftime = require('strftime');
+
+/*::
+// @ts-ignore
+import * as moment from "moment"
+
+declare module "moment" {
+  interface Moment {
+    _d: Date
+    origValueString: string
+  }
+}
+declare global {
+  interface ViewHelpers {
+    TIMESTAMPTZ_OID: number
+    TIMESTAMP_OID: number
+    formatCellFromSelect: (value: any, field: any) => string
+    formatCell: (value: any, format: string, dataType: string) => string
+    truncate: (str: string, length: number) => string
+    tag_options: (options: any) => string
+    link_to: (text: string, url: string, options: any) => string
+    icon: (name: string, title: string) => string
+    column_type_label: (column: any, short: string) => string
+    betterDateTime: (date: moment.Moment) => string
+    betterDateTimeZ: (date: moment.Moment) => string
+    editDateFormat: (value: any, format: string) => string
+    betterDate: (value: Date) => string
+    timeFormat: (date: string) => string
+    execTime: (time: number) => string
+    formatJson: (value: any) => string
+    formatArray: (value: any, format: string) => string
+    getIndexType: (indexSql: string) => string
+    escapeHTML: (unsafe: string) => string
+    shorterTypeName: (typeName: string) => string
+    relType: (type: string) => string
+    tableGrantsDesc: (permissions: string) => string
+  }
+}
+*/
 
 var GRANTS_ABBR = {
   r: 'SELECT',
@@ -16,8 +55,23 @@ var GRANTS_ABBR = {
   T: 'TEMPORARY'
 };
 
-
 var helpers = global.ViewHelpers = {
+
+  TIMESTAMPTZ_OID: 1184,
+  TIMESTAMP_OID: 1114,
+
+  formatCellFromSelect(value, field) {
+    var format = field.udt_name;
+    if (field.dataTypeID == this.TIMESTAMP_OID) {
+      format = 'timestamp';
+    }
+    if (field.dataTypeID == this.TIMESTAMPTZ_OID) {
+      format = 'timestamptz';
+    }
+
+    return this.formatCell(value, format, field.data_type);
+  },
+
   formatCell: function (value, format, dataType) {
     if (value === null) {
       return '<i class="null">NULL</i>';
@@ -105,49 +159,67 @@ var helpers = global.ViewHelpers = {
     return short ? this.shorterTypeName(baseName) : baseName;
   },
 
-  betterDateTime: function (value) {
-    var date = new Date(Date.parse(value)); // convert to current timezone
-    var now = new Date();
+  betterDateTime: function (date) {
+    var dateSec = date._d.getTime() / 1000.0;
+    var nowSec = Math.round(Date.now() / 1000);
+    var todayStart = nowSec - nowSec % 86400;
+    var todayEnd = todayStart + 86400;
+    var currentYear = new Date().getFullYear();
 
-    if (now.toDateString() == date.toDateString()) {
-      return '<time>' + strftime('Today, %H:%M:%S', date) + '</time>';
-    } else if (now.getFullYear() == date.getFullYear()) {
-      return '<time>' + strftime('%b %d, %H:%M:%S', date) + '</time>';
+    var attrs = date.origValueString ? ` title="${date.origValueString}"` : '';
+    var formatted = null;
+
+    if (dateSec > todayStart && dateSec < todayEnd) {
+      formatted = "Today, " + date.format("HH:mm:ss");
+    } else if (currentYear == date._d.getFullYear()) {
+      formatted = date.format("MMM DD HH:mm:ss");
     } else {
-      return '<time>' + strftime('%b %d, %Y, %H:%M:%S', date) + '</time>';
+      formatted = date.format("MMM DD YYYY HH:mm:ss");
     }
+
+    return `<time${attrs}>${formatted}</time>`;
   },
 
-  betterDateTimeZ: function (value) {
-    var date = new Date(Date.parse(value)); // convert to current timezone
-    var now = new Date();
 
-    if (now.toDateString() == date.toDateString()) {
-      return '<time>' + strftime('Today, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
-    } else if (now.getFullYear() == date.getFullYear()) {
-      return '<time>' + strftime('%b %d, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+  betterDateTimeZ: function (date) {
+    // date._d - is a date with substracted timezone offset
+    var dateSec = date._d.getTime() / 1000.0;
+    var nowSec = Math.round(Date.now() / 1000);
+    var todayStart = nowSec - nowSec % 86400;
+    var todayEnd = todayStart + 86400;
+    var currentYear = new Date().getFullYear();
+
+    var attrs = date.origValueString ? ` title="${date.origValueString}"` : '';
+    var formatted = null;
+
+    if (dateSec > todayStart && dateSec < todayEnd) {
+      formatted = "Today, " + date.format("HH:mm:ss Z").replace(/:00$/, '');
+    } else if (currentYear == date._d.getFullYear()) {
+      formatted = date.format("MMM DD HH:mm:ss Z").replace(/:00$/, '');
     } else {
-      return '<time>' + strftime('%b %d, %Y, %H:%M:%S %z', date).replace(/00$/, '') + '</time>';
+      formatted = date.format("MMM DD YYYY HH:mm:ss Z").replace(/:00$/, '');
     }
+
+    return `<time${attrs}>${formatted}</time>`;
   },
 
   editDateFormat: function (value, format) {
-    var date = new Date(Date.parse(value));
-
-    if (format == "timestamptz") {
-      return strftime('%F %T.%L%z', date).replace(/00$/, '');
-    } else if (format == "date") {
-      return strftime('%F', date);
-    } else if (format == "timetz") {
-      return value;
+    if (value.origValueString) {
+      return value.origValueString;
     } else {
-      return strftime('%F %T.%L', date);
+      if (format == "date") {
+        return strftime('%F', value);
+      } else if (format == "timetz") {
+        return value;
+      } else {
+        return strftime('%F %T.%L', value);
+      }
     }
   },
 
   // 1999-01-08
-  betterDate: function (value) {
-    var date = new Date(Date.parse(value));
+  betterDate: function (date) {
+    //var date = new Date(Date.parse(value));
     return '<time>' + strftime('%Y-%m-%d', date) + '</time>';
   },
 
@@ -257,3 +329,5 @@ var helpers = global.ViewHelpers = {
     }
   }
 };
+
+module.exports = helpers;

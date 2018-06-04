@@ -10,6 +10,26 @@ const colors = require('colors/safe');
 colors.enabled = true;
 const vsprintf = require("sprintf-js").vsprintf;
 
+// Change postgres' type parser to use moment instance instead of js Date instance
+// because momentjs object has timezone information as in original strin (js Date object always use local timezone)
+var types = require('pg').types;
+var moment = require('moment')
+
+var TIMESTAMPTZ_OID = 1184
+var TIMESTAMP_OID = 1114
+var customDateParser = (val) => {
+  if (val === null) {
+    return null;
+  } else {
+    var date = moment.parseZone(val)
+    date.origValueString = val
+    return date
+  }
+};
+
+types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
+types.setTypeParser(TIMESTAMP_OID, customDateParser)
+
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
     // @ts-ignore
