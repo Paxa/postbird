@@ -2,16 +2,17 @@
 
 Postbird is PostgreSQL GUI client for macOS, written in JavaScript, runs with Electron
 
-![postbird-screenshot](https://cloud.githubusercontent.com/assets/26019/24329271/0758103e-1234-11e7-916c-40d407799580.png)
+![postbird-screenshot](https://user-images.githubusercontent.com/26019/41055418-dcc55700-69f3-11e8-8d3e-572cf5febedc.png)
 
-![postbird-table-screenshot](https://cloud.githubusercontent.com/assets/26019/24329272/075a06c8-1234-11e7-9fb8-fc800343e8ad.png)
+![postbird-table-screenshot](https://user-images.githubusercontent.com/26019/41055416-dc5a5464-69f3-11e8-87b8-994e763da816.png)
 
+![postbird-structure-screenshot](https://user-images.githubusercontent.com/26019/41055417-dc8eb56a-69f3-11e8-8145-6f0d5eb147a6.png)
 
 ## Download
 
-**Version 0.7.1**
+**Version 0.8.0**
 
-[Postbird-0.7.1.dmg](https://github.com/Paxa/postbird/releases/download/0.7.1/Postbird-0.7.1.dmg) - OS X 10.9+ 64bit
+[Postbird-0.8.0.dmg](https://github.com/Paxa/postbird/releases/download/0.8.0/Postbird-0.8.0.dmg) - OS X 10.9+ 64bit
 
 
 ## Development
