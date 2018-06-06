@@ -79,7 +79,7 @@ class Procedure extends ModelBase {
   }
 
   static listLanguages () {
-    return this.q("SELECT * FROM pg_language", (data, error) => {
+    return this.q("SELECT * FROM pg_language").then(data => {
       return Promise.resolve(data.rows);
     });
   }
