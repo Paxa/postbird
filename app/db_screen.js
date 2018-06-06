@@ -2,6 +2,7 @@ class DbScreen {
   /*::
   type: string
   contentTabLimit: number
+  contentTabWideLimit: number
   options: any
   connection: Connection
   view: DbScreenView
