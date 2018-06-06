@@ -162,12 +162,20 @@ var filterMatchers = (() => {
 
 class Content extends Pane {
 
-  renderTab (data, columnTypes, error) {
+  renderTab (data, columnTypes, options) {
 
-    if (error) {
-      this.error = error;
+    if (options.error) {
+      this.error = options.error;
       this.renderData(data);
       return;
+    } else {
+      this.error = null;
+    }
+
+    if (options.pageLimit) {
+      this.pageLimit = options.pageLimit;
+    } else {
+      this.pageLimit = this.handler.contentTabLimit;
     }
 
     this.columnTypes = columnTypes;
@@ -252,6 +260,8 @@ class Content extends Pane {
       this.prevPageEl.css('display', 'none');
     }
 
+    this.footer.find('.info').text(`Rows ${begin} - ${ends} of ...`);
+
     this.totals((count) => {
       if (ends == count) {
         this.nextPageEl.hide();
@@ -259,7 +269,7 @@ class Content extends Pane {
         this.nextPageEl.show();
       }
 
-      this.footer.find('.info').text("Rows " + begin + " - " + ends + " of " + count);
+      this.footer.find('.info').text(`Rows ${begin} - ${ends} of ${count}`);
     });
 
   }
@@ -282,7 +292,7 @@ class Content extends Pane {
       }
     });
     this.offset += this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions).then(data => {
+    this.handler.table.getRows(this.offset, this.pageLimit, this.queryOptions).then(data => {
       this.renderPage(data);
       this.scrollToTop();
       setTimeout(() => {
@@ -298,7 +308,7 @@ class Content extends Pane {
       }
     });
     this.offset -= this.limit;
-    this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions).then(data => {
+    this.handler.table.getRows(this.offset, this.pageLimit, this.queryOptions).then(data => {
       this.renderPage(data);
       this.scrollToTop();
       setTimeout(() => {
@@ -316,7 +326,7 @@ class Content extends Pane {
       }
     });
     try {
-      var data = await this.handler.table.getRows(this.offset, this.handler.contentTabLimit, this.queryOptions);
+      var data = await this.handler.table.getRows(this.offset, this.pageLimit, this.queryOptions);
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();

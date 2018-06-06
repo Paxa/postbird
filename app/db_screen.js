@@ -15,6 +15,7 @@ class DbScreen {
   constructor (connection, options) {
     this.type = "db_screen";
     this.contentTabLimit = 200;
+    this.contentTabWideLimit = 100;
     this.options = Object.assign({fetchDbList: true}, options)
 
     this.connection = connection;
@@ -206,12 +207,16 @@ class DbScreen {
           extraColumns.push(`ST_AsText(${key}) as ${key}`);
         }
       });
-      var data = await this.table.getRows(0, this.contentTabLimit, {with_oid: hasOid, extraColumns: extraColumns});
-      this.view.contentPane.renderTab(data, columnTypes);
+      var rowsCount = Object.keys(columnTypes).length < 30 ? this.contentTabLimit : this.contentTabWideLimit;
+      var data = await this.table.getRows(0, rowsCount, {
+        with_oid: hasOid,
+        extraColumns: extraColumns,
+      });
+      this.view.contentPane.renderTab(data, columnTypes, {pageLimit: rowsCount});
       this.currentTab = 'content';
     } catch (error) {
       $u.alertError("Can not load content", {detail: error.message});
-      this.view.contentPane.renderTab(null, null, error);
+      this.view.contentPane.renderTab(null, null, {error: error});
       this.currentTab = 'content';
     } finally {
       App.stopLoading();
