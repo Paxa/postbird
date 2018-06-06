@@ -196,9 +196,11 @@ class LoginScreen {
     if (params.type == "url") {
       this.urlForm.fillForm(params);
       this.standardForm.fillForm({});
+      this.activeForm = 'postgres-url';
     } else {
       this.standardForm.fillForm(params);
       this.urlForm.fillForm({});
+      this.activeForm = 'standard';
     }
   }
 
