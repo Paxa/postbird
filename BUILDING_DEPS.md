@@ -21,7 +21,7 @@ cp /Applications/Postgres.app/Contents/Versions/latest/bin/pg_dump ./vendor/darw
 install_name_tool -change /Applications/Postgres.app/Contents/Versions/10/lib/libpq.5.dylib @loader_path/libpq.5.10.dylib ./vendor/darwin/psql
 install_name_tool -change /Applications/Postgres.app/Contents/Versions/10/lib/libpq.5.dylib @loader_path/libpq.5.10.dylib ./vendor/darwin/pg_dump
 
-PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH ./node_modules/.bin/electron-rebuild -n 54
+PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH ./node_modules/.bin/electron-rebuild -n 59
 
 install_name_tool -change /Applications/Postgres.app/Contents/Versions/10/lib/libpq.5.dylib @loader_path/../../../../vendor/darwin/libpq.5.10.dylib node_modules/libpq/build/Release/addon.node
 

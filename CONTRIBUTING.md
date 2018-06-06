@@ -30,9 +30,9 @@ As a workaround, before creating package need to delete developer dependecies fr
 # make sure you have ran "rake rebuild_ext"
 # delete "devDependencies" from package.json
 npm prune
-npm install -g electron-packager@10.1.1
-npm install -g requireg
-sudo npm install -g electron@1.7.12
+npm install -g electron-packager@12.1.0
+npm install requireg
+sudo npm install -g electron@2.0.2
 node packager.js
 rake build_dmg
 ```

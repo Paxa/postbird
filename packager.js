@@ -1,11 +1,11 @@
-var requireg = require('requireg')
+var requireg = require('requireg');
 var packager = requireg('electron-packager');
 var rebuild = requireg('electron-rebuild').rebuild;
 var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  electronVersion: '1.7.12',
+  electronVersion: '2.0.2',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
