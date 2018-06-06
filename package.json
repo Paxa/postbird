@@ -1,7 +1,7 @@
 {
   "name": "Postbird",
   "main": "main.js",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
   "scripts": {

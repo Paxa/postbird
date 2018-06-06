@@ -1,4 +1,4 @@
-== Version 0.8.0 (unrelease)
+== Version 0.8.0 (07-jun-2018)
 
 * Feature: Connect with postgres:// URL
 * Redesign help screen
@@ -10,6 +10,7 @@
 * Editing & deleting procedures
 * Implement stopRunningQuery for pure-js pg client
 * Add typescript hibrid validator
+* Show only 100 rows per page for wide tables (more then 30 columns)
 
 == Version 0.7.1 (06-feb-2018)
 
