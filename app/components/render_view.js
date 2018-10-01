@@ -1,9 +1,12 @@
 var pug;
 var pugRuntime = require('pug-runtime');
+var slash = require('slash');
 require(__dirname + '/../view_helpers');
 
+var dirname = process.platform === "win32"? slash(__dirname): __dirname;
+
 var RenderView = {
-  root: __dirname.replace(/\/app\/components/, ''),
+  root: dirname.replace(/\/app\/components/, ''),
 
   pugFn: {},
 
