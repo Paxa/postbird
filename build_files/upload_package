@@ -1,0 +1,20 @@
+#!/bin/sh
+
+export GIT_REF=`git show --pretty=format:%h --quiet`
+export GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | tr -d '\n'`
+export PKG_DATE=`git show --pretty=format:%cd --date=short --quiet`
+
+set -e
+set -v
+
+if [ "$(uname)" == "Darwin" ]; then
+  rake build_dmg
+fi
+
+ls -lah ~
+
+pip install --upgrade b2
+
+b2 authorize-account $B2_KEY_ID $B2_KEY
+
+b2 upload-file $B2_BUCKET ~/Postbird-0.8.0.dmg $PKG_DATE-$GIT_BRANCH-$PKG_DATE/Postbird.dmg
