@@ -17,6 +17,7 @@ env:
 script:
   - yarn
   - ./build_files/rebuild_ext
+  - mkdir -p ~/Postbird_release
   - npm install -g electron-packager@13.0.0
   - npm install -g electron@3.0.10
   - node packager.js
