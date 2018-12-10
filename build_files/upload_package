@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export GIT_REF=`git show --pretty=format:%h --quiet`
 export GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | tr -d '\n'`
@@ -13,6 +13,7 @@ fi
 
 ls -lah ~
 
+pip install --upgrade pip
 pip install --upgrade b2
 
 b2 authorize-account $B2_KEY_ID $B2_KEY

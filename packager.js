@@ -5,7 +5,7 @@ var packageJson = require('./package.json');
 var child_process = require('child_process');
 
 var opts = {
-  electronVersion: '2.0.2',
+  electronVersion: '3.0.10',
   dir: '.',
   arch: 'x64',
   platform: 'darwin',
