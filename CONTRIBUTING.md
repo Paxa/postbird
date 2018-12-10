@@ -27,7 +27,7 @@ Electron packager or npm has a bug, it may include developer dependecies to rele
 As a workaround, before creating package need to delete developer dependecies from package.json and run `npm prune`
 
 ```
-# make sure you have ran "rake rebuild_ext"
+# make sure you have ran "yarn rebuild_ext"
 # delete "devDependencies" from package.json
 npm prune
 npm install -g electron-packager@13.0.0

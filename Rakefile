@@ -46,14 +46,6 @@ task :build_dev do
   puts "Complete"
 end
 
-desc "Rebuild npm native extensions for electron"
-task :rebuild_ext do
-  if RUBY_PLATFORM =~ /darwin/
-    system "PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin ./node_modules/.bin/electron-rebuild -n 59"
-  else
-    system "./node_modules/.bin/electron-rebuild -n 59"
-  end
-end
 
 desc "Build and install"
 task :build_install do

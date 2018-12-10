@@ -8,11 +8,12 @@ set -e
 set -v
 
 if [ "$(uname)" == "Darwin" ]; then
+  rake --version
   rake build_dmg
 fi
 
-ls -lah ~/Postbird_release/
-ls -lah ~/*.dmg
+ls -lah ~/Postbird_release/*
+ls -lah ~/*.dmg || true
 
 sudo pip install --upgrade pip
 sudo pip install --upgrade b2
