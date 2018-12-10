@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - '11'
+
+os:
+  - osx
+  - windows
+  - linux
+
+cache:
+  yarn: true
+
+env:
+  - B2_KEY_ID=001e4484b4856cc0000000005
+  - B2_KEY=K001ryuVlXkuP18wIL9SwmGEXDpnirk
+
+script:
+  - yarn
+  - yarn rebuild_ext
+  - ./bin/build_files/mac_libs
+  - node packager.js

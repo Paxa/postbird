@@ -9,7 +9,7 @@
     "test": "electron-mocha tests/",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "cross-env NW_DEV=true NW_DEBUG=true electron . $@",
-    "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 59",
+    "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 64",
     "ts": "node ts.js"
   },
   "devDependencies": {
@@ -18,37 +18,38 @@
     "@types/mousetrap": "^1.6.0",
     "@types/pg": "^7.4.9",
     "@types/semver": "^5.5.0",
-    "electron": "2.0.10",
+    "electron": "3.0.10",
     "electron-mocha": "^6.0.2",
-    "electron-packager": "12.1.0",
-    "electron-rebuild": "1.7.3",
+    "electron-packager": "13.0.0",
+    "electron-rebuild": "1.8.2",
     "localStorage": "^1.0.3",
-    "node-sass": "4.9.0",
-    "spectron": "^3.8.0",
+    "node-sass": "4.11.0",
+    "spectron": "^5.0.0",
     "typescript": "^2.8.3"
   },
   "dependencies": {
-    "colors": "^1.3.0",
+    "colors": "^1.3.3",
     "cross-env": "^5.2.0",
-    "csv-stringify": "^3.0.0",
-    "electron-window-state": "4.1.1",
+    "csv-stringify": "^5.1.0",
+    "electron-window-state": "5.0.3",
     "eventemitter2": "5.0.1",
     "is-electron-renderer": "^2.0.1",
     "moment": "^2.22.2",
     "needle": "2.2.1",
-    "pg": "7.4.3",
+    "pg": "7.7.1",
     "pg-escape": "^0.2.0",
     "pug": "2.0.3",
-    "raven": "2.6.2",
-    "semver": "^5.5.0",
+    "raven": "2.6.4",
+    "semver": "^5.6.0",
     "slash": "^2.0.0",
-    "sprintf-js": "1.1.1",
+    "sprintf-js": "1.1.2",
     "strftime": "0.10.0"
   },
   "optionalDependencies": {
     "pg-native": "3.0.0"
   },
   "resolutions": {
-    "node-abi": "^2.4.1"
+    "node-abi": "^2.5.0",
+    "node-gyp": "^3.8.0"
   }
 }
