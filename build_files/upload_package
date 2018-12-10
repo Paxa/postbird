@@ -12,7 +12,7 @@ if [ "$(uname)" == "Darwin" ]; then
   rake build_dmg
 fi
 
-ls -lah ~/Postbird_release/*
+ls -lah ~/Postbird_release/* || true
 ls -lah ~/*.dmg || true
 
 sudo pip install --upgrade pip

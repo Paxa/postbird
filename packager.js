@@ -4,11 +4,12 @@ var rebuild = requireg('electron-rebuild').rebuild;
 var packageJson = require('./package.json');
 var child_process = require('child_process');
 
+
 var opts = {
   electronVersion: '3.0.10',
   dir: '.',
   arch: 'x64',
-  platform: 'darwin',
+  platform: process.platform,
   appBundleId: 'com.postbird',
   appCategoryType: 'public.app-category.developer-tools',
   appVersion: packageJson.version,
