@@ -5,8 +5,8 @@ node_js:
 
 os:
   - osx
-  - windows
   - linux
+#  - windows
 
 cache:
   yarn: true

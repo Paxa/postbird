@@ -13,8 +13,8 @@ fi
 
 ls -lah ~
 
-pip install --upgrade pip
-pip install --upgrade b2
+sudo pip install --upgrade pip
+sudo pip install --upgrade b2
 
 b2 authorize-account $B2_KEY_ID $B2_KEY
 
