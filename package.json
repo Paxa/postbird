@@ -40,6 +40,7 @@
     "pg-escape": "^0.2.0",
     "pug": "2.0.3",
     "raven": "2.6.4",
+    "requireg": "^0.2.1",
     "semver": "^5.6.0",
     "slash": "^2.0.0",
     "sprintf-js": "1.1.2",
