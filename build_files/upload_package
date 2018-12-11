@@ -14,10 +14,13 @@ if [ "$(uname)" == "Darwin" ]; then
 else
   wget https://dl.minio.io/client/mc/release/linux-amd64/mc
   chmod +x mc
-  mv mc /usr/bin/mc
+  sudo mv mc /usr/bin/mc
 fi
 
 mc --version
 mc config host add paxa https://paxa.kuber.host travis postbird --api s3v4
 
-mc cp ./dist/Postbird-*.dmg paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$PKG_DATE
+for filename in ./dist/*.{dmg,deb,rpm}; do
+  [ -e "$filename" ] || continue
+  mc cp $filename paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$PKG_DATE/
+done

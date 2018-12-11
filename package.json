@@ -4,6 +4,7 @@
   "version": "0.8.0",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
+  "description": "Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron",
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
     "test": "electron-mocha tests/",
@@ -12,6 +13,11 @@
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 64",
     "ts": "node ts.js",
     "dist": "node build_package.js"
+  },
+  "author": {
+    "name": "Pavel Evstigneev",
+    "email": "pavel.evst@gmail.com",
+    "url": "https://github.com/Paxa"
   },
   "devDependencies": {
     "@types/alertify": "^0.3.30",
