@@ -60,9 +60,13 @@ process.on('unhandledRejection', error => {
         target: [ "deb", "rpm" ]
       },
 
-      windows: {
-        target: [ "nsis", "portable" ],
+      nsis: {
+        //target: [ "nsis", "portable" ],
         icon: "build_files/icon.icns",
+      },
+
+      portable: {
+        
       }
     }
   })
