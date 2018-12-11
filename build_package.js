@@ -57,7 +57,7 @@ process.on('unhandledRejection', error => {
 
       linux: {
         category: "Programming",
-        target: [ "AppImage", "deb", "rpm" ]
+        target: [ "deb", "rpm" ]
       }
     }
   })
