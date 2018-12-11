@@ -11,14 +11,8 @@ os:
 cache:
   yarn: true
 
-env:
-  - B2_BUCKET=postbird-builds B2_KEY_ID=001e4484b4856cc0000000005 B2_KEY=K001ryuVlXkuP18wIL9SwmGEXDpnirk
-
 script:
   - yarn
   - ./build_files/rebuild_ext
-  - mkdir -p ~/Postbird_release
-  - npm install -g electron-packager@13.0.0
-  - npm install -g electron@3.0.10
-  - node packager.js
+  - yarn dist
   - ./build_files/upload_package

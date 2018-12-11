@@ -2,3 +2,4 @@ assets/styles/.sass-cache
 libudev.so.0
 node_modules/
 .ruby-version
+dist/

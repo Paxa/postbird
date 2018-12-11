@@ -7,17 +7,17 @@ export PKG_DATE=`git show --pretty=format:%cd --date=short --quiet`
 set -e
 set -v
 
+ls -lah dist/* || true
+
 if [ "$(uname)" == "Darwin" ]; then
-  rake --version
-  rake build_dmg
+  brew install minio-mc
+else
+  wget https://dl.minio.io/client/mc/release/linux-amd64/mc
+  chmod +x mc
+  mv mc /usr/bin/mc
 fi
 
-ls -lah ~/Postbird_release/* || true
-ls -lah ~/*.dmg || true
+mc --version
+mc config host add paxa https://paxa.kuber.host travis postbird --api s3v4
 
-sudo pip install --upgrade pip
-sudo pip install --upgrade b2
-
-b2 authorize-account $B2_KEY_ID $B2_KEY
-
-b2 upload-file $B2_BUCKET ~/Postbird-0.8.0.dmg $PKG_DATE-$GIT_BRANCH-$PKG_DATE/Postbird.dmg
+mc cp ./dist/Postbird-*.dmg paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$PKG_DATE
