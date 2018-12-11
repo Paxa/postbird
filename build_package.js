@@ -58,6 +58,11 @@ process.on('unhandledRejection', error => {
       linux: {
         category: "Programming",
         target: [ "deb", "rpm" ]
+      },
+
+      windows: {
+        target: [ "nsis", "portable" ],
+        icon: "build_files/icon.icns",
       }
     }
   })
