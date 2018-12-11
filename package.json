@@ -4,12 +4,18 @@
   "version": "0.8.0",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
+  "author": {
+    "name": "Pavel Evstigneev",
+    "email": "pavel.evst@gmail.com",
+    "url": "https://github.com/Paxa"
+  },
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
     "test": "electron-mocha tests/",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "cross-env NW_DEV=true NW_DEBUG=true electron . $@",
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 59",
+    "dist": "build",
     "ts": "node ts.js"
   },
   "devDependencies": {
@@ -19,6 +25,7 @@
     "@types/pg": "^7.4.9",
     "@types/semver": "^5.5.0",
     "electron": "2.0.10",
+    "electron-builder": "^20.38.2",
     "electron-mocha": "^6.0.2",
     "electron-packager": "12.1.0",
     "electron-rebuild": "1.7.3",
@@ -50,5 +57,15 @@
   },
   "resolutions": {
     "node-abi": "^2.4.1"
+  },
+  "build": {
+    "appId": "postbird",
+    "linux": {
+      "category": "Programming",
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
   }
 }
