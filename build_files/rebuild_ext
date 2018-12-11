@@ -17,5 +17,7 @@ if [ "$(uname)" == "Darwin" ]; then
   install_name_tool -change /Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.dylib @loader_path/../../../../vendor/darwin/libpq.5.11.dylib node_modules/libpq/build/Release/addon.node
   otool -L node_modules/libpq/build/Release/addon.node
 else
+  sudo apt-get clean
+  sudo apt-get update
   sudo apt-get install rpm
 fi
