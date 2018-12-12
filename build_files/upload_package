@@ -23,13 +23,13 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
   MC_CMD="./mc"
 else
   wget https://dl.minio.io/client/mc/release/windows-amd64/mc.exe
-  MC_CMD="mc.exe"
+  MC_CMD="./mc.exe"
 fi
 
 $MC_CMD --version
 $MC_CMD config host add postbird https://paxa.kuber.host travis postbird --api s3v4
 
-for filename in ./dist/*.{dmg,deb,rpm,nsis}; do
+for filename in ./dist/*.{dmg,deb,rpm,exe}; do
   [ -e "$filename" ] || continue
   $MC_CMD cp $filename postbird/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
 done
