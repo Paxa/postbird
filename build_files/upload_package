@@ -15,7 +15,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   if brew ls --versions minio-mc; then
     echo "brew minio-mc already installed"
   else
-    brew install minio-mc
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install minio-mc
   fi
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
   wget https://dl.minio.io/client/mc/release/linux-amd64/mc

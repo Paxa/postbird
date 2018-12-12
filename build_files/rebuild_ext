@@ -4,7 +4,10 @@ set -e
 
 if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   if [ ! -d "/Applications/Postgres.app/Contents/Versions/11" ]; then
-    brew cask install postgres
+    # updating brew takes forver
+    # also lock to specific version of postgres.app
+    HOMEBREW_NO_AUTO_UPDATE=1 brew cask install \
+      https://raw.githubusercontent.com/Homebrew/homebrew-cask/b52633190d94bbffd11cbef9168164db58c658a3/Casks/postgres.rb
   else
     echo "Postgres.app aleady installed"
   fi
