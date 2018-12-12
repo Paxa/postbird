@@ -44,11 +44,11 @@ process.on('unhandledRejection', error => {
         //icon: "SQL.icns"
       }],
       npmRebuild: false, // because we changed dependency paths postgres manually
+      icon: "build_files/icon.icns",
 
       mac: {
         category: "public.app-category.developer-tools",
         target: "default",
-        icon: "build_files/icon.icns",
         bundleVersion: buildVersion,
         bundleShortVersion: packageJson.version,
         minimumSystemVersion: "10.9.0",
@@ -57,16 +57,13 @@ process.on('unhandledRejection', error => {
 
       linux: {
         category: "Programming",
-        target: [ "deb", "rpm" ]
+        target: [ "deb", "rpm", "snap", "" ],
+        icon: "build_files/icon.png",
+        mimeTypes: ["application/sql"]
       },
 
       nsis: {
-        //target: [ "nsis", "portable" ],
-        //icon: "build_files/icon.icns",
-      },
-
-      portable: {
-        
+        installerIcon: "build_files/icon.ico"
       }
     }
   })
