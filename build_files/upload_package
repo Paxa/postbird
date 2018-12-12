@@ -9,18 +9,23 @@ set -v
 
 ls -lah dist/* || true
 
-if [ "$(uname)" == "Darwin" ]; then
+MC_CMD="mc"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   brew install minio-mc
-else
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
   wget https://dl.minio.io/client/mc/release/linux-amd64/mc
   chmod +x mc
-  sudo mv mc /usr/bin/mc
+  MC_CMD="./mc"
+else
+  wget https://dl.minio.io/client/mc/release/windows-amd64/mc.exe
+  MC_CMD="mc.exe"
 fi
 
-mc --version
-mc config host add paxa https://paxa.kuber.host travis postbird --api s3v4
+$MC_CMD --version
+$MC_CMD config host add paxa https://paxa.kuber.host travis postbird --api s3v4
 
 for filename in ./dist/*.{dmg,deb,rpm,nsis}; do
   [ -e "$filename" ] || continue
-  mc cp $filename paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
+  $MC_CMD cp $filename paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
 done

@@ -2,22 +2,28 @@
 
 set -e
 
-if [ "$(uname)" == "Darwin" ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   if [ ! -d "/Applications/Postgres.app/Contents/Versions/11" ]; then
     brew cask install postgres
   else
     echo "Postgres.app aleady installed"
   fi
-fi
 
-yarn rebuild_ext
+  yarn rebuild_ext
 
-if [ "$(uname)" == "Darwin" ]; then
   echo "Updating node_modules/libpq/build/Release/addon.node"
-  install_name_tool -change /Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.dylib @loader_path/../../../../vendor/darwin/libpq.5.11.dylib node_modules/libpq/build/Release/addon.node
+  install_name_tool -change \
+    /Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.dylib \
+    @loader_path/../../../../vendor/darwin/libpq.5.11.dylib \
+    node_modules/libpq/build/Release/addon.node
   otool -L node_modules/libpq/build/Release/addon.node
-else
+
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
+  yarn rebuild_ext
+
   sudo apt-get clean > /dev/null
   sudo apt-get update > /dev/null
   sudo apt-get install -q rpm
+else
+  # skip for windows
 fi
