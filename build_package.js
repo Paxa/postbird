@@ -57,7 +57,7 @@ process.on('unhandledRejection', error => {
 
       linux: {
         category: "Programming",
-        target: [ "deb", "rpm", "snap", "" ],
+        target: [ "deb", "rpm", "snap" ],
         icon: "build_files/icon.png",
         mimeTypes: ["application/sql"]
       },
