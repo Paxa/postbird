@@ -12,7 +12,11 @@ ls -lah dist/* || true
 MC_CMD="mc"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
-  brew install minio-mc
+  if brew ls --versions minio-mc; then
+    echo "brew minio-mc already installed"
+  else
+    brew install minio-mc
+  fi
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
   wget https://dl.minio.io/client/mc/release/linux-amd64/mc
   chmod +x mc
@@ -23,9 +27,9 @@ else
 fi
 
 $MC_CMD --version
-$MC_CMD config host add paxa https://paxa.kuber.host travis postbird --api s3v4
+$MC_CMD config host add postbird https://paxa.kuber.host travis postbird --api s3v4
 
 for filename in ./dist/*.{dmg,deb,rpm,nsis}; do
   [ -e "$filename" ] || continue
-  $MC_CMD cp $filename paxa/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
+  $MC_CMD cp $filename postbird/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
 done
