@@ -62,7 +62,7 @@ process.on('unhandledRejection', error => {
 
       nsis: {
         //target: [ "nsis", "portable" ],
-        icon: "build_files/icon.icns",
+        //icon: "build_files/icon.icns",
       },
 
       portable: {
