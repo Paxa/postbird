@@ -2,7 +2,10 @@
 
 export GIT_REF=`git show --pretty=format:%h --quiet`
 export GIT_BRANCH=${TRAVIS_BRANCH:-`git rev-parse --abbrev-ref HEAD | tr -d '\n'`}
-export PKG_DATE=`git show --pretty=format:%cd --date=short --quiet`
+
+export TZ=":Europe/London" # UTC
+export GIT_ISO_DATE=`git show --pretty=format:%cd --date=iso --quiet`
+export PKG_DATE=`ruby -rdate -e 'puts Time.at(DateTime.parse(ENV["GIT_ISO_DATE"]).to_time.to_i).strftime("%Y_%m_%d.%H_%M")'`
 
 set -e
 set -v
