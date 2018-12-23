@@ -16,7 +16,7 @@ var template = [
         click: () => {
           (new ImportController).doImport();
         },
-        accelerator: 'Shift+CmdOrCtrl+i',
+        accelerator: 'CmdOrCtrl+o',
       },
       {
         label: 'Reconnect',
