@@ -3,6 +3,7 @@ const Platform = builder.Platform
 
 var packageJson = require('./package.json');
 var childProcess = require('child_process');
+var isWin = process.platform === "win32";
 
 var exec = (cmd) => {
   return new Promise((resolve, reject) => {
@@ -44,7 +45,7 @@ process.on('unhandledRejection', error => {
         //icon: "SQL.icns"
       }],
       npmRebuild: false, // because we changed dependency paths postgres manually
-      icon: "build_files/icon.icns",
+      icon: isWin ? "build_files/icon.ico" : "build_files/icon.icns",
 
       mac: {
         category: "public.app-category.developer-tools",
@@ -64,6 +65,9 @@ process.on('unhandledRejection', error => {
 
       nsis: {
         installerIcon: "build_files/icon.ico"
+      },
+      win: {
+        verifyUpdateCodeSignature: false
       }
     }
   })

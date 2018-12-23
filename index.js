@@ -102,9 +102,7 @@ $(window).on('window-ready', (event) => {
   console.log('window-ready');
 });
 
-if (!process.platform.match(/^win/) && !process.platform.match(/^linux/)) { // win32, win64, win128, etc
-  require('./app/top_menu');
-}
+require('./app/top_menu');
 
 var arguments = electron.remote.process.argv;
 if (arguments.length > 2) {

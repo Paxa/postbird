@@ -2,9 +2,6 @@ class ImportController {
 
   constructor () {
     // TODO: Detect connected tab
-    if (App.currentTab.instance.type != "db_screen") {
-      $u.alert("Please connect to database", {type: "warning"});
-    }
   }
 
   get handler () {
@@ -12,6 +9,11 @@ class ImportController {
   }
 
   async doImport () {
+    if (this.handler.type != "db_screen") {
+      $u.alert("Please connect to database", {type: "warning"});
+      return;
+    }
+
     var files = await $u.openFileDialog('.sql');
 
     if (files && files.length > 0) {
