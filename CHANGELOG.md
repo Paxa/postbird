@@ -1,3 +1,13 @@
+== Version 0.8.1
+
+* Support for Linux
+* Support for Windows (Thanks to @DavidBernal)
+* Change shortcut for open file to Cmd+O
+* Adds codemirror search (Thanks to @drozdoff)
+* Update to electron 3
+* Change from electron-packager to electron-builder
+* Automatic builds via travis
+
 == Version 0.8.0 (07-jun-2018)
 
 * Feature: Connect with postgres:// URL
