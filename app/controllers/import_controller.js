@@ -3,7 +3,7 @@ class ImportController {
   constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
-      $u.alert("Please connecto to database", {type: "warning"});
+      $u.alert("Please connect to database", {type: "warning"});
     }
   }
 
