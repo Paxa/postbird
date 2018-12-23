@@ -8,6 +8,9 @@ os:
   - linux
   - windows
 
+env:
+  - YARN_GPG=no
+
 cache:
   yarn: true
 

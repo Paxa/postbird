@@ -143,7 +143,42 @@ app-builder-bin@2.6.0:
   resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-2.6.0.tgz#b4e5d5ee5bcf264818ab9830b95338f9f419de5d"
   integrity sha512-7HphDMS2U9MwAA6R7lSU6MASFR/D+VJDb5hQ4Fn2coOMyaRn71QDWPdG0TPnDr88F2I7bsTuHYud28S/yN2lZw==
 
-app-builder-lib@20.38.3, app-builder-lib@~20.38.3:
+app-builder-bin@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-2.6.1.tgz#aa97f82d341dfa6f1269d78955482d619cc613ed"
+  integrity sha512-W0l85O+s6lOaziWqAhszPfwiG0s15FvMBP9j9i/bknsMccUkwN60u4Cy7yYtf6akCUDuJenLqpTX4/xvkq1egw==
+
+app-builder-lib@20.38.4:
+  version "20.38.4"
+  resolved "https://registry.yarnpkg.com/app-builder-lib/-/app-builder-lib-20.38.4.tgz#71a515d01f4f2bd48a67495804f659a46c35303c"
+  integrity sha512-JbuAJQBndcCW6BJVIb2tPjM5wiuIjz2LUlbyVxNIawM2wFKUBV9kr0N3RNBJFxcrCEuA9oprMUCoymJdrMUVfA==
+  dependencies:
+    "7zip-bin" "~4.1.0"
+    app-builder-bin "2.6.1"
+    async-exit-hook "^2.0.1"
+    bluebird-lst "^1.0.6"
+    builder-util "9.6.1"
+    builder-util-runtime "8.1.0"
+    chromium-pickle-js "^0.2.0"
+    debug "^4.1.0"
+    ejs "^2.6.1"
+    electron-osx-sign "0.4.11"
+    electron-publish "20.38.3"
+    fs-extra-p "^7.0.0"
+    hosted-git-info "^2.7.1"
+    is-ci "^2.0.0"
+    isbinaryfile "^3.0.3"
+    js-yaml "^3.12.0"
+    lazy-val "^1.0.3"
+    minimatch "^3.0.4"
+    normalize-package-data "^2.4.0"
+    plist "^3.0.1"
+    read-config-file "3.2.0"
+    sanitize-filename "^1.6.1"
+    semver "^5.6.0"
+    temp-file "^3.3.2"
+
+app-builder-lib@~20.38.3:
   version "20.38.3"
   resolved "https://registry.yarnpkg.com/app-builder-lib/-/app-builder-lib-20.38.3.tgz#3998cbe07cad6eb45918eba43aa6313bf6cc15c2"
   integrity sha512-xZTzWgH2pDUfic9KAv17julgp4/HVD451AzYdyFcwGTrDvLjoZee2Ua6/Els88GKbH3QIkpntJEn5gCwdc4O9A==
@@ -419,6 +454,24 @@ builder-util@9.6.0, builder-util@~9.6.0:
     debug "^4.1.0"
     fs-extra-p "^7.0.0"
     is-ci "^1.2.1"
+    js-yaml "^3.12.0"
+    source-map-support "^0.5.9"
+    stat-mode "^0.2.2"
+    temp-file "^3.3.2"
+
+builder-util@9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-9.6.1.tgz#4625620b1535fe40dcacb178d24fe56d0d7c8957"
+  integrity sha512-8MljKTjeV+A+LLVexuWEV3EpWbiUcsHHrB4Bg2qNo/3dC+vTo6g/27+W3Ij7Ij1UTobSkNBstFieWijXJCco9A==
+  dependencies:
+    "7zip-bin" "~4.1.0"
+    app-builder-bin "2.6.1"
+    bluebird-lst "^1.0.6"
+    builder-util-runtime "^8.1.0"
+    chalk "^2.4.1"
+    debug "^4.1.0"
+    fs-extra-p "^7.0.0"
+    is-ci "^2.0.0"
     js-yaml "^3.12.0"
     source-map-support "^0.5.9"
     stat-mode "^0.2.2"
@@ -772,9 +825,9 @@ css@^2.0.0:
     urix "^0.1.0"
 
 csv-stringify@^5.1.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.1.1.tgz#3989b8fc40b6cf12d2808529c86ca0fde019f560"
-  integrity sha512-QWD7SS9eLWolYlpRzwmhjSBBM0DM415dDyslRvENx5aSPK1oS2M7ynLLDyku9ziPTecfvEQAu6dp2wnz2jCy4Q==
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.1.2.tgz#0c594ff13f3ae30d40348805eeb0d1f4faf1d9c2"
+  integrity sha512-rvNEMy8IwVe/gnCjnF4a/3cxKPm8oaAZEBB8RIzlx9HcNrLrn3NlgacUIFZBRH86tKF76WVA13nkFF0mX7G2EQ==
   dependencies:
     lodash.get "~4.4.2"
 
@@ -899,14 +952,14 @@ ejs@~2.5.6:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-electron-builder@^20.38.3:
-  version "20.38.3"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.38.3.tgz#32eaa08575b5036e4dafc78adef25ff5a7370004"
-  integrity sha512-KVM90FtSmryi6JT+YEOTJPsB34ZPdrJn2X18Rt8uatSQPj4vVCSwT834cyvF79idRea8yRVoMcm69XtH9VNPjg==
+electron-builder@^20.38.4:
+  version "20.38.4"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.38.4.tgz#67727529ffb87e7fdd78b3a84ea0d6c22bf04ec2"
+  integrity sha512-WHOr3Rz2wktxV5TqmRL6woO9/wrIZeRfJPSEXOhgfgLskE5Sp2Aer0zAF7lHNqXuG6JhU+0I9IYFAxa73MTs9w==
   dependencies:
-    app-builder-lib "20.38.3"
+    app-builder-lib "20.38.4"
     bluebird-lst "^1.0.6"
-    builder-util "9.6.0"
+    builder-util "9.6.1"
     builder-util-runtime "8.1.0"
     chalk "^2.4.1"
     dmg-builder "6.5.3"
@@ -1784,6 +1837,7 @@ lodash.clonedeep@^4.3.2:
 lodash.get@~4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
 lodash.mergewith@^4.6.0:
   version "4.6.0"
@@ -1953,8 +2007,9 @@ moment@>=2.14.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
 moment@^2.22.2:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
 ms@2.0.0:
   version "2.0.0"
@@ -1990,9 +2045,9 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
 
 node-abi@^2.0.0, node-abi@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.5.0.tgz#942e1a78bce764bc0c1672d5821e492b9d032052"
-  integrity sha512-9g2twBGSP6wIR5PW7tXvAWnEWKJDH/VskdXp168xsw9VVxpEGov8K4jsP4/VeoC7b2ZAyzckvMCuQuQlw44lXg==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.5.1.tgz#bb17288fc3b2f68fea0ed9897c66979fd754ed47"
+  integrity sha512-oDbFc7vCFx0RWWCweTer3hFm1u+e60N5FtGnmRV6QqvgATGFH/XRR6vqWIeBVosCYCqt6YdIr2L0exLZuEdVcQ==
   dependencies:
     semver "^5.4.1"
 
@@ -2827,7 +2882,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.4.1:
+"semver@2 || 3 || 4 || 5", semver@^5.3.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
@@ -2835,9 +2890,10 @@ semver@4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.2.tgz#c7a07158a80bedd052355b770d82d6640f803be7"
 
-semver@^5.0.3, semver@^5.1.0, semver@^5.6.0:
+semver@^5.0.3, semver@^5.1.0, semver@^5.4.1, semver@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
+  integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
 semver@^5.5.0:
   version "5.5.0"
