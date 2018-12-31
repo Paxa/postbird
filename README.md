@@ -33,6 +33,14 @@ npm run rebuild_ext
 
 To install it on Linux:
 
+before on unbutu:
+```sh
+# sudo apt-get install postgresql postgresql-contrib libpq-dev python-dev
+# sudo apt-get install postgresql-server-dev-X
+```
+
+Note: Change **X** of postgresql-server-dev-X to package version.
+
 ```sh
 git clone git@github.com:Paxa/postbird.git
 cd postbird
