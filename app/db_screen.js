@@ -395,7 +395,12 @@ class DbScreen {
     App.stopLoading();
 
     if (this.currentTable == tableName) {
-      this.currentTable = newName;
+      if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
+        this.tableSelected(this.currentSchema, newName);
+      } else {
+        this.currentTable = newName;
+        this.table = new Model.Table(this.currentSchema, this.currentTable);
+      }
     }
     this.omit('table.renamed');
     this.fetchTablesAndSchemas();
