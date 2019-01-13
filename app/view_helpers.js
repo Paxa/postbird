@@ -111,6 +111,9 @@ var helpers = global.ViewHelpers = {
         //console.log(value);
         //formated = value.length > 100 ? value.substr(0, 100) : value;
         break;
+      case 'interval':
+        formated = `${value.toPostgres()}`
+        break;
     }
 
     if (dataType == 'ARRAY' && Array.isArray(value)) {
