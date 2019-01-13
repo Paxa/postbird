@@ -257,7 +257,7 @@ class DbScreenView {
 
   renameTable (node, schema, tableName) {
     node = $u(node);
-    node.html('<input value="' + tableName + '" type=text>');
+    node.html(`<input value="${tableName}" type="text" class="edit-table-field">`);
     var input = node.find('input');
     input.focus();
     setTimeout(() => { input[0].setSelectionRange(0, 999); }, 20);

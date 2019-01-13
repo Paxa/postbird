@@ -711,6 +711,9 @@ body.sidebar-resizing {
               left: 13px;
               top: 4px;
               position: absolute; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li .edit-table-field {
+              font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+              font-size: 13px; }
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
               background-image: url("icons/db_view.png");
               opacity: 0.8; }

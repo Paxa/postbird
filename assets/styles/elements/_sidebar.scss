@@ -146,6 +146,13 @@
               position: absolute;
             }
 
+            .edit-table-field {
+              font: {
+                family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+                size: 13px;
+              };
+            }
+
             &[table-type=VIEW]:before, &[table-type="MATERIALIZED VIEW"]:before {
               background-image: url("icons/db_view.png");
               opacity: 0.8;
