@@ -32,8 +32,10 @@ types.setTypeParser(TIMESTAMP_OID, customDateParser)
 
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
-    // @ts-ignore
-    var pg = pg.native;
+    if (pg.native) {
+      // @ts-ignore
+      var pg = pg.native;
+    }
   }
 } catch (error) {
   console.log("can not load pg-native, using pg");

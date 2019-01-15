@@ -64,6 +64,12 @@ class ImportController {
       this.dialog.addMessage(success ? "SUCCESS" : "FAILURE");
       this.dialog.showCloseButton();
       this.handler.fetchTablesAndSchemas();
+    }).catch(error => {
+      if (typeof error == 'string') {
+        this.dialog.addMessage(error);
+      } else {
+        this.dialog.addMessage(`ERROR:\n${error.message}\n`);
+      }
     });
   }
 }
