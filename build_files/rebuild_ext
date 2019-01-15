@@ -26,8 +26,8 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
 
   sudo apt-get clean > /dev/null
   sudo apt-get update > /dev/null
-  sudo apt-get install -q rpm snapd
-  sudo snap install snapcraft --classic
+  sudo apt-get install -q rpm
+  #sudo snap install snapcraft --classic
 #else
   # skip for windows
 fi
