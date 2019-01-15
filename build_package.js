@@ -73,8 +73,7 @@ process.on('unhandledRejection', error => {
       snap: {
         grade: "devel",
         summary: "Advanced PostgreSQL desktop client for your daily needs",
-        description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features",
-        stagePackages: ["default", "postgresql-client"]
+        description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features"
       },
 
       nsis: {
