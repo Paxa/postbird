@@ -23,9 +23,13 @@ class HelpScreen {
 
     new PgDumpRunner().version().then(version => {
       this.content.find('.pg_dump_version').text(version);
+    }).catch(err => {
+      this.content.find('.pg_dump_version').text(err);
     });
     new PsqlRunner().version().then(version => {
       this.content.find('.psql_version').text(version);
+    }).catch(err => {
+      this.content.find('.psql_version').text(err);
     });
   }
 

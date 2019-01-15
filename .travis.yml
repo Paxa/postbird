@@ -17,5 +17,5 @@ cache:
 script:
   - yarn
   - ./build_files/rebuild_ext
-  - yarn dist
+  - DEBUG=electron-builder yarn dist
   - ./build_files/upload_package

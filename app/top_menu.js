@@ -272,6 +272,30 @@ if (process.platform == 'darwin') {
   );
 }
 
+if (process.platform == 'linux') {
+  template[6].submenu.unshift(
+    {
+      label: 'About Postbird',
+      click: () => {
+        var help = global.HelpScreen.open();
+        help.activatePage("about-postbird");
+      }
+    }
+  )
+  template[6].submenu.push(
+    {
+      type: 'separator'
+    },
+    {
+      label: "Check For Updates...",
+      click: () => {
+        (new global.UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
+      }
+    },
+  );
+}
+
+
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
@@ -342,4 +366,3 @@ App.on('table.changed', (schema, table) => {
 App.on('dbtab.changed', (tab) => {
   checkTableMenu();
 });
-

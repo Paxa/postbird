@@ -45,7 +45,7 @@ process.on('unhandledRejection', error => {
         //icon: "SQL.icns"
       }],
       npmRebuild: false, // because we changed dependency paths postgres manually
-      icon: isWin ? "build_files/icon.ico" : "build_files/icon.icns",
+      icon: isWin ? "build_files/icon.ico" : __dirname + "/build_files/icon.icns",
 
       mac: {
         category: "public.app-category.developer-tools",
@@ -59,14 +59,29 @@ process.on('unhandledRejection', error => {
       linux: {
         category: "Programming",
         target: [ "deb", "rpm", "snap" ],
-        icon: "build_files/icon.png",
+        icon: __dirname + "/build_files/icon.png",
         mimeTypes: ["application/sql"]
+      },
+      rpm: {
+        depends: ["default", "postgresql"],
+        icon: __dirname + "/build_files/icon.png",
+        desktop: "Postbird"
+      },
+      deb: {
+        depends: ["default", "postgresql-client"]
+      },
+      snap: {
+        grade: "devel",
+        summary: "Advanced PostgreSQL desktop client for your daily needs",
+        description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features",
+        stagePackages: ["default", "postgresql-client"]
       },
 
       nsis: {
         installerIcon: "build_files/icon.ico"
       },
       win: {
+        target: ["nsis", "zip"],
         verifyUpdateCodeSignature: false
       }
     }
