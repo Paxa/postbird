@@ -51,6 +51,7 @@ h4 Indexes
           th uniq
           th columns
           th type
+          th size
           th
       tbody
         each index in indexes || []
@@ -63,6 +64,7 @@ h4 Indexes
             td= index.indisunique ? 'Yes' : 'No'
             td= index.columns().join(", ")
             td= getIndexType(index.pg_get_indexdef)
+            td= index.index_size
             td
               a(exec="deleteIndex('" + index.relname + "')") Delete
         else

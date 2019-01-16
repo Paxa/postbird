@@ -3,6 +3,7 @@ class Index extends ModelBase {
   table: Model.Table
   name: string
   pg_get_indexdef: string
+  index_size: string
   */
   constructor (name, table, data = {} /*:: as any */) {
     if (name) {
@@ -27,7 +28,8 @@ class Index extends ModelBase {
           c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid,
           pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
           pg_catalog.pg_get_constraintdef(con.oid, true), contype,
-          condeferrable, condeferred, c2.reltablespace, i.indisvalid
+          condeferrable, condeferred, c2.reltablespace, i.indisvalid,
+          pg_size_pretty(pg_relation_size(c2.oid)) as index_size
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
         LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
@@ -83,7 +85,7 @@ class Index extends ModelBase {
   }
 }
 
-['name', 'relname', 'indisprimary', 'indisunique', 'indisvalid', 'pg_get_indexdef', 'pg_get_constraintdef'].forEach(field => {
+['name', 'relname', 'indisprimary', 'indisunique', 'indisvalid', 'pg_get_indexdef', 'pg_get_constraintdef', 'index_size'].forEach(field => {
   Object.defineProperty(Index.prototype, field, {
     get: function () {
       return this.data[field];
