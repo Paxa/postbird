@@ -1,0 +1,75 @@
+
+.custom-window {
+  width: auto;
+  min-width: 400px;
+
+  .alertify-dialog {
+    padding-top: 38px;
+  }
+
+  h3.window-title {
+    position: absolute;
+    padding-top: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 31px;
+    font-size: 20px;
+    background: #f5f7f9;
+
+    @include gradient(#f5f7f9, #f0f1f2);
+
+    border-radius: 8px 8px 0 0;
+  }
+
+  p.buttons {
+    margin: {
+      top: 11px;
+      bottom: -5px;
+    };
+
+    button {
+      @extend .alertify-button;
+    }
+
+    button.ok {
+      @extend .alertify-button-ok;
+    }
+
+    button.cancel {
+      border-color: #ADA6A6;
+      background-color: #B8B8B8;
+
+      &:hover, &:focus {
+        background-color: #B8B8B8;
+        border-color: #ADA6A6;
+      }
+    }
+  }
+
+  input[type="text"], input[type="password"] {
+    font-size: 12px;
+    height: 13px;
+    padding: 10px 6px;
+    outline: none;
+    border: 1px solid #d5d5d5;
+    margin: 5px;
+    cursor: text;
+    -webkit-app-region: no-drag;
+    box-sizing: border-box;
+    &:focus {
+      border-radius: 1px;
+      box-shadow: 0 0 0 3.5px rgba(116,180,255,.7);
+      animation: showFocus .3s;
+      border-color: #7aa7dd !important;
+    }
+  }
+
+  .alertify-buttons {
+    display: none;
+    padding: {
+      top: 5px;
+      bottom: 5px;
+    };
+  }
+}

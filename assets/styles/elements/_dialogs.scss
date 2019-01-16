@@ -73,10 +73,12 @@
 }
 
 .edit-procedure-dialog {
+  max-width: 75vw;
   textarea, .CodeMirror {
     border: 1px solid #ccc;
     min-height: 368px;
     text-align: left;
+    max-width: 100%;
   }
 }
 
@@ -99,6 +101,19 @@
   &.edit-value-wide {
     textarea {
       min-width: 800px;
+    }
+  }
+}
+
+.new-index-dialog {
+  ul.columns-names {
+    margin: 3px auto 10px;
+    text-align: left;
+    width: 70%;
+    border: 1px solid #ccc;
+
+    li + li {
+      border-top: 1px solid #ccc;
     }
   }
 }

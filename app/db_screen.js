@@ -537,10 +537,8 @@ class DbScreen {
     });
   }
 
-  getTableSql (schema, table, callback) {
-    new Model.Table(schema, table).getSourceSql((source) => {
-      callback(source);
-    });
+  getTableSql (schema, table) {
+    return new Model.Table(schema, table).getSourceSql();
   }
 
   infoTabActivate () {

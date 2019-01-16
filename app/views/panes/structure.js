@@ -51,7 +51,7 @@ class Structure extends Pane {
   }
 
   deleteIndex (indexName) {
-    var msg = `Delete index <b>${indexName}</b>?`;
+    var msg = `Delete index "${indexName}"?`;
     $u.confirm(msg, (result) => {
       if (result) {
         this.doDeleteIndex(indexName);

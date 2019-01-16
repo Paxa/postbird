@@ -9,12 +9,13 @@
     <link href="public/codemirror/addon/hint/show-hint.css" media="all" rel="stylesheet" type="text/css" />
     <link href="public/style.css" media="all" rel="stylesheet" type="text/css" />
   </head>
-  <body>
+  <body class="platform-">
     <script>
       var win = require('electron').remote.app.mainWindow;
       if (!win.isFocused()) {
         document.body.classList.add('unfocused');
       }
+      document.body.classList.add("platform-" + process.platform);
     </script>
 
     <div id="tabs">

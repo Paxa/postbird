@@ -38,7 +38,7 @@ interface App {
   stopLoading: () => void;
   stopRunningQuery: () => void;
   openConnection: (options: any, connectionName: string, callback: Function) => void;
-  humanErrorMessage: (error: any) => string;
+  humanErrorMessage: (error: any, options?: any) => string;
 
   activateTab: (index: number) => void;
   closeTab: (index) => void;
@@ -301,14 +301,18 @@ global.App = {
     });
   },
 
-  humanErrorMessage: (error) => {
+  humanErrorMessage: (error, options = {}) => {
     if (error.message == "connect ECONNREFUSED") {
       return "Connection refused.<br>Make sure postgres is running";
     } else if (error.message.match(/^getaddrinfo ENOTFOUND/)) {
       var host = error.message.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
       return `Can not resolve host '${host[1]}'`;
     } else {
-      return error.message;
+      var message = error.message;
+      if (options.showQuery && error.query) {
+        message += `\n\nSQL:\n${error.query}`;
+      }
+      return message;
     }
   }
 };

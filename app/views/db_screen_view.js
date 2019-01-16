@@ -199,7 +199,7 @@ class DbScreenView {
         }
 
         actions[`Show ${tableTitle} SQL`] = () => {
-          this.showViewSql(schema, table.table_name);
+          this.showTableSql(schema, table.table_name, tableTitle);
         };
         if (table.table_type == 'MATERIALIZED VIEW') {
           actions[`Refresh Mat. View`] = () => {
@@ -381,20 +381,18 @@ class DbScreenView {
     new Dialog.NewTable(this.handler);
   }
 
-  showTableSql (schema, table) {
-    App.startLoading("Getting table sql...");
-    this.handler.getTableSql(schema, table, (source) => {
+  async showTableSql (schema, table, tableTypeTitle) {
+    App.startLoading(`Getting ${tableTypeTitle.toLowerCase()} definition sql...`);
+    try {
+      var source = await this.handler.getTableSql(schema, table)
+      new Dialog.ShowSql(`${tableTypeTitle} ${table}`, source);
+    } catch (error) {
+      $u.alertError("Error getting source", {
+        detail: App.humanErrorMessage(error, {showQuery: true})
+      })
+    } finally {
       App.stopLoading();
-      new Dialog.ShowSql("Table " + table, source);
-    });
-  }
-
-  showViewSql (schema, table) {
-    App.startLoading("Getting view sql...");
-    this.handler.getTableSql(schema, table, (source) => {
-      App.stopLoading();
-      new Dialog.ShowSql("View " + table, source);
-    });
+    }
   }
 
   switchToHerokuMode (name, databseUrl) {

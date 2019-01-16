@@ -3,7 +3,7 @@
 form
   p
     label Name
-    input(name="name", value = data.column_name)
+    input(name="name", value = data.column_name type="text")
 
   p
     label Type
@@ -15,16 +15,15 @@ form
             if type
               option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name
   p
-    = "See "
-    a(href="http://www.postgresql.org/docs/10/static/datatype.html", target="_blank") documentation for datatypes
+    a(href="https://www.postgresql.org/docs/current/datatype.html", class="external docs-link") Postgres Data Types
 
-    p
+  p
     label Default value
-    input(name="default_value", value = data.column_default)
+    input(name="default_value", value = data.column_default type="text")
 
   p
     label Max length
-    input(name="max_length", value = data.character_maximum_length)
+    input(name="max_length", value = data.character_maximum_length type="text")
 
   p
     label
@@ -35,7 +34,7 @@ form
   input.pseudo-hidden(type="submit")
   p.buttons
     if action == "edit"
-        button.ok Update column
+        button.ok Update Column
     else
-        button.ok Add column
-    button.cancel cancel
+        button.ok Add Column
+    button.cancel Cancel

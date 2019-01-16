@@ -36,6 +36,7 @@ class EditProcedure extends Dialog {
       indentWithTabs: false,
       smartIndent: true,
       lineNumbers: true,
+      lineWrapping: true,
       matchBrackets : true,
       autofocus: true,
       styleActiveLine: true,

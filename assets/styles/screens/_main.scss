@@ -47,6 +47,8 @@
     .window-content {
       display: none;
       overflow: auto;
+      // use grey background in next release, make it same as mac apps
+      //background: #edecec;
 
       &.active {
         display: block;

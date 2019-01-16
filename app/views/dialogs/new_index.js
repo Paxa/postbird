@@ -2,7 +2,8 @@ class NewIndex extends Dialog {
 
   constructor (handler) {
     super(handler, {
-      title: "Create index"
+      title: "Create Index",
+      dialogClass: "new-index-dialog"
     });
     this.showWindow();
   }

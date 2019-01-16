@@ -23,6 +23,12 @@ class Dialog {
       $u.textInputMenu(el);
     });
 
+    this.windowContent.find('a.external').bind('click', (e) => {
+      $u.stopEvent(e);
+      var url = e.target.href;
+      electron.remote.shell.openExternal(url);
+    });
+
     if (this.dialogClass) {
       this.addClass(this.dialogClass);
     }

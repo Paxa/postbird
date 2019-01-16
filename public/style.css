@@ -122,7 +122,7 @@ h4 {
   line-height: 1.35em; }
 
 input, textarea {
-  border: 1px solid #b4b4b4; }
+  border: 1px solid #d5d5d5; }
 
 .pseudo-hidden {
   position: absolute;
@@ -246,8 +246,12 @@ input, textarea {
   color: #666; }
 
 .tab-message {
-  padding: 20px;
-  color: #333; }
+  padding: 11px;
+  color: #333;
+  position: absolute; }
+
+.window-content.content .tab-message {
+  padding: 20px; }
 
 #content {
   overflow: hidden; }
@@ -267,6 +271,7 @@ input, textarea {
   color: #333;
   background-color: #fcfcfc;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f1f1f1 100%);
+  background-size: 100% 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06); }
   .native-look:focus {
     box-shadow: none;
@@ -399,7 +404,7 @@ input, textarea {
       padding: 2px 8px 2px 8px;
       position: relative; }
       .login-screen .heroku-oauth ul.apps > li.selected {
-        background: #2c67d2;
+        background: #2b66da;
         color: white; }
     .login-screen .heroku-oauth ul.apps li {
       padding: 3px 10px;
@@ -442,7 +447,7 @@ input, textarea {
       padding: 2px 8px 2px 8px;
       position: relative; }
       .login-screen .sidebar ul > li.selected {
-        background: #2c67d2;
+        background: #2b66da;
         color: white; }
     .login-screen .sidebar ul li[data-auto-connect="true"]:after {
       content: 'AUTO';
@@ -551,7 +556,7 @@ body.sidebar-resizing {
       padding: 2px 8px 2px 8px;
       position: relative; }
       .help-screen > .sidebar ul > li.selected {
-        background: #2c67d2;
+        background: #2b66da;
         color: white; }
     .help-screen > .sidebar ul li {
       cursor: pointer;
@@ -697,10 +702,10 @@ body.sidebar-resizing {
             padding: 2px 8px 2px 8px;
             position: relative; }
             .main-screen > .sidebar > .tables > ul > li > ul > li.selected {
-              background: #2c67d2;
+              background: #2b66da;
               color: white; }
           .main-screen > .sidebar > .tables > ul > li > ul > li {
-            padding-left: 35px; }
+            padding-left: 34px; }
             .main-screen > .sidebar > .tables > ul > li > ul > li:before {
               display: block;
               content: "";
@@ -886,6 +891,7 @@ body.sidebar-resizing {
   border-spacing: 0;
   overflow: auto;
   max-height: 100%;
+  background: #fff;
   /*
   
     */ }
@@ -926,7 +932,7 @@ body.sidebar-resizing {
     background: #dcdcdc;
     color: black; }
   .rescol-wrapper .rescol-content-wrapper table.active tr.selected td {
-    background: #2c67d2;
+    background: #2b66da;
     color: white; }
     .rescol-wrapper .rescol-content-wrapper table.active tr.selected td a {
       color: white; }
@@ -1498,7 +1504,7 @@ body.new-window {
       padding: 2px 8px 2px 8px;
       position: relative; }
       .snippets-window > ul > li.selected {
-        background: #2c67d2;
+        background: #2b66da;
         color: white; }
     .snippets-window > ul > li {
       padding-left: 12px; }
@@ -1573,55 +1579,12 @@ body.new-window {
 .clearfix {
   clear: both; }
 
-.custom-window {
-  width: auto;
-  min-width: 400px; }
-  .custom-window .alertify-dialog {
-    padding-top: 38px; }
-  .custom-window h3.window-title {
-    position: absolute;
-    padding-top: 5px;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 31px;
-    font-size: 20px;
-    background: #f5f7f9;
-    background-color: #f5f7f9;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2')";
-    background: -webkit-gradient(linear, left top, left bottom, from(#f5f7f9), to(#f0f1f2));
-    background: -moz-linear-gradient(top, #f5f7f9, #f0f1f2);
-    background: linear-gradient(top, #f5f7f9, #f0f1f2);
-    border-radius: 8px 8px 0 0; }
-  .custom-window p.buttons {
-    margin-top: 11px;
-    margin-bottom: -5px; }
-    .custom-window p.buttons button.cancel {
-      border-color: #ADA6A6;
-      background-color: #B8B8B8; }
-      .custom-window p.buttons button.cancel:hover, .custom-window p.buttons button.cancel:focus {
-        background-color: #B8B8B8;
-        border-color: #ADA6A6; }
-  .custom-window .alertify-buttons {
-    display: none;
-    padding-top: 5px;
-    padding-bottom: 5px; }
-
 .grey-cancel-button button.alertify-button-cancel {
   border-color: #ADA6A6;
   background-color: #B8B8B8; }
 
 footer + h4 {
   margin-top: 15px; }
-
-ul.columns-names {
-  margin: 3px auto 10px;
-  text-align: left;
-  width: 70%;
-  border: 1px solid #ccc; }
-  ul.columns-names li + li {
-    border-top: 1px solid #ccc; }
 
 img.app-icon {
   opacity: 0.8; }
@@ -1683,6 +1646,72 @@ small.help-icon {
     opacity: 1;
     transition: all 0.2s; }
 
+.docs-link {
+  font-size: 13px;
+  display: inline-block; }
+  .docs-link:before {
+    content: '';
+    background-image: url("icons/external-link.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 11px;
+    height: 11px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    opacity: 0.7;
+    display: inline-block;
+    vertical-align: middle; }
+
+.custom-window {
+  width: auto;
+  min-width: 400px; }
+  .custom-window .alertify-dialog {
+    padding-top: 38px; }
+  .custom-window h3.window-title {
+    position: absolute;
+    padding-top: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 31px;
+    font-size: 20px;
+    background: #f5f7f9;
+    background-color: #f5f7f9;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f7f9', endColorstr='#f0f1f2')";
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5f7f9), to(#f0f1f2));
+    background: -moz-linear-gradient(top, #f5f7f9, #f0f1f2);
+    background: linear-gradient(top, #f5f7f9, #f0f1f2);
+    border-radius: 8px 8px 0 0; }
+  .custom-window p.buttons {
+    margin-top: 11px;
+    margin-bottom: -5px; }
+    .custom-window p.buttons button.cancel {
+      border-color: #ADA6A6;
+      background-color: #B8B8B8; }
+      .custom-window p.buttons button.cancel:hover, .custom-window p.buttons button.cancel:focus {
+        background-color: #B8B8B8;
+        border-color: #ADA6A6; }
+  .custom-window input[type="text"], .custom-window input[type="password"] {
+    font-size: 12px;
+    height: 13px;
+    padding: 10px 6px;
+    outline: none;
+    border: 1px solid #d5d5d5;
+    margin: 5px;
+    cursor: text;
+    -webkit-app-region: no-drag;
+    box-sizing: border-box; }
+    .custom-window input[type="text"]:focus, .custom-window input[type="password"]:focus {
+      border-radius: 1px;
+      box-shadow: 0 0 0 3.5px rgba(116, 180, 255, 0.7);
+      animation: showFocus .3s;
+      border-color: #7aa7dd !important; }
+  .custom-window .alertify-buttons {
+    display: none;
+    padding-top: 5px;
+    padding-bottom: 5px; }
+
 .import-file-dialog header, .export-file-dialog header {
   margin-bottom: 15px; }
   .import-file-dialog header code, .export-file-dialog header code {
@@ -1742,10 +1771,13 @@ small.help-icon {
 .heroku-connection-dialog button.save-conn {
   margin-right: 10px; }
 
-.edit-procedure-dialog textarea, .edit-procedure-dialog .CodeMirror {
-  border: 1px solid #ccc;
-  min-height: 368px;
-  text-align: left; }
+.edit-procedure-dialog {
+  max-width: 75vw; }
+  .edit-procedure-dialog textarea, .edit-procedure-dialog .CodeMirror {
+    border: 1px solid #ccc;
+    min-height: 368px;
+    text-align: left;
+    max-width: 100%; }
 
 .alertify-inner.edit-value input.number-value, .alertify-inner.edit-value input.date-value, .alertify-inner.edit-value textarea {
   width: 100%;
@@ -1761,6 +1793,14 @@ small.help-icon {
 
 .alertify-inner.edit-value.edit-value-wide textarea {
   min-width: 800px; }
+
+.new-index-dialog ul.columns-names {
+  margin: 3px auto 10px;
+  text-align: left;
+  width: 70%;
+  border: 1px solid #ccc; }
+  .new-index-dialog ul.columns-names li + li {
+    border-top: 1px solid #ccc; }
 
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */

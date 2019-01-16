@@ -2,7 +2,7 @@
 form
   p
     label(for="index_name_field") Name
-    input#index_name_field(name="name", placeholder="optional")
+    input#index_name_field(name="name", placeholder="optional" type="text")
 
   p
     label Columns
@@ -17,14 +17,18 @@ form
     input#index_uniq_field(type="checkbox", name="uniq", value="1")
 
   p
-    label(for="index_method_field") Method
+    label(for="index_method_field") Index Type
     select#index_method_field(name="method")
       option(value="btree") btree
       option(value="hash") hash
       option(value="gist") gist
+      option(value="spgist") spgist
       option(value="gin") gin
+      option(value="brin") brin
+    br
+    a(href="https://www.citusdata.com/blog/2017/10/17/tour-of-postgres-index-types/" class="external docs-link") About Index Types
 
   input.pseudo-hidden(type="submit")
   p.buttons
-    button.ok Add index
-    button.cancel cancel
+    button.ok Add Index
+    button.cancel Cancel

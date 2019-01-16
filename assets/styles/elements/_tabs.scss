@@ -114,6 +114,11 @@ $tab-border-color: #9b9b9b;
 }
 
 .tab-message {
-  padding: 20px;
+  padding: 11px;
   color: #333;
+  position: absolute;
 }
+.window-content.content .tab-message {
+  padding: 20px;
+}
+

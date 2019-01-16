@@ -423,7 +423,26 @@ class Table extends ModelBase {
     return this.q(sql);
   }
 
-  getSourceSql (callback) {
+  async getSourceSql (callback/*:: ?: Function */) {
+
+    // some kind of bug in pd_dump, it doesn't show view definitions anymore.
+    // use pg_get_viewdef() as workaround
+    var tableType = await this.getTableType();
+
+    if (tableType == TABLE_TYPES.VIEW) {
+      var sql = `SELECT pg_get_viewdef('${this.table}', true) AS view_def`;
+      return new Promise((resolve, reject) => {
+        this.q(sql).then(res => {
+          var viewSource = res.rows[0] && res.rows[0].view_def;
+          callback && callback(viewSource);
+          resolve(viewSource);
+        }).catch(error => {
+          reject(error);
+          callback(undefined, error);
+        })
+      });
+    }
+
     var exporter = new SqlExporter({debug: true});
     // TODO: include schema
     exporter.addArgument('--table=' + this.sqlTable());
