@@ -49,7 +49,7 @@ process.on('unhandledRejection', error => {
 
       mac: {
         category: "public.app-category.developer-tools",
-        target: "default",
+        target: ["dmg"],
         bundleVersion: buildVersion,
         bundleShortVersion: packageJson.version,
         minimumSystemVersion: "10.9.0",
