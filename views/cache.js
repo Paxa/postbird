@@ -774,12 +774,12 @@ pug_html = pug_html + "\n\u003Cbutton class=\"cancel native-look\" autofocus=\"a
 ;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fheroku_connection.jade";
 pug_html = pug_html + "Close\u003C\u002Fbutton\u003E";}.call(this,"connectionUrl" in locals_for_with?locals_for_with.connectionUrl:typeof connectionUrl!=="undefined"?connectionUrl:undefined,"name" in locals_for_with?locals_for_with.name:typeof name!=="undefined"?name:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/heroku_connection"].content = "strong= name\n\ncode.connection-info\n  = connectionUrl\n\np\n  i= \"Note: This information can be changed in future by heroku\"\n\nbutton.save-conn.native-look Save locally\nbutton.cancel.native-look(autofocus=true) Close";
-exports["dialogs/import_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fimport_file.jade":"header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
+exports["dialogs/import_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fimport_file.jade":"header\n  = \"Importing File:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import File\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
 ;var locals_for_with = (locals || {});(function (currentDb, databases, filename) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 pug_html = pug_html + "\n\u003Cheader\u003E";
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = "Importing file:") ? "" : pug_interp));
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Importing File:") ? "" : pug_interp));
 ;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
 ;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
@@ -844,7 +844,7 @@ pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
 ;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
 ;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
-pug_html = pug_html + "Import file\u003C\u002Fbutton\u003E";
+pug_html = pug_html + "Import File\u003C\u002Fbutton\u003E";
 ;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
@@ -855,7 +855,7 @@ pug_html = pug_html + "\n  \u003Cp class=\"buttons close-btn is-hidden\"\u003E";
 pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
 pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"currentDb" in locals_for_with?locals_for_with.currentDb:typeof currentDb!=="undefined"?currentDb:undefined,"databases" in locals_for_with?locals_for_with.databases:typeof databases!=="undefined"?databases:undefined,"filename" in locals_for_with?locals_for_with.filename:typeof filename!=="undefined"?filename:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["dialogs/import_file"].content = "header\n  = \"Importing file:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import file\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
+exports["dialogs/import_file"].content = "header\n  = \"Importing File:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import File\n    button.cancel cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
 exports["dialogs/index_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Findex_form.jade":"\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\" type=\"text\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Index Type\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"spgist\") spgist\n      option(value=\"gin\") gin\n      option(value=\"brin\") brin\n    br\n    a(href=\"https:\u002F\u002Fwww.citusdata.com\u002Fblog\u002F2017\u002F10\u002F17\u002Ftour-of-postgres-index-types\u002F\" class=\"external docs-link\") About Index Types\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add Index\n    button.cancel Cancel\n"};
 ;var locals_for_with = (locals || {});(function (columns) {var pug_indent = [];
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Findex_form.jade";
@@ -2602,7 +2602,7 @@ pug_html = pug_html + "\n  \u003Cdiv class=\"preview\"\u003E\u003C\u002Fdiv\u003
 ;pug_debug_line = 6;pug_debug_filename = "views\u002Fsnippets.jade";
 pug_html = pug_html + "\n  \u003Cfooter\u003E\u003C\u002Ffooter\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"snippets" in locals_for_with?locals_for_with.snippets:typeof snippets!=="undefined"?snippets:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["snippets"].content = ".snippets-window\n  ul\n    each snippet, name in snippets\n      li(snippet=name)= name\n  .preview\n  footer\n";
-exports["structure_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fstructure_tab.jade":".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(\u002F^nextval\u002F) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add Column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td\n              = index.relname\n              if !index.indisvalid\n                span.tag.error(title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\") invalid\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.columns().join(\", \")\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add Index\n\nif constraints.length \u003E 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n"};
+exports["structure_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fstructure_tab.jade":".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(\u002F^nextval\u002F) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add Column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th size\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td\n              = index.relname\n              if !index.indisvalid\n                span.tag.error(title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\") invalid\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.columns().join(\", \")\n            td= getIndexType(index.pg_get_indexdef)\n            td= index.index_size\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add Index\n\nif constraints.length \u003E 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n"};
 ;var locals_for_with = (locals || {});(function (column_type_label, columns, columnsError, constraints, getIndexType, indexes, indexesError, isMatView) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders columns-list-table\"\u003E";
@@ -2832,10 +2832,14 @@ pug_html = pug_html + "\n          \u003Cth\u003E";
 ;pug_debug_line = 53;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "type\u003C\u002Fth\u003E";
 ;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 54;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "size\u003C\u002Fth\u003E";
 ;pug_debug_line = 55;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Ctbody\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
 ;pug_debug_line = 56;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
 // iterate indexes || []
 ;(function(){
   var $$obj = indexes || [];
@@ -2843,61 +2847,65 @@ pug_html = pug_html + "\n      \u003Ctbody\u003E";
     if ($$obj.length) {
       for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
         var index = $$obj[pug_index1];
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp));
+pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp));
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
 if (!index.indisvalid) {
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Cspan class=\"tag error\" title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\"\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "invalid\u003C\u002Fspan\u003E";
 }
 pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.columns().join(", ")) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.index_size) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
-;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
       }
     } else {
-;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (!indexes) {
-;pug_debug_line = 70;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 71;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
+if (!indexes) {
 ;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
+pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (indexesError) {
+pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
 ;pug_debug_line = 74;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\u003Cbr\u002F\u003E";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
 ;pug_debug_line = 75;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (indexesError) {
+;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 77;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n            \u003Cpre\u003E";
-;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = indexesError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
 }
 pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
@@ -2908,61 +2916,65 @@ pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\
     for (var pug_index1 in $$obj) {
       $$l++;
       var index = $$obj[pug_index1];
-;pug_debug_line = 57;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 58;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 59;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp));
+pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 60;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.relname) ? "" : pug_interp));
+;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
 if (!index.indisvalid) {
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Cspan class=\"tag error\" title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\"\u003E";
-;pug_debug_line = 61;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "invalid\u003C\u002Fspan\u003E";
 }
 pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 62;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisprimary ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 63;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.indisunique ? 'Yes' : 'No') ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 64;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = index.columns().join(", ")) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 65;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 66;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = getIndexType(index.pg_get_indexdef)) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = index.index_size) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 68;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteIndex('" + index.relname + "')", true, false)) + "\u003E";
-;pug_debug_line = 67;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
     if ($$l === 0) {
-;pug_debug_line = 69;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (!indexes) {
-;pug_debug_line = 70;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 71;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
+if (!indexes) {
 ;pug_debug_line = 72;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
+pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;pug_debug_line = 73;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (indexesError) {
+pug_html = pug_html + "\n          \u003Ctd colspan=\"6\"\u003E";
 ;pug_debug_line = 74;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\u003Cbr\u002F\u003E";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error accured while getting table indexes ") ? "" : pug_interp));
 ;pug_debug_line = 75;pug_debug_filename = "views\u002Fstructure_tab.jade";
+if (indexesError) {
+;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\u003Cbr\u002F\u003E";
+;pug_debug_line = 77;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n            \u003Cpre\u003E";
-;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ccode\u003E";
-;pug_debug_line = 76;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = indexesError.message) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\u003C\u002Fpre\u003E";
 }
 pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
@@ -2972,64 +2984,64 @@ pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\
 }).call(this);
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-;pug_debug_line = 78;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 80;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n\u003Cfooter\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addIndexForm\"\u003E";
-;pug_debug_line = 79;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Add Index\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";
 ;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
-if (constraints.length > 0) {
-;pug_debug_line = 82;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Ch4\u003E";
-;pug_debug_line = 82;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "Constraints\u003C\u002Fh4\u003E";
+pug_html = pug_html + "\n  \u003Cbutton class=\"native-look\" exec=\"addIndexForm\"\u003E";
+;pug_debug_line = 81;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Add Index\u003C\u002Fbutton\u003E\n\u003C\u002Ffooter\u003E";
 ;pug_debug_line = 83;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
+if (constraints.length > 0) {
 ;pug_debug_line = 84;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+pug_html = pug_html + "\n\u003Ch4\u003E";
+;pug_debug_line = 84;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "Constraints\u003C\u002Fh4\u003E";
 ;pug_debug_line = 85;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders indexes-list-table\"\u003E";
 ;pug_debug_line = 86;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n    \u003Ctable\u003E";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
 ;pug_debug_line = 87;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Cthead\u003E";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
 ;pug_debug_line = 88;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 89;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 90;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 89;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 89;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "name\u003C\u002Fth\u003E";
-;pug_debug_line = 90;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E";
-;pug_debug_line = 90;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "source\u003C\u002Fth\u003E";
 ;pug_debug_line = 91;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 91;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "name\u003C\u002Fth\u003E";
 ;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n      \u003Ctbody\u003E";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 92;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "source\u003C\u002Fth\u003E";
 ;pug_debug_line = 93;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 94;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
 // iterate constraints
 ;(function(){
   var $$obj = constraints;
   if ('number' == typeof $$obj.length) {
       for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
         var constraint = $$obj[pug_index2];
-;pug_debug_line = 94;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 97;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 97;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 99;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 100;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteConstraint('" + constraint.conname + "')", true, false)) + "\u003E";
-;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 100;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
       }
   } else {
@@ -3037,21 +3049,21 @@ pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u
     for (var pug_index2 in $$obj) {
       $$l++;
       var constraint = $$obj[pug_index2];
-;pug_debug_line = 94;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n        \u003Ctr\u003E";
-;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 95;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
-;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 96;pug_debug_filename = "views\u002Fstructure_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 97;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 97;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.conname) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
 ;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = constraint.pretty_source) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 99;pug_debug_filename = "views\u002Fstructure_tab.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 100;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "\u003Ca" + (pug.attr("exec", "deleteConstraint('" + constraint.conname + "')", true, false)) + "\u003E";
-;pug_debug_line = 98;pug_debug_filename = "views\u002Fstructure_tab.jade";
+;pug_debug_line = 100;pug_debug_filename = "views\u002Fstructure_tab.jade";
 pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
     }
   }
@@ -3059,7 +3071,7 @@ pug_html = pug_html + "Delete\u003C\u002Fa\u003E\u003C\u002Ftd\u003E\n        \u
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
 }}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"columns" in locals_for_with?locals_for_with.columns:typeof columns!=="undefined"?columns:undefined,"columnsError" in locals_for_with?locals_for_with.columnsError:typeof columnsError!=="undefined"?columnsError:undefined,"constraints" in locals_for_with?locals_for_with.constraints:typeof constraints!=="undefined"?constraints:undefined,"getIndexType" in locals_for_with?locals_for_with.getIndexType:typeof getIndexType!=="undefined"?getIndexType:undefined,"indexes" in locals_for_with?locals_for_with.indexes:typeof indexes!=="undefined"?indexes:undefined,"indexesError" in locals_for_with?locals_for_with.indexesError:typeof indexesError!=="undefined"?indexesError:undefined,"isMatView" in locals_for_with?locals_for_with.isMatView:typeof isMatView!=="undefined"?isMatView:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["structure_tab"].content = ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add Column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td\n              = index.relname\n              if !index.indisvalid\n                span.tag.error(title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\") invalid\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.columns().join(\", \")\n            td= getIndexType(index.pg_get_indexdef)\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add Index\n\nif constraints.length > 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n";
+exports["structure_tab"].content = ".rescol-wrapper.with-borders.columns-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th column\n          th type\n          th max length\n          th default\n          th primary key\n          th null\n          th\n      tbody\n        each column in columns || []\n          tr\n            td= column.column_name\n            td(title = column_type_label(column))= column_type_label(column, true)\n            td= column.character_maximum_length\n            td= ('' + column.column_default).match(/^nextval/) ? 'auto increment' : column.column_default\n            td= column.is_primary_key ? 'yes' : ''\n            td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'\n            td\n              a(exec=\"editColumn('\" + column.column_name + \"')\") Edit\n              != \"&nbsp;\"\n              a(exec=\"deleteColumn('\" + column.column_name + \"')\") Delete\n        else\n          if !columns\n            tr\n              td(colspan=7)\n                = \"Error accured while getting table info\"\n                if columnsError\n                  br\n                  pre\n                    code= columnsError.message\n\nfooter\n  if !isMatView\n    button.native-look(exec=\"addColumnForm\") Add Column\n\nh4 Indexes\n\n.rescol-wrapper.with-borders.indexes-list-table\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th p. key\n          th uniq\n          th columns\n          th type\n          th size\n          th\n      tbody\n        each index in indexes || []\n          tr\n            td\n              = index.relname\n              if !index.indisvalid\n                span.tag.error(title=\"This usually means that error happen while creating index with 'CONCURRENTLY'\") invalid\n            td= index.indisprimary ? 'Yes' : 'No'\n            td= index.indisunique ? 'Yes' : 'No'\n            td= index.columns().join(\", \")\n            td= getIndexType(index.pg_get_indexdef)\n            td= index.index_size\n            td\n              a(exec=\"deleteIndex('\" + index.relname + \"')\") Delete\n        else\n          if !indexes\n            tr\n              td(colspan=6)\n                = \"Error accured while getting table indexes \"\n                if indexesError\n                  br\n                  pre\n                    code= indexesError.message\n\nfooter\n  button.native-look(exec=\"addIndexForm\") Add Index\n\nif constraints.length > 0\n  h4 Constraints\n  .rescol-wrapper.with-borders.indexes-list-table\n    .rescol-header-wrapper\n    .rescol-content-wrapper\n      table\n        thead\n          tr\n            th name\n            th source\n            th\n        tbody\n          each constraint in constraints\n            tr\n              td= constraint.conname\n              td= constraint.pretty_source\n              td\n                a(exec=\"deleteConstraint('\" + constraint.conname + \"')\") Delete\n";
 exports["users_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fusers_tab.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Role name\n          th List of roles\n          th Member of\n          th(style=\"max-width: 250px\") Owned Databases\n          th\n      tbody\n        each user in rows\n          tr\n            td\n              if currentUser == user.rolname\n                strong= user.rolname\n                br\n                small (current user)\n              else\n                = user.rolname\n            td(style=\"max-width: 180px\")= user.roles.join(', ')\n            td= user.memberof\n            td(style=\"max-width: 250px\")= user.owned_dbs\n            td\n              a(exec=\"editUser('\" + user.rolname + \"')\") Edit\n              = \" \"\n              a(exec=\"deleteUser('\" + user.rolname + \"')\") Delete\n              = \" \"\n              a(exec=\"getGrants('\" + user.rolname + \"')\") Grants\n\nfooter\n  button.native-look.createUserBtn(exec=\"newUserDialog\") Create new user\n  \u002F\u002Fbutton.native-look.createRoleBtn(exec=\"newRole\") Create new role"};
 ;var locals_for_with = (locals || {});(function (currentUser, rows) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fusers_tab.jade";

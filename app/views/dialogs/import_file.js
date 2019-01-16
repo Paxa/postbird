@@ -2,7 +2,7 @@ class ImportFile extends Dialog {
 
   constructor (handler, filename, onSubmit) {
     super(handler, {
-      title: "Import options",
+      title: "Import Options",
       dialogClass: "import-file-dialog",
       filename: filename,
       onSubmitCallback: onSubmit
@@ -36,6 +36,8 @@ class ImportFile extends Dialog {
 
   startImporting () {
     this.addClass('importing');
+    var btn = this.content.find('button.ok');
+    btn.prop('disabled', true).text("Importing...");
   }
 
   onSubmit (data) {
@@ -47,6 +49,7 @@ class ImportFile extends Dialog {
 
     var element = this.content.find('code.result')[0];
     element.innerHTML += message;
+    element.scrollTop = element.scrollHeight;
   }
 
   showCloseButton () {
