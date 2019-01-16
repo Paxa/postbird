@@ -4,9 +4,12 @@
 * Support for Windows (Thanks to @DavidBernal)
 * Change shortcut for open file to Cmd+O
 * Adds codemirror search (Thanks to @drozdoff)
-* Update to electron 3
+* Update to electron 4
 * Change from electron-packager to electron-builder
 * Automatic builds via travis
+* Show index size
+* Better error message when can't find psql or pg_dump on linux
+* Fix showing interval types
 
 == Version 0.8.0 (07-jun-2018)
 
