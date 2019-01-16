@@ -10,7 +10,7 @@
     "test": "electron-mocha tests/",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "cross-env NW_DEV=true NW_DEBUG=true electron . $@",
-    "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 64",
+    "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild -n 69",
     "ts": "node ts.js",
     "dist": "node build_package.js",
     "build": "node build_package.js"
@@ -26,7 +26,7 @@
     "@types/mousetrap": "^1.6.0",
     "@types/pg": "^7.4.9",
     "@types/semver": "^5.5.0",
-    "electron": "3.0.11",
+    "electron": "4.0.1",
     "electron-builder": "^20.38.4",
     "electron-mocha": "^6.0.4",
     "electron-rebuild": "1.8.2",
