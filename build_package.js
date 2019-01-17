@@ -62,19 +62,20 @@ process.on('unhandledRejection', error => {
         target: ["deb", "rpm", "snap"],
         icon: __dirname + "/build_files/icon.png",
         mimeTypes: ["application/sql"],
-        synopsis: "PostgreSQL desktop client",
         description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features"
       },
       rpm: {
         depends: ["postgresql"],
         icon: __dirname + "/build_files/icon.png",
-        desktop: "Postbird"
+        desktop: "Postbird",
+        synopsis: "PostgreSQL desktop client"
       },
       deb: {
         depends: [
           'gconf2', 'gconf-service', 'libnotify4', 'libappindicator1',
           'libxtst6', 'libnss3', 'libxss1', "postgresql-client"
-        ]
+        ],
+        synopsis: "PostgreSQL desktop client"
       },
       snap: {
         grade: "devel",
