@@ -14,8 +14,12 @@ env:
 cache:
   yarn: true
 
+branches:
+  only:
+    - master
+
 script:
   - yarn
   - ./build_files/rebuild_ext
-  - DEBUG=electron-builder yarn dist
+  - yarn dist
   - ./build_files/upload_package
