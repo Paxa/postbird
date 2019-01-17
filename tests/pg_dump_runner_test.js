@@ -36,8 +36,8 @@ describe("PgDumpRunner", () => {
   it("should run with promise", async () => {
     var runner = new PgDumpRunner();
 
-    var stdout = await runner.execute(["--version"]);
-    assert.match(stdout, /^pg_dump \(PostgreSQL\) /);
+    var result = await runner.execute(["--version"]);
+    assert.match(result.stdout, /^pg_dump \(PostgreSQL\) /);
   })
 
 });
