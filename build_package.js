@@ -68,7 +68,10 @@ process.on('unhandledRejection', error => {
         desktop: "Postbird"
       },
       deb: {
-        depends: ["default", "postgresql-client"]
+        depends: [
+          'gconf2', 'gconf-service', 'libnotify4', 'libappindicator1',
+          'libxtst6', 'libnss3', 'libxss1', "postgresql-client"
+        ]
       },
       snap: {
         grade: "devel",
