@@ -14,7 +14,6 @@ Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs 
 
 [Postbird-0.8.0.dmg](https://github.com/Paxa/postbird/releases/download/0.8.0/Postbird-0.8.0.dmg) - OS X 10.9+ 64bit
 
-
 ## Development
 
 [ ![Codeship Status for Paxa/postbird](https://app.codeship.com/projects/c2450da0-9339-0135-ee6d-1663622ccf5e/status?branch=master)](https://app.codeship.com/projects/250798)
@@ -30,6 +29,24 @@ PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin/ # to compile
 npm install
 npm run rebuild_ext
 ./run
+```
+
+To install it on Linux:
+
+before on unbutu:
+```sh
+# sudo apt-get install postgresql postgresql-contrib libpq-dev python-dev
+# sudo apt-get install postgresql-server-dev-X
+```
+
+Note: Change **X** of postgresql-server-dev-X to package version.
+
+```sh
+git clone git@github.com:Paxa/postbird.git
+cd postbird
+yarn
+yarn dist
+sudo apt install ./dist/Postbird_0.8.0_XXX.deb
 ```
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details
