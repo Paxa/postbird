@@ -46,6 +46,7 @@ process.on('unhandledRejection', error => {
       }],
       npmRebuild: false, // because we changed dependency paths postgres manually
       icon: isWin ? "build_files/icon.ico" : __dirname + "/build_files/icon.icns",
+      productName: process.platform == 'linux' ? 'postbird' : 'Postbird',
 
       mac: {
         category: "public.app-category.developer-tools",
@@ -57,7 +58,6 @@ process.on('unhandledRejection', error => {
       },
 
       linux: {
-        artifactName: "postbird",
         category: "Programming",
         target: ["deb", "rpm", "snap"],
         icon: __dirname + "/build_files/icon.png",
@@ -79,7 +79,7 @@ process.on('unhandledRejection', error => {
       },
       snap: {
         grade: "devel",
-        summary: "Advanced PostgreSQL desktop client for your daily needs"
+        summary: "PostgreSQL desktop client"
       },
 
       nsis: {
