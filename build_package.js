@@ -78,7 +78,7 @@ process.on('unhandledRejection', error => {
         synopsis: "PostgreSQL desktop client"
       },
       snap: {
-        grade: "devel",
+        grade: "stable",
         summary: "PostgreSQL desktop client"
       },
 
