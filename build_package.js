@@ -57,10 +57,13 @@ process.on('unhandledRejection', error => {
       },
 
       linux: {
+        artifactName: "postbird",
         category: "Programming",
         target: ["deb", "rpm", "snap"],
         icon: __dirname + "/build_files/icon.png",
-        mimeTypes: ["application/sql"]
+        mimeTypes: ["application/sql"],
+        synopsis: "PostgreSQL desktop client",
+        description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features"
       },
       rpm: {
         depends: ["postgresql"],
@@ -75,8 +78,7 @@ process.on('unhandledRejection', error => {
       },
       snap: {
         grade: "devel",
-        summary: "Advanced PostgreSQL desktop client for your daily needs",
-        description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features"
+        summary: "Advanced PostgreSQL desktop client for your daily needs"
       },
 
       nsis: {

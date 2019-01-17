@@ -10,6 +10,8 @@
 * Show index size
 * Better error message when can't find psql or pg_dump on linux
 * Fix showing interval types
+* Reload a tab when table renamed
+
 
 == Version 0.8.0 (07-jun-2018)
 
