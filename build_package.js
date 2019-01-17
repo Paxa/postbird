@@ -58,12 +58,12 @@ process.on('unhandledRejection', error => {
 
       linux: {
         category: "Programming",
-        target: [ "deb", "rpm", "snap" ],
+        target: ["deb", "rpm", "snap"],
         icon: __dirname + "/build_files/icon.png",
         mimeTypes: ["application/sql"]
       },
       rpm: {
-        depends: ["default", "postgresql"],
+        depends: ["postgresql"],
         icon: __dirname + "/build_files/icon.png",
         desktop: "Postbird"
       },
