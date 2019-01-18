@@ -47,6 +47,7 @@ process.on('unhandledRejection', error => {
       npmRebuild: false, // because we changed dependency paths postgres manually
       icon: isWin ? "build_files/icon.ico" : __dirname + "/build_files/icon.icns",
       productName: process.platform == 'linux' ? 'postbird' : 'Postbird',
+      publish: null,
 
       mac: {
         category: "public.app-category.developer-tools",
@@ -54,7 +55,11 @@ process.on('unhandledRejection', error => {
         bundleVersion: buildVersion,
         bundleShortVersion: packageJson.version,
         minimumSystemVersion: "10.9.0",
-        extendInfo: "build_files/Info.plist"
+        extendInfo: "build_files/Info.plist",
+        asar: true,
+        extraFiles: ["vendor/darwin"],
+        asarUnpack: ["node_modules/libpq"],
+        files: ["!vendor"]
       },
 
       linux: {
@@ -87,7 +92,10 @@ process.on('unhandledRejection', error => {
       },
       win: {
         target: ["nsis", "zip"],
-        verifyUpdateCodeSignature: false
+        verifyUpdateCodeSignature: false,
+        extraFiles: [
+          "vendor/win32"
+        ]
       }
     }
   })

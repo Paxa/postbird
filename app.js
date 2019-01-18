@@ -1,5 +1,6 @@
 var remote = require('electron').remote;
 var events = require('events');
+var path = require('path');
 
 require('./lib/node_lib');
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
@@ -343,10 +344,13 @@ Object.defineProperty(App, "currentTable", {
   }
 });
 
-
 Object.setPrototypeOf(global.App, new events.EventEmitter);
 
 global.App.remote = remote;
+
+global.App.vendorPath = process.mainModule.filename.includes('app.asar') ?
+  path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
+  path.join(process.mainModule.filename, `../vendor/${process.platform}`);
 
 global.App.emit = function (eventName) {
   //if (!this._events[eventName]) {

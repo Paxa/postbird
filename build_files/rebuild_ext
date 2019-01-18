@@ -17,7 +17,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   echo "Updating node_modules/libpq/build/Release/addon.node"
   install_name_tool -change \
     /Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.dylib \
-    @loader_path/../../../../vendor/darwin/libpq.5.11.dylib \
+    @loader_path/../../../../../../vendor/darwin/libpq.5.11.dylib \
     node_modules/libpq/build/Release/addon.node
   otool -L node_modules/libpq/build/Release/addon.node
 
