@@ -350,7 +350,7 @@ global.App.remote = remote;
 
 global.App.vendorPath = process.mainModule.filename.includes('app.asar') ?
   path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
-  path.join(process.mainModule.filename, `../vendor/${process.platform}`);
+  path.join(process.mainModule.filename.replace('node_modules/electron-mocha/index.js', 'index.html'), `../vendor/${process.platform}`);
 
 global.App.emit = function (eventName) {
   //if (!this._events[eventName]) {
