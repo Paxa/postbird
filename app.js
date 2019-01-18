@@ -51,11 +51,17 @@ interface App {
   emit?: (eventName, ...any) => void;
   logEvents?: any[];
   helpScreen?: HelpScreen;
+  vendorPath: string;
 }
 */
 
 global.App = {
   root: process.mainModule.filename.replace(/\/index.html/, ''),
+  // used for running binaries inside asar package
+  vendorPath: process.mainModule.filename.includes('app.asar') ?
+    path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
+    path.join(process.mainModule.filename.replace('node_modules/electron-mocha/index.js', 'index.html'), `../vendor/${process.platform}`),
+
   activeTab: null,
   tabs: [], // {name, content, is_active}
 
@@ -347,10 +353,6 @@ Object.defineProperty(App, "currentTable", {
 Object.setPrototypeOf(global.App, new events.EventEmitter);
 
 global.App.remote = remote;
-
-global.App.vendorPath = process.mainModule.filename.includes('app.asar') ?
-  path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
-  path.join(process.mainModule.filename.replace('node_modules/electron-mocha/index.js', 'index.html'), `../vendor/${process.platform}`);
 
 global.App.emit = function (eventName) {
   //if (!this._events[eventName]) {
