@@ -70,7 +70,9 @@ var helpers = global.ViewHelpers = {
     return this.formatCell(value, format, field.data_type);
   },
 
-  formatCell: function (value, format, dataType) {
+  formatCell: function (value, format, dataType, relations= [], columnName) {
+    const relation = relations.findIndex(r => r.column_name === columnName)
+
     if (value === null) {
       return '<i class="null">NULL</i>';
     }
@@ -120,6 +122,10 @@ var helpers = global.ViewHelpers = {
       formated = this.formatArray(value, format);
     }
 
+    if (relation > -1) {
+      formated += `<span class="foreign" data-table="${relations[relation].foreign_table_name}" data-column="${relations[relation].foreign_column_name}" data-value="${value}">${this.icon('foreign_table', 'Foreign Key', 10,10)}</span>`
+    }
+
     return formated;
   },
 
@@ -147,9 +153,9 @@ var helpers = global.ViewHelpers = {
     return "<a " + this.tag_options(options) + '>' + text + '</a>';
   },
 
-  icon: function(name, title) {
+  icon: function(name, title, height = 20, width = 20) {
     title = title === undefined ? name.replace(/[\-_]/g, ' ') : title;
-    return `<img src="./public/icons/${name}.png" width="20" height="20" class="app-icon" title="${title}"/>`;
+    return `<img src="./public/icons/${name}.png" width="${width}" height="${height}" class="app-icon" title="${title}"/>`;
   },
 
   column_type_label: function (column, short) {

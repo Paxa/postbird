@@ -213,6 +213,7 @@ class DbScreen {
         with_oid: hasOid,
         extraColumns: extraColumns,
       });
+      data.relations = await this.table.getRelations()
       this.view.contentPane.renderTab(data, columnTypes, {pageLimit: rowsCount});
       this.currentTab = 'content';
     } catch (error) {
