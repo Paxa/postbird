@@ -654,6 +654,30 @@ body.sidebar-resizing {
     max-height: 100%;
     overflow: auto;
     position: relative; }
+    .main-screen > .sidebar > .tables span.funnel-icon {
+      display: block;
+      height: 16px;
+      width: 16px;
+      position: absolute;
+      background: #cecece;
+      -webkit-mask-image: url(icons/funnel.svg);
+      top: 12px;
+      left: 19px; }
+    .main-screen > .sidebar > .tables span.clear-filter {
+      background: #666;
+      display: block;
+      height: 18px;
+      width: 18px;
+      position: absolute;
+      top: 11px;
+      -webkit-mask-image: url(icons/add-circle.svg);
+      right: 15px;
+      transform: rotate(45deg);
+      cursor: pointer; }
+    .main-screen > .sidebar > .tables input.filter-tables {
+      margin: 6px 12px;
+      padding: 6px 26px;
+      width: calc(100% - 5.5em); }
     .main-screen > .sidebar > .tables div.show-system-tables {
       padding-left: 5px;
       position: relative;

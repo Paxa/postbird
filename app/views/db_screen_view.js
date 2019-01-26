@@ -52,6 +52,12 @@ class DbScreenView {
     this.sidebar.find('a.addTable').bind('click', this.newTableDialog.bind(this));
     this.sidebar.find('a.reloadStructure').bind('click', this.reloadStructure.bind(this));
 
+    this.sidebar.find('input.filter-tables').bind('keyup', this.filterTables.bind(this));
+    this.sidebar.find('span.clear-filter').bind('click', function() { 
+      $u('li[title="Table"]').show()
+      $u('input.filter-tables').val(null)
+    })
+
     this.databaseSelect.bind('change', (e) => {
       var value = '' + $u(e.target).val();
 
@@ -253,6 +259,21 @@ class DbScreenView {
 
   reloadStructure () {
     this.handler.fetchTablesAndSchemas();
+  }
+
+  filterTables (event) {
+    const name = event.target.value;
+    if (name) {
+      $u('li[title="Table"]')
+        .hide()
+        .filter(function () {
+          if ($(this).attr('table-name').indexOf(name) > -1) {
+            $(this).show()
+          }
+        })
+    } else {
+      $u('li[title="Table"]').show()
+    }
   }
 
   renameTable (node, schema, tableName) {
