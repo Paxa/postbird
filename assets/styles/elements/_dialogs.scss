@@ -56,6 +56,26 @@
   }
 }
 
+.new-snippet-dialog {
+  width: 700px;
+  height: 500px;
+  input {
+    width: 300px;
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    height: 3em;
+  }
+
+  code.snippet-sql {
+    width: 100%;
+    min-height: 12em;
+    max-height: 12em;
+    overflow: auto;
+  }
+}
+
 .heroku-connection-dialog {
   code {
     @include dialog-code;
