@@ -8,6 +8,10 @@ var TABLE_TYPES = {
   FOREIGN_TABLE: 'FOREIGN TABLE'
 };
 
+var TABLE_TYPE_ALIASES = {
+  'SYSTEM VIEW': 'VIEW',
+  'FOREIGN': 'FOREIGN TABLE',
+}
 
 class Table extends ModelBase {
   /*::
@@ -40,6 +44,11 @@ class Table extends ModelBase {
 
   constructor (schema, tableName, tableType /*:: ?: string */) {
     super();
+
+    if (TABLE_TYPE_ALIASES[tableType]) {
+      tableType = TABLE_TYPE_ALIASES[tableType];
+    }
+
     this.tableType = tableType || null;
 
     this.schema = schema;
@@ -135,6 +144,11 @@ class Table extends ModelBase {
 
     var data = await this.q(sql);
     this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
+
+    if (TABLE_TYPE_ALIASES[this.tableType]) {
+      this.tableType = TABLE_TYPE_ALIASES[tableType];
+    }
+
     return this.tableType;
   }
 
@@ -573,6 +587,7 @@ class Table extends ModelBase {
 }
 
 Table.types = TABLE_TYPES;
+Table.typeAliasess = TABLE_TYPE_ALIASES;
 
 /*::
 declare var Table__: typeof Table

@@ -291,6 +291,11 @@ class Connection {
     return this.query(sql, (rows) => {
       rows.rows.forEach((dbrow) => {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
+
+        if (Model.Table.typeAliasess[dbrow.table_type]) {
+          dbrow.table_type = Model.Table.typeAliasess[dbrow.table_type];
+        }
+
         data[dbrow.table_schema].push(dbrow);
       });
       callback(data);
