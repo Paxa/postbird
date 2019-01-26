@@ -4,10 +4,11 @@
       label Select database
       select
         option Select database...
-    .tables.without-system-tables
+    .tables-filter
       span.funnel-icon
-      span.clear-filter
       input.filter-tables(placeholder="Filter Tables")
+      span.clear-filter(title="Clear Filter")
+    .tables.without-system-tables
       ul
       .show-system-tables
         label

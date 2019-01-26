@@ -638,7 +638,7 @@ body.sidebar-resizing {
     top: 0;
     left: 0;
     box-sizing: border-box;
-    padding: 3px 5px;
+    padding: 3px 5px 6px;
     width: 100%;
     border-bottom: 1px solid #d1d1d1; }
     .main-screen > .sidebar > .databases select {
@@ -649,35 +649,40 @@ body.sidebar-resizing {
       margin-bottom: -1px; }
     .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
       display: block; }
-  .main-screen > .sidebar > .tables {
-    height: 100%;
-    max-height: 100%;
-    overflow: auto;
-    position: relative; }
-    .main-screen > .sidebar > .tables span.funnel-icon {
+  .main-screen > .sidebar > .tables-filter {
+    position: relative;
+    padding: 6px 0 7px; }
+    .main-screen > .sidebar > .tables-filter span.funnel-icon {
       display: block;
       height: 16px;
       width: 16px;
       position: absolute;
       background: #cecece;
       -webkit-mask-image: url(icons/funnel.svg);
-      top: 12px;
+      top: 11px;
       left: 19px; }
-    .main-screen > .sidebar > .tables span.clear-filter {
-      background: #666;
-      display: block;
+    .main-screen > .sidebar > .tables-filter input.filter-tables {
+      margin: 0px 12px;
+      padding: 5px 26px;
+      width: calc(100% - 78px); }
+    .main-screen > .sidebar > .tables-filter span.clear-filter {
+      background: #7b7b7b;
+      display: none;
       height: 18px;
       width: 18px;
       position: absolute;
-      top: 11px;
+      top: 10px;
       -webkit-mask-image: url(icons/add-circle.svg);
       right: 15px;
       transform: rotate(45deg);
       cursor: pointer; }
-    .main-screen > .sidebar > .tables input.filter-tables {
-      margin: 6px 12px;
-      padding: 6px 26px;
-      width: calc(100% - 5.5em); }
+    .main-screen > .sidebar > .tables-filter.has-filter-value span.clear-filter {
+      display: block; }
+  .main-screen > .sidebar > .tables {
+    height: calc(100% - 36px);
+    max-height: 100%;
+    overflow: auto;
+    position: relative; }
     .main-screen > .sidebar > .tables div.show-system-tables {
       padding-left: 5px;
       position: relative;

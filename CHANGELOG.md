@@ -1,4 +1,8 @@
-== Version 0.8.1
+== Version 0.8.2
+
+* Feature: filter tables by name (Thanks to [https://github.com/willvincent](@willvincent))
+
+== Version 0.8.1 (18-jan-2019)
 
 * Support for Linux
 * Support for Windows (Thanks to @DavidBernal)

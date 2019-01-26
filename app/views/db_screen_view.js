@@ -53,9 +53,9 @@ class DbScreenView {
     this.sidebar.find('a.reloadStructure').bind('click', this.reloadStructure.bind(this));
 
     this.sidebar.find('input.filter-tables').bind('keyup', this.filterTables.bind(this));
-    this.sidebar.find('span.clear-filter').bind('click', function() { 
-      $u('li[table-name]').show()
-      $u('input.filter-tables').val(null)
+    this.sidebar.find('span.clear-filter').bind('click', () => {
+      $u('input.filter-tables').val(null);
+      this.sidebar.find('input.filter-tables').keyup();
     })
 
     this.databaseSelect.bind('change', (e) => {
@@ -186,6 +186,8 @@ class DbScreenView {
           } catch (error) {
             errorReporter(error, false);
           }
+
+          table.table_type = "BASE TABLE";
         }
 
         var actions = {
@@ -263,7 +265,9 @@ class DbScreenView {
 
   filterTables (event) {
     const name = event.target.value;
+    //console.log('name', name, !!name);
     if (name) {
+      this.sidebar.find('.tables-filter').addClass('has-filter-value')
       $u('li[table-name]')
         .hide()
         .filter(function () {
@@ -272,6 +276,7 @@ class DbScreenView {
           }
         })
     } else {
+      this.sidebar.find('.tables-filter').removeClass('has-filter-value')
       $u('li[table-name]').show()
     }
   }
