@@ -1486,6 +1486,9 @@ span.proc-arg-list {
 body.new-window {
   background: #ececec; }
 
+body.snippets {
+  overflow: auto; }
+
 .snippets-window {
   background: #ececec; }
   .snippets-window > ul {
