@@ -268,13 +268,12 @@ class DbScreenView {
     //console.log('name', name, !!name);
     if (name) {
       this.sidebar.find('.tables-filter').addClass('has-filter-value')
-      $u('li[table-name]')
-        .hide()
-        .filter(function () {
-          if ($(this).attr('table-name').indexOf(name) > -1) {
-            $(this).show()
-          }
-        })
+      $u('li[table-name]').hide().each((i, element) => {
+        var tableName = $(element).attr('table-name').toLowerCase();
+        if (tableName.includes(name.toLowerCase())) {
+          $(element).show()
+        }
+      });
     } else {
       this.sidebar.find('.tables-filter').removeClass('has-filter-value')
       $u('li[table-name]').show()

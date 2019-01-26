@@ -19,6 +19,7 @@ class Table extends ModelBase {
   schema: string
   table: string
   static types: any
+  static typeAliasess: any
   */
 
   static create (schema, tableName, options /*:: ?: any */) {
@@ -146,7 +147,7 @@ class Table extends ModelBase {
     this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
 
     if (TABLE_TYPE_ALIASES[this.tableType]) {
-      this.tableType = TABLE_TYPE_ALIASES[tableType];
+      this.tableType = TABLE_TYPE_ALIASES[this.tableType];
     }
 
     return this.tableType;
