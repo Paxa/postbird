@@ -142,6 +142,11 @@
           min-width: 100px;
         }
 
+        span.foreign {
+          float: right;
+          cursor: pointer;
+        }
+
         span.wrong-json {
           background: rgba(255, 192, 203, 0.56);
         }
