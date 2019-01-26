@@ -245,6 +245,17 @@ class Connection {
       var minorVer = ~~ (intVersion % 10000 / 100);
       var patchVer = intVersion % 100;
       this._serverVersion = [majorVer, minorVer, patchVer].join(".");
+
+      // convert "10.4," to 10.4,
+      if (this._serverVersion.match(/,$/)) {
+        this._serverVersion = this._serverVersion.replace(/,$/, '');
+      }
+
+      // convert 11.1 to 11.1.0
+      if (this._serverVersion.match(/^\d+\.\d+$/)) {
+        this._serverVersion += '.0'
+      }
+
       callback && callback(this._serverVersion);
       return Promise.resolve(this._serverVersion);
     }
@@ -253,9 +264,17 @@ class Connection {
 
     return this.server.fetchServerVersion().then(version => {
       this._serverVersion = version.split(" ")[1];
+
+      // convert "10.4," to 10.4,
+      if (this._serverVersion.match(/,$/)) {
+        this._serverVersion = this._serverVersion.replace(/,$/, '');
+      }
+
+      // convert 11.1 to 11.1.0
       if (this._serverVersion.match(/^\d+\.\d+$/)) {
         this._serverVersion += '.0';
       }
+
       this._serverVersionFull = version;
       callback && callback(this._serverVersion, this._serverVersionFull);
       return Promise.resolve(this._serverVersion);
