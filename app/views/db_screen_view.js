@@ -54,7 +54,7 @@ class DbScreenView {
 
     this.sidebar.find('input.filter-tables').bind('keyup', this.filterTables.bind(this));
     this.sidebar.find('span.clear-filter').bind('click', function() { 
-      $u('li[title="Table"]').show()
+      $u('li[table-name]').show()
       $u('input.filter-tables').val(null)
     })
 
@@ -264,7 +264,7 @@ class DbScreenView {
   filterTables (event) {
     const name = event.target.value;
     if (name) {
-      $u('li[title="Table"]')
+      $u('li[table-name]')
         .hide()
         .filter(function () {
           if ($(this).attr('table-name').indexOf(name) > -1) {
@@ -272,7 +272,7 @@ class DbScreenView {
           }
         })
     } else {
-      $u('li[title="Table"]').show()
+      $u('li[table-name]').show()
     }
   }
 
