@@ -54,8 +54,7 @@ class DbScreenView {
 
     this.sidebar.find('input.filter-tables').bind('keyup', this.filterTables.bind(this));
     this.sidebar.find('span.clear-filter').bind('click', () => {
-      $u('input.filter-tables').val(null);
-      this.sidebar.find('input.filter-tables').keyup();
+      this.clearTablesFilter();
     })
 
     this.databaseSelect.bind('change', (e) => {
@@ -72,7 +71,9 @@ class DbScreenView {
         new Dialog.NewDatabase(this.handler);
         $u(e.target).val('');
       } else {
-        this.handler.selectDatabase(value);
+        this.handler.selectDatabase(value, () => {
+          this.clearTablesFilter({show: false});
+        });
       }
     });
 
@@ -263,20 +264,27 @@ class DbScreenView {
     this.handler.fetchTablesAndSchemas();
   }
 
+  clearTablesFilter (options = {show: true}) {
+    $u('input.filter-tables').val(null);
+    if (options.show !== false) {
+      $u('li[table-name]').show();
+    }
+    this.sidebar.find('.tables-filter').removeClass('has-filter-value');
+  }
+
   filterTables (event) {
     const name = event.target.value;
     //console.log('name', name, !!name);
     if (name) {
-      this.sidebar.find('.tables-filter').addClass('has-filter-value')
+      this.sidebar.find('.tables-filter').addClass('has-filter-value');
       $u('li[table-name]').hide().each((i, element) => {
         var tableName = $(element).attr('table-name').toLowerCase();
         if (tableName.includes(name.toLowerCase())) {
-          $(element).show()
+          $(element).show();
         }
       });
     } else {
-      this.sidebar.find('.tables-filter').removeClass('has-filter-value')
-      $u('li[table-name]').show()
+      this.clearTablesFilter();
     }
   }
 
