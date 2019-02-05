@@ -29,7 +29,7 @@
           tr(data-ctid = row.ctid)
             each column in data.fields
               if column.name != 'ctid'
-                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)
+                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)
 
 
 .summary-and-pages.native-footer-bar
