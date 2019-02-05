@@ -12,24 +12,13 @@ set -v
 
 ls -lah dist/* || true
 
-#MC_CMD="./mc"
-#
-#if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
-#  wget https://dl.minio.io/client/mc/release/darwin-amd64/mc
-#  chmod +x mc
-#elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
-#  wget https://dl.minio.io/client/mc/release/linux-amd64/mc
-#  chmod +x mc
-#else
-#  wget https://dl.minio.io/client/mc/release/windows-amd64/mc.exe
-#  MC_CMD="./mc.exe"
-#fi
-#
-#$MC_CMD --version
-#$MC_CMD config host add postbird https://paxa.kuber.host travis postbird --api s3v4
-
-for filename in ./dist/*.{dmg,deb,rpm,snap,exe,zip}; do
+cd dist
+for filename in ./*.{dmg,deb,rpm,snap,exe,zip}; do
   [ -e "$filename" ] || continue
   #$MC_CMD cp "$filename" postbird/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
-  curl -v https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename -T $filename -H "Upload-Token: $UPLOAD_TOKEN"
+  curl https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename \
+    -v \
+    -T $filename \
+    -H "Upload-Token: $UPLOAD_TOKEN" \
+    --retry 3 --retry-delay 10
 done
