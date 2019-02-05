@@ -25,3 +25,7 @@ script:
   - ./build_files/rebuild_ext
   - yarn dist
   - ./build_files/upload_package
+
+matrix:
+  allow_failures:
+    - os: windows
