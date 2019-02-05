@@ -20,5 +20,5 @@ for filename in ./*.{dmg,deb,rpm,snap,exe,zip}; do
     -v \
     -T $filename \
     -H "Upload-Token: $UPLOAD_TOKEN" \
-    --retry 3 --retry-delay 10
+    --retry 3 --retry-delay 10 --http1.1
 done
