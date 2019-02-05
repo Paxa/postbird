@@ -10,8 +10,8 @@ os:
 env:
   matrix:
     - YARN_GPG=no
-  global:
-    secure: U98ScOVVLLQhxghbzE8O5EZA/KjqCs9X8PePney6TNqOPmVBYD8LEyi27yUCGqAxu0Q0S/1VVrfaiRjIyg3ANMD+ZeRQkEk+1rSiDod54MYLRvSwAjOIrDYUNsV48vzTPaARsL454JXa41Gkz+c5ErkE43j/HPcGJthYH6yi3U0=
+#  global:
+#    secure: U98ScOVVLLQhxghbzE8O5EZA/KjqCs9X8PePney6TNqOPmVBYD8LEyi27yUCGqAxu0Q0S/1VVrfaiRjIyg3ANMD+ZeRQkEk+1rSiDod54MYLRvSwAjOIrDYUNsV48vzTPaARsL454JXa41Gkz+c5ErkE43j/HPcGJthYH6yi3U0=
 
 cache:
   yarn: true
