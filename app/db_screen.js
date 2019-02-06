@@ -483,8 +483,11 @@ class DbScreen {
     App.startLoading(`Updating column ${columnObj.data.column_name}`);
 
     try {
-      await columnObj.update(data);
-      this.structureTabActivate();
+      var res = await columnObj.update(data);
+      if (res) {
+        this.structureTabActivate();
+      }
+      return res;
     } finally {
       App.stopLoading();
     }

@@ -13,7 +13,7 @@ form
         optgroup(label = group)
           each type in types
             if type
-              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name
+              option(value = type.udt_name, title = type.description, selected = (data.udt_name == type.udt_name))= type.name
   p
     a(href="https://www.postgresql.org/docs/current/datatype.html", class="external docs-link") Postgres Data Types
 

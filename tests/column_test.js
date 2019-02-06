@@ -36,6 +36,105 @@ describe('Model.Column', () => {
     await table.drop()
   })
 
+  it('should fetch numeric column length with scale', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({
+      table: table,
+      name: 'some_column',
+      type: 'numeric',
+      max_length: '10,5',
+      allow_null: false
+    })
+
+    await column.create()
+
+    column = await table.getColumnObj(column.name)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'numeric',
+      default_value: null,
+      max_length: '10,5',
+      allow_null: false
+    })
+
+    await table.drop()
+  })
+
+  it('should fetch timestamp column length', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({
+      table: table,
+      name: 'some_column',
+      type: 'timestamp',
+      max_length: '5',
+      allow_null: false
+    })
+
+    await column.create()
+
+    column = await table.getColumnObj(column.name)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'timestamp without time zone',
+      default_value: null,
+      max_length: '5',
+      allow_null: false
+    })
+
+    await table.drop()
+  })
+
+  it('should fetch timestamp column length', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({
+      table: table,
+      name: 'some_column',
+      type: 'timestamp',
+      max_length: '5',
+      allow_null: false
+    })
+
+    await column.create()
+
+    column = await table.getColumnObj(column.name)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'timestamp without time zone',
+      default_value: null,
+      max_length: '5',
+      allow_null: false
+    })
+
+    await table.drop()
+  })
+
+  it('should recognize default timestamp column length', async () => {
+    var table = await Model.Table.create('public', 'test_table')
+    var column = new Model.Column({
+      table: table,
+      name: 'some_column',
+      type: 'interval',
+      allow_null: false
+    })
+
+    await column.create()
+
+    column = await table.getColumnObj(column.name)
+
+    assert.deepEqual(column.attributes, {
+      name: 'some_column',
+      type: 'interval',
+      default_value: null,
+      max_length: null,
+      allow_null: false
+    })
+
+    await table.drop()
+  })
+
   it('should make virtual attributes', () => {
     var column = new Model.Column({
       name: 'some_column',
@@ -222,7 +321,8 @@ describe('Model.Column', () => {
       types.find(t => { return t.name == 'text' }),
       { schema: 'pg_catalog',
         name: 'text',
-        description: 'variable-length string, no limit specified'
+        description: 'variable-length string, no limit specified',
+        udt_name: 'text'
       }
     )
   })

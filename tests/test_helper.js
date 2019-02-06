@@ -5,7 +5,6 @@ if (!window.localStorage) {
 
 
 require('../app');
-require('../lib/jquery.class');
 require('../app/connection');
 
 global.assert = require('./assert_extras');

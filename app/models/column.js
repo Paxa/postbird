@@ -5,7 +5,7 @@ class Column extends ModelBase {
   changes: any
   table: Model.Table
   name: string
-  max_length: number
+  max_length: string
   type: string
   allow_null: boolean
   static attributesAliases: any
@@ -27,6 +27,19 @@ class Column extends ModelBase {
       this.changes = {};
 
     } else {
+
+      if (data.character_maximum_length == null) {
+        if (typeof data.numeric_precision == 'number') {
+          if (data.numeric_scale) {
+            data.character_maximum_length = `${data.numeric_precision},${data.numeric_scale}`;
+          } else {
+            data.character_maximum_length = `${data.numeric_precision}`;
+          }
+        } else if (typeof data.datetime_precision == 'number' && data.atttypmod != -1) {
+          data.character_maximum_length = `${data.datetime_precision}`;
+        }
+      }
+
       super(data);
       if (data.table) {
         this.table = data.table;
@@ -56,12 +69,23 @@ class Column extends ModelBase {
   }
 
   async update(formData) {
+    var allValid = true;
+
     for (var attr in formData) {
-      this[attr] = formData[attr];
+      try {
+        this[attr] = formData[attr];
+      } catch (error) {
+        console.error(error);
+        allValid = false;
+      }
     }
 
-    return this.save();
-    // TODO: finish here
+    if (allValid) {
+      await this.save();
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
   }
 
   async save() {
@@ -145,7 +169,8 @@ class Column extends ModelBase {
     var sql = `
       SELECT n.nspname as "schema",
         pg_catalog.format_type(t.oid, NULL) AS "name",
-        pg_catalog.obj_description(t.oid, 'pg_type') as "description"
+        pg_catalog.obj_description(t.oid, 'pg_type') as "description",
+        t.typname as udt_name
       FROM pg_catalog.pg_type t
            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
       WHERE (t.typrelid = 0 OR (SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid))
@@ -177,9 +202,17 @@ Object.keys(Column.attributesAliases).forEach((attr) => {
 
     set: function (value) {
       if (attr == 'max_length') {
-        value = parseInt(value, 10);
-        if (isNaN(value)) value = null;
+        if (typeof value == 'string') {
+          value = value.trim()
+          if (!value.match(/^[\d,]*$/)) {
+            $u.alert("Max Length has invalid format: only numbers and comma allowed");
+            throw new Error("Max Length has invalid format: only numbers and comma allowed")
+          }
+        } else if (isNaN(value)) {
+          value = null;
+        }
       }
+
       if (this.data[data_attr] != value) {
         this.changes = this.changes || {};
         this.changes[attr] = [this.data[data_attr], value];

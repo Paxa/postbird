@@ -307,10 +307,16 @@ class Table extends ModelBase {
   }
 
   _table_getColumns (name) {
-    var sql = "select * from information_schema.columns where table_schema = '%s' and table_name = '%s' %s;";
-    var cond = name ? " and column_name = '" + name + "'" : '';
+    var sql = `SELECT columns.*, atttypmod
+                FROM information_schema.columns, pg_catalog.pg_attribute
+                WHERE columns.table_schema = '${this.schema}' AND
+                      columns.table_name = '${this.table}' AND
+                      pg_attribute.attrelid = '${this.sqlTable()}'::regclass AND
+                      pg_attribute.attname = columns.column_name
+                      %s;`;
+    var cond = name ? ` AND column_name = '${name}'` : '';
 
-    return this.q(sql, this.schema, this.table, cond).then(rows => {
+    return this.q(sql, cond).then(rows => {
       return Promise.resolve(rows.rows);
     });
   }

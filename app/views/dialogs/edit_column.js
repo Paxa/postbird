@@ -27,8 +27,10 @@ class EditColumn extends Dialog.NewColumn {
     }
 
     try {
-      await this.handler.updateColumn(this.columnObj, data);
-      this.close();
+      var saved = await this.handler.updateColumn(this.columnObj, data);
+      if (saved) {
+        this.close();
+      }
     } catch (error) {
       this.defaultServerResponse(null, error);
     }
