@@ -38,7 +38,6 @@ To run newest version, simply:
 git clone git@github.com:Paxa/postbird.git
 cd postbird
 yarn
-yarn rebuild_ext
 yarn start
 ```
 
