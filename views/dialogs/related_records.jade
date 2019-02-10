@@ -1,0 +1,10 @@
+each row in data.rows
+  table
+    each field in data.fields
+      tr
+        td= field.name
+        td!= formatCellFromSelect(row[field.name], field)
+
+p.buttons
+  button.ok Apply Filters
+  button.cancel Close

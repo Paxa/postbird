@@ -402,6 +402,17 @@ class Table extends ModelBase {
     });
   }
 
+  async getRowsSimple (column, value) {
+    var sql = pgEscape(`SELECT * FROM ${this.sqlTable()} WHERE "${column}" = %L`, value);
+    var data = await this.q(sql);
+
+    //console.log(JSON.stringify(data.fields, null, 2));
+
+    PgTypeNames.extendFields(data);
+
+    return data;
+  }
+
   async getTotalRows () {
     var sql = `SELECT count(*) AS rows_count FROM ${this.sqlTable()}`;
     var data = await this.q(sql);
@@ -570,17 +581,25 @@ class Table extends ModelBase {
     var sql = `
       SELECT
           kcu.column_name,
+          ccu.table_schema AS foreign_table_schema,
           ccu.table_name AS foreign_table_name,
           ccu.column_name AS foreign_column_name
       FROM
           information_schema.table_constraints AS tc
-          JOIN information_schema.key_column_usage 
+          JOIN information_schema.key_column_usage
               AS kcu ON tc.constraint_name = kcu.constraint_name
-          JOIN information_schema.constraint_column_usage 
+          JOIN information_schema.constraint_column_usage
               AS ccu ON ccu.constraint_name = tc.constraint_name
-      WHERE tc.table_name = '${this.table}' AND constraint_type = 'FOREIGN KEY'
+      WHERE tc.table_schema = '${this.schema}' AND tc.table_name = '${this.table}' AND constraint_type = 'FOREIGN KEY'
     `;
-    return this.q(sql);
+
+    var res = await this.q(sql);
+    res.hash = {};
+    res.rows.forEach(row => {
+      res.hash[row.column_name] = row;
+    });
+
+    return res;
   }
 
   dropConstraint (constraintName, callback) {

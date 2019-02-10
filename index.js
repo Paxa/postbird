@@ -50,6 +50,7 @@ require('./app/views/dialogs/edit_procedure');
 require('./app/views/dialogs/def_procedure');
 require('./app/views/dialogs/user_grants');
 require('./app/views/dialogs/edit_value');
+require('./app/views/dialogs/related_records');
 
 global.Model = require('./app/models/all');
 

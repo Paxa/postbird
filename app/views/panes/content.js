@@ -179,9 +179,7 @@ class Content extends Pane {
     }
 
     this.columnTypes = columnTypes;
-    this.queryOptions = {
-      with_oid: !!columnTypes.oid
-    };
+    this.queryOptions = options.queryOptions || {};
 
     if (data) {
       this.limit = data.limit;
@@ -198,7 +196,7 @@ class Content extends Pane {
 
     this.state = {};
 
-    this.handler.table.getTableType().then(tableType => {
+    return this.handler.table.getTableType().then(tableType => {
       this.currentTableType = tableType;
       this.renderData(data);
     });
@@ -221,7 +219,7 @@ class Content extends Pane {
 
     this.renderViewToPane('content', 'content_tab', {
       data: data,
-      relations: data.relations ? data.relations.rows : [],
+      relations: data.relations ? data.relations.hash : [],
       types: this.columnTypes,
       sorting: {column: this.queryOptions.sortColumn, direction: this.queryOptions.sortDirection},
       tableType: this.currentTableType,
@@ -247,8 +245,6 @@ class Content extends Pane {
     this.initContextMenu();
 
     this.initFilters();
-
-    this.initRelations();
 
     this.footer = this.content.find('.summary-and-pages');
 
@@ -339,7 +335,7 @@ class Content extends Pane {
       App.stopLoading();
       this.content.removeClass('reloading');
     } catch (error) {
-      alert(error.message);
+      $u.alert(error.message);
       App.stopLoading();
     }
   }
@@ -376,22 +372,6 @@ class Content extends Pane {
             cell.attr('sortable-dir', direction);
           }
           this.reloadData();
-        });
-      });
-    });
-  }
-
-  initRelations () {
-    this.content.find('.rescol-wrapper').on('resizable-columns:init', (event) => {
-
-      var cells = this.content.find('table td span.foreign');
-      cells.each((i, cell) => {
-        cell = $u(cell);
-        cell.bind('click', (ev) => {
-          const table = cell.attr('data-table');
-          const column = cell.attr('data-column');
-          const value = cell.attr('data-value')
-          this.viewForeign(table, column, value);
         });
       });
     });
@@ -447,7 +427,7 @@ class Content extends Pane {
 
   async deleteRow (row) {
     if (this.currentTableType != 'BASE TABLE') {
-      alert("Can't delete from " + this.currentTableType);
+      $u.alert("Can't delete from " + this.currentTableType);
     }
     if (confirm("Are you sure want to delete this row?")) {
       var ctid = $u(row).attr('data-ctid');
@@ -476,7 +456,7 @@ class Content extends Pane {
       }
     });
 
-    global.editValue = value;
+    //global.editValue = value;
 
     var dialog = new Dialog.EditValue(this.handler, {
       value: value,
@@ -507,41 +487,15 @@ class Content extends Pane {
     });
   }
 
-  async viewForeign (table, column, value) {
-    const query = `SELECT * FROM ${table} WHERE ${column} = '${value}'`;
-    const foreign = await this.handler.table.q(query)
+  async viewForeign (schema, table, column, value) {
+    var foreign = await this.handler.loadForeignRows(schema, table, column, value);
 
-    const fields = foreign.fields.map(f => f.name);
-    console.log(fields);
-    console.log(foreign.rows);
-
-    // var dialog = new Dialog.EditValue(this.handler, {
-    //   value: value,
-    //   fieldName: fieldName,
-    //   fieldType: fieldType,
-    //   onSave: async (value, isNull) => {
-    //     App.startLoading(`Updating value for ${fieldName}...`);
-    //     try {
-    //       var result = await this.handler.table.updateValue(ctid, fieldName, value, isNull);
-    //       dialog.close();
-    //       if (result.rowCount == 0) {
-    //         $u.alertError("No records updated, probably table content was changed since you started editing.",
-    //           {detail: "Try to refresh content and edit again"}
-    //         );
-    //       }
-    //     } catch (error) {
-    //       console.error(error);
-    //       var sql = error.query ? `\nSQL: ${error.query}` : '';
-    //       var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
-    //       $u.alertError("Error while updating value", {detail: error.message + hint + sql});
-    //       return;
-    //     } finally {
-    //       App.stopLoading();
-    //     }
-    //     await this.reloadData();
-    //     //this.content.find(`.rescol-content-wrapper table tbody:nth-child(${valueIndex + 1})`).click();
-    //   }
-    // });
+    var dialog = new Dialog.RelatedRecords(this.handler, foreign, {
+      schema: schema,
+      table: table,
+      column: column,
+      value: value
+    });
   }
 
   addRow () {
@@ -663,6 +617,14 @@ class Content extends Pane {
     });
   }
 
+  setFilter (field, matcher, value) {
+    this.filterField.val(field).change();
+    this.filterMatcher.val(matcher).change();
+    this.filterValue.val(value).change();
+    this.state.filtered = true;
+    this.content.find('.content-filter').attr('filtered', 'filtered');
+  }
+
   cancelFilters () {
     this.filterValue.val("").trigger('change');
     if (this.state.filtered) {
@@ -671,6 +633,11 @@ class Content extends Pane {
       this.reloadData();
     }
   }
+}
+
+Content.filterSql = (column, matcher, value) => {
+  var m = filterMatchers[matcher];
+  return m.sql('string', column, value);
 }
 
 Content.insertSnippet = function (sql) {

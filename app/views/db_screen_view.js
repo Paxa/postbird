@@ -343,7 +343,7 @@ class DbScreenView {
       currentTabEl.empty().html('<span class="tab-loader">Getting data ...</span>');
     }
 
-    this.handler.activateTab(name, true);
+    return this.handler.activateTab(name, true);
   }
 
   truncateTable (schema, tableName) {

@@ -140,16 +140,16 @@ class DbScreen {
     this.view.setSelected(schema, tableName);
 
     if (showTab) {
-      this.view.showTab(showTab);
+      return this.view.showTab(showTab);
     } else if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
-      this.view.showTab(this.view.currentTab);
+      return this.view.showTab(this.view.currentTab);
     } else {
-      this.view.showTab('structure');
+      return this.view.showTab('structure');
     }
   }
 
   activateTab (tabName, force) {
-    console.log(tabName + 'TabActivate', typeof this[tabName + 'TabActivate']);
+    //console.log(tabName + 'TabActivate', typeof this[tabName + 'TabActivate']);
 
     if (this.currentTab == tabName && !force) {
       return;
@@ -158,7 +158,7 @@ class DbScreen {
     if (this[tabName + 'TabActivate']) {
       this.currentTab = tabName;
       App.emit('dbtab.changed', this.currentTab);
-      this[tabName + 'TabActivate']();
+      return this[tabName + 'TabActivate']();
     }
   }
 
@@ -187,7 +187,16 @@ class DbScreen {
     });
   }
 
+  async openContentTabWithFilter (schema, table, field, value) {
+    this.contentConditions = [Pane.Content.filterSql(field, 'eq', value)];
+    var res = await this.tableSelected(schema, table, 'content');
+    console.log(res, 'res');
+    delete this.contentConditions;
+    this.view.contentPane.setFilter(field, 'eq', value);
+  }
+
   async contentTabActivate () {
+    var sTime = Date.now();
     if (!this.currentTable) {
       this.view.setTabMessage("Please select table or view");
       return;
@@ -208,20 +217,30 @@ class DbScreen {
           extraColumns.push(`ST_AsText(${key}) as ${key}`);
         }
       });
-      var rowsCount = Object.keys(columnTypes).length < 30 ? this.contentTabLimit : this.contentTabWideLimit;
-      var data = await this.table.getRows(0, rowsCount, {
+      var rowsCount = Object.keys(columnTypes).length < 20 ? this.contentTabLimit : this.contentTabWideLimit;
+      var queryOptions = {
         with_oid: hasOid,
         extraColumns: extraColumns,
-      });
+        conditions: this.contentConditions
+      };
+      var data = await this.table.getRows(0, rowsCount, queryOptions);
       data.relations = await this.table.getRelations()
-      this.view.contentPane.renderTab(data, columnTypes, {pageLimit: rowsCount});
+
       this.currentTab = 'content';
+
+      await this.view.contentPane.renderTab(data, columnTypes, {
+        pageLimit: rowsCount,
+        queryOptions: queryOptions
+      });
+      return 'done';
     } catch (error) {
       $u.alertError("Can not load content", {detail: error.message});
       this.view.contentPane.renderTab(null, null, {error: error});
       this.currentTab = 'content';
+      return 'error';
     } finally {
       App.stopLoading();
+      console.log("contentTabActivate " + (Date.now() - sTime) + "ms");
     }
   }
 
@@ -611,6 +630,16 @@ class DbScreen {
       App.stopLoading();
       callback(result, error);
     });
+  }
+
+  async loadForeignRows (schema, table, column, value) {
+    try {
+      App.startLoading(`Loading related rows`);
+      var rows = await new Model.Table(schema, table).getRowsSimple(column, value);
+      return rows;
+    } finally {
+      App.stopLoading();
+    }
   }
 }
 

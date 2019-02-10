@@ -70,9 +70,7 @@ var helpers = global.ViewHelpers = {
     return this.formatCell(value, format, field.data_type);
   },
 
-  formatCell: function (value, format, dataType, relations= [], columnName) {
-    const relation = relations.findIndex(r => r.column_name === columnName)
-
+  formatCell: function (value, format, dataType) {
     if (value === null) {
       return '<i class="null">NULL</i>';
     }
@@ -122,11 +120,15 @@ var helpers = global.ViewHelpers = {
       formated = this.formatArray(value, format);
     }
 
-    if (relation > -1) {
-      formated += `<span class="foreign" data-table="${relations[relation].foreign_table_name}" data-column="${relations[relation].foreign_column_name}" data-value="${value}">${this.icon('foreign_table', 'Foreign Key', 10,10)}</span>`
-    }
-
     return formated;
+  },
+
+  relatedRowsIcon(rel, columnName, value) {
+    if (rel) {
+      var escapedValue = typeof value == 'string' ? value.replace(/('|")/g, "\\$1") : value;
+      var execAttr = `viewForeign('${rel.foreign_table_schema}', '${rel.foreign_table_name}', '${rel.foreign_column_name}', '${escapedValue}')`;
+      return `<a class="foreign" exec="${execAttr}"></span>`;
+    }
   },
 
   truncate: function(str, length) {

@@ -117,3 +117,21 @@
     }
   }
 }
+
+.related-records-dialog {
+  max-width: 75vw;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    td {
+      border: 1px solid #ccc;
+      padding: 2px 7px;
+    }
+    td ~ td {
+      word-break: break-all;
+    }
+    & ~ table {
+      margin-top: 15px;
+    }
+  }
+}

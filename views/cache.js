@@ -19,8 +19,8 @@ pug_html = pug_html + "Cancel\u003C\u002Fa\u003E";
 }
 pug_html = pug_html + "\n\u003C\u002Fdiv\u003E";}.call(this,"cancel" in locals_for_with?locals_for_with.cancel:typeof cancel!=="undefined"?cancel:undefined,"message" in locals_for_with?locals_for_with.message:typeof message!=="undefined"?message:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["_loader"].content = ".app-loader\n  span= message\n  small Please wait\n  if cancel\n    a.cancel-btn Cancel";
-exports["content_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fcontent_tab.jade":".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    \u002F\u002Fli\n    \u002F\u002F  a Remove\n    \u002F\u002Fli\n    \u002F\u002F  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n"};
-;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, matchers, relations, shorterTypeName, sorting, state, tableType, types) {var pug_indent = [];
+exports["content_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fcontent_tab.jade":".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td\n                  != formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n                  != relatedRowsIcon(relations[column.name], column.name, row[column.name])\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    \u002F\u002Fli\n    \u002F\u002F  a Remove\n    \u002F\u002Fli\n    \u002F\u002F  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n"};
+;var locals_for_with = (locals || {});(function (column_type_label, data, formatCell, matchers, relatedRowsIcon, relations, shorterTypeName, sorting, state, tableType, types) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n\u003Cdiv" + (" class=\"content-filter\""+pug.attr("filtered", !!state.filtered, true, false)) + "\u003E";
 ;pug_debug_line = 2;pug_debug_filename = "views\u002Fcontent_tab.jade";
@@ -177,8 +177,10 @@ pug_html = pug_html + "\n        \u003Ctr" + (pug.attr("data-ctid", row.ctid, tr
 if (column.name != 'ctid') {
 ;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp);
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = relatedRowsIcon(relations[column.name], column.name, row[column.name])) ? "" : pug_interp) + "\n          \u003C\u002Ftd\u003E";
 }
       }
   } else {
@@ -190,8 +192,10 @@ pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[
 if (column.name != 'ctid') {
 ;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp);
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = relatedRowsIcon(relations[column.name], column.name, row[column.name])) ? "" : pug_interp) + "\n          \u003C\u002Ftd\u003E";
 }
     }
   }
@@ -217,8 +221,10 @@ pug_html = pug_html + "\n        \u003Ctr" + (pug.attr("data-ctid", row.ctid, tr
 if (column.name != 'ctid') {
 ;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp);
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = relatedRowsIcon(relations[column.name], column.name, row[column.name])) ? "" : pug_interp) + "\n          \u003C\u002Ftd\u003E";
 }
       }
   } else {
@@ -230,8 +236,10 @@ pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[
 if (column.name != 'ctid') {
 ;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
-;pug_debug_line = 32;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 33;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)) ? "" : pug_interp);
+;pug_debug_line = 34;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + (null == (pug_interp = relatedRowsIcon(relations[column.name], column.name, row[column.name])) ? "" : pug_interp) + "\n          \u003C\u002Ftd\u003E";
 }
     }
   }
@@ -243,49 +251,49 @@ pug_html = pug_html + "\n        \u003C\u002Ftr\u003E";
 }).call(this);
 
 pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-;pug_debug_line = 35;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n\u003Cdiv class=\"summary-and-pages native-footer-bar\"\u003E";
-;pug_debug_line = 36;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n  \u003Cul\u003E";
 ;pug_debug_line = 37;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003C!--li--\u003E";
+pug_html = pug_html + "\n\u003Cdiv class=\"summary-and-pages native-footer-bar\"\u003E";
 ;pug_debug_line = 38;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003C!--  a Remove--\u003E";
+pug_html = pug_html + "\n  \u003Cul\u003E";
 ;pug_debug_line = 39;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n    \u003C!--li--\u003E";
 ;pug_debug_line = 40;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003C!--  a Duplicate--\u003E";
+pug_html = pug_html + "\n    \u003C!--  a Remove--\u003E";
 ;pug_debug_line = 41;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003Cli class=\"info\"\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\n    \u003C!--li--\u003E";
+;pug_debug_line = 42;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\n    \u003C!--  a Duplicate--\u003E";
 ;pug_debug_line = 43;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003Cli class=\"pages prev\"\u003E";
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\u003Ca exec=\"prevPage\"\u003E";
-;pug_debug_line = 44;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "Prev\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\n    \u003Cli class=\"info\"\u003E\u003C\u002Fli\u003E";
 ;pug_debug_line = 45;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003Cli class=\"pages next\"\u003E";
+pug_html = pug_html + "\n    \u003Cli class=\"pages prev\"\u003E";
 ;pug_debug_line = 46;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\u003Ca exec=\"nextPage\"\u003E";
+pug_html = pug_html + "\u003Ca exec=\"prevPage\"\u003E";
 ;pug_debug_line = 46;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "Next\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "Prev\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
 ;pug_debug_line = 47;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\n    \u003Cli class=\"reload\"\u003E";
+pug_html = pug_html + "\n    \u003Cli class=\"pages next\"\u003E";
 ;pug_debug_line = 48;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "\u003Ca exec=\"reloadData\"\u003E";
+pug_html = pug_html + "\u003Ca exec=\"nextPage\"\u003E";
 ;pug_debug_line = 48;pug_debug_filename = "views\u002Fcontent_tab.jade";
-pug_html = pug_html + "Reload\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "Next\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
 ;pug_debug_line = 49;pug_debug_filename = "views\u002Fcontent_tab.jade";
-if (tableType == 'BASE TABLE') {
+pug_html = pug_html + "\n    \u003Cli class=\"reload\"\u003E";
 ;pug_debug_line = 50;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "\u003Ca exec=\"reloadData\"\u003E";
+;pug_debug_line = 50;pug_debug_filename = "views\u002Fcontent_tab.jade";
+pug_html = pug_html + "Reload\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
+;pug_debug_line = 51;pug_debug_filename = "views\u002Fcontent_tab.jade";
+if (tableType == 'BASE TABLE') {
+;pug_debug_line = 52;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\n    \u003Cli\u003E";
-;pug_debug_line = 51;pug_debug_filename = "views\u002Fcontent_tab.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "\u003Ca exec=\"addRow\"\u003E";
-;pug_debug_line = 51;pug_debug_filename = "views\u002Fcontent_tab.jade";
+;pug_debug_line = 53;pug_debug_filename = "views\u002Fcontent_tab.jade";
 pug_html = pug_html + "Add New Row\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
 }
-pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"matchers" in locals_for_with?locals_for_with.matchers:typeof matchers!=="undefined"?matchers:undefined,"relations" in locals_for_with?locals_for_with.relations:typeof relations!=="undefined"?relations:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["content_tab"].content = ".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td!= formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type, relations, column.name)\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
+pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"matchers" in locals_for_with?locals_for_with.matchers:typeof matchers!=="undefined"?matchers:undefined,"relatedRowsIcon" in locals_for_with?locals_for_with.relatedRowsIcon:typeof relatedRowsIcon!=="undefined"?relatedRowsIcon:undefined,"relations" in locals_for_with?locals_for_with.relations:typeof relations!=="undefined"?relations:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["content_tab"].content = ".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td\n                  != formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n                  != relatedRowsIcon(relations[column.name], column.name, row[column.name])\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
 exports["db_rows_table"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdb_rows_table.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCellFromSelect(row[column.name], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n"};
 ;var locals_for_with = (locals || {});(function (column_type_label, data, formatCellFromSelect) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdb_rows_table.jade";
@@ -427,7 +435,7 @@ pug_html = pug_html + "OK\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E\n   
 }
 pug_html = pug_html + "\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCellFromSelect" in locals_for_with?locals_for_with.formatCellFromSelect:typeof formatCellFromSelect!=="undefined"?formatCellFromSelect:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCellFromSelect(row[column.name], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
-exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    a(href=\"https:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002Fcurrent\u002Fdatatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n"};
+exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.udt_name, title = type.description, selected = (data.udt_name == type.udt_name))= type.name\n  p\n    a(href=\"https:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002Fcurrent\u002Fdatatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n"};
 ;var locals_for_with = (locals || {});(function (action, data, groupedTypes) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 data = data || {}
@@ -470,7 +478,7 @@ pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true,
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.udt_name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.udt_name == type.udt_name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -483,7 +491,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.udt_name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.udt_name == type.udt_name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -510,7 +518,7 @@ pug_html = pug_html + "\n      \u003Coptgroup" + (pug.attr("label", group, true,
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.udt_name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.udt_name == type.udt_name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -523,7 +531,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_in
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 if (type) {
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
-pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.data_type == type.name), true, false)) + "\u003E";
+pug_html = pug_html + "\n        \u003Coption" + (pug.attr("value", type.udt_name, true, false)+pug.attr("title", type.description, true, false)+pug.attr("selected", (data.udt_name == type.udt_name), true, false)) + "\u003E";
 ;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = type.name) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
 }
@@ -590,7 +598,7 @@ pug_html = pug_html + "Add Column\u003C\u002Fbutton\u003E";
 pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 40;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";
 pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";}.call(this,"action" in locals_for_with?locals_for_with.action:typeof action!=="undefined"?action:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"groupedTypes" in locals_for_with?locals_for_with.groupedTypes:typeof groupedTypes!=="undefined"?groupedTypes:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.name, title = type.description, selected = (data.data_type == type.name))= type.name\n  p\n    a(href=\"https://www.postgresql.org/docs/current/datatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n";
+exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.udt_name, title = type.description, selected = (data.udt_name == type.udt_name))= type.name\n  p\n    a(href=\"https://www.postgresql.org/docs/current/datatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n";
 exports["dialogs/def_procedure"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fdef_procedure.jade":"code.general.sql= source\n\np.buttons.close-btn\n  button.cancel Close"};
 ;var locals_for_with = (locals || {});(function (source) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fdef_procedure.jade";
@@ -1116,6 +1124,116 @@ pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
 ;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fnew_table.jade";
 pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/new_table"].content = "form\n  p\n    label Table name\n    input(name=\"name\" type=\"text\")\n\n  p\n    label Tablespace\n    select(name=\"tablespace\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  p.buttons\n    button.ok Create Table\n    button.cancel Cancel\n";
+exports["dialogs/related_records"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Frelated_records.jade":"each row in data.rows\n  table\n    each field in data.fields\n      tr\n        td= field.name\n        td!= formatCellFromSelect(row[field.name], field)\n\np.buttons\n  button.ok Apply Filters\n  button.cancel Close\n"};
+;var locals_for_with = (locals || {});(function (data, formatCellFromSelect) {var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+// iterate data.rows
+;(function(){
+  var $$obj = data.rows;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var row = $$obj[pug_index0];
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n\u003Ctable\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+// iterate data.fields
+;(function(){
+  var $$obj = data.fields;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index1 = 0, $$l = $$obj.length; pug_index1 < $$l; pug_index1++) {
+        var field = $$obj[pug_index1];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Ctr\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = field.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[field.name], field)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E\n  \u003C\u002Ftr\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index1 in $$obj) {
+      $$l++;
+      var field = $$obj[pug_index1];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Ctr\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = field.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[field.name], field)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E\n  \u003C\u002Ftr\u003E";
+    }
+  }
+}).call(this);
+
+pug_html = pug_html + "\n\u003C\u002Ftable\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var row = $$obj[pug_index0];
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n\u003Ctable\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+// iterate data.fields
+;(function(){
+  var $$obj = data.fields;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
+        var field = $$obj[pug_index2];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Ctr\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = field.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[field.name], field)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E\n  \u003C\u002Ftr\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index2 in $$obj) {
+      $$l++;
+      var field = $$obj[pug_index2];
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Ctr\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = field.name) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n    \u003Ctd\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[field.name], field)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E\n  \u003C\u002Ftr\u003E";
+    }
+  }
+}).call(this);
+
+pug_html = pug_html + "\n\u003C\u002Ftable\u003E";
+    }
+  }
+}).call(this);
+
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "Apply Filters\u003C\u002Fbutton\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Frelated_records.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";}.call(this,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCellFromSelect" in locals_for_with?locals_for_with.formatCellFromSelect:typeof formatCellFromSelect!=="undefined"?formatCellFromSelect:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/related_records"].content = "each row in data.rows\n  table\n    each field in data.fields\n      tr\n        td= field.name\n        td!= formatCellFromSelect(row[field.name], field)\n\np.buttons\n  button.ok Apply Filters\n  button.cancel Close\n";
 exports["dialogs/show_sql"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fshow_sql.jade":"code.result.sql\n  = code\n\np.buttons\n  button.cancel OK"};
 ;var locals_for_with = (locals || {});(function (code) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fshow_sql.jade";

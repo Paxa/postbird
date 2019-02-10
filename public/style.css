@@ -1363,9 +1363,15 @@ body.sidebar-resizing {
     .window-content.content table tr td span.text {
       width: 100%;
       min-width: 100px; }
-    .window-content.content table tr td span.foreign {
-      float: right;
-      cursor: pointer; }
+    .window-content.content table tr td a.foreign {
+      display: inline-block;
+      margin-left: 3px;
+      cursor: pointer;
+      width: 10px;
+      height: 10px;
+      background-image: url("icons/foreign_table.png");
+      background-size: 10px 10px;
+      background-repeat: no-repeat; }
     .window-content.content table tr td span.wrong-json {
       background: rgba(255, 192, 203, 0.56); }
     .window-content.content table tr td time {
@@ -1833,6 +1839,19 @@ small.help-icon {
   border: 1px solid #ccc; }
   .new-index-dialog ul.columns-names li + li {
     border-top: 1px solid #ccc; }
+
+.related-records-dialog {
+  max-width: 75vw; }
+  .related-records-dialog table {
+    width: 100%;
+    border-collapse: collapse; }
+    .related-records-dialog table td {
+      border: 1px solid #ccc;
+      padding: 2px 7px; }
+    .related-records-dialog table td ~ td {
+      word-break: break-all; }
+    .related-records-dialog table ~ table {
+      margin-top: 15px; }
 
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */

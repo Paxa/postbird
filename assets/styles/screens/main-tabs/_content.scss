@@ -142,9 +142,15 @@
           min-width: 100px;
         }
 
-        span.foreign {
-          float: right;
+        a.foreign {
+          display: inline-block;
+          margin-left: 3px;
           cursor: pointer;
+          width: 10px;
+          height: 10px;
+          background-image: url("icons/foreign_table.png");
+          background-size: 10px 10px;
+          background-repeat: no-repeat;
         }
 
         span.wrong-json {
