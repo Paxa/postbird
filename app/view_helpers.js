@@ -15,6 +15,7 @@ declare global {
     TIMESTAMP_OID: number
     formatCellFromSelect: (value: any, field: any) => string
     formatCell: (value: any, format: string, dataType: string) => string
+    relatedRowsIcon: (rel: any, columnName: string, value: string) => string
     truncate: (str: string, length: number) => string
     tag_options: (options: any) => string
     link_to: (text: string, url: string, options: any) => string

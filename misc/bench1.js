@@ -1,5 +1,5 @@
 const Benchmark = require('benchmark');
-const ViewHelper = require('./app/view_helpers');
+const ViewHelpers = require('./app/view_helpers');
 const moment = require('moment');
 
 var suite = new Benchmark.Suite({

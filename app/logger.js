@@ -7,12 +7,12 @@ var topProcess = remote ? remote.process : process;
 
 function Logger (level) {
   this.logLevel = level;
-};
+}
 
 !function (proto) {
 
   log_levels.forEach((level) => {
-    proto[level] = function (message) {
+    proto[level] = function () {
       this.write(level, arguments);
     };
   });
@@ -31,9 +31,9 @@ function Logger (level) {
         }
         messages.push(String(message));
       }
-      var message = messages.join(' ');
+      message = messages.join(' ');
 
-      line = sprintf("%s %s\n", level.toUpperCase(), message);
+      var line = sprintf("%s %s\n", level.toUpperCase(), message);
       this.print(line);
     }
   };

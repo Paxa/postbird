@@ -1,6 +1,8 @@
 var pug;
 var pugRuntime = require('pug-runtime');
 var slash = require('slash');
+var fs = require('fs');
+
 require(__dirname + '/../view_helpers');
 
 var dirname = process.platform === "win32"? slash(__dirname): __dirname;
@@ -44,7 +46,7 @@ var RenderView = {
 
   compileJade: function (file) {
     var filepath = RenderView.root + '/views/' + file + '.jade';
-    var content = node.fs.readFileSync(filepath, 'utf-8');
+    var content = fs.readFileSync(filepath, 'utf-8');
 
     if (this.pugFn[file] && this.pugFn[file].content != content) {
       console.log('remove template cache for: ' + file);
@@ -76,7 +78,7 @@ var RenderView = {
   },
 
   pugCacheSave: function () {
-    result = "";
+    var result = "";
     var convertedPath = (process.env.PWD + '/').replace(/\//g, '\\\\u002F');
 
     Object.keys(this.pugFn).sort().forEach((key) => {
@@ -85,12 +87,12 @@ var RenderView = {
       result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
     });
 
-    node.fs.writeFileSync(this.root + '/views/cache.js', result, 'utf8');
+    fs.writeFileSync(this.root + '/views/cache.js', result, 'utf8');
     console.log("Pug cache saved!");
   },
 
   pugCacheLoad: function() {
-    if (node.fs.existsSync(this.root + '/views/cache.js')) {
+    if (fs.existsSync(this.root + '/views/cache.js')) {
       var cache = require(this.root + '/views/cache');
       if (cache) {
         this.pugFn = cache;

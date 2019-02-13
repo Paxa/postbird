@@ -137,7 +137,7 @@ class Procedure extends ModelBase {
       callback && callback(result, error);
     });
   }
-};
+}
 
 !function () {
   var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension', 'full_prosrc'];

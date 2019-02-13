@@ -20,7 +20,7 @@ app.on('window-all-closed', function() {
   //}
 });
 
-var result = app.setAsDefaultProtocolClient('postgres');
+app.setAsDefaultProtocolClient('postgres');
 
 app.on('open-file', (event, filename) => {
   event.preventDefault();
@@ -43,7 +43,7 @@ app.on('open-url', (event, url) => {
 });
 
 app.on('ready', () => {
-  let mainWindowState = windowStateKeeper({
+  const mainWindowState = windowStateKeeper({
     defaultWidth: 960,
     defaultHeight: 640
   });

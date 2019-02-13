@@ -13,7 +13,8 @@
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild",
     "ts": "node ts.js",
     "dist": "node build_package.js",
-    "build": "node build_package.js"
+    "build": "node build_package.js",
+    "lint": "eslint ."
   },
   "author": {
     "name": "Pavel Evstigneev",
@@ -30,6 +31,7 @@
     "electron-builder": "^20.38.4",
     "electron-mocha": "^6.0.4",
     "electron-rebuild": "1.8.2",
+    "eslint": "^5.13.0",
     "localStorage": "^1.0.4",
     "node-sass": "4.11.0",
     "spectron": "^5.0.0",

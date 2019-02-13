@@ -34,7 +34,7 @@ try {
   if (process.platform == "darwin" || process.platform == "linux") {
     if (pg.native) {
       // @ts-ignore
-      var pg = pg.native;
+      pg = pg.native;
     }
   }
 } catch (error) {
@@ -133,7 +133,7 @@ class Connection {
 
     this.connection = new pg.Client({connectionString: this.connectString}) /*:: as pg.ClientExt */;
 
-    return this.connection.connect().then(res => {
+    return this.connection.connect().then(() => {
       this.connection.on('notification', (msg) => {
         this.notificationCallbacks.forEach((fn) => {
           fn(msg);
@@ -506,7 +506,7 @@ class Connection {
 
           console.log("Stopping query via sql. PID:", this.connection.processID);
           var sql = `select pg_cancel_backend(${this.connection.processID})`;
-          otherConn.query(sql).then(res => {
+          otherConn.query(sql).then(() => {
             otherConn.end();
           }).catch(err => {
             console.error(err);

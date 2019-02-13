@@ -2,6 +2,5 @@
 
 export NW_DEV=true
 export NW_DEBUG=true
-export PATH=$PATH:node_modules/.bin
 
-electron . $@
+node_modules/.bin/electron . $@

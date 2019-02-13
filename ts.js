@@ -26,7 +26,8 @@ var fileNames = [
   'app/models/procedure.js',
   'app/models/table.js',
   'app/models/saved_conn.js',
-  'app/views/db_screen_view.js'
+  'app/views/db_screen_view.js',
+  'lib/pg_type_names.js'
 ];
 
 var options = {

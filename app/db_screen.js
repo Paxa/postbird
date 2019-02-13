@@ -11,6 +11,7 @@ class DbScreen {
   currentTable: string
   currentSchema: string
   table: Model.Table
+  contentConditions: any
   */
 
   constructor (connection, options) {

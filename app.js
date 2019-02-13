@@ -221,8 +221,9 @@ global.App = {
 
     var tabs = this.tabs.filter((tab) => {
       if (tab.instance == this.helpScreen) {
-        return true
+        return true;
       }
+      return false;
     });
 
     return !!tabs.length;
@@ -346,6 +347,8 @@ Object.defineProperty(App, "currentTable", {
   get: function () {
     if (this.currentTab && this.currentTab.instance) {
       return this.currentTab.instance.table;
+    } else {
+      return null;
     }
   }
 });
@@ -354,7 +357,7 @@ Object.setPrototypeOf(global.App, new events.EventEmitter);
 
 global.App.remote = remote;
 
-global.App.emit = function (eventName) {
+global.App.emit = function () {
   //if (!this._events[eventName]) {
   //  console.log("Fire event '" + eventName + "' but no listeners");
   //}
@@ -367,7 +370,7 @@ global.App.logger = new EventEmitter2({
   wildcard: true
 });
 
-global.App.log = function App_log(type, value1, value2, value3, value4) {
+global.App.log = function App_log() {
   return this.logger.emit.apply(this.logger, arguments);
 }.bind(App);
 

@@ -35,7 +35,7 @@ class UpdatesController {
   }
 
   showInstallDialog (remote, current, date) {
-    var date = new Date(date);
+    date = new Date(date);
     var msg = `Newer version is available. ${remote} (You are currently using: ${current})
                <br>Released at: ${strftime("%d %B %Y, %H:%M", date)}<br>`;
     window.alertify.labels.ok = "Install";
@@ -47,7 +47,7 @@ class UpdatesController {
     }, 'grey-cancel-button');
   }
 
-  fetchLatestRelease (callback) {
+  fetchLatestRelease () {
     return needle("get", this.releasesUrl, {}).then(resp => {
       var stableRelease = resp.body.filter((rel) => {
         return !rel.prerelease;

@@ -25,10 +25,10 @@ process.on('unhandledRejection', error => {
 
 (async () => {
 
-  let commitsCount = (await exec("git rev-list HEAD --count")).trim();
-  let commitID = (await exec("git log --pretty=format:'%h' -n 1")).trim();
+  const commitsCount = (await exec("git rev-list HEAD --count")).trim();
+  const commitID = (await exec("git log --pretty=format:'%h' -n 1")).trim();
 
-  let buildVersion = `${commitsCount} - ${commitID}`;
+  const buildVersion = `${commitsCount} - ${commitID}`;
   console.log('build-version', buildVersion);
 
   await builder.build({

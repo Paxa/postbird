@@ -36,6 +36,7 @@ declare module NodeJS {
     log: any;
     TESTING: any;
     errorReporter: (exception: Error, showError?: boolean) => void;
+    PgTypeNames: PgTypeNames;
   }
 }
 
@@ -71,6 +72,7 @@ declare var electron: Electron.RendererInterface;
 
 //declare var LoginScreen: LoginScreen;
 declare var App: App;
+declare var PgTypeNames: PgTypeNames;
 
 // TODO:
 

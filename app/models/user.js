@@ -90,7 +90,7 @@ class User extends ModelBase {
 
     return this.q(sql);
   }
-};
+}
 
 
 /*::

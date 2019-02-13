@@ -8,7 +8,7 @@ global.SnippetsWindow = {
       return;
     }
 
-    newWindow = new BrowserWindow({
+    var newWindow = new BrowserWindow({
       width: 775,
       height: 420,
       title: "Snippets",

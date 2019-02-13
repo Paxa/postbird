@@ -72,7 +72,7 @@ class Procedures extends Pane {
     var langs = await Model.Procedure.listLanguages();
     App.stopLoading();
 
-    new Dialog.ListLanguages(this.hadler, langs);;
+    new Dialog.ListLanguages(this.hadler, langs);
   }
 
 }

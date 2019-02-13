@@ -6,21 +6,15 @@ class Schema extends ModelBase {
     this.schemaName = schemaName;
   }
 
-  static create (name, options, callback) {
-    if (callback === undefined && typeof options == 'function') {
-      callback = options;
-      options = {};
-    }
-
+  static create (name, options) {
     var sql = `CREATE SCHEMA "${name}";`;
 
-    return this.q(sql).then(res => {
-      callback && callback(new Model.Schema(name), error);
+    return this.q(sql).then(() => {
       return Promise.resolve(new Model.Schema(name));
     });
   }
 
-  static findAll (callback) {
+  static findAll () {
     var sql = "select nspname as name from pg_catalog.pg_namespace;"
 
     return this.q(sql).then(res => {
@@ -30,7 +24,6 @@ class Schema extends ModelBase {
           schemas.push(Model.Schema(row.name));
         });
       }
-      callback(schemas, error);
       return Promise.resolve(schemas);
     });
   }
@@ -53,7 +46,7 @@ class Schema extends ModelBase {
     });
   }
 
-  getTableNames (callback) {
+  getTableNames () {
     var sql = `SELECT * FROM information_schema.tables where table_schema = '${this.schemaName}';`;
 
     return this.query(sql).then(rows => {
@@ -61,7 +54,6 @@ class Schema extends ModelBase {
       if (rows.rows) {
         names = rows.rows.map((t) => { return t.table_name });
       }
-      callback && callback(names, error);
       return Promise.resolve(names);
     });
   }

@@ -9,7 +9,7 @@ global.HistoryWindow = {
       return;
     }
 
-    newWindow = new BrowserWindow({
+    var newWindow = new BrowserWindow({
       width: 775,
       height: 420,
       title: "Console",
@@ -38,7 +38,7 @@ global.HistoryWindow = {
       App.on("log.message", evenEmitter);
     });
 
-    newWindow.on('closed', (event) => {
+    newWindow.on('closed', () => {
       newWindow = null;
       App.historyWin = null;
       App.removeListener("log.message", evenEmitter);

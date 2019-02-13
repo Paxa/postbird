@@ -37,13 +37,13 @@ class ImportController {
       }
 
       this.dialog.addMessage("Creating database '" + data.new_database_name + "'\n");
-      this.handler.createDatabase({dbname: data.new_database_name}).then(result => {
+      this.handler.createDatabase({dbname: data.new_database_name}).then(() => {
         //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
       });
     } else {
       this.dialog.addMessage("Select database '" + data.database + "'\n");
-      this.handler.setDatabase(data.database, (error, relust) => {
+      this.handler.setDatabase(data.database, () => {
         //this.dialog.addMessage("OK\n");
         this.loadSqlFile();
       });
@@ -55,7 +55,7 @@ class ImportController {
     //this.dialog.addMessage("Importing " + this.filename + " ...");
     var importer = new SqlImporter(this.filename);
 
-    importer.onMessage((message, is_good) => {
+    importer.onMessage(message => {
       this.dialog.addMessage(message);
     });
 

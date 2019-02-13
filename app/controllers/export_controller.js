@@ -36,7 +36,7 @@ class ExportController {
     this.dialog.startExporting();
     this.dialog.addMessage("Start exporting '" + this.handler.database + "'\n");
 
-    exporter.onMessage((message, is_good) => {
+    exporter.onMessage(message => {
       this.dialog.addMessage(message);
     });
 

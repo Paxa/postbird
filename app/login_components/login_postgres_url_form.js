@@ -21,7 +21,7 @@ class LoginPostgresUrlForm {
     this.form.find('input[type=checkbox]').bind('change', this.formChanged.bind(this));
   }
 
-  formChanged (event) {
+  formChanged () {
     //console.log('formChanged', event.target);
     if (this.loginForm.isNewConnection()) return;
 
