@@ -2,7 +2,6 @@ global.errorReporter = require('./lib/error_reporter');
 require('./lib/object_extras');
 
 require('./lib/dominate');
-require('./lib/jquery.class');
 require('./lib/alertify');
 require('./lib/node_lib');
 //global.AppMenu = require('nw-appmenu');
@@ -100,7 +99,6 @@ electron.ipcRenderer.on('open-url', function(event, url) {
 
 $(window).on('window-ready', (event) => {
   electron.ipcRenderer.send('main-window-ready', {});
-  console.log('window-ready');
 });
 
 require('./app/top_menu');

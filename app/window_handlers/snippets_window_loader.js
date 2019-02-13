@@ -3,7 +3,6 @@ require(__dirname + '/../lib/node_lib');
 require(__dirname + '/../lib/object_extras');
 
 require(__dirname + '/../lib/dominate');
-require(__dirname + '/../lib/jquery.class');
 require(__dirname + '/../lib/alertify');
 require(__dirname + '/../lib/sql_snippets');
 require(__dirname + '/../lib/widgets/generic_table');

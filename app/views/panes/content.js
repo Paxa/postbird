@@ -383,7 +383,7 @@ class Content extends Pane {
     // bind for delete button
     if (this.currentTableType == 'BASE TABLE') {
       $u(table).on('generic-table-init', () => {
-        var genericTable = table.data('generic_table');
+        var genericTable = GenericTable.getInstance(table);
         genericTable.bind('key.backspace', (event) => {
           this.deleteRow(genericTable.selectedRow);
         });
@@ -391,7 +391,7 @@ class Content extends Pane {
     }
 
     table.on('contextmenu', (event) => {
-      var genericTable = table.data('generic_table');
+      var genericTable = GenericTable.getInstance(table);
 
       var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
 

@@ -1,6 +1,5 @@
 //var jQuery = require(__dirname + '/../lib/jquery.js');
 require(__dirname + '/../lib/dominate');
-require(__dirname + '/../lib/jquery.class');
 require(__dirname + '/../lib/alertify');
 require(__dirname + '/../lib/node_lib');
 //require(__dirname + '/../public/mousetrap');

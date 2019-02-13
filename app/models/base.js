@@ -41,8 +41,6 @@ class ModelBase {
   }
 }
 
-//ModelBase.extend = jClass.extend;
-
 module.exports = ModelBase;
 
 global.ModelBase = ModelBase;
