@@ -1491,6 +1491,13 @@ body.sidebar-resizing {
     .window-content.query .result .type-xml {
       white-space: pre;
       word-break: break-all; }
+    .window-content.query .result i.null {
+      font-style: normal;
+      color: #b8b8b8;
+      font-size: 12px;
+      opacity: 0.75; }
+    .window-content.query .result span.wrong-json {
+      background: rgba(255, 192, 203, 0.56); }
     .window-content.query .result table {
       margin-bottom: 3px; }
       .window-content.query .result table th {

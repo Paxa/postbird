@@ -58,6 +58,17 @@
       word-break: break-all;
     }
 
+    i.null {
+      font-style: normal;
+      color: #b8b8b8;
+      font-size: 12px;
+      opacity: 0.75;
+    }
+
+    span.wrong-json {
+      background: rgba(255, 192, 203, 0.56);
+    }
+
     table {
       margin-bottom: 3px;
 
