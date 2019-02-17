@@ -53,7 +53,7 @@ class NewColumn extends Dialog {
   }
 
   groupTypes (types) {
-    var types = types.slice(0);
+    types = types.slice(0);
     var grouped = {};
     var groupName;
 

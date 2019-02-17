@@ -2,7 +2,7 @@ var csvGenerate = require('csv-stringify');
 
 class Query extends Pane {
 
-  renderTab (rows) {
+  renderTab () {
     if (this.content) return;
 
     this.renderViewToPane('query', 'query_tab');

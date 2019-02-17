@@ -1,5 +1,4 @@
-const builder = require("electron-builder")
-const Platform = builder.Platform
+const builder = require("electron-builder");
 
 var packageJson = require('./package.json');
 var childProcess = require('child_process');

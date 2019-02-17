@@ -75,6 +75,7 @@ global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
 
 require('./app/utils');
 
+// eslint-disable-next-line
 function reloadCss() {
   var queryString = '?reload=' + new Date().getTime();
   global.$u('link[rel="stylesheet"]').each(function () {
@@ -97,19 +98,19 @@ electron.ipcRenderer.on('open-url', function(event, url) {
   });
 });
 
-$(window).on('window-ready', (event) => {
+$(window).on('window-ready', () => {
   electron.ipcRenderer.send('main-window-ready', {});
 });
 
 require('./app/top_menu');
 
-var arguments = electron.remote.process.argv;
-if (arguments.length > 2) {
-  var connectionStr = arguments[2];
+var cliArgs = electron.remote.process.argv;
+if (cliArgs.length > 2) {
+  var connectionStr = cliArgs[2];
   if (connectionStr.startsWith("postgres://")) {
     App.cliConnectString = connectionStr;
   } else {
-    window.alert(`Can't recognize argument ${arguments[2]}\nExpected postgres://user@server/dbname`);
+    window.alert(`Can't recognize argument ${cliArgs[2]}\nExpected postgres://user@server/dbname`);
   }
 }
 
@@ -147,7 +148,7 @@ $(document).ready(function() {
 
   setTimeout(function () {
     console.log("Checking updates info");
-    (new global.UpdatesController).checkUpdates();
+    (new UpdatesController).checkUpdates();
   }, 10000);
 
   /*

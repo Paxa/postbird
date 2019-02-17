@@ -1,6 +1,3 @@
-// @ts-ignore
-const url = require('url');
-
 class LoginScreen {
 
   /*::

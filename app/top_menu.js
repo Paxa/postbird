@@ -1,7 +1,5 @@
 var remote = require('electron').remote;
 var Menu = remote.Menu;
-var MenuItem = remote.MenuItem;
-var webFrame = require('electron').webFrame;
 
 var UpdatesController = require('./controllers/updates_controller');
 var ExportController = require('./controllers/export_controller');
@@ -224,7 +222,7 @@ if (process.platform == 'darwin') {
       {
         label: "Check For Updates...",
         click: () => {
-          (new global.UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
+          (new UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
         }
       },
       {

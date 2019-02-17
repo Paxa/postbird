@@ -1,3 +1,6 @@
+// @ts-ignore
+var url = require('url');
+
 class LoginPostgresUrlForm {
   /*::
     loginForm: LoginScreen

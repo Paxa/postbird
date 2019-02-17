@@ -2,6 +2,7 @@ lib/alertify.js
 lib/dominate.js
 views/cache.js
 ts.js
+lib/sql_splitter.js
 
 public/**/*
 tests/**/*

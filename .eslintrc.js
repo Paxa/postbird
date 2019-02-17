@@ -51,6 +51,7 @@ module.exports = {
       "hljs": true
     },
     "rules": {
+        "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }],
         "no-console": "off",
         "accessor-pairs": "error",
         "array-bracket-newline": "off",

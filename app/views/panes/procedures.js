@@ -23,7 +23,7 @@ class Procedures extends Pane {
     }
   }
 
-  async editProc (poid, procName) {
+  async editProc (poid) {
     var proc = await Model.Procedure.find(poid);
 
     var dialog = new Dialog.EditProcedure(this.handler, proc, async (updated) => {
@@ -42,7 +42,7 @@ class Procedures extends Pane {
     return Model.Procedure.update(poid, newSource);
   }
 
-  async removeProc (poid, procName) {
+  async removeProc (poid) {
     var proc = await Model.Procedure.find(poid);
 
     if (await $u.confirm(`Delete procedure ${proc.name}(${proc.arg_list})?`)) {
@@ -53,7 +53,7 @@ class Procedures extends Pane {
     }
   }
 
-  async procDefinition (poid, name) {
+  async procDefinition (poid) {
     var proc = await Model.Procedure.find(poid);
     var data = await proc.getDefinition();
     new Dialog.DefProcedure(this.handler, proc, data.source);

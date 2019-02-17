@@ -29,7 +29,7 @@ class NewTable extends Dialog {
 
   async onSubmit (data) {
     try {
-      var data = await this.handler.createTable(data);
+      data = await this.handler.createTable(data);
       this.defaultServerResponse(data);
     } catch (error) {
       this.defaultServerResponse(null, error);

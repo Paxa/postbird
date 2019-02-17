@@ -3,15 +3,18 @@ class Extensions extends Pane {
   renderTab (rows) {
     var scrollOffset = [0, 0];
     var selecredRow = null;
+
+    // save selected row and scroll possition
     if (this.content && this.handler.currentTab == 'extensions') {
-      var table = this.content.find('.rescol-content-wrapper')[0];
-      scrollOffset = table ? [table.scrollTop, table.scrollLeft] : [0, 0];
-      var selectedCells = $u(table).find('tr.selected td');
+      var oldTable = this.content.find('.rescol-content-wrapper')[0];
+      scrollOffset = oldTable ? [oldTable.scrollTop, oldTable.scrollLeft] : [0, 0];
+      var selectedCells = $u(oldTable).find('tr.selected td');
       selecredRow = selectedCells.length && selectedCells[0].innerHTML;
     }
 
     this.renderViewToPane('extensions', 'extensions_tab', {rows: rows});
 
+    // restore selected row and scroll position
     if (scrollOffset[0] != 0 && scrollOffset[1] != 0) {
       var table = this.content.find('.rescol-content-wrapper table');
       if (table[0]) {

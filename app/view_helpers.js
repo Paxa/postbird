@@ -158,7 +158,7 @@ var helpers = global.ViewHelpers = {
   },
 
   icon: function(name, title, height = 20, width = 20) {
-    title = title === undefined ? name.replace(/[\-_]/g, ' ') : title;
+    title = title === undefined ? name.replace(/[-_]/g, ' ') : title;
     return `<img src="./public/icons/${name}.png" width="${width}" height="${height}" class="app-icon" title="${title}"/>`;
   },
 

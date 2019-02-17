@@ -19,9 +19,9 @@ var filterMatchers = (() => {
     return type == 'integer';
   };
 
-  var isString = (type) => {
-    return type.match(/^character varying.*/);
-  };
+  //var isString = (type) => {
+  //  return type.match(/^character varying.*/);
+  //};
 
   var basicValidation = (type, v) => {
     if (v === '') return "Value is required";
@@ -490,7 +490,7 @@ class Content extends Pane {
   async viewForeign (schema, table, column, value) {
     var foreign = await this.handler.loadForeignRows(schema, table, column, value);
 
-    var dialog = new Dialog.RelatedRecords(this.handler, foreign, {
+    new Dialog.RelatedRecords(this.handler, foreign, {
       schema: schema,
       table: table,
       column: column,

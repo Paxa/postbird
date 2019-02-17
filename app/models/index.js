@@ -80,7 +80,7 @@ class Index extends ModelBase {
   }
 
   columns () {
-    var str = this.pg_get_indexdef.match(/ON [^\(]+\((.+)\)/)[1];
+    var str = this.pg_get_indexdef.match(/ON [^(]+\((.+)\)/)[1];
     return str.split(/,\s+/).map(col => { return col.replace(/^"(.+)"$/, '$1'); });
   }
 }
