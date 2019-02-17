@@ -174,13 +174,14 @@ describe('Model.Table', () => {
     await view.drop()
   })
 
-  it("should get disk summary", async () => {
+  it.only("should get disk summary", async () => {
     var table = await Model.Table.create('public', 'test_table')
 
     var summary = await table.diskSummary();
     assert.equal(summary.type, 'table');
     assert.equal(summary.estimateCount, 0);
-    assert.match(summary.diskUsage, /\d+ bytes/);
+    assert.greaterThen(summary.diskUsage.total, 1);
+    assert.greaterThen(summary.diskUsage.index, 1);
   })
 
   it("should updateValue with uuid", async () => {

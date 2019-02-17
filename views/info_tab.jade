@@ -5,15 +5,20 @@
   p
     = "Estimate rows count: "
     = recordsCount
-  p
-    = "Size on disk: "
-    = tableSize
+  if diskUsage
+    p
+      = `Total size on disk: ${formatBytes(diskUsage.total)} `
+      span.table-size-breakdown
+        = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`
 
 h4 Source SQL
 
-if source.source
-  code.result.sql= source.source
+if source
+  code.result.sql= source
 else
+  code.result Loading...
+
+if dumpError
   code.result
     strong= "Error happen while running pg_dump:\n"
-    = source.error
+    = dumpError

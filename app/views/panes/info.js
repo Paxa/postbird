@@ -1,16 +1,32 @@
 class Info extends Pane {
 
-  renderTab (source, relType, recordsCount, tableSize) {
+  renderTab () {
     this.renderViewToPane('info', 'info_tab', {
-      source: source,
-      tableSize: tableSize,
-      recordsCount: recordsCount,
-      relType: relType
+      source: this.source,
+      dumpError: this.dumpError,
+      diskUsage: this.diskUsage,
+      recordsCount: this.recordsCount,
+      relType: this.relType,
+      summaryError: this.summaryError
     });
 
-    window.hljs.highlightBlock(this.content.find('code')[0]);
+    if (this.source) {
+      window.hljs.highlightBlock(this.content.find('code')[0]);
+    }
 
     $u.textContextMenu(this.content);
+  }
+
+  updateSource(source, dumpError) {
+    this.source = source;
+    this.dumpError = dumpError;
+  }
+
+  updateSummary(result, summaryError) {
+    this.relType = result.type;
+    this.recordsCount = result.estimateCount;
+    this.diskUsage = result.diskUsage;
+    this.summaryError = summaryError;
   }
 }
 

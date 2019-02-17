@@ -576,28 +576,25 @@ class DbScreen {
     this.view.setTabMessage("Getting table information ...");
 
     App.startLoading("Getting table info...");
+
     table.getSourceSql((code, dumpError) => {
-      table.diskSummary().then(result => {
-        if (dumpError) {
-          //window.alert("Running pg_dump failed:\n" + dumpError);
-          //global.errorReporter(dumpError, false);
-        }
-        this.view.infoPane.renderTab(
-          {source: code, error: dumpError},
-          result.type, result.estimateCount, result.diskUsage
-        );
-        App.stopLoading();
-        this.currentTab = 'info';
-      }).catch(error => {
-        global.errorReporter(error, false);
-        this.view.infoPane.renderTab(
-          {source: code, error: dumpError},
-          'error getting talbe info', '', ''
-        );
-        App.stopLoading();
-        this.currentTab = 'info';
-      });
+      this.view.infoPane.updateSource(code, dumpError);
+      this.view.infoPane.renderTab();
+      App.stopLoading();
     });
+
+    table.diskSummary().then(result => {
+      this.view.infoPane.updateSummary(result);
+      this.view.infoPane.renderTab();
+      App.stopLoading();
+    }).catch(error => {
+      console.error(error);
+      this.view.infoPane.updateSummary({}, error);
+      this.view.infoPane.renderTab();
+      App.stopLoading();
+    });
+
+    this.currentTab = 'info';
   }
 
   // TODO: add caching

@@ -493,6 +493,7 @@ class Table extends ModelBase {
         stdout = stdout.replace(/^-- Dumped from .+$/m, "\n"); // remove 'Dumped from ...'
         stdout = stdout.replace(/^-- Dumped by .+$/m, "\n"); // remove 'Dumped by ...'
         stdout = stdout.replace(/(\r?\n){2,}/gim, "\n\n"); // remove extra new lines
+        stdout = stdout.replace("SELECT pg_catalog.set_config('search_path', '', false);", '');
         stdout = stdout.trim(); // remove padding spaces
 
         // some views craeted by extensions can't be dumped
@@ -520,8 +521,10 @@ class Table extends ModelBase {
 
   async diskSummary () {
     var sql = `
-      select
-        pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size",
+      SELECT
+        pg_total_relation_size(c.oid) AS total_bytes,
+        pg_indexes_size(c.oid) AS index_bytes,
+        COALESCE(pg_total_relation_size(reltoastrelid), 0) AS toast_bytes,
         reltuples as estimate_count,
         relkind
       FROM pg_class C
@@ -541,6 +544,9 @@ class Table extends ModelBase {
 
     var row = result.rows[0];
     var type = row.relkind;
+
+    row.table_bytes = row.total_bytes - row.index_bytes - row.toast_bytes;
+
     // TODO: dry
     // https://www.postgresql.org/docs/10/static/catalog-pg-class.html
     switch (row.relkind) {
@@ -558,7 +564,12 @@ class Table extends ModelBase {
     return {
       type: type,
       estimateCount: row.estimate_count,
-      diskUsage: row.total_size
+      diskUsage: {
+        total: row.total_bytes,
+        table: row.table_bytes,
+        index: row.index_bytes,
+        toast: row.toast_bytes
+      }
     };
   }
 

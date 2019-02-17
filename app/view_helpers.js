@@ -34,6 +34,7 @@ declare global {
     shorterTypeName: (typeName: string) => string
     relType: (type: string) => string
     tableGrantsDesc: (permissions: string) => string
+    formatBytes: (size: number) => string
   }
 }
 */
@@ -336,6 +337,18 @@ var helpers = global.ViewHelpers = {
         actions.push(GRANTS_ABBR[letter] || letter);
       });
       return actions.join(", ");
+    }
+  },
+
+  formatBytes(bytes) {
+    if (bytes < 1024) {
+      return bytes + " Bytes";
+    } else if (bytes < 1048576) {
+      return (bytes / 1024).toFixed(3).replace(/\.?0+$/, '') + " KB";
+    } else if (bytes < 1073741824) {
+      return (bytes / 1048576).toFixed(3).replace(/\.?0+$/, '') + " MB";
+    } else {
+      return (bytes / 1073741824).toFixed(3).replace(/\.?0+$/, '') + " GB";
     }
   }
 };

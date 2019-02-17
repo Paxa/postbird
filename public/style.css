@@ -1447,6 +1447,9 @@ body.sidebar-resizing {
     font-weight: bold;
     font-size: 13px;
     margin-bottom: 9px; }
+  .window-content.info span.table-size-breakdown {
+    color: #666;
+    margin-left: 5px; }
   .window-content.info code.result {
     white-space: pre-wrap;
     font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
