@@ -174,7 +174,7 @@ describe('Model.Table', () => {
     await view.drop()
   })
 
-  it.only("should get disk summary", async () => {
+  it("should get disk summary", async () => {
     var table = await Model.Table.create('public', 'test_table')
 
     var summary = await table.diskSummary();
