@@ -31,6 +31,7 @@
       <key>CFBundleURLSchemes</key>
       <array>
         <string>postgres</string>
+        <string>postgresql</string>
       </array>
     </dict>
   </array>

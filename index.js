@@ -107,10 +107,12 @@ require('./app/top_menu');
 var cliArgs = electron.remote.process.argv;
 if (cliArgs.length > 2) {
   var connectionStr = cliArgs[2];
-  if (connectionStr.startsWith("postgres://")) {
+  if (connectionStr.startsWith("postgres://") || connectionStr.startsWith("postgresql://")) {
     App.cliConnectString = connectionStr;
   } else {
-    window.alert(`Can't recognize argument ${cliArgs[2]}\nExpected postgres://user@server/dbname`);
+    $u.alertError(`Can't recognize argument ${cliArgs[2]}`, {
+      detail: `Expected:\n  postgres://user@server/dbname \n  postgresql://user@server/dbname`
+    });
   }
 }
 
