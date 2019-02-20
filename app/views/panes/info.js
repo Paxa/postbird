@@ -11,7 +11,9 @@ class Info extends Pane {
     });
 
     if (this.source) {
-      window.hljs.highlightBlock(this.content.find('code')[0]);
+      this.content.find('code').forEach(code => {
+        window.hljs.highlightBlock(code);
+      });
     }
 
     $u.textContextMenu(this.content);

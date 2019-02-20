@@ -35,6 +35,11 @@ class Extensions extends Pane {
     this.initTables();
   }
 
+  renderError(error) {
+    this.handler.view.setTabMessage(`Error: ${error.message}`);
+    //errorReporter(error);
+  }
+
   install (extension) {
 
     $u.confirm(`Install extension ${extension}?`, {button: "Install"}, (res) => {

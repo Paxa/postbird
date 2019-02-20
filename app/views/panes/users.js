@@ -17,6 +17,11 @@ class Users extends global.Pane {
     this.initTables();
   }
 
+  renderError(error) {
+    this.handler.view.setTabMessage(`Error: ${error.message}`);
+    //errorReporter(error);
+  }
+
   editUser (username) {
     new Dialog.EditUser(this.handler, this.users[username]);
   }

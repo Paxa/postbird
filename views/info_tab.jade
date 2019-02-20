@@ -11,6 +11,11 @@
       span.table-size-breakdown
         = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`
 
+  if summaryError
+    code.result
+      strong= "Error happen while getting table summary\n"
+      = summaryError
+
 h4 Source SQL
 
 if source

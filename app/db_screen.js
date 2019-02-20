@@ -163,11 +163,18 @@ class DbScreen {
     }
   }
 
-  extensionsTabActivate () {
-    this.connection.getExtensions((rows) => {
-      this.view.extensionsPane.renderTab(rows);
+  async extensionsTabActivate () {
+    App.startLoading(`Getting extensions list`);
+    try {
+      var result = await this.connection.getExtensions()
+      this.view.extensionsPane.renderTab(result.rows);
       this.currentTab = 'extensions';
-    });
+    } catch (error) {
+      this.view.extensionsPane.renderError(error);
+      this.currentTab = 'extensions';
+    } finally {
+      App.stopLoading();
+    }
   }
 
   installExtension (extension, callback) {
@@ -251,9 +258,17 @@ class DbScreen {
   }
 
   async usersTabActivate () {
-    var users = await Model.User.findAll();
-    this.view.usersPane.renderTab(users);
-    this.currentTab = 'users';
+    App.startLoading(`Getting users list...`);
+    try {
+      var users = await Model.User.findAll();
+      this.view.usersPane.renderTab(users);
+      this.currentTab = 'users';
+    } catch (error) {
+      this.view.usersPane.renderError(error);
+      this.currentTab = 'users';
+    } finally {
+      App.stopLoading();
+    }
   }
 
   async createUser (data) {

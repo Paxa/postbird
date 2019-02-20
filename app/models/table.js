@@ -164,6 +164,10 @@ class Table extends ModelBase {
   }
 
   async _getTableStructure () {
+    var collationQuery = ''
+    if (this.connection().supportPgCollation()) {
+      collationQuery = `, (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation`;
+    }
     var sql = `
       SELECT
         a.attname as column_name,
@@ -173,9 +177,8 @@ class Table extends ModelBase {
         (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
          FROM pg_catalog.pg_attrdef d
          WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default,
-        a.attnotnull, a.attnum,
-        (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t
-         WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation
+        a.attnotnull, a.attnum
+        ${collationQuery}
       FROM pg_catalog.pg_attribute a
       JOIN pg_type t on t.oid = a.atttypid
       WHERE
@@ -334,13 +337,17 @@ class Table extends ModelBase {
   }
 
   getPrimaryKey () {
+    var indkeySql = this.connection().supportVectorAsArray() ?
+      `pg_attribute.attnum = any(pg_index.indkey)` :
+      `pg_attribute.attnum in(indkey[0], indkey[1], indkey[2], indkey[3], indkey[4], indkey[5], indkey[6], indkey[7], indkey[8], indkey[9])`;
+
     var sql = `SELECT pg_attribute.attname
       FROM pg_index, pg_class, pg_attribute
       WHERE
         pg_class.oid = '${this.sqlTable()}'::regclass AND
         indrelid = pg_class.oid AND
         pg_attribute.attrelid = pg_class.oid AND
-        pg_attribute.attnum = any(pg_index.indkey)
+        ${indkeySql}
         AND indisprimary;`;
 
     return this.q(sql).then(data => {

@@ -23,15 +23,17 @@ class Index extends ModelBase {
       WHERE n.nspname = '${table.schema}' and c.relname = '${table.table}'
       ORDER BY 2, 3;`;
 
+    var indisvalidSql = this.connection().supportPgIndexIndisvalid() ?
+      'i.indisvalid' : 'true as indisvalid';
+    var indexSizeSql = this.connection().supportPgRelationSize() ?
+      'pg_size_pretty(pg_relation_size(c2.oid)) as index_size' : `'n/a' as index_size`;
+
     var sql_find_index = `
       SELECT
-          c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid,
-          pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),
-          pg_catalog.pg_get_constraintdef(con.oid, true), contype,
-          condeferrable, condeferred, c2.reltablespace, i.indisvalid,
-          pg_size_pretty(pg_relation_size(c2.oid)) as index_size
+          c2.relname, i.indisprimary, i.indisunique, i.indisclustered, ${indisvalidSql},
+          pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), c2.reltablespace,
+          ${indexSizeSql}
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
-        LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN ('p','u','x'))
       WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
       ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;`;
 

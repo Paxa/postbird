@@ -285,6 +285,22 @@ class Connection {
     return semver.gt(this._serverVersion, "9.3.0");
   }
 
+  supportPgCollation() {
+    return semver.gte(this._serverVersion, "9.3.0");
+  }
+
+  supportPgIndexIndisvalid() {
+    return semver.gte(this._serverVersion, "8.2.0");
+  }
+
+  supportPgRelationSize() {
+    return semver.gte(this._serverVersion, "8.1.0");
+  }
+
+  supportVectorAsArray() {
+    return semver.gte(this._serverVersion, "8.1.0");
+  }
+
   tablesAndSchemas(callback /*: Function */) {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
@@ -338,11 +354,8 @@ class Connection {
     })
   }
 
-  getExtensions(callback /*: Function */) {
-    // 'select * from pg_available_extensions order by (installed_version is null), name;'
-    return this.q('select * from pg_available_extensions order by name;', (data) => {
-      callback(data.rows);
-    });
+  getExtensions() /*: Promise<any> */ {
+    return this.q('select * from pg_available_extensions order by name;');
   }
 
   installExtension(extension /*: string */, callback /*: Function */) {
