@@ -180,6 +180,11 @@ class Connection {
   }
 
   query(sql, callback /*: Function */) {
+    return this.queryWithOptions(sql, {}, callback);
+  }
+
+  queryWithOptions(sql, options, callback /*: Function */) {
+    options.text = sql;
     if (this.logging) logger.print("SQL: " + colors.green(sql) + "\n");
 
     var historyRecord /*: HistoryRecord */ = { sql: sql, date: (new Date()), state: 'running', time: -1 };
@@ -188,7 +193,7 @@ class Connection {
     var time = Date.now();
 
     return new Promise((resolve, reject) => {
-      this.connection.query(sql, (error, result) => {
+      this.connection.query(options, (error, result) => {
         historyRecord.time = Date.now() - time;
         if (this.logging) logger.print("SQL:" + colors.green(" Done ") + historyRecord.time + "\n");
 

@@ -294,7 +294,7 @@ pug_html = pug_html + "Add New Row\u003C\u002Fa\u003E\u003C\u002Fli\u003E";
 }
 pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCell" in locals_for_with?locals_for_with.formatCell:typeof formatCell!=="undefined"?formatCell:undefined,"matchers" in locals_for_with?locals_for_with.matchers:typeof matchers!=="undefined"?matchers:undefined,"relatedRowsIcon" in locals_for_with?locals_for_with.relatedRowsIcon:typeof relatedRowsIcon!=="undefined"?relatedRowsIcon:undefined,"relations" in locals_for_with?locals_for_with.relations:typeof relations!=="undefined"?relations:undefined,"shorterTypeName" in locals_for_with?locals_for_with.shorterTypeName:typeof shorterTypeName!=="undefined"?shorterTypeName:undefined,"sorting" in locals_for_with?locals_for_with.sorting:typeof sorting!=="undefined"?sorting:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"tableType" in locals_for_with?locals_for_with.tableType:typeof tableType!=="undefined"?tableType:undefined,"types" in locals_for_with?locals_for_with.types:typeof types!=="undefined"?types:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["content_tab"].content = ".content-filter(filtered=!!state.filtered)\n  form\n    label Search:\n    select(name=\"filter-field\")\n      each column in data.fields\n        if column.name != 'ctid'\n          option(value = column.name selected = state.filterField == column.name)= column.name\n    select(name=\"filter-matcher\")\n      each matcher, key in matchers\n        option(value = key, selected = state.filterMatcher === key)= matcher.label\n    input(type=\"search\" placeholder=\"Search\" name=\"filter-value\" value=state.filterValue)\n    span.cancel(title=\"Cancel Filter\")\n    button Filter\n\n.rescol-wrapper(full-width=true)\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          each column in data.fields\n            if column.name != 'ctid'\n              - var type = column_type_label(types[column.name])\n              - var typeLabel = shorterTypeName(types[column.name].data_type);\n              - var dir = sorting.column == column.name ? sorting.direction : ''\n              th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name\n      tbody\n        each row in data.rows\n          tr(data-ctid = row.ctid)\n            each column in data.fields\n              if column.name != 'ctid'\n                td\n                  != formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)\n                  != relatedRowsIcon(relations[column.name], column.name, row[column.name])\n\n\n.summary-and-pages.native-footer-bar\n  ul\n    //li\n    //  a Remove\n    //li\n    //  a Duplicate\n    li.info\n\n    li.pages.prev\n      a(exec=\"prevPage\") Prev\n    li.pages.next\n      a(exec=\"nextPage\") Next\n    li.reload\n      a(exec=\"reloadData\") Reload\n    if tableType == 'BASE TABLE'\n      li\n        a(exec=\"addRow\") Add New Row\n";
-exports["db_rows_table"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdb_rows_table.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCellFromSelect(row[column.name], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n"};
+exports["db_rows_table"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdb_rows_table.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column, index in data.fields\n                td!= formatCellFromSelect(row[index], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n"};
 ;var locals_for_with = (locals || {});(function (column_type_label, data, formatCellFromSelect) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
@@ -356,22 +356,22 @@ pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-      for (var pug_index2 = 0, $$l = $$obj.length; pug_index2 < $$l; pug_index2++) {
-        var column = $$obj[pug_index2];
+      for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
+        var column = $$obj[index];
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
-pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[column.name], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[index], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
       }
   } else {
     var $$l = 0;
-    for (var pug_index2 in $$obj) {
+    for (var index in $$obj) {
       $$l++;
-      var column = $$obj[pug_index2];
+      var column = $$obj[index];
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
-pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[column.name], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[index], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
     }
   }
 }).call(this);
@@ -390,22 +390,22 @@ pug_html = pug_html + "\n        \u003Ctr\u003E";
 ;(function(){
   var $$obj = data.fields;
   if ('number' == typeof $$obj.length) {
-      for (var pug_index3 = 0, $$l = $$obj.length; pug_index3 < $$l; pug_index3++) {
-        var column = $$obj[pug_index3];
+      for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
+        var column = $$obj[index];
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
-pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[column.name], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[index], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
       }
   } else {
     var $$l = 0;
-    for (var pug_index3 in $$obj) {
+    for (var index in $$obj) {
       $$l++;
-      var column = $$obj[pug_index3];
+      var column = $$obj[index];
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
 pug_html = pug_html + "\n          \u003Ctd\u003E";
 ;pug_debug_line = 15;pug_debug_filename = "views\u002Fdb_rows_table.jade";
-pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[column.name], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
+pug_html = pug_html + (null == (pug_interp = formatCellFromSelect(row[index], column)) ? "" : pug_interp) + "\u003C\u002Ftd\u003E";
     }
   }
 }).call(this);
@@ -434,7 +434,7 @@ pug_html = pug_html + "\n          \u003Ctd\u003E";
 pug_html = pug_html + "OK\u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E";
 }
 pug_html = pug_html + "\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";}.call(this,"column_type_label" in locals_for_with?locals_for_with.column_type_label:typeof column_type_label!=="undefined"?column_type_label:undefined,"data" in locals_for_with?locals_for_with.data:typeof data!=="undefined"?data:undefined,"formatCellFromSelect" in locals_for_with?locals_for_with.formatCellFromSelect:typeof formatCellFromSelect!=="undefined"?formatCellFromSelect:undefined));} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column in data.fields\n                td!= formatCellFromSelect(row[column.name], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
+exports["db_rows_table"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    if data.fields\n      table\n        thead\n          tr\n            each column in data.fields\n              - var type = column_type_label(column)\n              th(class= 'format-' + type, title= type)= column.name\n        tbody\n          each row in data.rows\n            tr\n              each column, index in data.fields\n                td!= formatCellFromSelect(row[index], column)\n    else\n      table\n        tbody\n          tr\n            td= data.command\n            td OK\n";
 exports["dialogs/column_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fcolumn_form.jade":"- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              option(value = type.udt_name, title = type.description, selected = (data.udt_name == type.udt_name))= type.name\n  p\n    a(href=\"https:\u002F\u002Fwww.postgresql.org\u002Fdocs\u002Fcurrent\u002Fdatatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n"};
 ;var locals_for_with = (locals || {});(function (action, data, groupedTypes) {var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fcolumn_form.jade";

@@ -11,8 +11,8 @@
         tbody
           each row in data.rows
             tr
-              each column in data.fields
-                td!= formatCellFromSelect(row[column.name], column)
+              each column, index in data.fields
+                td!= formatCellFromSelect(row[index], column)
     else
       table
         tbody

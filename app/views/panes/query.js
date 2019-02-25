@@ -115,7 +115,7 @@ class Query extends Pane {
       }
     });
 
-    this.handler.connection.query(sql, (data, error) => {
+    this.handler.connection.queryWithOptions(sql, {rowMode: 'array'}, (data, error) => {
       this.toggleButtonText();
       App.stopLoading();
       if (error) {
