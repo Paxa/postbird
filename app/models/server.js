@@ -9,7 +9,7 @@ class Server extends ModelBase {
   }
 
   supportMatViews() {
-    return semver.gt(this.connectionObj._serverVersion, "9.3.0");
+    return this.connectionObj.supportMatViews();
   }
 
   fetchServerVersion() {

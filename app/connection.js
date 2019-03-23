@@ -244,7 +244,9 @@ class Connection {
       return Promise.resolve(this._serverVersion);
     }
 
-    if (this.connection.native && this.connection.native.pq.serverVersion) {
+    var cockroachPort = parseInt(this.options.port) > 26000;
+
+    if (this.connection.native && this.connection.native.pq.serverVersion && !cockroachPort) {
       var intVersion = this.connection.native.pq.serverVersion();
       var majorVer = ~~ (intVersion / 10000);
       var minorVer = ~~ (intVersion % 10000 / 100);
@@ -268,7 +270,12 @@ class Connection {
     console.log("Client don't support serverVersion, getting it with sql");
 
     return this.server.fetchServerVersion().then(version => {
-      this._serverVersion = version.split(" ")[1];
+      if (version.match(/CockroachDB/i)) {
+        this.isCockroach = true;
+        this._serverVersion = '9.5.0';
+      } else {
+        this._serverVersion = version.split(" ")[1];
+      }
 
       // convert "10.4," to 10.4,
       if (this._serverVersion.match(/,$/)) {
@@ -287,11 +294,11 @@ class Connection {
   }
 
   supportMatViews() {
-    return semver.gt(this._serverVersion, "9.3.0");
+    return !this.isCockroach && semver.gt(this._serverVersion, "9.3.0");
   }
 
   supportPgCollation() {
-    return semver.gte(this._serverVersion, "9.3.0");
+    return !this.isCockroach && semver.gte(this._serverVersion, "9.3.0");
   }
 
   supportPgIndexIndisvalid() {
@@ -299,11 +306,23 @@ class Connection {
   }
 
   supportPgRelationSize() {
-    return semver.gte(this._serverVersion, "8.1.0");
+    return !this.isCockroach && semver.gte(this._serverVersion, "8.1.0");
   }
 
   supportVectorAsArray() {
     return semver.gte(this._serverVersion, "8.1.0");
+  }
+
+  supportColMaxLength() {
+    return !this.isCockroach;
+  }
+
+  supportColDefault() {
+    return !this.isCockroach;
+  }
+
+  supportCtid() {
+    return !this.isCockroach;
   }
 
   tablesAndSchemas(callback /*: Function */) {

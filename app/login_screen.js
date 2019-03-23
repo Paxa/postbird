@@ -254,7 +254,12 @@ class LoginScreen {
     if (autoConnect) {
       var connection = this.savedConnections[autoConnect];
       console.log("Connecting to auto-connect saved connection: " + autoConnect, connection);
-      App.startLoading("Connecting...", 50);
+      App.startLoading("Connecting...", 50, {
+        cancel() {
+          App.stopRunningQuery();
+          App.stopLoading();
+        }
+      });
       this.fillForm(autoConnect, connection);
       this.submitCurrentForm();
     }
