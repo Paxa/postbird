@@ -10,7 +10,9 @@ var RenderView = require(__dirname + '/../app/components/render_view');
 
 require(__dirname + '/../lib/error_reporter');
 
-var remote = require('electron').remote;
+const fs = require('fs');
+const path = require('path');
+const remote = require('electron').remote;
 
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');
@@ -38,7 +40,14 @@ var SnippetsWindow = {
   renderContent: function () {
     this.content = $u(document.body);
 
-    var node = App.renderView("snippets", {snippets: SqlSnippets});
+    var snippetsPath = path.join(remote.app.getPath('userData'), 'custom_snippets.json');
+    var customSnippets = {};
+    if (fs.existsSync(snippetsPath)) {
+      customSnippets = JSON.parse(fs.readFileSync(snippetsPath))
+    }
+    this.mergedSnippets = Object.assign({}, SqlSnippets, customSnippets);
+
+    var node = App.renderView("snippets", {snippets: this.mergedSnippets});
     this.content.empty();
     this.content.fasterAppend(node);
 
@@ -57,7 +66,7 @@ var SnippetsWindow = {
       this.activateItem($u(event.target).attr('snippet'));
     });
 
-    this.activateItem( this.view.listItems.attr('snippet') );
+    this.activateItem(this.view.listItems.attr('snippet'));
   },
 
   activateItem: function (name) {
@@ -65,7 +74,7 @@ var SnippetsWindow = {
     var element = this.view.list.find('[snippet="' + name + '"]');
     element.addClass('selected');
 
-    var snippet = SqlSnippets[name];
+    var snippet = this.mergedSnippets[name];
     this.currentSnippet = snippet;
 
     var node = App.renderView("snippet_preview", {snippet: snippet});

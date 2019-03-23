@@ -1,5 +1,6 @@
 const fs = require('fs');
-const customSnippets = require(__dirname + '/../../../public/custom_snippets.json');
+const path = require('path');
+const electron = require('electron');
 
 class NewSnippet extends Dialog {
 
@@ -23,18 +24,26 @@ class NewSnippet extends Dialog {
   onSubmit (data) {
     // Apped to json file
     if (data.snippet_name) {
+      var snippetsPath = path.join(electron.remote.app.getPath('userData'), 'custom_snippets.json');
+
+      var customSnippets = {};
+      if (fs.existsSync(snippetsPath)) {
+        customSnippets = JSON.parse(fs.readFileSync(snippetsPath))
+      }
+
       customSnippets[data.snippet_name] = {
         description: data.description,
-        sql: data.sql
-      }
-      fs.writeFileSync(__dirname + '/../../../public/custom_snippets.json', JSON.stringify(customSnippets));
+        sql: this.code
+      };
+
+      console.log('saving snippet to ', snippetsPath);
+      console.log('data', JSON.stringify(customSnippets, null, 2));
+      fs.writeFileSync(snippetsPath, JSON.stringify(customSnippets, null, 2));
       this.close();
     }
     else {
-      window.alert('A Snippet name is required!')
+      $u.alert('A Snippet name is required!');
     }
-    
-
   }
 }
 

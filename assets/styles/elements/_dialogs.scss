@@ -57,22 +57,35 @@
 }
 
 .new-snippet-dialog {
-  width: 700px;
-  height: 500px;
-  input {
-    width: 300px;
+  p.input {
+    text-align: left;
+  }
+  label {
+    display: inline-block;
+    text-align: right;
+    width: 30%;
+    vertical-align: top;
+    margin-right: 5px;
+    line-height: 28px;
+  }
+  input, textarea {
+    display: inline-block;
+    width: calc(70% - 21px);
+    margin: 3px;
   }
   textarea {
-    display: block;
-    width: 100%;
     height: 3em;
   }
 
   code.snippet-sql {
+    max-width: 700px;
     width: 100%;
-    min-height: 12em;
-    max-height: 12em;
+    max-height: calc(100vh - 320px);
+    min-height: 10em;
     overflow: auto;
+    white-space: pre-wrap;
+    font-family: $code-font;
+    text-align: left;
   }
 }
 
