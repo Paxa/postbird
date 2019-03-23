@@ -1534,6 +1534,9 @@ span.proc-arg-list {
 body.new-window {
   background: #ececec; }
 
+body.snippets {
+  overflow: auto; }
+
 .snippets-window {
   background: #ececec; }
   .snippets-window > ul {
@@ -1803,6 +1806,21 @@ small.help-icon {
   text-align: left;
   white-space: pre-wrap;
   word-break: normal; }
+
+.new-snippet-dialog {
+  width: 700px;
+  height: 500px; }
+  .new-snippet-dialog input {
+    width: 300px; }
+  .new-snippet-dialog textarea {
+    display: block;
+    width: 100%;
+    height: 3em; }
+  .new-snippet-dialog code.snippet-sql {
+    width: 100%;
+    min-height: 12em;
+    max-height: 12em;
+    overflow: auto; }
 
 .heroku-connection-dialog code {
   padding: 5px;

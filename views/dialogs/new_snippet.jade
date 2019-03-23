@@ -1,0 +1,17 @@
+form
+  p
+    label Snippet Name
+    input(name="snippet_name", value=snippet_name type="text")
+
+  P
+    label Description
+    textarea(name="description" class="snippet-description")= description
+
+  code.snippet-sql
+    = code
+
+  input.pseudo-hidden(name="sql" value=code)
+  input.pseudo-hidden(type="submit")
+  p.buttons
+    button.ok= buttonText || "Create Snippet"
+    button.cancel cancel

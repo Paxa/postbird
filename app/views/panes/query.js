@@ -85,6 +85,16 @@ class Query extends Pane {
     }
   }
 
+  saveSnippet () {
+    this.editor.save();
+    this.statusLine.text('');
+
+    var selectedText = this.editor.getSelection();
+
+    var sql = selectedText || this.textarea.val();
+
+    new Dialog.NewSnippet(sql)
+  }
 
   runQuery () {
     this.editor.save();
