@@ -38,6 +38,7 @@ require('./app/views/dialogs/new_table');
 require('./app/views/dialogs/edit_user');
 require('./app/views/dialogs/new_database');
 require('./app/views/dialogs/new_column');
+require('./app/views/dialogs/new_snippet');
 require('./app/views/dialogs/edit_column');
 require('./app/views/dialogs/new_index');
 require('./app/views/dialogs/import_file');

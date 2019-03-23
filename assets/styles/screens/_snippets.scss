@@ -2,6 +2,10 @@ body.new-window {
   background: $mac-window-background;
 }
 
+body.snippets {
+  overflow: auto;
+}
+
 .snippets-window {
   background: $mac-window-background;
 
@@ -40,6 +44,7 @@ body.new-window {
     padding: 12px 10px;
     vertical-align: top;
     margin-left: 35%;
+    // overflow: auto;
 
     p {
       margin-bottom: 12px;
