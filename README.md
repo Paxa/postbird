@@ -49,3 +49,8 @@ ls ./dist
 ```
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details
+
+## Help Project
+
+Your donations will help to publish to app stores, more frequent releases, faster feature requests implementation.
+Postbird at opencollective: https://opencollective.com/postbird
