@@ -70,6 +70,10 @@ class DbScreenView {
         e.preventDefault();
         new Dialog.NewDatabase(this.handler);
         $u(e.target).val('');
+      } else if (value == '**refresh-list**') {
+        $u(e.target).val('');
+        e.preventDefault();
+        this.handler.fetchDbList();
       } else {
         this.handler.selectDatabase(value, () => {
           this.clearTablesFilter({show: false});
@@ -132,6 +136,9 @@ class DbScreenView {
 
     this.databaseSelect.append($dom(
       ['option', {value: '**create-db**'}, 'Create Database']
+    ));
+    this.databaseSelect.append($dom(
+      ['option', {value: '**refresh-list**'}, 'Refresh List']
     ));
 
     if (this.handler.database) {

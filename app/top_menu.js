@@ -53,6 +53,14 @@ var template = [
         label: 'Refresh Database',
         click: () => {
           global.App.currentTab.instance.fetchTablesAndSchemas();
+          global.App.currentTab.instance.fetchDbList();
+        },
+        enabled: false
+      },
+      {
+        label: 'Refresh Databases List',
+        click: () => {
+          global.App.currentTab.instance.fetchDbList();
         },
         enabled: false
       },
@@ -322,6 +330,7 @@ var checkDbMenu = function () {
   if (db) {
     enableItem("Database", "Create Database");
     enableItem("Database", "Refresh Database");
+    enableItem("Database", "Refresh Databases List");
     enableItem("Database", "Rename Database");
     enableItem("Database", "Export Database");
     enableItem("Database", "Drop Database");
