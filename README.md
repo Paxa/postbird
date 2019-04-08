@@ -1,4 +1,5 @@
-# Postbird
+# Postbird 
+[![Backers on Open Collective](https://opencollective.com/postbird/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/postbird/sponsors/badge.svg)](#sponsors) 
 
 Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron
 
@@ -54,3 +55,33 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details
 
 Your donations will help to publish to app stores, more frequent releases, faster feature requests implementation.
 Postbird at opencollective: https://opencollective.com/postbird
+
+### Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/Paxa/postbird/graphs/contributors"><img src="https://opencollective.com/postbird/contributors.svg?width=890&button=false" /></a>
+
+
+### Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/postbird#backer)]
+
+<a href="https://opencollective.com/postbird#backers" target="_blank"><img src="https://opencollective.com/postbird/backers.svg?width=890"></a>
+
+
+### Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/postbird#sponsor)]
+
+<a href="https://opencollective.com/postbird/sponsor/0/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/1/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/2/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/3/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/4/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/5/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/6/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/7/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/8/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/postbird/sponsor/9/website" target="_blank"><img src="https://opencollective.com/postbird/sponsor/9/avatar.svg"></a>
+
+
