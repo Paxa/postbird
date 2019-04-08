@@ -14,7 +14,8 @@
     "ts": "node ts.js",
     "dist": "node build_package.js",
     "build": "node build_package.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "opencollective-postinstall"
   },
   "author": {
     "name": "Pavel Evstigneev",
@@ -47,6 +48,7 @@
     "moment": "^2.22.2",
     "needle": "2.2.4",
     "node-abi": "^2.5.0",
+    "opencollective-postinstall": "^2.0.2",
     "pg": "7.9.0",
     "pg-escape": "^0.2.0",
     "pug": "2.0.3",
@@ -54,7 +56,8 @@
     "semver": "^5.6.0",
     "slash": "^2.0.0",
     "sprintf-js": "1.1.2",
-    "strftime": "0.10.0"
+    "strftime": "0.10.0",
+    "opencollective": "^1.0.3"
   },
   "optionalDependencies": {
     "pg-native": "3.0.0"
@@ -62,5 +65,9 @@
   "resolutions": {
     "node-abi": "^2.5.0",
     "node-gyp": "^3.8.0"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/postbird"
   }
 }
