@@ -30,11 +30,13 @@ var customDateParser = (val) => {
 types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
 types.setTypeParser(TIMESTAMP_OID, customDateParser)
 
+var usingNativeLib = false;
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
     if (pg.native) {
       // @ts-ignore
       pg = pg.native;
+      usingNativeLib = true;
     }
   }
 } catch (error) {
@@ -143,6 +145,12 @@ class Connection {
     } else if (typeof options == 'string') {
       this.connectString = options;
       options = Connection.parseConnectionString(this.connectString);
+    }
+
+    if (usingNativeLib) {
+      this.connectString = this.connectString.replace(/(\?|&)ssl=1/, '$1ssl=verify-full');
+    } else {
+      this.connectString = this.connectString.replace(/(\?|&)ssl=verify-full/, '$1ssl=1');
     }
 
     log.info('Connecting to', this.connectString);
