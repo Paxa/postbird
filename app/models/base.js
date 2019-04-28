@@ -15,7 +15,7 @@ class ModelBase {
     } else if (App.currentTab.instance.connection) {
       return Connection.prototype.q.apply(App.currentTab.instance.connection, arguments);
     } else {
-      throw "Current tab is not connected yet";
+      throw new Error("Current tab is not connected yet");
     }
   }
 
@@ -31,7 +31,7 @@ class ModelBase {
     if (App.currentTab.instance.connection) {
       return App.currentTab.instance.connection;
     } else {
-      throw "Current tab is not connected yet";
+      throw new Error("Current tab is not connected yet");
     }
   }
 

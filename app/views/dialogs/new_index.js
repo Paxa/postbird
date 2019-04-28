@@ -24,7 +24,7 @@ class NewIndex extends Dialog {
       }
     }
     if (data.columns.length == 0) {
-      $u.alertError("Please selectec at least 1 column");
+      $u.alertError("Please select at least 1 column");
       return;
     }
     try {

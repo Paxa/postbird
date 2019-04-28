@@ -307,10 +307,10 @@ class Connection {
     return semver.gte(this._serverVersion, "8.1.0");
   }
 
-  tablesAndSchemas(callback /*: Function */) {
+  tablesAndSchemas() {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
-    return this.query(sql, (rows) => {
+    return this.query(sql).then(rows => {
       rows.rows.forEach((dbrow) => {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
 
@@ -320,11 +320,11 @@ class Connection {
 
         data[dbrow.table_schema].push(dbrow);
       });
-      callback(data);
+      return data;
     });
   }
 
-  mapViewsAsTables(callback /*: Function */) {
+  mapViewsAsTables() {
     if (!this.supportMatViews()) {
       callback([]);
       return;
@@ -335,17 +335,12 @@ class Connection {
               "from pg_matviews " +
               "order by schemaname != 'public', matviewname";
 
-    return this.query(sql, (result, error) => {
-      if (error) {
-        log.error(error.message);
-        callback([]);
-        return;
-      }
+    return this.query(sql).then(result => {
       result.rows.forEach((dbrow) => {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
         data[dbrow.table_schema].push(dbrow);
       });
-      callback(data);
+      return data;
     });
   }
 
@@ -470,8 +465,11 @@ class Connection {
 
   onConnectionError(error /*: Error */) {
     if (
-      error.message.indexOf("server closed the connection unexpectedly") != -1 ||
-      error.message.indexOf("Unable to set non-blocking to true") != -1) {
+      error.message.includes("server closed the connection unexpectedly") ||
+      error.message.includes("Unable to set non-blocking to true") ||
+      error.message.includes("Client has encountered a connection error and is not queryable") ||
+      error.message.includes("Connection terminated")
+    ) {
 
       console.error(error);
 

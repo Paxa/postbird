@@ -487,9 +487,7 @@ class Content extends Pane {
           }
         } catch (error) {
           console.error(error);
-          var sql = error.query ? `\nSQL: ${error.query}` : '';
-          var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
-          $u.alertError("Error while updating value", {detail: error.message + hint + sql});
+          $u.alertSqlError("Error while updating value", error);
           return;
         } finally {
           App.stopLoading();

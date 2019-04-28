@@ -261,6 +261,18 @@ $u.alertError = function (text, options, callback) {
   return $u.alert(text, options, callback);
 };
 
+$u.alertSqlError = function (text, error, callback) {
+
+  var sql = error.query ? `\nSQL: ${error.query}` : '';
+  var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
+
+  var options = {
+    type: 'warning',
+    detail: error.message + (hint || sql ? "\n" : "") + hint + sql
+  };
+
+  return $u.alert(text, options, callback);
+};
 
 // Make an area droppable
 // from here https://github.com/micc83/Nuwk/blob/master/js/controllers.js
