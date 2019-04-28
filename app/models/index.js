@@ -34,7 +34,7 @@ class Index extends ModelBase {
           pg_catalog.pg_get_indexdef(i.indexrelid, 0, true), c2.reltablespace,
           ${indexSizeSql}
       FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i
-      WHERE c.oid = '%d' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
+      WHERE c.oid = %d AND c.oid = i.indrelid AND i.indexrelid = c2.oid
       ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;`;
 
     var oid_data = await this.q(sql_find_oid);

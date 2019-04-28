@@ -124,32 +124,34 @@ class Table extends ModelBase {
       return Promise.resolve(this.tableType);
     }
 
-    var sql;
-    if (this.connection().server.supportMatViews()) {
-      sql = `
-        SELECT table_schema, table_name, table_type
-        FROM information_schema.tables
-        WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
-        UNION
-        SELECT schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
-        FROM pg_matviews
-        WHERE schemaname = '${this.schema}' AND matviewname = '${this.table}'
-      `
-    } else {
-      sql = `
-        SELECT table_schema, table_name, table_type
-        FROM information_schema.tables
-        WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
-      `
+    var sqlWithMatView = `
+      SELECT table_schema, table_name, table_type
+      FROM information_schema.tables
+      WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
+      UNION
+      SELECT schemaname as table_schema, matviewname as table_name, 'MATERIALIZED VIEW' as table_type
+      FROM pg_matviews
+      WHERE schemaname = '${this.schema}' AND matviewname = '${this.table}'
+    `;
+
+    var sqlWithoutMatViews = `
+      SELECT table_schema, table_name, table_type
+      FROM information_schema.tables
+      WHERE table_schema = '${this.schema}' AND table_name = '${this.table}'
+    `;
+
+    try {
+      var sql = this.connection().server.supportMatViews() ? sqlWithMatView : sqlWithoutMatViews;
+      var data = await this.q(sql);
+      this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
+
+      if (TABLE_TYPE_ALIASES[this.tableType]) {
+        this.tableType = TABLE_TYPE_ALIASES[this.tableType];
+      }
+    } catch (error) {
+      console.error(error);
+      this.tableType = 'BASE TABLE';
     }
-
-    var data = await this.q(sql);
-    this.tableType = data.rows && data.rows[0] && data.rows[0].table_type;
-
-    if (TABLE_TYPE_ALIASES[this.tableType]) {
-      this.tableType = TABLE_TYPE_ALIASES[this.tableType];
-    }
-
     return this.tableType;
   }
 
@@ -168,15 +170,27 @@ class Table extends ModelBase {
     if (this.connection().supportPgCollation()) {
       collationQuery = `, (SELECT c.collname FROM pg_catalog.pg_collation c, pg_catalog.pg_type t WHERE c.oid = a.attcollation AND t.oid = a.atttypid AND a.attcollation <> t.typcollation) AS attcollation`;
     }
+
+    var maxLengthQuery = ''
+    if (this.connection().supportColMaxLength()) {
+      maxLengthQuery = `information_schema._pg_char_max_length(information_schema._pg_truetypid(a.*, t.*), information_schema._pg_truetypmod(a.*, t.*)) as character_maximum_length,`;
+    }
+
+    var colDefaultQuery = ''
+    if (this.connection().supportColDefault()) {
+      colDefaultQuery = `
+        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+         FROM pg_catalog.pg_attrdef d
+         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default,`;
+    }
+
     var sql = `
       SELECT
         a.attname as column_name,
         NOT a.attnotnull as is_nullable,
-        information_schema._pg_char_max_length(information_schema._pg_truetypid(a.*, t.*), information_schema._pg_truetypmod(a.*, t.*)) as character_maximum_length,
+        ${maxLengthQuery}
         pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type,
-        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
-         FROM pg_catalog.pg_attrdef d
-         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default,
+        ${colDefaultQuery}
         a.attnotnull, a.attnum
         ${collationQuery}
       FROM pg_catalog.pg_attribute a
@@ -249,15 +263,21 @@ class Table extends ModelBase {
   }
 
   async _table_getColumnTypes () {
+    var colDefaultQuery = '1'
+    if (this.connection().supportColDefault()) {
+      colDefaultQuery = `
+        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+         FROM pg_catalog.pg_attrdef d
+         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default`;
+    }
+
     var sql = `
       SELECT
         a.attname as column_name,
         pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type,
         t.typname as udt_name,
         NOT a.attnotnull as is_nullable,
-        (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
-         FROM pg_catalog.pg_attrdef d
-         WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as column_default
+        ${colDefaultQuery}
       FROM pg_catalog.pg_attribute a
       JOIN pg_type t on t.oid = a.atttypid
       WHERE
@@ -375,7 +395,7 @@ class Table extends ModelBase {
 
     var sysColumns = [];
     if (options.with_oid) sysColumns.push('oid');
-    if (!await this.isView()) sysColumns.push('ctid');
+    if (!await this.isView() && this.connection().supportCtid()) sysColumns.push('ctid');
 
     //sysColumns = sysColumns.join(", ") + (sysColumns.length ? "," : "");
     var selectColumns = sysColumns.concat(['*']);
@@ -462,7 +482,23 @@ class Table extends ModelBase {
     return this.q(sql);
   }
 
+  async getCockroachSourceSql(callback/*:: ?: Function */) {
+    try {
+      var res = await this.q(`SHOW CREATE ${this.sqlTable()}`);
+      var source = res.rows && res.rows[0] && res.rows[0].create_statement;
+      callback && callback(source);
+      return source;
+    } catch (error) {
+      callback && callback(null, error);
+      throw error;
+    }
+  }
+
   async getSourceSql (callback/*:: ?: Function */) {
+
+    if (this.connection().isCockroach) {
+      return this.getCockroachSourceSql(callback);
+    }
 
     // some kind of bug in pd_dump, it doesn't show view definitions anymore.
     // use pg_get_viewdef() as workaround

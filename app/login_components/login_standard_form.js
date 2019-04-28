@@ -98,7 +98,11 @@ class LoginStandardForm {
   }
 
   testConnection () {
-    App.startLoading("Connecting...");
+    App.startLoading("Connecting...", 100, {
+      cancel() {
+        App.stopLoading();
+      }
+    });
 
     var options = this.getFormData();
     var conn = new Connection();
