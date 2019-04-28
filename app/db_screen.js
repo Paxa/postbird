@@ -641,6 +641,9 @@ class DbScreen {
     App.startLoading(`Truncating ${table}`);
     new Model.Table(schema, table).truncate(cascade, (result, error) => {
       App.stopLoading();
+      if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
+        return this.view.showTab(this.view.currentTab);
+      }
       callback(result, error);
     });
   }
