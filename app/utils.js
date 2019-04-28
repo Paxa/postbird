@@ -19,6 +19,7 @@ interface JQueryStatic {
   confirm: (text: string, options?: any, callback?: Function) => Promise<boolean>;
   alert: (text: string, options?: any, callback?: Function) => Promise<number>;
   alertError: (text: string, options?: any, callback?: Function) => Promise<number>;
+  alertSqlError: (text: string, error?: any, callback?: Function) => Promise<number>;
   makeDroppable: (target: HTMLElement, callback: Function) => void;
   selectedText: (element: any, currentWindow: any) => string;
   textInputMenu: (element: HTMLInputElement, currentWindow: any) => void;

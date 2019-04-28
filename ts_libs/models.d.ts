@@ -1,7 +1,7 @@
 import events = require("events");
 
 declare global {
-  class Model {
+  export class Model {
   }
 
   export module Model {

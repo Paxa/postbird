@@ -43,10 +43,32 @@ try {
   //errorReporter(error);
 }
 
+/*::
+interface FieldDef {
+    name: string;
+    tableID: number;
+    columnID: number;
+    dataTypeID: number;
+    dataTypeSize: number;
+    dataTypeModifier: number;
+    format: string;
+}
+
+interface QueryResultBase {
+    command: string;
+    rowCount: number;
+    oid: number;
+    fields: FieldDef[];
+}
+
+interface QueryResult extends QueryResultBase {
+    rows: any[];
+}
+*/
+
 class Connection {
   /*::
     className: string
-    //defaultDatabaseName: string
     history: HistoryRecord[]
     logging: boolean
     printTestingError: boolean
@@ -180,11 +202,11 @@ class Connection {
     return this.connectToServer(this.options, callback);
   }
 
-  query(sql, callback /*: Function */) {
+  query(sql, callback /*:: ?: Function */) /*: Promise<QueryResult> */ {
     return this.queryWithOptions(sql, {}, callback);
   }
 
-  queryWithOptions(sql, options, callback /*: Function */) {
+  queryWithOptions(sql, options, callback /*: Function */) /*: Promise<QueryResult> */ {
     options.text = sql;
     if (this.logging) logger.print("SQL: " + colors.green(sql) + "\n");
 
@@ -230,7 +252,7 @@ class Connection {
     });
   }
 
-  q(sql /*: string */, ...params /*: any[] */ ) {
+  q(sql /*: string */, ...params /*: any[] */ ) /*: Promise<QueryResult> */ {
     var callback = undefined;
     if (typeof params[params.length - 1] == 'function') {
       callback = params.pop();
@@ -311,7 +333,7 @@ class Connection {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
     return this.query(sql).then(rows => {
-      rows.rows.forEach((dbrow) => {
+      rows.rows.forEach(dbrow => {
         if (!data[dbrow.table_schema]) data[dbrow.table_schema] = [];
 
         if (Model.Table.typeAliasess[dbrow.table_type]) {
@@ -326,8 +348,7 @@ class Connection {
 
   mapViewsAsTables() {
     if (!this.supportMatViews()) {
-      callback([]);
-      return;
+      return Promise.resolve([]);
     }
 
     var data = {};
