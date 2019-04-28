@@ -35,6 +35,14 @@ class EditValue extends Dialog {
       }
     });
 
+    // don't close dialog when press enter in textfield
+    this.content.find('textarea').on('keyup', event => {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    })
+
     this.bindFormSubmitting();
   }
 
