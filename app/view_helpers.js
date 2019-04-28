@@ -163,6 +163,11 @@ var helpers = global.ViewHelpers = {
   },
 
   column_type_label: function (column, short) {
+    // still not sure why it happens
+    if (!column) {
+      return 'varchar';
+    }
+
     var baseName = column.udt_name || column.data_type;
     if (column.data_type == 'ARRAY') {
       baseName = baseName.replace(/^_/, '') + "[]";

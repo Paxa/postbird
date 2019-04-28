@@ -252,7 +252,7 @@ class Connection {
       var patchVer = intVersion % 100;
       this._serverVersion = [majorVer, minorVer, patchVer].join(".");
 
-      // convert "10.4," to 10.4,
+      // convert "10.4," to 10.4
       if (this._serverVersion.match(/,$/)) {
         this._serverVersion = this._serverVersion.replace(/,$/, '');
       }

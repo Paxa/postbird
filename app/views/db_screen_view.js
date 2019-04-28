@@ -153,7 +153,8 @@ class DbScreenView {
       "VIEW": 'View',
       "BASE TABLE": 'Table',
       "MATERIALIZED VIEW": 'Mat. View',
-      "FOREIGN TABLE": "Foreign Table"
+      "FOREIGN TABLE": "Foreign Table",
+      "LOCAL TEMPORARY": "Temporary Table"
     };
 
     $u.each(data, (schema, tables) => {
