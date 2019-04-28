@@ -1,8 +1,24 @@
-== Version 0.8.2
+### Version 0.8.2
 
-* Feature: filter tables by name (Thanks to [https://github.com/willvincent](@willvincent))
+* Feature: Filter tables by name (Thanks to [https://github.com/willvincent](@willvincent))
+* Feature: Show related records via foreign key (Thanks to [https://github.com/willvincent](@willvincent))
+* Feature: Sava custom snippets (Thanks to [https://github.com/willvincent](@willvincent))
+* Fix scrollbar in snippets window (Thanks to [https://github.com/willvincent](@willvincent))
+* Feature: reload databases list
+* Fix handling short server version eg 11.0
+* Fix editing max length for numbers and dates
+* Update styles for null fields in query results
+* Show more size breakdown in table info
+* Add minimum support for Postgres 8
+* Add minimum support for CockroachDB
+* Add support for postgresql protocol
+* Support duplicate column names in query tab
+* Fix using special characters in username and password
+* Better handling of database errors
+* Add quit function for linux
+* Don't close edit dialog when press enter in textfield
 
-== Version 0.8.1 (18-jan-2019)
+### Version 0.8.1 (18-jan-2019)
 
 * Support for Linux
 * Support for Windows (Thanks to @DavidBernal)
@@ -17,7 +33,7 @@
 * Reload a tab when table renamed
 
 
-== Version 0.8.0 (07-jun-2018)
+### Version 0.8.0 (07-jun-2018)
 
 * Feature: Connect with postgres:// URL
 * Redesign help screen
@@ -31,7 +47,7 @@
 * Add typescript hibrid validator
 * Show only 100 rows per page for wide tables (more then 30 columns)
 
-== Version 0.7.1 (06-feb-2018)
+### Version 0.7.1 (06-feb-2018)
 
 * Feature: Updating values in table
 * Show NULL as “NULL”
@@ -47,7 +63,7 @@
 * Update readme and contributing guide
 * More async/await
 
-== Version 0.7.0 (22-oct-2017)
+### Version 0.7.0 (22-oct-2017)
 
 * Update to electron 1.7.8
 * Update to PostgreSQL 10
@@ -64,7 +80,7 @@
 * MIgrate big junk of code from callbacks to async/await
 * Add integration tests with spectron
 
-== Version 0.6.2 (01-may-2017)
+### Version 0.6.2 (01-may-2017)
 
 * Fix “Cannot set property 'state' of undefined”
 * Use editMenu, zoomin, zoomout for top menu
@@ -76,13 +92,13 @@
 * Dialog for truncate table action, add cascade truncate
 * Fix dialog cancel button error
 
-== Version 0.6.1 (11-apr-2017)
+### Version 0.6.1 (11-apr-2017)
 
 * Fix displaying connection error message
 * More error reporting
 * Fix layout of resizable table when some cell is empty
 
-== Version 0.6.0 (05-apr-2017)
+### Version 0.6.0 (05-apr-2017)
 
 * Add Feature: Truncate table
 * Fix checking updates, check updates on startup
@@ -116,7 +132,7 @@
 * Set extensions page to same position after install or uninstall
 * Smaller release size
 
-== Version 0.5.0 (25-mar-2016)
+### Version 0.5.0 (25-mar-2016)
 
 * Migrate to Electron from Node-Webkit
 * Implement adding row to table
@@ -135,7 +151,7 @@
 * Fix displaying json & jsonb fields
 * Better xml & html formatting
 
-== Version 0.4.4
+### Version 0.4.4
 
 * Add support for foreign tables
 * Implement simple history window
@@ -160,12 +176,12 @@
 * Add shortcuts Cmd+W to close tab
 * Add shortcuts Cmd+T to switch to connection tab
 
-== Version 0.4.3
+### Version 0.4.3
 
 * Fix exception when login
 * Add position for "Check For Updates..."
 
-== Version 0.4.2
+### Version 0.4.2
 
 * Add feature to export only data or only structure
 * Trim snippets sql, add snippets for mat views
@@ -178,7 +194,7 @@
 * Show extension name in procedures list
 * Add snippets about triggers and constraints, fix snippets css
 
-== Version 0.4.1
+### Version 0.4.1
 
 * Add support for "oid" column. Show in columns list, show in content tab
 * Build dev version with symlinks
@@ -209,7 +225,7 @@
 * Improve result for non-SELECT statements and status text in query tab
 * Feature check for updates
 
-== Version 0.4
+### Version 0.4
 
 * Use new shortcut api
 * Add keyboard shortcuts to open help window
@@ -250,7 +266,7 @@
 * Remove any-db dependency
 
 
-== Version 0.3 (Sep 27, 2014)
+### Version 0.3 (Sep 27, 2014)
 
 * Redesign ui, make in OS X style
 * Add login to heroku postgresql server
@@ -259,4 +275,4 @@
 * Rework content tab
 * Add table selectable and resizable controls
 
-== Version 0.2 (Jul 8, 2014)
+### Version 0.2 (Jul 8, 2014)
