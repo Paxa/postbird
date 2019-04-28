@@ -299,6 +299,15 @@ if (process.platform == 'linux') {
       }
     },
   );
+  template[0].submenu.push(
+    {
+      type: 'separator'
+    },
+    {
+      label: "Quit",
+      click: () => { remote.app.quit(); }
+    },
+  );
 }
 
 
