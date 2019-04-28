@@ -56,7 +56,7 @@ class Server extends ModelBase {
   }
 
   createDatabase(dbname, template, encoding) {
-    var sql = `CREATE DATABASE ${dbname}`;
+    var sql = `CREATE DATABASE "${dbname}"`;
     if (encoding) sql += " ENCODING '" + encoding + "'";
     if (template) sql += " TEMPLATE " + template;
     return this.q(sql);
