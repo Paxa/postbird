@@ -82,6 +82,7 @@ class Connection {
     connectString: string
     options: ConnectionOptions
     startQuery: string
+    isCockroach: boolean
 
     static PG: any
     public static instances: Connection[]
