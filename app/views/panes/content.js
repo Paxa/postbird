@@ -421,8 +421,21 @@ class Content extends Pane {
         var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
         this.editField(el);
       };
+
+      contextMenuActions['Add New Row'] = (menuItem, bwin) => {
+        this.addRow();
+      };
     }
     $u.contextMenu(table, contextMenuActions);
+
+    if (this.currentTableType == 'BASE TABLE') {
+      // for empty area when table is empty
+      $u.contextMenu(this.content, {
+        'Add New Row': () => {
+          this.addRow();
+        }
+      });
+    }
   }
 
   async deleteRow (row) {

@@ -1427,6 +1427,8 @@ body.sidebar-resizing {
       font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
       background: #f5f5f5;
       padding: 4px 6px; }
+  .window-content.content .adding-new-row input {
+    width: 100%; }
 
 .window-content.users {
   margin-bottom: -27px;
