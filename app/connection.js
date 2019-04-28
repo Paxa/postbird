@@ -110,9 +110,10 @@ class Connection {
 
       if (!options.database) options.database = Connection.defaultDatabaseName;
 
-      var connectUser = options.user ? `${options.user}` : '';
-      if (options.password) connectUser += `:${options.password}`;
-      this.connectString = `postgres://${connectUser ? connectUser + '@' : ''}${options.host}:${options.port}/${options.database}`;
+      var connectUser = options.user ? `${encodeURIComponent(options.user)}` : '';
+      if (options.password) connectUser += `:${encodeURIComponent(options.password)}`;
+      this.connectString = `postgres://${connectUser ? connectUser + '@' : ''}` +
+        `${options.host}:${options.port}/${encodeURIComponent(options.database)}`;
 
       if (options.query) {
         this.connectString += "?" + options.query;
