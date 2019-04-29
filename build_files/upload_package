@@ -15,7 +15,7 @@ ls -lah dist/* || true
 cd dist
 for filename in ./*.{dmg,deb,rpm,snap,exe,zip}; do
   [ -e "$filename" ] || continue
-  #$MC_CMD cp "$filename" postbird/postbird-builds/$PKG_DATE-$GIT_BRANCH-$GIT_REF/
+  echo "Uploading $filename to https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF ..."
   curl https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename \
     -T $filename \
     -H "Upload-Token: $UPLOAD_TOKEN" \
