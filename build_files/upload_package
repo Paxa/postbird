@@ -14,14 +14,10 @@ ls -lah dist/* || true
 
 cd dist
 
-if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-  curl --help
-fi
-
 for filename in ./*.{dmg,deb,rpm,snap,exe,zip}; do
   [ -e "$filename" ] || continue
   echo "Uploading $filename to https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF ..."
-  curl https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename \
+  curl "https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename" \
     -T "$filename" \
     -H "Upload-Token: $UPLOAD_TOKEN" \
     --retry 3 --retry-delay 10 --http1.1
