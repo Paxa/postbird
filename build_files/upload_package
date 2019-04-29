@@ -17,7 +17,7 @@ for filename in ./*.{dmg,deb,rpm,snap,exe,zip}; do
   [ -e "$filename" ] || continue
   echo "Uploading $filename to https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF ..."
   curl https://postbird.paxa.kuber.host/$PKG_DATE-$GIT_BRANCH-$GIT_REF/$filename \
-    -T $filename \
+    -T "$filename" \
     -H "Upload-Token: $UPLOAD_TOKEN" \
     --retry 3 --retry-delay 10 --http1.1
 done
