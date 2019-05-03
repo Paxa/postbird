@@ -1,4 +1,4 @@
-### Version 0.8.2
+### Version 0.8.2 (04-may-2019)
 
 * Feature: Filter tables by name (Thanks to [https://github.com/willvincent](@willvincent))
 * Feature: Show related records via foreign key (Thanks to [https://github.com/willvincent](@willvincent))

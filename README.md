@@ -1,5 +1,5 @@
 # Postbird 
-[![Backers on Open Collective](https://opencollective.com/postbird/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/postbird/sponsors/badge.svg)](#sponsors) 
+[![Backers on Open Collective](https://opencollective.com/postbird/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/postbird/sponsors/badge.svg)](#sponsors)
 
 Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron
 
@@ -9,19 +9,19 @@ Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs 
 
 ## Download
 
-**Version 0.8.1**
+**Version 0.8.2**
 
-MacOS: [Postbird-0.8.1.dmg](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird-0.8.1.dmg) - MacOS 10.9+
+MacOS: [Postbird-0.8.2.dmg](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2.dmg) - MacOS 10.9+
 
-Linux packages: [Postbird_0.8.1_amd64.deb](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird_0.8.1_amd64.deb) [Postbird-0.8.1.x86_64.rpm](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird-0.8.1.x86_64.rpm) [Postbird_0.8.1_amd64.snap](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird_0.8.1_amd64.snap)<br>
+Linux packages: [Postbird_0.8.2_amd64.deb](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird_0.8.2_amd64.deb) [Postbird-0.8.2.x86_64.rpm](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2.x86_64.rpm) [Postbird_0.8.2_amd64.snap](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird_0.8.2_amd64.snap)<br>
 Via snap:
 ```
 sudo snap install postbird
 ```
 Snap page: https://snapcraft.io/postbird
 
-Windows installer: [Postbird.Setup.0.8.1.exe](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird.Setup.0.8.1.exe)<br>
-Windows portable: [Postbird-0.8.1-win.zip](https://github.com/Paxa/postbird/releases/download/0.8.1/Postbird-0.8.1-win.zip)
+Windows installer: [Postbird.Setup.0.8.2.exe](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird.Setup.0.8.2.exe)<br>
+Windows portable: [Postbird-0.8.2-win.zip](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2-win.zip)
 
 Latest artifacts: https://postbird.paxa.kuber.host/
 
