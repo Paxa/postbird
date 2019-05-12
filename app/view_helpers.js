@@ -55,13 +55,16 @@ var GRANTS_ABBR = {
   T: 'TEMPORARY'
 };
 
+var TRUNCATE_LONG_TEXT = 500;
+
+
 var helpers = global.ViewHelpers = {
 
   TIMESTAMPTZ_OID: 1184,
   TIMESTAMP_OID: 1114,
 
   formatCellFromSelect(value, field) {
-    var format = field.udt_name;
+    var format = field.udt_name || field.format;
     if (field.dataTypeID == this.TIMESTAMP_OID) {
       format = 'timestamp';
     }
@@ -77,22 +80,24 @@ var helpers = global.ViewHelpers = {
       return '<i class="null">NULL</i>';
     }
     if (typeof value == 'string') {
-      value = this.escapeHTML(value);
+      //value = this.escapeHTML(value);
     }
 
     var formated = value;
     if (!formated) return formated;
 
     switch (format) {
-      case 'hstore': case 'text':
-        formated = '<span class="text">' + value + '</span>';
+      case 'hstore': case 'text': case 'tsvector':
+        var shorterValue = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
+        formated = '<span class="text">' + shorterValue + '</span>';
         break;
       case 'xml':
         formated = '<span class="text type-xml">' + value + '</span>';
         break;
       case 'varchar':
         if (typeof value == 'string' && value.length > 20) {
-          formated = '<span class="text">' + value + '</span>';
+          var shorterValue = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
+          formated = '<span class="text">' + shorterValue + '</span>';
         }
         break;
       case 'timestamp':
