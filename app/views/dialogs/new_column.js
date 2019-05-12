@@ -16,7 +16,7 @@ class NewColumn extends Dialog {
       "JSON":       ['json', 'jsonb'],
       "Network":    ['macaddr', 'macaddr8', 'cidr', 'inet'],
       "Geometry":   ['point', 'line', 'lseg', 'box', 'path', 'polygon', 'circle'],
-      "Text Search": ['tsvector', 'tsquery', '']
+      "Text Search": ['tsvector', 'tsquery']
     };
 
     this.showWindow();
