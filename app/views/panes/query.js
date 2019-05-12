@@ -212,7 +212,7 @@ class Query extends Pane {
     dialog.showSaveDialog(mainWindow, {
       title: "Save result as csv file",
       defaultPath: "result.csv",
-      message: "aaaa",
+      //message: "aaaa",
       filters: [
         {name: 'CSV File', extensions: ['csv']},
         {name: 'Other', extensions: ['*']}
@@ -249,7 +249,9 @@ class Query extends Pane {
     generator.write(columns);
 
     this.lastResult.completeRows.forEach(row => {
-      var values = columns.map(col => { return row[col] });
+      var values = row.map(val => {
+        return val.toISOString ? val.toISOString() : val;
+      });
       generator.write(values);
     });
     generator.end();
