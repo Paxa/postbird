@@ -131,7 +131,7 @@ var helpers = global.ViewHelpers = {
   },
 
   relatedRowsIcon(rel, columnName, value) {
-    if (rel) {
+    if (value !== null && rel) {
       var escapedValue = typeof value == 'string' ? value.replace(/('|")/g, "\\$1") : value;
       var execAttr = `viewForeign('${rel.foreign_table_schema}', '${rel.foreign_table_name}', '${rel.foreign_column_name}', '${escapedValue}')`;
       return `<a class="foreign" exec="${execAttr}"></span>`;
