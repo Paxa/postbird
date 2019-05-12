@@ -329,13 +329,15 @@ class Content extends Pane {
     });
     try {
       var data = await this.handler.table.getRows(this.offset, this.pageLimit, this.queryOptions);
-      data.relations = await this.handler.table.getRelations()
+      data.relations = await this.handler.table.getRelations();
+      delete this.totalRows;
       this.renderPage(data);
       this.scrollToTop();
       App.stopLoading();
       this.content.removeClass('reloading');
     } catch (error) {
       $u.alert(error.message);
+    } finally {
       App.stopLoading();
     }
   }
