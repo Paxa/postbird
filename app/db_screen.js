@@ -205,9 +205,10 @@ class DbScreen {
   async openContentTabWithFilter (schema, table, field, value) {
     this.contentConditions = [Pane.Content.filterSql(field, 'eq', value)];
     var res = await this.tableSelected(schema, table, 'content');
-    console.log(res, 'res');
+
     delete this.contentConditions;
     this.view.contentPane.setFilter(field, 'eq', value);
+    this.view.clearTablesFilter();
   }
 
   async contentTabActivate () {
