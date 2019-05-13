@@ -1,13 +1,17 @@
-var LastQuery = {
+class LastQuery {
 
-  load: () => {
+  static load () {
     return window.localStorage.lastQuery;
-  },
+  }
 
-  save: (value) => {
+  static save (value) {
     return window.localStorage.lastQuery = value;
   }
 
 }
+
+/*::
+declare var LastQuery__: typeof LastQuery
+*/
 
 module.exports = LastQuery;

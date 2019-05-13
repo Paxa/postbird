@@ -4,7 +4,6 @@ require('./lib/object_extras');
 require('./lib/dominate');
 require('./lib/alertify');
 require('./lib/node_lib');
-//global.AppMenu = require('nw-appmenu');
 require('./lib/sidebar_resize');
 require('./lib/query_tab_resizer');
 require('./lib/widgets/generic_table');
@@ -20,7 +19,7 @@ global.node.colors = require('colors');
 global.node.colors.enabled = true;
 
 require('./app');
-require('./app/views/pane');
+global.Pane = require('./app/views/panes/all');
 require('./app/connection');
 require('./app/view_helpers');
 require('./app/db_screen');

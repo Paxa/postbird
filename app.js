@@ -4,7 +4,7 @@ var path = require('path');
 
 require('./lib/node_lib');
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
-global.logger = global.log = require('./app/logger').make('info');
+global.logger = require('./app/logger').make('info');
 
 var RenderView = require('./app/components/render_view');
 
@@ -33,7 +33,7 @@ interface App {
   addDbScreen: (connection: Connection, connectionName: any, options: any) => void;
   addHelpScreen: () => void;
   helpScreenOpen: () => void;
-  renderView: (viewName: string) => JQuery<HTMLElement>;
+  renderView: (viewName: string, options?: any) => JQuery<HTMLElement>;
   setSizes: () => void;
   startLoading: (message: string, timeout?: number, options?: any) => void;
   stopLoading: () => void;
@@ -73,7 +73,7 @@ global.App = {
     this.addConnectionTab();
     this.activateTab(0);
 
-    log.info('Loaded in ' + (Date.now() - remote.app.ApplicationStart) + 'ms');
+    logger.info('Loaded in ' + (Date.now() - remote.app.ApplicationStart) + 'ms');
     console.log('Loaded in ' + (Date.now() - remote.app.ApplicationStart) + 'ms');
     /* auto connect, for development *\/
 
@@ -111,7 +111,7 @@ global.App = {
       is_active: false,
       activate: () => {
         if (App.tabs.indexOf(tabData) == -1) {
-          log.info('Try to activate removed tab', tabData);
+          logger.info('Try to activate removed tab', tabData);
         }
         App.activateTab(App.tabs.indexOf(tabData));
       }
@@ -229,7 +229,9 @@ global.App = {
     return !!tabs.length;
   },
 
-  renderView: RenderView.renderView.bind(RenderView),
+  renderView: function (file, options) {
+    return RenderView.renderView(file, options);
+  },
 
   setSizes: function() {
     var height = $u(window).height();

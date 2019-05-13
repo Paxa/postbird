@@ -9,6 +9,7 @@ var fileNames = [
   'ts_libs/globals.d.ts',
   'app/connection.js',
   'app.js',
+  'app/logger.js',
   'app/utils.js',
   'app/login_components/heroku_client.js',
   'app/login_components/login_postgres_url_form.js',
@@ -25,8 +26,19 @@ var fileNames = [
   'app/models/index.js',
   'app/models/procedure.js',
   'app/models/table.js',
+  'app/models/trigger.js',
   'app/models/saved_conn.js',
+  'app/models/last_query.js',
   'app/views/db_screen_view.js',
+  'app/views/panes/base.js',
+  'app/views/panes/content.js',
+  'app/views/panes/extensions.js',
+  'app/views/panes/info.js',
+  'app/views/panes/procedures.js',
+  'app/views/panes/query.js',
+  'app/views/panes/structure.js',
+  'app/views/panes/users.js',
+  'app/views/panes/all.js',
   'lib/pg_type_names.js'
 ];
 

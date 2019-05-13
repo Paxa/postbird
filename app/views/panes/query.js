@@ -1,6 +1,25 @@
 var csvGenerate = require('csv-stringify');
+var fs = require('fs');
 
-class Query extends Pane {
+/*::
+interface Query_ExterndedResults extends pg.QueryResult {
+  completeRows: any[]
+}
+*/
+
+class Query extends PaneBase {
+
+  /*::
+    button: JQuery<HTMLElement>
+    cleanButton: JQuery<HTMLElement>
+    saveButton: JQuery<HTMLElement>
+    mime: string
+    textarea: JQuery<HTMLElement>
+    editor: CodeMirror.EditorFromTextArea
+    statusLine: JQuery<HTMLElement>
+    saveTimeout: NodeJS.Timer
+    lastResult: Query_ExterndedResults
+  */
 
   renderTab () {
     if (this.content) return;
@@ -14,7 +33,9 @@ class Query extends Pane {
     this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
 
-    this.editor = window.CodeMirror.fromTextArea(this.textarea[0], {
+    var textarea = /*:: <HTMLTextAreaElement><any> */ this.textarea[0];
+
+    this.editor = window.CodeMirror.fromTextArea(textarea, {
       mode: this.mime,
       indentWithTabs: false,
       smartIndent: true,
@@ -113,7 +134,7 @@ class Query extends Pane {
 
     var selectedText = this.editor.getSelection();
 
-    var sql = selectedText || this.textarea.val();
+    var sql = selectedText || this.textarea.val().toString();
     var tableRegex = /(create|drop)\s+(OR REPLACE\s+)?((GLOBAL|LOCAL|TEMPORARY|TEMP|UNLOGGED|FOREIGN|MATERIALIZED)\s+)*\s*(table|schema|view)/im;
     var needReloadTables = tableRegex.test(sql);
 
@@ -228,7 +249,7 @@ class Query extends Pane {
   saveResultTo(filename) {
     App.startLoading("Saving file...", 100);
 
-    var fileWriter = node.fs.createWriteStream(filename);
+    var fileWriter = fs.createWriteStream(filename);
     //this.lastResult;
 
     var generator = csvGenerate({delimiter: ','})
@@ -258,5 +279,9 @@ class Query extends Pane {
   }
 
 }
+
+/*::
+declare var Query__: typeof Query
+*/
 
 module.exports = Query;

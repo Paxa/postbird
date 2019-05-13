@@ -160,7 +160,42 @@ var filterMatchers = (() => {
   };
 })();
 
-class Content extends Pane {
+/*::
+interface Content_State {
+  filtered?: boolean
+  filterField?: string
+  filterValue?: string
+  filterMatcher?: string
+}
+*/
+
+class Content extends PaneBase {
+
+  /*::
+  error: PgError
+  pageLimit: number
+  columnTypes: Table_ColumnTypes
+  queryOptions: Table_getRows_Options
+  state: Content_State
+  limit: number
+  offset: number
+  dataRowsCount: number
+  currentTable: Array<string | Table>
+  totalRows: number
+  currentTableType: string
+  currentData: pg.QueryResult
+
+  footer:        JQuery<HTMLElement>
+  nextPageEl:    JQuery<HTMLElement>
+  prevPageEl:    JQuery<HTMLElement>
+  newRowFields:  JQuery<HTMLElement>
+
+  filterField:   JQuery<HTMLElement>
+  filterMatcher: JQuery<HTMLElement>
+  filterValue:   JQuery<HTMLElement>
+  filterForm:    JQuery<HTMLElement>
+  filterCancel:  JQuery<HTMLElement>
+  */
 
   renderTab (data, columnTypes, options) {
 
@@ -359,8 +394,8 @@ class Content extends Pane {
     this.content.find('.rescol-wrapper').on('resizable-columns:init', (event) => {
 
       var cells = this.content.find('table th[sortable]');
-      cells.each((i, cell) => {
-        cell = $u(cell);
+      cells.each((i, cellEl) => {
+        var cell = $u(cellEl);
         cell.bind('click', (ev) => {
           var direction = rotate[cell.attr('sortable-dir') || ''];
           this.offset = 0;
@@ -379,7 +414,7 @@ class Content extends Pane {
     });
   }
 
-  initContextMenu (event) {
+  initContextMenu () {
     var table = this.content.find('.rescol-content-wrapper table');
 
     // bind for delete button
@@ -459,8 +494,8 @@ class Content extends Pane {
     var position = $u(field).prevAll('td').length;
     var ctid = $u(field).closest('tr').attr('data-ctid');
 
-    var fieldName = this.currentData.fields.filter(f => f.name != 'ctid')[position];
-    fieldName = fieldName && fieldName.name;
+    var fieldDef = this.currentData.fields.filter(f => f.name != 'ctid')[position];
+    var fieldName = field && fieldDef.name;
 
     var fieldType = this.columnTypes[fieldName];
 
@@ -588,15 +623,15 @@ class Content extends Pane {
     this.filterCancel =  this.content.find('.content-filter span.cancel');
 
     this.filterField.on('change', () => {
-      this.state.filterField = this.filterField.val();
+      this.state.filterField = this.filterField.val().toString();
     });
 
     this.filterMatcher.on('change', () => {
-      this.state.filterMatcher = this.filterMatcher.val();
+      this.state.filterMatcher = this.filterMatcher.val().toString();
     });
 
     this.filterValue.on('change', () => {
-      this.state.filterValue = this.filterValue.val();
+      this.state.filterValue = this.filterValue.val().toString();
     });
 
     this.filterCancel.on('click', (e) => this.cancelFilters());
@@ -609,12 +644,12 @@ class Content extends Pane {
     this.filterForm.on('submit', (e) => {
       e.preventDefault();
 
-      var value = this.filterValue.val();
-      var field = this.filterField.val();
+      var value = this.filterValue.val().toString();
+      var field = this.filterField.val().toString();
       var dataType = this.columnTypes[field].data_type;
       this.state.filtered = true;
 
-      var m = filterMatchers[this.filterMatcher.val()];
+      var m = filterMatchers[this.filterMatcher.val().toString()];
       if (m) {
         if (m.validate) {
           var message = m.validate(dataType, value);
@@ -646,21 +681,25 @@ class Content extends Pane {
       this.reloadData();
     }
   }
-}
 
-Content.filterSql = (column, matcher, value) => {
-  var m = filterMatchers[matcher];
-  return m.sql('string', column, value);
-}
-
-Content.insertSnippet = function (sql) {
-  var tab = App.currentTab.instance;
-  if (tab.currentTab != "query") {
-    tab.view.showTab("query")
+  static filterSql (column, matcher, value) {
+    var m = filterMatchers[matcher];
+    return m.sql('string', column, value);
   }
 
-  electron.remote.app.mainWindow.focus();
-  tab.view.queryPane.appendText(sql, 2);
-};
+  static insertSnippet (sql) {
+    var tab = App.currentTab.instance;
+    if (tab.currentTab != "query") {
+      tab.view.showTab("query")
+    }
+
+    electron.remote.app.mainWindow.focus();
+    tab.view.queryPane.appendText(sql, 2);
+  }
+}
+
+/*::
+declare var Content__: typeof Content
+*/
 
 module.exports = Content;

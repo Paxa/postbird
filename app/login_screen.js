@@ -44,7 +44,7 @@ class LoginScreen {
   }
 
   initEvents(content) {
-    Pane.prototype.initEvents.call(this, content);
+    PaneBase.prototype.initEvents.call(this, content);
 
     this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();

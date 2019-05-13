@@ -1,6 +1,19 @@
-class Structure extends Pane {
+/*::
+interface Structure_ExtraOptions {
+  isMatView?: boolean
+  columnsError?: string
+  indexesError?: string
+  constraintsError?: string
+}
+*/
 
-  renderTab (columns, indexes, constraints, extra = {}) {
+class Structure extends PaneBase {
+
+  /*::
+    constraints: any[]
+  */
+
+  renderTab (columns, indexes, constraints, extra /*: Structure_ExtraOptions */ = {}) {
     var neededConstraints = [];
     this.constraints = constraints ? constraints.rows : [];
     this.constraints.forEach((constraint) => {
@@ -80,5 +93,9 @@ class Structure extends Pane {
     });
   }
 }
+
+/*::
+declare var Structure__: typeof Structure
+*/
 
 module.exports = Structure;

@@ -18,5 +18,9 @@ declare global {
     class Column extends Column__ { }
 
     class Procedure extends Procedure__ { }
+
+    class Trigger extends Trigger__ { }
+
+    class LastQuery extends LastQuery__ { }
   }
 }

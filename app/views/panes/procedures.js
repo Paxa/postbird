@@ -1,6 +1,6 @@
-class Procedures extends Pane {
+class Procedures extends PaneBase {
 
-  async renderTab (callback) {
+  async renderTab (callback /*::? : () => void */) {
     App.startLoading("Loading procedures...");
 
     try {
@@ -72,9 +72,13 @@ class Procedures extends Pane {
     var langs = await Model.Procedure.listLanguages();
     App.stopLoading();
 
-    new Dialog.ListLanguages(this.hadler, langs);
+    new Dialog.ListLanguages(this.handler, langs);
   }
 
 }
+
+/*::
+declare var Procedures__: typeof Procedures
+*/
 
 module.exports = Procedures;

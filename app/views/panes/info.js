@@ -1,4 +1,13 @@
-class Info extends Pane {
+class Info extends PaneBase {
+
+  /*::
+  source: string
+  dumpError: string
+  diskUsage: Table_DiskUsage
+  recordsCount: number
+  relType: string
+  summaryError: string
+  */
 
   renderTab () {
     this.renderViewToPane('info', 'info_tab', {
@@ -24,12 +33,16 @@ class Info extends Pane {
     this.dumpError = dumpError;
   }
 
-  updateSummary(result, summaryError) {
+  updateSummary(result, summaryError /*::? : string */) {
     this.relType = result.type;
     this.recordsCount = result.estimateCount;
     this.diskUsage = result.diskUsage;
     this.summaryError = summaryError;
   }
 }
+
+/*::
+declare var Info__: typeof Info
+*/
 
 module.exports = Info;

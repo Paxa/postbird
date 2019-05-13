@@ -13,6 +13,41 @@ var TABLE_TYPE_ALIASES = {
   'FOREIGN': 'FOREIGN TABLE',
 }
 
+/*::
+interface Table_ColumnType {
+  column_name: string
+  data_type: string
+  column_default: any
+  udt_name: string
+  ordinal_position: number
+}
+
+interface Table_ColumnTypes {
+  [column: string] : Table_ColumnType;
+}
+
+interface Table_DiskUsage {
+  total: number
+  table: number
+  index: number
+  toast: number
+}
+
+interface Table_DiskSummary {
+  type: string
+  estimateCount: number
+  diskUsage: Table_DiskUsage
+}
+
+interface Table_getRows_Options {
+  conditions?: string[]
+  with_oid?: boolean
+  extraColumns?: string[]
+  sortColumn?: string
+  sortDirection?: string
+}
+
+*/
 class Table extends ModelBase {
   /*::
   tableType: string
@@ -254,7 +289,7 @@ class Table extends ModelBase {
     return data && data.rows[0] && data.rows[0].relhasoids;
   }
 
-  async getColumnTypes () /*: Promise<any> */ {
+  async getColumnTypes () /*: Promise<Table_ColumnTypes> */ {
     if (await this.isMatView()) {
       return this._matview_getColumnTypes();
     } else {
@@ -388,7 +423,7 @@ class Table extends ModelBase {
     return column.create();
   }
 
-  async getRows (offset, limit, options) {
+  async getRows (offset, limit, options /*: Table_getRows_Options */) {
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
@@ -527,8 +562,8 @@ class Table extends ModelBase {
     return new Promise((resolve, reject) => {
       exporter.doExport(ModelBase.connection(), (result, stdout, stderr, process) => {
         if (!result) {
-          log.error("Run pg_dump failed");
-          log.error(stderr);
+          logger.error("Run pg_dump failed");
+          logger.error(stderr);
         }
         stdout = stdout.toString();
         stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
@@ -562,7 +597,7 @@ class Table extends ModelBase {
     });
   }
 
-  async diskSummary () {
+  async diskSummary () /*: Promise<Table_DiskSummary> */ {
     var sql = `
       SELECT
         pg_total_relation_size(c.oid) AS total_bytes,

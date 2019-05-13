@@ -1,4 +1,4 @@
-class Extensions extends Pane {
+class Extensions extends PaneBase {
 
   renderTab (rows) {
     var scrollOffset = [0, 0];
@@ -80,5 +80,9 @@ class Extensions extends Pane {
   }
 
 }
+
+/*::
+declare var Extensions__: typeof Extensions
+*/
 
 module.exports = Extensions;

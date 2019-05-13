@@ -10,7 +10,7 @@ interface JQuery {
 interface JQueryStatic {
   textareaAutoSize: (element: any) => void;
   stopEvent: (event: any) => void;
-  contextMenu: (element: any, options: any, params?: any) => void;
+  contextMenu: (element: JQuery<HTMLElement> | HTMLElement, options: any, params?: any) => void;
   formValues: (selector_or_el: any) => void;
   buildOption: (label: any, value: any, options: any) => void;
   html2collection: (html: string) => JQuery<HTMLElement>;
@@ -21,9 +21,9 @@ interface JQueryStatic {
   alertError: (text: string, options?: any, callback?: Function) => Promise<number>;
   alertSqlError: (text: string, error?: any, callback?: Function) => Promise<number>;
   makeDroppable: (target: HTMLElement, callback: Function) => void;
-  selectedText: (element: any, currentWindow: any) => string;
-  textInputMenu: (element: HTMLInputElement, currentWindow: any) => void;
-  textContextMenu: (element: HTMLElement, currentWindow: any) => void;
+  selectedText: (element: any, currentWindow?: any) => string;
+  textInputMenu: (element: HTMLInputElement, currentWindow?: any) => void;
+  textContextMenu: (element: JQuery<HTMLElement> | HTMLElement, currentWindow?: any) => void;
 }
 */
 
@@ -64,8 +64,11 @@ $u.buildOption = function (label, value, options) {
   return $dom(['option', label, options]);
 };
 
-$u.contextMenu = function (element, options, params) {
-  if (element.is === $u.fn.is) element = element[0];
+$u.contextMenu = function (elementArg, options, params) {
+  //if (element.is === $u.fn.is) {
+  //  element /*: HTMLElement_wContextMenu */ = element[0];
+  //}
+  var element = elementArg instanceof HTMLElement ? elementArg : elementArg[0];
 
   element.addEventListener('contextmenu', (event) => {
     if (!element.contextmenu) {
@@ -87,7 +90,9 @@ $u.contextMenu = function (element, options, params) {
       params.onShow(event, element.contextmenu);
     }
 
-    element.contextmenu.popup(remote.getCurrentWindow(), {async: true});
+    element.contextmenu.popup({
+      window: remote.getCurrentWindow()
+    });
   });
 };
 

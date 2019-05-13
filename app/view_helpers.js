@@ -89,15 +89,15 @@ var helpers = global.ViewHelpers = {
     switch (format) {
       case 'hstore': case 'text': case 'tsvector':
         var shorterValue = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
-        formated = '<span class="text">' + shorterValue + '</span>';
+        formated = `<span class="text">${shorterValue}</span>`;
         break;
       case 'xml':
         formated = '<span class="text type-xml">' + value + '</span>';
         break;
       case 'varchar':
         if (typeof value == 'string' && value.length > 20) {
-          var shorterValue = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
-          formated = '<span class="text">' + shorterValue + '</span>';
+          var shorterValue /*: any */ = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
+          formated = `<span class="text">${shorterValue}</span>`;
         }
         break;
       case 'timestamp':

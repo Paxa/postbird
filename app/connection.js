@@ -154,7 +154,7 @@ class Connection {
       this.connectString = this.connectString.replace(/(\?|&)ssl=verify-full/, '$1ssl=1');
     }
 
-    log.info('Connecting to', this.connectString);
+    logger.info('Connecting to', this.connectString);
 
     if (this.connection) {
       this.connection.end();
@@ -231,7 +231,7 @@ class Connection {
 
         if (global.TESTING && this.printTestingError && error) {
           if (this.logging) logger.print("FAILED: " + colors.yellow(sql) + "\n");
-          log.error(error);
+          logger.error(error);
         }
 
         if (error) {

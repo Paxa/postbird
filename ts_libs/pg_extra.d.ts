@@ -34,3 +34,8 @@ interface HistoryRecord {
   time: number
   error?: Error
 }
+
+interface PgError extends Error {
+  hint: string
+  query: string
+}

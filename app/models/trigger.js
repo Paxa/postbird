@@ -1,5 +1,10 @@
 class Trigger extends ModelBase {
-  static findAll (callback) {
+  /*::
+    schema: string
+    name: string
+    table_name: string
+  */
+  static findAll () {
     var sql = `
       select
         pg_class.relname as table_name,
@@ -15,14 +20,12 @@ class Trigger extends ModelBase {
     return new Promise((resolve, reject) => {
       this.q(sql, (data, error) => {
         if (error) {
-          callback([], error);
           return reject(error);
         }
         var triggers = [];
         data.rows.forEach((row) => {
           triggers.push(new Trigger('public', row));
         });
-        callback && callback(triggers);
         resolve(triggers);
       });
     });
@@ -44,7 +47,7 @@ class Trigger extends ModelBase {
         return;
       }
       if (data.rows[0]) {
-        callback(Trigger('public', data.rows[0]));
+        callback(new Trigger('public', data.rows[0]));
       } else {
         callback();
       }
@@ -106,5 +109,9 @@ class Trigger extends ModelBase {
   });
 
 }();
+
+/*::
+declare var Trigger__: typeof Trigger
+*/
 
 module.exports = Trigger;

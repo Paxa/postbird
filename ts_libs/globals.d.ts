@@ -1,8 +1,11 @@
 /// <reference path="../node_modules/electron/electron.d.ts" />
 /// <reference path="../node_modules/colors/safe.d.ts" />
 /// <reference path="../node_modules/moment/moment.d.ts" />
+/// <reference path="./codemirror.d.ts" />
+/// <reference path="./codemirror_extra.d.ts" />
 /// <reference path="./pg_extra.d.ts" />
 /// <reference path="./models.d.ts" />
+/// <reference path="./panes.d.ts" />
 
 /// DOM extras
 interface File {
@@ -11,6 +14,18 @@ interface File {
 
 interface HTMLElement {
   href: string
+  contextmenu: Electron.Menu
+  value: any
+}
+
+interface Node {
+  scrollTop: number
+  scrollLeft: number
+}
+
+interface EventTarget {
+  disabled: boolean
+  tagName: string
 }
 
 interface ObjectConstructor {
@@ -30,28 +45,46 @@ declare module NodeJS {
     LoginStandardForm: typeof LoginStandardForm;
     DbScreenView: typeof DbScreenView;
     ModelBase: typeof ModelBase;
+    PaneBase: typeof PaneBase;
     ViewHelpers: ViewHelpers;
     App: App;
-    logger: any;
-    log: any;
+    Pane: typeof Pane;
+    logger: Logger;
     TESTING: any;
     errorReporter: (exception: Error, showError?: boolean) => void;
     PgTypeNames: PgTypeNames;
+    electron: Electron.RendererInterface;
+    HistoryWindow: any;
   }
 }
 
 // Others
 declare var $u: JQueryStatic;
 
-interface Window {
-  alertify: alertify.IAlertifyStatic;
-  Mousetrap: MousetrapStatic;
+declare class Window_Hljs {
+  highlightBlock(block: Node) : void
 }
 
-declare module Electron {
+interface Window {
+  alertify: alertify.IAlertifyStatic
+  Mousetrap: MousetrapStatic
+  hljs: Window_Hljs
+  CodeMirror: Window_CodeMirror
+}
+
+interface Window_CodeMirror {
+  fromTextArea(host: HTMLTextAreaElement, options?: CodeMirror.EditorConfiguration): CodeMirror.EditorFromTextArea
+  hint: any
+}
+
+declare namespace Electron {
   interface App {
     ApplicationStart: number;
     mainWindow: BrowserWindow;
+  }
+
+  interface Menu {
+    clickEvent: PointerEvent
   }
 }
 
@@ -65,7 +98,7 @@ declare class ObjectKit {
   static forEach: (data: any, iterator: (k: any, v: any) => void) => void;
 }
 
-declare var log: any;
+declare var logger: Logger;
 declare var DOMinate: any;
 declare var $dom: any;
 declare var electron: Electron.RendererInterface;
@@ -76,10 +109,12 @@ declare var PgTypeNames: PgTypeNames;
 
 // TODO:
 
-declare var Pane: any;
-declare var logger: any;
 declare var PgDumpRunner: any;
 declare var PsqlRunner: any;
 declare var Dialog: any;
 declare var SidebarResize: any;
+declare var ResizableColumns: any;
+declare var GenericTable: any;
+declare var QueryTabResizer: any;
 declare var errorReporter: (exception: Error, showError?: boolean) => void;
+declare var SnippetsWindow: any;

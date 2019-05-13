@@ -1,4 +1,11 @@
-class Pane {
+class PaneBase {
+
+  /*::
+  view: DbScreenView
+  handler: DbScreen
+  lastEvent: Event
+  content: JQuery<HTMLElement>
+  */
 
   constructor (view) {
     this.view = view;
@@ -7,7 +14,8 @@ class Pane {
 
   initEvents (content) {
     $u(content).find('a[exec], button[exec], input[type=submit][exec]').each((i, el) => {
-      $u(el).bind('click', (e) => {
+      el.addEventListener('click', e => {
+      //$u(el).bind('click', (e) => {
         $u.stopEvent(e);
         this.lastEvent = e;
         //with(this) {
@@ -21,10 +29,10 @@ class Pane {
   }
 
   setUnchangeable () {
-    this.content.attr('unchangeable', true);
+    this.content.attr('unchangeable', 'true');
   }
 
-  renderViewToPane (pane, view_file, options) {
+  renderViewToPane (pane, view_file, options /*::? : any */) {
     try {
       var node = App.renderView(view_file, options);
       this.view.setTabContent(pane, node);
@@ -65,14 +73,4 @@ class Pane {
   }
 }
 
-global.Pane = Pane;
-
-Pane.Procedures = require('./panes/procedures');
-Pane.Info       = require('./panes/info');
-Pane.Content    = require('./panes/content');
-Pane.Query      = require('./panes/query');
-Pane.Structure  = require('./panes/structure');
-Pane.Users      = require('./panes/users');
-Pane.Extensions = require('./panes/extensions');
-
-module.exports = Pane;
+global.PaneBase = PaneBase;

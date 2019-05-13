@@ -1,4 +1,14 @@
-class Users extends global.Pane {
+/*::
+interface Users_UsersMap {
+  [column: string] : Model.User
+}
+*/
+
+class Users extends PaneBase {
+  /*::
+    users: Users_UsersMap
+    currentUser: string
+  */
 
   renderTab (rows) {
     this.users = {};
@@ -60,5 +70,9 @@ class Users extends global.Pane {
     }
   }
 }
+
+/*::
+declare var Users__: typeof Users
+*/
 
 module.exports = Users;

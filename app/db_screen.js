@@ -11,7 +11,7 @@ class DbScreen {
   currentTable: string
   currentSchema: string
   table: Model.Table
-  contentConditions: any
+  contentConditions: string[]
   */
 
   constructor (connection, options) {
@@ -564,7 +564,7 @@ class DbScreen {
     }
   }
 
-  async deleteIndex (indexName, callback) {
+  async deleteIndex (indexName) {
     App.startLoading(`Deleting index ${indexName}`);
 
     try {

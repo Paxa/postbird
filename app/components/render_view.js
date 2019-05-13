@@ -55,7 +55,7 @@ var RenderView = {
 
     if (!this.pugFn[file]) {
       if (!pug) {
-        log.info('loading pug....');
+        logger.info('loading pug....');
         pug = require('pug');
       }
       this.pugFn[file] = pug.compile(content, {filename: filepath, pretty: true, compileDebug: true});

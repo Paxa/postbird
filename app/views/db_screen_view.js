@@ -14,14 +14,13 @@ class DbScreenView {
   tabContents: JQuery<HTMLElement>
   currentTableNode: JQuery<HTMLElement>
 
-  // TODO
-  extensionsPane: any
-  contentPane: any
-  queryPane: any
-  usersPane: any
-  structurePane: any
-  proceduresPane: any
-  infoPane: any
+  extensionsPane: Pane.Extensions
+  contentPane: Pane.Content
+  queryPane: Pane.Query
+  usersPane: Pane.Users
+  structurePane: Pane.Structure
+  proceduresPane: Pane.Procedures
+  infoPane: Pane.Info
   */
 
   constructor (handler) {
