@@ -14,26 +14,26 @@
               - var query = event.args[0]
               strong Running
               .sql.running
-                code.sql= "SQL: " + query.sql
+                code.pgsql= "SQL: " + query.sql
 
             else if event.type == "sql.failed"
               - var query = event.args[0]
               .sql.failed
-                code.sql= "SQL: " + query.sql
+                code.pgsql= "SQL: " + query.sql
                 span.error= JSON.stringify(query.error, null, 2)
                 span.exec-time= "(" + execTime(query.time) + ")"
 
             else if event.type == "sql.success"
               - var query = event.args[0]
               .sql.success
-                code.sql= "SQL: " + query.sql
+                code.pgsql= "SQL: " + query.sql
                 span.exec-time= "(" + execTime(query.time) + ")"
 
             else if event.type == "connect.success"
               - var opts = event.args[1]
               = "Connected to server "
               if opts
-                code.sql
+                code.pgsql
                   = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port
                   if opts.database
                     = "/" + opts.database
@@ -41,7 +41,7 @@
             else if event.type == "connect.error"
               - var opts = event.args[1]
               = "Failed connect to server "
-              code.sql
+              code.pgsql
                 = opts.user + (opts.password ? ":<password>" : "") + "@" + opts.host + ":" + opts.port
                 if opts.database
                   = "/" + opts.database

@@ -1625,7 +1625,7 @@ body.new-window {
       .history-window > ul li span.exec-time {
         display: block;
         font-style: italic; }
-  .history-window code.sql {
+  .history-window code.pgsql {
     white-space: pre-wrap;
     font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
 
