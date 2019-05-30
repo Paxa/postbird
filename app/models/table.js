@@ -46,7 +46,6 @@ interface Table_getRows_Options {
   sortColumn?: string
   sortDirection?: string
 }
-
 */
 class Table extends ModelBase {
   /*::
@@ -410,7 +409,7 @@ class Table extends ModelBase {
     });
   }
 
-  getColumnObj (name) {
+  getColumnObj (name) /*: Promise<Model.Column> */ {
     return this.getColumns(name).then(data => {
       var row = new Model.Column(data[0].column_name, data[0]);
       row.table = this;

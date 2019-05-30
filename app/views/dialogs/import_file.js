@@ -1,4 +1,8 @@
-class ImportFile extends Dialog {
+class ImportFile extends DialogBase {
+  /*::
+  filename: string
+  onSubmitCallback: (data: string) => void
+  */
 
   constructor (handler, filename, onSubmit) {
     super(handler, {
@@ -22,9 +26,8 @@ class ImportFile extends Dialog {
 
       var newDbNameInput = this.content.find("p.new-database-input");
       this.content.find("select").bind('change', (event) => {
-        if (this.value == '**create-db**') {
+        if (event.target.value == '**create-db**') {
           newDbNameInput.show();
-          console.log(newDbNameInput.find('input'));
           newDbNameInput.find('input').focus();
         } else {
           newDbNameInput.hide();
@@ -65,5 +68,7 @@ class ImportFile extends Dialog {
 
 }
 
-global.Dialog.ImportFile = ImportFile;
+/*::
+declare var ImportFile__: typeof ImportFile
+*/
 module.exports = ImportFile;

@@ -1,5 +1,9 @@
-class EditUser extends Dialog.NewUser {
+var NewUserClass = require('./new_user');
 
+class EditUser extends NewUserClass {
+  /*::
+  username: string
+  */
   constructor(handler, user) {
     super(handler, {
       title: "Edit user",
@@ -32,5 +36,7 @@ class EditUser extends Dialog.NewUser {
   }
 }
 
-global.Dialog.EditUser = EditUser;
+/*::
+declare var EditUser__: typeof EditUser
+*/
 module.exports = EditUser;

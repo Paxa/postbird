@@ -1,4 +1,11 @@
-class EditProcedure extends Dialog {
+class EditProcedure extends DialogBase {
+  /*::
+  onSave: (updated: string) => void
+  proc: Model.Procedure
+  mime: string
+  textarea: JQuery<HTMLElement>
+  editor: CodeMirror.EditorFromTextArea
+  */
 
   constructor(handler, proc, callback) {
     super(handler, {
@@ -27,11 +34,10 @@ class EditProcedure extends Dialog {
         this.mime = 'text/x-pgsql';
     }
 
-    //console.log(this.proc.language, 'this.mime', this.mime);
-
     this.textarea = this.content.find('textarea.editor');
 
-    this.editor = window.CodeMirror.fromTextArea(this.textarea[0], {
+    var textarea = /*:: <HTMLTextAreaElement><any> */ this.textarea[0];
+    this.editor = window.CodeMirror.fromTextArea(textarea, {
       mode: this.mime,
       indentWithTabs: false,
       smartIndent: true,
@@ -54,5 +60,7 @@ class EditProcedure extends Dialog {
 
 }
 
-global.Dialog.EditProcedure = EditProcedure;
+/*::
+declare var EditProcedure__: typeof EditProcedure
+*/
 module.exports = EditProcedure;

@@ -1,5 +1,7 @@
-class ListLanguages extends Dialog {
-
+class ListLanguages extends DialogBase {
+  /*::
+  langs: string[]
+  */
   constructor (handler, langs) {
     super(handler, {
       title: "Languages",
@@ -15,5 +17,7 @@ class ListLanguages extends Dialog {
   }
 }
 
-global.Dialog.ListLanguages = ListLanguages;
+/*::
+declare var ListLanguages__: typeof ListLanguages
+*/
 module.exports = ListLanguages;

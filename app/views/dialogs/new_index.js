@@ -1,4 +1,4 @@
-class NewIndex extends Dialog {
+class NewIndex extends DialogBase {
 
   constructor (handler) {
     super(handler, {
@@ -36,5 +36,7 @@ class NewIndex extends Dialog {
   }
 }
 
-global.Dialog.NewIndex = NewIndex;
+/*::
+declare var NewIndex__: typeof NewIndex
+*/
 module.exports = NewIndex;

@@ -1,5 +1,10 @@
-class EditValue extends Dialog {
-
+class EditValue extends DialogBase {
+  /*::
+  value: any
+  fieldName: string
+  fieldType: string
+  onSave: (newValue: string, isNull: boolean) => void
+  */
   constructor(handler, params) {
     params.title = `Edit ${params.fieldName}`;
     params.dialogClass = "edit-value";
@@ -61,5 +66,7 @@ class EditValue extends Dialog {
   }
 }
 
-global.Dialog.EditValue = EditValue;
+/*::
+declare var EditValue__: typeof EditValue
+*/
 module.exports = EditValue;

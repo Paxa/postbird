@@ -1,6 +1,10 @@
-class DefProcedure extends Dialog {
+class DefProcedure extends DialogBase {
+  /*::
+  proc: Model.Procedure
+  source: string
+  */
 
-  constructor (handler, proc, source) {
+  constructor (handler, proc /*: Model.Procedure */, source) {
     super(handler, {
       title: "Procedure Source",
       dialogClass: "source-procedure-dialog",
@@ -19,5 +23,8 @@ class DefProcedure extends Dialog {
 
 }
 
-global.Dialog.DefProcedure = DefProcedure;
+/*::
+declare var DefProcedure__: typeof DefProcedure
+*/
+
 module.exports = DefProcedure;

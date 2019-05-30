@@ -1,6 +1,16 @@
-class NewColumn extends Dialog {
+/*::
+interface NewColumn_GroupsMap {
+  [column: string] : string[]
+}
+*/
 
-  constructor (handler, params) {
+class NewColumn extends DialogBase {
+  /*::
+  groups: NewColumn_GroupsMap
+  */
+
+
+  constructor (handler, params /*:: ?: any */) {
     params = Object.assign({title: "Create column"}, params || {});
     super(handler, params);
 
@@ -34,7 +44,7 @@ class NewColumn extends Dialog {
 
   async onSubmit (data) {
     if (data.type == "") {
-      window.alert("Please choose column type");
+      $u.alert("Please choose column type");
       return;
     }
     try {
@@ -86,5 +96,7 @@ class NewColumn extends Dialog {
   }
 }
 
-global.Dialog.NewColumn = NewColumn;
+/*::
+declare var NewColumn__: typeof NewColumn
+*/
 module.exports = NewColumn;

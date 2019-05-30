@@ -1,5 +1,15 @@
-class ExportFile extends Dialog {
+/*::
+interface ExportFile_CallbackOptions {
+  exportData: boolean
+  exportStructure: boolean
+  exportOwners: boolean
+}
+*/
 
+class ExportFile extends DialogBase {
+  /*::
+  onSubmitCallback: (exportToFile: string, options: ExportFile_CallbackOptions) => void
+  */
   constructor (handler, callback) {
     super(handler, {
       title: "Export options",
@@ -34,7 +44,7 @@ class ExportFile extends Dialog {
   }
 
   onSubmit (data) {
-    var exportToFile = this.content.find('[name="export_to_file"]').val();
+    var exportToFile = this.content.find('[name="export_to_file"]').val().toString();
     var exportData = this.content.find('[name="export_data"]').prop('checked');
     var exportStructure = this.content.find('[name="export_structure"]').prop('checked');
     var exportOwners = this.content.find('[name="objects_ownership"]').prop('checked');
@@ -66,5 +76,7 @@ class ExportFile extends Dialog {
 
 }
 
-global.Dialog.ExportFile = ExportFile;
+/*::
+declare var ExportFile__: typeof ExportFile
+*/
 module.exports = ExportFile;

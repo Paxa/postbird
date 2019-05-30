@@ -31,26 +31,7 @@ require('./app/help_screen');
 require('./app/views/db_screen_view');
 require('./app/views/snippets');
 
-require('./app/views/dialog');
-require('./app/views/dialogs/new_user');
-require('./app/views/dialogs/new_table');
-require('./app/views/dialogs/edit_user');
-require('./app/views/dialogs/new_database');
-require('./app/views/dialogs/new_column');
-require('./app/views/dialogs/new_snippet');
-require('./app/views/dialogs/edit_column');
-require('./app/views/dialogs/new_index');
-require('./app/views/dialogs/import_file');
-require('./app/views/dialogs/heroku_connection');
-require('./app/views/dialogs/list_languages');
-require('./app/views/dialogs/export_file');
-require('./app/views/dialogs/show_sql');
-require('./app/views/dialogs/edit_procedure');
-require('./app/views/dialogs/def_procedure');
-require('./app/views/dialogs/user_grants');
-require('./app/views/dialogs/edit_value');
-require('./app/views/dialogs/related_records');
-
+global.Dialog = require('./app/views/dialogs/all');
 global.Model = require('./app/models/all');
 
 require('./app/controllers/import_controller');

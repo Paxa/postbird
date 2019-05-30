@@ -7,6 +7,7 @@ class Procedure extends ModelBase {
   oid: string
   is_aggregate: boolean
   arg_list: string
+  language: string
   */
 
   static findAll () {

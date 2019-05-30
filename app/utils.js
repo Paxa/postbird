@@ -12,7 +12,7 @@ interface JQueryStatic {
   stopEvent: (event: any) => void;
   contextMenu: (element: JQuery<HTMLElement> | HTMLElement, options: any, params?: any) => void;
   formValues: (selector_or_el: any) => void;
-  buildOption: (label: any, value: any, options: any) => void;
+  buildOption: (label: any, value?: any, options?: any) => HTMLElement;
   html2collection: (html: string) => JQuery<HTMLElement>;
   listenClickOutside: (element: JQuery<HTMLElement>, Object, Function) => void;
   openFileDialog: (fileExt: string) => Promise<string[]>;
@@ -22,7 +22,7 @@ interface JQueryStatic {
   alertSqlError: (text: string, error?: any, callback?: Function) => Promise<number>;
   makeDroppable: (target: HTMLElement, callback: Function) => void;
   selectedText: (element: any, currentWindow?: any) => string;
-  textInputMenu: (element: HTMLInputElement, currentWindow?: any) => void;
+  textInputMenu: (element: HTMLInputElement | HTMLElement, currentWindow?: any) => void;
   textContextMenu: (element: JQuery<HTMLElement> | HTMLElement, currentWindow?: any) => void;
 }
 */

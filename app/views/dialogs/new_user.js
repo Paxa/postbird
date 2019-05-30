@@ -1,6 +1,9 @@
-class NewUser extends Dialog {
-
-  constructor (handler, params) {
+class NewUser extends DialogBase {
+  /*::
+  user: Model.User
+  buttonText: string
+  */
+  constructor (handler, params /*:: ?: any */) {
     params = Object.assign({title: "Create user", user: {}}, params);
     super(handler, params);
     this.showWindow();
@@ -46,5 +49,7 @@ class NewUser extends Dialog {
   }
 }
 
-global.Dialog.NewUser = NewUser;
+/*::
+declare var NewUser__: typeof NewUser
+*/
 module.exports = NewUser;

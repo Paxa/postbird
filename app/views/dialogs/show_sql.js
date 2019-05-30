@@ -1,5 +1,7 @@
-class ShowSql extends Dialog {
-
+class ShowSql extends DialogBase {
+  /*::
+  code: string
+  */
   constructor (title, code) {
     super(null, {
       dialogClass: "show-sql-dialog",
@@ -16,5 +18,7 @@ class ShowSql extends Dialog {
   }
 }
 
-global.Dialog.ShowSql = ShowSql;
+/*::
+declare var ShowSql__: typeof ShowSql
+*/
 module.exports = ShowSql;

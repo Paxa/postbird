@@ -1,4 +1,12 @@
-class Dialog {
+class DialogBase {
+
+  /*::
+  handler: DbScreen
+  dialogClass: string
+  title: string
+  windowContent: JQuery<HTMLElement>
+  content: JQuery<HTMLElement>
+  */
 
   constructor(handler, params) {
     if (params) {
@@ -74,7 +82,7 @@ class Dialog {
     console.log('onSubmit', data)
   }
 
-  defaultServerResponse (data, error) {
+  defaultServerResponse (data, error /*::? : PgError */) {
     if (error) {
       console.error(error);
       $u.alert(error.message, {type: "warning", detail: error.query});
@@ -83,7 +91,7 @@ class Dialog {
     }
   }
 
-  renderTemplate (template, locals, title) {
+  renderTemplate (template, locals, title /*::? : string */) {
     title = title || this.title;
     locals = locals || {};
 
@@ -126,5 +134,5 @@ class Dialog {
   }
 }
 
-global.Dialog = Dialog;
-module.exports = Dialog;
+global.DialogBase = DialogBase;
+module.exports = DialogBase;

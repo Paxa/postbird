@@ -23,6 +23,7 @@ interface App {
   root: string
   activeTab: number
   tabs: AppTab[]
+  loginScreen?: LoginScreen;
   init: () => void;
   addTab: (name: string, contentHtml: string, instance: any) => void;
   closeCurrentTab: () => void;

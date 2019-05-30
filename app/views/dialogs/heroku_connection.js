@@ -1,5 +1,9 @@
-class HerokuConnection extends Dialog {
-
+class HerokuConnection extends DialogBase {
+  /*::
+  name: string
+  databseUrl: string
+  loginScreen: LoginScreen
+  */
   constructor (viewObj, name, databseUrl) {
     super(null, {
       title: "Heroku Connection",
@@ -41,5 +45,7 @@ class HerokuConnection extends Dialog {
 
 }
 
-global.Dialog.HerokuConnection = HerokuConnection;
+/*::
+declare var HerokuConnection__: typeof HerokuConnection
+*/
 module.exports = HerokuConnection;

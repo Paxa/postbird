@@ -1,4 +1,4 @@
-class NewTable extends Dialog {
+class NewTable extends DialogBase {
   constructor(handler) {
     super(handler, {
       title: "New Table",
@@ -37,5 +37,7 @@ class NewTable extends Dialog {
   }
 }
 
-global.Dialog.NewTable = NewTable;
+/*::
+declare var NewTable__: typeof NewTable
+*/
 module.exports = NewTable;

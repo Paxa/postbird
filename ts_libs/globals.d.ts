@@ -6,6 +6,7 @@
 /// <reference path="./pg_extra.d.ts" />
 /// <reference path="./models.d.ts" />
 /// <reference path="./panes.d.ts" />
+/// <reference path="./dialogs.d.ts" />
 
 /// DOM extras
 interface File {
@@ -16,6 +17,9 @@ interface HTMLElement {
   href: string
   contextmenu: Electron.Menu
   value: any
+  type: string
+  autofocus: boolean
+  checked: boolean
 }
 
 interface Node {
@@ -46,6 +50,7 @@ declare module NodeJS {
     DbScreenView: typeof DbScreenView;
     ModelBase: typeof ModelBase;
     PaneBase: typeof PaneBase;
+    DialogBase: typeof DialogBase;
     ViewHelpers: ViewHelpers;
     App: App;
     Pane: typeof Pane;
@@ -111,7 +116,6 @@ declare var PgTypeNames: PgTypeNames;
 
 declare var PgDumpRunner: any;
 declare var PsqlRunner: any;
-declare var Dialog: any;
 declare var SidebarResize: any;
 declare var ResizableColumns: any;
 declare var GenericTable: any;

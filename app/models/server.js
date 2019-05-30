@@ -8,11 +8,11 @@ class Server extends ModelBase {
     this.connectionObj = connection;
   }
 
-  supportMatViews() {
+  supportMatViews() /*: boolean */ {
     return this.connectionObj.supportMatViews();
   }
 
-  fetchServerVersion() {
+  fetchServerVersion() /*: Promise<string> */ {
     return this.query('SELECT version()').then(result => {
       var version = result.rows[0].version;
       return Promise.resolve(version);
@@ -29,7 +29,7 @@ class Server extends ModelBase {
     });
   }
 
-  databaseTemplatesList() {
+  databaseTemplatesList() /*: Promise<string[]> */ {
     return this.query('SELECT datname FROM pg_database WHERE datistemplate = true;').then(rows => {
       var templetes = rows.rows.map(dbrow => {
         return dbrow.datname;
@@ -38,7 +38,7 @@ class Server extends ModelBase {
     });
   }
 
-  avaliableEncodings() {
+  avaliableEncodings() /*: Promise<string[]> */ {
     return this.query('select pg_encoding_to_char(i) as encoding from generate_series(0,100) i').then(result => {
       var encodings = [];
       result.rows.forEach((row) => {
@@ -48,7 +48,7 @@ class Server extends ModelBase {
     });
   }
 
-  getVariable(variable) {
+  getVariable(variable) /*: Promise<string> */ {
     return this.q(`show ${variable}`).then(data => {
       var vname = Object.keys(data.rows[0])[0];
       return Promise.resolve(data.rows[0][vname]);

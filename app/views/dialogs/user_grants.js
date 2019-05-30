@@ -1,5 +1,7 @@
-class UserGrants extends Dialog {
-
+class UserGrants extends DialogBase {
+  /*::
+  grants: any[]
+  */
   constructor (title, grants) {
     super(null, {
       title: title,
@@ -15,5 +17,7 @@ class UserGrants extends Dialog {
   }
 }
 
-global.Dialog.UserGrants = UserGrants;
+/*::
+declare var UserGrants__: typeof UserGrants
+*/
 module.exports = UserGrants;

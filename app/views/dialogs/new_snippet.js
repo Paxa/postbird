@@ -1,8 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const electron = require('electron');
+var fs = require('fs');
+var path = require('path');
+//var electron = require('electron');
 
-class NewSnippet extends Dialog {
+class NewSnippet extends DialogBase {
+  /*::
+  code: string
+  */
 
   constructor (code) {
     super(null, {
@@ -47,5 +50,7 @@ class NewSnippet extends Dialog {
   }
 }
 
-global.Dialog.NewSnippet = NewSnippet;
+/*::
+declare var NewSnippet__: typeof NewSnippet
+*/
 module.exports = NewSnippet;

@@ -1,5 +1,12 @@
-class NewDatabase extends Dialog {
-
+class NewDatabase extends DialogBase {
+  /*::
+  templateSelect: JQuery<HTMLElement>
+  encodingSelect: JQuery<HTMLElement>
+  templates: string[]
+  encodings: string[]
+  clientEncoding: string
+  serverEncoding: string
+  */
   constructor (handler) {
     super(handler, {
       title: "New database"
@@ -15,14 +22,15 @@ class NewDatabase extends Dialog {
     this.content = this.renderWindow(this.title, nodes);
 
     this.templateSelect = this.content.find('select.template');
-    this.templateSelect.append( $u.buildOption('') );
+    this.templateSelect.append($u.buildOption(''));
     this.templates.forEach((template) => {
       this.templateSelect.append( $u.buildOption(template, template) );
     });
 
     this.encodingSelect = this.content.find('select.encoding');
     this.encodings.forEach((encoding) => {
-      var label = encoding, options = {};
+      var label = encoding;
+      var options = /*:: <any> */ {};
       if (this.clientEncoding == encoding) {
         label = label + '  (Client encoding)';
         options.selected = 'selected';
@@ -52,7 +60,7 @@ class NewDatabase extends Dialog {
     }
   }
 
-  async prepareData (callback) {
+  async prepareData () {
     var server = this.handler.connection.server;
 
     this.templates = await server.databaseTemplatesList();
@@ -62,5 +70,7 @@ class NewDatabase extends Dialog {
   }
 }
 
-global.Dialog.NewDatabase = NewDatabase;
+/*::
+declare var NewDatabase__: typeof NewDatabase
+*/
 module.exports = NewDatabase;

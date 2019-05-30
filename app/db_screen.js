@@ -307,7 +307,7 @@ class DbScreen {
     return result;
   }
 
-  async createDatabase (data, callback) {
+  async createDatabase (data) {
     await this.connection.switchDb(Connection.defaultDatabaseName);
     var res = await this.connection.server.createDatabase(data.dbname, data.template, data.encoding);
     await this.fetchDbList();
@@ -373,7 +373,7 @@ class DbScreen {
     App.stopLoading();
   }
 
-  async createTable (data, callback) {
+  async createTable (data) {
     App.startLoading(`Creating table table ${data.name}`);
     try {
       await Model.Table.create(data.tablespace, data.name);
@@ -502,7 +502,7 @@ class DbScreen {
     });
   }
 
-  async addColumn (data, callback) {
+  async addColumn (data) {
     App.startLoading(`Adding column ${data.name}`);
     var column = new Model.Column({
       table: this.table,
@@ -523,7 +523,7 @@ class DbScreen {
     }
   }
 
-  async updateColumn (columnObj, data, callback) {
+  async updateColumn (columnObj, data) {
     App.startLoading(`Updating column ${columnObj.data.column_name}`);
 
     try {
@@ -548,7 +548,7 @@ class DbScreen {
     }
   }
 
-  async addIndex (data, callback) {
+  async addIndex (data) {
     App.startLoading(`Adding index ${data.name}`);
 
     try {
@@ -657,7 +657,7 @@ class DbScreen {
     });
   }
 
-  async loadForeignRows (schema, table, column, value) {
+  async loadForeignRows (schema, table, column, value) /*: Promise<any[]> */ {
     try {
       App.startLoading(`Loading related rows`);
       var rows = await new Model.Table(schema, table).getRowsSimple(column, value);

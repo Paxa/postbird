@@ -1,5 +1,17 @@
-class RelatedRecords extends Dialog {
+/*::
+interface RelatedRecords_QueryOptions {
+  schema: string
+  table: string
+  column: string
+  value: string
+}
+*/
 
+class RelatedRecords extends DialogBase {
+  /*::
+  data: any[]
+  queryOptions: RelatedRecords_QueryOptions
+  */
   constructor (handler, data, queryOptions) {
     super(handler, {
       dialogClass: "related-records-dialog",
@@ -31,5 +43,7 @@ class RelatedRecords extends Dialog {
   }
 }
 
-global.Dialog.RelatedRecords = RelatedRecords;
+/*::
+declare var RelatedRecords__: typeof RelatedRecords
+*/
 module.exports = RelatedRecords;

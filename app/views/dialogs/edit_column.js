@@ -1,4 +1,10 @@
-class EditColumn extends Dialog.NewColumn {
+var NewColumnClass = require('./new_column');
+
+class EditColumn extends NewColumnClass {
+  /*::
+  columnName: string
+  columnObj: Model.Column
+  */
 
   constructor(handler, columnName) {
     super(handler, {
@@ -22,7 +28,7 @@ class EditColumn extends Dialog.NewColumn {
 
   async onSubmit(data) {
     if (data.type == "") {
-      window.alert("Please choose column type");
+      $u.alert("Please choose column type");
       return;
     }
 
@@ -37,5 +43,7 @@ class EditColumn extends Dialog.NewColumn {
   }
 }
 
-global.Dialog.EditColumn = EditColumn;
+/*::
+declare var EditColumn__: typeof EditColumn
+*/
 module.exports = EditColumn;

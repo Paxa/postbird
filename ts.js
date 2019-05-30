@@ -39,7 +39,27 @@ var fileNames = [
   'app/views/panes/structure.js',
   'app/views/panes/users.js',
   'app/views/panes/all.js',
-  'lib/pg_type_names.js'
+  'lib/pg_type_names.js',
+  'app/views/dialogs/base.js',
+  'app/views/dialogs/all.js',
+  'app/views/dialogs/def_procedure.js',
+  'app/views/dialogs/edit_column.js',
+  'app/views/dialogs/edit_procedure.js',
+  'app/views/dialogs/edit_user.js',
+  'app/views/dialogs/edit_value.js',
+  'app/views/dialogs/export_file.js',
+  'app/views/dialogs/heroku_connection.js',
+  'app/views/dialogs/import_file.js',
+  'app/views/dialogs/list_languages.js',
+  'app/views/dialogs/new_column.js',
+  'app/views/dialogs/new_database.js',
+  'app/views/dialogs/new_index.js',
+  'app/views/dialogs/new_snippet.js',
+  'app/views/dialogs/new_table.js',
+  'app/views/dialogs/new_user.js',
+  'app/views/dialogs/related_records.js',
+  'app/views/dialogs/show_sql.js',
+  'app/views/dialogs/user_grants.js',
 ];
 
 var options = {
