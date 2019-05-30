@@ -167,8 +167,7 @@ var template /*: Electron.MenuItemConstructorOptions[] */ = [
         label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W',
         click: (item, focusedWindow) => {
-          // @ts-ignore
-          if (focusedWindow && focusedWindow.getURL().match(/index\.html$/) && global.App.tabs.length > 1) {
+          if (focusedWindow && focusedWindow.webContents.getURL().match(/index\.html$/) && global.App.tabs.length > 1) {
             global.App.closeCurrentTab();
           } else {
             if (focusedWindow) {

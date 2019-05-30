@@ -21,6 +21,7 @@ interface HTMLElement {
   type: string
   autofocus: boolean
   checked: boolean
+  genericTable: GenericTable
 }
 
 interface Node {
@@ -75,6 +76,9 @@ declare module NodeJS {
     $u: JQueryStatic;
     DOMinate (elements: any[]): DOMinateResult;
     $dom (elements: any[]): HTMLElement;
+    ResizableColumns: typeof ResizableColumns;
+    GenericTable: typeof GenericTable;
+    QueryTabResizer: typeof QueryTabResizer;
   }
 }
 
@@ -93,6 +97,9 @@ interface Window {
   SidebarResize: typeof SidebarResize;
   $u: JQueryStatic;
   jQuery: JQueryStatic;
+  ResizableColumns: typeof ResizableColumns;
+  GenericTable: typeof GenericTable;
+  QueryTabResizer: typeof QueryTabResizer;
 }
 
 interface Window_CodeMirror {
@@ -132,9 +139,3 @@ declare var $dom: (elements: any[]) => HTMLElement;
 declare var App: App;
 declare var PgTypeNames: PgTypeNames;
 declare var errorReporter: (exception: PgError, showError?: boolean) => boolean;
-
-// TODO:
-
-declare var ResizableColumns: any;
-declare var GenericTable: any;
-declare var QueryTabResizer: any;
