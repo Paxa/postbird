@@ -343,7 +343,7 @@ class DbScreen {
     App.stopLoading();
   }
 
-  renameDatabaseDialog (defaultValue) {
+  renameDatabaseDialog (defaultValue = null) {
     var msg = "Renaming database '" + this.database + "'?";
     window.alertify.prompt(msg, (result, newName) => {
       if (result) {

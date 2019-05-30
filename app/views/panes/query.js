@@ -220,11 +220,11 @@ class Query extends PaneBase {
   }
 
   openSnippets () {
-    SnippetsWindow.init();
+    new SnippetsWindow();
   }
 
   showHistory () {
-    global.HistoryWindow.init();
+    new HistoryWindow();
   }
 
   saveQueryResult () {

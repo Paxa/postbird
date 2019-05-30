@@ -1,11 +1,7 @@
 var remote = require('electron').remote;
 var Menu = remote.Menu;
 
-var UpdatesController = require('./controllers/updates_controller');
-var ExportController = require('./controllers/export_controller');
-var ImportController = require('./controllers/import_controller');
-
-var template = [
+var template /*: Electron.MenuItemConstructorOptions[] */ = [
   {
     label: 'File',
     submenu: [
@@ -123,21 +119,6 @@ var template = [
           }
         }
       },
-      /*
-      {
-        label: 'Toggle Full Screen',
-        accelerator: (() => {
-          if (process.platform == 'darwin')
-            return 'Ctrl+Command+F';
-          else
-            return 'F11';
-        })(),
-        click: (item, focusedWindow) => {
-          if (focusedWindow)
-            focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-        }
-      },
-      */
       {
         label: 'Toggle Developer Tools',
         accelerator: (() => {
@@ -172,7 +153,7 @@ var template = [
       {
         label: 'Console',
         click: () => {
-          global.HistoryWindow.init();
+          new HistoryWindow();
         },
         accelerator: 'CmdOrCtrl+l'
       },
@@ -186,6 +167,7 @@ var template = [
         label: 'Close Tab',
         accelerator: 'CmdOrCtrl+W',
         click: (item, focusedWindow) => {
+          // @ts-ignore
           if (focusedWindow && focusedWindow.getURL().match(/index\.html$/) && global.App.tabs.length > 1) {
             global.App.closeCurrentTab();
           } else {
@@ -215,13 +197,14 @@ var template = [
   },
 ];
 
+
 if (process.platform == 'darwin') {
-  var name = "Postbird";
+  var selfName = "Postbird";
   template.unshift({
-    label: name,
+    label: selfName,
     submenu: [
       {
-        label: 'About ' + name,
+        label: 'About ' + selfName,
         role: 'about'
       },
       {
@@ -245,7 +228,7 @@ if (process.platform == 'darwin') {
         type: 'separator'
       },
       {
-        label: 'Hide ' + name,
+        label: 'Hide ' + selfName,
         accelerator: 'Command+H',
         role: 'hide'
       },
@@ -269,7 +252,8 @@ if (process.platform == 'darwin') {
     ]
   });
   // Window menu.
-  template[5].submenu.push(
+  var windowMenuSubmenu = /*:: <Electron.MenuItemConstructorOptions[]><any> */ template[5].submenu;
+  windowMenuSubmenu.push(
     { type: 'separator' },
     {
       label: 'Bring All to Front',
@@ -279,7 +263,8 @@ if (process.platform == 'darwin') {
 }
 
 if (process.platform == 'linux') {
-  template[6].submenu.unshift(
+  var helpMenuSubmenu = /*:: <Electron.MenuItemConstructorOptions[]><any> */ template[6].submenu;
+  helpMenuSubmenu.unshift(
     {
       label: 'About Postbird',
       click: () => {
@@ -288,7 +273,7 @@ if (process.platform == 'linux') {
       }
     }
   )
-  template[6].submenu.push(
+  helpMenuSubmenu.push(
     {
       type: 'separator'
     },
@@ -299,7 +284,8 @@ if (process.platform == 'linux') {
       }
     },
   );
-  template[0].submenu.push(
+  var appMenuSubmenu = /*:: <Electron.MenuItemConstructorOptions[]><any> */ template[0].submenu;
+  appMenuSubmenu.push(
     {
       type: 'separator'
     },
@@ -314,19 +300,19 @@ if (process.platform == 'linux') {
 var menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-function enableItem(topLabel, itemLable, enabled) {
-  if (enabled === undefined) {
-    enabled = true;
-  }
-  menu.items.forEach((item, i) => {
+function enableItem(topLabel, itemLable, enabled = true) {
+  for (let item of menu.items) {
     if (item.label == topLabel) {
-      item.submenu.items.forEach((subItem) => {
+      // @ts-ignore
+      for (let subItem of item.submenu.items) {
         if (subItem.label == itemLable) {
           subItem.enabled = enabled;
         }
-      });
+        break;
+      }
+      break;
     }
-  });
+  }
 }
 
 function disableItem(topLabel, itemLable) {

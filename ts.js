@@ -7,9 +7,11 @@ colors.enabled = true;
 var fileNames = [
   'ts_libs/eventemitter2.d.ts',
   'ts_libs/globals.d.ts',
+  'index.js',
   'app/connection.js',
   'app.js',
   'app/logger.js',
+  'app/top_menu.js',
   'app/utils.js',
   'app/login_components/heroku_client.js',
   'app/login_components/login_postgres_url_form.js',
@@ -30,6 +32,8 @@ var fileNames = [
   'app/models/saved_conn.js',
   'app/models/last_query.js',
   'app/views/db_screen_view.js',
+  'app/views/snippets.js',
+  'app/views/history_window.js',
   'app/views/panes/base.js',
   'app/views/panes/content.js',
   'app/views/panes/extensions.js',
@@ -40,6 +44,11 @@ var fileNames = [
   'app/views/panes/users.js',
   'app/views/panes/all.js',
   'lib/pg_type_names.js',
+  'lib/sql_importer.js',
+  'lib/psql_runner.js',
+  'lib/pg_dump_runner.js',
+  'lib/sidebar_resize.js',
+  'lib/error_reporter.js',
   'app/views/dialogs/base.js',
   'app/views/dialogs/all.js',
   'app/views/dialogs/def_procedure.js',
@@ -60,6 +69,9 @@ var fileNames = [
   'app/views/dialogs/related_records.js',
   'app/views/dialogs/show_sql.js',
   'app/views/dialogs/user_grants.js',
+  'app/controllers/export_controller.js',
+  'app/controllers/import_controller.js',
+  'app/controllers/updates_controller.js',
 ];
 
 var options = {

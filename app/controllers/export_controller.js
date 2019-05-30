@@ -1,5 +1,8 @@
 class ExportController {
-
+  /*::
+  dialog: Dialog.ExportFile
+  filename: string
+  */
   constructor () {
     // TODO: Detect connected tab
     if (App.currentTab.instance.type != "db_screen") {
@@ -57,3 +60,4 @@ class ExportController {
 }
 
 module.exports = ExportController;
+global.ExportController = ExportController;

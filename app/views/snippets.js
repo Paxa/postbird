@@ -1,8 +1,8 @@
-var electron = require('electron');
-var BrowserWindow = electron.remote.BrowserWindow;
+var electronRemote = require('electron').remote;
+var BrowserWindow = electronRemote.BrowserWindow;
 
-global.SnippetsWindow = {
-  init: function () {
+class SnippetsWindow {
+  constructor () {
     if (App.snippersWin) {
       App.snippersWin.focus();
       return;
@@ -15,7 +15,6 @@ global.SnippetsWindow = {
       show: true,
       webPreferences: {
         webSecurity: false,
-        allowDisplayingInsecureContent: true,
         allowRunningInsecureContent: true
       }
     });
@@ -33,6 +32,7 @@ global.SnippetsWindow = {
     });
 
     App.snippersWin = newWindow;
-  },
+  }
+}
 
-};
+global.SnippetsWindow = SnippetsWindow;

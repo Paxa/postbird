@@ -39,8 +39,11 @@ interface App {
   startLoading: (message: string, timeout?: number, options?: any) => void;
   stopLoading: () => void;
   stopRunningQuery: () => void;
-  openConnection: (options: any, connectionName: string, callback: Function) => void;
+  openConnection: (options: any, connectionName?: string, callback?: Function) => void;
   humanErrorMessage: (error: any, options?: any) => string;
+
+  on(event: string | symbol, listener: (...args: any[]) => void): this;
+  removeListener(event: string | symbol, listener: (...args: any[]) => void): this;
 
   activateTab: (index: number) => void;
   closeTab: (index) => void;
@@ -52,7 +55,10 @@ interface App {
   emit?: (eventName, ...any) => void;
   logEvents?: any[];
   helpScreen?: HelpScreen;
+  snippersWin?: Electron.BrowserWindow;
+  historyWin?: Electron.BrowserWindow;
   vendorPath: string;
+  cliConnectString?: string;
 }
 */
 
@@ -325,7 +331,12 @@ global.App = {
       }
       return message;
     }
-  }
+  },
+
+  /*::
+  on(event, listener) { return this },
+  removeListener(event, listener) { return this },
+  */
 };
 
 Object.defineProperty(App, "currentTab", {

@@ -1,5 +1,8 @@
 class ImportController {
-
+  /*::
+  dialog: Dialog.ImportFile
+  filename: string
+  */
   constructor () {
     // TODO: Detect connected tab
   }
@@ -75,3 +78,4 @@ class ImportController {
 }
 
 module.exports = ImportController;
+global.ImportController = ImportController;

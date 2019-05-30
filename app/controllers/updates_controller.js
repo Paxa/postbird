@@ -3,14 +3,24 @@ var semver = require('semver');
 var needle = require('needle');
 var strftime = require('strftime');
 
-class UpdatesController {
+/*::
+interface UpdatesController_Options {
+  showLoading: boolean
+  showAlreadyLatest: boolean
+}
+*/
 
+class UpdatesController {
+  /*::
+  releasesUrl: string
+  releasesPage: string
+  */
   constructor() {
     this.releasesUrl = "https://api.github.com/repos/paxa/Postbird/releases";
     this.releasesPage = "https://github.com/Paxa/postbird/releases";
   }
 
-  async checkUpdates (options) {
+  async checkUpdates (options /*:: ?: UpdatesController_Options */) {
     if (options && options.showLoading) {
       App.startLoading("Getting latest version info");
     }
@@ -62,3 +72,4 @@ class UpdatesController {
 }
 
 module.exports = UpdatesController;
+global.UpdatesController = UpdatesController;

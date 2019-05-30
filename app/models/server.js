@@ -1,5 +1,4 @@
-// @ts-ignore
-const semver = require('semver');
+var semver = require('semver');
 
 class Server extends ModelBase {
 

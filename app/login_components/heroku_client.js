@@ -1,10 +1,10 @@
 /// <reference types="node" />
 
 // @ts-ignore
-const url = require('url');
-const querystring = require('querystring');
-const needle = require('needle');
-const http = require('http');
+var url = require('url');
+var querystring = require('querystring');
+var needle = require('needle');
+var http = require('http');
 
 /*::
 interface HerokuClientOptions {

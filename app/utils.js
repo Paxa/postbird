@@ -1,18 +1,18 @@
 /*::
 interface JQuery {
   forEach: (handler: Function) => void;
-  single_double_click_nowait: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
-  single_double_click: (single_click_cb: Function, double_click_cb: Function, timeout?: any) => void;
+  single_double_click_nowait: (single_click_cb: Function, double_click_cb: Function, timeout?: number) => void;
+  single_double_click: (single_click_cb: Function, double_click_cb: Function, timeout?: number) => void;
   removeChildren: () => JQuery<HTMLElement>;
-  fasterAppend: (nodes: any) => void;
+  fasterAppend: (nodes: HTMLElement[]) => void;
 }
 
 interface JQueryStatic {
-  textareaAutoSize: (element: any) => void;
+  textareaAutoSize: (element: HTMLElement) => void;
   stopEvent: (event: any) => void;
   contextMenu: (element: JQuery<HTMLElement> | HTMLElement, options: any, params?: any) => void;
   formValues: (selector_or_el: any) => void;
-  buildOption: (label: any, value?: any, options?: any) => HTMLElement;
+  buildOption: (label: string, value?: string, options?: any) => HTMLElement;
   html2collection: (html: string) => JQuery<HTMLElement>;
   listenClickOutside: (element: JQuery<HTMLElement>, Object, Function) => void;
   openFileDialog: (fileExt: string) => Promise<string[]>;
@@ -144,8 +144,12 @@ $u.fn.removeChildren = function removeChildren () {
   return this;
 };
 
-$u.fn.fasterAppend = function fasterAppend (nodes /*: any */) {
-  if (nodes.tagName) nodes = [nodes];
+$u.fn.fasterAppend = function fasterAppend (nodes) {
+  // @ts-ignore
+  if (nodes.tagName) {
+    // @ts-ignore
+    nodes = [nodes];
+  }
   for (var i = 0; i < nodes.length; i++) {
     this[0].appendChild(nodes[i]);
   }

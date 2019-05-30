@@ -15,9 +15,6 @@ require('./lib/pg_type_names');
 require('./lib/sql_snippets');
 require('./lib/resizable_columns');
 
-global.node.colors = require('colors');
-global.node.colors.enabled = true;
-
 require('./app');
 global.Pane = require('./app/views/panes/all');
 require('./app/connection');
@@ -36,10 +33,9 @@ global.Model = require('./app/models/all');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');
-var UpdatesController = require('./app/controllers/updates_controller');
-var ImportController = require('./app/controllers/import_controller');
+require('./app/controllers/updates_controller');
 
-require('./app/history_window');
+require('./app/views/history_window');
 
 var CliUtil = require('./lib/cli_util');
 

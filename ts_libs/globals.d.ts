@@ -7,6 +7,7 @@
 /// <reference path="./models.d.ts" />
 /// <reference path="./panes.d.ts" />
 /// <reference path="./dialogs.d.ts" />
+/// <reference path="./child_process.d.ts" />
 
 /// DOM extras
 interface File {
@@ -51,15 +52,29 @@ declare module NodeJS {
     ModelBase: typeof ModelBase;
     PaneBase: typeof PaneBase;
     DialogBase: typeof DialogBase;
+    SqlImporter: typeof SqlImporter;
+    PsqlRunner: typeof PsqlRunner;
+    PgDumpRunner: typeof PgDumpRunner;
+    SidebarResize: typeof SidebarResize;
+    SnippetsWindow: SnippetsWindow;
     ViewHelpers: ViewHelpers;
     App: App;
     Pane: typeof Pane;
+    Dialog: typeof Dialog;
+    Model: typeof Model;
     logger: Logger;
     TESTING: any;
     errorReporter: (exception: Error, showError?: boolean) => void;
     PgTypeNames: PgTypeNames;
     electron: Electron.RendererInterface;
-    HistoryWindow: any;
+    HistoryWindow: HistoryWindow;
+    ChildProcessExt: ChildProcessExt;
+    UpdatesController: typeof UpdatesController;
+    ExportController: typeof ExportController;
+    ImportController: typeof ImportController;
+    $u: JQueryStatic;
+    DOMinate (elements: any[]): DOMinateResult;
+    $dom (elements: any[]): HTMLElement;
   }
 }
 
@@ -75,6 +90,9 @@ interface Window {
   Mousetrap: MousetrapStatic
   hljs: Window_Hljs
   CodeMirror: Window_CodeMirror
+  SidebarResize: typeof SidebarResize;
+  $u: JQueryStatic;
+  jQuery: JQueryStatic;
 }
 
 interface Window_CodeMirror {
@@ -103,22 +121,20 @@ declare class ObjectKit {
   static forEach: (data: any, iterator: (k: any, v: any) => void) => void;
 }
 
-declare var logger: Logger;
-declare var DOMinate: any;
-declare var $dom: any;
-declare var electron: Electron.RendererInterface;
+interface DOMinateResult {
+  [column: string] : HTMLElement
+}
 
-//declare var LoginScreen: LoginScreen;
+declare var logger: Logger;
+declare var electron: Electron.RendererInterface;
+declare var DOMinate: (elements: any[]) => DOMinateResult;
+declare var $dom: (elements: any[]) => HTMLElement;
 declare var App: App;
 declare var PgTypeNames: PgTypeNames;
+declare var errorReporter: (exception: PgError, showError?: boolean) => boolean;
 
 // TODO:
 
-declare var PgDumpRunner: any;
-declare var PsqlRunner: any;
-declare var SidebarResize: any;
 declare var ResizableColumns: any;
 declare var GenericTable: any;
 declare var QueryTabResizer: any;
-declare var errorReporter: (exception: Error, showError?: boolean) => void;
-declare var SnippetsWindow: any;

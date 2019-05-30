@@ -14,6 +14,9 @@ var TABLE_TYPE_ALIASES = {
 }
 
 /*::
+
+type Table_Type = 'VIEW' | 'BASE TABLE' | 'MATERIALIZED VIEW' | 'FOREIGN TABLE';
+
 interface Table_ColumnType {
   column_name: string
   data_type: string
@@ -46,10 +49,15 @@ interface Table_getRows_Options {
   sortColumn?: string
   sortDirection?: string
 }
+
+interface Table_getRows_Result extends pg.QueryResult {
+  relations: string[]
+}
 */
+
 class Table extends ModelBase {
   /*::
-  tableType: string
+  tableType: Table_Type
   schema: string
   table: string
   static types: any
@@ -77,7 +85,7 @@ class Table extends ModelBase {
     });
   }
 
-  constructor (schema, tableName, tableType /*:: ?: string */) {
+  constructor (schema, tableName, tableType /*:: ?: Table_Type */) {
     super();
 
     if (TABLE_TYPE_ALIASES[tableType]) {
@@ -90,7 +98,7 @@ class Table extends ModelBase {
     this.table = tableName;
   }
 
-  rename (newName) {
+  rename (newName) /*: Promise<QueryResult> */ {
     return this.getTableType().then(tableType => {
       var sql;
       if (tableType == TABLE_TYPES.VIEW) {
@@ -112,7 +120,7 @@ class Table extends ModelBase {
     });
   }
 
-  remove () {
+  remove () /*: Promise<QueryResult> */ {
     return this.getTableType().then(tableType => {
 
       if (tableType == TABLE_TYPES.VIEW) {
@@ -131,31 +139,31 @@ class Table extends ModelBase {
     return this.remove();
   }
 
-  removeView () {
+  removeView () /*: Promise<QueryResult> */ {
     var sql = `DROP VIEW ${this.sqlTable()}`;
     return this.q(sql);
   }
 
-  removeMatView () {
+  removeMatView () /*: Promise<QueryResult> */ {
     var sql = `DROP MATERIALIZED VIEW ${this.sqlTable()}`;
     return this.q(sql);
   }
 
-  removeFereignTable () {
+  removeFereignTable () /*: Promise<QueryResult> */ {
     return this.q(`DROP FOREIGN TABLE ${this.sqlTable()}`);
   }
 
-  async isMatView () {
+  async isMatView () /*: Promise<boolean> */ {
     return (await this.getTableType()) == "MATERIALIZED VIEW";
   }
 
-  async isView () {
+  async isView () /*: Promise<boolean> */ {
     return (await this.getTableType()) == "VIEW";
   }
 
-  async getTableType () {
+  async getTableType () /*: Promise<Table_Type> */ {
     if (this.tableType !== undefined && this.tableType !== null) {
-      return Promise.resolve(this.tableType);
+      return Promise.resolve(this.tableType /*:: as Table_Type */);
     }
 
     var sqlWithMatView = `
@@ -186,7 +194,7 @@ class Table extends ModelBase {
       console.error(error);
       this.tableType = 'BASE TABLE';
     }
-    return this.tableType;
+    return this.tableType /*:: as Table_Type */;
   }
 
   getStructure () {
@@ -279,7 +287,7 @@ class Table extends ModelBase {
     return data.rows;
   }
 
-  async hasOID () {
+  async hasOID () /*: Promise<boolean> */ {
     //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
     var sql = `SELECT relhasoids FROM pg_catalog.pg_class, pg_catalog.pg_namespace n
       WHERE n.oid = pg_class.relnamespace AND nspname = '${this.schema}' AND relname = '${this.table}'`
@@ -355,7 +363,7 @@ class Table extends ModelBase {
     return types;
   }
 
-  async getColumns (name /*:: ?: string */) {
+  async getColumns (name /*:: ?: string */) /*: Promise<Table_ColumnTypes> */ {
     if (await this.isMatView()) {
       return this._matview_getColumns();
     } else {
@@ -385,7 +393,7 @@ class Table extends ModelBase {
   // For tests only
   getColumnNames () {
     return this.getColumns().then(rows => {
-      var names = rows.map(c => { return c.column_name; });
+      var names = Object.values(rows).map(c => { return c.column_name; });
       return Promise.resolve(names);
     });
   }
@@ -417,12 +425,12 @@ class Table extends ModelBase {
     });
   }
 
-  addColumnObj (column) {
+  addColumnObj (column /*: Model.Column */) {
     column.table = this;
     return column.create();
   }
 
-  async getRows (offset, limit, options /*: Table_getRows_Options */) {
+  async getRows (offset, limit, options /*: Table_getRows_Options */) /*: Promise<Table_getRows_Result> */{
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
@@ -474,19 +482,10 @@ class Table extends ModelBase {
     return data;
   }
 
-  async getTotalRows () {
+  async getTotalRows () /*: Promise<number> */ {
     var sql = `SELECT count(*) AS rows_count FROM ${this.sqlTable()}`;
     var data = await this.q(sql);
     return parseInt(data.rows[0].rows_count, 10);
-  }
-
-  // unused
-  async getTotalRowsEstimate () {
-    var sql = `SELECT reltuples::bigint AS estimate
-      FROM   pg_class
-      WHERE  oid = '${this.sqlTable()}'::regclass`
-
-    return (await this.q(sql)).rows[0].estimate;
   }
 
   insertRow (values) {

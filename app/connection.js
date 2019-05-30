@@ -2,16 +2,14 @@
 
 // @ts-ignore
 var pg = require('pg');
-// @ts-ignore
-const url = require('url');
-// @ts-ignore
-const semver = require('semver');
-const colors = require('colors/safe');
+var url = require('url');
+var semver = require('semver');
+var colors = require('colors/safe');
 colors.enabled = true;
-const vsprintf = require("sprintf-js").vsprintf;
+var vsprintf = require("sprintf-js").vsprintf;
 
 // Change postgres' type parser to use moment instance instead of js Date instance
-// because momentjs object has timezone information as in original strin (js Date object always use local timezone)
+// because momentjs object has timezone information as in original string (js Date object always use local timezone)
 var types = require('pg').types;
 var moment = require('moment')
 

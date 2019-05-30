@@ -1,8 +1,8 @@
-var electron = require('electron');
-var BrowserWindow = electron.remote.BrowserWindow;
+var electronRemote = require('electron').remote;
+var BrowserWindow = electronRemote.BrowserWindow;
 
-global.HistoryWindow = {
-  init: function () {
+class HistoryWindow {
+  constructor () {
 
     if (App.historyWin) {
       App.historyWin.focus();
@@ -16,7 +16,6 @@ global.HistoryWindow = {
       show: true,
       webPreferences: {
         webSecurity: false,
-        allowDisplayingInsecureContent: true,
         allowRunningInsecureContent: true
       }
     });
@@ -46,4 +45,6 @@ global.HistoryWindow = {
 
     App.historyWin = newWindow;
   }
-};
+}
+
+global.HistoryWindow = HistoryWindow;

@@ -38,4 +38,5 @@ interface HistoryRecord {
 interface PgError extends Error {
   hint: string
   query: string
+  client?: pg.ClientExt | string
 }
