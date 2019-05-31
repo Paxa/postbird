@@ -44,6 +44,7 @@ class NewSnippet extends DialogBase {
 
     console.log(`${data.snippet_name} saved to ${snippetsPath}`);
 
+		// append to json file	
     fs.writeFileSync(snippetsPath, JSON.stringify(customSnippets, null, 2));
 
     this.close();
