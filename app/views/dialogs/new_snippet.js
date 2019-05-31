@@ -6,7 +6,7 @@ class NewSnippet extends DialogBase {
   code: string
   */
 
-  constructor(code) {
+  constructor (code) {
     super(null, {
       dialogClass: 'new-snippet-dialog',
       title: 'New Snippet',
@@ -24,7 +24,7 @@ class NewSnippet extends DialogBase {
     this.bindFormSubmitting();
   }
 
-  onSubmit(data) {
+  onSubmit (data) {
     if (!data.snippet_name) {
       return $u.alert('A Snippet name is required!');
     }
