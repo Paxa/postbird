@@ -29,6 +29,7 @@ types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
 types.setTypeParser(TIMESTAMP_OID, customDateParser)
 
 var usingNativeLib = false;
+/*
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
     if (pg.native) {
@@ -42,6 +43,7 @@ try {
   console.error(error);
   //errorReporter(error);
 }
+*/
 
 /*::
 interface FieldDef {
