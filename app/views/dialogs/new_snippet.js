@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+var fs = require('fs');
+var path = require('path');
 
 class NewSnippet extends DialogBase {
   /*::
@@ -17,7 +17,7 @@ class NewSnippet extends DialogBase {
   }
 
   showWindow() {
-    const nodes = App.renderView('dialogs/new_snippet', { code: this.code });
+    const nodes = App.renderView('dialogs/new_snippet', {code: this.code});
     this.content = this.renderWindow(this.title, nodes);
     window.hljs.highlightBlock(this.content.find('code')[0]);
 
