@@ -21,6 +21,7 @@ cache:
 branches:
   only:
     - master
+    - disable-libpq
 
 script:
   - yarn
