@@ -19,9 +19,9 @@ It will automatically recompile if any scss files are changed, to update css wit
 
 ## Compiling dependencies for release
 
-Postbird using cpmmand line utils for imporing and exporing sql dumps, also for generating table source.
+Postbird using cpmmand line utils for importing and exporting sql dumps, also for generating table source.
 That binaries have dependencies for shared libraries (postgres internal stuf), for easier life I put it to repo.
-For compiling instructions see BUILDING_DEPS.md. This only required for updating postgres version
+For compiling instructions see `BUILDING_DEPS.md`. This only required for updating postgres version
 
 ## Building Prostbird.app
 
@@ -36,7 +36,7 @@ yarn dist
 * `assets` - contain scss files and some images
 * `app` - main files
 * `app/views` - everything related to visual elements
-* `app/models` - data layer, intefaces and object wrappers to access db entities
+* `app/models` - data layer, interfaces and object wrappers to access db entities
 * `app/window_handlers` - additional windows
 * `app/controllers` - I move some functions to controllers (actually still figuring out what will be the right structure of code)
 * `app/components` -  some common functions
@@ -45,7 +45,7 @@ yarn dist
 ## Writing Code
 
 This code doesn't use any framework for organizing models and views, just plain javascript that use native DOM API and jQuery to manipulate DOM elements,
-pug for templates and 3rd party libraries for some features. Most of files are classes registed as global variable.
+pug for templates and 3rd party libraries for some features. Most of files are classes registered as global variable.
 
 You may be wondering why do I need `views/cache.js`, it's template cache for all pug files,
 it makes rendering html much faster. Pug runtime (something that consume cache.js and generate html) is very fast to load and fast to execute,
