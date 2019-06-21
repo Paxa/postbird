@@ -46,7 +46,7 @@
     "is-electron-renderer": "^2.0.1",
     "moment": "^2.22.2",
     "needle": "2.4.0",
-    "node-abi": "^2.5.0",
+    "node-abi": "^2.9.0",
     "pg": "7.11.0",
     "pg-escape": "^0.2.0",
     "pug": "2.0.3",
@@ -60,7 +60,7 @@
     "pg-native": "3.0.0"
   },
   "resolutions": {
-    "node-abi": "^2.5.0",
+    "node-abi": "^2.9.0",
     "node-gyp": "^3.8.0"
   }
 }
