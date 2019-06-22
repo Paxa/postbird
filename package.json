@@ -28,7 +28,7 @@
     "@types/pg": "^7.4.9",
     "@types/semver": "~6.0",
     "electron": "~4.2",
-    "electron-builder": "^20.41.0",
+    "electron-builder": "^20.44.4",
     "electron-mocha": "^6.0.4",
     "electron-rebuild": "1.8.4",
     "eslint": "^5.13.0",
