@@ -47,10 +47,10 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/mousetrap@^1.6.0":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.2.tgz#5f48bdbd28c8a447167263ae436488f1d8be072d"
-  integrity sha512-m67PUdzoHJGmYJ6Fno4iXocl+azw9cuz8tdUG21M04UzMRUT1YfxPIIIt3lQkXLMGwlGSKXYNGxCOMxKlGegIw==
+"@types/mousetrap@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.3.tgz#3159a01a2b21c9155a3d8f85588885d725dc987d"
+  integrity sha512-13gmo3M2qVvjQrWNseqM3+cR6S2Ss3grbR2NZltgMq94wOwqJYQdgn8qzwDshzgXqMlSUtyPZjysImmktu22ew==
 
 "@types/node@*":
   version "11.13.8"

@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/alertify": "^0.3.30",
     "@types/jquery": "^3.3.2",
-    "@types/mousetrap": "^1.6.0",
+    "@types/mousetrap": "^1.6.3",
     "@types/pg": "^7.4.9",
     "@types/semver": "~6.0",
     "electron": "~4.2",
