@@ -51,7 +51,7 @@
     "pg-escape": "^0.2.0",
     "pug": "2.0.3",
     "raven": "2.6.4",
-    "semver": "^6.1.1",
+    "semver": "^6.2.0",
     "slash": "^3.0.0",
     "sprintf-js": "1.1.2",
     "strftime": "0.10.0"
