@@ -225,7 +225,9 @@ var helpers = global.ViewHelpers = {
   },
 
   editDateFormat: function (value, format) {
-    if (value.origValueString) {
+    if (value == null) {
+      return value;
+    } else if (value.origValueString) {
       return value.origValueString;
     } else {
       if (format == "date") {
