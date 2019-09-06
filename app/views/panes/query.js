@@ -271,7 +271,7 @@ class Query extends PaneBase {
 
     this.lastResult.completeRows.forEach(row => {
       var values = row.map(val => {
-        return val.toISOString ? val.toISOString() : val;
+        return val && val.toISOString ? val.toISOString() : val;
       });
       generator.write(values);
     });
