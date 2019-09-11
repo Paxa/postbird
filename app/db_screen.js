@@ -239,6 +239,9 @@ class DbScreen {
         extraColumns: extraColumns,
         conditions: this.contentConditions
       };
+      if (columnTypes.id && (columnTypes.id.column_default || '').match(/^nextval\(/)) {
+        queryOptions.sortColumn = 'id';
+      }
       var data = await this.table.getRows(0, rowsCount, queryOptions);
       data.relations = await this.table.getRelations()
 
