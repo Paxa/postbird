@@ -16,7 +16,8 @@ class HistoryWindow {
       show: true,
       webPreferences: {
         webSecurity: false,
-        allowRunningInsecureContent: true
+        allowRunningInsecureContent: true,
+        nodeIntegration: true,
       }
     });
 
