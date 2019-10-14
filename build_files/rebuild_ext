@@ -2,9 +2,10 @@
 
 set -e
 
-exit
+
 
 if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
+  exit
   if [ ! -d "/Applications/Postgres.app/Contents/Versions/11" ]; then
     # updating brew takes forver
     # also lock to specific version of postgres.app
