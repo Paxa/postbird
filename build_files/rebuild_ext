@@ -12,7 +12,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
     echo "Postgres.app aleady installed"
   fi
 
-  yarn rebuild_ext
+  # yarn rebuild_ext
 
   echo "Updating node_modules/libpq/build/Release/addon.node"
   install_name_tool -change \
@@ -22,7 +22,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # MAC
   otool -L node_modules/libpq/build/Release/addon.node
 
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
-  yarn rebuild_ext
+  # yarn rebuild_ext
 
   sudo apt-get clean > /dev/null
   sudo apt-get update > /dev/null
