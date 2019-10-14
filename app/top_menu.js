@@ -306,10 +306,9 @@ function enableItem(topLabel, itemLable, enabled = true) {
       for (let subItem of item.submenu.items) {
         if (subItem.label == itemLable) {
           subItem.enabled = enabled;
+          return;
         }
-        break;
       }
-      break;
     }
   }
 }
@@ -321,15 +320,22 @@ function disableItem(topLabel, itemLable) {
 
 var checkDbMenu = function () {
   var db = global.App.currentTab.instance.database;
-  if (db) {
+  var connected = !!db;
+
+  if (connected) {
     enableItem("Database", "Create Database");
-    enableItem("Database", "Refresh Database");
     enableItem("Database", "Refresh Databases List");
+  } else {
+    disableItem("Database", "Create Database");
+    disableItem("Database", "Refresh Databases List");
+  }
+
+  if (db && db != Connection.defaultDatabaseName) {
+    enableItem("Database", "Refresh Database");
     enableItem("Database", "Rename Database");
     enableItem("Database", "Export Database");
     enableItem("Database", "Drop Database");
   } else {
-    disableItem("Database", "Create Database");
     disableItem("Database", "Refresh Database");
     disableItem("Database", "Rename Database");
     disableItem("Database", "Export Database");
@@ -349,7 +355,7 @@ var checkTableMenu = function () {
   }
 };
 
-App.on('database.changed', (db) => {
+global.App.on('database.changed', (db) => {
   checkDbMenu();
   checkTableMenu();
 });

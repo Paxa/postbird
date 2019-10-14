@@ -288,10 +288,17 @@ class Table extends ModelBase {
   }
 
   async hasOID () /*: Promise<boolean> */ {
-    //var sql = "select relhasoids from pg_catalog.pg_class where relname = '%s'";
-    var sql = `SELECT relhasoids FROM pg_catalog.pg_class, pg_catalog.pg_namespace n
-      WHERE n.oid = pg_class.relnamespace AND nspname = '${this.schema}' AND relname = '${this.table}'`
+  var sql = `SELECT TRUE as relhasoids FROM pg_attribute WHERE
+    attrelid = '${this.sqlTable()}'::regclass AND
+    attname = 'oid' AND
+    NOT attisdropped`;
 
+    if (this.connection().supportClassRelhasoids()) {
+      sql = `SELECT relhasoids FROM pg_catalog.pg_class, pg_catalog.pg_namespace n WHERE
+        n.oid = pg_class.relnamespace AND
+        nspname = '${this.schema}' AND
+        relname = '${this.table}'`;
+    }
     var data = await this.q(sql);
     return data && data.rows[0] && data.rows[0].relhasoids;
   }

@@ -10,4 +10,9 @@
   table + footer {
     margin-top: 10px;
   }
+
+  .memberof-value {
+    word-break: break-all;
+    max-width: 250px;
+  }
 }

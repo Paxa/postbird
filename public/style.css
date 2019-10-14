@@ -1440,6 +1440,9 @@ body.sidebar-resizing {
     margin-bottom: 10px; }
   .window-content.users table + footer {
     margin-top: 10px; }
+  .window-content.users .memberof-value {
+    word-break: break-all;
+    max-width: 250px; }
 
 .window-content.info {
   padding: 9px;

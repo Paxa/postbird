@@ -29,6 +29,8 @@ types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
 types.setTypeParser(TIMESTAMP_OID, customDateParser)
 
 var usingNativeLib = false;
+// Disable loading pg-native until issue with openssl paths is solved
+/*
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
     if (pg.native) {
@@ -42,6 +44,8 @@ try {
   console.error(error);
   //errorReporter(error);
 }
+*/
+
 
 /*::
 interface FieldDef {
@@ -353,6 +357,10 @@ class Connection {
 
   supportCtid() {
     return !this.isCockroach;
+  }
+
+  supportClassRelhasoids() {
+    return this.isCockroach || semver.lt(this._serverVersion, "12.0.0");
   }
 
   tablesAndSchemas() {
