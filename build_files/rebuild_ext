@@ -29,7 +29,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then # LINUX
 
   sudo apt-get clean > /dev/null
   sudo apt-get update > /dev/null
-  sudo apt-get install -q rpm
+  sudo apt-get install -q rpm bsdtar
 #else
   # skip for windows
 fi
