@@ -63,7 +63,7 @@ process.on('unhandledRejection', error => {
 
       linux: {
         category: "Programming",
-        target: ["deb", "rpm", "snap"],
+        target: ["deb", "rpm", "snap", "appImage", "pacman", "apk"],
         icon: __dirname + "/build_files/icon.png",
         mimeTypes: ["application/sql"],
         description: "Postbird is a cross-platform PostgreSQL GUI client. Simple and efficient, with support of postgres specific features"
@@ -85,7 +85,10 @@ process.on('unhandledRejection', error => {
         grade: "stable",
         summary: "PostgreSQL desktop client"
       },
-      appImage: { },
+      appImage: {
+        synopsis: "PostgreSQL desktop client",
+        category: "Development",
+      },
       pacman: { },
       apk: { },
 
