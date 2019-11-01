@@ -85,6 +85,9 @@ process.on('unhandledRejection', error => {
         grade: "stable",
         summary: "PostgreSQL desktop client"
       },
+      appImage: { },
+      pacman: { },
+      apk: { },
 
       nsis: {
         installerIcon: "build_files/icon.ico"
