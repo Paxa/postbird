@@ -1,3 +1,23 @@
+### Version 0.8.3
+
+* Postgres 12 support
+* Feature: Basic support for sequences
+* Feature: Basic support for MacOS dark mode
+* Feature: Add default sorting by id
+* Cleanup new_snippet.js (Thanks to [https://github.com/saylestyler][@saylestyler])
+* Fixed typos on strings 22 & 39 (Thanks to [https://github.com/kant][@kant])
+* Add check for null in CSV export (Thanks to [https://github.com/TheHollidayInn][@TheHollidayInn])
+* Fix saving CSV file
+* Fix editing null values
+* Build more packages for linux
+* Refresh total rows count when reloading content tab (Cmd+R)
+* Cut long strings to 500 chars when shown in table
+* Make blank as default type when adding column
+* Don't show related rows icon when value is null
+* Update hljs
+* More typescript
+* Better stack traces for async db errors
+
 ### Version 0.8.2 (04-may-2019)
 
 * Feature: Filter tables by name (Thanks to [https://github.com/willvincent](@willvincent))
