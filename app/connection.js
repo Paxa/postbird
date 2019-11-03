@@ -225,6 +225,7 @@ class Connection {
     this.history.push(historyRecord);
     App.log("sql.start", historyRecord);
     var time = Date.now();
+    var startStack = new Error().stack;
 
     return new Promise((resolve, reject) => {
       this.connection.query(options, (error, result) => {
@@ -237,6 +238,7 @@ class Connection {
         }
 
         if (error) {
+          error.stack = error.stack + "\n" + startStack.substring(startStack.indexOf("\n") + 1);
           historyRecord.error = error;
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
