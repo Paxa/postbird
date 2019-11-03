@@ -153,7 +153,8 @@ class DbScreenView {
       "BASE TABLE": 'Table',
       "MATERIALIZED VIEW": 'Mat. View',
       "FOREIGN TABLE": "Foreign Table",
-      "LOCAL TEMPORARY": "Temporary Table"
+      "LOCAL TEMPORARY": "Temporary Table",
+      'SEQUENCE': 'Sequence'
     };
 
     $u.each(data, (schema, tables) => {
@@ -201,12 +202,14 @@ class DbScreenView {
         var actions = {
           'View': () => {
             this.handler.tableSelected(schema, table.table_name);
-          },
-          'separator1': 'separator',
-          'Rename': () => {
-            this.renameTable(tableNode, schema, table.table_name);
           }
         };
+        if (table.table_type != 'SEQUENCE') {
+          actions['separator1'] = 'separator';
+          actions['Rename'] = () => {
+            this.renameTable(tableNode, schema, table.table_name);
+          }
+        }
 
         if (table.table_type == "BASE TABLE") {
           actions['Truncate Table'] = () => {
@@ -224,21 +227,23 @@ class DbScreenView {
             });
           };
         }
-        actions[`separator2`] = 'separator';
-        actions[`Drop ${tableTitle}`] = () => {
-          this.handler.dropRelation(schema, table.table_name, (res, error) => {
-            if (error) {
-              var errorMsg = "" + error.toString();
-              if (error.detail) errorMsg += "\n----\n" + error.detail;
-              if (error.hint) errorMsg += "\n----\n" + error.hint;
-              window.alert(errorMsg);
-            } else {
-              if (this.handler.currentTable == table.table_name) {
-                this.eraseCurrentContent();
+        if (table.table_type != 'SEQUENCE') {
+          actions[`separator2`] = 'separator';
+          actions[`Drop ${tableTitle}`] = () => {
+            this.handler.dropRelation(schema, table.table_name, (res, error) => {
+              if (error) {
+                var errorMsg = "" + error.toString();
+                if (error.detail) errorMsg += "\n----\n" + error.detail;
+                if (error.hint) errorMsg += "\n----\n" + error.hint;
+                window.alert(errorMsg);
+              } else {
+                if (this.handler.currentTable == table.table_name) {
+                  this.eraseCurrentContent();
+                }
               }
-            }
-          });
-        };
+            });
+          };
+        }
 
         $u.contextMenu(tableNode, actions);
         tableNode.addEventListener('contextmenu', (event) => {

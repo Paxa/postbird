@@ -161,6 +161,22 @@ class Table extends ModelBase {
     return (await this.getTableType()) == "VIEW";
   }
 
+  async isSequence () /*: Promise<boolean> */ {
+    var sql = `SELECT 1 as exists FROM information_schema.sequences WHERE sequence_schema = '${this.schema}' AND sequence_name = '${this.table}'`;
+    var data = await this.q(sql);
+    return data.rows.length > 0;
+  }
+
+  async sequenceInfo () {
+    var sql = `SELECT * FROM information_schema.sequences WHERE sequence_schema = '${this.schema}' AND sequence_name = '${this.table}'`;
+    var data = await this.q(sql);
+    if (data.rows[0]) {
+      var extras = await this.connection().findSequences(this.schema, this.table);
+      console.log('extras', extras);
+      return Object.assign(data.rows[0], extras.rows[0]);
+    }
+  }
+
   async getTableType () /*: Promise<Table_Type> */ {
     if (this.tableType !== undefined && this.tableType !== null) {
       return Promise.resolve(this.tableType /*:: as Table_Type */);
@@ -635,7 +651,7 @@ class Table extends ModelBase {
     switch (row.relkind) {
       case "r": type = "table"; break;
       case "i": type = "index"; break;
-      case "s": type = "sequence"; break;
+      case "S": case "s": type = "sequence"; break;
       case "v": type = "view"; break;
       case "m": type = "materialized view"; break;
       case "c": type = "composite type"; break;

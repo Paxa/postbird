@@ -12,6 +12,25 @@
     height: auto;
     margin-bottom: 10px;
   }
+
+  .object-details-table {
+    background: #f8f8f8;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 0px;
+    td {
+      line-height: 20px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    tr td:first-child {
+      width: 50px;
+      white-space: nowrap;
+      text-align: right;
+      padding-right: 11px;
+      padding-left: 22px;
+    }
+  }
 }
 
 .big-data-table {

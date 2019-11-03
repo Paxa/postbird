@@ -14,23 +14,29 @@ class Structure extends PaneBase {
   */
 
   renderTab (columns, indexes, constraints, extra /*: Structure_ExtraOptions */ = {}) {
-    var neededConstraints = [];
-    this.constraints = constraints ? constraints.rows : [];
-    this.constraints.forEach((constraint) => {
-      if (constraint.contype != "p") {
-        neededConstraints.push(constraint);
-      }
-    });
+    if (extra.sequenceInfo) {
+      this.renderViewToPane('structure', 'sequnece_structure_tab', {
+        sequence: extra.sequenceInfo
+      });
+    } else {
+      var neededConstraints = [];
+      this.constraints = constraints ? constraints.rows : [];
+      this.constraints.forEach((constraint) => {
+        if (constraint.contype != "p") {
+          neededConstraints.push(constraint);
+        }
+      });
 
-    this.renderViewToPane('structure', 'structure_tab', {
-      columns: columns,
-      indexes: indexes,
-      constraints: neededConstraints,
-      isMatView: extra.isMatView,
-      indexesError: extra.indexesError,
-      columnsError: extra.columnsError,
-      constraintsError: extra.constraintsError
-    });
+      this.renderViewToPane('structure', 'structure_tab', {
+        columns: columns,
+        indexes: indexes,
+        constraints: neededConstraints,
+        isMatView: extra.isMatView,
+        indexesError: extra.indexesError,
+        columnsError: extra.columnsError,
+        constraintsError: extra.constraintsError
+      });
+    }
     this.initTables();
   }
 

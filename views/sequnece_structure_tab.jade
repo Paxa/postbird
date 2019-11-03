@@ -1,0 +1,30 @@
+h4 Sequence
+
+table.object-details-table
+  tr
+    td Data Type:
+    td= sequence.data_type
+  tr
+    td Current Value:
+    td= sequence.start_value
+  tr
+    td Minimum:
+    td= sequence.minimum_value
+  tr
+    td Maximum:
+    td= sequence.maximum_value
+  tr
+    td Increment By:
+    td= sequence.increment
+  tr
+    td Cycle:
+    td= sequence.cycle_option
+  if sequence.dep_table
+    tr
+      td Owned By Column:
+      td= `${sequence.dep_table}.${sequence.dep_column}`
+  if sequence.dep_def_value && sequence.dep_def_value.contains(sequence.sequence_name)
+    tr
+      td Owner Default Value:
+      td= sequence.dep_def_value
+

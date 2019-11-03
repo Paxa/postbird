@@ -382,6 +382,46 @@ class Connection {
     });
   }
 
+  async findSequences(schema /*:: ?: string */, table /*:: ?: string */) {
+    var where = schema && table ? `AND ns.nspname = '${schema}' AND seq.relname = '${table}'` : '';
+    var sql = `
+      select ns.nspname as table_schema, seq.relname as table_name, 'SEQUENCE' as table_type,
+        tab.relname as dep_table, attr.attname as dep_column, pg_get_expr(adbin, adrelid) as dep_def_value
+      from pg_class as seq
+      join pg_namespace as ns on (ns.oid = seq.relnamespace)
+      left join pg_depend as dep on (seq.oid = dep.objid and deptype != 'n')
+      left join pg_class as tab on (dep.refobjid = tab.oid)
+      left join pg_attribute as attr on (attr.attnum = dep.refobjsubid and attr.attrelid = dep.refobjid)
+      left join pg_attrdef as attrdef on (attrdef.adrelid = tab.oid and attrdef.adnum = attr.attnum)
+      where seq.relkind = 'S' ${where}
+      order by table_schema, table_name;
+    `;
+
+    return await this.query(sql);
+  }
+
+  async findNonSerialSequences() {
+    var allSequences = await this.findSequences();
+    var data = {};
+    for (let row of allSequences.rows) {
+      if (this.isSeqIndependent(row)) {
+        if (!data[row.table_schema]) data[row.table_schema] = [];
+        data[row.table_schema].push(row);
+      }
+    };
+
+    return data;
+  }
+
+  isSeqIndependent(sequence) {
+    if (!sequence.dep_def_value) {
+      return true;
+    } else {
+      var expect = new RegExp(`^nextval\\('${sequence.table_name}.+\\)`);
+      return !sequence.dep_def_value.match(expect);
+    }
+  }
+
   mapViewsAsTables() {
     if (!this.supportMatViews()) {
       return Promise.resolve([]);

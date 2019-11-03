@@ -107,8 +107,16 @@ class DbScreen {
     try {
       var data = await this.connection.tablesAndSchemas();
       var matViews = await this.connection.mapViewsAsTables();
+      var sequences = await this.connection.findNonSerialSequences();
 
       Object.forEach(matViews, (schema, views) => {
+        if (!data[schema]) data[schema] = [];
+        views.forEach((view) => {
+          data[schema].push(view);
+        });
+      });
+
+      Object.forEach(sequences, (schema, views) => {
         if (!data[schema]) data[schema] = [];
         views.forEach((view) => {
           data[schema].push(view);
@@ -234,7 +242,7 @@ class DbScreen {
         }
       });
       var rowsCount = Object.keys(columnTypes).length < 20 ? this.contentTabLimit : this.contentTabWideLimit;
-      var queryOptions = {
+      var queryOptions /*:: : Table_getRows_Options */ = {
         with_oid: hasOid,
         extraColumns: extraColumns,
         conditions: this.contentConditions
@@ -464,7 +472,18 @@ class DbScreen {
     App.startLoading("Getting table structure...");
 
     try {
-      var isMatView = await this.table.isMatView();
+      var sequenceInfo = await this.table.sequenceInfo();
+      if (sequenceInfo) {
+        this.view.structurePane.renderTab(rows, [], false, {sequenceInfo: sequenceInfo});
+        App.stopLoading();
+        return;
+      }
+    } catch (error) {
+      errorReporter(error, false);
+    }
+
+    try {
+      var isMatView = await this.table.isSequence();
     } catch (error) {
       errorReporter(error, false);
     }
