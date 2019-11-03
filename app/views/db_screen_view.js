@@ -358,41 +358,39 @@ class DbScreenView {
     return this.handler.activateTab(name, true);
   }
 
-  truncateTable (schema, tableName) {
-    dialog.showMessageBox({
+  async truncateTable (schema, tableName) {
+    var confirmRes = await dialog.showMessageBox({
       type: 'question',
       buttons: ['Truncate', 'Cancel'],
       defaultId: 0,
       message: `Truncate table ${schema}.${tableName}?`,
       detail: `All records will be removed. And table will be locked during this operation`,
       checkboxLabel: "Truncate tables with foreign-key references"
-    }, (response, cascade) => {
-      if (response == 1) {
-        return;
-      }
-      this.handler.truncateTable(schema, tableName, cascade, (res, error) => {
-        if (error) {
-          var errorMsg = "" + error.toString();
-
-          if (error.detail) errorMsg += "\n----\n" + error.detail;
-          if (error.hint) errorMsg += "\n----\n" + error.hint;
-
-          if (!errorMsg.includes(error.query)) errorMsg += "\n----\nSQL: " + error.query;
-
-          dialog.showMessageBox({
-            type: "error",
-            message: `Error while truncating ${schema}.${tableName}`,
-            detail: errorMsg
-          });
-        } else {
-          dialog.showMessageBox({
-            type: "info",
-            message: "Table successfully truncated",
-            detail: `Complete in ${res.time} ms.`
-          });
-        }
-      });
     });
+
+    if (confirmRes.response == 0) {
+      try {
+        var res = await this.handler.truncateTable(schema, tableName, confirmRes.checkboxChecked);
+        dialog.showMessageBox({
+          type: "info",
+          message: "Table successfully truncated",
+          detail: `Complete in ${res.time} ms.`
+        });
+      } catch (error) {
+        var errorMsg = "" + error.toString();
+
+        if (error.detail) errorMsg += "\n----\n" + error.detail;
+        if (error.hint) errorMsg += "\n----\n" + error.hint;
+
+        if (!errorMsg.includes(error.query)) errorMsg += "\n----\nSQL: " + error.query;
+
+        dialog.showMessageBox({
+          type: "error",
+          message: `Error while truncating ${schema}.${tableName}`,
+          detail: errorMsg
+        });
+      }
+    }
   }
 
   setTabMessage (message) {

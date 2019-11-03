@@ -668,15 +668,17 @@ class DbScreen {
     });
   }
 
-  truncateTable (schema, table, cascade, callback) {
+  async truncateTable (schema, table, cascade) {
     App.startLoading(`Truncating ${table}`);
-    new Model.Table(schema, table).truncate(cascade, (result, error) => {
-      App.stopLoading();
+    try {
+      var result = await (new Model.Table(schema, table).truncate(cascade));
       if (['structure', 'content', 'info'].includes(this.view.currentTab)) {
-        return this.view.showTab(this.view.currentTab);
+        this.view.showTab(this.view.currentTab);
       }
-      callback(result, error);
-    });
+      return result;
+    } finally {
+      App.stopLoading();
+    }
   }
 
   async loadForeignRows (schema, table, column, value) /*: Promise<any[]> */ {

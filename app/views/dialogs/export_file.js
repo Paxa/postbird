@@ -32,8 +32,10 @@ class ExportFile extends DialogBase {
         message: `Postgres dump of '${this.handler.database}' database`,
         defaultPath: `${this.handler.database}.sql`,
       };
-      dialog.showSaveDialog(electron.remote.app.mainWindow, options, (selected) => {
-        fileInput.val(selected);
+      dialog.showSaveDialog(electron.remote.app.mainWindow, options).then((res) => {
+        if (res.filePath) {
+          fileInput.val(res.filePath);
+        }
       });
     });
     this.bindFormSubmitting();

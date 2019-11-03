@@ -267,7 +267,7 @@ input, textarea {
   border-radius: 4px;
   height: 21px;
   line-height: 19px;
-  font-size: 11px;
+  font-size: 12px;
   color: #333;
   background-color: #fcfcfc;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f1f1f1 100%);
@@ -749,12 +749,15 @@ body.sidebar-resizing {
               font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
               font-size: 13px;
               width: 100%; }
-            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type=VIEW]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
+            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="VIEW"]:before, .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="MATERIALIZED VIEW"]:before {
               background-image: url("icons/db_view.png");
               opacity: 0.8; }
             .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="FOREIGN TABLE"]:before {
               background-image: url("icons/foreign_table.png");
               opacity: 0.8; }
+            .main-screen > .sidebar > .tables > ul > li > ul > li[table-type="SEQUENCE"]:before {
+              background-image: url("icons/sequence2.png");
+              opacity: 0.7; }
         .main-screen > .sidebar > .tables > ul > li.open > ul {
           display: block; }
   .main-screen > .sidebar > ul.extras {
@@ -1247,6 +1250,21 @@ body.sidebar-resizing {
   .window-content.structure .columns-list-table {
     height: auto;
     margin-bottom: 10px; }
+  .window-content.structure .object-details-table {
+    background: #f8f8f8;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 0px; }
+    .window-content.structure .object-details-table td {
+      line-height: 20px;
+      padding-top: 4px;
+      padding-bottom: 4px; }
+    .window-content.structure .object-details-table tr td:first-child {
+      width: 50px;
+      white-space: nowrap;
+      text-align: right;
+      padding-right: 11px;
+      padding-left: 22px; }
 
 .big-data-table {
   max-width: 100%;
@@ -2070,3 +2088,41 @@ body.unfocused .login-screen .middle-window .header-tabs a.selected {
   border-top-color: #c8c8c8;
   border-bottom-color: #a7a7a7;
   border-left-color: #c1c1c1; }
+
+body.dark-mode #tabs {
+  background: #252525; }
+  body.dark-mode #tabs .tab {
+    background: #242424;
+    color: #fff;
+    border-color: #7a7a7a; }
+    body.dark-mode #tabs .tab .close {
+      background: transparent; }
+      body.dark-mode #tabs .tab .close:before, body.dark-mode #tabs .tab .close:after {
+        background: #9a9a9a;
+        left: 3px;
+        right: 3px; }
+    body.dark-mode #tabs .tab:hover {
+      background: #1f1f1f; }
+      body.dark-mode #tabs .tab:hover .close:hover {
+        background: #333333; }
+    body.dark-mode #tabs .tab.active {
+      background: #343434;
+      box-shadow: none; }
+      body.dark-mode #tabs .tab.active:hover .close:hover {
+        background: #4e4e4e; }
+      body.dark-mode #tabs .tab.active:hover .close:before, body.dark-mode #tabs .tab.active:hover .close:after {
+        background: #cbcbca; }
+  body.dark-mode #tabs:after {
+    background: #dbdbdb; }
+
+body.dark-mode .native-look {
+  background: #6c6b6d;
+  color: #e9e9e9;
+  border-color: #6c6b6d; }
+  body.dark-mode .native-look:active {
+    background: linear-gradient(to bottom, #417dec 0, #3a73de 80%);
+    border-color: #75a4f2 #3e79e7 #3a73de #3e79e7; }
+
+body.dark-mode .add-connection.native-look {
+  background: #6c6b6d;
+  padding-left: 9px; }

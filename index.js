@@ -151,4 +151,12 @@ $(document).ready(function() {
   mainWindow.on('blur', () => {
     document.body.classList.add('unfocused');
   });
+
+  electron.remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
+    if (electron.remote.systemPreferences.isDarkMode()) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  });
 });

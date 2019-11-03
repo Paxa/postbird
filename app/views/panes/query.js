@@ -227,10 +227,10 @@ class Query extends PaneBase {
     new HistoryWindow();
   }
 
-  saveQueryResult () {
+  async saveQueryResult () {
     var dialog = electron.remote.dialog;
     var mainWindow = electron.remote.app.mainWindow;
-    dialog.showSaveDialog(mainWindow, {
+    var res = await dialog.showSaveDialog(mainWindow, {
       title: "Save result as csv file",
       defaultPath: "result.csv",
       //message: "aaaa",
@@ -238,12 +238,10 @@ class Query extends PaneBase {
         {name: 'CSV File', extensions: ['csv']},
         {name: 'Other', extensions: ['*']}
       ]
-    }, (filename) => {
-      console.log("selected", filename);
-      if (filename) {
-        this.saveResultTo(filename);
-      }
     });
+    if (res.filePath) {
+      this.saveResultTo(res.filePath);
+    }
   }
 
   saveResultTo(filename) {

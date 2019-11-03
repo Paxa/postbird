@@ -1,0 +1,54 @@
+body.dark-mode {
+  #tabs {
+    background: #252525;
+    .tab {
+      background: #242424;
+      color: #fff;
+      border-color: #7a7a7a;
+      .close {
+        background: transparent;
+        &:before, &:after {
+          background: #9a9a9a;
+          left: 3px;
+          right: 3px;
+        }
+      }
+      &:hover {
+        background: #1f1f1f;
+        .close:hover {
+          background: #333333;
+        }
+      }
+      &.active {
+        background: #343434;
+        box-shadow: none;
+        &:hover .close {
+          &:hover {
+            background: #4e4e4e;
+          }
+          &:before, &:after {
+            background: #cbcbca;
+          }
+        }
+      }
+    }
+    &:after {
+      background: #dbdbdb;
+    }
+  }
+
+  .native-look {
+    background: #6c6b6d;
+    color: #e9e9e9;
+    border-color: #6c6b6d;
+    &:active {
+      background: linear-gradient(to bottom, #417dec 0, #3a73de 80%);
+      border-color: #75a4f2 #3e79e7 #3a73de #3e79e7;
+    }
+  }
+
+  .add-connection.native-look {
+    background: #6c6b6d;
+    padding-left: 9px;
+  }
+}

@@ -42,7 +42,7 @@ class Extensions extends PaneBase {
 
   install (extension) {
 
-    $u.confirm(`Install extension ${extension}?`, {button: "Install"}, (res) => {
+    $u.confirm(`Install extension ${extension}?`, {button: "Install"}).then((res) => {
       if (!res) return;
 
       this.lastEvent.target.disabled = true;
@@ -59,7 +59,7 @@ class Extensions extends PaneBase {
   }
 
   uninstall (extension) {
-    $u.confirm(`Delete extension ${extension}?`, {button: "Uninstall"}, (res) => {
+    $u.confirm(`Delete extension ${extension}?`, {button: "Uninstall"}).then((res) => {
       if (!res) return;
       this.lastEvent.target.disabled = true;
 

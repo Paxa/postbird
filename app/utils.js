@@ -16,10 +16,10 @@ interface JQueryStatic {
   html2collection: (html: string) => JQuery<HTMLElement>;
   listenClickOutside: (element: JQuery<HTMLElement>, Object, Function) => void;
   openFileDialog: (fileExt: string) => Promise<string[]>;
-  confirm: (text: string, options?: any, callback?: Function) => Promise<boolean>;
-  alert: (text: string, options?: any, callback?: Function) => Promise<number>;
-  alertError: (text: string, options?: any, callback?: Function) => Promise<number>;
-  alertSqlError: (text: string, error?: any, callback?: Function) => Promise<number>;
+  confirm: (text: string, options?: any) => Promise<boolean>;
+  alert: (text: string, options?: any) => Promise<any>;
+  alertError: (text: string, options?: any) => Promise<any>;
+  alertSqlError: (text: string, error?: any) => Promise<any>;
   makeDroppable: (target: HTMLElement, callback: Function) => void;
   selectedText: (element: any, currentWindow?: any) => string;
   textInputMenu: (element: HTMLInputElement | HTMLElement, currentWindow?: any) => void;
@@ -227,51 +227,36 @@ $u.openFileDialog = function (fileExt) {
   });
 };
 
-$u.confirm = function (text, options, callback) {
-  options = options || {};
+$u.confirm = async (text, options = {}) => {
+  var mainWindow = electron.remote.app.mainWindow;
+  var res = await electron.remote.dialog.showMessageBox(mainWindow, {
+    type: "question",
+    message: text,
+    detail: options.detail,
+    buttons: [options.button || "Ok", "Cancel"],
+    defaultId: options.defaultId
+  });
 
-  return new Promise((resolve, reject) => {
-    var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.app.mainWindow;
-    dialog.showMessageBox(mainWindow, {
-      type: "question",
-      message: text,
-      detail: options.detail,
-      buttons: [options.button || "Ok", "Cancel"],
-      defaultId: options.defaultId
-    }, (res) => {
-      resolve(res == 0);
-      callback && callback(res == 0);
-    });
+  return res.response == 0;
+};
+
+$u.alert = async (text, options = {}) => {
+  var mainWindow = electron.remote.app.mainWindow;
+  return await electron.remote.dialog.showMessageBox(mainWindow, {
+    type: options.type || "question",
+    message: text,
+    detail: options.detail,
+    buttons: [options.button || "Ok"],
+    defaultId: options.defaultId
   });
 };
 
-$u.alert = function (text, options, callback) {
-  options = options || {};
-
-  return new Promise((resolve, reject) => {
-    var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.app.mainWindow;
-    dialog.showMessageBox(mainWindow, {
-      type: options.type || "question",
-      message: text,
-      detail: options.detail,
-      buttons: [options.button || "Ok"],
-      defaultId: options.defaultId
-    }, (res) => {
-      resolve(res);
-      callback && callback(res);
-    });
-  });
-};
-
-$u.alertError = function (text, options, callback) {
-  options = options || {};
+$u.alertError = async (text, options = {}) => {
   options.type = 'warning';
-  return $u.alert(text, options, callback);
+  return $u.alert(text, options);
 };
 
-$u.alertSqlError = function (text, error, callback) {
+$u.alertSqlError = function (text, error) {
 
   var sql = error.query ? `\nSQL: ${error.query}` : '';
   var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
@@ -281,7 +266,7 @@ $u.alertSqlError = function (text, error, callback) {
     detail: error.message + (hint || sql ? "\n" : "") + hint + sql
   };
 
-  return $u.alert(text, options, callback);
+  return $u.alert(text, options);
 };
 
 // Make an area droppable

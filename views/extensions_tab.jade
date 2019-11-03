@@ -16,7 +16,7 @@
             td
               if column.installed_version
                 strong= column.installed_version
-                button(exec="uninstall('" + column.name + "')") Uninstall
+                button.native-look(exec="uninstall('" + column.name + "')") Uninstall
               else
-                button(exec="install('" + column.name + "')") Install
+                button.native-look(exec="install('" + column.name + "')") Install
             td= column.comment

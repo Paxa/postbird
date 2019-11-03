@@ -14,6 +14,17 @@ var mainWindow = null;
 var filesToOpen = [];
 var urlsToOpen = [];
 
+var checkDarkMode = () => {
+  if (electron.systemPreferences.isDarkMode()) {
+    electron.systemPreferences.setAppLevelAppearance('dark');
+  } else {
+    electron.systemPreferences.setAppLevelAppearance('light');
+  }
+}
+
+electron.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', checkDarkMode);
+checkDarkMode();
+
 app.on('window-all-closed', function() {
   //if (process.platform != 'darwin') {
     app.quit();

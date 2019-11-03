@@ -11,11 +11,17 @@
   </head>
   <body class="platform-">
     <script>
-      var win = require('electron').remote.app.mainWindow;
-      if (!win.isFocused()) {
-        document.body.classList.add('unfocused');
-      }
-      document.body.classList.add("platform-" + process.platform);
+      (() => {
+        var electron = require('electron').remote;
+        var win = electron.app.mainWindow;
+        if (!win.isFocused()) {
+          document.body.classList.add('unfocused');
+        }
+        document.body.classList.add("platform-" + process.platform);
+        if (electron.systemPreferences.isDarkMode()) {
+          document.body.classList.add("dark-mode");
+        }
+      })();
     </script>
 
     <div id="tabs">

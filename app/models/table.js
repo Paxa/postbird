@@ -672,11 +672,9 @@ class Table extends ModelBase {
     };
   }
 
-  truncate (cascade, callback) {
+  truncate (cascade) {
     var sql = `truncate table ${this.sqlTable()} ${cascade ? "CASCADE" : ""};`;
-    return this.q(sql, (data, error) => {
-      callback && callback(data, error);
-    });
+    return this.q(sql);
   }
 
   getConstraints () {

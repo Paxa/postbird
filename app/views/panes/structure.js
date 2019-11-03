@@ -4,6 +4,7 @@ interface Structure_ExtraOptions {
   columnsError?: string
   indexesError?: string
   constraintsError?: string
+  sequenceInfo?: any
 }
 */
 
@@ -69,13 +70,11 @@ class Structure extends PaneBase {
     }
   }
 
-  deleteIndex (indexName) {
+  async deleteIndex (indexName) {
     var msg = `Delete index "${indexName}"?`;
-    $u.confirm(msg, (result) => {
-      if (result) {
-        this.doDeleteIndex(indexName);
-      }
-    });
+    if (await $u.confirm(msg)) {
+      await this.doDeleteIndex(indexName);
+    }
   }
 
   async doDeleteIndex (indexName) {
