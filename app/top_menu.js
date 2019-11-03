@@ -1,6 +1,7 @@
 var remote = require('electron').remote;
 var Menu = remote.Menu;
 
+// @ts-ignore
 var template /*: Electron.MenuItemConstructorOptions[] */ = [
   {
     label: 'File',
@@ -199,6 +200,7 @@ var template /*: Electron.MenuItemConstructorOptions[] */ = [
 
 if (process.platform == 'darwin') {
   var selfName = "Postbird";
+  // @ts-ignore
   template.unshift({
     label: selfName,
     submenu: [
