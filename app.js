@@ -401,3 +401,11 @@ global.App.logger.onAny((ev, ...args) => {
   //}
 });
 
+
+global.App.UserError = class UserError extends Error {
+  constructor(message, description = null) {
+    super(message);
+    this.description = description;
+    Error.captureStackTrace(this, UserError);
+  }
+}

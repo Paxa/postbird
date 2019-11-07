@@ -53,13 +53,10 @@ class Structure extends PaneBase {
     new Dialog.EditColumn(this.handler, column_name);
   }
 
-  deleteColumn (column_name) {
-    var msg = `Delete column <b>${column_name}</b>?`;
-    window.alertify.confirm(msg, (result) => {
-      if (result) {
-        this.doDeleteColumn(column_name);
-      }
-    });
+  async deleteColumn (column_name) {
+    if (await $u.confirm(`Delete column "${column_name}"?`)) {
+      this.doDeleteColumn(column_name);
+    }
   }
 
   async doDeleteColumn (column_name) {

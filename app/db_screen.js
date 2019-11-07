@@ -499,7 +499,11 @@ class DbScreen {
       var indexes = await Model.Index.list(this.table);
     } catch (error) {
       var indexesError = error;
-      errorReporter(error, false);
+      if (error instanceof App.UserError) {
+        $u.alertError(error);
+      } else {
+        errorReporter(error, false);
+      }
     }
 
     try {

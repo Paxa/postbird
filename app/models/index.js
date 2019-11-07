@@ -40,7 +40,10 @@ class Index extends ModelBase {
     var oid_data = await this.q(sql_find_oid);
 
     if (!oid_data || !oid_data.rows || !oid_data.rows[0]) {
-      throw new Error(`Relation ${table.sqlTable()} does not exist`);
+      throw new App.UserError(
+        `Relation ${table.sqlTable()} does not exist`,
+        'Try reloading tables list or submit but report at Help->Send Feedback'
+      );
     }
 
     var oid = oid_data.rows[0].oid;

@@ -253,11 +253,16 @@ $u.alert = async (text, options = {}) => {
 
 $u.alertError = async (text, options = {}) => {
   options.type = 'warning';
+  if (text instanceof App.UserError) {
+    if (text.description) {
+      options.detail = text.description;
+    }
+    text = text.message;
+  }
   return $u.alert(text, options);
 };
 
 $u.alertSqlError = function (text, error) {
-
   var sql = error.query ? `\nSQL: ${error.query}` : '';
   var hint = error.messageHint ? `\nHint: ${error.messageHint}` : '';
 
