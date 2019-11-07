@@ -192,6 +192,12 @@ var template /*: Electron.MenuItemConstructorOptions[] */ = [
           var help = global.HelpScreen.open();
           help.activatePage("get-postgres");
         }
+      },
+      {
+        label: "Send Feedback",
+        click: () => {
+          remote.shell.openExternal("https://github.com/Paxa/postbird/issues");
+        }
       }
     ]
   },
