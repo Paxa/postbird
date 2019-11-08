@@ -299,9 +299,9 @@ input, textarea {
     border: 1px solid #dfdfdf;
     border-top: 1px solid #d3d3d3;
     font-size: 13px;
-    width: 320px;
+    width: 330px;
     margin: 40px auto 0;
-    margin-top: calc(50vh - 193px);
+    margin-top: calc(50vh - 198px);
     padding: 16px 20px; }
     .login-screen .middle-window .header-tabs {
       position: relative;

@@ -14,6 +14,10 @@ class SavedConn {
     window.localStorage.savedConnections = JSON.stringify(newData);
   }
 
+  static hasConnection(name) {
+    return !!this.savedConnections()[name];
+  }
+
   static renameConnection (oldName, newName) {
     var data = this.savedConnections();
     data[newName] = data[oldName];

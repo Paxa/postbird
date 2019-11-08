@@ -8,6 +8,17 @@ global.logger = require('./app/logger').make('info');
 
 var RenderView = require('./app/components/render_view');
 
+class UserError extends Error {
+  /*::
+    description: string
+  */
+  constructor(message, description = null) {
+    super(message);
+    this.description = description;
+    Error.captureStackTrace(this, UserError);
+  }
+}
+
 /*::
 
 interface AppTab {
@@ -59,6 +70,7 @@ interface App {
   historyWin?: Electron.BrowserWindow;
   vendorPath: string;
   cliConnectString?: string;
+  UserError?: typeof UserError;
 }
 */
 
@@ -402,10 +414,4 @@ global.App.logger.onAny((ev, ...args) => {
 });
 
 
-global.App.UserError = class UserError extends Error {
-  constructor(message, description = null) {
-    super(message);
-    this.description = description;
-    Error.captureStackTrace(this, UserError);
-  }
-}
+global.App.UserError = UserError;

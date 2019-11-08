@@ -139,8 +139,12 @@ class LoginScreen {
           this.submitCurrentForm();
         },
         'separator': 'separator',
-        "Rename": this.renameConnection.bind(this, name),
-        "Delete": this.deleteConnection.bind(this, name)
+        "Rename": () => {
+          this.renameConnection(name);
+        },
+        "Delete": () => {
+          this.deleteConnection(name);
+        }
       });
 
       if (name == currentConnection) {
@@ -184,7 +188,7 @@ class LoginScreen {
   addNewConnection () {
     this.connections.find('.selected').removeClass('selected');
     this.connectionName = "**new**";
-    this.fillForm(undefined, {host: "localhost", user: "", password: "", database: ""});
+    this.fillForm(undefined, {host: "localhost", user: "", password: "", database: "", port: ""});
     this.standardForm.form.find('[name=host]').focus();
     this.standardForm.setButtonShown(true);
   }
@@ -209,13 +213,17 @@ class LoginScreen {
     }
   }
 
-  renameConnection (name) {
-    window.alertify.prompt("Rename connection?", (confirm, newName) => {
-      if (confirm) {
+  async renameConnection (name, filledValue = null) {
+    var newName = await $u.prompt("Rename connection?", filledValue || name);
+    if (newName) {
+      if (Model.SavedConn.hasConnection(newName)) {
+        await $u.alert(`Connection '${newName}' already exists`, {detail: "Choose another connection name"})
+        this.renameConnection(name, newName);
+      } else {
         Model.SavedConn.renameConnection(name, newName);
         this.fillSavedConnections();
       }
-    }, name);
+    }
   }
 
   deleteConnection (name) {

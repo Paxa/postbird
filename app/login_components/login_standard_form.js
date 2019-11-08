@@ -65,12 +65,13 @@ class LoginStandardForm {
     var button = this.form.find('input[type=submit]');
     var buttonText = button.val();
     button.prop('disabled', true).val("Connecting...");
+    this.setButtonShown(false);
 
     var options = this.getFormData();
 
     this.loginForm.makeConnection(options, {}, (tab) => {
-      console.log('makeConnection', tab);
       button.removeAttr('disabled').val(buttonText);
+      this.setButtonShown(true);
       if (callback && tab) callback(tab);
     });
   }

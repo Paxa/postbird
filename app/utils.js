@@ -18,12 +18,13 @@ interface JQueryStatic {
   openFileDialog: (fileExt: string) => Promise<string[]>;
   confirm: (text: string, options?: any) => Promise<boolean>;
   alert: (text: string, options?: any) => Promise<any>;
-  alertError: (text: string, options?: any) => Promise<any>;
+  alertError: (text: string | UserError, options?: any) => Promise<any>;
   alertSqlError: (text: string, error?: any) => Promise<any>;
   makeDroppable: (target: HTMLElement, callback: Function) => void;
   selectedText: (element: any, currentWindow?: any) => string;
   textInputMenu: (element: HTMLInputElement | HTMLElement, currentWindow?: any) => void;
   textContextMenu: (element: JQuery<HTMLElement> | HTMLElement, currentWindow?: any) => void;
+  prompt: (message: string, filledValue?: string) => Promise<string>;
 }
 */
 
@@ -272,6 +273,14 @@ $u.alertSqlError = function (text, error) {
   };
 
   return $u.alert(text, options);
+};
+
+$u.prompt = async (message, filledValue = null) /*: Promise<string> */ => {
+  return new Promise((resolve, reject) => {
+    window.alertify.prompt(message, (confirm, value) => {
+      resolve(confirm ? value : null);
+    }, filledValue);
+  }) /*:: as Promise<string> */;
 };
 
 // Make an area droppable
