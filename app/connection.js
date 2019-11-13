@@ -113,17 +113,18 @@ class Connection {
   static parseConnectionString(postgresUrl /*: string */) /*: ConnectionOptions */ {
     var cs = new ConnectionString(postgresUrl);
     if (!cs.params) cs.params = {};
-    if (!cs.params.application_name) cs.params.application_name = 'Postbird';
+    if (!cs.params.application_name) cs.params.application_name = 'Postbird.app';
 
     var res = Object.assign({}, cs.params, {
       host: cs.hostname,
-      port: cs.port || cs.params && cs.params && cs.params.socketPort,
+      port: cs.port || cs.params && cs.params && cs.params.socketPort || '5432',
       database: cs.path && cs.path[0],
       user: cs.user,
       password: cs.password,
-      ssl: (cs.params && 'ssl' in cs.params) ? Boolean(cs.params.ssl) : undefined,
-      sql_query: cs.params && cs.params.sql_query
     });
+    if (cs.params && 'ssl' in cs.params) {
+      res.ssl = Boolean(cs.params.ssl)
+    }
     delete res.socketPort;
 
     return res;

@@ -32,12 +32,51 @@ describe('Connection', () => {
     var parsed = Connection.parseConnectionString("postgres://user:pass@host/db?ssl=true");
 
     assert.deepEqual(parsed, {
+      application_name: 'Postbird.app',
       user: 'user',
       password: 'pass',
       host: 'host',
       port: '5432',
       database: 'db',
-      query: 'ssl=true'
+      ssl: true
     });
   });
+
+  it("should generate connection string", async () => {
+    var connStr = "postgres://user:pass@host/db";
+    var parsed = Connection.parseConnectionString(connStr);
+    var generated = Connection.generateConnectionString(parsed);
+    assert.deepEqual(generated, "postgres://user:pass@host:5432/db")
+  });
+
+  it("should generate connection string for unix socket", async () => {
+    var generated = Connection.generateConnectionString({
+      host: "/tmp",
+      port: "5435"
+    });
+    assert.deepEqual(generated, "postgres://%2Ftmp/template1?socketPort=5435");
+
+    var parsed = Connection.parseConnectionString(generated);
+
+    assert.deepEqual(parsed, {
+      application_name: 'Postbird.app',
+      user: undefined,
+      password: undefined,
+      host: '/tmp',
+      port: '5435',
+      database: 'template1'
+    });
+  });
+
+  it("should set deefault params", async () => {
+    var parsed = Connection.parseConnectionString("postgres://");
+    assert.deepEqual(parsed, {
+      application_name: 'Postbird.app',
+      user: undefined,
+      password: undefined,
+      host: undefined,
+      port: '5432',
+      database: undefined
+    });
+  })
 });
