@@ -28,16 +28,16 @@ class LoginScreen {
     if (this.connections.find('li:first').length) {
       this.connections.find('li:first').click();
     } else {
-      this.fillForm(null, {user: process.env.USER});
+      this.fillForm({user: process.env.USER});
     }
+
+    this.initEvents(this.content);
 
     if (cliConnectString) {
       this.makeConnection(cliConnectString, {});
     } else {
       this.checkAutoLogin();
     }
-
-    this.initEvents(this.content);
 
     this.herokuClient = new HerokuClient();
     this.activeForm = 'standard';
@@ -64,7 +64,7 @@ class LoginScreen {
     this.showPart('standard');
   }
 
-  showHerokuPane1 () {
+  showHerokuPane () {
     this.content.find('.header-tabs a').removeClass('selected');
     this.content.find('.header-tabs .login-with-heroku').addClass('selected');
     this.showPart('heroku-1');
@@ -130,12 +130,12 @@ class LoginScreen {
     var currentConnection = this.connectionName;
 
     ObjectKit.forEach(this.savedConnections, (name, params) => {
-      var line = $dom(['li', {'data-auto-connect': params.auto_connect}, name]);
+      var line = $dom(['li', {'data-auto-connect': params.auto_connect, 'data-name': name}, name]);
 
       $u.contextMenu(line, {
-        "Fill form with ...": () => { this.fillForm(name, params) },
+        "Fill form with ...": () => { this.fillForm(params) },
         "Connect" () {
-          this.fillForm(name, params);
+          this.fillForm(params);
           this.submitCurrentForm();
         },
         'separator': 'separator',
@@ -166,7 +166,7 @@ class LoginScreen {
     this.connections.find('.selected').removeClass('selected');
     $u(line).addClass('selected');
     this.connectionName = name;
-    this.fillForm(name, params);
+    this.fillForm(params);
     if (params.type == 'url') {
       this.showUrlPane();
       this.urlForm.setButtonShown(false);
@@ -188,12 +188,12 @@ class LoginScreen {
   addNewConnection () {
     this.connections.find('.selected').removeClass('selected');
     this.connectionName = "**new**";
-    this.fillForm(undefined, {host: "localhost", user: "", password: "", database: "", port: ""});
+    this.fillForm({host: "localhost", user: "", password: "", database: "", port: ""});
     this.standardForm.form.find('[name=host]').focus();
     this.standardForm.setButtonShown(true);
   }
 
-  fillForm (name, params) {
+  fillForm (params) {
     if (params.type == "url") {
       this.urlForm.fillForm(params);
       this.standardForm.fillForm({});
@@ -268,7 +268,7 @@ class LoginScreen {
           App.stopLoading();
         }
       });
-      this.fillForm(autoConnect, connection);
+      this.connectionSelected(autoConnect, connection, this.connections.find(`[data-name='${autoConnect}']`));
       this.submitCurrentForm();
     }
   }

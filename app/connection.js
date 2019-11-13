@@ -417,7 +417,7 @@ class Connection {
     if (!sequence.dep_def_value) {
       return true;
     } else {
-      var expect = new RegExp(`^nextval\\('${sequence.table_name}.+\\)`);
+      var expect = new RegExp(`^nextval\\(('${sequence.table_schema}'\.)?'${sequence.table_name}.+\\)`);
       return !sequence.dep_def_value.match(expect);
     }
   }

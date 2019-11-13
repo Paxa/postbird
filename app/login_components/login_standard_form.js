@@ -22,8 +22,8 @@ class LoginStandardForm {
       }
     });
 
-    allInputs.bind('focus', this.formChanged.bind(this));
-    allInputs.bind('keyup', this.formChanged.bind(this));
+    allInputs.bind('focus', (e) => { this.formChanged() });
+    allInputs.bind('keyup', (e) => { this.formChanged() });
 
     this.form.find('input[type=checkbox]').bind('change', this.formChanged.bind(this));
   }
@@ -42,8 +42,7 @@ class LoginStandardForm {
     };
   }
 
-  formChanged (event) {
-    //console.log('formChanged', event.target);
+  formChanged () {
     if (this.loginForm.isNewConnection()) return;
 
     var formData = this.getFormData();
@@ -71,7 +70,7 @@ class LoginStandardForm {
 
     this.loginForm.makeConnection(options, {}, (tab) => {
       button.removeAttr('disabled').val(buttonText);
-      this.setButtonShown(true);
+      this.formChanged();
       if (callback && tab) callback(tab);
     });
   }
@@ -95,6 +94,7 @@ class LoginStandardForm {
         field.val(v);
       }
     });
+
     this.setButtonShown(false);
   }
 

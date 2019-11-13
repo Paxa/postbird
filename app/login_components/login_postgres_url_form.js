@@ -18,14 +18,13 @@ class LoginPostgresUrlForm {
 
     var allInputs = this.form.find('input[type=text], input[type=password], textarea');
 
-    allInputs.bind('focus', this.formChanged.bind(this));
-    allInputs.bind('keyup', this.formChanged.bind(this));
+    allInputs.bind('focus', (e) => { this.formChanged() });
+    allInputs.bind('keyup', (e) => { this.formChanged() });
 
     this.form.find('input[type=checkbox]').bind('change', this.formChanged.bind(this));
   }
 
   formChanged () {
-    //console.log('formChanged', event.target);
     if (this.loginForm.isNewConnection()) return;
 
     var formData = this.getFormData();
@@ -75,7 +74,7 @@ class LoginPostgresUrlForm {
 
     this.loginForm.makeConnection(options, {}, (tab) => {
       button.removeAttr('disabled').val(buttonText);
-      this.setButtonShown(true);
+      this.formChanged();
       if (callback && tab) callback(tab);
     });
   }

@@ -172,7 +172,6 @@ class Table extends ModelBase {
     var data = await this.q(sql);
     if (data.rows[0]) {
       var extras = await this.connection().findSequences(this.schema, this.table);
-      console.log('extras', extras);
       return Object.assign(data.rows[0], extras.rows[0]);
     }
   }
