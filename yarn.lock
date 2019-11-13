@@ -849,6 +849,11 @@ configstore@^4.0.0:
     write-file-atomic "^2.0.0"
     xdg-basedir "^3.0.0"
 
+connection-string@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/connection-string/-/connection-string-3.0.4.tgz#45080b52eeef86630924b6c93849eff90773a148"
+  integrity sha512-KNtK/TVPk1Ew7t/132fcXubHNytfv3m80vS8xx/ZVeMjH9aTroKAPEqkcJ/+AKaaKAcQQnjY5b3V5KIZTXKmCQ==
+
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"

@@ -7,6 +7,8 @@ var semver = require('semver');
 var colors = require('colors/safe');
 colors.enabled = true;
 var vsprintf = require("sprintf-js").vsprintf;
+var ConnectionString = require('connection-string').ConnectionString;
+
 
 // Change postgres' type parser to use moment instance instead of js Date instance
 // because momentjs object has timezone information as in original string (js Date object always use local timezone)
@@ -107,19 +109,60 @@ class Connection {
     return 'template1';
   }
 
-  static parseConnectionString(postgresUrl /*: string */) {
-    var parsed = url.parse(postgresUrl);
-    var auth = (parsed.auth || '').split(':');
-    var dbname = !parsed.pathname || parsed.pathname == '/' ? this.defaultDatabaseName : parsed.pathname.replace(/^\//, '');
+  // Use ConnectionString lib to support parsing unix socket in connection string
+  static parseConnectionString(postgresUrl /*: string */) /*: ConnectionOptions */ {
+    var cs = new ConnectionString(postgresUrl);
+    if (!cs.params) cs.params = {};
+    if (!cs.params.application_name) cs.params.application_name = 'Postbird';
 
-    return {
-      user: auth[0],
-      password: auth[1],
-      host: parsed.hostname,
-      port: parsed.port || '5432',
-      database: dbname,
-      query: parsed.query
-    };
+    var res = Object.assign({}, cs.params, {
+      host: cs.hostname,
+      port: cs.port || cs.params && cs.params && cs.params.socketPort,
+      database: cs.path && cs.path[0],
+      user: cs.user,
+      password: cs.password,
+      ssl: (cs.params && 'ssl' in cs.params) ? Boolean(cs.params.ssl) : undefined,
+      sql_query: cs.params && cs.params.sql_query
+    });
+    delete res.socketPort;
+
+    return res;
+  }
+
+  // Use ConnectionString lib to support parsing unix socket in connection string
+  static generateConnectionString(options) {
+    if (options.port == undefined) options.port = '5432';
+    if (options.host == undefined) options.host = 'localhost';
+    if (!options.database) options.database = Connection.defaultDatabaseName;
+
+    var socketPort = null;
+
+    var host = options.host
+    if (host.startsWith('/')) {
+      host = {
+        type: "socket",
+        name: host,
+        port: options.port
+      };
+      if (`${options.port}` != '5432') {
+        socketPort = options.port;
+      }
+    } else {
+      host = ConnectionString.parseHost(`${host}${options.port ? ':' + options.port : ''}`);
+    }
+
+    const cs = new ConnectionString('postgres://');
+    cs.setDefaults({
+      hosts: [host],
+      path: [options.database],
+      user: options.user,
+      password: options.password
+    });
+    if (socketPort) {
+      cs.params = {};
+      cs.params.socketPort = socketPort
+    }
+    return cs.toString();
   }
 
   connectToServer(options /*: string | ConnectionOptions */, callback /*: (success: boolean, error?: Error) => void */) {
@@ -132,19 +175,7 @@ class Connection {
         this.startQuery = options.sql_query;
       }
       // set defaults
-      if (options.port == undefined) options.port = '5432';
-      if (options.host == undefined) options.host = 'localhost';
-
-      if (!options.database) options.database = Connection.defaultDatabaseName;
-
-      var connectUser = options.user ? `${encodeURIComponent(options.user)}` : '';
-      if (options.password) connectUser += `:${encodeURIComponent(options.password)}`;
-      this.connectString = `postgres://${connectUser ? connectUser + '@' : ''}` +
-        `${options.host}:${options.port}/${encodeURIComponent(options.database)}`;
-
-      if (options.query) {
-        this.connectString += "?" + options.query;
-      }
+      this.connectString = Connection.generateConnectionString(options);
     } else if (typeof options == 'string') {
       this.connectString = options;
       options = Connection.parseConnectionString(this.connectString);
@@ -165,7 +196,7 @@ class Connection {
 
     this.options = options;
 
-    this.connection = new pg.Client({connectionString: this.connectString}) /*:: as pg.ClientExt */;
+    this.connection = this._initConnection(this.connectString);
 
     return this.connection.connect().then(() => {
       this.connection.on('notification', (msg) => {
@@ -206,6 +237,13 @@ class Connection {
       callback && callback(false, error);
       App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
     });
+  }
+
+  _initConnection(connectString) /*: pg.ClientExt */ {
+    console.log('connectString', connectString, Connection.parseConnectionString(connectString));
+    // @ts-ignore
+    var clientConfig = Connection.parseConnectionString(connectString) /*:: as pg.ClientConfig */;
+    return new pg.Client(clientConfig) /*:: as pg.ClientExt */;
   }
 
   switchDb(database /*: string */, callback /*::? : (success: boolean, error?: Error) => void */) {
@@ -611,7 +649,7 @@ class Connection {
     } else {
       query = this.connection.activeQuery;
       if (query) {
-        var otherConn = new pg.Client({connectionString: this.connectString});
+        var otherConn = this._initConnection(this.connectString);
         otherConn.connect((error) => {
           if (error) {
             console.log(error);

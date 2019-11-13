@@ -336,6 +336,9 @@ global.App = {
     } else if (error.message.match(/^getaddrinfo ENOTFOUND/)) {
       var host = error.message.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
       return `Can not resolve host '${host[1]}'`;
+    } else if (error.message.match(/^connect ENOENT /)) {
+      var socket = error.message.match(/^connect ENOENT\s+(.+)$/);
+      return `Unix socket not found at ${socket[1]}`;
     } else {
       var message = error.message;
       if (options.showQuery && error.query) {

@@ -48,6 +48,7 @@
     "needle": "2.4.0",
     "pg": "7.12.1",
     "pg-escape": "^0.2.0",
+    "connection-string": "3.0.4",
     "pug": "2.0.4",
     "raven": "2.6.4",
     "semver": "^6.1.1",
