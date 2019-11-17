@@ -647,6 +647,16 @@ body.sidebar-resizing {
       display: block;
       user-select: none;
       margin-bottom: -1px; }
+    .main-screen > .sidebar > .databases span.connection-lost {
+      position: absolute;
+      right: 6px;
+      top: 4px; }
+      .main-screen > .sidebar > .databases span.connection-lost a {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background: url("icons/disconnect.png") no-repeat;
+        background-size: 15px 15px; }
     .main-screen > .sidebar > .databases .heroku-mode span, .main-screen > .sidebar > .databases .heroku-mode a {
       display: block; }
   .main-screen > .sidebar > .tables-filter {

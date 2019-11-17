@@ -12,6 +12,7 @@ class DbScreen {
   currentSchema: string
   table: Model.Table
   contentConditions: string[]
+  connectionLostError: Error
   */
 
   constructor (connection, options) {
@@ -23,6 +24,18 @@ class DbScreen {
     this.connection = connection;
     // @ts-ignore
     this.view = new DbScreenView(this);
+
+    this.connection.onDisconnect = (error) => {
+      if (this.connectionLostError) {
+        this.connectionLostError = error;
+      } else {
+        this.connectionLostError = error;
+        if (App.isFocused && App.currentTab.instance == this) {
+          this.showConnectionLostDialog();
+        }
+      }
+      this.view.showConnectionLostIcon();
+    };
 
     this.currentTab = null;
 
@@ -665,6 +678,8 @@ class DbScreen {
       if (success) {
         window.alertify.alert('Reconnected!');
         if (callback) callback(true);
+        this.view.hideConnectionLostIcon();
+        delete this.connectionLostError;
       } else {
         window.alertify.alert('Connection error.<br>' + (error.message || error));
         if (callback) callback(false);
@@ -692,6 +707,23 @@ class DbScreen {
       return rows;
     } finally {
       App.stopLoading();
+    }
+  }
+
+  async showConnectionLostDialog () {
+    var dialog = electron.remote.dialog;
+    var message = this.connectionLostError.message.replace(/\n\s+/g, "\n");
+    var res = await dialog.showMessageBox({
+      type: "error",
+      message: "Server Connection Error",
+      detail: message,
+      buttons: ["Reconnect", "Do Nothing"],
+      defaultId: 0,
+      cancelId: 1,
+    });
+
+    if (res.response == 0) {
+      this.reconnect();
     }
   }
 }

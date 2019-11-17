@@ -71,6 +71,7 @@ interface App {
   vendorPath: string;
   cliConnectString?: string;
   UserError?: typeof UserError;
+  isFocused: boolean;
 }
 */
 
@@ -83,6 +84,7 @@ global.App = {
 
   activeTab: null,
   tabs: [], // {name, content, is_active}
+  isFocused: true,
 
   init: function () {
     RenderView.pugCacheLoad();

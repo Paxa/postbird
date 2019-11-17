@@ -52,6 +52,19 @@
       margin-bottom: -1px;
     }
 
+    span.connection-lost {
+      position: absolute;
+      right: 6px;
+      top: 4px;
+      a {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background: url("icons/disconnect.png") no-repeat;
+        background-size: 15px 15px;
+      }
+    }
+
     .heroku-mode {
       span, a {
         display: block;

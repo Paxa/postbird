@@ -144,13 +144,32 @@ $(document).ready(function() {
   });
   */
 
+  var windowEvents = {
+    focus: () => {
+      document.body.classList.remove('unfocused');
+      App.isFocused = true;
+    },
+    blur: () => {
+      document.body.classList.add('unfocused');
+      App.isFocused = false;
+    }
+  };
+
   var mainWindow = electron.remote.app.mainWindow;
-  mainWindow.on('focus', () => {
-    document.body.classList.remove('unfocused');
+  mainWindow.on('focus', windowEvents.focus);
+  mainWindow.on('blur', windowEvents.blur);
+
+  // used when we reload app, usually for development
+  window.addEventListener('beforeunload', () => {
+    mainWindow.removeListener('focus', windowEvents.focus);
+    mainWindow.removeListener('blur', windowEvents.blur);
   });
-  mainWindow.on('blur', () => {
-    document.body.classList.add('unfocused');
-  });
+
+  if (mainWindow.isFocused()) {
+    windowEvents.focus();
+  } else {
+    windowEvents.blur();
+  }
 
   electron.remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
     if (electron.remote.systemPreferences.isDarkMode()) {

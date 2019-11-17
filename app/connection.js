@@ -87,6 +87,7 @@ class Connection {
     options: ConnectionOptions
     startQuery: string
     isCockroach: boolean
+    onDisconnect?: Function
 
     static PG: any
     public static instances: Connection[]
@@ -207,11 +208,7 @@ class Connection {
         App.log("notification.recieved", msg);
       });
 
-      this.connection.on('error', (error) => {
-        var dialog = electron.remote.dialog;
-        var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
-        dialog.showErrorBox("Server Connection Error", message);
-      });
+      this.connection.on('error', (e) => { this.onConnectionLost(e) });
 
       this.serverVersion().then(version => {
         if (this.logging) {
@@ -241,10 +238,19 @@ class Connection {
   }
 
   _initConnection(connectString) /*: pg.ClientExt */ {
-    console.log('connectString', connectString, Connection.parseConnectionString(connectString));
     // @ts-ignore
     var clientConfig = Connection.parseConnectionString(connectString) /*:: as pg.ClientConfig */;
     return new pg.Client(clientConfig) /*:: as pg.ClientExt */;
+  }
+
+  onConnectionLost(error) {
+    if (this.onDisconnect) {
+      this.onDisconnect(error);
+    } else {
+      var dialog = electron.remote.dialog;
+      var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
+      dialog.showErrorBox("Server Connection Error", message);
+    }
   }
 
   switchDb(database /*: string */, callback /*::? : (success: boolean, error?: Error) => void */) {

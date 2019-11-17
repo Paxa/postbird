@@ -452,6 +452,18 @@ class DbScreenView {
 
     this.content.find('.databases').append(herokuHeader[0]);
   }
+
+  showConnectionLostIcon () {
+    var lostIcon = $dom(['a', '', {title: "Server is disconnected"}]);
+    lostIcon.addEventListener('click', (e) => {
+      this.handler.showConnectionLostDialog();
+    })
+    this.content.find('span.connection-lost').empty().append(lostIcon);
+  }
+
+  hideConnectionLostIcon () {
+    this.content.find('span.connection-lost').empty();
+  }
 }
 
 global.DbScreenView = DbScreenView;
