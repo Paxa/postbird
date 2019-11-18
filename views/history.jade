@@ -30,7 +30,7 @@
                 span.exec-time= "(" + execTime(query.time) + ")"
 
             else if event.type == "connect.success"
-              - var opts = event.args[1]
+              - var opts = event.args[0]
               = "Connected to server "
               if opts
                 code.pgsql

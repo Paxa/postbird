@@ -35,13 +35,12 @@ process.on('unhandledRejection', error => {
     config: {
       protocols: {
         name: "Postgres Database",
-        schemes: ["postgres"],
+        schemes: ["postgres", "postgresql"],
         role: "Editor"
       },
       fileAssociations: [{
         ext: "sql",
         name: "SQL File",
-        //icon: "SQL.icns"
       }],
       npmRebuild: false, // because we changed dependency paths postgres manually
       icon: isWin ? "build_files/icon.ico" : __dirname + "/build_files/icon.icns",
@@ -54,7 +53,10 @@ process.on('unhandledRejection', error => {
         bundleVersion: buildVersion,
         bundleShortVersion: packageJson.version,
         minimumSystemVersion: "10.9.0",
-        extendInfo: "build_files/Info.plist",
+        extendInfo: {
+          NSRequiresAquaSystemAppearance: false,
+        },
+        darkModeSupport: true,
         asar: true,
         extraFiles: ["vendor/darwin"],
         asarUnpack: ["node_modules/libpq"],

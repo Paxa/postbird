@@ -230,7 +230,7 @@ class Connection {
           Promise.resolve(true);
         }
       });
-      App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
+      App.log("connect.success", JSON.parse(JSON.stringify(options)));
     }).catch(error => {
       callback && callback(false, error);
       App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
