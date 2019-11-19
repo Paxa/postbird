@@ -80,7 +80,7 @@ global.App = {
   // used for running binaries inside asar package
   vendorPath: process.mainModule.filename.includes('app.asar') ?
     path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
-    path.join(process.mainModule.filename.replace('node_modules/electron-mocha/index.js', 'index.html'), `../vendor/${process.platform}`),
+    path.join(process.mainModule.filename.replace('node_modules/electron-mocha/lib/main.js', 'index.html'), `../vendor/${process.platform}`),
 
   activeTab: null,
   tabs: [], // {name, content, is_active}
