@@ -1,21 +1,23 @@
-### Version 0.8.3
+### Version 0.8.3 (19-nov-2019)
 
 * Postgres 12 support
 * Feature: Basic support for sequences
 * Feature: Basic support for MacOS dark mode
 * Feature: Add default sorting by id
+* Feature: Support connecting to uniq socket
+* Feature: Handle disconnects: add icon when disconnected and better dialog (#92)
 * Cleanup new_snippet.js (Thanks to [https://github.com/saylestyler][@saylestyler])
 * Fixed typos on strings 22 & 39 (Thanks to [https://github.com/kant][@kant])
 * Add check for null in CSV export (Thanks to [https://github.com/TheHollidayInn][@TheHollidayInn])
+* Add "Send Feedback" button in menu (#75)
+* Fix: When renaming connection, don't override existing connection (#79)
+* Fix: Make connection selected when auto connected
 * Fix saving CSV file
-* Fix editing null values
 * Build more packages for linux
 * Refresh total rows count when reloading content tab (Cmd+R)
 * Cut long strings to 500 chars when shown in table
 * Make blank as default type when adding column
 * Don't show related rows icon when value is null
-* Update hljs
-* More typescript
 * Better stack traces for async db errors
 
 ### Version 0.8.2 (04-may-2019)
