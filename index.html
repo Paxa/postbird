@@ -18,7 +18,7 @@
           document.body.classList.add('unfocused');
         }
         document.body.classList.add("platform-" + process.platform);
-        if (electron.systemPreferences.isDarkMode()) {
+        if (electron.systemPreferences && electron.systemPreferences.isDarkMode()) {
           document.body.classList.add("dark-mode");
         }
       })();

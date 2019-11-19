@@ -171,11 +171,13 @@ $(document).ready(function() {
     windowEvents.blur();
   }
 
-  electron.remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
-    if (electron.remote.systemPreferences.isDarkMode()) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  });
+  if (electron.remote.systemPreferences && electron.remote.systemPreferences.subscribeNotification) {
+    electron.remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
+      if (electron.remote.systemPreferences.isDarkMode()) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    });
+  }
 });
