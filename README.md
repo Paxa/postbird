@@ -9,19 +9,27 @@ Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs 
 
 ## Download
 
-**Version 0.8.2**
+**Version 0.8.4**
 
-MacOS: [Postbird-0.8.2.dmg](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2.dmg) - MacOS 10.9+
+MacOS: [Postbird-0.8.4.dmg](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4.dmg) - MacOS 10.9+
 
-Linux packages: [Postbird_0.8.2_amd64.deb](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird_0.8.2_amd64.deb) [Postbird-0.8.2.x86_64.rpm](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2.x86_64.rpm) [Postbird_0.8.2_amd64.snap](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird_0.8.2_amd64.snap)<br>
+Linux packages:
+
+* [Postbird_0.8.4_amd64.deb](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird_0.8.4_amd64.deb)
+* [Postbird-0.8.4.x86_64.rpm](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4.x86_64.rpm)
+* [Postbird_0.8.4_amd64.snap](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird_0.8.4_amd64.snap)
+* [postbird-0.8.4.AppImage](https://github.com/Paxa/postbird/releases/download/0.8.4/postbird-0.8.4.AppImage)
+* [Postbird-0.8.4.apk](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4.apk)
+* [Postbird-0.8.4.pacman](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4.pacman)
+
 Via snap:
 ```
 sudo snap install postbird
 ```
 Snap page: https://snapcraft.io/postbird
 
-Windows installer: [Postbird.Setup.0.8.2.exe](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird.Setup.0.8.2.exe)<br>
-Windows portable: [Postbird-0.8.2-win.zip](https://github.com/Paxa/postbird/releases/download/0.8.2/Postbird-0.8.2-win.zip)
+Windows installer: [Postbird.Setup.0.8.4.exe](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird.Setup.0.8.4.exe)<br>
+Windows portable: [Postbird-0.8.4-win.zip](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4-win.zip)
 
 Latest artifacts: https://postbird.paxa.kuber.host/
 

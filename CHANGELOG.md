@@ -1,3 +1,7 @@
+### Version 0.8.4 (20-nov-2019)
+
+* Fix `electron.systemPreferences.subscribeNotification` is not a function
+
 ### Version 0.8.3 (19-nov-2019)
 
 * Postgres 12 support

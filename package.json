@@ -1,7 +1,7 @@
 {
   "name": "Postbird",
   "main": "main.js",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
   "description": "Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron",
