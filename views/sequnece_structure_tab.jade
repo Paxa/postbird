@@ -23,8 +23,7 @@ table.object-details-table
     tr
       td Owned By Column:
       td= `${sequence.dep_table}.${sequence.dep_column}`
-  if sequence.dep_def_value && sequence.dep_def_value.contains(sequence.sequence_name)
+  if sequence.dep_def_value && `${sequence.dep_def_value}`.includes(sequence.sequence_name)
     tr
       td Owner Default Value:
       td= sequence.dep_def_value
-
