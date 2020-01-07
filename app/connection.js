@@ -2,16 +2,16 @@
 
 // @ts-ignore
 var pg = require('pg');
-// @ts-ignore
-const url = require('url');
-// @ts-ignore
-const semver = require('semver');
-const colors = require('colors/safe');
+var url = require('url');
+var semver = require('semver');
+var colors = require('colors/safe');
 colors.enabled = true;
-const vsprintf = require("sprintf-js").vsprintf;
+var vsprintf = require("sprintf-js").vsprintf;
+var ConnectionString = require('connection-string').ConnectionString;
+
 
 // Change postgres' type parser to use moment instance instead of js Date instance
-// because momentjs object has timezone information as in original strin (js Date object always use local timezone)
+// because momentjs object has timezone information as in original string (js Date object always use local timezone)
 var types = require('pg').types;
 var moment = require('moment')
 
@@ -31,6 +31,8 @@ types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
 types.setTypeParser(TIMESTAMP_OID, customDateParser)
 
 var usingNativeLib = false;
+// Disable loading pg-native until issue with openssl paths is solved
+/*
 try {
   if (process.platform == "darwin" || process.platform == "linux") {
     if (pg.native) {
@@ -44,6 +46,8 @@ try {
   console.error(error);
   //errorReporter(error);
 }
+*/
+
 
 /*::
 interface FieldDef {
@@ -83,6 +87,7 @@ class Connection {
     options: ConnectionOptions
     startQuery: string
     isCockroach: boolean
+    onDisconnect?: Function
 
     static PG: any
     public static instances: Connection[]
@@ -105,19 +110,62 @@ class Connection {
     return 'template1';
   }
 
-  static parseConnectionString(postgresUrl /*: string */) {
-    var parsed = url.parse(postgresUrl);
-    var auth = (parsed.auth || '').split(':');
-    var dbname = !parsed.pathname || parsed.pathname == '/' ? this.defaultDatabaseName : parsed.pathname.replace(/^\//, '');
+  // Use ConnectionString lib to support parsing unix socket in connection string
+  static parseConnectionString(postgresUrl /*: string */) /*: ConnectionOptions */ {
+    var cs = new ConnectionString(postgresUrl);
+    if (!cs.params) cs.params = {};
+    if (!cs.params.application_name) cs.params.application_name = 'Postbird.app';
 
-    return {
-      user: auth[0],
-      password: auth[1],
-      host: parsed.hostname,
-      port: parsed.port || '5432',
-      database: dbname,
-      query: parsed.query
-    };
+    var res = Object.assign({}, cs.params, {
+      host: cs.hostname,
+      port: cs.port || cs.params && cs.params && cs.params.socketPort || '5432',
+      database: cs.path && cs.path[0],
+      user: cs.user,
+      password: cs.password,
+    });
+    if (cs.params && 'ssl' in cs.params) {
+      res.ssl = Boolean(cs.params.ssl)
+    }
+    delete res.socketPort;
+
+    return res;
+  }
+
+  // Use ConnectionString lib to support parsing unix socket in connection string
+  static generateConnectionString(options) {
+    if (options.port == undefined) options.port = '5432';
+    if (options.host == undefined) options.host = 'localhost';
+    if (!options.database) options.database = Connection.defaultDatabaseName;
+
+    var socketPort = null;
+
+    var host = options.host
+    if (host.startsWith('/')) {
+      host = {
+        type: "socket",
+        name: host,
+        port: options.port
+      };
+      if (`${options.port}` != '5432') {
+        socketPort = options.port;
+      }
+    } else {
+      host = ConnectionString.parseHost(`${host}${options.port ? ':' + options.port : ''}`);
+    }
+
+    const cs = new ConnectionString('postgres://');
+    cs.setDefaults({
+      hosts: [host],
+      path: [options.database],
+      user: options.user,
+      password: options.password,
+      params: { ssl: options.ssl }
+    });
+    if (socketPort) {
+      cs.params = {};
+      cs.params.socketPort = socketPort
+    }
+    return cs.toString();
   }
 
   connectToServer(options /*: string | ConnectionOptions */, callback /*: (success: boolean, error?: Error) => void */) {
@@ -130,19 +178,7 @@ class Connection {
         this.startQuery = options.sql_query;
       }
       // set defaults
-      if (options.port == undefined) options.port = '5432';
-      if (options.host == undefined) options.host = 'localhost';
-
-      if (!options.database) options.database = Connection.defaultDatabaseName;
-
-      var connectUser = options.user ? `${encodeURIComponent(options.user)}` : '';
-      if (options.password) connectUser += `:${encodeURIComponent(options.password)}`;
-      this.connectString = `postgres://${connectUser ? connectUser + '@' : ''}` +
-        `${options.host}:${options.port}/${encodeURIComponent(options.database)}`;
-
-      if (options.query) {
-        this.connectString += "?" + options.query;
-      }
+      this.connectString = Connection.generateConnectionString(options);
     } else if (typeof options == 'string') {
       this.connectString = options;
       options = Connection.parseConnectionString(this.connectString);
@@ -154,7 +190,7 @@ class Connection {
       this.connectString = this.connectString.replace(/(\?|&)ssl=verify-full/, '$1ssl=1');
     }
 
-    log.info('Connecting to', this.connectString);
+    logger.info('Connecting to', this.connectString);
 
     if (this.connection) {
       this.connection.end();
@@ -163,7 +199,7 @@ class Connection {
 
     this.options = options;
 
-    this.connection = new pg.Client({connectionString: this.connectString}) /*:: as pg.ClientExt */;
+    this.connection = this._initConnection(this.connectString);
 
     return this.connection.connect().then(() => {
       this.connection.on('notification', (msg) => {
@@ -173,11 +209,7 @@ class Connection {
         App.log("notification.recieved", msg);
       });
 
-      this.connection.on('error', (error) => {
-        var dialog = electron.remote.dialog;
-        var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
-        dialog.showErrorBox("Server Connection Error", message);
-      });
+      this.connection.on('error', (e) => { this.onConnectionLost(e) });
 
       this.serverVersion().then(version => {
         if (this.logging) {
@@ -199,11 +231,27 @@ class Connection {
           Promise.resolve(true);
         }
       });
-      App.log("connect.success", this, JSON.parse(JSON.stringify(options)));
+      App.log("connect.success", JSON.parse(JSON.stringify(options)));
     }).catch(error => {
       callback && callback(false, error);
       App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
     });
+  }
+
+  _initConnection(connectString) /*: pg.ClientExt */ {
+    // @ts-ignore
+    var clientConfig = Connection.parseConnectionString(connectString) /*:: as pg.ClientConfig */;
+    return new pg.Client(clientConfig) /*:: as pg.ClientExt */;
+  }
+
+  onConnectionLost(error) {
+    if (this.onDisconnect) {
+      this.onDisconnect(error);
+    } else {
+      var dialog = electron.remote.dialog;
+      var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
+      dialog.showErrorBox("Server Connection Error", message);
+    }
   }
 
   switchDb(database /*: string */, callback /*::? : (success: boolean, error?: Error) => void */) {
@@ -223,6 +271,7 @@ class Connection {
     this.history.push(historyRecord);
     App.log("sql.start", historyRecord);
     var time = Date.now();
+    var startStack = new Error().stack;
 
     return new Promise((resolve, reject) => {
       this.connection.query(options, (error, result) => {
@@ -231,10 +280,11 @@ class Connection {
 
         if (global.TESTING && this.printTestingError && error) {
           if (this.logging) logger.print("FAILED: " + colors.yellow(sql) + "\n");
-          log.error(error);
+          logger.error(error);
         }
 
         if (error) {
+          error.stack = error.stack + "\n" + startStack.substring(startStack.indexOf("\n") + 1);
           historyRecord.error = error;
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
@@ -357,6 +407,10 @@ class Connection {
     return !this.isCockroach;
   }
 
+  supportClassRelhasoids() {
+    return this.isCockroach || semver.lt(this._serverVersion, "12.0.0");
+  }
+
   tablesAndSchemas() {
     var data = {};
     var sql = "SELECT * FROM information_schema.tables order by table_schema != 'public', table_name;";
@@ -372,6 +426,46 @@ class Connection {
       });
       return data;
     });
+  }
+
+  async findSequences(schema /*:: ?: string */, table /*:: ?: string */) {
+    var where = schema && table ? `AND ns.nspname = '${schema}' AND seq.relname = '${table}'` : '';
+    var sql = `
+      select ns.nspname as table_schema, seq.relname as table_name, 'SEQUENCE' as table_type,
+        tab.relname as dep_table, attr.attname as dep_column, pg_get_expr(adbin, adrelid) as dep_def_value
+      from pg_class as seq
+      join pg_namespace as ns on (ns.oid = seq.relnamespace)
+      left join pg_depend as dep on (seq.oid = dep.objid and deptype != 'n')
+      left join pg_class as tab on (dep.refobjid = tab.oid)
+      left join pg_attribute as attr on (attr.attnum = dep.refobjsubid and attr.attrelid = dep.refobjid)
+      left join pg_attrdef as attrdef on (attrdef.adrelid = tab.oid and attrdef.adnum = attr.attnum)
+      where seq.relkind = 'S' ${where}
+      order by table_schema, table_name;
+    `;
+
+    return await this.query(sql);
+  }
+
+  async findNonSerialSequences() {
+    var allSequences = await this.findSequences();
+    var data = {};
+    for (let row of allSequences.rows) {
+      if (this.isSeqIndependent(row)) {
+        if (!data[row.table_schema]) data[row.table_schema] = [];
+        data[row.table_schema].push(row);
+      }
+    };
+
+    return data;
+  }
+
+  isSeqIndependent(sequence) {
+    if (!sequence.dep_def_value) {
+      return true;
+    } else {
+      var expect = new RegExp(`^nextval\\(('${sequence.table_schema}'\.)?'${sequence.table_name}.+\\)`);
+      return !sequence.dep_def_value.match(expect);
+    }
   }
 
   mapViewsAsTables() {
@@ -563,7 +657,7 @@ class Connection {
     } else {
       query = this.connection.activeQuery;
       if (query) {
-        var otherConn = new pg.Client({connectionString: this.connectString});
+        var otherConn = this._initConnection(this.connectString);
         otherConn.connect((error) => {
           if (error) {
             console.log(error);
