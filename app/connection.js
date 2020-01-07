@@ -159,11 +159,13 @@ class Connection {
       path: [options.database],
       user: options.user,
       password: options.password,
-      params: { ssl: options.ssl }
     });
+    cs.params = {};
     if (socketPort) {
-      cs.params = {};
       cs.params.socketPort = socketPort
+    }
+    if (options.ssl) {
+      cs.params.ssl = true;
     }
     return cs.toString();
   }
