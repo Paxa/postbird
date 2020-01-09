@@ -7,7 +7,7 @@ var semver = require('semver');
 var colors = require('colors/safe');
 colors.enabled = true;
 var vsprintf = require("sprintf-js").vsprintf;
-var ConnectionString = require('connection-string').ConnectionString;
+var ConnectionString = require('connection-string');
 
 
 // Change postgres' type parser to use moment instance instead of js Date instance
@@ -112,18 +112,19 @@ class Connection {
 
   // Use ConnectionString lib to support parsing unix socket in connection string
   static parseConnectionString(postgresUrl /*: string */) /*: ConnectionOptions */ {
-    var cs = new ConnectionString(postgresUrl);
-    if (!cs.params) cs.params = {};
-    if (!cs.params.application_name) cs.params.application_name = 'Postbird.app';
-
+    var cs = new ConnectionString(postgresUrl, {
+      params: {
+        application_name: 'Postbird.app'
+      }
+    });
     var res = Object.assign({}, cs.params, {
       host: cs.hostname,
-      port: cs.port || cs.params && cs.params && cs.params.socketPort || '5432',
+      port: cs.port || cs.params.socketPort || 5432,
       database: cs.path && cs.path[0],
       user: cs.user,
       password: cs.password,
     });
-    if (cs.params && 'ssl' in cs.params) {
+    if ('ssl' in cs.params) {
       res.ssl = Boolean(cs.params.ssl)
     }
     delete res.socketPort;
