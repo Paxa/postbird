@@ -7,7 +7,7 @@ var semver = require('semver');
 var colors = require('colors/safe');
 colors.enabled = true;
 var vsprintf = require("sprintf-js").vsprintf;
-var ConnectionString = require('connection-string');
+var ConnectionString = require('connection-string').ConnectionString;
 
 
 // Change postgres' type parser to use moment instance instead of js Date instance
