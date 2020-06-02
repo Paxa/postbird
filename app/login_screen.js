@@ -191,6 +191,14 @@ class LoginScreen {
     this.fillForm({host: "localhost", user: "", password: "", database: "", port: ""});
     this.standardForm.form.find('[name=host]').focus();
     this.standardForm.setButtonShown(true);
+    this.urlForm.setButtonShown(true);
+    var data = {
+      type: 'url',
+      url: null,
+      auto_connect: false
+    };
+    Model.SavedConn.saveConnection('**new**', data);
+    this.fillSavedConnections();
   }
 
   fillForm (params) {
