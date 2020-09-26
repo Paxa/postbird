@@ -4,6 +4,7 @@ const BrowserWindow = electron.BrowserWindow;
 const windowStateKeeper = require('electron-window-state');
 
 electron.app.ApplicationStart = Date.now();
+electron.app.MainFilename = process.mainModule.filename;
 
 // Report crashes to our server.
 //require('crash-reporter').start();
@@ -67,7 +68,8 @@ app.on('ready', () => {
     width: mainWindowState.width,
     height: mainWindowState.height,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 
