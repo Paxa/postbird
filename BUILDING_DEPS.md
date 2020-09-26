@@ -4,17 +4,17 @@ Download `Postgres.app` and make sure you have command line tools installed
 ```
 # Copy postgres libs
 
-cp /Applications/Postgres.app/Contents/Versions/latest/lib/libpq.5.12.dylib ./vendor/darwin/
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/libpq.5.13.dylib ./vendor/darwin/
 cp /Applications/Postgres.app/Contents/Versions/latest/lib/libssl.1.1.dylib ./vendor/darwin/
 cp /Applications/Postgres.app/Contents/Versions/latest/lib/libcrypto.1.1.dylib ./vendor/darwin/
 
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libssl.1.1.dylib @loader_path/libssl.1.1.dylib ./vendor/darwin/libpq.5.12.dylib
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libpq.5.12.dylib
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libssl.1.1.dylib
+install_name_tool -change /Applications/Postgres.app/Contents/Versions/13/lib/libssl.1.1.dylib @loader_path/libssl.1.1.dylib ./vendor/darwin/libpq.5.13.dylib
+install_name_tool -change /Applications/Postgres.app/Contents/Versions/13/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libpq.5.13.dylib
+install_name_tool -change /Applications/Postgres.app/Contents/Versions/13/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libssl.1.1.dylib
 
 ## check with otool
 
-otool -L vendor/darwin/libpq.5.12.dylib
+otool -L vendor/darwin/libpq.5.13.dylib
 otool -L vendor/darwin/libssl.1.1.dylib
 otool -L vendor/darwin/libcrypto.1.1.dylib
 
@@ -22,13 +22,19 @@ otool -L vendor/darwin/libcrypto.1.1.dylib
 cp /Applications/Postgres.app/Contents/Versions/latest/bin/psql    ./vendor/darwin/
 cp /Applications/Postgres.app/Contents/Versions/latest/bin/pg_dump ./vendor/darwin/
 
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libpq.5.dylib @loader_path/libpq.5.12.dylib ./vendor/darwin/psql
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libpq.5.dylib @loader_path/libpq.5.12.dylib ./vendor/darwin/pg_dump
+install_name_tool -change /Applications/Postgres.app/Contents/Versions/13/lib/libpq.5.dylib @loader_path/libpq.5.13.dylib ./vendor/darwin/psql
+install_name_tool -change /Applications/Postgres.app/Contents/Versions/13/lib/libpq.5.dylib @loader_path/libpq.5.13.dylib ./vendor/darwin/pg_dump
 
 ## check with otool
 
 otool -L vendor/darwin/psql
 otool -L vendor/darwin/pg_dump
+
+# make it run on catalina
+
+xattr -d com.apple.quarantine vendor/darwin/*
+spctl --assess vendor/darwin/*
+codesign --remove-signature vendor/darwin/*
 
 # Build libpq package
 
