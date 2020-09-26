@@ -28,7 +28,7 @@ sudo snap install postbird
 ```
 Snap page: https://snapcraft.io/postbird
 
-Windows installer: [Postbird.Setup.0.8.4.exe](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird.Setup.0.8.4.exe)<br>
+Windows installer: [Postbird.Setup.0.8.4.exe](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-Setup-0.8.4.exe)<br>
 Windows portable: [Postbird-0.8.4-win.zip](https://github.com/Paxa/postbird/releases/download/0.8.4/Postbird-0.8.4-win.zip)
 
 Latest artifacts: https://postbird.paxa.kuber.host/
