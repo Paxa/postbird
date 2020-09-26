@@ -17,6 +17,7 @@ class SnippetsWindow {
         webSecurity: false,
         allowRunningInsecureContent: true,
         nodeIntegration: true,
+        enableRemoteModule: true,
       }
     });
 

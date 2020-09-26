@@ -76,11 +76,11 @@ interface App {
 */
 
 global.App = {
-  root: process.mainModule.filename.replace(/\/index.html/, ''),
+  root: remote.app.MainFilename.replace(/\/(index\.html|main\.js)/, ''),
   // used for running binaries inside asar package
-  vendorPath: process.mainModule.filename.includes('app.asar') ?
-    path.join(process.mainModule.filename, `../../../vendor/${process.platform}`) :
-    path.join(process.mainModule.filename.replace('node_modules/electron-mocha/lib/main.js', 'index.html'), `../vendor/${process.platform}`),
+  vendorPath: remote.app.MainFilename.includes('app.asar') ?
+    path.join(remote.app.MainFilename, `../../../vendor/${process.platform}`) :
+    path.join(remote.app.MainFilename.replace('node_modules/electron-mocha/lib/main.js', 'index.html'), `../vendor/${process.platform}`),
 
   activeTab: null,
   tabs: [], // {name, content, is_active}

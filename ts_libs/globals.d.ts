@@ -110,6 +110,7 @@ interface Window_CodeMirror {
 declare namespace Electron {
   interface App {
     ApplicationStart: number;
+    MainFilename: string;
     mainWindow: BrowserWindow;
   }
 
