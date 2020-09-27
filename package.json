@@ -7,7 +7,7 @@
   "description": "Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron",
   "scripts": {
     "sass": "node-sass assets/styles/style.scss --output public --watch",
-    "test": "electron-mocha tests/",
+    "test": "electron-mocha tests/ --renderer --require-main main.js",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "cross-env NW_DEV=true NW_DEBUG=true electron . $@",
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild",
@@ -34,7 +34,7 @@
     "eslint": "^7.9.0",
     "localStorage": "^1.0.4",
     "node-sass": "4.14.1",
-    "spectron": "^5.0.0",
+    "spectron": "^12.0.0",
     "typescript": "^2.8.3"
   },
   "dependencies": {
