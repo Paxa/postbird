@@ -76,7 +76,7 @@ interface App {
 */
 
 global.App = {
-  root: remote.app.MainFilename.replace(/\/(index\.html|main\.js)/, ''),
+  root: remote.app.getAppPath(),
   // used for running binaries inside asar package
   vendorPath: remote.app.MainFilename.includes('app.asar') ?
     path.join(remote.app.MainFilename, `../../../vendor/${process.platform}`) :
