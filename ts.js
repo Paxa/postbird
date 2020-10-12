@@ -1,6 +1,6 @@
 Error.stackTraceLimit = Infinity;
 
-var ts = require("typescript");
+var ts = require("plus-typescript");
 const colors = require('colors/safe');
 colors.enabled = true;
 
@@ -87,7 +87,8 @@ var options = {
   allowNonTsExtensions: true,
   moduleResolution: ts.ModuleResolutionKind.NodeJs,
   module: ts.ModuleKind.ES2015,
-  esModuleInterop: true
+  esModuleInterop: true,
+  module: 'commonjs',
   //lib: ["lib.d.ts", "es5", "es2015", "es2017", "es2018", "dom", "scripthost"]
 };
 
@@ -151,6 +152,13 @@ console.log(`Validating ${program.getSourceFiles().length} files...`);
 
 let emitResult = program.emit();
 let allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
+
+allDiagnostics = allDiagnostics.filter(diagnostic => {
+  return !diagnostic.messageText || !(
+    diagnostic.messageText &&
+    diagnostic.messageText.messageText &&
+    diagnostic.messageText.messageText.includes("Interface 'SVGElement' cannot simultaneously extend types 'Element' and"))
+});
 
 if (allDiagnostics.length == 0) {
   console.log(colors.green("All good"));

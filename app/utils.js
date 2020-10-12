@@ -28,9 +28,10 @@ interface JQueryStatic {
 }
 */
 
-var remote = require('electron').remote;
-var Menu = remote.Menu;
-var MenuItem = remote.MenuItem;
+var electron = require('electron');
+//var remote = require('electron').remote;
+var Menu = electron.remote.Menu;
+var MenuItem = electron.remote.MenuItem;
 
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
@@ -92,7 +93,7 @@ $u.contextMenu = function (elementArg, options, params) {
     }
 
     element.contextmenu.popup({
-      window: remote.getCurrentWindow()
+      window: electron.remote.getCurrentWindow()
     });
   });
 };

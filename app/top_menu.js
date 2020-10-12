@@ -128,21 +128,21 @@ var template /*: Electron.MenuItemConstructorOptions[] */ = [
           else
             return 'Ctrl+Shift+I';
         })(),
-        role: 'toggledevtools'
+        role: 'toggleDevTools'
       },
       {
         label: 'Zoom In',
-        role: 'zoomin',
+        role: 'zoomIn',
         accelerator: 'CmdOrCtrl+='
       },
       {
         label: 'Zoom Out',
-        role: 'zoomout',
+        role: 'zoomOut',
         accelerator: 'CmdOrCtrl+-'
       },
       {
         label: 'Zoom to Normal',
-        role: 'resetzoom',
+        role: 'resetZoom',
         accelerator: 'CmdOrCtrl+0'
       },
     ]
@@ -242,7 +242,7 @@ if (process.platform == 'darwin') {
       {
         label: 'Hide Others',
         accelerator: 'Command+Shift+H',
-        role: 'hideothers'
+        role: 'hideOthers'
       },
       {
         label: 'Show All',

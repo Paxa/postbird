@@ -44,7 +44,7 @@ interface App {
   addConnectionTab: () => any;
   addDbScreen: (connection: Connection, connectionName: any, options: any) => void;
   addHelpScreen: () => void;
-  helpScreenOpen: () => void;
+  helpScreenOpen: () => boolean;
   renderView: (viewName: string, options?: any) => JQuery<HTMLElement>;
   setSizes: () => void;
   startLoading: (message: string, timeout?: number, options?: any) => void;

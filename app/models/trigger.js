@@ -92,7 +92,7 @@ class Trigger extends ModelBase {
   }
 }
 
-!function () {
+(() => {
   var props = ['table_name', 'proc_name', 'constraint_name'];
   props.forEach((prop) => {
     Object.defineProperty(Trigger.prototype, prop, {
@@ -108,7 +108,7 @@ class Trigger extends ModelBase {
     }
   });
 
-}();
+})();
 
 /*::
 declare var Trigger__: typeof Trigger

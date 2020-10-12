@@ -140,7 +140,7 @@ class Procedure extends ModelBase {
   }
 }
 
-!function () {
+(function () {
   var props = ['oid', 'name', 'author', 'language', 'arg_list', 'return_type', 'prosrc', 'extension', 'full_prosrc'];
   props.forEach((prop) => {
     Object.defineProperty(Procedure.prototype, prop, {
@@ -162,7 +162,7 @@ class Procedure extends ModelBase {
     }
   });
 
-}();
+})();
 
 /*::
 declare var Procedure__: typeof Procedure
