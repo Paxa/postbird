@@ -1,3 +1,11 @@
+### Version 0.9.0
+
+* Fix ssl connection & heroku connection (Thanks to [https://github.com/egallup02360](@egallup02360) #95)
+* Postgres 12 support
+* Update to electron 10.1.2
+* Fix "Snippets" and "See History" on windows (Thanks to [https://github.com/mastazi](@mastazi) #118)
+* Allow to cancel loader window when connecting to server
+
 ### Version 0.8.4 (20-nov-2019)
 
 * Fix `electron.systemPreferences.subscribeNotification` is not a function

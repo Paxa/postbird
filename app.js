@@ -306,7 +306,19 @@ global.App = {
   },
 
   openConnection: function (options, connectionName, callback) {
-    this.startLoading("Connecting...");
+    var showConnectionError = true;
+    var runCallback = true;
+
+    this.startLoading("Connecting...", 500, {
+      cancel() {
+        App.stopRunningQuery();
+        App.stopLoading();
+        showConnectionError = false
+        if (callback) callback(false);
+        runCallback = false
+      }
+    });
+    //this.startLoading("Connecting...");
 
     if (typeof options == 'string') {
       options = Connection.parseConnectionString(options);
@@ -321,13 +333,17 @@ global.App = {
       if (status) {
         var tab = this.addDbScreen(conn, connectionName, options);
         tab.activate();
-        if (callback) callback(tab);
+        if (callback && runCallback) callback(tab);
       } else {
-        $u.alertError("Connection error", {
-          detail: this.humanErrorMessage(error)
-        });
+        if (showConnectionError) {
+          $u.alertError("Connection error", {
+            detail: this.humanErrorMessage(error)
+          });
+        } else {
+          console.error(error)
+        }
         //window.alertify.alert(this.humanErrorMessage(message));
-        if (callback) callback(false);
+        if (callback && runCallback) callback(false);
       }
     });
   },

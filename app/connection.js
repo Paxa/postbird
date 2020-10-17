@@ -244,6 +244,7 @@ class Connection {
   _initConnection(connectString) /*: pg.ClientExt */ {
     // @ts-ignore
     var clientConfig = Connection.parseConnectionString(connectString) /*:: as pg.ClientConfig */;
+    // clientConfig.connectionTimeoutMillis = 10000; // 10 sec
     return new pg.Client(clientConfig) /*:: as pg.ClientExt */;
   }
 

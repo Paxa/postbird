@@ -80,7 +80,14 @@ class LoginPostgresUrlForm {
   }
 
   testConnection () {
-    App.startLoading("Connecting...");
+    var showConnectionError = true;
+    App.startLoading("Connecting...", 500, {
+      cancel() {
+        App.stopRunningQuery();
+        App.stopLoading();
+        showConnectionError = false;
+      }
+    });
 
     var options = this.getFormData();
     var conn = new Connection();
@@ -90,7 +97,14 @@ class LoginPostgresUrlForm {
         window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
-        window.alertify.alert(App.humanErrorMessage(error));
+        if (showConnectionError) {
+          $u.alertError("Connection Error", {
+            detail: App.humanErrorMessage(error)
+          });
+        } else {
+          console.error(error)
+        }
+        //window.alertify.alert(App.humanErrorMessage(error));
       }
     });
   }

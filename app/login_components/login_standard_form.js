@@ -99,9 +99,12 @@ class LoginStandardForm {
   }
 
   testConnection () {
-    App.startLoading("Connecting...", 100, {
+    var showConnectionError = true;
+    App.startLoading("Connecting...", 500, {
       cancel() {
+        App.stopRunningQuery();
         App.stopLoading();
+        showConnectionError = false;
       }
     });
 
@@ -113,9 +116,13 @@ class LoginStandardForm {
         window.alertify.alert("Successfully connected!");
         conn.close();
       } else {
-        $u.alertError("Connection Error", {
-          detail: App.humanErrorMessage(error)
-        });
+        if (showConnectionError) {
+          $u.alertError("Connection Error", {
+            detail: App.humanErrorMessage(error)
+          });
+        } else {
+          console.error(error)
+        }
         //window.alertify.alert(App.humanErrorMessage(message));
       }
     });

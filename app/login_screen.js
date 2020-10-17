@@ -28,7 +28,7 @@ class LoginScreen {
     if (this.connections.find('li:first').length) {
       this.connections.find('li:first').click();
     } else {
-      this.fillForm({user: process.env.USER});
+      this.fillForm({user: process.env.USER || 'user'});
     }
 
     this.initEvents(this.content);
@@ -262,7 +262,7 @@ class LoginScreen {
     if (autoConnect) {
       var connection = this.savedConnections[autoConnect];
       console.log("Connecting to auto-connect saved connection: " + autoConnect, connection);
-      App.startLoading("Connecting...", 50, {
+      App.startLoading("Connecting...", 500, {
         cancel() {
           App.stopRunningQuery();
           App.stopLoading();
