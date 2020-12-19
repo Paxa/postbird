@@ -181,45 +181,16 @@ var helpers = global.ViewHelpers = {
   },
 
   betterDateTime: function (date) {
-    var dateSec = date._d.getTime() / 1000.0;
-    var nowSec = Math.round(Date.now() / 1000);
-    var todayStart = nowSec - nowSec % 86400;
-    var todayEnd = todayStart + 86400;
-    var currentYear = new Date().getFullYear();
-
     var attrs = date.origValueString ? ` title="${date.origValueString}"` : '';
-    var formatted = null;
-
-    if (dateSec > todayStart && dateSec < todayEnd) {
-      formatted = "Today, " + date.format("HH:mm:ss");
-    } else if (currentYear == date._d.getFullYear()) {
-      formatted = date.format("MMM DD HH:mm:ss");
-    } else {
-      formatted = date.format("MMM DD YYYY HH:mm:ss");
-    }
+    var formatted = date.format("YYYY-MM-DD HH:mm:ss");
 
     return `<time${attrs}>${formatted}</time>`;
   },
 
 
   betterDateTimeZ: function (date) {
-    // date._d - is a date with substracted timezone offset
-    var dateSec = date._d.getTime() / 1000.0;
-    var nowSec = Math.round(Date.now() / 1000);
-    var todayStart = nowSec - nowSec % 86400;
-    var todayEnd = todayStart + 86400;
-    var currentYear = new Date().getFullYear();
-
     var attrs = date.origValueString ? ` title="${date.origValueString}"` : '';
-    var formatted = null;
-
-    if (dateSec > todayStart && dateSec < todayEnd) {
-      formatted = "Today, " + date.format("HH:mm:ss Z").replace(/:00$/, '');
-    } else if (currentYear == date._d.getFullYear()) {
-      formatted = date.format("MMM DD HH:mm:ss Z").replace(/:00$/, '');
-    } else {
-      formatted = date.format("MMM DD YYYY HH:mm:ss Z").replace(/:00$/, '');
-    }
+    var formatted = date.format("YYYY-MM-DD HH:mm:ss");
 
     return `<time${attrs}>${formatted}</time>`;
   },
