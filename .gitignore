@@ -3,3 +3,4 @@ libudev.so.0
 node_modules/
 .ruby-version
 dist/
+.DS_Store

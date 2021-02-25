@@ -14,6 +14,8 @@ class LoginScreen {
 
   constructor (cliConnectString) {
     this.type = "login_screen";
+    this.herokuClient = new HerokuClient();
+    this.activeForm = 'standard';
 
     this.content = App.renderView('login_screen');
     this.standardForm = new LoginStandardForm(this, this.content);
@@ -24,27 +26,26 @@ class LoginScreen {
       $u.textareaAutoSize(el);
     });
 
+    this.initEvents();
+
     this.fillSavedConnections();
-    if (this.connections.find('li:first').length) {
-      this.connections.find('li:first').click();
+
+    if (Object.keys(this.savedConnections).length > 0) {
+      this.connectionName = Object.keys(this.savedConnections)[0];
+      this.connectionSelected(this.connectionName);
     } else {
       this.fillForm({user: process.env.USER || 'user'});
     }
-
-    this.initEvents(this.content);
 
     if (cliConnectString) {
       this.makeConnection(cliConnectString, {});
     } else {
       this.checkAutoLogin();
     }
-
-    this.herokuClient = new HerokuClient();
-    this.activeForm = 'standard';
   }
 
-  initEvents(content) {
-    PaneBase.prototype.initEvents.call(this, content);
+  initEvents() {
+    PaneBase.prototype.initEvents.call(this, this.content);
 
     this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();
@@ -55,7 +56,8 @@ class LoginScreen {
   showPart (name) {
     this.activeForm = name;
     this.content.find('.middle-window-content').hide();
-    this.content.find('.middle-window-content.' + name).show();
+    this.content.find('.middle-window-content.' + name).show().css('display', 'block');
+    this.content.find('.middle-window').attr('active-part', name);
   }
 
   showStandardPane () {
@@ -78,6 +80,10 @@ class LoginScreen {
 
   showHerokuOAuthPane () {
     this.showPart('heroku-oauth');
+  }
+
+  showExtraLogingFields () {
+    this.content.find('.middle-window').toggleClass('extra-login-fields-open');
   }
 
   startHerokuOAuth () {
@@ -127,7 +133,6 @@ class LoginScreen {
   fillSavedConnections () {
     this.connections.empty();
     this.savedConnections = Model.SavedConn.savedConnections();
-    var currentConnection = this.connectionName;
 
     ObjectKit.forEach(this.savedConnections, (name, params) => {
       var line = $dom(['li', {'data-auto-connect': params.auto_connect, 'data-name': name}, name]);
@@ -147,14 +152,15 @@ class LoginScreen {
         }
       });
 
-      if (name == currentConnection) {
-        $u(line).addClass('selected');
-      }
+      // if (name == currentConnection) {
+      //   $u(line).addClass('selected');
+      //   this.connectionSelected(name, params, line);
+      // }
 
       $u(line).single_double_click_nowait((e) => {
-        this.connectionSelected(name, params, line);
+        this.connectionSelected(name);
       }, (e) => {
-        this.connectionSelected(name, params, line);
+        this.connectionSelected(name);
         this.submitCurrentForm();
       });
 
@@ -162,7 +168,10 @@ class LoginScreen {
     });
   }
 
-  connectionSelected (name, params, line) {
+  connectionSelected (name) {
+    var params = this.savedConnections[name];
+    var line = this.connections.find(`[data-name='${name}']`);
+
     this.connections.find('.selected').removeClass('selected');
     $u(line).addClass('selected');
     this.connectionName = name;
@@ -276,7 +285,7 @@ class LoginScreen {
           App.stopLoading();
         }
       });
-      this.connectionSelected(autoConnect, connection, this.connections.find(`[data-name='${autoConnect}']`));
+      this.connectionSelected(autoConnect);
       this.submitCurrentForm();
     }
   }

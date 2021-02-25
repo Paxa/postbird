@@ -331,6 +331,9 @@ global.App = {
     conn.connectToServer(options, (status, error) => {
       this.stopLoading();
       if (status) {
+        if (conn.options.tab_name) {
+          connectionName = conn.options.tab_name;
+        }
         var tab = this.addDbScreen(conn, connectionName, options);
         tab.activate();
         if (callback && runCallback) callback(tab);

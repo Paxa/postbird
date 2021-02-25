@@ -25,6 +25,12 @@ interface ConnectionOptions {
   url?: string
   type?: string
   sql_query?: string
+  tab_name?: string
+  ssh_host?: string
+  ssh_user?: string
+  ssh_pass?: string
+  ssh_port?: string
+  ssh_key?: string
 }
 
 interface HistoryRecord {
