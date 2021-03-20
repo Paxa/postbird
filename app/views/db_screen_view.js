@@ -157,7 +157,12 @@ class DbScreenView {
       'SEQUENCE': 'Sequence'
     };
 
-    $u.each(data, (schema, tables) => {
+    Object.keys(data).sort((a, b) => {
+      // preserve public shema as first always
+      if (a > b || b === 'public') return 1;
+      if (a < b) return -1;
+      return 0;
+    }).forEach((schema) => {
       var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
       if (schema == 'public') $u(schemaTree[0]).addClass('open');
 
