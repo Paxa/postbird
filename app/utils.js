@@ -400,3 +400,13 @@ $u.textareaAutoSize = function (element) {
   element.style.height = 'auto';
   element.style.height = element.scrollHeight + 'px';
 };
+
+$u.debounce = (func, delay) => {
+  let inDebounce;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(inDebounce);
+    inDebounce = setTimeout(() => func.apply(context, args), delay);
+  };
+};
