@@ -51,7 +51,8 @@ class DbScreenView {
     this.sidebar.find('a.addTable').bind('click', this.newTableDialog.bind(this));
     this.sidebar.find('a.reloadStructure').bind('click', this.reloadStructure.bind(this));
 
-    this.sidebar.find('input.filter-tables').bind('keyup', this.filterTables.bind(this));
+    this.sidebar.find('input.filter-tables')
+      .bind('keyup', $u.debounce(this.filterTables, 500).bind(this));
     this.sidebar.find('span.clear-filter').bind('click', () => {
       this.clearTablesFilter();
     })
