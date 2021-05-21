@@ -28,6 +28,7 @@ declare global {
     timeFormat: (date: string) => string
     execTime: (time: number) => string
     formatJson: (value: any) => string
+    formatJsonArray: (value: any) => string
     formatArray: (value: any, format: string) => string
     getIndexType: (indexSql: string) => string
     escapeHTML: (unsafe: string) => string
@@ -125,6 +126,8 @@ var helpers = global.ViewHelpers = {
 
     if (dataType == 'ARRAY' && Array.isArray(value)) {
       formated = this.formatArray(value, format);
+    } else if (dataType === 'jsonb[]' && Array.isArray(value)) {
+      formated = this.formatJsonArray(value);
     }
 
     return formated;
@@ -276,7 +279,7 @@ var helpers = global.ViewHelpers = {
   },
 
   formatArray: function (value, format) {
-    var fomrmatted = value.map((element) => {
+    var formatted = value.map((element) => {
       if (Array.isArray(element)) {
         return this.formatArray(element, format);
       } else {
@@ -284,7 +287,11 @@ var helpers = global.ViewHelpers = {
       }
     });
 
-    return '{' + fomrmatted.join(',') + '}';
+    return '{' + formatted.join(',') + '}';
+  },
+
+  formatJsonArray: function (value) {
+    return '[' + value.map(this.formatJson.bind(this)).join(',') + ']';
   },
 
   getIndexType: function (indexSql) {
