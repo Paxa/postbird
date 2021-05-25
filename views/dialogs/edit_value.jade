@@ -14,7 +14,7 @@ form
     else
       if fieldType.udt_name == "json" || fieldType.udt_name == "jsonb"
         - value = JSON.stringify(value, null, 2)
-      else if (fieldType.data_type == "jsonb[]" && Array.isArray(value))
+      else if ["json[]", "jsonb[]"].includes(fieldType.data_type) && Array.isArray(value)
         - value = "{" + value.map(val => "\"" + JSON.stringify(val).replace(/"/g, '\\"') + "\"").toString() + "}"
       textarea(name="value" placeholder=fieldType.column_default disabled=valueIsNull)= value
 
