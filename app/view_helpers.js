@@ -126,7 +126,7 @@ var helpers = global.ViewHelpers = {
 
     if (dataType == 'ARRAY' && Array.isArray(value)) {
       formated = this.formatArray(value, format);
-    } else if (dataType === 'jsonb[]' && Array.isArray(value)) {
+    } else if (['json[]', 'jsonb[]'].includes(dataType) && Array.isArray(value)) {
       formated = this.formatJsonArray(value);
     }
 
@@ -291,7 +291,7 @@ var helpers = global.ViewHelpers = {
   },
 
   formatJsonArray: function (value) {
-    return '[' + value.map(this.formatJson.bind(this)).join(',') + ']';
+    return '[' + value.map(this.formatJson.bind(this)).join(', ') + ']';
   },
 
   getIndexType: function (indexSql) {
