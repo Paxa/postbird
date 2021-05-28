@@ -12,10 +12,8 @@ form
         option(value="true"  selected=value) true
         option(value="false" selected=(value === false) ) false
     else
-      if fieldType.udt_name == "json" || fieldType.udt_name == "jsonb"
+      if ["json", "jsonb"].includes(fieldType.udt_name) || (["json[]", "jsonb[]"].includes(fieldType.data_type) && Array.isArray(value))
         - value = JSON.stringify(value, null, 2)
-      else if ["json[]", "jsonb[]"].includes(fieldType.data_type) && Array.isArray(value)
-        - value = "{" + value.map(val => "\"" + JSON.stringify(val).replace(/"/g, '\\"') + "\"").toString() + "}"
       textarea(name="value" placeholder=fieldType.column_default disabled=valueIsNull)= value
 
   if fieldType.is_nullable
