@@ -45,7 +45,7 @@ var filterMatchers = (() => {
       sql: (type, f, v) => {
         return `${ef(f)} = ${numOrStr(type, v)}`;
       },
-      
+
     },
     not_eq: {
       label: '≠',
@@ -508,6 +508,16 @@ class Content extends PaneBase {
 
     //global.editValue = value;
 
+    const sanitizeUpdateValue = (dataType, stringValue) => {
+      if (['json[]', 'jsonb[]'].includes(dataType)) {
+        const bracket = (v) => "{" + v + "}"
+        const quote =  (v) => "\"" + v + "\""
+        const jsonArray = JSON.parse(stringValue)
+        return  bracket(jsonArray.map(json => quote(JSON.stringify(json).replace(/"/g, '\\"'))).toString())
+      }
+      return stringValue
+    }
+
     var dialog = new Dialog.EditValue(this.handler, {
       value: value,
       fieldName: fieldName,
@@ -515,7 +525,8 @@ class Content extends PaneBase {
       onSave: async (value, isNull) => {
         App.startLoading(`Updating value for ${fieldName}...`);
         try {
-          var result = await this.handler.table.updateValue(ctid, fieldName, value, isNull);
+          const sanitizedValue = sanitizeUpdateValue(fieldType.data_type, value)
+          var result = await this.handler.table.updateValue(ctid, fieldName, sanitizedValue, isNull);
           dialog.close();
           if (result.rowCount == 0) {
             $u.alertError("No records updated, probably table content was changed since you started editing.",
