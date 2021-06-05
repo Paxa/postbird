@@ -12,7 +12,7 @@ form
         option(value="true"  selected=value) true
         option(value="false" selected=(value === false) ) false
     else
-      if ["json", "jsonb"].includes(fieldType.udt_name) || (["json[]", "jsonb[]"].includes(fieldType.data_type) && Array.isArray(value))
+      if ["json", "jsonb"].includes(fieldType.udt_name) || (fieldType.data_type.includes("[]") && Array.isArray(value))
         - value = JSON.stringify(value, null, 2)
       textarea(name="value" placeholder=fieldType.column_default disabled=valueIsNull)= value
 

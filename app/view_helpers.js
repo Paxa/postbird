@@ -27,9 +27,7 @@ declare global {
     betterDate: (value: Date) => string
     timeFormat: (date: string) => string
     execTime: (time: number) => string
-    formatJson: (value: any) => string
-    formatJsonArray: (value: any) => string
-    formatArray: (value: any, format: string) => string
+    formatArray: (value: any, format: string, dataType: string) => string
     getIndexType: (indexSql: string) => string
     escapeHTML: (unsafe: string) => string
     shorterTypeName: (typeName: string) => string
@@ -84,53 +82,55 @@ var helpers = global.ViewHelpers = {
       //value = this.escapeHTML(value);
     }
 
-    var formated = value;
-    if (!formated) return formated;
+    var formatted = value;
+    if (!formatted) return formatted;
 
     switch (format) {
       case 'hstore': case 'text': case 'tsvector':
         var shorterValue = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
-        formated = `<span class="text">${shorterValue}</span>`;
+        formatted = `<span class="text">${shorterValue}</span>`;
         break;
       case 'xml':
-        formated = '<span class="text type-xml">' + value + '</span>';
+        formatted = '<span class="text type-xml">' + value + '</span>';
         break;
       case 'varchar':
         if (typeof value == 'string' && value.length > 20) {
           var shorterValue /*: any */ = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
-          formated = `<span class="text">${shorterValue}</span>`;
+          formatted = `<span class="text">${shorterValue}</span>`;
         }
         break;
       case 'timestamp':
-        formated = this.betterDateTime(value);
+        formatted = this.betterDateTime(value);
         break;
       case 'timestamptz':
-        formated = this.betterDateTimeZ(value);
+        formatted = this.betterDateTimeZ(value);
         break;
       case 'date':
-        formated = this.betterDate(value);
+        formatted = this.betterDate(value);
         break;
       case 'jsonb': case 'json':
-        formated = this.formatJson(value);
+        formatted = this.formatJson(value);
         break;
       case 'bytea':
         var str = value.toString('ascii', 0, 100);
-        formated = str;
+        formatted = str;
         //console.log(value);
-        //formated = value.length > 100 ? value.substr(0, 100) : value;
+        //formatted = value.length > 100 ? value.substr(0, 100) : value;
         break;
       case 'interval':
-        formated = `${value.toPostgres()}`
+        formatted = `${value.toPostgres()}`
         break;
     }
 
-    if (dataType == 'ARRAY' && Array.isArray(value)) {
-      formated = this.formatArray(value, format);
-    } else if (['json[]', 'jsonb[]'].includes(dataType) && Array.isArray(value)) {
-      formated = this.formatJsonArray(value);
+    if (Array.isArray(value)) {
+      if (dataType == 'ARRAY') {
+        formatted = this.formatArray(value, format, dataType);
+      } else {
+        formatted = this.formatJson(value);
+      }
     }
 
-    return formated;
+    return formatted;
   },
 
   relatedRowsIcon(rel, columnName, value) {
@@ -278,20 +278,15 @@ var helpers = global.ViewHelpers = {
     return `<span class="text ${wrongJson ? 'wrong-json' : ''}" ${wrongJson ? 'title="JSON value saved as string"' : ''}>${json}</span>`;
   },
 
-  formatArray: function (value, format) {
+  formatArray: function (value, format, dataType) {
     var formatted = value.map((element) => {
       if (Array.isArray(element)) {
-        return this.formatArray(element, format);
+        return this.formatArray(element, format, dataType);
       } else {
-        return this.formatCell(element, format);
+        return this.formatCell(element, format, dataType);
       }
     });
-
-    return '{' + formatted.join(',') + '}';
-  },
-
-  formatJsonArray: function (value) {
-    return '[' + value.map(this.formatJson.bind(this)).join(', ') + ']';
+    return '[' + formatted.join(',') + ']';
   },
 
   getIndexType: function (indexSql) {
