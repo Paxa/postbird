@@ -33,7 +33,7 @@ jobs:
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             return commit_details.data.author.date
 
-      - uses: wilsonzlin/setup-b2@v2
+      - uses: wilsonzlin/setup-b2@v3
 
       - name: Upload
         run: |
