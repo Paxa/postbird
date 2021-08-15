@@ -35,20 +35,8 @@ jobs:
 
       - uses: wilsonzlin/setup-b2@v3
 
-      - name: Upload
-        shell: bash
+      - name: Display the path
         if: runner.os == 'Linux'
         run: |
-          echo $COMMITTED_AT;
-          b2 authorize-account ${B2_APPKEY_ID} ${B2_APPKEY};
-          cd dist;
-          for filename in ./*.{dmg,deb,rpm,snap,exe,zip,AppImage,pacman,apk}; do
-            echo "Upload to ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename}";
-            b2 upload_file ${B2_BUCKET} ${filename} ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename};
-          done;
-          b2 clear-account
-        env:
-          COMMITTED_AT: ${{ steps.author-date.outputs.result }}
-          B2_APPKEY_ID: ${{ secrets.B2_KEY_ID }}
-          B2_APPKEY: ${{ secrets.B2_APPLICATION_KEY }}
-          B2_BUCKET: ${{ secrets.B2_BUCKET }}
+          exec(open("./build_files/upload_package.py").read(), globals())
+        shell: python
