@@ -19,13 +19,36 @@ jobs:
         with:
           node-version: 12
 
-      - name: Build/release Electron app
+      - name: Build/release app
         uses: samuelmeuli/action-electron-builder@v1
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+      - uses: actions/github-script@v4
+        id: author-date
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
+            return commit_details.data.author.date
+
+      - name: Upload
+        uses: yamatt/backblaze-b2-upload-action@v4
+        run: |
+          echo $COMMITTED_AT;
+          b2 authorize-account ${B2_APPKEY_ID} ${B2_APPKEY};
+          cd dist;
+          for filename in ./*.{dmg,deb,rpm,snap,exe,zip,AppImage,pacman,apk}; do;
+            echo "Upload to ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename}";
+            b2 upload_file ${B2_BUCKET} ${filename} ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename};
+          done;
+          b2 clear-account
+        env:
+          COMMITTED_AT: ${{ steps.author-date.outputs.result }}
+        with:
+          key_id: ${{ secrets.B2_KEY_ID }}
+          application_key: ${{ secrets.B2_APPLICATION_KEY }}
+          bucket_name: ${{ secrets.B2_BUCKET }}
+          file_path: test
+          remote_path: test
