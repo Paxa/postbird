@@ -33,8 +33,9 @@ jobs:
             const commit_details = await github.git.getCommit({owner: context.repo.owner, repo: context.repo.repo, commit_sha: context.sha});
             return commit_details.data.author.date
 
+      - uses: wilsonzlin/setup-b2@v2
+
       - name: Upload
-        uses: yamatt/backblaze-b2-upload-action@v4
         run: |
           echo $COMMITTED_AT;
           b2 authorize-account ${B2_APPKEY_ID} ${B2_APPKEY};
@@ -46,9 +47,6 @@ jobs:
           b2 clear-account
         env:
           COMMITTED_AT: ${{ steps.author-date.outputs.result }}
-        with:
-          key_id: ${{ secrets.B2_KEY_ID }}
-          application_key: ${{ secrets.B2_APPLICATION_KEY }}
-          bucket_name: ${{ secrets.B2_BUCKET }}
-          file_path: test
-          remote_path: test
+          B2_APPKEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPKEY: ${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: ${{ secrets.B2_BUCKET }}
