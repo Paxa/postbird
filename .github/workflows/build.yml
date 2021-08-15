@@ -36,6 +36,7 @@ jobs:
       - uses: wilsonzlin/setup-b2@v3
 
       - name: Upload
+        shell: bash
         run: |
           echo $COMMITTED_AT;
           b2 authorize-account ${B2_APPKEY_ID} ${B2_APPKEY};
