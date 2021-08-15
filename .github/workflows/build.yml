@@ -37,11 +37,12 @@ jobs:
 
       - name: Upload
         shell: bash
+        if: runner.os == 'Linux'
         run: |
           echo $COMMITTED_AT;
           b2 authorize-account ${B2_APPKEY_ID} ${B2_APPKEY};
           cd dist;
-          for filename in ./*.{dmg,deb,rpm,snap,exe,zip,AppImage,pacman,apk}; do;
+          for filename in ./*.{dmg,deb,rpm,snap,exe,zip,AppImage,pacman,apk}; do
             echo "Upload to ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename}";
             b2 upload_file ${B2_BUCKET} ${filename} ${COMMITTED_AT}-${GITHUB_BASE_REF}-${GITHUB_SHA:0:8}/${filename};
           done;
