@@ -371,7 +371,21 @@ input, textarea {
     .login-screen .middle-window label + label {
       width: auto; }
       .login-screen .middle-window label + label input[type=checkbox] {
-        margin-left: 0; }
+        margin-left: 0;
+        position: relative;
+        top: 2px; }
+    .login-screen .middle-window .extra-login-fields p.extra-field {
+      display: none; }
+    .login-screen .middle-window .extra-login-fields .close-extra-fields {
+      display: none; }
+    .login-screen .middle-window[active-part="standard"].extra-login-fields-open {
+      margin-top: calc(50vh - 275px); }
+      .login-screen .middle-window[active-part="standard"].extra-login-fields-open .close-extra-fields {
+        display: inline; }
+      .login-screen .middle-window[active-part="standard"].extra-login-fields-open .open-extra-fields {
+        display: none; }
+      .login-screen .middle-window[active-part="standard"].extra-login-fields-open .extra-login-fields p.extra-field {
+        display: block; }
   .login-screen .middle-window-content {
     display: none; }
     .login-screen .middle-window-content.standard {
@@ -426,6 +440,10 @@ input, textarea {
     box-sizing: border-box;
     font-size: 12px;
     font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif; }
+  .login-screen .middle-window-content.postgres-url .ssh-tunnel-info {
+    text-align: center;
+    margin-bottom: -8px;
+    margin-top: 3px; }
   .login-screen .sidebar {
     background: #f0f1ed;
     border-right: 1px solid #dadbd7;

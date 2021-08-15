@@ -54,6 +54,7 @@ declare module NodeJS {
     PaneBase: typeof PaneBase;
     DialogBase: typeof DialogBase;
     SqlImporter: typeof SqlImporter;
+    SqlExporter: typeof SqlExporter;
     PsqlRunner: typeof PsqlRunner;
     PgDumpRunner: typeof PgDumpRunner;
     SidebarResize: typeof SidebarResize;

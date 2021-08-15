@@ -8,6 +8,7 @@ var colors = require('colors/safe');
 colors.enabled = true;
 var vsprintf = require("sprintf-js").vsprintf;
 var ConnectionString = require('connection-string').ConnectionString;
+var SshConnect = require('../lib/ssh_connect');
 
 
 // Change postgres' type parser to use moment instance instead of js Date instance
@@ -88,6 +89,7 @@ class Connection {
     startQuery: string
     isCockroach: boolean
     onDisconnect?: Function
+    sshConnection?: typeof SshConnect
 
     static PG: any
     public static instances: Connection[]
@@ -202,8 +204,34 @@ class Connection {
 
     this.options = options;
 
-    this.connection = this._initConnection(this.connectString);
+    if (options.ssh_host && !this.sshConnection) {
+      this.sshConnection = new SshConnect();
+      this.sshConnection.connectTo(options).then(tunnel => {
+        console.log('ssh tunnel', tunnel);
+        this.options.tab_name = this.options.host;
+        this.options.host = tunnel.host;
+        this.options.port = tunnel.port;
 
+        var connStr = Connection.generateConnectionString(this.options);
+        this.connection = this._initConnection(connStr);
+        return this._startConnection(this.options, (success, error) => {
+          if (!success) {
+            this.sshConnection.disconnect();
+          }
+          callback(success, error)
+        });
+      }).catch(error => {
+        console.error(error);
+        callback && callback(false, error);
+        App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
+      });
+    } else {
+      this.connection = this._initConnection(this.connectString);
+      return this._startConnection(options, callback);
+    }
+  }
+
+  _startConnection(options, callback) {
     return this.connection.connect().then(() => {
       this.connection.on('notification', (msg) => {
         this.notificationCallbacks.forEach((fn) => {
@@ -593,6 +621,10 @@ class Connection {
     if (this.connection) {
       this.connection.end();
     }
+    if (this.sshConnection) {
+      this.sshConnection.disconnect();
+    }
+
     var index = global.Connection.instances.indexOf(this);
     if (index != -1) {
       global.Connection.instances.splice(index, 1);

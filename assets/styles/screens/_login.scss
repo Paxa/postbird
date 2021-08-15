@@ -112,9 +112,37 @@ $mac-block-tabs-radius: 4px;
       width: auto;
       input[type=checkbox] {
         margin-left: 0;
+        position: relative;
+        top: 2px;
       }
     }
-  }
+
+    // extra fields for ssh tunnel connection
+    .extra-login-fields {
+      p.extra-field {
+        display: none;
+      }
+      .close-extra-fields {
+        display: none;
+      }
+    }
+
+    &[active-part="standard"].extra-login-fields-open {
+      margin-top: calc(50vh - 275px);
+      .close-extra-fields {
+        display: inline;
+      }
+      .open-extra-fields {
+        display: none;
+      }
+      .extra-login-fields {
+        p.extra-field {
+          display: block;
+        }
+      }
+    }
+
+  } // .middle-window
 
   .middle-window-content {
     display: none;
@@ -192,6 +220,11 @@ $mac-block-tabs-radius: 4px;
       box-sizing: border-box;
       font-size: 12px;
       font-family: $code-font;
+    }
+    .ssh-tunnel-info {
+      text-align: center;
+      margin-bottom: -8px;
+      margin-top: 3px;
     }
   }
 

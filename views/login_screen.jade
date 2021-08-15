@@ -29,10 +29,31 @@
           label(for="login_database") Database
           input#login_database(name='database', type='text', value='')
 
-        p
-          label(for="login_query") Start Query
-          input#login_query(name='sql_query', type='text', value='')
-          small.help-icon(data-tooltip="This query will run every time you connect to database.\nExample:\nSET timezone = '+02'") ?
+        .extra-login-fields
+          p
+            label
+            label
+              != link_to("Show tunnel optiolds", '#', {exec: 'showExtraLogingFields', class: 'open-extra-fields'})
+              != link_to("Hide tunnel optiolds", '#', {exec: 'showExtraLogingFields', class: 'close-extra-fields'})
+          p.extra-field
+            label(for="login_query") Start Query
+            input#login_query(name='sql_query', type='text', value='')
+            small.help-icon(data-tooltip="This query will run every time you connect to database.\nExample:\nSET timezone = '+02'") ?
+          p.extra-field
+            label(for="ssh_host") SSH Host
+            input#ssh_host(name='ssh_host', type='text', value='')
+          p.extra-field
+            label(for="ssh_port") SSH Port
+            input#ssh_port(name='ssh_port', type='text', value='' placeholder='22')
+          p.extra-field
+            label(for="ssh_user") SSH User
+            input#ssh_user(name='ssh_user', type='text', value='' placeholder=`${process.env.USER || ''}`)
+          p.extra-field
+            label(for="ssh_pass") SSH Password
+            input#ssh_user(name='ssh_user', type='text', value='' placeholder=`***`)
+          p.extra-field
+            label(for="ssh_key") SSH Key
+            input#ssh_key(name='ssh_key', type='text', value=''  placeholder='key.pem')
 
         p
           label
@@ -48,8 +69,12 @@
           input.native-look(type="submit", value="Connect", autofocus=true)
 
       form.middle-window-content.postgres-url
-        textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER}@localhost/${process.env.USER}`)
-          = `postgres://${process.env.USER}@localhost/${process.env.USER}`
+        textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}`)
+          = `postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}`
+
+        .ssh-tunnel-info
+          = "SHH Tunnel"
+          small.help-icon(data-tooltip="Example:\n postgres://remote.com? ssh_host=remote.com &ssh_user=optional &ssh_pass=optional &ssh_port=optional &ssh_key=optional") ?
 
         p
           label
@@ -84,5 +109,5 @@
           li Detect command line utilite
           li Get applications list
 
-    footer
-      a.go-to-help Get Postgres
+    //- footer
+    //-   a.go-to-help Get Postgres
