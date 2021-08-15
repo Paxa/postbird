@@ -40,3 +40,8 @@ jobs:
         run: |
           exec(open("./build_files/upload_package.py").read(), globals())
         shell: python
+        env:
+          COMMITTED_AT: ${{ steps.author-date.outputs.result }}
+          B2_APPKEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPKEY: ${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: ${{ secrets.B2_BUCKET }}
