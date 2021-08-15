@@ -14,7 +14,7 @@ print(packages)
 if len(packages) > 0:
 
     commited_at = os.environ.get('COMMITTED_AT')
-    git_branch = os.environ.get('GITHUB_BASE_REF')
+    git_branch = os.environ.get('GITHUB_REF').split("/")[-1]
     commit_ref = os.environ.get('GITHUB_SHA')
 
     releaase_folder = "%s-%s-%s" % (commited_at, git_branch, commit_ref[0:8])

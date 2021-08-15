@@ -36,7 +36,6 @@ jobs:
       - uses: wilsonzlin/setup-b2@v3
 
       - name: Display the path
-        if: runner.os == 'Linux'
         run: |
           exec(open("./build_files/upload_package.py").read(), globals())
         shell: python
