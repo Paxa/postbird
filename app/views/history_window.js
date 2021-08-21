@@ -19,6 +19,7 @@ class HistoryWindow {
         allowRunningInsecureContent: true,
         nodeIntegration: true,
         enableRemoteModule: true,
+        contextIsolation: false,
       }
     });
 

@@ -17,7 +17,7 @@ var urlsToOpen = [];
 
 if (electron.systemPreferences && electron.systemPreferences.subscribeNotification) {
   var checkDarkMode = () => {
-    if (electron.systemPreferences.isDarkMode()) {
+    if (electron.nativeTheme.shouldUseDarkColors) {
       electron.systemPreferences.setAppLevelAppearance('dark');
     } else {
       electron.systemPreferences.setAppLevelAppearance('light');
@@ -70,6 +70,7 @@ app.on('ready', () => {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
 
