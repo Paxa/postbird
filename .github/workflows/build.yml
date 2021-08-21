@@ -27,7 +27,7 @@ jobs:
 
       - name: List Files
         shell: bash
-        run: ls dist
+        run: ls -lah dist
 
       - name: Upload Postbird.dmg
         uses: actions/upload-artifact@v2
@@ -50,13 +50,6 @@ jobs:
           path: dist/*.zip
         if: ${{ runner.os == 'Windows' }}
 
-      - name: Upload Postbird-win.zip
-        uses: actions/upload-artifact@v2
-        with:
-          name: Postbird-win.zip
-          path: dist/*.zip
-        if: ${{ runner.os == 'Windows' }}
-
       - name: Upload Postbird.snap
         uses: actions/upload-artifact@v2
         with:
@@ -68,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Postbird.AppImage
-          path: dist/*.AppImage
+          path: dist/Postbird*.AppImage
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.deb
