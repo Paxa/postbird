@@ -46,7 +46,7 @@ jobs:
       - name: Upload Postbird-win.zip
         uses: actions/upload-artifact@v2
         with:
-          name: Postbird-win.zip
+          name: Postbird_win.zip
           path: dist/*.zip
         if: ${{ runner.os == 'Windows' }}
 
