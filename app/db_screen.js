@@ -431,6 +431,13 @@ class DbScreen {
     var message = `Delete ${tableTitle} ${schema}.${tableName}?`;
     if (await $u.confirm(message)) {
       await table.remove();
+      if (this.currentTable == tableName && this.currentSchema == schema) {
+        this.currentTable = null;
+        this.currentSchema = null;
+        if (this.currentTab != 'query') {
+          this.activateTab(this.currentTab, 'force');
+        }
+      }
       this.omit('table.deleted');
       this.fetchTablesAndSchemas();
     }
