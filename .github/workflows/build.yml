@@ -38,4 +38,13 @@ jobs:
           COMMITTED_AT: ${{ steps.author-date.outputs.result }}
         with:
           name: ${{ env.COMMITTED_AT }}-${{ env.GITHUB_SHA }}
-          path: dist/*.{dmg,deb,rpm,snap,exe,zip,AppImage,pacman,apk}
+          path: |
+            dist/*.dmg
+            dist/*.deb
+            dist/*.rpm
+            dist/*.snap
+            dist/*.exe
+            dist/*.zip
+            dist/*.AppImage
+            dist/*.pacman
+            dist/*.apk
