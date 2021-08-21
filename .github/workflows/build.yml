@@ -19,10 +19,6 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install Linux Dependencies
-        run: sudo apt-get install -y rpm
-        if: ${{ runner.os == 'Linux' }}
-
       - name: Build/release app
         uses: samuelmeuli/action-electron-builder@v1
         with:
