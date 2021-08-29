@@ -323,7 +323,11 @@ global.App = {
     if (typeof options == 'string') {
       options = Connection.parseConnectionString(options);
       if (!connectionName) {
-        connectionName = options.host;
+        if (options.tab_name && options.tab_name != "") {
+          connectionName = options.tab_name;
+        } else {
+          connectionName = options.host;
+        }
       }
     }
 
