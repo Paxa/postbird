@@ -1193,10 +1193,10 @@ css-value@^0.0.1:
   resolved "https://registry.yarnpkg.com/css-value/-/css-value-0.0.1.tgz#5efd6c2eea5ea1fd6b6ac57ec0427b18452424ea"
   integrity sha1-Xv1sLupeof1rasV+wEJ7GEUkJOo=
 
-csv-stringify@^5.6.2:
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.2.tgz#e653783e2189c4c797fbb12abf7f4943c787caa9"
-  integrity sha512-n3rIVbX6ylm1YsX2NEug9IaPV8xRnT+9/NNZbrA/bcHgOSSeqtWla6XnI/xmyu57wIw+ASCAoX1oM6EZtqJV0A==
+csv-stringify@^5.6.4:
+  version "5.6.4"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.4.tgz#8764c56c39eefc1539db47de3f3b90eb11be22f0"
+  integrity sha512-LnX2ft+6MX3CJKLoL4n9ZLIiaUKmPQLJixMbSfGC8wGNBn82UEdX9Fcg4f2HbpCTWqjIiLrxegQt2uorQo2NXw==
 
 currently-unhandled@^0.4.1:
   version "0.4.1"
@@ -1504,10 +1504,10 @@ electron-window@^0.8.0:
   dependencies:
     is-electron-renderer "^2.0.0"
 
-electron@^13.2.0:
-  version "13.2.1"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-13.2.1.tgz#0dc89ed0e3faf327b39571de533ca1ae18878ff1"
-  integrity sha512-/K0Uw+o3+phbHtrVL6qDFVJqmeRF6EIPwVeUHEH5R8JNy13f4X3RouKjQzVyY/Os8fEqYHGFONWhD6q6g750HQ==
+electron@^13.2.3:
+  version "13.2.3"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.2.3.tgz#a0fd80a011ba1549147777c9d72e881577904509"
+  integrity sha512-FzWhbKHjq7ZTpPQFaYiLPL64erC8/BOsu5NlNN9nQ6f7rIP8ygKlNAlQit3vbOcksQAwItDUCIw4sW0mcaRpCA==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
