@@ -1,4 +1,10 @@
 var Client = require('pg').Client;
+var pgEscape = require('pg-escape');
+
+var typesWithoutQuotes = [
+  'bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal',
+  'int2vector', 'int4range', 'int8range', 'numrange', 'boolean'
+];
 
 var filterMatchers = (() => {
   var pgClient = new Client();
@@ -459,11 +465,27 @@ class Content extends PaneBase {
         this.editField(el);
       };
 
+      contextMenuActions['Copy Row as SQL'] = (menuItem, bwin) => {
+        var event = table[0].contextmenu.clickEvent;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+        this.copyRowAsSql(el);
+      };
+
       contextMenuActions['Add New Row'] = (menuItem, bwin) => {
         this.addRow();
       };
     }
-    $u.contextMenu(table, contextMenuActions);
+    $u.contextMenu(table, contextMenuActions, {
+      // if text is not selected - disable copy button
+      onShow: (event, contextmenu) => {
+        var isTextSelected = window.getSelection().toString() != "";
+        contextmenu.items.forEach(item => {
+          if (item.label == "Copy") {
+            item.enabled = isTextSelected;
+          }
+        });
+      }
+    });
 
     if (this.currentTableType == 'BASE TABLE') {
       // for empty area when table is empty
@@ -486,6 +508,63 @@ class Content extends PaneBase {
         this.reloadData();
       } catch (error) {
         $u.alert(error.message);
+      }
+    }
+  }
+
+  copyRowAsSql (row) {
+    var ctid = $u(row).attr('data-ctid');
+    var selectedRow = this.currentData.rows.find(row => {
+      return row.ctid == ctid;
+    });
+
+    var fieldNames = []
+    var escapedValues = [];
+
+    this.currentData.fields.forEach(field => {
+      var fieldName = field.name;
+      if (fieldName != 'ctid') {
+        fieldNames.push(fieldName);
+        var escapedValue = '';
+        var colType = this.columnTypes[fieldName].data_type;
+        var escapedValue = this.valueToSqlInsert(selectedRow[fieldName], colType);
+        escapedValues.push(escapedValue);
+      }
+    })
+    var joinedFields = fieldNames.map(f => '"' + f + '"').join(", ");
+    var joinedValues = escapedValues.join(", ");
+    var sql = `INSERT INTO "${this.handler.currentSchema}"."${this.handler.currentTable}" (${joinedFields}) VALUES (${joinedValues})`;
+    console.log("Insert SQL", sql);
+    electron.clipboard.writeText(sql);
+  }
+
+  valueToSqlInsert(value, colType, insideArray) {
+    if (value === null) {
+      return 'NULL';
+    }
+    var isArray = colType.endsWith("[]") || Array.isArray(value);
+    if (isArray) {
+      var arrayElements = value.map(elementVal => {
+        return this.valueToSqlInsert(elementVal, colType.replace(/\[\]$/, ''), true);
+      })
+      if (insideArray) {
+        return `[${arrayElements.join(", ")}]`;
+      } else {
+        return `ARRAY [${arrayElements.join(", ")}]`;
+      }
+    } else if (typesWithoutQuotes.includes(colType)) {
+      return value;
+    } else if (colType == 'json' || colType == 'jsonb') {
+      if (insideArray) {
+        return `'${pgEscape.string(JSON.stringify(value))}'::${colType}`;
+      } else {
+        return `'${pgEscape.string(JSON.stringify(value))}'`;
+      }
+    } else {
+      if (typeof value == 'string') {
+        return pgEscape('%L', value)
+      } else {
+        return `'${pgEscape.string(value)}'`;
       }
     }
   }

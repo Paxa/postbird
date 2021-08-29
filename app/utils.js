@@ -77,7 +77,11 @@ $u.contextMenu = function (elementArg, options, params) {
       var menu = element.contextmenu = new Menu();
       for (var n in options) {
         if (options[n] && typeof options[n] == 'string') {
-          menu.append(new MenuItem({ type: options[n] }));
+          if (options[n] == 'separator') {
+            menu.append(new MenuItem({ type: options[n] }));
+          } else {
+            menu.append(new MenuItem({ role: options[n] }));
+          }
         } else {
           menu.append(new MenuItem({ label: n, click: options[n] }));
         }

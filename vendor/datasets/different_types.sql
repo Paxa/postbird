@@ -10,8 +10,9 @@ CREATE TABLE different_types (
   col_array_int integer[],
   col_matrix_3x3 integer[3][3],
   col_array_text text[],
+  song text[][],
   col_hstore hstore,
-  col_gender human_gender
+  col_gender human_gender,
 );
 
 -- insert all nulls
