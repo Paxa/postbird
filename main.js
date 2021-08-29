@@ -1,5 +1,6 @@
 const electron = require('electron');
 const app = electron.app;
+const path = require('path');
 const BrowserWindow = electron.BrowserWindow;
 const windowStateKeeper = require('electron-window-state');
 
@@ -34,7 +35,13 @@ app.on('window-all-closed', function() {
   //}
 });
 
-app.setAsDefaultProtocolClient('postgres');
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('postgres', process.execPath, [path.resolve(process.argv[1])])
+  }
+} else {
+  app.setAsDefaultProtocolClient('postgres')
+}
 
 app.on('open-file', (event, filename) => {
   event.preventDefault();
@@ -51,10 +58,13 @@ app.on('open-url', (event, url) => {
 
   if (mainWindow) {
     mainWindow.send('open-url', url);
+    mainWindow.focus();
   } else {
     urlsToOpen.push(url);
   }
 });
+
+var gotTheLock = app.requestSingleInstanceLock();
 
 app.on('ready', () => {
   const mainWindowState = windowStateKeeper({
