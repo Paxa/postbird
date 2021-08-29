@@ -266,10 +266,10 @@ class Content extends PaneBase {
 
     //console.log("Rendered " + (Date.now() - sTime) + "ms");
 
-    this.content.find('span.text').bind('dblclick', (e) => {
-      $u.stopEvent(e);
-      $u(e.target.parentNode).toggleClass('expanded');
-    });
+    // this.content.find('span.text').bind('dblclick', (e) => {
+    //   $u.stopEvent(e);
+    //   $u(e.target.parentNode).toggleClass('expanded');
+    // });
 
     //console.log("Expanders " + (Date.now() - sTime) + "ms");
 
