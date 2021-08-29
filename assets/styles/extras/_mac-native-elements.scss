@@ -1,7 +1,7 @@
-$mac-window-background: #ececec;
+$mac-window-background: #f6f6f6;
 
-$mac-item-selected-bg: #2b66da;
-$mac-item-selected-inactive-bg: #dcdcdc;
+$mac-item-selected-bg: #2065d9;
+$mac-item-selected-inactive-bg: #dbdcdd;
 $mac-table-even-row-dg: #f5f5f4;
 
 $mac-sidebar-border-color: #ddddd9;
@@ -94,15 +94,15 @@ $mac-button-shadow: 0 1px 1px rgba(0,0,0,.06);
 }
 
 @mixin native-sidebar() {
-  background: #f0f1ed; // #eff1ed; // #f5f5f4;
+  background: #ededee; // #eff1ed; // #f5f5f4;
   border-right: 1px solid #dadbd7;
 }
 
 @mixin native-panel-element() {
-  background: #e2e2e2;
+  background: #eaeaea;
   border-radius: 5px;
-  border: 1px solid #dfdfdf;
-  border-top: 1px solid #d3d3d3;
+  border: 1px solid #e3e3e3;
+  border-top: 1px solid #dfdfdf;
 }
 
 @mixin native-sidebar-title() {

@@ -1,13 +1,17 @@
 $unfocus-list-item-bg: #dcdcdc;
+$unfocus-sidebar-bg: #f3f3f3;
 
 body.unfocused {
   #tabs {
-    background: #ececec;
+    background: #dcdbdb;
+    box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.1);
     .tab {
-      background: #ececec;
+      // background: rgba(#acabab, 0.3);
       border-color: #dbdbdb;
+      color: #a09f9f;
       &.active {
-        background: #f1f1f1;
+        background: #e9e8e8;
+        color: #a9a8a8;
       }
     }
     &:after {
@@ -31,7 +35,7 @@ body.unfocused {
   }
 
   .main-screen > .sidebar, .login-screen .sidebar {
-    background: #f6f6f6;
+    background: $unfocus-sidebar-bg;
     border-right-color: #dfdfdf;
   }
 

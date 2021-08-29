@@ -22,7 +22,7 @@
     .window-tabs {
       display: flex;
       background: rgba(#000, 0.1);
-      border-bottom: 1px solid #a3a3a3;
+      border-bottom: 1px solid #c3c3c3;
 
       @include children-inline;
 
@@ -30,7 +30,7 @@
         width: 150px;
         max-width: 100%;
         text-align: center;
-        border-right: 1px solid #a3a3a3;
+        border-right: 1px solid #c3c3c3;
 
         @include system-text;
 

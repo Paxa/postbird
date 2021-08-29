@@ -3,7 +3,7 @@
   border-right: none;
   width: $sidebar-width;
   padding: {
-    top: 48px;
+    top: 50px;
     right: 0px;
     left: 0px;
     bottom: $sidebar-footer-height + 1px;
@@ -38,18 +38,22 @@
     top: 0;
     left: 0;
     box-sizing: border-box;
-    padding: 3px 5px 6px;
+    padding: 3px 12px 6px;
     width: 100%;
     border-bottom: 1px solid #d1d1d1;
 
     select {
       width: 100%;
+      border-color: #ccc;
+      border-radius: 4px;
+      height: 23px;
     }
 
     label {
       display: block;
       @include unselectable;
-      margin-bottom: -1px;
+      margin-bottom: 1px;
+      font-size: 0.9em;
     }
 
     span.connection-lost {

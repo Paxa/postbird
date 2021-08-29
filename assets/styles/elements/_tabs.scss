@@ -1,10 +1,13 @@
-$tab-border-color: #9b9b9b;
+// $tab-border-color: #9b9b9b;
+$tab-border-color: #acacac;
 
 #tabs {
   @include children-inline;
-  @include gradient(#c4c2c4, #bfbdbf);
-  @include gradient(#c3c1c3, #bebdbe);
+  // @include gradient(#c4c2c4, #bfbdbf);
+  // @include gradient(#c3c1c3, #bebdbe);
+  background-color: #e7e6e5;
   overflow: hidden;
+  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
 
   position: relative;
 
@@ -20,13 +23,15 @@ $tab-border-color: #9b9b9b;
   }
 
   .tab {
-    @include gradient(#c3c1c3, #bebdbe);
-    color: #4d4d4d;
+    //@include gradient(#c3c1c3, #bebdbe);
+    background-color: #e7e6e5;
+    background-color: transparent;
+    color: #5c5b5b;
     margin: {
       right: 0px;
       bottom: 0px;
     };
-    line-height: 22px;
+    line-height: 26px;
     font: {
       size: 12px;
     };
@@ -35,11 +40,12 @@ $tab-border-color: #9b9b9b;
     text-align: center;
     border-bottom: none;
     position: relative;
-    border-right: 1px solid #aaa;
+    border-right: 1px solid #d5d4d3;
+    // box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
 
     .close {
       position: absolute;
-      top: 3px;
+      top: 5px;
       left: 5px;
       text-decoration: none;
       vertical-align: top;
@@ -68,7 +74,8 @@ $tab-border-color: #9b9b9b;
       }
 
       &:hover {
-        @include gradient(#a7a5a7, #a3a2a3);
+        // @include gradient(#a7a5a7, #a3a2a3);
+        background-color: #c2c1c1
       }
     }
 
@@ -77,23 +84,28 @@ $tab-border-color: #9b9b9b;
     }
 
     &:hover {
-      @include gradient(#b8b7b8, #b4b2b4);
+      // @include gradient(#b8b7b8, #b4b2b4);
+      background-color: #dbdada;
       .close {
         display: inline-block;
       }
     }
 
     &.active {
-      @include gradient(#dcdadc, #d6d4d6);
+      // @include gradient(#dcdadc, #d6d4d6);
+      color: #4A4A4A;
+      background-color: #F4F3F2;
       position: relative;
 
-      border-color: #999;
-      box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2);
+      border-color: #d6d5d5;
+      // box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 0.5), 0px 2px 3px rgba(0, 0, 0, 0.2);
+      box-shadow: none;
 
       padding-bottom: 0;
       &:hover .close {
         &:hover {
-          @include gradient(#cac8ca, #c5c4c5);
+          // @include gradient(#cac8ca, #c5c4c5);
+          background-color: #dcdbdb;
         }
         &:before, &:after {
           background: #797879;
