@@ -95,6 +95,10 @@ class DbScreen {
     this.currentTable = null;
     this.currentSchema = null;
 
+    if (this.currentTab != 'query') {
+      this.activateTab(this.currentTab, 'force');
+    }
+
     if (database) {
       this.connection.switchDb(this.database, () => {
         this.fetchTablesAndSchemas();
