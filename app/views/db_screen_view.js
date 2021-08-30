@@ -96,7 +96,7 @@ class DbScreenView {
       "Refresh Tables": this.reloadStructure.bind(this)
     });
 
-    new SidebarResize(this.content.find('.resize-handler'));
+    this.sidebarResizer = new SidebarResize(this.content.find('.resize-handler'));
   }
 
   // Public API

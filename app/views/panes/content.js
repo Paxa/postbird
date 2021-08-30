@@ -290,6 +290,8 @@ class Content extends PaneBase {
 
     this.footer = this.content.find('.summary-and-pages');
 
+    this.initFooterResize();
+
     this.nextPageEl = this.footer.find('.pages.next');
     this.prevPageEl = this.footer.find('.pages.prev');
 
@@ -424,6 +426,11 @@ class Content extends PaneBase {
   initContextMenu () {
     var table = this.content.find('.rescol-content-wrapper table');
 
+    // this may heppen when there is render error
+    if (table.length == 0) {
+      return;
+    }
+
     // bind for delete button
     if (this.currentTableType == 'BASE TABLE') {
       $u(table).on('generic-table-init', () => {
@@ -496,6 +503,17 @@ class Content extends PaneBase {
         }
       });
     }
+  }
+
+  // Move footer according to left sidebar resize
+  initFooterResize() {
+    if (!this.footer[0]) {
+      return;
+    }
+    this.footer[0].style.marginLeft = '' + (this.handler.view.sidebarResizer.currentWith - 1) + 'px';
+    this.handler.view.content.on('sidebar-resize', (e, newWidth) => {
+      this.footer[0].style.marginLeft = '' + (newWidth - 1) + 'px';
+    })
   }
 
   async deleteRow (row) {
