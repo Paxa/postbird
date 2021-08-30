@@ -4,6 +4,7 @@ var slash = require('slash');
 var fs = require('fs');
 
 require(__dirname + '/../view_helpers');
+require(__dirname + '/../view_cell_helpers');
 
 var dirname = process.platform === "win32"? slash(__dirname): __dirname;
 
@@ -13,23 +14,12 @@ var RenderView = {
   pugFn: {},
 
   renderView: function (file, options) {
+    var newOptions = options ? {...this.getViewHelpers(), ...options} : this.getViewHelpers();
+
     var html;
-    var new_options = {};
-    var i;
-
-    for (i in ViewHelpers) {
-      if (typeof ViewHelpers[i] == 'function') {
-        new_options[i] = ViewHelpers[i].bind(ViewHelpers);
-      }
-    }
-
-    if (options) {
-      for (i in options) new_options[i] = options[i];
-    }
-
     try {
       //var st = Date.now();
-      html = this.compileJade(file)(pugRuntime, new_options);
+      html = this.compileJade(file)(pugRuntime, newOptions);
       //console.log('pug render ' + file + ' in ' + (Date.now() - st) + 'ms');
     } catch (error) {
       console.log("Error compiling '" + RenderView.root + '/views/' + file + '.jade');
@@ -42,6 +32,24 @@ var RenderView = {
     });
 
     return res;
+  },
+
+  getViewHelpers() {
+    if (!this._viewHelpers) {
+      this._viewHelpers = {};
+      var i;
+      for (i in ViewHelpers) {
+        if (typeof ViewHelpers[i] == 'function') {
+          this._viewHelpers[i] = ViewHelpers[i].bind(ViewHelpers);
+        }
+      }
+      for (i in ViewCellHelpers) {
+        if (typeof ViewCellHelpers[i] == 'function') {
+          this._viewHelpers[i] = ViewCellHelpers[i].bind(ViewCellHelpers);
+        }
+      }
+    }
+    return this._viewHelpers;
   },
 
   compileJade: function (file) {

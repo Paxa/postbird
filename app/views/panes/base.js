@@ -41,7 +41,8 @@ class PaneBase {
       var errorMsg = $dom(['div.error',
         ['h4', "Can not render content"],
         ['code',
-          ['pre', error.toString()]
+          ['pre', error.toString()],
+          ['pre', error.stack]
         ]
       ]);
 

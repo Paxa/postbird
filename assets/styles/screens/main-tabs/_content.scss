@@ -157,10 +157,6 @@
           background: rgba(255, 192, 203, 0.56);
         }
 
-        span.type-xml {
-          //white-space: pre-line
-        }
-
         time {
           @include inline-block;
           min-width: 55px;

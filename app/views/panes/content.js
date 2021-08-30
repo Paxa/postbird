@@ -249,7 +249,8 @@ class Content extends PaneBase {
         ['h4', "Can not load content"],
         ['code',
           ['pre', this.error.toString() + (this.error.hint ? "\n" + this.error.hint : "")],
-          ['pre', this.error.query ? `Query: ${this.error.query}` : '']
+          ['pre', this.error.query ? `Query: ${this.error.query}` : ''],
+          ['pre', this.error.stack]
         ]
       ]);
 
