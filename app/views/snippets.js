@@ -26,7 +26,7 @@ class SnippetsWindow {
 
     newWindow.setTitle("Snippets");
 
-    if (process.env.NW_DEBUG == "true") {
+    if (process.env.POSTBIRD_DEBUG == "true") {
       newWindow.webContents.toggleDevTools();
     }
 

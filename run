@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NW_DEV=true
-export NW_DEBUG=true
+export POSTBIRD_DEV=true
+export POSTBIRD_DEBUG=true
 
 node_modules/.bin/electron . $@

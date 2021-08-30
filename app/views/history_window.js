@@ -25,7 +25,7 @@ class HistoryWindow {
 
     newWindow.loadURL('file://' + App.root + '/views/history_window.html');
 
-    if (process.env.NW_DEBUG == "true") {
+    if (process.env.POSTBIRD_DEBUG == "true") {
       newWindow.webContents.toggleDevTools();
     }
 

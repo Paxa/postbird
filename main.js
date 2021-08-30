@@ -7,6 +7,8 @@ const windowStateKeeper = require('electron-window-state');
 electron.app.ApplicationStart = Date.now();
 electron.app.MainFilename = process.mainModule.filename;
 
+require('./lib/error_reporter').init();
+
 // Report crashes to our server.
 //require('crash-reporter').start();
 
@@ -91,7 +93,7 @@ app.on('ready', () => {
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-  if (process.env.NW_DEBUG == "true") {
+  if (process.env.POSTBIRD_DEBUG == "true") {
     mainWindow.webContents.openDevTools({detach: true});
   }
 
