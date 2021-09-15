@@ -298,7 +298,10 @@ if (process.platform == 'linux') {
     },
     {
       label: "Quit",
-      click: () => { remote.app.quit(); }
+      click: () => {
+        remote.app.quit();
+      },
+      accelerator: 'CmdOrCtrl+Q'
     },
   );
 }
