@@ -28,7 +28,6 @@ declare global {
     timeFormat: (date: string) => string
     execTime: (time: number) => string
     formatJson: (value: any) => string
-    formatJsonArray: (value: any) => string
     formatArray: (value: any, format: string) => string
     getIndexType: (indexSql: string) => string
     escapeHTML: (unsafe: string) => string

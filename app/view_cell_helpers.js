@@ -28,7 +28,6 @@ declare global {
     timeFormat: (date: string) => string
     execTime: (time: number) => string
     formatJson: (value: any) => string
-    formatJsonArray: (value: any) => string
     formatArray: (value: any, format: string) => string
     getIndexType: (indexSql: string) => string
     escapeHTML: (unsafe: string) => string
@@ -116,11 +115,13 @@ var helpers = global.ViewCellHelpers = {
         break;
     }
 
-    if (dataType == 'ARRAY' && Array.isArray(value)) {
-      formated = this.formatArray(value, format);
-    } else if (['json[]', 'jsonb[]'].includes(dataType) && Array.isArray(value)) {
-      formated = this.formatJsonArray(value);
-      htmlEscaped = true;
+    if (Array.isArray(value)) {
+      if (dataType == 'ARRAY') {
+        formated = this.formatArray(value, format);
+      } else {
+        formated = this.formatJson(value);
+        htmlEscaped = true
+      }
     }
 
     if (!htmlEscaped && typeof formated == 'string') {
