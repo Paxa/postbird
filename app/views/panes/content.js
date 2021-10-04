@@ -616,11 +616,13 @@ class Content extends PaneBase {
     //global.editValue = value;
 
     const sanitizeUpdateValue = (dataType, stringValue) => {
-      if (['json[]', 'jsonb[]'].includes(dataType)) {
-        const bracket = (v) => "{" + v + "}"
-        const quote =  (v) => "\"" + v + "\""
+      const bracket = (v) => "{" + v + "}"
+      const quote =  (v) => "\"" + v + "\""
+      if (/^jsonb?\[\]$/.test(dataType)) {
         const jsonArray = JSON.parse(stringValue)
         return  bracket(jsonArray.map(json => quote(JSON.stringify(json).replace(/"/g, '\\"'))).toString())
+      } else if (/^character varying\(\d+\)\[\]$/.test(dataType)) {
+        return bracket(JSON.parse(stringValue).toString())
       }
       return stringValue
     }
