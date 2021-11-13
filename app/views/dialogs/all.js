@@ -19,4 +19,5 @@ module.exports = {
   RelatedRecords:   require('./related_records'),
   ShowSql:          require('./show_sql'),
   UserGrants:       require('./user_grants'),
+  ConnectionList:   require('./connection_list'),
 };

@@ -40,6 +40,14 @@ var template /*: Electron.MenuItemConstructorOptions[] */ = [
     label: 'Database',
     submenu: [
       {
+        label: 'Show Connected Clients',
+        click: () => {
+          (new ServerController).showConnectionList();
+        },
+        enabled: false
+      },
+      { type: 'separator' },
+      {
         label: 'Create Database',
         click: () => {
           new Dialog.NewDatabase(global.App.currentTab.instance);
@@ -339,11 +347,13 @@ var checkDbMenu = function () {
   }
 
   if (db && db != Connection.defaultDatabaseName) {
+    enableItem("Database", "Show Connected Clients");
     enableItem("Database", "Refresh Database");
     enableItem("Database", "Rename Database");
     enableItem("Database", "Export Database");
     enableItem("Database", "Drop Database");
   } else {
+    disableItem("Database", "Show Connected Clients");
     disableItem("Database", "Refresh Database");
     disableItem("Database", "Rename Database");
     disableItem("Database", "Export Database");

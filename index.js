@@ -34,6 +34,7 @@ global.Model = require('./app/models/all');
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');
 require('./app/controllers/updates_controller');
+require('./app/controllers/server_controller');
 
 require('./app/views/history_window');
 

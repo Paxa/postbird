@@ -168,3 +168,34 @@
     }
   }
 }
+
+.alertify-inner.connection-list {
+  width: 900px;
+  //max-width: 350px;
+  margin-bottom: 5px;
+  table {
+    td, th {
+      word-break: break-all;
+    }
+    code {
+      max-width: 700px;
+      margin: 1px 0;
+
+      @include dialog-code;
+
+      padding: 3px 5px;
+      overflow: auto;
+      max-height: 400px;
+      box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.15);
+      text-align: left;
+      white-space: pre-wrap;
+      word-break: normal;
+    }
+    i.null {
+      font-style: normal;
+      color: #b8b8b8;
+      font-size: 12px;
+      opacity: 0.75;
+    }
+  }
+}

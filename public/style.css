@@ -1918,6 +1918,32 @@ small.help-icon {
     .related-records-dialog table ~ table {
       margin-top: 15px; }
 
+.alertify-inner.connection-list {
+  width: 900px;
+  margin-bottom: 5px; }
+  .alertify-inner.connection-list table td, .alertify-inner.connection-list table th {
+    word-break: break-all; }
+  .alertify-inner.connection-list table code {
+    max-width: 700px;
+    margin: 1px 0;
+    padding: 5px;
+    background: #f5f5f5;
+    display: block;
+    font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+    word-break: break-all;
+    padding: 3px 5px;
+    overflow: auto;
+    max-height: 400px;
+    box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: normal; }
+  .alertify-inner.connection-list table i.null {
+    font-style: normal;
+    color: #b8b8b8;
+    font-size: 12px;
+    opacity: 0.75; }
+
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
 .hljs {

@@ -671,6 +671,175 @@ pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u
         typeof selected !== 'undefined' ? selected : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/column_form"].content = "- data = data || {}\n\nform\n  p\n    label Name\n    input(name=\"name\", value = data.column_name type=\"text\")\n\n  p\n    label Type\n    select(name=\"type\")\n      option\n      each types, group in groupedTypes\n        optgroup(label = group)\n          each type in types\n            if type\n              - selected = data.udt_name && data.udt_name == type.udt_name\n              option(value = type.udt_name || type.name, title = type.description, selected = selected)= type.name\n  p\n    a(href=\"https://www.postgresql.org/docs/current/datatype.html\", class=\"external docs-link\") Postgres Data Types\n\n  p\n    label Default value\n    input(name=\"default_value\", value = data.column_default type=\"text\")\n\n  p\n    label Max length\n    input(name=\"max_length\", value = data.character_maximum_length type=\"text\")\n\n  p\n    label\n      input(type=\"hidden\", name=\"allow_null\" value=\"0\")\n      input(type=\"checkbox\" name=\"allow_null\" value=\"1\", checked = (data.is_nullable == 'YES'))\n      = \"Allow null\"\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    if action == \"edit\"\n        button.ok Update Column\n    else\n        button.ok Add Column\n    button.cancel Cancel\n";
+exports["dialogs/connection_list"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fconnection_list.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th PID\n          th Database\n          th User\n          th IP\n          th Application\n          th State\n          th Query\n      tbody\n        each client in connections\n          tr\n            td= client.pid\n            td\n              if client.datname\n                = client.datname\n              else\n                i.null NULL\n            td= client.usename\n            td= client.client_addr\n            td= client.state_change ? client.application_name : client.backend_type\n            td= client.state\n            td\n              if client.state == 'active'\n                code.result.pgsql= client.query\n\np.buttons\n  button.cancel Close\n"};
+;
+    var locals_for_with = (locals || {});
+    
+    (function (connections) {
+      var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"rescol-wrapper with-borders\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-header-wrapper\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"rescol-content-wrapper\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n    \u003Ctable\u003E";
+;pug_debug_line = 5;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n      \u003Cthead\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "PID\u003C\u002Fth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "Database\u003C\u002Fth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "User\u003C\u002Fth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "IP\u003C\u002Fth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "Application\u003C\u002Fth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 12;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "State\u003C\u002Fth\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Cth\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "Query\u003C\u002Fth\u003E\n        \u003C\u002Ftr\u003E\n      \u003C\u002Fthead\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n      \u003Ctbody\u003E";
+;pug_debug_line = 15;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+// iterate connections
+;(function(){
+  var $$obj = connections;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var client = $$obj[pug_index0];
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.pid) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+if (client.datname) {
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.datname) ? "" : pug_interp));
+}
+else {
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\u003Ci class=\"null\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "NULL\u003C\u002Fi\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.usename) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.client_addr) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.state_change ? client.application_name : client.backend_type) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.state) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+if (client.state == 'active') {
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\u003Ccode class=\"result pgsql\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.query) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var client = $$obj[pug_index0];
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n        \u003Ctr\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.pid) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 19;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+if (client.datname) {
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.datname) ? "" : pug_interp));
+}
+else {
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\u003Ci class=\"null\"\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "NULL\u003C\u002Fi\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 23;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.usename) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.client_addr) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.state_change ? client.application_name : client.backend_type) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.state) ? "" : pug_interp)) + "\u003C\u002Ftd\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n          \u003Ctd\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+if (client.state == 'active') {
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\u003Ccode class=\"result pgsql\"\u003E";
+;pug_debug_line = 29;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = client.query) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+}
+pug_html = pug_html + "\n          \u003C\u002Ftd\u003E\n        \u003C\u002Ftr\u003E";
+    }
+  }
+}).call(this);
+
+pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 31;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 32;pug_debug_filename = "views\u002Fdialogs\u002Fconnection_list.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";
+    }.call(this, "connections" in locals_for_with ?
+        locals_for_with.connections :
+        typeof connections !== 'undefined' ? connections : undefined));
+    ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/connection_list"].content = ".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th PID\n          th Database\n          th User\n          th IP\n          th Application\n          th State\n          th Query\n      tbody\n        each client in connections\n          tr\n            td= client.pid\n            td\n              if client.datname\n                = client.datname\n              else\n                i.null NULL\n            td= client.usename\n            td= client.client_addr\n            td= client.state_change ? client.application_name : client.backend_type\n            td= client.state\n            td\n              if client.state == 'active'\n                code.result.pgsql= client.query\n\np.buttons\n  button.cancel Close\n";
 exports["dialogs/edit_value"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fedit_value.jade":"form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    - numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']\n    if fieldType.data_type == \"integer\" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if [\"json\", \"jsonb\"].includes(fieldType.udt_name) || ([\"json[]\", \"jsonb[]\"].includes(fieldType.data_type) && Array.isArray(value))\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n"};
 ;
     var locals_for_with = (locals || {});

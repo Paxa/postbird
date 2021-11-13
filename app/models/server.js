@@ -54,6 +54,12 @@ class Server extends ModelBase {
     });
   }
 
+  listConnections(variable) {
+    return this.q(`SELECT * FROM pg_stat_activity \n  order by state_change is null, datname nulls first, usename, application_name`).then(data => {
+      return Promise.resolve(data.rows);
+    });
+  }
+
   createDatabase(dbname, template, encoding) {
     var sql = `CREATE DATABASE "${dbname}"`;
     if (encoding) sql += " ENCODING '" + encoding + "'";
