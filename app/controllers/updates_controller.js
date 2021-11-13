@@ -1,4 +1,4 @@
-var remote = require('electron').remote;
+var remote = require('@electron/remote');
 var semver = require('semver');
 var needle = require('needle');
 var strftime = require('strftime');

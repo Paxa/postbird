@@ -1,5 +1,6 @@
 var SqlExporter = require('../../lib/sql_exporter');
 var pgEscape = require('pg-escape');
+var pg = require('pg');
 
 var TABLE_TYPES = {
   VIEW: 'VIEW',
@@ -505,9 +506,19 @@ class Table extends ModelBase {
   }
 
   async getTotalRows () /*: Promise<number> */ {
-    var sql = `SELECT count(*) AS rows_count FROM ${this.sqlTable()}`;
-    var data = await this.q(sql);
-    return parseInt(data.rows[0].rows_count, 10);
+    return new Promise ((resolve, reject) => {
+      var sql = `SELECT count(*) AS rows_count FROM ${this.sqlTable()}`;
+      var queryOptions = {
+        query_timeout: 5000,
+      };
+      this.connection().queryWithOptions(sql, queryOptions, (data, error) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(parseInt(data.rows[0].rows_count, 10));
+        }
+      }).catch(err => {});
+    });
   }
 
   insertRow (values) {
@@ -560,7 +571,7 @@ class Table extends ModelBase {
     var tableType = await this.getTableType();
 
     if (tableType == TABLE_TYPES.VIEW) {
-      var sql = `SELECT pg_get_viewdef('${this.table}', true) AS view_def`;
+      var sql = `SELECT pg_get_viewdef('${this.sqlTable()}', true) AS view_def`;
       return new Promise((resolve, reject) => {
         this.q(sql).then(res => {
           var viewSource = res.rows[0] && res.rows[0].view_def;

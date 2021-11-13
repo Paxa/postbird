@@ -1,7 +1,5 @@
 var sprintf = require("sprintf-js").sprintf;
 var util = require('util');
-var remote = require('electron').remote;
-var topProcess = remote ? remote.process : process;
 
 var LOG_LEVELS = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug'];
 
@@ -11,6 +9,9 @@ class Logger {
   */
 
   constructor (level) {
+    var isRenderer = require('is-electron-renderer');
+    var remote = isRenderer ? require('@electron/remote') : require("@electron/remote/main");
+    this.topProcess = remote ? remote.process : process;
     this.logLevel = level;
   }
 
@@ -19,7 +20,7 @@ class Logger {
   }
 
   print (string) {
-    topProcess.stdout.write(string);
+    this.topProcess.stdout.write(string);
   }
 
   emergency(...messageArgs) { this.write('emergency', messageArgs); }

@@ -1,3 +1,5 @@
+var electronRemote = require('@electron/remote');
+
 class DbScreen {
   /*::
   type: string
@@ -39,13 +41,18 @@ class DbScreen {
 
     this.currentTab = null;
 
-    if (this.options.fetchDbList) this.fetchDbList();
-
     this.database = this.connection.options.database;
     App.emit('database.changed', this.database);
-    this.fetchTablesAndSchemas(() => {
-      this.view.showDatabaseContent();
-    });
+
+    (async () => {
+      if (this.options.fetchDbList) {
+        await this.fetchDbList();
+      }
+
+      await this.fetchTablesAndSchemas(() => {
+        this.view.showDatabaseContent();
+      });
+    })();
 
     this.connection.onNotification((message) => {
       window.alertify.alert("Recieve Message:<br>" + JSON.stringify(message));
@@ -722,7 +729,7 @@ class DbScreen {
   }
 
   async showConnectionLostDialog () {
-    var dialog = electron.remote.dialog;
+    var dialog = electronRemote.dialog;
     var message = this.connectionLostError.message.replace(/\n\s+/g, "\n");
     var res = await dialog.showMessageBox({
       type: "error",

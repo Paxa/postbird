@@ -12,7 +12,7 @@ require(__dirname + '/../lib/error_reporter');
 
 const fs = require('fs');
 const path = require('path');
-const remote = require('electron').remote;
+const remote = require('@electron/remote');
 
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');
@@ -90,7 +90,7 @@ var SnippetsWindow = {
   },
 
   sendToMainWindow: function (event, sql) {
-    var mainWindow = electron.remote.app.mainWindow;
+    var mainWindow = remote.app.mainWindow;
     mainWindow.send(event, sql);
   }
 };

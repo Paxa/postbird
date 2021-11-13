@@ -38,6 +38,7 @@ require('./app/controllers/updates_controller');
 require('./app/views/history_window');
 
 var CliUtil = require('./lib/cli_util');
+var electronRemote = require('@electron/remote');
 
 global.$u = window.$u = window.jQuery;
 
@@ -81,7 +82,7 @@ $(window).on('window-ready', () => {
 
 require('./app/top_menu');
 
-var cliArgs = electron.remote.process.argv;
+var cliArgs = electronRemote.process.argv;
 if (cliArgs.length > 2) {
   var connectionStr = cliArgs[2];
   if (connectionStr.startsWith("postgres://") || connectionStr.startsWith("postgresql://")) {
@@ -155,7 +156,7 @@ $(document).ready(function() {
     }
   };
 
-  var mainWindow = electron.remote.app.mainWindow;
+  var mainWindow = electronRemote.app.mainWindow;
   mainWindow.on('focus', windowEvents.focus);
   mainWindow.on('blur', windowEvents.blur);
 
@@ -171,9 +172,9 @@ $(document).ready(function() {
     windowEvents.blur();
   }
 
-  if (electron.remote.systemPreferences && electron.remote.systemPreferences.subscribeNotification) {
-    electron.remote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
-      if (electron.remote.systemPreferences.isDarkMode()) {
+  if (electronRemote.systemPreferences && electronRemote.systemPreferences.subscribeNotification) {
+    electronRemote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
+      if (electronRemote.systemPreferences.isDarkMode()) {
         document.body.classList.add('dark-mode');
       } else {
         document.body.classList.remove('dark-mode');

@@ -1,3 +1,5 @@
+var electronRemote = require('@electron/remote');
+
 class DialogBase {
 
   /*::
@@ -34,7 +36,7 @@ class DialogBase {
     this.windowContent.find('a.external').bind('click', (e) => {
       $u.stopEvent(e);
       var url = e.target.href;
-      electron.remote.shell.openExternal(url);
+      electronRemote.shell.openExternal(url);
     });
 
     if (this.dialogClass) {

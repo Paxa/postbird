@@ -1,5 +1,5 @@
-var electronRemote = require('electron').remote;
-var BrowserWindow = electronRemote.BrowserWindow;
+var electronRemote = require('@electron/remote');
+const { BrowserWindow } = require('@electron/remote')
 
 class HistoryWindow {
   constructor () {
@@ -23,6 +23,7 @@ class HistoryWindow {
       }
     });
 
+    electronRemote.require('@electron/remote/main').enable(newWindow.webContents);
     newWindow.loadURL('file://' + App.root + '/views/history_window.html');
 
     if (process.env.POSTBIRD_DEBUG == "true") {

@@ -4,6 +4,8 @@ const path = require('path');
 const BrowserWindow = electron.BrowserWindow;
 const windowStateKeeper = require('electron-window-state');
 
+require('@electron/remote/main').initialize();
+
 electron.app.ApplicationStart = Date.now();
 electron.app.MainFilename = process.mainModule.filename;
 
@@ -91,6 +93,7 @@ app.on('ready', () => {
   electron.app.mainWindow = mainWindow;
 
   // and load the index.html of the app.
+  require("@electron/remote/main").enable(mainWindow.webContents);
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   if (process.env.POSTBIRD_DEBUG == "true") {

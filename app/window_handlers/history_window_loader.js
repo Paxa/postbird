@@ -9,7 +9,7 @@ var RenderView = require(__dirname + '/../app/components/render_view');
 require(__dirname + '/../lib/error_reporter');
 require(__dirname + '/../lib/object_extras');
 
-var remote = require('electron').remote;
+var remote = require('@electron/remote');
 
 global.EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');

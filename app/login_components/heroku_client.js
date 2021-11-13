@@ -5,6 +5,7 @@ var url = require('url');
 var querystring = require('querystring');
 var needle = require('needle');
 var http = require('http');
+var electronRemote = require('@electron/remote');
 
 /*::
 interface HerokuClientOptions {
@@ -122,12 +123,12 @@ class HerokuClient {
       if (this.catcher) this.catcher.stop();
       this.catcher = new HerokuCatcher(requestToken => {
         this.setRequestToken(requestToken);
-        electron.remote.app.mainWindow.focus();
+        electronRemote.app.mainWindow.focus();
         callback();
       });
       this.catcher.start();
       console.log("Opening url " + url);
-      electron.remote.shell.openExternal(url);
+      electronRemote.shell.openExternal(url);
       //child_process.spawn('open', [url]);
     }
   }

@@ -1,5 +1,6 @@
 var csvGenerate = require('csv-stringify');
 var fs = require('fs');
+var electronRemote = require('@electron/remote');
 
 /*::
 interface Query_ExterndedResults extends pg.QueryResult {
@@ -228,8 +229,8 @@ class Query extends PaneBase {
   }
 
   async saveQueryResult () {
-    var dialog = electron.remote.dialog;
-    var mainWindow = electron.remote.app.mainWindow;
+    var dialog = electronRemote.dialog;
+    var mainWindow = electronRemote.app.mainWindow;
     var res = await dialog.showSaveDialog(mainWindow, {
       title: "Save result as csv file",
       defaultPath: "result.csv",

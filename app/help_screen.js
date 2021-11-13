@@ -1,3 +1,5 @@
+var electronRemote = require('@electron/remote');
+
 class HelpScreen {
   /*::
   type: string
@@ -18,7 +20,7 @@ class HelpScreen {
     this.content.find('.page a.external').bind('click', (e) => {
       $u.stopEvent(e);
       var url = e.target.href;
-      electron.remote.shell.openExternal(url);
+      electronRemote.shell.openExternal(url);
     });
 
     new PgDumpRunner().version().then(version => {

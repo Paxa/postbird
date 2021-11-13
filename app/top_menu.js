@@ -1,4 +1,4 @@
-var remote = require('electron').remote;
+var remote = require('@electron/remote');
 var Menu = remote.Menu;
 
 // @ts-ignore

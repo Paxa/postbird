@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var electronRemote = require('@electron/remote');
 
 class NewSnippet extends DialogBase {
   /*::
@@ -29,7 +30,7 @@ class NewSnippet extends DialogBase {
       return $u.alert('A Snippet name is required!');
     }
 
-    const snippetsPath = path.join(electron.remote.app.getPath('userData'), 'custom_snippets.json');
+    const snippetsPath = path.join(electronRemote.app.getPath('userData'), 'custom_snippets.json');
 
     let customSnippets = {};
 

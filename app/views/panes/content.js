@@ -1,5 +1,6 @@
 var Client = require('pg').Client;
 var pgEscape = require('pg-escape');
+var electronRemote = require('@electron/remote');
 
 var typesWithoutQuotes = [
   'bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal',
@@ -306,25 +307,33 @@ class Content extends PaneBase {
 
     this.footer.find('.info').text(`Rows ${begin} - ${ends} of ...`);
 
-    this.totals((count) => {
+    this.getTotalRows(count => {
       if (ends == count) {
         this.nextPageEl.hide();
       } else {
         this.nextPageEl.show();
       }
 
-      this.footer.find('.info').text(`Rows ${begin} - ${ends} of ${count}`);
+      if (count == '?') {
+        count = `<span title="query to count rows took too long">?</span>`
+      }
+      this.footer.find('.info').html(`Rows ${begin} - ${ends} of ${count}`);
     });
 
   }
 
-  totals (callback) {
+  getTotalRows (callback) {
     if (this.totalRows) {
       callback(this.totalRows);
     } else {
+      callback('...');
       this.handler.table.getTotalRows().then(count => {
         this.totalRows = count;
         callback(count);
+      }).catch(error => {
+        console.log("query error", error);
+        this.totalRows = '?';
+        callback('?');
       });
     }
   }
@@ -802,7 +811,7 @@ class Content extends PaneBase {
       tab.view.showTab("query")
     }
 
-    electron.remote.app.mainWindow.focus();
+    electronRemote.app.mainWindow.focus();
     tab.view.queryPane.appendText(sql, 2);
   }
 }

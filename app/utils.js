@@ -29,9 +29,9 @@ interface JQueryStatic {
 */
 
 var electron = require('electron');
-//var remote = require('electron').remote;
-var Menu = electron.remote.Menu;
-var MenuItem = electron.remote.MenuItem;
+var electronRemote = require('@electron/remote');
+var Menu = electronRemote.Menu;
+var MenuItem = electronRemote.MenuItem;
 
 $u.formValues = function (selector_or_el) {
   var paramObj = {};
@@ -97,7 +97,7 @@ $u.contextMenu = function (elementArg, options, params) {
     }
 
     element.contextmenu.popup({
-      window: electron.remote.getCurrentWindow()
+      window: electronRemote.getCurrentWindow()
     });
   });
 };
@@ -221,8 +221,8 @@ $u.listenClickOutside = function listenClickOutside (element, options, callback)
 
 $u.openFileDialog = function (fileExt) {
   return new Promise((resolve, reject) => {
-    var mainWindow = electron.remote.app.mainWindow;
-    electron.remote.dialog.showOpenDialog(mainWindow, {
+    var mainWindow = electronRemote.app.mainWindow;
+    electronRemote.dialog.showOpenDialog(mainWindow, {
       properties: [ 'openFile' ],
       filters: [
         { name: 'SQL Files', extensions: [fileExt, 'sql', 'pgsql'] },
@@ -234,8 +234,8 @@ $u.openFileDialog = function (fileExt) {
 };
 
 $u.confirm = async (text, options = {}) => {
-  var mainWindow = electron.remote.app.mainWindow;
-  var res = await electron.remote.dialog.showMessageBox(mainWindow, {
+  var mainWindow = electronRemote.app.mainWindow;
+  var res = await electronRemote.dialog.showMessageBox(mainWindow, {
     type: "question",
     message: text,
     detail: options.detail,
@@ -247,8 +247,8 @@ $u.confirm = async (text, options = {}) => {
 };
 
 $u.alert = async (text, options = {}) => {
-  var mainWindow = electron.remote.app.mainWindow;
-  return await electron.remote.dialog.showMessageBox(mainWindow, {
+  var mainWindow = electronRemote.app.mainWindow;
+  return await electronRemote.dialog.showMessageBox(mainWindow, {
     type: options.type || "question",
     message: text,
     detail: options.detail,

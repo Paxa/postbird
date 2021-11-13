@@ -12,7 +12,7 @@
   <body class="platform-">
     <script>
       (() => {
-        var electron = require('electron').remote;
+        var electron = require('@electron/remote');
         var win = electron.app.mainWindow;
         if (!win.isFocused()) {
           document.body.classList.add('unfocused');

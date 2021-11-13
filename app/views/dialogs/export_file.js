@@ -1,3 +1,5 @@
+var electronRemote = require('@electron/remote');
+
 /*::
 interface ExportFile_CallbackOptions {
   exportData: boolean
@@ -24,7 +26,7 @@ class ExportFile extends DialogBase {
 
     this.content = this.renderWindow(this.title, nodes);
 
-    var dialog = electron.remote.dialog;
+    var dialog = electronRemote.dialog;
     var fileInput = this.content.find('[name=export_to_file]');
     fileInput.on('click', (e) => {
       e.preventDefault();
@@ -32,7 +34,7 @@ class ExportFile extends DialogBase {
         message: `Postgres dump of '${this.handler.database}' database`,
         defaultPath: `${this.handler.database}.sql`,
       };
-      dialog.showSaveDialog(electron.remote.app.mainWindow, options).then((res) => {
+      dialog.showSaveDialog(electronRemote.app.mainWindow, options).then((res) => {
         if (res.filePath) {
           fileInput.val(res.filePath);
         }

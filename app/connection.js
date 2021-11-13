@@ -9,7 +9,7 @@ colors.enabled = true;
 var vsprintf = require("sprintf-js").vsprintf;
 var ConnectionString = require('connection-string').ConnectionString;
 var SshConnect = require('../lib/ssh_connect');
-
+var electronRemote = require('@electron/remote');
 
 // Change postgres' type parser to use moment instance instead of js Date instance
 // because momentjs object has timezone information as in original string (js Date object always use local timezone)
@@ -198,7 +198,9 @@ class Connection {
     logger.info('Connecting to', this.connectString);
 
     if (this.connection) {
-      this.connection.end();
+      if (!this.connection.ended) {
+        this.connection.end();
+      }
       delete this.connection; // = null;
     }
 
@@ -232,37 +234,43 @@ class Connection {
   }
 
   _startConnection(options, callback) {
-    return this.connection.connect().then(() => {
-      this.connection.on('notification', (msg) => {
-        this.notificationCallbacks.forEach((fn) => {
-          fn(msg);
-        });
-        App.log("notification.recieved", msg);
-      });
+    this.connection.on('error', (e) => { this.onConnectionLost(e) });
 
-      this.connection.on('error', (e) => { this.onConnectionLost(e) });
-
-      this.serverVersion().then(version => {
-        if (this.logging) {
-          console.log("Server version is", version);
-        }
-        if (this.startQuery) {
-          this.query(this.startQuery, (res, error) => {
-            if (error) {
-              var formattedError = new Error(`Start query: ${this.startQuery}\n\nError: ${error.message}${error.hint ? "\n----\n" + error.hint : ''}`);
-              callback && callback(false, formattedError);
-              Promise.reject(error);
-            } else {
-              callback && callback(true);
-              Promise.resolve(true);
-            }
+    this.connection.on('connect', client => {
+      if (!client.postbirdEventsInit) {
+        client.on('notification', (msg) => {
+          this.notificationCallbacks.forEach((fn) => {
+            fn(msg);
           });
-        } else {
-          callback && callback(true);
-          Promise.resolve(true);
-        }
-      });
+          App.log("notification.recieved", msg);
+        });
+
+        client.postbirdEventsInit = true;
+      }
+    })
+
+    return this.serverVersion().then(version => {
       App.log("connect.success", JSON.parse(JSON.stringify(options)));
+
+      if (this.logging) {
+        console.log("Server version is", version);
+      }
+
+      if (this.startQuery) {
+        this.query(this.startQuery, (res, error) => {
+          if (error) {
+            var formattedError = new Error(`Start query: ${this.startQuery}\n\nError: ${error.message}${error.hint ? "\n----\n" + error.hint : ''}`);
+            callback && callback(false, formattedError);
+            Promise.reject(error);
+          } else {
+            callback && callback(true);
+            Promise.resolve(true);
+          }
+        });
+      } else {
+        callback && callback(true);
+        Promise.resolve(true);
+      }
     }).catch(error => {
       callback && callback(false, error);
       App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
@@ -270,17 +278,29 @@ class Connection {
   }
 
   _initConnection(connectString) /*: pg.ClientExt */ {
+    delete this._serverVersion;
+    delete this._serverVersionFull;
+
     // @ts-ignore
     var clientConfig = Connection.parseConnectionString(connectString) /*:: as pg.ClientConfig */;
-    // clientConfig.connectionTimeoutMillis = 10000; // 10 sec
-    return new pg.Client(clientConfig) /*:: as pg.ClientExt */;
+
+    clientConfig.idleTimeoutMillis = 600000;
+    clientConfig.max = clientConfig.max || 5;
+    clientConfig.log = (a, b, c) => { console.log('Pool:', a, b, c); }
+    var pool = new pg.Pool(clientConfig);
+
+    // pool.on('remove', client => {
+    //   console.log('pool removed');
+    // })
+
+    return pool;
   }
 
   onConnectionLost(error) {
     if (this.onDisconnect) {
       this.onDisconnect(error);
     } else {
-      var dialog = electron.remote.dialog;
+      var dialog = electronRemote.dialog;
       var message = error.message.replace(/\n\s+/g, "\n") + "\nTo re-open connection, use File -> Reconnect";
       dialog.showErrorBox("Server Connection Error", message);
     }
@@ -306,7 +326,7 @@ class Connection {
     var startStack = new Error().stack;
 
     return new Promise((resolve, reject) => {
-      this.connection.query(options, (error, result) => {
+      var queryCallback = (error, result) => {
         historyRecord.time = Date.now() - time;
         if (this.logging) logger.print("SQL:" + colors.green(" Done ") + historyRecord.time + "\n");
 
@@ -316,19 +336,22 @@ class Connection {
         }
 
         if (error) {
+          var customTimeoutError = options.query_timeout && error.message == 'Query read timeout';
           error.stack = error.stack + "\n" + startStack.substring(startStack.indexOf("\n") + 1);
           historyRecord.error = error;
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
           // @ts-ignore
           error.query = sql;
-          if (this.logging) {
+          if (this.logging && !customTimeoutError) {
             console.error("SQL failed", sql);
             console.error(error);
           }
           //if (query) query.state = 'error';
           if (callback) callback(result, error);
-          this.onConnectionError(error);
+          if (!customTimeoutError) {
+            this.onConnectionError(error);
+          }
           reject(error);
         } else {
           historyRecord.state = 'success';
@@ -339,7 +362,9 @@ class Connection {
           if (callback) callback(result);
           resolve(result);
         }
-      });
+      };
+
+      this.connection.query(options, queryCallback);
     });
   }
 
@@ -381,7 +406,7 @@ class Connection {
       return Promise.resolve(this._serverVersion);
     }
 
-    console.log("Client don't support serverVersion, getting it with sql");
+    // console.log("Client don't support serverVersion, getting it with sql");
 
     return this.server.fetchServerVersion().then(version => {
       if (version.match(/CockroachDB/i)) {
@@ -617,10 +642,11 @@ class Connection {
     });
   }
 
-  close(callback /*:: ?: Function */) {
+  async close(callback /*:: ?: Function */) {
     if (this.connection) {
-      this.connection.end();
+      await this.connection.end()
     }
+
     if (this.sshConnection) {
       this.sshConnection.disconnect();
     }
@@ -629,12 +655,13 @@ class Connection {
     if (index != -1) {
       global.Connection.instances.splice(index, 1);
     }
+
     callback && callback();
   }
 
   reconnect(callback /*: (success: boolean, error?: Error) => void */) {
-    this.close(() => {
-      this.connectToServer(this.options, callback);
+    return this.close().then(() => {
+      return this.connectToServer(this.options, callback);
     });
   }
 
@@ -691,27 +718,16 @@ class Connection {
         console.log('no running query');
       }
     } else {
-      query = this.connection.activeQuery;
-      if (query) {
-        var otherConn = this._initConnection(this.connectString);
-        otherConn.connect((error) => {
-          if (error) {
-            console.log(error);
-            return;
-          }
-
-          console.log("Stopping query via sql. PID:", this.connection.processID);
-          var sql = `select pg_cancel_backend(${this.connection.processID})`;
-          otherConn.query(sql).then(() => {
-            otherConn.end();
+      this.connection._clients.forEach(poolClient => {
+        if (poolClient.activeQuery) {
+          var sql = `select pg_cancel_backend(${poolClient.processID})`;
+          this.connection.query(sql).then(res => {
+            console.log('query canceled');
           }).catch(err => {
             console.error(err);
-            otherConn.end();
           });
-        });
-      } else {
-        console.log('no running query');
-      }
+        }
+      })
     }
   }
 }

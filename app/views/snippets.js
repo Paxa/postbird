@@ -1,5 +1,5 @@
-var electronRemote = require('electron').remote;
-var BrowserWindow = electronRemote.BrowserWindow;
+var electronRemote = require('@electron/remote');
+const { BrowserWindow } = require('@electron/remote')
 
 class SnippetsWindow {
   constructor () {
@@ -22,6 +22,7 @@ class SnippetsWindow {
       }
     });
 
+    electronRemote.require('@electron/remote/main').enable(newWindow.webContents);
     newWindow.loadURL('file://' + App.root + '/views/snippets_window.html');
 
     newWindow.setTitle("Snippets");
