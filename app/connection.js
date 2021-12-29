@@ -129,6 +129,13 @@ class Connection {
     if ('ssl' in cs.params) {
       res.ssl = Boolean(cs.params.ssl)
     }
+
+    if ('rejectUnauthorized' in cs.params && res.ssl) {
+      res.ssl = {
+        rejectUnauthorized: cs.params.rejectUnauthorized == "false" ? false : Boolean(cs.params.rejectUnauthorized)
+      }
+    }
+
     delete res.socketPort;
 
     return res;
@@ -169,6 +176,9 @@ class Connection {
     }
     if (options.ssl) {
       cs.params.ssl = true;
+    }
+    if ('rejectUnauthorized' in options) {
+      cs.params.rejectUnauthorized = options.rejectUnauthorized;
     }
     return cs.toString();
   }
@@ -286,12 +296,20 @@ class Connection {
 
     clientConfig.idleTimeoutMillis = 600000;
     clientConfig.max = clientConfig.max || 5;
-    clientConfig.log = (a, b, c) => { console.log('Pool:', a, b, c); }
-    var pool = new pg.Pool(clientConfig);
 
-    // pool.on('remove', client => {
-    //   console.log('pool removed');
-    // })
+    console.log('clientConfig', connectString, clientConfig);
+    try {
+      throw "aaa";
+    } catch (e) {
+      console.log(e);
+    }
+
+    // if (clientConfig.ssl == 'require') {
+    //
+    // }
+
+    // clientConfig.log = (a, b, c) => { console.log('Pool:', a, b, c); }
+    var pool = new pg.Pool(clientConfig);
 
     return pool;
   }

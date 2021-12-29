@@ -119,7 +119,7 @@ class LoginScreen {
         App.stopLoading();
         return;
       }
-      db_url = db_url + "?ssl=verify-full";
+      db_url = db_url + "?ssl=require&rejectUnauthorized=false";
       console.log('connecting to', db_url);
       this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, (tab) => {
         if (tab) {
