@@ -98,8 +98,9 @@ process.on('unhandledRejection', error => {
         installerIcon: "build_files/icon.ico"
       },
       win: {
-        target: ["nsis", "zip"],
+        target: ["nsis", "zip", "portable"],
         verifyUpdateCodeSignature: false,
+        icon: "build_files/icon.ico",
         extraFiles: [
           "vendor/win32"
         ]
