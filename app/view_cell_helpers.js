@@ -23,7 +23,6 @@ declare global {
     column_type_label: (column: any, short: string) => string
     betterDateTime: (date: moment.Moment) => string
     betterDateTimeZ: (date: moment.Moment) => string
-    editDateFormat: (value: any, format: string) => string
     betterDate: (value: Date) => string
     timeFormat: (date: string) => string
     execTime: (time: number) => string

@@ -591,6 +591,8 @@ class Content extends PaneBase {
     } else {
       if (typeof value == 'string') {
         return pgEscape('%L', value)
+      } else if (colType.startsWith('timestamp') && (value.origValueString || typeof value.toISOString == 'function')) {
+        return `'${pgEscape.string(value.origValueString || value.toISOString())}'`;
       } else {
         return `'${pgEscape.string(value)}'`;
       }
