@@ -297,13 +297,6 @@ class Connection {
     clientConfig.idleTimeoutMillis = 600000;
     clientConfig.max = clientConfig.max || 5;
 
-    console.log('clientConfig', connectString, clientConfig);
-    try {
-      throw "aaa";
-    } catch (e) {
-      console.log(e);
-    }
-
     // if (clientConfig.ssl == 'require') {
     //
     // }
@@ -738,12 +731,22 @@ class Connection {
     } else {
       this.connection._clients.forEach(poolClient => {
         if (poolClient.activeQuery) {
-          var sql = `select pg_cancel_backend(${poolClient.processID})`;
+          var queryPid = poolClient.processID;
+          var sql = `select pg_cancel_backend(${queryPid})`;
+          // console.log(sql);
           this.connection.query(sql).then(res => {
-            console.log('query canceled');
-          }).catch(err => {
-            console.error(err);
-          });
+            console.log('query canceled', res);
+            setTimeout(() => {
+              this.connection.query(`SELECT * FROM pg_stat_activity WHERE state = 'active' and pid = '${queryPid}';`).then(res => {
+                // console.log('res', res);
+                if (res.rows.length > 0) {
+                  this.connection.query(`select pg_terminate_backend(${queryPid})`).then(res => {
+                    console.log('query terminated', res);
+                  }).catch(err => { console.error(err); });
+                }
+              }).catch(err => { console.error(err); });
+            }, 2000);
+          }).catch(err => { console.error(err); });
         }
       })
     }
