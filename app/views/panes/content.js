@@ -637,7 +637,7 @@ class Content extends PaneBase {
         App.startLoading(`Updating value for ${fieldName}...`);
         try {
           const sanitizedValue = sanitizeUpdateValue(fieldType.data_type, value)
-          var result = await this.handler.table.updateValue(ctid, fieldName, sanitizedValue, isNull);
+          var result = await this.handler.table.updateValue(ctid, fieldName, sanitizedValue, isNull, fieldType.data_type);
           dialog.close();
           if (result.rowCount == 0) {
             $u.alertError("No records updated, probably table content was changed since you started editing.",
@@ -713,7 +713,7 @@ class Content extends PaneBase {
     });
 
     try {
-      await this.handler.table.insertRow(data);
+      await this.handler.table.insertRow(data, this.columnTypes);
       this.newRowFields.remove();
       this.reloadData();
     } catch (error) {

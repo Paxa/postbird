@@ -521,12 +521,12 @@ class Table extends ModelBase {
     });
   }
 
-  insertRow (values) {
+  insertRow (values, columnTypes) {
     if (Array.isArray(values)) {
       var sql = `INSERT INTO ${this.sqlTable()} VALUES (%s)`;
 
       var safeValues = values.map((val) => {
-        return "'" + val.toString() + "'";
+        return `'${val.toString()}'`;
       }).join(", ");
 
       return this.q(sql, safeValues);
@@ -534,13 +534,59 @@ class Table extends ModelBase {
       var columns = Object.keys(values).map(col => {
         return `"${col}"`;
       });
+      var safeValues = Object.keys(values).map(field => {
+        var colType = columnTypes[field].data_type;
+        var value = values[field];
+        if (colType.endsWith("[]")) {
+          var arraySql = this._prepareArrayForInsert(value, field, colType, true)
+          return `'${arraySql}'`;
+        } else {
+          return `'${value.toString()}'`;
+        }
+      });
+
       var sql = `INSERT INTO ${this.sqlTable()} (${columns.join(", ")}) VALUES (%s)`;
-      var safeValues = Object.values(values).map(val => {
-        return "'" + val.toString() + "'";
-      }).join(", ");
+
 
       return this.q(sql, safeValues);
     }
+  }
+
+  _prepareArrayForInsert(value, field, colType, escapeValues = false) {
+    if (value.startsWith("[") && value.endsWith("]")) {
+      var arrayValues = []
+      try {
+        arrayValues = JSON.parse(value)
+      } catch (e) {
+        throw new Error(`Can not parse value for array that looks like json. Column: ${field}, value: ${value}`, e);
+      }
+
+      return this._arrayToInsert(arrayValues)
+    } else if (value.startsWith("{") && value.endsWith("}")) {
+      if (escapeValues) {
+        return pgEscape.literal(value).replace(/^'/, '').replace(/'$/, '');
+      } else {
+        return value;
+      }
+    } else if (value.match(/^(array|ARRAY)\s*\[.*\]$/)) {
+      return value
+    } else {
+      throw new Error(`Can not recognize value format for array. Column: ${field}, value: ${value}`);
+    }
+  }
+
+  _arrayToInsert(arrayValues) {
+    var escapedValues = arrayValues.map(val => {
+      if (typeof val == 'string') {
+        return `"${val.toString()}"`;
+      } else if (Array.isArray(val)) {
+        return this._arrayToInsert(val);
+      } else {
+        return val.toString();
+      }
+    });
+
+    return `{${escapedValues.join(', ')}}`
   }
 
   deleteRowByCtid (ctid) {
@@ -735,11 +781,14 @@ class Table extends ModelBase {
     return this.q(`REFRESH MATERIALIZED VIEW ${this.sqlTable()}`);
   }
 
-  updateValue (ctid, field, value, isNull) {
+  updateValue (ctid, field, value, isNull, colType) {
     var sql;
     if (isNull) {
       sql = `UPDATE ${this.sqlTable()} SET "${field}" = NULL WHERE ctid = '${ctid}';`;
     } else {
+      if (colType.endsWith('[]')) {
+        value = this._prepareArrayForInsert(value, field, colType, false)
+      }
       sql = pgEscape(`UPDATE ${this.sqlTable()} SET "${field}" = %L WHERE ctid = '${ctid}';`, value);
     }
 
