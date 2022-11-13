@@ -1,5 +1,5 @@
 // @ts-ignore
-var url = require('url');
+var URL = require('url');
 
 class LoginPostgresUrlForm {
   /*::
@@ -72,7 +72,13 @@ class LoginPostgresUrlForm {
 
     var options = this.getFormData();
 
-    this.loginForm.makeConnection(options, {}, (tab) => {
+    try {
+      options.name = URL.parse(options.url).host;
+    } catch (e) {
+      console.error('can not parse connection url', e);
+    }
+
+    this.loginForm.makeConnection(options, {name: options.name}, (tab) => {
       button.removeAttr('disabled').val(buttonText);
       this.formChanged();
       if (callback && tab) callback(tab);
@@ -116,7 +122,7 @@ class LoginPostgresUrlForm {
       var name = null;
       var suggested = null;
       try {
-        suggested = url.parse(data.url).host;
+        suggested = URL.parse(data.url).host;
       } catch (e) {
         console.error(e);
       }
