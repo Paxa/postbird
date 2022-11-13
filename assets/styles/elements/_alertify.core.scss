@@ -146,16 +146,8 @@
   margin-left: 5px;
 
   &:hover, &:active, &:visited {
-    background: none;
     text-decoration: none;
-    border: none;
-
-    /* line-height and font-size for input button */
-    line-height: 1.5;
-    font-size: 100%;
-    display: inline-block;
     cursor: pointer;
-    margin-left: 5px;
   }
 }
 

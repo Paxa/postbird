@@ -4,7 +4,7 @@
   min-width: 400px;
 
   .alertify-dialog {
-    padding-top: 38px;
+    padding-top: 42px;
   }
 
   h3.window-title {
@@ -14,19 +14,23 @@
     left: 0;
     right: 0;
     height: 31px;
-    font-size: 20px;
+    font-size: 18px;
     background: #f5f7f9;
 
-    @include gradient(#f5f7f9, #f0f1f2);
+    // @include gradient(#f5f7f9, #f0f1f2);
 
-    border-radius: 8px 8px 0 0;
+    border-radius: 10px 10px 0 0;
   }
 
   p.buttons {
     margin: {
-      top: 11px;
+      top: 15px;
       bottom: -5px;
     };
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
     button {
       @extend .alertify-button;
@@ -37,13 +41,7 @@
     }
 
     button.cancel {
-      border-color: #ADA6A6;
-      background-color: #B8B8B8;
-
-      &:hover, &:focus {
-        background-color: #B8B8B8;
-        border-color: #ADA6A6;
-      }
+      @extend .alertify-button-cancel;
     }
   }
 

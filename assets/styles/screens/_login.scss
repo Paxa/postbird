@@ -27,6 +27,7 @@ $mac-block-tabs-radius: 4px;
       width: 100%;
       text-align: center;
       a {
+        @include unselectable;
         background: #fff;
         border-top: 1px solid #c8c8c8;
         border-bottom: 1px solid #a7a7a7;
