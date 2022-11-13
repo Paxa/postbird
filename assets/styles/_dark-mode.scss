@@ -1,4 +1,117 @@
 body.dark-mode {
+  background-color: #242424;
+  color: #fff;
+
+  .login-screen {
+    background-color: #242424;
+    color: #fff;
+    .sidebar {
+      background: #444;
+      border-right-color: #6f6f6f;
+      color: #fff;
+    }
+    .middle-window {
+      background: #444;
+      border-radius: 5px;
+      border: 1px solid #6f6f6f;
+      border-top: 1px solid #6f6f6f;
+    }
+  }
+
+  .main-screen {
+    >.main {
+      .window-tabs {
+        >* {
+          color: #fff;
+        }
+        border-color: #2f2f2f;
+      }
+    }
+    >.sidebar {
+      background: #444;
+      border-right-color: #6f6f6f;
+      color: #fff;
+      >.resize-handler {
+        &:before {
+          background: #6f6f6f;
+        }
+      }
+      .filter-tables {
+        background: #323232;
+      }
+      &.database-selected {
+        background-color: #242424;
+        color: #fff;
+      }
+    }
+  }
+
+  .window-content {
+    .tab-message {
+      color: #ddd;
+    }
+  }
+  .window-content.content {
+    .content-filte {
+      background-color: #242424;
+      color: #fff;
+    }
+    .content-filter {
+      background: #444444;
+      border-bottom: 1px solid #acacac;
+      color: #fff;
+    }
+  }
+
+  .window-content.query {
+    .result table th {
+      background: #4a4a4a;
+    }
+  }
+
+  .rescol-wrapper {
+    table {
+      th {
+        background-color: #242424;
+        color: #fff;
+      }
+    }
+    .rescol-content-wrapper {
+      color: #fff;
+      table {
+        tr {
+          &:nth-child(even) {
+            td {
+              background-color: #242424;
+              color: #fff;
+            }
+          }
+          &:nth-child(odd) {
+            td {
+              background-color: #383838;
+              color: #fff;
+              border-bottom: 1px solid #2f2f2f;
+            }
+          }
+        }
+      }
+      table.active {
+        tr.selected {
+          td {
+            background: #2b66da;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+//  >#tabs {
+//    &:after {
+//      background: #6f6f6f;
+//    }
+//  }
+
   #tabs {
     background: #252525;
     .tab {
@@ -34,6 +147,7 @@ body.dark-mode {
     }
     &:after {
       background: #dbdbdb;
+      background: #6f6f6f; // check
     }
   }
 
@@ -50,5 +164,20 @@ body.dark-mode {
   .add-connection.native-look {
     background: #6c6b6d;
     padding-left: 9px;
+  }
+
+  &.unfocused {
+    .main-screen {
+      >.sidebar {
+        background: #444;
+        border-right-color: #6f6f6f;
+        color: #fff;
+      }
+    }
+    >#tabs {
+      &:after {
+        background: #6f6f6f;
+      }
+    }
   }
 }
