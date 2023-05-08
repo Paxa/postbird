@@ -385,7 +385,8 @@ class Connection {
       callback = params.pop();
     }
 
-    return this.query(vsprintf(sql, params), callback);
+    const query = params.length ? vsprintf(sql, params) : sql
+    return this.query(query, callback);
   }
 
   serverVersion(callback /*:: ?: Function */) {
