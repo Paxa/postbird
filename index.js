@@ -84,7 +84,9 @@ $(window).on('window-ready', () => {
 require('./app/top_menu');
 
 var cliArgs = electronRemote.process.argv;
-if (cliArgs.length > 2) {
+// Skip argument parsing when running tests
+var isTestMode = cliArgs.some(arg => arg.includes('electron-mocha') || arg.includes('tests/') || arg.includes('test'));
+if (cliArgs.length > 2 && !isTestMode) {
   var connectionStr = cliArgs[2];
   if (connectionStr.startsWith("postgres://") || connectionStr.startsWith("postgresql://")) {
     App.cliConnectString = connectionStr;
