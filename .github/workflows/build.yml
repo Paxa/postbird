@@ -17,7 +17,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Build/release app
         uses: samuelmeuli/action-electron-builder@v1
@@ -30,63 +30,63 @@ jobs:
         run: ls -lah dist
 
       - name: Upload Postbird.dmg
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.dmg
           path: dist/*.dmg
         if: ${{ runner.os == 'macOS' }}
 
       - name: Upload Postbird_setup.exe
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird_setup.exe
           path: dist/*.exe
         if: ${{ runner.os == 'Windows' }}
 
       - name: Upload Postbird-win.zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird_win.zip
           path: dist/*.zip
         if: ${{ runner.os == 'Windows' }}
 
       - name: Upload Postbird.snap
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.snap
           path: dist/*.snap
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.AppImage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.AppImage
           path: dist/Postbird*.AppImage
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.deb
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.deb
           path: dist/*.deb
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.rpm
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.rpm
           path: dist/*.rpm
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.pacman
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.pacman
           path: dist/*.pacman
         if: ${{ runner.os == 'Linux' }}
 
       - name: Upload Postbird.apk
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Postbird.apk
           path: dist/*.apk
