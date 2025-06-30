@@ -1,4 +1,5 @@
 var electronRemote = require('@electron/remote');
+var electron = require('electron');
 
 class HelpScreen {
   /*::
@@ -9,7 +10,9 @@ class HelpScreen {
   constructor () {
     this.type = "login_screen";
 
-    this.content = App.renderView('help');
+    this.content = App.renderView('help', {
+      appVersion: electronRemote.app.getVersion()
+    });
 
     this.content.find(".sidebar a[page]").bind('click', (e) => {
       $u.stopEvent(e);
@@ -26,12 +29,12 @@ class HelpScreen {
     new PgDumpRunner().version().then(version => {
       this.content.find('.pg_dump_version').text(version);
     }).catch(err => {
-      this.content.find('.pg_dump_version').text(err);
+      this.content.find('.pg_dump_version').text(err || 'Error happen executing pg_dump command');
     });
     new PsqlRunner().version().then(version => {
       this.content.find('.psql_version').text(version);
     }).catch(err => {
-      this.content.find('.psql_version').text(err);
+      this.content.find('.psql_version').text(err || 'Error happen executing psql command');
     });
   }
 

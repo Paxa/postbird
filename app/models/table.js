@@ -637,7 +637,7 @@ class Table extends ModelBase {
     exporter.addArgument('--no-owner');
 
     return new Promise((resolve, reject) => {
-      exporter.doExport(ModelBase.connection(), (result, stdout, stderr, process) => {
+      return exporter.doExport(ModelBase.connection(), (result, stdout, stderr, process) => {
         if (!result) {
           logger.error("Run pg_dump failed");
           logger.error(stderr);

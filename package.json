@@ -27,14 +27,13 @@
     "@types/mousetrap": "^1.6.4",
     "@types/pg": "^7.14.5",
     "@types/semver": "~7.3.8",
-    "electron": "^21.2.3",
-    "electron-builder": "^23.6.0",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.6.3",
     "electron-mocha": "^9.2.0",
     "eslint": "^7.32.0",
     "localStorage": "^1.0.4",
-    "node-sass": "4.14.1",
-    "plus-typescript": "^4.1.1-alpha",
-    "spectron": "^12.0.0"
+    "node-sass": "9.0.0",
+    "plus-typescript": "^4.1.1-alpha"
   },
   "dependencies": {
     "@electron/remote": "2.0.1",
@@ -50,13 +49,13 @@
     "moment": "^2.29.1",
     "needle": "2.8.0",
     "node-ssh-forward": "https://github.com/Paxa/node-ssh-forward.git#add-timeout",
-    "pg": "https://gitpkg.now.sh/Paxa/node-postgres/packages/pg?master",
+    "pg": "https://gitpkg.now.sh/Paxa/node-postgres/packages/pg?add-query-timeout",
     "pg-escape": "^0.2.0",
     "pug": "3.0.2",
     "semver": "^7.3.5",
     "slash": "^3.0.0",
     "sprintf-js": "1.1.2",
-    "ssh-config": "^4.1.0",
-    "strftime": "0.10.0"
+    "ssh-config": "^4.3.0",
+    "strftime": "0.10.1"
   }
 }

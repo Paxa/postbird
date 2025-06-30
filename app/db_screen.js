@@ -659,7 +659,18 @@ class DbScreen {
     App.startLoading("Getting table info...");
 
     table.getSourceSql((code, dumpError) => {
-      this.view.infoPane.updateSource(code, dumpError);
+      console.log('getSourceSql callback', typeof code, code, typeof dumpError, dumpError);
+      try {
+        this.view.infoPane.updateSource(code, dumpError);
+        this.view.infoPane.renderTab();
+        App.stopLoading();
+      } catch (e) {
+        console.error(e);
+      }
+    }).catch(error => {
+      console.error(error);
+      console.log("Error in running pg_dump", error)
+      this.view.infoPane.updateSource('', 'Error in running pg_dump');
       this.view.infoPane.renderTab();
       App.stopLoading();
     });

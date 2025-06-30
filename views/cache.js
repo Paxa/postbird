@@ -996,6 +996,100 @@ pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u0
         typeof database !== 'undefined' ? database : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/export_file"].content = "header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
+exports["dialogs/import_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Fimport_file.jade":"header\n  = \"Importing File:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import File\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close"};
+;
+    var locals_for_with = (locals || {});
+    
+    (function (currentDb, databases, filename) {
+      var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n\u003Cheader\u003E";
+;pug_debug_line = 2;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Importing File:") ? "" : pug_interp));
+;pug_debug_line = 3;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\u003Ccode\u003E";
+;pug_debug_line = 4;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = filename) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\n\u003C\u002Fheader\u003E";
+;pug_debug_line = 6;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n\u003Cform\u003E";
+;pug_debug_line = 7;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 8;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Database\u003C\u002Flabel\u003E";
+;pug_debug_line = 9;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cselect name=\"database\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+// iterate databases
+;(function(){
+  var $$obj = databases;
+  if ('number' == typeof $$obj.length) {
+      for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
+        var database = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", database, true, false)+pug.attr("selected", (database == currentDb), true, false)) + "\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = database) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
+      }
+  } else {
+    var $$l = 0;
+    for (var pug_index0 in $$obj) {
+      $$l++;
+      var database = $$obj[pug_index0];
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption" + (pug.attr("value", database, true, false)+pug.attr("selected", (database == currentDb), true, false)) + "\u003E";
+;pug_debug_line = 11;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = database) ? "" : pug_interp)) + "\u003C\u002Foption\u003E";
+    }
+  }
+}).call(this);
+
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption disabled=\"disabled\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "-----\u003C\u002Foption\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n      \u003Coption value=\"**create-db**\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Create database\u003C\u002Foption\u003E\n    \u003C\u002Fselect\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 16;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"new-database-input is-hidden\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Clabel\u003E";
+;pug_debug_line = 17;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "New database\u003C\u002Flabel\u003E";
+;pug_debug_line = 18;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cinput name=\"new_database_name\"\u002F\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 20;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cinput class=\"pseudo-hidden\" type=\"submit\"\u002F\u003E";
+;pug_debug_line = 22;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\u003Ccode class=\"result\"\u003E\u003C\u002Fcode\u003E";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"ok\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Import File\u003C\u002Fbutton\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E";
+;pug_debug_line = 27;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n  \u003Cp class=\"buttons close-btn is-hidden\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "\n    \u003Cbutton class=\"cancel\"\u003E";
+;pug_debug_line = 28;pug_debug_filename = "views\u002Fdialogs\u002Fimport_file.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u003C\u002Fform\u003E";
+    }.call(this, "currentDb" in locals_for_with ?
+        locals_for_with.currentDb :
+        typeof currentDb !== 'undefined' ? currentDb : undefined, "databases" in locals_for_with ?
+        locals_for_with.databases :
+        typeof databases !== 'undefined' ? databases : undefined, "filename" in locals_for_with ?
+        locals_for_with.filename :
+        typeof filename !== 'undefined' ? filename : undefined));
+    ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/import_file"].content = "header\n  = \"Importing File:\"\n  code\n    = filename\n\nform\n  p\n    label Database\n    select(name=\"database\")\n      each database in databases\n        option( value = database, selected = (database == currentDb) )= database\n\n      option(disabled = true) -----\n      option(value = '**create-db**') Create database\n\n  p.new-database-input.is-hidden\n    label New database\n    input(name=\"new_database_name\")\n\n  input.pseudo-hidden(type=\"submit\")\n\n  code.result\n\n  p.buttons\n    button.ok Import File\n    button.cancel Cancel\n  p.buttons.close-btn.is-hidden\n    button.cancel Close";
 exports["dialogs/index_form"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fdialogs\u002Findex_form.jade":"\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\" type=\"text\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Index Type\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"spgist\") spgist\n      option(value=\"gin\") gin\n      option(value=\"brin\") brin\n    br\n    a(href=\"https:\u002F\u002Fwww.citusdata.com\u002Fblog\u002F2017\u002F10\u002F17\u002Ftour-of-postgres-index-types\u002F\" class=\"external docs-link\") About Index Types\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add Index\n    button.cancel Cancel\n"};
 ;
     var locals_for_with = (locals || {});
@@ -1755,11 +1849,11 @@ pug_html = pug_html + "\n      \u003C\u002Ftbody\u003E\n    \u003C\u002Ftable\u0
         typeof rows !== 'undefined' ? rows : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["extensions_tab"].content = ".rescol-wrapper\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th Name\n          th Default Version\n          th Installed Version\n          th\n      tbody\n        each column in rows\n          tr\n            td= column.name\n            td= column.default_version\n            td\n              if column.installed_version\n                strong= column.installed_version\n                button.native-look(exec=\"uninstall('\" + column.name + \"')\") Uninstall\n              else\n                button.native-look(exec=\"install('\" + column.name + \"')\") Install\n            td= column.comment";
-exports["help"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhelp.jade":".help-screen\n  .sidebar\n    h4 Help\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      \u002F\u002Fli\n      \u002F\u002F  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public\u002Fimages\u002Ficon.png\")\n      p.\n        Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron\n      p\n        = \"Source code at \"\n        != link_to(\"github.com\u002Fpaxa\u002Fpostbird\", \"https:\u002F\u002Fgithub.com\u002Fpaxa\u002Fpostbird\", {class: \"external\"})\n\n      br\n      p\n        = `Postbird version: ${electron.remote.app.getVersion()}`\n        br\n        = `Electron version: ${process.versions.electron}`\n        br\n        = `Node version: ${process.versions.node}`\n        br\n        != `pg_dump version: \u003Cspan class=\"pg_dump_version\"\u003E...\u003C\u002Fspan\u003E`\n        br\n        != `psql version: \u003Cspan class=\"psql_version\"\u003E...\u003C\u002Fspan\u003E`\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer. \"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections. \"\n          = \"Close the app, and the server shuts down. \"\n        a.download.external(href=\"http:\u002F\u002Fpostgresapp.com\u002F\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and \"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http:\u002F\u002Fwww.enterprisedb.com\u002Fproducts-services-training\u002Fpgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew\n\n        p\n          code brew install postgresql\n"};
+exports["help"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhelp.jade":".help-screen\n  .sidebar\n    h4 Help\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      \u002F\u002Fli\n      \u002F\u002F  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public\u002Fimages\u002Ficon.png\")\n      p.\n        Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron\n      p\n        = \"Source code at \"\n        != link_to(\"github.com\u002Fpaxa\u002Fpostbird\", \"https:\u002F\u002Fgithub.com\u002Fpaxa\u002Fpostbird\", {class: \"external\"})\n\n      br\n      p\n        = `Postbird version: ${appVersion}`\n        br\n        = `Electron version: ${process.versions.electron}`\n        br\n        = `Node version: ${process.versions.node}`\n        br\n        != `pg_dump version: \u003Cspan class=\"pg_dump_version\"\u003E...\u003C\u002Fspan\u003E`\n        br\n        != `psql version: \u003Cspan class=\"psql_version\"\u003E...\u003C\u002Fspan\u003E`\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer. \"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections. \"\n          = \"Close the app, and the server shuts down. \"\n        a.download.external(href=\"http:\u002F\u002Fpostgresapp.com\u002F\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and \"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http:\u002F\u002Fwww.enterprisedb.com\u002Fproducts-services-training\u002Fpgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew\n\n        p\n          code brew install postgresql\n"};
 ;
     var locals_for_with = (locals || {});
     
-    (function (electron, link_to, process) {
+    (function (appVersion, link_to, process) {
       var pug_indent = [];
 ;pug_debug_line = 1;pug_debug_filename = "views\u002Fhelp.jade";
 pug_html = pug_html + "\n\u003Cdiv class=\"help-screen\"\u003E";
@@ -1814,7 +1908,7 @@ pug_html = pug_html + "\u003Cbr\u002F\u003E";
 ;pug_debug_line = 25;pug_debug_filename = "views\u002Fhelp.jade";
 pug_html = pug_html + "\n      \u003Cp\u003E";
 ;pug_debug_line = 26;pug_debug_filename = "views\u002Fhelp.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = `Postbird version: ${electron.remote.app.getVersion()}`) ? "" : pug_interp));
+pug_html = pug_html + (pug.escape(null == (pug_interp = `Postbird version: ${appVersion}`) ? "" : pug_interp));
 ;pug_debug_line = 27;pug_debug_filename = "views\u002Fhelp.jade";
 pug_html = pug_html + "\u003Cbr\u002F\u003E";
 ;pug_debug_line = 28;pug_debug_filename = "views\u002Fhelp.jade";
@@ -1883,15 +1977,15 @@ pug_html = pug_html + "\n        \u003Cp\u003E";
 pug_html = pug_html + "\u003Ccode\u003E";
 ;pug_debug_line = 58;pug_debug_filename = "views\u002Fhelp.jade";
 pug_html = pug_html + "brew install postgresql\u003C\u002Fcode\u003E\u003C\u002Fp\u003E\n      \u003C\u002Farticle\u003E\n    \u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
-    }.call(this, "electron" in locals_for_with ?
-        locals_for_with.electron :
-        typeof electron !== 'undefined' ? electron : undefined, "link_to" in locals_for_with ?
+    }.call(this, "appVersion" in locals_for_with ?
+        locals_for_with.appVersion :
+        typeof appVersion !== 'undefined' ? appVersion : undefined, "link_to" in locals_for_with ?
         locals_for_with.link_to :
         typeof link_to !== 'undefined' ? link_to : undefined, "process" in locals_for_with ?
         locals_for_with.process :
         typeof process !== 'undefined' ? process : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["help"].content = ".help-screen\n  .sidebar\n    h4 Help\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      //li\n      //  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public/images/icon.png\")\n      p.\n        Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron\n      p\n        = \"Source code at \"\n        != link_to(\"github.com/paxa/postbird\", \"https://github.com/paxa/postbird\", {class: \"external\"})\n\n      br\n      p\n        = `Postbird version: ${electron.remote.app.getVersion()}`\n        br\n        = `Electron version: ${process.versions.electron}`\n        br\n        = `Node version: ${process.versions.node}`\n        br\n        != `pg_dump version: <span class=\"pg_dump_version\">...</span>`\n        br\n        != `psql version: <span class=\"psql_version\">...</span>`\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer. \"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections. \"\n          = \"Close the app, and the server shuts down. \"\n        a.download.external(href=\"http://postgresapp.com/\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and \"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http://www.enterprisedb.com/products-services-training/pgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew\n\n        p\n          code brew install postgresql\n";
+exports["help"].content = ".help-screen\n  .sidebar\n    h4 Help\n    ul\n      li\n        a(page=\"about-postbird\") About Postbird\n      li\n        a(page=\"get-postgres\") Get Postgres\n      //li\n      //  a(page=\"sql-basics\") SQL basics\n\n  .content\n    .page.about-postbird\n      h2 About Postbird\n\n      p.logo\n        img(src=\"public/images/icon.png\")\n      p.\n        Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron\n      p\n        = \"Source code at \"\n        != link_to(\"github.com/paxa/postbird\", \"https://github.com/paxa/postbird\", {class: \"external\"})\n\n      br\n      p\n        = `Postbird version: ${appVersion}`\n        br\n        = `Electron version: ${process.versions.electron}`\n        br\n        = `Node version: ${process.versions.node}`\n        br\n        != `pg_dump version: <span class=\"pg_dump_version\">...</span>`\n        br\n        != `psql version: <span class=\"psql_version\">...</span>`\n\n    .page.get-postgres\n      h2 Get Postgres\n\n      article\n        h5 Postgres.app\n        p\n          = \"Postgres.app is a simple, native Mac OS X app that runs in the menubar without the need of an installer. \"\n          = \"Open the app, and you have a PostgreSQL server ready and awaiting new connections. \"\n          = \"Close the app, and the server shuts down. \"\n        a.download.external(href=\"http://postgresapp.com/\") Download\n\n      article\n        h5 Postgres Graphical installer\n        p\n          = \"An installer is available for Mac OS X that includes PostgreSQL, pgAdmin and \"\n          = \"the StackBuilder utility for installation of additional packages.\"\n        a.download.external(href=\"http://www.enterprisedb.com/products-services-training/pgdownload#osx\") Download\n\n      article\n        h5 Using Homebrew\n\n        p\n          code brew install postgresql\n";
 exports["history"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Fhistory.jade":".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - \u002F\u002F do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.pgsql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.pgsql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.pgsql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0]\n              = \"Connected to server \"\n              if opts\n                code.pgsql\n                  = opts.user + (opts.password ? \":\u003Cpassword\u003E\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"\u002F\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.pgsql\n                = opts.user + (opts.password ? \":\u003Cpassword\u003E\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"\u002F\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n"};
 ;
     var locals_for_with = (locals || {});
@@ -2239,7 +2333,7 @@ pug_html = pug_html + "\n  \u003C\u002Ful\u003E\n\u003C\u002Fdiv\u003E";
         typeof timeFormat !== 'undefined' ? timeFormat : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["history"].content = ".history-window\n  header\n    button.native-look.reload-btn Reload\n    button.native-look.clear-btn Clear\n  ul\n    each event in events\n      if event.type == \"sql.start\" && event.args[0].state != 'running'\n        - // do nothing\n      else\n        li\n          time= timeFormat(new Date(event.time))\n          .event-info\n            if event.type == \"sql.start\" && event.args[0].state == 'running'\n              - var query = event.args[0]\n              strong Running\n              .sql.running\n                code.pgsql= \"SQL: \" + query.sql\n\n            else if event.type == \"sql.failed\"\n              - var query = event.args[0]\n              .sql.failed\n                code.pgsql= \"SQL: \" + query.sql\n                span.error= JSON.stringify(query.error, null, 2)\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"sql.success\"\n              - var query = event.args[0]\n              .sql.success\n                code.pgsql= \"SQL: \" + query.sql\n                span.exec-time= \"(\" + execTime(query.time) + \")\"\n\n            else if event.type == \"connect.success\"\n              - var opts = event.args[0]\n              = \"Connected to server \"\n              if opts\n                code.pgsql\n                  = opts.user + (opts.password ? \":<password>\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                  if opts.database\n                    = \"/\" + opts.database\n\n            else if event.type == \"connect.error\"\n              - var opts = event.args[1]\n              = \"Failed connect to server \"\n              code.pgsql\n                = opts.user + (opts.password ? \":<password>\" : \"\") + \"@\" + opts.host + \":\" + opts.port\n                if opts.database\n                  = \"/\" + opts.database\n              span.error= event.args[2].message || event.args[2]\n\n            else if event.type == \"exec.start\"\n              strong Executing\n              .exec.start\n                code= event.args[0].command\n\n            else if event.type == \"exec.finish\"\n              strong Complete\n              .exec.finish\n                code= event.args[0].command\n                span.exec-time= \"(\" + execTime(event.args[0].time) + \")\"\n\n            else\n              .event\n                = \"~\"\n                = event.type\n                = \" \"\n                = JSON.stringify(event.args, null, 2)\n";
-exports["info_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Finfo_tab.jade":".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  if diskUsage\n    p\n      = `Total size on disk: ${formatBytes(diskUsage.total)} `\n      span.table-size-breakdown\n        = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`\n\n  if summaryError\n    code.result\n      strong= \"Error happen while getting table summary\\n\"\n      = summaryError\n\nh4 Source SQL\n\nif source\n  code.result.pgsql= source\nelse\n  code.result Loading...\n\nif dumpError\n  code.result\n    strong= \"Error happen while running pg_dump:\\n\"\n    = dumpError\n"};
+exports["info_tab"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Finfo_tab.jade":".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  if diskUsage\n    p\n      = `Total size on disk: ${formatBytes(diskUsage.total)} `\n      span.table-size-breakdown\n        = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`\n\n  if summaryError\n    code.result\n      strong= \"Error happen while getting table summary\\n\"\n      = summaryError\n\nh4 Source SQL\n\nif source && !dumpError\n  code.result.pgsql= source\nelse if dumpError\n  code.result\n    strong= \"Error happen while running pg_dump:\\n\"\n    = dumpError\nelse\n  code.result Loading...\n"};
 ;
     var locals_for_with = (locals || {});
     
@@ -2289,28 +2383,28 @@ pug_html = pug_html + "\n\u003Ch4\u003E";
 ;pug_debug_line = 19;pug_debug_filename = "views\u002Finfo_tab.jade";
 pug_html = pug_html + "Source SQL\u003C\u002Fh4\u003E";
 ;pug_debug_line = 21;pug_debug_filename = "views\u002Finfo_tab.jade";
-if (source) {
+if (source && !dumpError) {
 ;pug_debug_line = 22;pug_debug_filename = "views\u002Finfo_tab.jade";
 pug_html = pug_html + "\u003Ccode class=\"result pgsql\"\u003E";
 ;pug_debug_line = 22;pug_debug_filename = "views\u002Finfo_tab.jade";
 pug_html = pug_html + (pug.escape(null == (pug_interp = source) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
 }
-else {
-;pug_debug_line = 24;pug_debug_filename = "views\u002Finfo_tab.jade";
-pug_html = pug_html + "\u003Ccode class=\"result\"\u003E";
-;pug_debug_line = 24;pug_debug_filename = "views\u002Finfo_tab.jade";
-pug_html = pug_html + "Loading...\u003C\u002Fcode\u003E";
-}
-;pug_debug_line = 26;pug_debug_filename = "views\u002Finfo_tab.jade";
+else
 if (dumpError) {
-;pug_debug_line = 27;pug_debug_filename = "views\u002Finfo_tab.jade";
+;pug_debug_line = 24;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\u003Ccode class=\"result\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + "\u003Cstrong\u003E";
+;pug_debug_line = 25;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = "Error happen while running pg_dump:\n") ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
+;pug_debug_line = 26;pug_debug_filename = "views\u002Finfo_tab.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = dumpError) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+}
+else {
+;pug_debug_line = 28;pug_debug_filename = "views\u002Finfo_tab.jade";
 pug_html = pug_html + "\u003Ccode class=\"result\"\u003E";
 ;pug_debug_line = 28;pug_debug_filename = "views\u002Finfo_tab.jade";
-pug_html = pug_html + "\u003Cstrong\u003E";
-;pug_debug_line = 28;pug_debug_filename = "views\u002Finfo_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = "Error happen while running pg_dump:\n") ? "" : pug_interp)) + "\u003C\u002Fstrong\u003E";
-;pug_debug_line = 29;pug_debug_filename = "views\u002Finfo_tab.jade";
-pug_html = pug_html + (pug.escape(null == (pug_interp = dumpError) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E";
+pug_html = pug_html + "Loading...\u003C\u002Fcode\u003E";
 }
     }.call(this, "diskUsage" in locals_for_with ?
         locals_for_with.diskUsage :
@@ -2328,7 +2422,7 @@ pug_html = pug_html + (pug.escape(null == (pug_interp = dumpError) ? "" : pug_in
         locals_for_with.summaryError :
         typeof summaryError !== 'undefined' ? summaryError : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
-exports["info_tab"].content = ".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  if diskUsage\n    p\n      = `Total size on disk: ${formatBytes(diskUsage.total)} `\n      span.table-size-breakdown\n        = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`\n\n  if summaryError\n    code.result\n      strong= \"Error happen while getting table summary\\n\"\n      = summaryError\n\nh4 Source SQL\n\nif source\n  code.result.pgsql= source\nelse\n  code.result Loading...\n\nif dumpError\n  code.result\n    strong= \"Error happen while running pg_dump:\\n\"\n    = dumpError\n";
+exports["info_tab"].content = ".summary\n  p\n    = \"Type: \"\n    strong= relType\n  p\n    = \"Estimate rows count: \"\n    = recordsCount\n  if diskUsage\n    p\n      = `Total size on disk: ${formatBytes(diskUsage.total)} `\n      span.table-size-breakdown\n        = `(Table: ${formatBytes(diskUsage.table)}, Indexes: ${formatBytes(diskUsage.index)}, Toast: ${formatBytes(diskUsage.toast)})`\n\n  if summaryError\n    code.result\n      strong= \"Error happen while getting table summary\\n\"\n      = summaryError\n\nh4 Source SQL\n\nif source && !dumpError\n  code.result.pgsql= source\nelse if dumpError\n  code.result\n    strong= \"Error happen while running pg_dump:\\n\"\n    = dumpError\nelse\n  code.result Loading...\n";
 exports["login_screen"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"views\u002Flogin_screen.jade":".login-screen\n  .sidebar\n    h4 Saved connections\n    ul.connections\n    button.add-connection.native-look(exec=\"addNewConnection\") Add\n\n  .main-window\n    .middle-window\n      .header-tabs\n        != link_to(\"Standard\", '#', {exec: 'showStandardPane', class: 'login-with-password selected'})\n        != link_to(\"Connect URL\", '#', {exec: 'showUrlPane', class: 'enter-postgres-url'})\n        != link_to(\"Heroku\", '#', {exec: 'showHerokuPane', class: 'login-with-heroku'})\n\n      form.middle-window-content.standard\n        p\n          label(for=\"login_host\") Host\n          input#login_host(name='host', type='text', value='localhost', placeholder='localhost')\n        p\n          label(for=\"login_port\") Port\n          input#login_port(name='port', type='text', value='5432', placeholder='5432')\n        p\n          label(for=\"login_username\") Username\n          input#login_username(name='user', type='text', value='')\n        p\n          label(for=\"login_password\") Password\n          input#login_password(name='password', type='password', value='')\n\n        p\n          label(for=\"login_database\") Database\n          input#login_database(name='database', type='text', value='')\n\n        .extra-login-fields\n          p\n            label\n            label\n              != link_to(\"Show tunnel optiolds\", '#', {exec: 'showExtraLogingFields', class: 'open-extra-fields'})\n              != link_to(\"Hide tunnel optiolds\", '#', {exec: 'showExtraLogingFields', class: 'close-extra-fields'})\n          p.extra-field\n            label(for=\"login_query\") Start Query\n            input#login_query(name='sql_query', type='text', value='')\n            small.help-icon(data-tooltip=\"This query will run every time you connect to database.\\nExample:\\nSET timezone = '+02'\") ?\n          p.extra-field\n            label(for=\"ssh_host\") SSH Host\n            input#ssh_host(name='ssh_host', type='text', value='')\n          p.extra-field\n            label(for=\"ssh_port\") SSH Port\n            input#ssh_port(name='ssh_port', type='text', value='' placeholder='22')\n          p.extra-field\n            label(for=\"ssh_user\") SSH User\n            input#ssh_user(name='ssh_user', type='text', value='' placeholder=`${process.env.USER || ''}`)\n          p.extra-field\n            label(for=\"ssh_pass\") SSH Password\n            input#ssh_user(name='ssh_user', type='text', value='' placeholder=`***`)\n          p.extra-field\n            label(for=\"ssh_key\") SSH Key\n            input#ssh_key(name='ssh_key', type='text', value=''  placeholder='key.pem')\n\n        p\n          label\n          label\n            input(name='auto_connect', type='checkbox', value='1')\n            = \"Connect on start\"\n\n        input(name=\"query\", type=\"hidden\")\n\n        p.buttons\n          button.native-look(exec=\"std_testConnection\") Test Connection\n          button.native-look(exec=\"std_saveAndConnect\") Save & Connect\n          input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n      form.middle-window-content.postgres-url\n        textarea.connection-url(name='connect_url' placeholder=`postgres:\u002F\u002F${process.env.USER || 'user'}@localhost\u002F${process.env.USER || 'dbname'}`)\n          = `postgres:\u002F\u002F${process.env.USER || 'user'}@localhost\u002F${process.env.USER || 'dbname'}`\n\n        .ssh-tunnel-info\n          = \"SHH Tunnel\"\n          small.help-icon(data-tooltip=\"Example:\\n postgres:\u002F\u002Fremote.com? ssh_host=remote.com &ssh_user=optional &ssh_pass=optional &ssh_port=optional &ssh_key=optional\") ?\n\n        p\n          label\n          label\n            input(name='auto_connect', type='checkbox', value='1')\n            = \"Connect on start\"\n\n        p.buttons\n          button.native-look(exec=\"url_testConnection\") Test Connection\n          button.native-look(exec=\"url_saveAndConnect\") Save & Connect\n          input.native-look(type=\"submit\", value=\"Connect\", autofocus=true)\n\n      .middle-window-content.heroku-1\n        h5 Connect to Heroku PostgreSQL\n\n        p!= link_to(\"Access with OAuth\", '#', {exec: 'startHerokuOAuth'})\n        - \u002F\u002Fp!= link_to('Access with \"$ heroku\" command line tool', '#')\n\n\n      .middle-window-content.heroku-oauth\n        ul.steps\n          li.access-token Grand access\n          li.request-token Request Token\n          li.get-apps Get applications list\n        ul.apps\n        ul.steps\n          li.database-url Database URL\n          li.connect-db Connect to DB\n\n      .middle-window-content.heroku-cl\n        ul\n          li Detect command line utilite\n          li Get applications list\n\n    \u002F\u002F- footer\n    \u002F\u002F-   a.go-to-help Get Postgres\n"};
 ;
     var locals_for_with = (locals || {});

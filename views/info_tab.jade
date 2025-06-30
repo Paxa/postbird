@@ -18,12 +18,11 @@
 
 h4 Source SQL
 
-if source
+if source && !dumpError
   code.result.pgsql= source
-else
-  code.result Loading...
-
-if dumpError
+else if dumpError
   code.result
     strong= "Error happen while running pg_dump:\n"
     = dumpError
+else
+  code.result Loading...
