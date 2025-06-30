@@ -6,6 +6,11 @@ const windowStateKeeper = require('electron-window-state');
 
 require('@electron/remote/main').initialize();
 
+// Enable remote for all new web contents
+app.on('web-contents-created', (event, contents) => {
+  require('@electron/remote/main').enable(contents);
+});
+
 electron.app.ApplicationStart = Date.now();
 electron.app.MainFilename = process.mainModule.filename;
 
@@ -68,8 +73,6 @@ app.on('open-url', (event, url) => {
   }
 });
 
-var gotTheLock = app.requestSingleInstanceLock();
-
 app.on('ready', () => {
   const mainWindowState = windowStateKeeper({
     defaultWidth: 960,
@@ -92,8 +95,10 @@ app.on('ready', () => {
 
   electron.app.mainWindow = mainWindow;
 
-  // and load the index.html of the app.
+  // Enable @electron/remote for this webContents
   require("@electron/remote/main").enable(mainWindow.webContents);
+
+  // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   if (process.env.POSTBIRD_DEBUG == "true") {
