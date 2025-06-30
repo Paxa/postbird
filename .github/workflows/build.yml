@@ -14,10 +14,8 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - name: Install Node.js, NPM and Yarn
+      - name: Install Node.js, NPM
         uses: actions/setup-node@v2
-        with:
-          node-version: '14'
 
       - name: Build/release app
         uses: samuelmeuli/action-electron-builder@v1
@@ -91,4 +89,3 @@ jobs:
           name: Postbird.apk
           path: dist/*.apk
         if: ${{ runner.os == 'Linux' }}
-
