@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Add python setuptools
+        shell: bash
+        run: pip install setuptools
+        if: ${{ runner.os == 'macOS' }}
+
       - name: Build/release app
         uses: samuelmeuli/action-electron-builder@v1
         with:
@@ -28,11 +33,6 @@ jobs:
       - name: List Files
         shell: bash
         run: ls -lah dist
-
-      - name: Add python setuptools
-        shell: bash
-        run: pip install setuptools
-        if: ${{ runner.os == 'macOS' }}
 
       - name: Upload Postbird.dmg
         uses: actions/upload-artifact@v4
