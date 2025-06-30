@@ -27,7 +27,7 @@
     "@types/mousetrap": "^1.6.4",
     "@types/pg": "^7.14.5",
     "@types/semver": "~7.3.8",
-    "electron": "^24.0.0",
+    "electron": "^25.0.0",
     "electron-builder": "^23.6.0",
     "electron-mocha": "^13.0.0",
     "eslint": "^7.32.0",
