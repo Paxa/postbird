@@ -84,7 +84,7 @@ $(window).on('window-ready', () => {
 require('./app/top_menu');
 
 var cliArgs = electronRemote.process.argv;
-if (cliArgs.length > 2) {
+if (cliArgs.length > 2 && !electronRemote.process.env.RUN_POSTBIRD_JS_TEST) {
   var connectionStr = cliArgs[2];
   if (connectionStr.startsWith("postgres://") || connectionStr.startsWith("postgresql://")) {
     App.cliConnectString = connectionStr;
