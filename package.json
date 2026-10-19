@@ -7,14 +7,16 @@
   "description": "Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron",
   "scripts": {
     "sass": "sass assets/styles/style.scss public/style.css --watch",
-    "test": "electron-mocha tests/ --renderer --require-main main.js",
+    "test": "bun test tests/",
+    "test:unit": "bun test tests/",
+    "test:legacy": "electron-mocha tests/ --renderer --require-main main.js",
     "integration_test": "mocha integration_tests/integration.js",
     "start": "cross-env NW_DEV=true NW_DEBUG=true electron . $@",
     "start:electrobun": "bun electrobun/bundle.ts && hutch electrobun run",
     "build:electrobun": "bun electrobun/bundle.ts && hutch electrobun build",
     "bundle:electrobun": "bun electrobun/bundle.ts",
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild",
-    "ts": "node ts.js",
+    "typecheck": "tsc --noEmit",
     "dist": "node build_package.js",
     "build": "node build_package.js",
     "lint": "eslint ."
@@ -26,8 +28,10 @@
   },
   "devDependencies": {
     "@types/alertify": "^0.3.30",
+    "@types/bun": "latest",
     "@types/jquery": "^3.5.3",
     "@types/mousetrap": "^1.6.4",
+    "@types/node": "^22.0.0",
     "@types/pg": "^7.14.5",
     "@types/semver": "~7.3.8",
     "electron": "^21.2.3",
@@ -35,9 +39,9 @@
     "electron-mocha": "^13.0.0",
     "eslint": "^7.32.0",
     "localStorage": "^1.0.4",
-    "plus-typescript": "^4.1.1-alpha",
     "sass": "^1.49.9",
-    "spectron": "^19.0.0"
+    "spectron": "^19.0.0",
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@electron/remote": "2.0.1",

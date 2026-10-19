@@ -1,0 +1,3 @@
+[test]
+preload = ["./tests/test_helper.ts"]
+root = "tests"

@@ -110,7 +110,7 @@ end;
 --
 
 /*
-CREATE FUNCTION "audit_bk1" () RETURNS opaque AS '
+CREATE FUNCTION "audit_bk1" () RETURNS trigger AS '
 	DECLARE
 	 key ALIAS FOR $1;
 	table_data inventory%ROWTYPE;
@@ -132,7 +132,7 @@ end;
 -- Name: "test_check_a_id" () Type: FUNCTION Owner: example
 --
 
-CREATE FUNCTION "test_check_a_id" () RETURNS opaque AS '
+CREATE FUNCTION "test_check_a_id" () RETURNS trigger AS '
     BEGIN
      -- checks to make sure the author id
      -- inserted is not left blank or less than 100
@@ -157,7 +157,7 @@ CREATE FUNCTION "test_check_a_id" () RETURNS opaque AS '
 -- Name: "audit_test" () Type: FUNCTION Owner: example
 --
 
-CREATE FUNCTION "audit_test" () RETURNS opaque AS '
+CREATE FUNCTION "audit_test" () RETURNS trigger AS '
     BEGIN   
        
       IF TG_OP = ''INSERT'' OR TG_OP = ''UPDATE'' THEN
@@ -344,7 +344,7 @@ CREATE FUNCTION "compound_word" (text,text) RETURNS text AS '
 -- Name: "givename" () Type: FUNCTION Owner: example
 --
 
-CREATE FUNCTION "givename" () RETURNS opaque AS '
+CREATE FUNCTION "givename" () RETURNS trigger AS '
  DECLARE
    tablename text;
  BEGIN
@@ -875,7 +875,7 @@ CREATE FUNCTION "ship_item" (text,text,text) RETURNS integer AS '
 -- Name: "check_book_addition" () Type: FUNCTION Owner: postgres
 --
 
-CREATE FUNCTION "check_book_addition" () RETURNS opaque AS '
+CREATE FUNCTION "check_book_addition" () RETURNS trigger AS '
   DECLARE 
     id_number INTEGER;
     book_isbn TEXT;
@@ -932,7 +932,7 @@ CREATE SEQUENCE "shipments_ship_id_seq" start 0 increment 1 maxvalue 2147483647 
 -- Name: "check_shipment_addition" () Type: FUNCTION Owner: postgres
 --
 
-CREATE FUNCTION "check_shipment_addition" () RETURNS opaque AS '
+CREATE FUNCTION "check_shipment_addition" () RETURNS trigger AS '
   DECLARE
      -- Declare a variable to hold the customer ID.
     id_number INTEGER;
@@ -1245,7 +1245,7 @@ CREATE TABLE "book_backup" (
 -- Name: "sync_authors_and_books" () Type: FUNCTION Owner: postgres
 --
 
-CREATE FUNCTION "sync_authors_and_books" () RETURNS opaque AS '
+CREATE FUNCTION "sync_authors_and_books" () RETURNS trigger AS '
   BEGIN
     IF TG_OP = ''UPDATE'' THEN
       UPDATE books SET author_id = new.id WHERE author_id = old.id; 
@@ -1818,7 +1818,7 @@ CREATE CONSTRAINT TRIGGER "valid_employee" AFTER INSERT OR UPDATE ON "schedules"
 -- Name: "RI_ConstraintTrigger_4063375" Type: TRIGGER Owner: postgres
 --
 
-CREATE CONSTRAINT TRIGGER "valid_employee" AFTER DELETE ON "employees"  FROM "schedules" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del" ('valid_employee', 'schedules', 'employees', 'FULL', 'employee_id', 'id');
+CREATE CONSTRAINT TRIGGER "valid_employee_del" AFTER DELETE ON "employees"  FROM "schedules" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del" ('valid_employee', 'schedules', 'employees', 'FULL', 'employee_id', 'id');
 
 --
 -- TOC Entry ID 138 (OID 4063378)
@@ -1826,7 +1826,7 @@ CREATE CONSTRAINT TRIGGER "valid_employee" AFTER DELETE ON "employees"  FROM "sc
 -- Name: "RI_ConstraintTrigger_4063377" Type: TRIGGER Owner: postgres
 --
 
-CREATE CONSTRAINT TRIGGER "valid_employee" AFTER UPDATE ON "employees"  FROM "schedules" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd" ('valid_employee', 'schedules', 'employees', 'FULL', 'employee_id', 'id');
+CREATE CONSTRAINT TRIGGER "valid_employee_upd" AFTER UPDATE ON "employees"  FROM "schedules" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd" ('valid_employee', 'schedules', 'employees', 'FULL', 'employee_id', 'id');
 
 --
 -- TOC Entry ID 140 (OID 3752079)

@@ -32,15 +32,19 @@ class MockWindow {
 
 const mainWindowInstance = new MockWindow();
 
+const _hasWindow = typeof window !== "undefined";
+const _startTime = _hasWindow ? (window.__appStartTime = window.__appStartTime || Date.now()) : Date.now();
+const _isDark = _hasWindow && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 const remote = {
   app: {
     getAppPath: () => ".",
-    ApplicationStart: (window.__appStartTime = window.__appStartTime || Date.now()),
+    ApplicationStart: _startTime,
     MainFilename: "index.html",
     mainWindow: mainWindowInstance,
   },
   nativeTheme: {
-    shouldUseDarkColors: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+    shouldUseDarkColors: !!_isDark,
   },
   systemPreferences: {
     subscribeNotification: () => {},

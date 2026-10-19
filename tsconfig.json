@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": false,
+    "useDefineForClassFields": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["bun", "node"],
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*", "ts_libs/*"]
+    }
+  },
+  "include": [
+    "ts_libs/**/*.d.ts",
+    "app/**/*.ts",
+    "app/**/*.js",
+    "lib/**/*.ts",
+    "lib/**/*.js",
+    "tests/**/*.ts",
+    "tests/**/*.js",
+    "electrobun/**/*.ts",
+    "app.ts",
+    "index.ts"
+  ]
+}
