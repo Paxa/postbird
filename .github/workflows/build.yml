@@ -66,6 +66,30 @@ jobs:
         if: runner.os == 'Linux'
         run: bash scripts/package_linux.sh ${{ matrix.target }}
 
+      - name: Prepare distribution artifacts
+        shell: bash
+        run: |
+          # Remove auto-updater archives to keep distributions lean
+          rm -f artifacts/*.tar.zst artifacts/*update.json
+
+          # Normalize macOS dmg name
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            for dmg in artifacts/*Postbird*.dmg; do
+              if [ -f "$dmg" ] && [ "$dmg" != "artifacts/${{ matrix.artifact-name }}.dmg" ]; then
+                mv "$dmg" "artifacts/${{ matrix.artifact-name }}.dmg"
+              fi
+            done
+          fi
+
+          # Normalize Windows zip name
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            for winzip in artifacts/*Postbird*.zip; do
+              if [ -f "$winzip" ] && [ "$winzip" != "artifacts/${{ matrix.artifact-name }}.zip" ]; then
+                mv "$winzip" "artifacts/${{ matrix.artifact-name }}.zip"
+              fi
+            done
+          fi
+
       - name: List built artifacts
         shell: bash
         run: ls -lah artifacts/
