@@ -1,0 +1,27 @@
+name: postbird
+base: core24
+version: '0.8.4'
+summary: PostgreSQL GUI client
+description: |
+  Postbird is a cross-platform PostgreSQL GUI client, written in TypeScript, powered by Electrobun.
+grade: stable
+confinement: strict
+
+apps:
+  postbird:
+    command: opt/postbird/Postbird
+    desktop: usr/share/applications/postbird.desktop
+    extensions: [gnome]
+    plugs:
+      - network
+      - network-bind
+      - home
+      - removable-media
+
+parts:
+  desktop-files:
+    plugin: dump
+    source: build_files
+    organize:
+      postbird.desktop: usr/share/applications/postbird.desktop
+      icon.png: usr/share/icons/hicolor/512x512/apps/postbird.png

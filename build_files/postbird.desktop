@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Postbird
+Comment=PostgreSQL GUI client, written in TypeScript, powered by Electrobun
+Exec=/opt/postbird/Postbird %U
+Icon=postbird
+Terminal=false
+Type=Application
+Categories=Development;Database;
+StartupWMClass=Postbird
+MimeType=application/x-postgresql;
