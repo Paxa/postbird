@@ -669,6 +669,19 @@ class Connection {
     callback && callback();
   }
 
+  static async closeAll(): Promise<void> {
+    const list = [...((Connection as any).instances || [])];
+    await Promise.all(
+      list.map(async (conn) => {
+        try {
+          await conn.close();
+        } catch (err) {
+          console.error("[Connection.closeAll Error]", err);
+        }
+      })
+    );
+  }
+
   reconnect(callback : (success: boolean, error?: Error) => void ) {
     return this.close().then(() => {
       return this.connectToServer(this.options, callback);

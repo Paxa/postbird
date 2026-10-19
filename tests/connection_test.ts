@@ -80,5 +80,30 @@ describe('Connection', () => {
       port: 5432,
       database: undefined
     });
-  })
+  });
+
+  it("should gracefully close all connections with closeAll", async () => {
+    const conn1 = new Connection();
+    await conn1.connectToServer({
+      user: process.env.USER || 'pavel',
+      host: 'localhost',
+      port: '5432',
+      database: 'postbird_test'
+    });
+
+    const conn2 = new Connection();
+    await conn2.connectToServer({
+      user: process.env.USER || 'pavel',
+      host: 'localhost',
+      port: '5432',
+      database: 'postbird_test'
+    });
+
+    assert(Connection.instances.includes(conn1), "conn1 should be in instances");
+    assert(Connection.instances.includes(conn2), "conn2 should be in instances");
+
+    await Connection.closeAll();
+
+    assert.equal(Connection.instances.length, 0, "All instances should be closed and removed");
+  });
 });

@@ -147,6 +147,21 @@ export async function runUITests() {
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_ui_table CASCADE;");
   });
 
+  // 10. Graceful shutdown handler & Cmd+Q interceptor
+  await test("registers graceful shutdown handler and intercepts Cmd+Q", async () => {
+    assert(typeof window.__postbirdGracefulQuit === "function", "__postbirdGracefulQuit should be registered");
+    assert(typeof window.Connection.closeAll === "function", "Connection.closeAll should be a function");
+
+    const qEvent = new KeyboardEvent("keydown", {
+      key: "q",
+      metaKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    window.dispatchEvent(qEvent);
+    assert(qEvent.defaultPrevented, "Cmd+Q should have default prevented by shutdown handler");
+  });
+
   // Summary
   const failed = results.filter(r => !r.passed).length;
   console.log("\n=======================================================");

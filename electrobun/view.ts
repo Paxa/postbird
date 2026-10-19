@@ -30,6 +30,10 @@ type PostbirdRPC = {
         params: { total: number; failed: number };
         response: { exitCode: number };
       };
+      quitApp: {
+        params: {};
+        response: { success: boolean };
+      };
     };
     messages: {};
   };
@@ -59,6 +63,9 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   finishTests: async (params: { total: number; failed: number }) => {
     return await electroview.rpc!.request.finishTests(params);
+  },
+  quitApp: async () => {
+    return await electroview.rpc!.request.quitApp({});
   },
 };
 

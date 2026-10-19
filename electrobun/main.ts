@@ -29,6 +29,10 @@ type PostbirdRPC = {
         params: { total: number; failed: number };
         response: { exitCode: number };
       };
+      quitApp: {
+        params: {};
+        response: { success: boolean };
+      };
     };
     messages: {};
   }>;
@@ -173,10 +177,52 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
         }, 150);
         return { exitCode: failed > 0 ? 1 : 0 };
       },
+
+      quitApp: async () => {
+        console.log("[Graceful Shutdown] Received quitApp RPC request, ending pools and exiting...");
+        await closeAllPools();
+        setTimeout(() => {
+          process.exit(0);
+        }, 80);
+        return { success: true };
+      },
     },
     messages: {},
   },
 });
+
+async function closeAllPools() {
+  for (const [key, pool] of pools.entries()) {
+    try {
+      console.log(`[Graceful Shutdown] Ending pool: ${key}`);
+      await pool.end();
+    } catch (e) {
+      console.error(`[Pool End Error] ${key}:`, e);
+    }
+  }
+  pools.clear();
+}
+
+async function handleGracefulQuit() {
+  console.log("[Graceful Shutdown] Initiating graceful shutdown via Cmd+Q / Menu...");
+  try {
+    if (mainWindow && mainWindow.webview) {
+      await mainWindow.webview.executeJavascript(
+        "window.__postbirdGracefulQuit ? window.__postbirdGracefulQuit() : null"
+      );
+    }
+  } catch (err) {
+    console.error("[Graceful Shutdown] Failed to trigger webview quit:", err);
+  }
+
+  await closeAllPools();
+  setTimeout(() => {
+    process.exit(0);
+  }, 150);
+}
+
+process.on("SIGINT", () => handleGracefulQuit());
+process.on("SIGTERM", () => handleGracefulQuit());
 
 ApplicationMenu.setApplicationMenu([
   {
@@ -188,7 +234,7 @@ ApplicationMenu.setApplicationMenu([
       { role: "hideOthers" },
       { role: "showAll" },
       { type: "divider" },
-      { role: "quit" },
+      { label: "Quit Postbird", accelerator: "CmdOrCtrl+Q", action: "quit-app" },
     ],
   },
   {
@@ -238,8 +284,11 @@ ApplicationMenu.setApplicationMenu([
   },
 ]);
 
-ApplicationMenu.on("application-menu-clicked", (e: any) => {
+ApplicationMenu.on("application-menu-clicked", async (e: any) => {
   console.log("[Menu Clicked]", e);
+  if (e?.action === "quit-app") {
+    await handleGracefulQuit();
+  }
 });
 
 const mainWindow = new BrowserWindow({

@@ -17,3 +17,32 @@ if (process.env.POSTBIRD_TEST_UI === "true") {
     });
   });
 }
+
+let isShuttingDown = false;
+(window as any).__postbirdGracefulQuit = async () => {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log("[Graceful Shutdown] Closing all PostgreSQL connections...");
+  try {
+    if ((window as any).Connection && typeof (window as any).Connection.closeAll === "function") {
+      await (window as any).Connection.closeAll();
+    }
+  } catch (err) {
+    console.error("[Graceful Shutdown Error]", err);
+  }
+  if ((window as any).__postbirdRpc && (window as any).__postbirdRpc.quitApp) {
+    await (window as any).__postbirdRpc.quitApp();
+  }
+};
+
+window.addEventListener("keydown", async (event: KeyboardEvent) => {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "q") {
+    event.preventDefault();
+    event.stopPropagation();
+    await (window as any).__postbirdGracefulQuit();
+  }
+});
+
+window.addEventListener("beforeunload", () => {
+  (window as any).__postbirdGracefulQuit();
+});
