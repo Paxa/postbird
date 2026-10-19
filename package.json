@@ -9,7 +9,7 @@
     "sass": "sass assets/styles/style.scss public/style.css --watch",
     "test": "bun test tests/",
     "test:unit": "bun test tests/",
-    "test:ui": "POSTBIRD_TEST_UI=true bun electrobun/bundle.ts && bunx electrobun build && bunx electrobun run",
+    "test:ui": "bun electrobun/bundle.ts && bunx electrobun build && POSTBIRD_TEST_UI=true bunx electrobun run",
     "integration_test": "bun run test:ui",
     "start": "bun electrobun/bundle.ts && bunx electrobun build && bunx electrobun run",
     "build": "bun electrobun/bundle.ts && bunx electrobun build",

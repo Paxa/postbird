@@ -56,6 +56,7 @@ class DialogBase {
 
   addClass (className) {
     this.windowContent.addClass(className);
+    $u('#alertify').addClass(className);
   }
 
   setAutofocus () {
@@ -66,6 +67,9 @@ class DialogBase {
   }
 
   close () {
+    if (this.dialogClass) {
+      $u('#alertify').removeClass(this.dialogClass);
+    }
     window.alertify.hide();
   }
 

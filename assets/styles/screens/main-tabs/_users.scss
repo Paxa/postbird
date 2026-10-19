@@ -1,6 +1,6 @@
 .window-content.users {
-  margin-bottom: -27px;
-  height: calc(100% + 7px);
+  height: 100%;
+  box-sizing: border-box;
   padding: 9px;
 
   .rescol-wrapper {

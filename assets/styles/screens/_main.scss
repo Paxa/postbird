@@ -9,17 +9,19 @@
 
   > .main {
     margin-left: $sidebar-width;
-    padding: {
-      bottom: $sidebar-footer-height;
-    };
-    overflow-y: auto;
+    padding-bottom: $sidebar-footer-height;
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 
     .window-tabs {
+      flex: 0 0 auto;
       display: flex;
       background: rgba(#000, 0.1);
       border-bottom: 1px solid #c3c3c3;
@@ -44,20 +46,25 @@
       }
     }
 
+    .clearfix {
+      display: none;
+    }
+
     .window-content {
       display: none;
-      overflow: auto;
-      // use grey background in next release, make it same as mac apps
-      //background: #edecec;
+      flex: 1 1 auto;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
 
       &.active {
         display: block;
-        height: calc(100% - 20px);
       }
 
-      &.structure.active, &.procedures.active, &.info.active, &.extensions.active, &.query.active {
-        margin-bottom: -27px;
-        height: calc(100% + 7px);
+      &.structure.active, &.procedures.active, &.info.active, &.extensions.active, &.query.active, &.users.active {
+        margin-bottom: -$sidebar-footer-height;
       }
     }
   }

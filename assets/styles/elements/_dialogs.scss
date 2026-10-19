@@ -115,9 +115,42 @@
   }
 }
 
+.alertify:has(.edit-value),
+.alertify.edit-value {
+  overflow: hidden;
+  max-height: calc(100vh - 100px);
+
+  .alertify-dialog {
+    overflow: hidden;
+    max-height: calc(100vh - 100px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .alertify-inner.edit-value {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-height: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+    > p:first-of-type {
+      margin: 5px 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+  }
+
   input.number-value, input.date-value, textarea {
     width: 100%;
+    box-sizing: border-box;
     font-size: 13px;
   }
   input.number-value, input.date-value, textarea, select {
@@ -127,14 +160,30 @@
   }
 
   textarea {
-    min-height: 50px;
-    max-height: calc(100vh - 250px);
+    box-sizing: border-box;
+    min-height: 80px;
+    max-height: calc(100vh - 310px);
     line-height: 1.5em;
+    overflow-y: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
+    resize: vertical;
   }
+
   &.edit-value-wide {
     textarea {
-      min-width: 800px;
+      min-width: min(800px, calc(100vw - 100px));
+      max-width: 100%;
     }
+  }
+
+  label {
+    margin: 5px 0;
+    flex: 0 0 auto;
+  }
+
+  p.buttons {
+    flex: 0 0 auto;
   }
 }
 

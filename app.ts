@@ -252,9 +252,9 @@ global.App = {
   },
 
   setSizes: function() {
-    var height = $u(window).height();
-    var topOffset = $u('body > #tabs').height();
-    $u('body > #content').css('height', height - topOffset);
+    var height = window.innerHeight;
+    var topOffset = $u('body > #tabs').outerHeight(true) || 0;
+    $u('body > #content').css('height', (height - topOffset) + 'px');
   },
 
   startLoading: function (message, timeout, options) {

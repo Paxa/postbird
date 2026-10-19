@@ -2,6 +2,8 @@
 .custom-window {
   width: auto;
   min-width: 400px;
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
 
   .alertify-dialog {
     padding-top: 42px;

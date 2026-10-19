@@ -385,9 +385,15 @@ $u.textContextMenu = function (element, currentWindow) {
 };
 
 $u.textareaAutoSize = function (element) {
-  function resize (event) {
-    event.target.style.height = 'auto';
-    event.target.style.height = event.target.scrollHeight+'px';
+  function resize (event?: any) {
+    var target = (event && event.target) ? event.target : element;
+    target.style.height = 'auto';
+    var computed = window.getComputedStyle(target);
+    var borderHeight = 0;
+    if (computed.boxSizing === 'border-box') {
+      borderHeight = (parseFloat(computed.borderTopWidth) || 0) + (parseFloat(computed.borderBottomWidth) || 0);
+    }
+    target.style.height = (target.scrollHeight + borderHeight) + 'px';
   }
 
   /* 0-timeout to get the already changed text */
@@ -395,14 +401,14 @@ $u.textareaAutoSize = function (element) {
     window.setTimeout(resize, 0, event);
   }
 
+  element.addEventListener('input',   delayedResize, false);
   element.addEventListener('change',  resize, false);
   element.addEventListener('cut',     delayedResize, false);
   element.addEventListener('paste',   delayedResize, false);
   element.addEventListener('drop',    delayedResize, false);
   element.addEventListener('keydown', delayedResize, false);
 
-  element.style.height = 'auto';
-  element.style.height = element.scrollHeight + 'px';
+  resize();
 };
 
 $u.debounce = (func, delay) => {

@@ -15,11 +15,25 @@ $code-font: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier 
 
 @import "elements/tabs";
 
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#tabs {
+  flex: 0 0 auto;
+}
+
 #content {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
 
   .tabContent {
     height: 100%;
+    overflow: hidden;
   }
 }
 

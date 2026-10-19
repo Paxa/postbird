@@ -242,6 +242,7 @@ export async function runUITests() {
     const targetTd = contentPane.find(".rescol-content-wrapper table tbody tr td").first()[0];
     assert(targetTd, "Target td should exist for cell editor");
 
+    $("#alertify").css("display", "");
     dbScreen.view.contentPane.editField(targetTd);
     await waitFor(() => $("#alertify .edit-value").length > 0 || $("#alertify").is(":visible"), 3000);
 
@@ -252,7 +253,47 @@ export async function runUITests() {
     if (window.alertify && window.alertify.close) {
       window.alertify.close();
     }
-    $("#alertify").hide().empty();
+    $("#alertify").removeClass("alertify-show").addClass("alertify-hidden").empty();
+  });
+
+  await test("content tab: in-place cell editor with long value prevents double scrolling", async () => {
+    // Open EditValue with a long text value (e.g. 5,000+ chars like a 1536-dim embedding vector)
+    $("#alertify").css("display", "");
+    const longValue = "[" + Array.from({ length: 1536 }, (_, i) => (Math.sin(i) * 0.1).toFixed(6)).join(", ") + "]";
+    const dialog = new window.Dialog.EditValue(dbScreen, {
+      value: longValue,
+      fieldName: "embedding",
+      fieldType: { data_type: "text", udt_name: "text", is_nullable: true },
+      onSave: () => {}
+    });
+
+    await waitFor(() => $("#alertify .edit-value").length > 0 && $("#alertify textarea").length > 0, 3000);
+    // Allow modal entrance transition to settle
+    await new Promise(r => setTimeout(r, 400));
+
+    const alertifyEl = document.getElementById("alertify");
+    const textareaEl = alertifyEl.querySelector("textarea");
+
+    assert(alertifyEl, "#alertify modal container must exist");
+    assert(textareaEl, "textarea must exist in edit-value dialog");
+
+    // The modal container itself should not have vertical scrolling (no double scrolling)
+    const modalOverflow = window.getComputedStyle(alertifyEl).overflowY;
+    assert(modalOverflow === "hidden" || alertifyEl.scrollHeight <= alertifyEl.clientHeight + 2,
+      `Modal dialog container should not scroll vertically (overflowY: ${modalOverflow}, scrollHeight: ${alertifyEl.scrollHeight}, clientHeight: ${alertifyEl.clientHeight})`);
+
+    // The textarea should scroll internally
+    assert(textareaEl.scrollHeight > textareaEl.clientHeight,
+      `Textarea should have scrollable content internally (scrollHeight: ${textareaEl.scrollHeight}, clientHeight: ${textareaEl.clientHeight})`);
+
+    // The Update and Cancel buttons should remain visible inside the dialog viewport
+    const okBtn = alertifyEl.querySelector("button.ok");
+    const okRect = okBtn.getBoundingClientRect();
+    const modalRect = alertifyEl.getBoundingClientRect();
+    assert(okRect.bottom <= modalRect.bottom + 5, `Update button should be within visible dialog bounds (okBottom: ${okRect.bottom}, modalBottom: ${modalRect.bottom})`);
+
+    dialog.close();
+    await new Promise(r => setTimeout(r, 400));
   });
 
   await test("content tab: foreign key visualization and related records popup", async () => {
@@ -275,8 +316,9 @@ export async function runUITests() {
     assert(fkCell.length > 0, "Foreign key value cell should exist");
 
     // Open foreign record popup
+    $("#alertify").css("display", "");
     await dbScreen.view.contentPane.viewForeign("public", "test_fk_parent", "id", "1");
-    await waitFor(() => $("#alertify .related-records-dialog").length > 0 || $("#alertify").is(":visible"), 3000);
+    await waitFor(() => $("#alertify .related-records-dialog").length > 0 && $("#alertify").text().includes("Root Parent Entity"), 4000);
 
     const relDialog = $("#alertify");
     assert(relDialog.length > 0, "Related records popup dialog should open");
@@ -286,10 +328,22 @@ export async function runUITests() {
     if (window.alertify && window.alertify.close) {
       window.alertify.close();
     }
-    $("#alertify").hide().empty();
+    $("#alertify").removeClass("alertify-show").addClass("alertify-hidden").empty();
 
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_fk_child CASCADE;");
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_fk_parent CASCADE;");
+  });
+
+  await test("main window layout has no accidental vertical scrollbar on .main or body", async () => {
+    const body = document.body;
+    assert(body.scrollHeight <= body.clientHeight + 1,
+      `Body should not vertically scroll (scrollHeight: ${body.scrollHeight}, clientHeight: ${body.clientHeight})`);
+
+    const main = document.querySelector(".main-screen > .main");
+    if (main) {
+      assert(main.scrollHeight <= main.clientHeight + 1,
+        `.main pane should not vertically scroll (scrollHeight: ${main.scrollHeight}, clientHeight: ${main.clientHeight})`);
+    }
   });
 
   await test("content tab: adds new row template to grid", async () => {

@@ -30,6 +30,20 @@ const shimPlugin = {
   },
 };
 
+import * as sass from "sass";
+
+console.log("Compiling styles (SASS)...");
+try {
+  const compiledSass = sass.compile(resolve(root, "assets/styles/style.scss"), {
+    loadPaths: [resolve(root, "assets/styles")],
+  });
+  await Bun.write(resolve(root, "public/style.css"), compiledSass.css);
+  console.log("Styles compiled successfully to public/style.css!");
+} catch (err) {
+  console.error("Failed to compile SASS styles:", err);
+  process.exit(1);
+}
+
 console.log("Bundling Postbird for Electrobun webview...");
 
 const result = await build({

@@ -1,7 +1,8 @@
 .window-content.content {
-  max-height: calc(100% - 20px);
-  height: calc(100% - 20px);
-  overflow: auto;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 
   &.reloading {
     li.reload {

@@ -265,11 +265,25 @@ input, textarea {
   padding: 20px;
 }
 
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#tabs {
+  flex: 0 0 auto;
+}
+
 #content {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
 }
 #content .tabContent {
   height: 100%;
+  overflow: hidden;
 }
 
 .native-look {
@@ -575,14 +589,18 @@ input, textarea {
 .main-screen > .main {
   margin-left: 20%;
   padding-bottom: 25px;
-  overflow-y: auto;
+  overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 .main-screen > .main .window-tabs {
+  flex: 0 0 auto;
   display: flex;
   background: rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #c3c3c3;
@@ -605,17 +623,23 @@ input, textarea {
 .main-screen > .main .window-tabs > *.active {
   background: rgba(93, 99, 107, 0.19);
 }
+.main-screen > .main .clearfix {
+  display: none;
+}
 .main-screen > .main .window-content {
   display: none;
-  overflow: auto;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 .main-screen > .main .window-content.active {
   display: block;
-  height: calc(100% - 20px);
 }
-.main-screen > .main .window-content.structure.active, .main-screen > .main .window-content.procedures.active, .main-screen > .main .window-content.info.active, .main-screen > .main .window-content.extensions.active, .main-screen > .main .window-content.query.active {
-  margin-bottom: -27px;
-  height: calc(100% + 7px);
+.main-screen > .main .window-content.structure.active, .main-screen > .main .window-content.procedures.active, .main-screen > .main .window-content.info.active, .main-screen > .main .window-content.extensions.active, .main-screen > .main .window-content.query.active, .main-screen > .main .window-content.users.active {
+  margin-bottom: -25px;
 }
 
 .window-tab {
@@ -1481,9 +1505,10 @@ body.sidebar-resizing * {
 }
 
 .window-content.content {
-  max-height: calc(100% - 20px);
-  height: calc(100% - 20px);
-  overflow: auto;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .window-content.content.reloading li.reload {
   background: rgba(0, 0, 0, 0.1);
@@ -1696,8 +1721,8 @@ body.sidebar-resizing * {
 }
 
 .window-content.users {
-  margin-bottom: -27px;
-  height: calc(100% + 7px);
+  height: 100%;
+  box-sizing: border-box;
   padding: 9px;
 }
 .window-content.users .rescol-wrapper {
@@ -1735,7 +1760,6 @@ body.sidebar-resizing * {
 
 .window-content.query {
   height: 100%;
-  margin-bottom: -27px;
 }
 .window-content.query .editing {
   height: 50%;
@@ -2056,6 +2080,8 @@ small.help-icon:hover:after {
 .custom-window {
   width: auto;
   min-width: 400px;
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
 }
 .custom-window .alertify-dialog {
   padding-top: 42px;
@@ -2205,20 +2231,65 @@ small.help-icon:hover:after {
   max-width: 100%;
 }
 
+.alertify:has(.edit-value),
+.alertify.edit-value {
+  overflow: hidden;
+  max-height: calc(100vh - 100px);
+}
+.alertify:has(.edit-value) .alertify-dialog,
+.alertify.edit-value .alertify-dialog {
+  overflow: hidden;
+  max-height: calc(100vh - 100px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.alertify-inner.edit-value {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-height: 100%;
+}
+.alertify-inner.edit-value form {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+.alertify-inner.edit-value form > p:first-of-type {
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 .alertify-inner.edit-value input.number-value, .alertify-inner.edit-value input.date-value, .alertify-inner.edit-value textarea {
   width: 100%;
+  box-sizing: border-box;
   font-size: 13px;
 }
 .alertify-inner.edit-value input.number-value[disabled], .alertify-inner.edit-value input.date-value[disabled], .alertify-inner.edit-value textarea[disabled], .alertify-inner.edit-value select[disabled] {
   background: #f5f5f5;
 }
 .alertify-inner.edit-value textarea {
-  min-height: 50px;
-  max-height: calc(100vh - 250px);
+  box-sizing: border-box;
+  min-height: 80px;
+  max-height: calc(100vh - 310px);
   line-height: 1.5em;
+  overflow-y: auto;
+  word-break: break-word;
+  white-space: pre-wrap;
+  resize: vertical;
 }
 .alertify-inner.edit-value.edit-value-wide textarea {
-  min-width: 800px;
+  min-width: min(800px, 100vw - 100px);
+  max-width: 100%;
+}
+.alertify-inner.edit-value label {
+  margin: 5px 0;
+  flex: 0 0 auto;
+}
+.alertify-inner.edit-value p.buttons {
+  flex: 0 0 auto;
 }
 
 .new-index-dialog ul.columns-names {
@@ -2545,5 +2616,3 @@ body.dark-mode .add-connection.native-look {
   background: #6c6b6d;
   padding-left: 9px;
 }
-
-/*# sourceMappingURL=style.css.map */
