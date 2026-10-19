@@ -16,6 +16,7 @@
     "start:electrobun": "bun electrobun/bundle.ts && bunx electrobun run",
     "build:electrobun": "bun electrobun/bundle.ts && bunx electrobun build",
     "bundle:electrobun": "bun electrobun/bundle.ts",
+    "compile:views": "bun scripts/compile_views.ts",
     "rebuild_ext": "cross-env PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin electron-rebuild",
     "typecheck": "tsc --noEmit",
     "dist": "node build_package.js",

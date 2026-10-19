@@ -11,7 +11,6 @@ declare module Dialog {
   class EditUser { constructor(...args: any[]); [key: string]: any; }
   class EditValue { constructor(...args: any[]); [key: string]: any; }
   class ExportFile { constructor(...args: any[]); [key: string]: any; }
-  class HerokuConnection { constructor(...args: any[]); [key: string]: any; }
   class ImportFile { constructor(...args: any[]); [key: string]: any; }
   class ListLanguages { constructor(...args: any[]); [key: string]: any; }
   class NewColumn { constructor(...args: any[]); [key: string]: any; }

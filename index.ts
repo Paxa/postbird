@@ -21,7 +21,6 @@ require('./app');
 require('./app/connection');
 require('./app/view_helpers');
 require('./app/db_screen');
-require('./app/login_components/heroku_client');
 require('./app/login_components/login_postgres_url_form');
 require('./app/login_components/login_standard_form');
 require('./app/login_screen');

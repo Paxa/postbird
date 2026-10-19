@@ -7,7 +7,6 @@ module.exports = {
   EditUser:         require('./edit_user'),
   EditValue:        require('./edit_value'),
   ExportFile:       require('./export_file'),
-  HerokuConnection: require('./heroku_connection'),
   ImportFile:       require('./import_file'),
   ListLanguages:    require('./list_languages'),
   NewColumn:        require('./new_column'),

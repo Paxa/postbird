@@ -40,7 +40,6 @@ module.exports = {
       "ResizableColumns": true,
       "ModelBase": true,
       "ObjectKit": true,
-      "HerokuClient": true,
       "LoginStandardForm": true,
       "LoginPostgresUrlForm": true,
       "PgDumpRunner": true,

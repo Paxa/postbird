@@ -43,7 +43,6 @@ declare module NodeJS {
     Connection: typeof Connection;
     HelpScreen: typeof HelpScreen;
     DbScreen: typeof DbScreen;
-    HerokuClient: typeof HerokuClient;
     LoginPostgresUrlForm: typeof LoginPostgresUrlForm;
     LoginStandardForm: typeof LoginStandardForm;
     DbScreenView: typeof DbScreenView;

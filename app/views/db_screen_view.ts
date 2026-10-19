@@ -446,21 +446,6 @@ class DbScreenView {
     }
   }
 
-  switchToHerokuMode (name, databseUrl) {
-    this.content.find('.databases > *').hide();
-    var herokuHeader = DOMinate(['div.heroku-mode',
-      ['span', "Heroku app:"],
-      ['a$name', name]
-    ]);
-
-    $u(herokuHeader.name).bind('click', () => {
-      new Dialog.HerokuConnection(this, name, databseUrl);
-      //window.alertify.alert(databseUrl);
-    });
-
-    this.content.find('.databases').append(herokuHeader[0]);
-  }
-
   showConnectionLostIcon () {
     var lostIcon = $dom(['a', '', {title: "Server is disconnected"}]);
     lostIcon.addEventListener('click', (e) => {

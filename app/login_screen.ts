@@ -8,13 +8,11 @@ class LoginScreen {
     urlForm: LoginPostgresUrlForm;
     savedConnections: any; // Hash<string, SavedConn>;
     connectionName: string;
-    herokuClient: HerokuClient;
     activeForm: string;
   
 
   constructor (cliConnectString) {
     this.type = "login_screen";
-    this.herokuClient = new HerokuClient();
     this.activeForm = 'standard';
 
     this.content = App.renderView('login_screen');
@@ -66,68 +64,14 @@ class LoginScreen {
     this.showPart('standard');
   }
 
-  showHerokuPane () {
-    this.content.find('.header-tabs a').removeClass('selected');
-    this.content.find('.header-tabs .login-with-heroku').addClass('selected');
-    this.showPart('heroku-1');
-  }
-
   showUrlPane () {
     this.content.find('.header-tabs a').removeClass('selected');
     this.content.find('.header-tabs .enter-postgres-url').addClass('selected');
     this.showPart('postgres-url');
   }
 
-  showHerokuOAuthPane () {
-    this.showPart('heroku-oauth');
-  }
-
   showExtraLogingFields () {
     this.content.find('.middle-window').toggleClass('extra-login-fields-open');
-  }
-
-  startHerokuOAuth () {
-    this.showHerokuOAuthPane();
-    var steps = this.content.find('.heroku-oauth ul.steps');
-    var options = {
-      onAccessTokenStart:  () => { steps.find('.access-token').addClass('started'); },
-      onAccessTokenDone:   () => { steps.find('.access-token').addClass('done'); },
-      onRequestTokenStart: () => { steps.find('.request-token').addClass('started'); },
-      onRequestTokenDone:  () => { steps.find('.request-token').addClass('done'); },
-      onGetAppsStarted:    () => { steps.find('.get-apps').addClass('started'); },
-      onGetAppsDone:       () => { steps.find('.get-apps').addClass('done'); }
-    };
-
-    var appsList = this.content.find('ul.apps').html('');
-    this.herokuClient.authAndGetApps(apps => {
-      apps.forEach((app) => {
-        var appEl = $dom(['li', ['span', app.name], ['button', 'Connect'], {'app-name': app.name}]);
-        appsList.append(appEl);
-        $u(appEl).find('button').bind('click', (event) => {
-          event.preventDefault();
-          this.connectToHeroku(app);
-        });
-      });
-    }, options);
-  }
-
-  connectToHeroku (heroku_app) {
-    App.startLoading("Fetching config...");
-    this.herokuClient.getDatabaseUrl(heroku_app.id, (db_url) => {
-      if (!db_url) {
-        window.alertify.alert("Seems like app <b>" + heroku_app.name + "</b> don't have database");
-        App.stopLoading();
-        return;
-      }
-      db_url = db_url + "?ssl=require&rejectUnauthorized=false";
-      console.log('connecting to', db_url);
-      this.makeConnection(db_url, {fetchDbList: false, name: heroku_app.name}, (tab) => {
-        if (tab) {
-          tab.instance.switchToHerokuMode(heroku_app.name, db_url);
-        }
-        console.log('connected to heroku');
-      });
-    });
   }
 
   fillSavedConnections () {

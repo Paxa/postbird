@@ -683,10 +683,6 @@ class DbScreen {
     return new Model.Table(this.currentSchema, this.currentTable);
   }
 
-  switchToHerokuMode (appName, dbUrl) {
-    this.view.switchToHerokuMode(appName, dbUrl);
-  }
-
   destroy () {
     this.connection.close();
   }
