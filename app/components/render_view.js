@@ -3,8 +3,8 @@ var pugRuntime = require('pug-runtime');
 var slash = require('slash');
 var fs = require('fs');
 
-require(__dirname + '/../view_helpers');
-require(__dirname + '/../view_cell_helpers');
+require('../view_helpers');
+require('../view_cell_helpers');
 
 var dirname = process.platform === "win32"? slash(__dirname): __dirname;
 
@@ -53,13 +53,12 @@ var RenderView = {
   },
 
   compileJade: function (file) {
+    if (this.pugFn[file]) {
+      return this.pugFn[file];
+    }
+
     var filepath = RenderView.root + '/views/' + file + '.jade';
     var content = fs.readFileSync(filepath, 'utf-8');
-
-    if (this.pugFn[file] && this.pugFn[file].content != content) {
-      console.log('remove template cache for: ' + file);
-      delete this.pugFn[file];
-    }
 
     if (!this.pugFn[file]) {
       if (!pug) {
@@ -100,6 +99,14 @@ var RenderView = {
   },
 
   pugCacheLoad: function() {
+    try {
+      var cache = require('../../views/cache');
+      if (cache) {
+        this.pugFn = cache;
+        return;
+      }
+    } catch (e) {}
+
     if (fs.existsSync(this.root + '/views/cache.js')) {
       var cache = require(this.root + '/views/cache');
       if (cache) {

@@ -1,3 +1,4 @@
+console.log("[INDEX.JS TOP] Starting Postbird initialization...");
 global.errorReporter = require('./lib/error_reporter');
 require('./lib/object_extras');
 
@@ -98,7 +99,13 @@ if (cliArgs.length > 2 && !isTestMode) {
 }
 
 $(document).ready(function() {
-  global.App.init();
+  console.log("[DOCUMENT READY] Initializing App...");
+  try {
+    global.App.init();
+    console.log("[DOCUMENT READY] App.init() succeeded!");
+  } catch (err) {
+    console.error("[DOCUMENT READY ERROR in App.init]:", err);
+  }
   //renderHome();
   $(window).bind('resize', function () {
     global.App.setSizes();

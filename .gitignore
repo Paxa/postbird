@@ -3,4 +3,8 @@ libudev.so.0
 node_modules/
 .ruby-version
 dist/
+build/
+.hutch/
+.cottontail-tmp/
+public/postbird-bundle.js
 .DS_Store
