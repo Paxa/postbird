@@ -1,4 +1,4 @@
-//global.Model = {};
+//(global as any).Model = {};
 
 class ModelBase {
   
@@ -43,4 +43,4 @@ class ModelBase {
 
 module.exports = ModelBase;
 
-global.ModelBase = ModelBase;
+(global as any).ModelBase = ModelBase;

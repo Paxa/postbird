@@ -53,7 +53,7 @@ describe('Model.Table', () => {
     var table = await Model.Table.create('public', 'test_table', {empty: true})
     await table.addColumnObj(new Model.Column('some_column', {data_type: 'integer'}));
 
-    var sql = await new Promise((resolve, reject) => {
+    var sql: any = await new Promise((resolve, reject) => {
       table.getSourceSql(resolve);
     });
 

@@ -151,4 +151,4 @@ class LoginStandardForm {
   }
 }
 
-global.LoginStandardForm = LoginStandardForm;
+(global as any).LoginStandardForm = LoginStandardForm;

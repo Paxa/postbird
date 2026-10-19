@@ -30,6 +30,7 @@
     "@types/alertify": "^0.3.30",
     "@types/bun": "latest",
     "@types/jquery": "^3.5.3",
+    "@types/mocha": "^10.0.10",
     "@types/mousetrap": "^1.6.4",
     "@types/node": "^22.0.0",
     "@types/pg": "^7.14.5",

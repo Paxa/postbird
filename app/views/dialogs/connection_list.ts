@@ -1,6 +1,6 @@
 class ConnectionList extends DialogBase {
   
-  server: string[]
+  server: any
   
   constructor (server) {
     super(null, {

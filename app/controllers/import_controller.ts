@@ -78,4 +78,4 @@ class ImportController {
 }
 
 module.exports = ImportController;
-global.ImportController = ImportController;
+(global as any).ImportController = ImportController;

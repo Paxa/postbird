@@ -7,7 +7,7 @@ try {
   global.after = bunTest.afterAll;
 } catch (e) {}
 
-global.window = global.window || {};
+global.window = global.window || ({} as any);
 if (!window.localStorage) {
   window.localStorage = require('localStorage');
 }
@@ -18,7 +18,7 @@ require('../app/connection');
 
 global.assert = require('./assert_extras');
 
-global.Model = require('../app/models/all');
+(global as any).Model = require('../app/models/all');
 
 global.cleanupSchema = async (connection) => {
   if (!connection) {

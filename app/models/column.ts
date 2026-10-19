@@ -5,9 +5,10 @@ class Column extends ModelBase {
   declare changes: any
   declare table: Model.Table
   declare name: string
-  declare max_length: string
+  declare max_length: string | number
   declare type: string
   declare allow_null: boolean
+  declare attributes: any
   declare static attributesAliases: any
   
 
@@ -165,7 +166,7 @@ class Column extends ModelBase {
     }
   }
 
-  static availableTypes (callback) {
+  static availableTypes (callback?: any) {
     var sql = `
       SELECT n.nspname as "schema",
         pg_catalog.format_type(t.oid, NULL) AS "name",

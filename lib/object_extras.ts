@@ -7,4 +7,4 @@ module.exports = {
 };
 
 Object.forEach = module.exports.forEach;
-global.ObjectKit = module.exports;
+(global as any).ObjectKit = module.exports;

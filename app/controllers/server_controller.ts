@@ -8,4 +8,4 @@ class ServerController {
 
 
 module.exports = ServerController;
-global.ServerController = ServerController;
+(global as any).ServerController = ServerController;

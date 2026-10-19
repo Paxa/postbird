@@ -1,27 +1,26 @@
-import events = require("events");
+declare class Dialog {
+  constructor(...args: any[]);
+  [key: string]: any;
+}
 
-declare global {
-  export class Dialog {
-  }
-
-  export module Dialog {
-    class DefProcedure     extends DefProcedure__ {}
-    class EditColumn       extends EditColumn__ {}
-    class EditProcedure    extends EditProcedure__ {}
-    class EditUser         extends EditUser__ {}
-    class EditValue        extends EditValue__ {}
-    class ExportFile       extends ExportFile__ {}
-    class HerokuConnection extends HerokuConnection__ {}
-    class ImportFile       extends ImportFile__ {}
-    class ListLanguages    extends ListLanguages__ {}
-    class NewColumn        extends NewColumn__ {}
-    class NewDatabase      extends NewDatabase__ {}
-    class NewIndex         extends NewIndex__ {}
-    class NewSnippet       extends NewSnippet__ {}
-    class NewTable         extends NewTable__ {}
-    class NewUser          extends NewUser__ {}
-    class RelatedRecords   extends RelatedRecords__ {}
-    class ShowSql          extends ShowSql__ {}
-    class UserGrants       extends UserGrants__ {}
-  }
+declare module Dialog {
+  class ConnectionList { constructor(...args: any[]); [key: string]: any; }
+  class DefProcedure { constructor(...args: any[]); [key: string]: any; }
+  class EditColumn { constructor(...args: any[]); [key: string]: any; }
+  class EditProcedure { constructor(...args: any[]); [key: string]: any; }
+  class EditUser { constructor(...args: any[]); [key: string]: any; }
+  class EditValue { constructor(...args: any[]); [key: string]: any; }
+  class ExportFile { constructor(...args: any[]); [key: string]: any; }
+  class HerokuConnection { constructor(...args: any[]); [key: string]: any; }
+  class ImportFile { constructor(...args: any[]); [key: string]: any; }
+  class ListLanguages { constructor(...args: any[]); [key: string]: any; }
+  class NewColumn { constructor(...args: any[]); [key: string]: any; }
+  class NewDatabase { constructor(...args: any[]); [key: string]: any; }
+  class NewIndex { constructor(...args: any[]); [key: string]: any; }
+  class NewSnippet { constructor(...args: any[]); [key: string]: any; }
+  class NewTable { constructor(...args: any[]); [key: string]: any; }
+  class NewUser { constructor(...args: any[]); [key: string]: any; }
+  class RelatedRecords { constructor(...args: any[]); [key: string]: any; }
+  class ShowSql { constructor(...args: any[]); [key: string]: any; }
+  class UserGrants { constructor(...args: any[]); [key: string]: any; }
 }

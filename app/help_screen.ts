@@ -60,4 +60,4 @@ class HelpScreen {
   }
 }
 
-global.HelpScreen = HelpScreen;
+(global as any).HelpScreen = HelpScreen;

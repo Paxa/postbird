@@ -1,4 +1,6 @@
 class Schema extends ModelBase {
+  schemaName: string;
+  className: string;
 
   constructor (schemaName) {
     super();
@@ -6,7 +8,7 @@ class Schema extends ModelBase {
     this.schemaName = schemaName;
   }
 
-  static create (name, options) {
+  static create (name, options?) {
     var sql = `CREATE SCHEMA "${name}";`;
 
     return this.q(sql).then(() => {
@@ -21,14 +23,14 @@ class Schema extends ModelBase {
       var schemas = [];
       if (res) {
         res.rows.forEach((row) => {
-          schemas.push(Model.Schema(row.name));
+          schemas.push(new Model.Schema(row.name));
         });
       }
       return Promise.resolve(schemas);
     });
   }
 
-  drop (options, callback) {
+  drop (options?: any, callback?: any) {
     if (callback === undefined && typeof options !== 'object') {
       callback = options;
       options = {};
@@ -59,6 +61,6 @@ class Schema extends ModelBase {
   }
 }
 
-//global.Model.Schema = Schema;
+declare var Schema__: typeof Schema;
 
 module.exports = Schema;

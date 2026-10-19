@@ -1,5 +1,6 @@
 var SqlExporter = require('../../lib/sql_exporter');
 var pgEscape = require('pg-escape');
+// @ts-ignore
 var pg = require('pg');
 
 var TABLE_TYPES = {
@@ -453,7 +454,7 @@ class Table extends ModelBase {
     return column.create();
   }
 
-  async getRows (offset, limit, options : Table_getRows_Options ) : Promise<Table_getRows_Result> {
+  async getRows (offset?: any, limit?: any, options?: Table_getRows_Options) : Promise<Table_getRows_Result> {
     if (!offset) offset = 0;
     if (!limit) limit = 100;
     if (!options) options = {};
@@ -534,7 +535,7 @@ class Table extends ModelBase {
       var columns = Object.keys(values).map(col => {
         return `"${col}"`;
       });
-      var safeValues = Object.keys(values).map(field => {
+      var safeValuesList = Object.keys(values).map(field => {
         var colType = (columnTypes && columnTypes[field]) ? columnTypes[field].data_type : '';
         var value = values[field];
         if (colType && colType.endsWith("[]")) {
@@ -548,7 +549,7 @@ class Table extends ModelBase {
       var sql = `INSERT INTO ${this.sqlTable()} (${columns.join(", ")}) VALUES (%s)`;
 
 
-      return this.q(sql, safeValues);
+      return this.q(sql, safeValuesList.join(", "));
     }
   }
 

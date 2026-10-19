@@ -160,7 +160,7 @@ class SshConnect_ {
 
       socket.connect(port, '127.0.0.1', () => {
         socket.end();
-        resolve();
+        resolve(true);
       });
     }));
 

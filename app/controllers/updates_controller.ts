@@ -72,4 +72,4 @@ class UpdatesController {
 }
 
 module.exports = UpdatesController;
-global.UpdatesController = UpdatesController;
+(global as any).UpdatesController = UpdatesController;

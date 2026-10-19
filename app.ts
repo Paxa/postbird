@@ -3,10 +3,10 @@ var events = require('events');
 var path = require('path');
 
 require('./lib/node_lib');
-global.EventEmitter2 = require('eventemitter2').EventEmitter2;
-global.logger = require('./app/logger').make('info');
+(global as any).EventEmitter2 = require('eventemitter2').EventEmitter2;
+(global as any).logger = require('./app/logger').make('info');
 
-var RenderView = require('./app/components/render_view');
+RenderView = require('./app/components/render_view');
 
 class UserError extends Error {
   
@@ -62,12 +62,12 @@ interface App {
 
   log?: any;
   logger?: any;
-  remote?: Electron.Remote;
+  remote?: any;
   emit?: (eventName, ...any) => void;
   logEvents?: any[];
   helpScreen?: HelpScreen;
-  snippersWin?: Electron.BrowserWindow;
-  historyWin?: Electron.BrowserWindow;
+  snippersWin?: any;
+  historyWin?: any;
   vendorPath: string;
   cliConnectString?: string;
   UserError?: typeof UserError;
@@ -366,7 +366,7 @@ global.App = {
       return `Unix socket not found at ${socket[1]}`;
     } else {
       var message = error.message;
-      if (options.showQuery && error.query) {
+      if ((options as any).showQuery && error.query) {
         message += `\n\nSQL:\n${error.query}`;
       }
       return message;

@@ -235,7 +235,7 @@ class DbScreen {
   }
 
   async openContentTabWithFilter (schema, table, field, value) {
-    this.contentConditions = [Pane.Content.filterSql(field, 'eq', value)];
+    this.contentConditions = [(Pane.Content as any).filterSql(field, 'eq', value)];
     var res = await this.tableSelected(schema, table, 'content');
 
     delete this.contentConditions;
@@ -746,4 +746,4 @@ class DbScreen {
   }
 }
 
-global.DbScreen = DbScreen;
+(global as any).DbScreen = DbScreen;

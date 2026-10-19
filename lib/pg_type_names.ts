@@ -6,7 +6,7 @@ interface PgTypeNames {
 }
 
 
-global.PgTypeNames = {
+(global as any).PgTypeNames = {
   hash: {
     20:   'int8',
     21:   'int2',

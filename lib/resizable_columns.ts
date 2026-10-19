@@ -255,6 +255,6 @@ class ResizableColumns {
   }
 }
 
-window.ResizableColumns = global.ResizableColumns = ResizableColumns;
+window.ResizableColumns = (global as any).ResizableColumns = ResizableColumns;
 
 //new ResizableColumns($('.rescol-wrapper'));

@@ -31,7 +31,7 @@ describe('Model.Procedure', () => {
   })
 
   it("Create function", async () => {
-    var pg_proc = await Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN val + 1")
+    var pg_proc: any = await Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN val + 1")
 
     assert.equal(pg_proc.name, "my_inc2")
     assert.equal(pg_proc.language, 'plpgsql')
@@ -44,7 +44,7 @@ describe('Model.Procedure', () => {
 
   it("Create function fail", async () => {
     getConnection().printTestingError = false;
-    var pg_proc = await Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN_ val + 1");
+    var pg_proc: any = await Model.Procedure.createFunction("my_inc2", "val integer", "integer", "RETURN_ val + 1");
     getConnection().printTestingError = true;
 
     assert.ok(pg_proc.error)
@@ -64,7 +64,7 @@ describe('Model.Procedure', () => {
     var searchable = await Model.Procedure.find('my_inc2')
     assert.equal(searchable, undefined)
 
-    pg_proc = await Model.Procedure.find('new_proc')
+    var pg_proc: any = await Model.Procedure.find('new_proc')
     assert.ok(pg_proc)
     assert.equal(pg_proc.name, 'new_proc')
 
@@ -83,7 +83,7 @@ describe('Model.Procedure', () => {
 
     await procs[0].drop()
 
-    procs2 = await Model.Procedure.findAll()
+    var procs2 = await Model.Procedure.findAll()
     assert.equal(procs2.length, 0)
   })
 

@@ -1,16 +1,14 @@
-import events = require("events");
+declare class Pane {
+  constructor(...args: any[]);
+  [key: string]: any;
+}
 
-declare global {
-  export class Pane {
-  }
-
-  export module Pane {
-    class Content    extends Content__ {}
-    class Extensions extends Extensions__ { }
-    class Procedures extends Procedures__ { }
-    class Info       extends Info__ { }
-    class Query      extends Query__ { }
-    class Structure  extends Structure__ { }
-    class Users      extends Users__ { }
-  }
+declare module Pane {
+  class Content { constructor(...args: any[]); [key: string]: any; }
+  class Extensions { constructor(...args: any[]); [key: string]: any; }
+  class Procedures { constructor(...args: any[]); [key: string]: any; }
+  class Info { constructor(...args: any[]); [key: string]: any; }
+  class Query { constructor(...args: any[]); [key: string]: any; }
+  class Structure { constructor(...args: any[]); [key: string]: any; }
+  class Users { constructor(...args: any[]); [key: string]: any; }
 }

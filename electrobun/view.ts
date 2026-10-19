@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Electrobun, { Electroview } from "electrobun/view";
 import { Buffer } from "buffer";
 (window as any).Buffer = Buffer;

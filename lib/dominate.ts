@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*@preserve DOMinate by Adrian Sieber*/
 // https://github.com/ad-si/DOMinate
 

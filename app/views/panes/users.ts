@@ -42,8 +42,7 @@ class Users extends PaneBase {
 
   async deleteUser (username) {
     
-    var res = confirm(`Do you want to delete user "${username}"?`)
-    await window.alertify.confirm();
+    var res = confirm(`Do you want to delete user "${username}"?`);
 
     if (res) {
       App.startLoading(`Deleting user ${username}`);

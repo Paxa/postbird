@@ -1,6 +1,10 @@
 /* Not ready, see spec file */
 
 class SqlSplitter {
+  sqlCode: string;
+  state: string;
+  context: string;
+  sql: string;
 
   constructor (sqlCode) {
     this.sqlCode = sqlCode;
@@ -72,5 +76,5 @@ class SqlSplitter {
   }
 }
 
-global.SqlSplitter = SqlSplitter;
+(global as any).SqlSplitter = SqlSplitter;
 window.SqlSplitter = SqlSplitter;

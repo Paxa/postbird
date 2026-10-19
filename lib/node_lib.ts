@@ -1,4 +1,4 @@
-var node = {};
+var node: any = {};
 
 var modules = ['child_process', 'fs', 'http', 'https', 'cluster',
   'crypto', 'dns', 'domain', 'net', 'url', 'util', 'vm', 'path',
@@ -19,4 +19,4 @@ modules.forEach(function(moduleName) {
 });
 
 module.exports = node;
-global.node = node;
+(global as any).node = node;

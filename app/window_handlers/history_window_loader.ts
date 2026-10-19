@@ -11,7 +11,7 @@ require(__dirname + '/../lib/object_extras');
 
 var remote = require('@electron/remote');
 
-global.EventEmitter2 = require('eventemitter2').EventEmitter2;
+(global as any).EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');
 
 global.App = {
@@ -67,3 +67,5 @@ $u(document).ready(() => {
   });
 
 });
+
+export {};

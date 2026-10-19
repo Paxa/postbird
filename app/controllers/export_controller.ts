@@ -63,4 +63,4 @@ class ExportController {
 }
 
 module.exports = ExportController;
-global.ExportController = ExportController;
+(global as any).ExportController = ExportController;

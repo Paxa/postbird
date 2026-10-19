@@ -257,13 +257,13 @@ $u.alert = async (text, options = {}) => {
   });
 };
 
-$u.alertError = async (text, options = {}) => {
+$u.alertError = async (text: any, options: any = {}) => {
   options.type = 'warning';
-  if (text instanceof App.UserError) {
+  if (text && typeof text === 'object') {
     if (text.description) {
       options.detail = text.description;
     }
-    text = text.message;
+    text = text.message || String(text);
   }
   return $u.alert(text, options);
 };

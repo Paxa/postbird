@@ -299,4 +299,4 @@ class LoginScreen {
   }
 }
 
-global.LoginScreen = LoginScreen;
+(global as any).LoginScreen = LoginScreen;

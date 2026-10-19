@@ -55,7 +55,7 @@ var GRANTS_ABBR = {
   T: 'TEMPORARY'
 };
 
-var helpers = global.ViewHelpers = {
+var helpers = (global as any).ViewHelpers = {
 
   relatedRowsIcon(rel, columnName, value) {
     if (value !== null && rel) {

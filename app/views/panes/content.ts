@@ -188,7 +188,7 @@ class Content extends PaneBase {
   offset: number
   dataRowsCount: number
   currentTable: Array<string | Table>
-  totalRows: number
+  totalRows: number | string
   currentTableType: string
   currentData: pg.QueryResult
 
@@ -553,9 +553,8 @@ class Content extends PaneBase {
       var fieldName = field.name;
       if (fieldName != 'ctid') {
         fieldNames.push(fieldName);
-        var escapedValue = '';
         var colType = this.columnTypes[fieldName].data_type;
-        var escapedValue = this.valueToSqlInsert(selectedRow[fieldName], colType);
+        var escapedValue = this.valueToSqlInsert(selectedRow[fieldName], colType, false);
         escapedValues.push(escapedValue);
       }
     })
@@ -566,7 +565,7 @@ class Content extends PaneBase {
     electron.clipboard.writeText(sql);
   }
 
-  valueToSqlInsert(value, colType, insideArray) {
+  valueToSqlInsert(value, colType, insideArray = false) {
     if (value === null) {
       return 'NULL';
     }

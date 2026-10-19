@@ -17,7 +17,7 @@ require('./lib/sql_snippets');
 require('./lib/resizable_columns');
 
 require('./app');
-global.Pane = require('./app/views/panes/all');
+(global as any).Pane = require('./app/views/panes/all');
 require('./app/connection');
 require('./app/view_helpers');
 require('./app/db_screen');
@@ -29,8 +29,8 @@ require('./app/help_screen');
 require('./app/views/db_screen_view');
 require('./app/views/snippets');
 
-global.Dialog = require('./app/views/dialogs/all');
-global.Model = require('./app/models/all');
+(global as any).Dialog = require('./app/views/dialogs/all');
+(global as any).Model = require('./app/models/all');
 
 require('./app/controllers/import_controller');
 require('./app/controllers/export_controller');
@@ -39,10 +39,10 @@ require('./app/controllers/server_controller');
 
 require('./app/views/history_window');
 
-var CliUtil = require('./lib/cli_util');
+CliUtil = require('./lib/cli_util');
 var electronRemote = require('@electron/remote');
 
-global.$u = window.$u = window.jQuery;
+(global as any).$u = window.$u = window.jQuery;
 
 
 /*
@@ -133,7 +133,7 @@ $(document).ready(function() {
 
   electron.ipcRenderer.on('Snippet.insert', function(event, message) {
     console.log('Snippet.insert', event, message);
-    Pane.Content.insertSnippet(message);
+    (Pane.Content as any).insertSnippet(message);
   });
 
   setTimeout(function () {

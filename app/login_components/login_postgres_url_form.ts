@@ -70,7 +70,7 @@ class LoginPostgresUrlForm {
     button.prop('disabled', true).val("Connecting...");
     this.setButtonShown(false);
 
-    var options = this.getFormData();
+    var options: any = this.getFormData();
 
     try {
       options.name = URL.parse(options.url).host;
@@ -148,4 +148,4 @@ class LoginPostgresUrlForm {
   }
 }
 
-global.LoginPostgresUrlForm = LoginPostgresUrlForm;
+(global as any).LoginPostgresUrlForm = LoginPostgresUrlForm;

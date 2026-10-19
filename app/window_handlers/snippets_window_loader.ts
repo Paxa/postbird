@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const remote = require('@electron/remote');
 
-global.EventEmitter2 = require('eventemitter2').EventEmitter2;
+(global as any).EventEmitter2 = require('eventemitter2').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');
 
 global.App = {
@@ -82,7 +82,7 @@ var SnippetsWindow = {
     this.view.preview.fasterAppend(node);
 
     $u.textContextMenu(this.view.preview.find('.preview-content'), window);
-    hljs.highlightBlock(this.view.preview.find('code')[0]);
+    window.hljs.highlightBlock(this.view.preview.find('code')[0]);
 
     this.view.preview.find('[exec="insert"]').bind('click', () => {
       this.sendToMainWindow('Snippet.insert', "\n\n" + snippet.sql);
@@ -99,3 +99,6 @@ jQuery(document).ready(() => {
   App.init();
   SnippetsWindow.renderContent();
 });
+
+export {};
+

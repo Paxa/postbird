@@ -246,4 +246,4 @@ class HerokuCatcher {
   }
 }
 
-global.HerokuClient = HerokuClient;
+(global as any).HerokuClient = HerokuClient;

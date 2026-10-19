@@ -131,4 +131,4 @@ class GenericTable {
 
 GenericTable.active = null;
 
-window.GenericTable = global.GenericTable = GenericTable;
+window.GenericTable = (global as any).GenericTable = GenericTable;

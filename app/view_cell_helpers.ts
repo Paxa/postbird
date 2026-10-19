@@ -41,7 +41,7 @@ declare global {
 var TRUNCATE_LONG_TEXT = 500;
 
 
-var helpers = global.ViewCellHelpers = {
+var helpers = (global as any).ViewCellHelpers = {
 
   TIMESTAMPTZ_OID: 1184,
   TIMESTAMP_OID: 1114,

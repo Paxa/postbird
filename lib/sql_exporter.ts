@@ -1,5 +1,5 @@
 
-const PgDumpRunner = require('./pg_dump_runner');
+require('./pg_dump_runner');
 
 interface SqlExporter_Options {
   args: string[]
@@ -27,7 +27,7 @@ class SqlExporter_ {
     }, options);
   }
 
-  doExport (connection, filename, callback) {
+  doExport (connection, filename?: any, callback?: any) {
     if (typeof callback == 'undefined' && typeof filename == 'function') {
       callback = filename;
       filename = undefined;

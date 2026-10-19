@@ -57,4 +57,4 @@ class QueryTabResizer {
   }
 }
 
-window.QueryTabResizer = global.QueryTabResizer = QueryTabResizer;
+window.QueryTabResizer = (global as any).QueryTabResizer = QueryTabResizer;

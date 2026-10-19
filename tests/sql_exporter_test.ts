@@ -22,7 +22,7 @@ describe('SqlExporter', () => {
 
     var exporter = new SqlExporter(null, {debug: true});
 
-    var result = await new Promise((resolve, reject) => {
+    var result: any = await new Promise((resolve, reject) => {
       exporter.doExport(getConnection(), (result, stdout, stderr) => {
         resolve({result, stdout, stderr});
       });

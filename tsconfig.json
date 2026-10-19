@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "allowJs": true,
     "checkJs": false,
@@ -11,11 +11,9 @@
     "useDefineForClassFields": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["bun", "node"],
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "types": ["bun", "node", "mocha", "jquery"],
     "paths": {
-      "*": ["*", "ts_libs/*"]
+      "*": ["./*", "./ts_libs/*"]
     }
   },
   "include": [

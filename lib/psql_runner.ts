@@ -143,5 +143,5 @@ class PsqlRunner {
   }
 }
 
-global.PsqlRunner = PsqlRunner;
+(global as any).PsqlRunner = PsqlRunner;
 module.exports = PsqlRunner;

@@ -74,4 +74,4 @@ class PaneBase {
   }
 }
 
-global.PaneBase = PaneBase;
+(global as any).PaneBase = PaneBase;

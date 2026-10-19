@@ -20,7 +20,7 @@ var initSentry = function initSentry() {
   }
 }
 
-var errorReporter = function errorReporter(exception : PgError , showError = true) {
+var errorReporter: any = function errorReporter(exception : any , showError = true) {
   setTimeout(function () {
     // skip errors while developing
     if (process.env.POSTBIRD_DEV == "true") {
@@ -72,7 +72,7 @@ var errorReporter = function errorReporter(exception : PgError , showError = tru
     }
 
     try {
-      extra.version_pg = global.Connection.instances.map(function (i) { return i._serverVersion; }).join(";; ");
+      extra.version_pg = (Connection as any).instances.map(function (i) { return i._serverVersion; }).join(";; ");
     } catch (error) {
       console.log("Error generatign error report");
       console.error(error);

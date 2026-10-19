@@ -104,7 +104,7 @@ class Connection {
 
     //this.options = options;
     this.connection = null;
-    global.Connection.instances.push(this);
+    (Connection as any).instances.push(this);
     this.notificationCallbacks = [];
   }
 
@@ -183,7 +183,7 @@ class Connection {
     return cs.toString();
   }
 
-  connectToServer(options : string | ConnectionOptions , callback : (success: boolean, error?: Error) => void ) {
+  connectToServer(options : string | ConnectionOptions , callback? : (success: boolean, error?: Error) => void ) {
     if (typeof options == 'object' && options.url) {
       options = options.url;
     }
@@ -208,7 +208,7 @@ class Connection {
     logger.info('Connecting to', this.connectString);
 
     if (this.connection) {
-      if (!this.connection.ended) {
+      if (!(this.connection as any).ended) {
         this.connection.end();
       }
       delete this.connection; // = null;
@@ -246,7 +246,7 @@ class Connection {
   _startConnection(options, callback) {
     this.connection.on('error', (e) => { this.onConnectionLost(e) });
 
-    this.connection.on('connect', client => {
+    (this.connection as any).on('connect', client => {
       if (!client.postbirdEventsInit) {
         client.on('notification', (msg) => {
           this.notificationCallbacks.forEach((fn) => {
@@ -291,8 +291,7 @@ class Connection {
     delete this._serverVersion;
     delete this._serverVersionFull;
 
-    // @ts-ignore
-    var clientConfig = Connection.parseConnectionString(connectString)  as pg.ClientConfig ;
+    var clientConfig: any = Connection.parseConnectionString(connectString);
 
     clientConfig.idleTimeoutMillis = 600000;
     clientConfig.max = clientConfig.max || 5;
@@ -304,7 +303,7 @@ class Connection {
     // clientConfig.log = (a, b, c) => { console.log('Pool:', a, b, c); }
     var pool = new pg.Pool(clientConfig);
 
-    return pool;
+    return pool as any;
   }
 
   onConnectionLost(error) {
@@ -662,9 +661,9 @@ class Connection {
       this.sshConnection.disconnect();
     }
 
-    var index = global.Connection.instances.indexOf(this);
+    var index = (Connection as any).instances.indexOf(this);
     if (index != -1) {
-      global.Connection.instances.splice(index, 1);
+      (Connection as any).instances.splice(index, 1);
     }
 
     callback && callback();
@@ -729,7 +728,7 @@ class Connection {
         console.log('no running query');
       }
     } else {
-      this.connection._clients.forEach(poolClient => {
+      (this.connection as any)._clients.forEach(poolClient => {
         if (poolClient.activeQuery) {
           var queryPid = poolClient.processID;
           var sql = `select pg_cancel_backend(${queryPid})`;
@@ -753,7 +752,7 @@ class Connection {
   }
 }
 
-global.Connection = Connection;
+(global as any).Connection = Connection;
 
-global.Connection.PG = pg;
-global.Connection.instances = [];
+(Connection as any).PG = pg;
+(Connection as any).instances = [];

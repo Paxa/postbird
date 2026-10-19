@@ -22,6 +22,7 @@ class DbScreenView {
   structurePane: Pane.Structure
   proceduresPane: Pane.Procedures
   infoPane: Pane.Info
+  sidebarResizer: any;
   
 
   constructor (handler) {
@@ -473,4 +474,4 @@ class DbScreenView {
   }
 }
 
-global.DbScreenView = DbScreenView;
+(global as any).DbScreenView = DbScreenView;

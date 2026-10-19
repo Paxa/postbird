@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BrowserView, BrowserWindow, ApplicationMenu, type RPCSchema } from "electrobun/main";
 import { Pool } from "pg";
 

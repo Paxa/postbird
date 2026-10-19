@@ -197,8 +197,8 @@ var template : Electron.MenuItemConstructorOptions[]  = [
         label: "Postbird Help",
         accelerator: 'CmdOrCtrl+Shift+/',
         click: () => {
-          var help = global.HelpScreen.open();
-          help.activatePage("get-postgres");
+          var help = (global as any).HelpScreen ? (global as any).HelpScreen.open() : null;
+          if (help) help.activatePage("get-postgres");
         }
       },
       {
@@ -267,7 +267,7 @@ if (process.platform == 'darwin') {
     ]
   });
   // Window menu.
-  var windowMenuSubmenu =  <Electron.MenuItemConstructorOptions[]><any>  template[5].submenu;
+  var windowMenuSubmenu = <any[]> template[5].submenu;
   windowMenuSubmenu.push(
     { type: 'separator' },
     {
@@ -278,13 +278,13 @@ if (process.platform == 'darwin') {
 }
 
 if (process.platform == 'linux') {
-  var helpMenuSubmenu =  <Electron.MenuItemConstructorOptions[]><any>  template[6].submenu;
+  var helpMenuSubmenu = <any[]> template[6].submenu;
   helpMenuSubmenu.unshift(
     {
       label: 'About Postbird',
       click: () => {
-        var help = global.HelpScreen.open();
-        help.activatePage("about-postbird");
+        var help = (global as any).HelpScreen ? (global as any).HelpScreen.open() : null;
+        if (help) help.activatePage("about-postbird");
       }
     }
   )
@@ -295,11 +295,11 @@ if (process.platform == 'linux') {
     {
       label: "Check For Updates...",
       click: () => {
-        (new global.UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
+        (new ((global as any).UpdatesController || UpdatesController)).checkUpdates({showLoading: true, showAlreadyLatest: true});
       }
     },
   );
-  var appMenuSubmenu =  <Electron.MenuItemConstructorOptions[]><any>  template[0].submenu;
+  var appMenuSubmenu = <any[]> template[0].submenu;
   appMenuSubmenu.push(
     {
       type: 'separator'

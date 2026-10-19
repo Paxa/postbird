@@ -159,5 +159,5 @@ class PgDumpRunner {
   }
 }
 
-global.PgDumpRunner = PgDumpRunner;
+(global as any).PgDumpRunner = PgDumpRunner;
 module.exports = PgDumpRunner;

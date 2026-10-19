@@ -52,4 +52,4 @@ class SidebarResize {
   }
 }
 
-window.SidebarResize = global.SidebarResize = SidebarResize;
+window.SidebarResize = (global as any).SidebarResize = SidebarResize;

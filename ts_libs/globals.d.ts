@@ -1,6 +1,3 @@
-/// <reference path="../node_modules/electron/electron.d.ts" />
-/// <reference path="../node_modules/colors/safe.d.ts" />
-/// <reference path="../node_modules/moment/moment.d.ts" />
 /// <reference path="./codemirror.d.ts" />
 /// <reference path="./codemirror_extra.d.ts" />
 /// <reference path="./pg_extra.d.ts" />
@@ -84,13 +81,14 @@ declare module NodeJS {
 }
 
 // Others
-declare var $u: JQueryStatic;
+declare var $u: JQueryStatic & { debounce?: any; [key: string]: any };
 
 declare class Window_Hljs {
   highlightBlock(block: Node) : void
 }
 
 interface Window {
+  [key: string]: any;
   alertify: alertify.IAlertifyStatic
   Mousetrap: Mousetrap.MousetrapStatic
   hljs: Window_Hljs
@@ -116,13 +114,24 @@ declare namespace Electron {
   }
 
   interface Menu {
-    clickEvent: MouseEvent
+    clickEvent: MouseEvent;
+    popup: (options?: any) => void;
   }
 }
 
 declare module alertify {
   interface IAlertifyStatic {
     hide: () => void;
+    alert: (message: string, callback?: (is_yes?: boolean) => void, cssClass?: string) => any;
+    confirm: (message: string, callback?: (is_yes?: boolean) => void, cssClass?: string) => any;
+    prompt: (message: string, callback?: (result: boolean, val: string) => void, defaultVal?: string) => any;
+    error: (message: string) => any;
+    success: (message: string) => any;
+    log: (message: string) => any;
+    labels: any;
+    set: (options: any) => any;
+    delay: number;
+    [key: string]: any;
   }
 }
 
@@ -138,10 +147,33 @@ interface GlobalEventHandlers {
   className: string
 }
 
-declare var logger: Logger;
-//declare var electron: Electron.IpcRenderer;
-declare var DOMinate: (elements: any[]) => DOMinateResult;
+declare var logger: any;
+declare var DOMinate: (elements: any[], namespace?: any, returnObject?: any) => any;
 declare var $dom: (elements: any[]) => HTMLElement;
-declare var App: App;
-declare var PgTypeNames: PgTypeNames;
-declare var errorReporter: (exception: PgError, showError?: boolean) => boolean;
+declare var App: any;
+declare var PgTypeNames: any;
+declare var errorReporter: any;
+
+declare var describe: any;
+declare var it: any;
+declare var before: any;
+declare var after: any;
+declare var beforeEach: any;
+declare var afterEach: any;
+declare var testConnection: any;
+declare var cleanupSchema: any;
+declare var TestHelper: any;
+declare var getConnection: any;
+declare var assert: any;
+declare var pg_proc: any;
+declare var node: any;
+declare var SqlSnippets: any;
+
+declare var $: any;
+declare var jQuery: any;
+declare var ViewHelpers: any;
+declare var ViewCellHelpers: any;
+
+declare var global: any;
+
+

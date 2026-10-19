@@ -56,7 +56,7 @@ class Procedure extends ModelBase {
   }
 
   // createFunction('my_inc1', 'integer val', 'integer', 'return val + 1;');
-  static createFunction (name, args, return_type, body, options) {
+  static createFunction (name, args, return_type, body, options: any = {}) {
     if (!options) options = {};
     options.lang = options.lang || 'plpgsql';
 

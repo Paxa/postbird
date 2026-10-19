@@ -14,7 +14,7 @@ class SqlImporter {
     }, options);
   }
 
-  doImport (connection, callback) {
+  doImport (connection, callback?: any) {
     var runner = new PsqlRunner(this.options);
 
     runner.options.cwd = path.dirname(this.filename);
@@ -67,5 +67,5 @@ class SqlImporter {
   }
 }
 
-global.SqlImporter = SqlImporter;
+(global as any).SqlImporter = SqlImporter;
 module.exports = SqlImporter;

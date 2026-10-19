@@ -1,4 +1,4 @@
-global.SqlSnippets = {
+(global as any).SqlSnippets = {
   'Create View': {
     sql: "CREATE VIEW vista AS SELECT text 'Hello World' AS hello;",
     description: "Create view"

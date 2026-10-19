@@ -6,6 +6,7 @@ var LOG_LEVELS = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice'
 class Logger {
   
     logLevel: string
+    topProcess: any
   
 
   constructor (level) {

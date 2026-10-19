@@ -136,5 +136,5 @@ class DialogBase {
   }
 }
 
-global.DialogBase = DialogBase;
+(global as any).DialogBase = DialogBase;
 module.exports = DialogBase;

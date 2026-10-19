@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('@electron/remote')
+var { BrowserWindow } = require('@electron/remote')
 
 class HistoryWindow {
   constructor () {
@@ -49,4 +49,4 @@ class HistoryWindow {
   }
 }
 
-global.HistoryWindow = HistoryWindow;
+(global as any).HistoryWindow = HistoryWindow;
