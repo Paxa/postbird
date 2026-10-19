@@ -1,5 +1,6 @@
 var path = require('path');
 var childProcess = require('child_process');
+var fs = require('fs');
 require('./object_extras');
 
 
@@ -42,7 +43,25 @@ class PsqlRunner {
     if (process.platform == 'linux') {
       return this.psqlRelativePath;
     } else {
-      return path.resolve(global.App?.root || '.', this.psqlRelativePath);
+      const bundled = path.resolve(global.App?.root || '.', this.psqlRelativePath);
+      if (fs.existsSync(bundled)) {
+        return bundled;
+      }
+      const postgresApp = "/Applications/Postgres.app/Contents/Versions/latest/bin/psql";
+      if (fs.existsSync(postgresApp)) {
+        return postgresApp;
+      }
+      return bundled;
+    }
+  }
+
+  ensureBinaryAccessible () {
+    if (process.platform === 'darwin') {
+      try {
+        childProcess.spawnSync('xattr', ['-d', 'com.apple.quarantine', this.binaryPath()]);
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
@@ -70,6 +89,7 @@ class PsqlRunner {
       console.log("RUNNING: ", commandStr);
     }
 
+    this.ensureBinaryAccessible();
     var startTime = Date.now();
     this.process = childProcess.spawn(this.binaryPath(), this.cmd_args, {cwd: this.options.cwd, env: this.env});
 
@@ -113,6 +133,7 @@ class PsqlRunner {
   }
 
   version () : Promise<string>  {
+    this.ensureBinaryAccessible();
     this.process = childProcess.spawn(this.binaryPath(), ["--version"], {env: this.env});
     this.process.stdout.setEncoding('utf8');
 

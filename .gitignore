@@ -4,6 +4,7 @@ node_modules/
 .ruby-version
 dist/
 build/
+artifacts/
 .hutch/
 .cottontail-tmp/
 public/postbird-bundle.js

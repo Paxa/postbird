@@ -19,6 +19,7 @@ export default {
 		copy: {
 			"index.html": "views/mainview/index.html",
 			"public": "views/mainview/public",
+			"vendor": "vendor",
 		},
 		mac: {
 			bundleCEF: false,

@@ -51,11 +51,25 @@ class PgDumpRunner {
     if (process.platform == 'linux') {
       return this.pgDumpRelativePath;
     } else {
+      const bundled = path.resolve(global.App?.root || '.', this.pgDumpRelativePath);
+      if (fs.existsSync(bundled)) {
+        return bundled;
+      }
       const postgresApp = "/Applications/Postgres.app/Contents/Versions/latest/bin/pg_dump";
       if (fs.existsSync(postgresApp)) {
         return postgresApp;
       }
-      return path.resolve(global.App?.root || '.', this.pgDumpRelativePath);
+      return bundled;
+    }
+  }
+
+  ensureBinaryAccessible () {
+    if (process.platform === 'darwin') {
+      try {
+        childProcess.spawnSync('xattr', ['-d', 'com.apple.quarantine', this.binaryPath()]);
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
@@ -85,6 +99,7 @@ class PgDumpRunner {
       console.log("RUNNING: " + commandStr);
     }
 
+    this.ensureBinaryAccessible();
     var startTime = Date.now();
     this.process = childProcess.spawn(this.binaryPath(), this.cmd_args, {env: this.env});
 
@@ -129,6 +144,7 @@ class PgDumpRunner {
   }
 
   version () : Promise<string>  {
+    this.ensureBinaryAccessible();
     this.process = childProcess.spawn(this.binaryPath(), ["--version"], {env: this.env});
     this.process.stdout.setEncoding('utf8');
 

@@ -1,49 +1,39 @@
-Download `Postgres.app` and make sure you have command line tools installed
+# Updating Postgres Binaries from Postgres.app (macOS)
 
+Download `Postgres.app` (e.g. Postgres 18+) and make sure command line tools are installed.
 
-```
-# Copy postgres libs
+```bash
+# 1. Copy Postgres libraries
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/libpq.5.dylib ./vendor/darwin/
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/libssl.3.dylib ./vendor/darwin/
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/libcrypto.3.dylib ./vendor/darwin/
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/libzstd.1.*.dylib ./vendor/darwin/libzstd.1.dylib
+cp /Applications/Postgres.app/Contents/Versions/latest/lib/liblz4.1.*.dylib ./vendor/darwin/liblz4.1.dylib
 
-cp /Applications/Postgres.app/Contents/Versions/latest/lib/libpq.5.14.dylib ./vendor/darwin/
-cp /Applications/Postgres.app/Contents/Versions/latest/lib/libssl.1.1.dylib ./vendor/darwin/
-cp /Applications/Postgres.app/Contents/Versions/latest/lib/libcrypto.1.1.dylib ./vendor/darwin/
+# 2. Update dylib IDs
+install_name_tool -id @loader_path/libpq.5.dylib vendor/darwin/libpq.5.dylib
+install_name_tool -id @loader_path/libssl.3.dylib vendor/darwin/libssl.3.dylib
+install_name_tool -id @loader_path/libcrypto.3.dylib vendor/darwin/libcrypto.3.dylib
+install_name_tool -id @loader_path/libzstd.1.dylib vendor/darwin/libzstd.1.dylib
+install_name_tool -id @loader_path/liblz4.1.dylib vendor/darwin/liblz4.1.dylib
 
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/14/lib/libssl.1.1.dylib @loader_path/libssl.1.1.dylib ./vendor/darwin/libpq.5.14.dylib
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/14/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libpq.5.14.dylib
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/14/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib ./vendor/darwin/libssl.1.1.dylib
-
-## check with otool
-
-otool -L vendor/darwin/libpq.5.14.dylib
-otool -L vendor/darwin/libssl.1.1.dylib
-otool -L vendor/darwin/libcrypto.1.1.dylib
-
-# Copy postgres psql & pg_dump
+# 3. Copy binaries
 cp /Applications/Postgres.app/Contents/Versions/latest/bin/psql    ./vendor/darwin/
 cp /Applications/Postgres.app/Contents/Versions/latest/bin/pg_dump ./vendor/darwin/
 
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/14/lib/libpq.5.dylib @loader_path/libpq.5.14.dylib ./vendor/darwin/psql
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/14/lib/libpq.5.dylib @loader_path/libpq.5.14.dylib ./vendor/darwin/pg_dump
+# 4. Link binaries to loader_path dylibs
+install_name_tool -change @loader_path/../lib/libpq.5.dylib @loader_path/libpq.5.dylib vendor/darwin/psql
 
-## check with otool
+install_name_tool -change @loader_path/../lib/libpq.5.dylib @loader_path/libpq.5.dylib vendor/darwin/pg_dump
+install_name_tool -change @loader_path/../lib/libzstd.1.dylib @loader_path/libzstd.1.dylib vendor/darwin/pg_dump
+install_name_tool -change @loader_path/../lib/liblz4.1.dylib @loader_path/liblz4.1.dylib vendor/darwin/pg_dump
+install_name_tool -change @loader_path/../lib/libcrypto.3.dylib @loader_path/libcrypto.3.dylib vendor/darwin/pg_dump
 
-otool -L vendor/darwin/psql
-otool -L vendor/darwin/pg_dump
+# 5. Ad-hoc codesign and remove quarantine attribute
+xattr -d com.apple.quarantine vendor/darwin/* 2>/dev/null || true
+codesign --force --deep -s - vendor/darwin/*
 
-# make it run on catalina
-
-xattr -d com.apple.quarantine vendor/darwin/*
-spctl --assess vendor/darwin/*
-codesign --remove-signature vendor/darwin/*
-
-# Build libpq package
-
-PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH ./node_modules/.bin/electron-rebuild -n 59
-
-install_name_tool -change /Applications/Postgres.app/Contents/Versions/12/lib/libpq.5.dylib @loader_path/../../../../vendor/darwin/libpq.5.12.dylib node_modules/libpq/build/Release/addon.node
-
-## check addon.node with otool (should have @loader_path/../...)
-
-otool -L node_modules/libpq/build/Release/addon.node
-
+# 6. Verify binaries
+./vendor/darwin/psql --version
+./vendor/darwin/pg_dump --version
 ```

@@ -139,19 +139,32 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
 
         let resolvedBin = bin;
         if (!fs.existsSync(resolvedBin)) {
+          const appVendorBin = path.resolve(__dirname, "..", bin);
+          const platformVendorBin = path.resolve(__dirname, "..", "vendor", process.platform, path.basename(bin));
+          const cwdVendorBin = path.resolve(process.cwd(), bin);
+          const cwdPlatformVendorBin = path.resolve(process.cwd(), "vendor", process.platform, path.basename(bin));
           const pgAppBin = `/Applications/Postgres.app/Contents/Versions/latest/bin/${path.basename(bin)}`;
-          const vendorBin = path.resolve(process.cwd(), bin);
-          const projectVendorBin = path.resolve(__dirname, "..", bin);
 
-          if (fs.existsSync(pgAppBin)) {
+          if (fs.existsSync(appVendorBin)) {
+            resolvedBin = appVendorBin;
+          } else if (fs.existsSync(platformVendorBin)) {
+            resolvedBin = platformVendorBin;
+          } else if (fs.existsSync(cwdVendorBin)) {
+            resolvedBin = cwdVendorBin;
+          } else if (fs.existsSync(cwdPlatformVendorBin)) {
+            resolvedBin = cwdPlatformVendorBin;
+          } else if (fs.existsSync(pgAppBin)) {
             resolvedBin = pgAppBin;
-          } else if (fs.existsSync(vendorBin)) {
-            resolvedBin = vendorBin;
-          } else if (fs.existsSync(projectVendorBin)) {
-            resolvedBin = projectVendorBin;
           } else {
             resolvedBin = path.basename(bin);
           }
+        }
+
+        if (process.platform === "darwin" && fs.existsSync(resolvedBin)) {
+          try {
+            const { spawnSync } = await import("child_process");
+            spawnSync("xattr", ["-d", "com.apple.quarantine", resolvedBin]);
+          } catch (e) {}
         }
 
         return new Promise((resolve) => {

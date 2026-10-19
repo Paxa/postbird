@@ -13,7 +13,7 @@
     "integration_test": "bun run test:ui",
     "start": "bun electrobun/bundle.ts && bunx electrobun run",
     "build": "bun electrobun/bundle.ts && bunx electrobun build",
-    "dist": "bun electrobun/bundle.ts && bunx electrobun build",
+    "dist": "bun electrobun/bundle.ts && bunx electrobun build --env=stable",
     "bundle": "bun electrobun/bundle.ts",
     "compile:views": "bun scripts/compile_views.ts",
     "typecheck": "tsc --noEmit",
