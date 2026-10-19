@@ -169,7 +169,7 @@ class Query extends PaneBase {
         this.content.find('.result .rescol-wrapper').replaceWith(node);
 
         var footerText;
-        if (data.fields && !isNaN(data.rowCount) || data.command == "SELECT") {
+        if ((data.fields && data.fields.length && !isNaN(data.rowCount)) || data.command == "SELECT") {
           footerText = `Found ${data.rowCount} ${data.rowCount > 1 ? 'rows' : 'row'} in ${data.time} ms.`;
           if (data.rowCount > 500) {
             footerText += " Shown first 500 records";

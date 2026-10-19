@@ -9,31 +9,24 @@
     <link href="public/codemirror/addon/hint/show-hint.css" media="all" rel="stylesheet" type="text/css" />
     <link href="public/style.css" media="all" rel="stylesheet" type="text/css" />
   </head>
-  <body class="platform-">
+  <body class="platform-darwin">
     <script>
-      (() => {
-        var electron = require('@electron/remote');
-        var win = electron.app.mainWindow;
-        if (!win.isFocused()) {
-          document.body.classList.add('unfocused');
-        }
-        document.body.classList.add("platform-" + process.platform);
-        if (electron.nativeTheme && electron.nativeTheme.shouldUseDarkColors) {
-          document.body.classList.add("dark-mode");
-        }
-      })();
+      window.onerror = function(msg, url, line, col, error) {
+        console.error("[Postbird Error]", msg, "at line", line, error);
+      };
     </script>
 
-    <div id="tabs">
+    <div id="tabs"></div>
+    <div id="content"></div>
 
-    </div>
+    <!-- Electrobun RPC and view bridge -->
+    <script type="text/javascript" src="index.js"></script>
 
-    <div id="content">
-
-    </div>
+    <!-- UI libraries -->
     <script type="text/javascript" src="public/jquery.js"></script>
     <script>
-      window.$ = window.jQuery = require('./public/jquery.js');
+      window.$ = window.jQuery;
+      window.$u = window.jQuery;
     </script>
     <script type="text/javascript" src="public/codemirror/codemirror.js"></script>
     <script type="text/javascript" src="public/codemirror/addon/hint/show-hint.js"></script>
@@ -50,6 +43,8 @@
     <script type="text/javascript" src="public/highlightjs/highlight.js"></script>
     <script type="text/javascript" src="public/highlightjs/languages/sql.js"></script>
     <script type="text/javascript" src="public/highlightjs/languages/pgsql.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+
+    <!-- Postbird application bundle -->
+    <script type="text/javascript" src="public/postbird-bundle.js"></script>
   </body>
 </html>

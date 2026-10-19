@@ -20,7 +20,6 @@ const shimPlugin = {
       "net": resolve(root, "electrobun/shims/child_process.js"),
       "tls": resolve(root, "electrobun/shims/child_process.js"),
       "dns": resolve(root, "electrobun/shims/child_process.js"),
-      "needle": resolve(root, "electrobun/shims/child_process.js"),
     };
 
     for (const [moduleName, shimPath] of Object.entries(shims)) {

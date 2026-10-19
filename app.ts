@@ -77,10 +77,7 @@ interface App {
 
 global.App = {
   root: remote.app.getAppPath(),
-  // used for running binaries inside asar package
-  vendorPath: remote.app.MainFilename.includes('app.asar') ?
-    path.join(remote.app.MainFilename, `../../../vendor/${process.platform}`) :
-    path.join(remote.app.MainFilename.replace('node_modules/electron-mocha/lib/main.js', 'index.html'), `../vendor/${process.platform}`),
+  vendorPath: `vendor/${process.platform}`,
 
   activeTab: null,
   tabs: [], // {name, content, is_active}

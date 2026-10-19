@@ -496,7 +496,7 @@ class Table extends ModelBase {
   }
 
   async getRowsSimple (column, value) {
-    var sql = pgEscape(`SELECT * FROM ${this.sqlTable()} WHERE "${column}" = %L`, value);
+    var sql = pgEscape(`SELECT * FROM ${this.sqlTable()} WHERE "${column}" = %L`, value == null ? "" : String(value));
     var data = await this.q(sql);
 
     //console.log(JSON.stringify(data.fields, null, 2));

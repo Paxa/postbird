@@ -15,7 +15,7 @@ type PostbirdRPC = {
   bun: {
     requests: {
       query: {
-        params: { sql: string; config?: any };
+        params: { sql: string; config?: any; queryOptions?: any };
         response: QueryResponse;
       };
       disconnect: {
@@ -33,6 +33,10 @@ type PostbirdRPC = {
       quitApp: {
         params: {};
         response: { success: boolean };
+      };
+      getWindowState: {
+        params: {};
+        response: { width: number; height: number; x: number; y: number };
       };
     };
     messages: {};
@@ -52,8 +56,8 @@ const electroview = new Electrobun.Electroview({ rpc });
 
 // Attach global RPC bridge for postbird
 (window as any).__postbirdRpc = {
-  query: async (sql: string, config: any) => {
-    return await electroview.rpc!.request.query({ sql, config });
+  query: async (sql: string, config: any, queryOptions?: any) => {
+    return await electroview.rpc!.request.query({ sql, config, queryOptions });
   },
   disconnect: async (config: any) => {
     return await electroview.rpc!.request.disconnect({ config });
@@ -66,6 +70,9 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   quitApp: async () => {
     return await electroview.rpc!.request.quitApp({});
+  },
+  getWindowState: async () => {
+    return await electroview.rpc!.request.getWindowState({});
   },
 };
 
@@ -81,7 +88,7 @@ const electroview = new Electrobun.Electroview({ rpc });
   removeListener: () => {},
   emit: () => {},
   cwd: () => ".",
-  nextTick: (fn: any) => queueMicrotask(fn),
+  nextTick: (fn: any, ...args: any[]) => queueMicrotask(() => (typeof fn === 'function' ? fn(...args) : undefined)),
   stdout: { write: (s: string) => console.log(s) },
   stderr: { write: (s: string) => console.error(s) },
 };

@@ -17,7 +17,7 @@ export default {
 			},
 		},
 		copy: {
-			"index-electrobun.html": "views/mainview/index.html",
+			"index.html": "views/mainview/index.html",
 			"public": "views/mainview/public",
 		},
 		mac: {

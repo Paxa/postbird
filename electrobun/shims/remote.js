@@ -71,7 +71,7 @@ const remote = {
     removeListener: () => {},
     emit: () => {},
     cwd: () => ".",
-    nextTick: (fn) => queueMicrotask(fn),
+    nextTick: (fn, ...args) => queueMicrotask(() => (typeof fn === 'function' ? fn(...args) : undefined)),
     stdout: {
       write: (s) => console.log(s),
     },

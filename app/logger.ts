@@ -10,9 +10,11 @@ class Logger {
   
 
   constructor (level) {
-    var isRenderer = require('is-electron-renderer');
-    var remote = isRenderer ? require('@electron/remote') : require("@electron/remote/main");
-    this.topProcess = remote ? remote.process : process;
+    if (typeof window !== "undefined" && (window as any).remote) {
+      this.topProcess = (window as any).remote.process;
+    } else {
+      this.topProcess = typeof process !== "undefined" ? process : { stdout: { write: (s: string) => console.log(s) } };
+    }
     this.logLevel = level;
   }
 

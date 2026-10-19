@@ -1,6 +1,5 @@
 var remote = require('@electron/remote');
 var semver = require('semver');
-var needle = require('needle');
 var strftime = require('strftime');
 
 
@@ -57,13 +56,18 @@ class UpdatesController {
     }, 'grey-cancel-button');
   }
 
-  fetchLatestRelease () {
-    return needle("get", this.releasesUrl, {}).then(resp => {
-      var stableRelease = resp.body.filter((rel) => {
-        return !rel.prerelease;
-      })[0];
-      return Promise.resolve(stableRelease);
-    });
+  async fetchLatestRelease () {
+    try {
+      const resp = await fetch(this.releasesUrl);
+      const data = await resp.json();
+      if (Array.isArray(data)) {
+        return data.find((rel: any) => !rel.prerelease) || null;
+      }
+      return null;
+    } catch (err) {
+      console.error("[UpdatesController] Error fetching releases:", err);
+      return null;
+    }
   }
 
   currentVersion () {

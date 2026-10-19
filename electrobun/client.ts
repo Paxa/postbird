@@ -1,6 +1,10 @@
 import { Buffer } from "buffer";
 (window as any).Buffer = Buffer;
 (globalThis as any).Buffer = Buffer;
+if (!(window as any).process) (window as any).process = {};
+(window as any).process.nextTick = (fn: any, ...args: any[]) => queueMicrotask(() => (typeof fn === "function" ? fn(...args) : undefined));
+if (!(globalThis as any).process) (globalThis as any).process = (window as any).process;
+(globalThis as any).process.nextTick = (window as any).process.nextTick;
 
 console.log("[POSTBIRD CLIENT] Initializing Postbird with Buffer polyfill...");
 import "../index.js";

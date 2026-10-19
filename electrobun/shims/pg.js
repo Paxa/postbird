@@ -43,9 +43,30 @@ class Client extends SimpleEmitter {
       values = [];
     }
 
+    const queryOptions = typeof options === 'object' ? { rowMode: options.rowMode } : {};
+
     const promise = (async () => {
       if (window.__postbirdRpc && window.__postbirdRpc.query) {
-        return await window.__postbirdRpc.query(sql, this.config);
+        const res = await window.__postbirdRpc.query(sql, this.config, queryOptions);
+        if (res && res.rows && Array.isArray(res.rows) && window.Buffer) {
+          for (let r = 0; r < res.rows.length; r++) {
+            const row = res.rows[r];
+            if (Array.isArray(row)) {
+              for (let c = 0; c < row.length; c++) {
+                if (row[c] && row[c].type === 'Buffer' && Array.isArray(row[c].data)) {
+                  row[c] = window.Buffer.from(row[c].data);
+                }
+              }
+            } else if (row && typeof row === 'object') {
+              for (const k in row) {
+                if (row[k] && row[k].type === 'Buffer' && Array.isArray(row[k].data)) {
+                  row[k] = window.Buffer.from(row[k].data);
+                }
+              }
+            }
+          }
+        }
+        return res;
       }
       console.warn("[pg.query fallback - RPC not ready]", sql);
       return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };
@@ -80,10 +101,30 @@ class Pool extends SimpleEmitter {
     }
 
     let sql = typeof options === 'string' ? options : (options && options.text ? options.text : options);
+    const queryOptions = typeof options === 'object' ? { rowMode: options.rowMode } : {};
 
     const promise = (async () => {
       if (window.__postbirdRpc && window.__postbirdRpc.query) {
-        return await window.__postbirdRpc.query(sql, this.config);
+        const res = await window.__postbirdRpc.query(sql, this.config, queryOptions);
+        if (res && res.rows && Array.isArray(res.rows) && window.Buffer) {
+          for (let r = 0; r < res.rows.length; r++) {
+            const row = res.rows[r];
+            if (Array.isArray(row)) {
+              for (let c = 0; c < row.length; c++) {
+                if (row[c] && row[c].type === 'Buffer' && Array.isArray(row[c].data)) {
+                  row[c] = window.Buffer.from(row[c].data);
+                }
+              }
+            } else if (row && typeof row === 'object') {
+              for (const k in row) {
+                if (row[k] && row[k].type === 'Buffer' && Array.isArray(row[k].data)) {
+                  row[k] = window.Buffer.from(row[k].data);
+                }
+              }
+            }
+          }
+        }
+        return res;
       }
       console.warn("[pg.Pool.query fallback - RPC not ready]", sql);
       return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-export POSTBIRD_DEV=true
-export POSTBIRD_DEBUG=true
-
-node_modules/.bin/electron . $@

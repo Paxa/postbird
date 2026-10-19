@@ -16,7 +16,7 @@
       p.logo
         img(src="public/images/icon.png")
       p.
-        Postbird is a cross-platform PostgreSQL GUI client, written in JavaScript, runs with Electron
+        Postbird is a cross-platform PostgreSQL GUI client, written in TypeScript, runs with Electrobun
       p
         = "Source code at "
         != link_to("github.com/paxa/postbird", "https://github.com/paxa/postbird", {class: "external"})
@@ -25,9 +25,7 @@
       p
         = `Postbird version: ${electron.remote.app.getVersion()}`
         br
-        = `Electron version: ${process.versions.electron}`
-        br
-        = `Node version: ${process.versions.node}`
+        = `Runtime: Electrobun (Bun ${process.versions.bun || process.versions.node || '1.x'})`
         br
         != `pg_dump version: <span class="pg_dump_version">...</span>`
         br
