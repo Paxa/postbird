@@ -198,4 +198,70 @@ describe('Model.Table', () => {
     assert.equal(data2.rows[0].something, "eeeeaaaa-bbbb-4ef8-bb6d-6bb9bd380a11")
   })
 
+  it("should deleteRowByCtid", async () => {
+    var table = await Model.Table.create('public', 'test_delete_tbl')
+    await table.addColumnObj(new Model.Column('val', {data_type: 'integer'}))
+
+    await table.insertRow({val: 100})
+    await table.insertRow({val: 200})
+    var rows = await table.getRows(0, 10, this.queryOptions);
+    assert.equal(rows.rows.length, 2);
+
+    await table.deleteRowByCtid(rows.rows[0].ctid);
+    var rowsAfter = await table.getRows(0, 10, this.queryOptions);
+    assert.equal(rowsAfter.rows.length, 1);
+    assert.equal(rowsAfter.rows[0].val, 200);
+
+    await table.drop();
+  })
+
+  it("should truncate table", async () => {
+    var table = await Model.Table.create('public', 'test_trunc_tbl')
+    await table.addColumnObj(new Model.Column('val', {data_type: 'integer'}))
+
+    await table.insertRow({val: 1})
+    await table.insertRow({val: 2})
+    assert.equal(await table.getTotalRows(), 2);
+
+    await table.truncate();
+    assert.equal(await table.getTotalRows(), 0);
+
+    await table.drop();
+  })
+
+  it("should getStructure, getColumnTypes, getColumnNames", async () => {
+    var table = await Model.Table.create('public', 'test_struct_tbl')
+    await table.addColumnObj(new Model.Column('name', {data_type: 'text'}))
+    await table.addColumnObj(new Model.Column('age', {data_type: 'integer'}))
+
+    var names = await table.getColumnNames();
+    assert.contain(names, 'name');
+    assert.contain(names, 'age');
+
+    var types = await table.getColumnTypes();
+    assert.equal(types.name.data_type, 'text');
+    assert.equal(types.age.data_type, 'integer');
+
+    var structure = await table.getStructure();
+    assert.ok(Array.isArray(structure));
+    assert.ok(structure.some(col => col.column_name == 'name'));
+    assert.ok(structure.some(col => col.column_name == 'age'));
+
+    await table.drop();
+  })
+
+  it("should inspect sequence", async () => {
+    await ModelBase.q("CREATE SEQUENCE public.test_counter_seq START 1;");
+    var seq = new Model.Table('public', 'test_counter_seq');
+
+    var isSeq = await seq.isSequence();
+    assert.equal(isSeq, true);
+
+    var info = await seq.sequenceInfo();
+    assert.ok(info);
+    assert.equal(info.sequence_name, 'test_counter_seq');
+
+    await ModelBase.q("DROP SEQUENCE public.test_counter_seq;");
+  })
+
 })

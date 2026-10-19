@@ -1,8 +1,10 @@
 class Trigger extends ModelBase {
   
-    schema: string
-    name: string
-    table_name: string
+  schema: string
+  declare name: string
+  declare table_name: string
+  declare proc_name: string
+  declare constraint_name: string
   
   static findAll () {
     var sql = `
@@ -80,14 +82,14 @@ class Trigger extends ModelBase {
     return Trigger.decodeTgType(this.data.tgtype);
   }
 
-  drop (callback) {
+  drop (callback?: any) {
     var sql = "DROP TRIGGER %s on %s";
 
-    this.q(sql, this.name, this.table_name, (result, error) => {
+    return this.q(sql, this.name, this.table_name, (result, error) => {
       if (error) {
         throw error;
       }
-      callback(result, error);
+      callback && callback(result, error);
     });
   }
 }

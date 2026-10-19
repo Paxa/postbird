@@ -16,6 +16,10 @@ assert.contain = (string, value) => {
   return assert(string.includes(value), `Value ${string} should include ${value}`);
 }
 
+assert.notContain = (string, value) => {
+  return assert(!string.includes(value), `Value ${string} should not include ${value}`);
+}
+
 assert.greaterThen = (number, otherNumner) => {
   return assert(number > otherNumner, `Value ${number} should br greater then ${otherNumner}`);
 }
