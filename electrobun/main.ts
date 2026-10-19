@@ -21,6 +21,10 @@ type PostbirdRPC = {
         params: { config?: any };
         response: { success: boolean };
       };
+      spawnProcess: {
+        params: { bin: string; args: string[]; options?: any };
+        response: { code: number; stdout: string; stderr: string };
+      };
     };
     messages: {};
   }>;
@@ -108,6 +112,34 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
           pools.delete(key);
         }
         return { success: true };
+      },
+
+      spawnProcess: async ({ bin, args, options }) => {
+        const { spawn } = await import("child_process");
+        return new Promise((resolve) => {
+          let stdout = "";
+          let stderr = "";
+          try {
+            const proc = spawn(bin, args || [], {
+              cwd: options?.cwd || process.cwd(),
+              env: { ...process.env, ...(options?.env || {}) },
+            });
+            proc.stdout?.on("data", (d: any) => {
+              stdout += d.toString();
+            });
+            proc.stderr?.on("data", (d: any) => {
+              stderr += d.toString();
+            });
+            proc.on("close", (code: any) => {
+              resolve({ code: code ?? 0, stdout, stderr });
+            });
+            proc.on("error", (err: any) => {
+              resolve({ code: 1, stdout, stderr: err.message || String(err) });
+            });
+          } catch (err: any) {
+            resolve({ code: 1, stdout, stderr: err.message || String(err) });
+          }
+        });
       },
     },
     messages: {},
