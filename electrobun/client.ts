@@ -9,18 +9,11 @@ if (!(globalThis as any).process) (globalThis as any).process = (window as any).
 console.log("[POSTBIRD CLIENT] Initializing Postbird with Buffer polyfill...");
 import "../index.js";
 
-if (process.env.POSTBIRD_TEST_UI === "true") {
-  console.log("[POSTBIRD CLIENT] Test mode active, queuing UI test runner...");
-  import("./ui_tests").then(({ runUITests }) => {
-    $(document).ready(() => {
-      setTimeout(() => {
-        runUITests().catch((err: any) => {
-          console.error("[UI Test Error]", err);
-        });
-      }, 800);
-    });
-  });
-}
+(window as any).__runUITests = async () => {
+  console.log("[POSTBIRD CLIENT] Received test trigger from host, running UI tests...");
+  const { runUITests } = await import("./ui_tests");
+  return runUITests();
+};
 
 let isShuttingDown = false;
 (window as any).__postbirdGracefulQuit = async () => {

@@ -11,7 +11,7 @@
     "test:unit": "bun test tests/",
     "test:ui": "POSTBIRD_TEST_UI=true bun electrobun/bundle.ts && bunx electrobun build && bunx electrobun run",
     "integration_test": "bun run test:ui",
-    "start": "bun electrobun/bundle.ts && bunx electrobun run",
+    "start": "bun electrobun/bundle.ts && bunx electrobun build && bunx electrobun run",
     "build": "bun electrobun/bundle.ts && bunx electrobun build",
     "dist": "bun electrobun/bundle.ts && bunx electrobun build --env=stable",
     "bundle": "bun electrobun/bundle.ts",
