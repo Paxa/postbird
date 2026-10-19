@@ -1,40 +1,31 @@
 var strftime = require('strftime');
 
+var moment = require('moment');
 
-import * as moment from "moment"
-
-declare module "moment" {
-  interface Moment {
-    _d: Date
-    origValueString: string
-  }
-}
-declare global {
-  interface ViewCellHelpers {
-    TIMESTAMPTZ_OID: number
-    TIMESTAMP_OID: number
-    formatCellFromSelect: (value: any, field: any) => string
-    formatCell: (value: any, format: string, dataType: string) => string
-    relatedRowsIcon: (rel: any, columnName: string, value: string) => string
-    truncate: (str: string, length: number) => string
-    tag_options: (options: any) => string
-    link_to: (text: string, url: string, options: any) => string
-    icon: (name: string, title: string) => string
-    column_type_label: (column: any, short: string) => string
-    betterDateTime: (date: moment.Moment) => string
-    betterDateTimeZ: (date: moment.Moment) => string
-    betterDate: (value: Date) => string
-    timeFormat: (date: string) => string
-    execTime: (time: number) => string
-    formatJson: (value: any) => string
-    formatArray: (value: any, format: string) => string
-    getIndexType: (indexSql: string) => string
-    escapeHTML: (unsafe: string) => string
-    shorterTypeName: (typeName: string) => string
-    relType: (type: string) => string
-    tableGrantsDesc: (permissions: string) => string
-    formatBytes: (size: number) => string
-  }
+interface ViewCellHelpers {
+  TIMESTAMPTZ_OID: number
+  TIMESTAMP_OID: number
+  formatCellFromSelect: (value: any, field: any) => string
+  formatCell: (value: any, format: string, dataType: string) => string
+  relatedRowsIcon: (rel: any, columnName: string, value: string) => string
+  truncate: (str: string, length: number) => string
+  tag_options: (options: any) => string
+  link_to: (text: string, url: string, options: any) => string
+  icon: (name: string, title: string) => string
+  column_type_label: (column: any, short: string) => string
+  betterDateTime: (date: any) => string
+  betterDateTimeZ: (date: any) => string
+  betterDate: (value: Date) => string
+  timeFormat: (date: string) => string
+  execTime: (time: number) => string
+  formatJson: (value: any) => string
+  formatArray: (value: any, format: string) => string
+  getIndexType: (indexSql: string) => string
+  escapeHTML: (unsafe: string) => string
+  shorterTypeName: (typeName: string) => string
+  relType: (type: string) => string
+  tableGrantsDesc: (permissions: string) => string
+  formatBytes: (size: number) => string
 }
 
 
@@ -168,6 +159,11 @@ var helpers = (global as any).ViewCellHelpers = {
   },
 
   betterDateTime: function (date) {
+    if (!date) return '';
+    if (typeof date === 'string' || date instanceof Date) {
+      date = moment.parseZone(date);
+    }
+    if (!date._d) date._d = date.toDate ? date.toDate() : new Date(date);
     var dateSec = date._d.getTime() / 1000.0;
     var nowSec = Math.round(Date.now() / 1000);
     var todayStart = nowSec - nowSec % 86400;
@@ -189,6 +185,11 @@ var helpers = (global as any).ViewCellHelpers = {
   },
 
   betterDateTimeZ: function (date) {
+    if (!date) return '';
+    if (typeof date === 'string' || date instanceof Date) {
+      date = moment.parseZone(date);
+    }
+    if (!date._d) date._d = date.toDate ? date.toDate() : new Date(date);
     // date._d - is a date with substracted timezone offset
     var dateSec = date._d.getTime() / 1000.0;
     var nowSec = Math.round(Date.now() / 1000);

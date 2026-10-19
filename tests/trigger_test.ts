@@ -45,7 +45,7 @@ describe("Model.Trigger", () => {
     await ModelBase.q(triggerSql);
 
     // 4. Find all triggers
-    var triggers = await Model.Trigger.findAll();
+    var triggers: any = await Model.Trigger.findAll();
     assert.ok(Array.isArray(triggers));
     var myTrigger = triggers.find(t => t.name == "before_insert_item");
     assert.ok(myTrigger, "Trigger before_insert_item should be found");
@@ -61,7 +61,7 @@ describe("Model.Trigger", () => {
     await myTrigger.drop();
 
     // 6. Verify dropped
-    var triggersAfterDrop = await Model.Trigger.findAll();
+    var triggersAfterDrop: any = await Model.Trigger.findAll();
     var found = triggersAfterDrop.find(t => t.name == "before_insert_item");
     assert.equal(found, undefined);
   });

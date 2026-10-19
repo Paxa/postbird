@@ -20,8 +20,9 @@
         tr
           each column in data.fields
             if column.name != 'ctid'
-              - var type = column_type_label(types[column.name])
-              - var typeLabel = shorterTypeName(types[column.name].data_type);
+              - var colInfo = (types && types[column.name]) || { data_type: 'unknown', real_format: 'text' };
+              - var type = column_type_label(colInfo)
+              - var typeLabel = shorterTypeName(colInfo.data_type);
               - var dir = sorting.column == column.name ? sorting.direction : ''
               th(class= 'format-' + type, title=typeLabel, sortable=column.name, sortable-dir=dir)= column.name
       tbody
@@ -29,8 +30,9 @@
           tr(data-ctid = row.ctid)
             each column in data.fields
               if column.name != 'ctid'
+                - var colInfo = (types && types[column.name]) || { data_type: 'unknown', real_format: 'text' };
                 td
-                  != formatCell(row[column.name], types[column.name].real_format, types[column.name].data_type)
+                  != formatCell(row[column.name], colInfo.real_format, colInfo.data_type)
                   != relatedRowsIcon(relations[column.name], column.name, row[column.name])
 
 
