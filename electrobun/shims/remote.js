@@ -37,6 +37,7 @@ const _startTime = _hasWindow ? (window.__appStartTime = window.__appStartTime |
 const _isDark = _hasWindow && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 const remote = {
+  getCurrentWindow: () => mainWindowInstance,
   app: {
     getAppPath: () => ".",
     ApplicationStart: _startTime,

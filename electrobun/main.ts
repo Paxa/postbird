@@ -25,6 +25,10 @@ type PostbirdRPC = {
         params: { bin: string; args: string[]; options?: any };
         response: { code: number; stdout: string; stderr: string };
       };
+      finishTests: {
+        params: { total: number; failed: number };
+        response: { exitCode: number };
+      };
     };
     messages: {};
   }>;
@@ -116,11 +120,31 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
 
       spawnProcess: async ({ bin, args, options }) => {
         const { spawn } = await import("child_process");
+        const path = await import("path");
+        const fs = await import("fs");
+
+        let resolvedBin = bin;
+        if (!fs.existsSync(resolvedBin)) {
+          const pgAppBin = `/Applications/Postgres.app/Contents/Versions/latest/bin/${path.basename(bin)}`;
+          const vendorBin = path.resolve(process.cwd(), bin);
+          const projectVendorBin = path.resolve(__dirname, "..", bin);
+
+          if (fs.existsSync(pgAppBin)) {
+            resolvedBin = pgAppBin;
+          } else if (fs.existsSync(vendorBin)) {
+            resolvedBin = vendorBin;
+          } else if (fs.existsSync(projectVendorBin)) {
+            resolvedBin = projectVendorBin;
+          } else {
+            resolvedBin = path.basename(bin);
+          }
+        }
+
         return new Promise((resolve) => {
           let stdout = "";
           let stderr = "";
           try {
-            const proc = spawn(bin, args || [], {
+            const proc = spawn(resolvedBin, args || [], {
               cwd: options?.cwd || process.cwd(),
               env: { ...process.env, ...(options?.env || {}) },
             });
@@ -140,6 +164,14 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
             resolve({ code: 1, stdout, stderr: err.message || String(err) });
           }
         });
+      },
+
+      finishTests: async ({ total, failed }) => {
+        console.log(`[Host Test Runner] UI tests complete: ${total - failed}/${total} passed (${failed} failed)`);
+        setTimeout(() => {
+          process.exit(failed > 0 ? 1 : 0);
+        }, 150);
+        return { exitCode: failed > 0 ? 1 : 0 };
       },
     },
     messages: {},

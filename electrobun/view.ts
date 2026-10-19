@@ -26,6 +26,10 @@ type PostbirdRPC = {
         params: { bin: string; args: string[]; options?: any };
         response: { code: number; stdout: string; stderr: string };
       };
+      finishTests: {
+        params: { total: number; failed: number };
+        response: { exitCode: number };
+      };
     };
     messages: {};
   };
@@ -52,6 +56,9 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   spawnProcess: async (params: { bin: string; args: string[]; options?: any }) => {
     return await electroview.rpc!.request.spawnProcess(params);
+  },
+  finishTests: async (params: { total: number; failed: number }) => {
+    return await electroview.rpc!.request.finishTests(params);
   },
 };
 

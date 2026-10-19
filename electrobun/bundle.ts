@@ -45,6 +45,7 @@ const result = await build({
     "process.platform": JSON.stringify("darwin"),
     "process.env.NODE_ENV": JSON.stringify("development"),
     "process.env.POSTBIRD_DEV": JSON.stringify("true"),
+    "process.env.POSTBIRD_TEST_UI": JSON.stringify(process.env.POSTBIRD_TEST_UI || "false"),
     "global": "window",
   },
 });
