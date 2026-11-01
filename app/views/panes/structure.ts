@@ -16,7 +16,7 @@ class Structure extends PaneBase {
 
   renderTab (columns, indexes, constraints, extra : Structure_ExtraOptions  = {}) {
     if (extra.sequenceInfo) {
-      this.renderViewToPane('structure', 'sequnece_structure_tab', {
+      this.renderViewToPane('structure', 'sequence_structure_tab', {
         sequence: extra.sequenceInfo
       });
     } else {

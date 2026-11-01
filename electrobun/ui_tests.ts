@@ -2,6 +2,7 @@
 import { TestHarness } from "./tests/test_harness";
 import { runLoginConnectionsSuite } from "./tests/01_login_connections_suite";
 import { runPanesAdministrationSuite } from "./tests/02_panes_administration_suite";
+import { runMonitoringSuite } from "./tests/06_monitoring_suite";
 import { runDialogsAndToolsSuite } from "./tests/03_dialogs_and_tools_suite";
 import { runMultitabShortcutsSuite } from "./tests/04_multitab_shortcuts_suite";
 import { runTopMenuSuite } from "./tests/05_top_menu_suite";
@@ -67,6 +68,11 @@ export async function runUITests() {
   // SUITE 2: ADMINISTRATION PANES (USERS, PROCEDURES & INFO)
   // =================================================================
   await runPanesAdministrationSuite(harness, dbScreen);
+
+  // =================================================================
+  // SUITE 6: REAL-TIME MONITORING DASHBOARD (ACCORDION & CHARTS)
+  // =================================================================
+  await runMonitoringSuite(harness, dbScreen);
 
   // =================================================================
   // SUITE 3: MODAL DIALOGS, UTILITIES & HELP

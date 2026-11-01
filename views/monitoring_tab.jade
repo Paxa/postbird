@@ -1,0 +1,214 @@
+.monitoring-view
+  .monitor-toolbar
+    .toolbar-left
+      h3.monitor-title PostgreSQL Monitoring
+      span.monitor-subtitle Real-time performance & server diagnostics
+    .toolbar-right
+      button.btn-native.btn-toggle-live(class=isLive ? 'active' : '', title=isLive ? "Pause Live Monitoring" : "Resume Live Monitoring")
+        span.live-pulse-dot
+        span.live-status-text= isLive ? "Live Monitoring (3s)" : "Monitoring Paused"
+      button.btn-native.btn-global-refresh(title="Refresh All Sections")
+        span.icon-refresh ⟳
+        |  Refresh All
+
+  .monitor-sections-container
+    // -------------------------------------------------------------
+    // SECTION 1: OVERVIEW & REAL-TIME ACTIVITY
+    // -------------------------------------------------------------
+    .monitor-section(data-section="overview", class=expandedSections.overview ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Server Overview & Real-Time Activity
+        span.section-badge.badge-realtime Real-time (3s)
+        span.section-summary-text= sectionSummaries.overview || "Loading real-time overview..."
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Overview") ⟳
+
+      .monitor-section-body
+        .metric-cards-grid
+          .metric-card
+            .metric-title Total Connections
+            .metric-value.metric-conns-val - / -
+            .metric-progress-track
+              .metric-progress-bar.metric-conns-bar(style="width: 0%")
+            .metric-subtitle.metric-conns-sub Loading connections...
+          
+          .metric-card
+            .metric-title Buffer Cache Hit Ratio
+            .metric-value.metric-cache-val - %
+            .metric-subtitle.metric-cache-sub Analyzing buffer hit rate...
+          
+          .metric-card
+            .metric-title Throughput
+            .metric-value.metric-qps-val 0 tx/s
+            .metric-subtitle.metric-qps-sub Transactions commit/rollback
+          
+          .metric-card
+            .metric-title Active Query Load
+            .metric-value.metric-load-val 0 ms
+            .metric-subtitle.metric-load-sub Cumulative active duration
+
+        .charts-grid
+          .chart-box
+            .chart-header
+              span.chart-title Throughput (Transactions / Second)
+            .chart-container.chart-container-qps!= qpsChartSvg
+
+          .chart-box
+            .chart-header
+              span.chart-title Summed Active Query Latency (ms)
+            .chart-container.chart-container-latency!= latencyChartSvg
+
+        .section-subhead Active & Waiting Queries
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.active-queries-table
+              thead
+                tr
+                  th(style="width: 70px;") PID
+                  th(style="width: 100px;") User
+                  th(style="width: 130px;") Client / App
+                  th(style="width: 80px;") State
+                  th(style="width: 110px;") Wait Event
+                  th(style="width: 85px;") Duration
+                  th Query
+                  th(style="width: 110px;") Actions
+              tbody
+                tr
+                  td(colspan="8", class="text-muted text-center", style="padding: 16px;") Loading queries...
+
+    // -------------------------------------------------------------
+    // SECTION 2: STORAGE & INDEX MEMORY FIT
+    // -------------------------------------------------------------
+    .monitor-section(data-section="storage", class=expandedSections.storage ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Storage & Memory Buffer Fit
+        span.section-badge.badge-snapshot Snapshot
+        span.section-summary-text= sectionSummaries.storage
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Storage Stats") ⟳
+
+      .monitor-section-body
+        .storage-buffer-gauge-card
+          .gauge-header
+            strong.storage-db-size-label Total Database Size: -
+            span.storage-cache-size-label Buffers configuration loading...
+          .gauge-track
+            .gauge-fill.storage-gauge-fill(style="width: 0%")
+          .gauge-footer
+            span.gauge-label.storage-gauge-label Index footprint vs shared_buffers
+            span.gauge-hint Active indexes should comfortably fit into memory (shared_buffers or OS cache)
+
+        .section-subhead Top 10 Tables by Disk & Index Footprint
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.top-tables-table
+              thead
+                tr
+                  th Table Name
+                  th(style="width: 110px;") Live Rows
+                  th(style="width: 110px;") Table Data
+                  th(style="width: 110px;") Indexes Size
+                  th(style="width: 120px;") Total Size
+              tbody
+                tr
+                  td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load storage details.
+
+    // -------------------------------------------------------------
+    // SECTION 3: VACUUM & BLOAT HEALTH
+    // -------------------------------------------------------------
+    .monitor-section(data-section="vacuum", class=expandedSections.vacuum ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Vacuum & Table Bloat Health
+        span.section-badge.badge-snapshot Snapshot
+        span.section-summary-text= sectionSummaries.vacuum
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Vacuum Stats") ⟳
+
+      .monitor-section-body
+        .vacuum-progress-block(style="display: none;")
+
+        .section-subhead Tables with Dead Tuples & Autovacuum Schedule
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.table-bloat-table
+              thead
+                tr
+                  th Table Name
+                  th(style="width: 100px;") Live Rows
+                  th(style="width: 100px;") Dead Rows
+                  th(style="width: 85px;") Dead %
+                  th(style="width: 120px;") Last Autovacuum
+                  th(style="width: 90px;") Auto Count
+                  th(style="width: 120px;") Status
+              tbody
+                tr
+                  td(colspan="7", class="text-muted text-center", style="padding: 14px;") Click to load vacuum statistics.
+
+    // -------------------------------------------------------------
+    // SECTION 4: STREAMING REPLICATION & WAL
+    // -------------------------------------------------------------
+    .monitor-section(data-section="replication", class=expandedSections.replication ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Streaming Replication & WAL Slots
+        span.section-badge.badge-realtime Real-time
+        span.section-summary-text= sectionSummaries.replication
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Replication Stats") ⟳
+
+      .monitor-section-body
+        .section-subhead Standby Replicas & Sync Status
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.replication-nodes-table
+              thead
+                tr
+                  th Node / Application
+                  th(style="width: 90px;") Mode
+                  th(style="width: 100px;") State
+                  th(style="width: 120px;") Lag (Bytes)
+                  th Lag (Time)
+              tbody
+                tr
+                  td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load replication details.
+
+        .section-subhead Replication Slots & Disk Retention
+        .replication-slots-list
+          span.text-muted Checking replication slots...
+
+    // -------------------------------------------------------------
+    // SECTION 5: SLOW QUERIES INSIGHTS
+    // -------------------------------------------------------------
+    .monitor-section(data-section="slow_queries", class=expandedSections.slow_queries ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Top Slow Queries (pg_stat_statements)
+        span.section-badge.badge-snapshot Snapshot
+        span.section-summary-text= sectionSummaries.slow_queries
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Slow Queries") ⟳
+
+      .monitor-section-body
+        .slow-queries-not-installed(style="display: none;")
+          .mac-callout-box
+            strong Extension pg_stat_statements is not enabled.
+            p This PostgreSQL extension tracks cumulative execution statistics across all queries.
+            button.btn-native.btn-install-statements Enable Extension Now (CREATE EXTENSION)
+
+        .slow-queries-installed
+          .rescol-wrapper.with-borders
+            .rescol-content-wrapper
+              table.slow-queries-table
+                thead
+                  tr
+                    th(style="width: 95px;") Avg Time
+                    th(style="width: 95px;") Max Time
+                    th(style="width: 80px;") Calls
+                    th(style="width: 90px;") Rows
+                    th Query
+                tbody
+                  tr
+                    td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load slow query insights.

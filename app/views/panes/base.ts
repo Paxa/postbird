@@ -12,18 +12,51 @@ class PaneBase {
     this.handler = view.handler;
   }
 
+  executeHandler (exec: string) {
+    if (!exec) return;
+    const match = exec.trim().match(/^([a-zA-Z0-9_$]+)(?:\((.*)\))?$/s);
+    if (!match) return;
+    const methodName = match[1];
+    const rawArgs = match[2];
+    const fn = (this as any)[methodName];
+    if (typeof fn !== 'function') {
+      console.warn(`[PaneBase] Handler method '${methodName}' not found on`, this);
+      return;
+    }
+    if (!rawArgs || rawArgs.trim() === '') {
+      return fn.call(this);
+    }
+    const args: any[] = [];
+    const argRegex = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|[^,]+/g;
+    const matches = rawArgs.match(argRegex) || [];
+    for (let part of matches) {
+      part = part.trim();
+      if ((part.startsWith("'") && part.endsWith("'")) || (part.startsWith('"') && part.endsWith('"'))) {
+        args.push(part.slice(1, -1).replace(/\\'/g, "'").replace(/\\"/g, '"'));
+      } else if (!isNaN(Number(part)) && part !== '') {
+        args.push(Number(part));
+      } else if (part === 'true') {
+        args.push(true);
+      } else if (part === 'false') {
+        args.push(false);
+      } else if (part === 'null') {
+        args.push(null);
+      } else {
+        args.push(part);
+      }
+    }
+    return fn.apply(this, args);
+  }
+
   initEvents (content) {
     $u(content).find('a[exec], button[exec], input[type=submit][exec]').each((i, el) => {
       el.addEventListener('click', e => {
-      //$u(el).bind('click', (e) => {
         $u.stopEvent(e);
         this.lastEvent = e;
-        //with(this) {
-          var exec = el.getAttribute('exec');
-          if (!exec.match(/\(.*\)/)) exec = exec + '()';
-          //console.log('EXEC', `this.${exec}`);
-          eval(`this.${exec}`);
-        //}
+        var exec = el.getAttribute('exec');
+        if (exec) {
+          this.executeHandler(exec);
+        }
       });
     });
   }

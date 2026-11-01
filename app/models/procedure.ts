@@ -1,3 +1,5 @@
+var pgEscape = require('pg-escape');
+
 class Procedure extends ModelBase {
 
   
@@ -34,6 +36,8 @@ class Procedure extends ModelBase {
   }
 
   static find (name) {
+    var escapedName = pgEscape.literal(String(name));
+    var isOid = typeof name === 'string' && name.match(/^\d+$/);
     var sql = `
       SELECT pg_proc.oid as poid, pg_proc.oid as proc_oid, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
              pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
@@ -43,7 +47,7 @@ class Procedure extends ModelBase {
       INNER JOIN pg_authid ON (pg_proc.proowner = pg_authid.oid)
       INNER JOIN pg_language ON (pg_proc.prolang = pg_language.oid)
       INNER JOIN pg_type ret_type ON (pg_proc.prorettype = ret_type.oid)
-      WHERE ns.nspname = 'public' AND proname = '${name}' ${name.match(/^\d+$/) ? `OR pg_proc.oid = '${name}'` : ''}
+      WHERE ns.nspname = 'public' AND (proname = ${escapedName} ${isOid ? `OR pg_proc.oid = ${escapedName}` : ''})
       ORDER BY proname;
     `;
 

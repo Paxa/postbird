@@ -1,3 +1,5 @@
+var pgEscape = require('pg-escape');
+
 class Schema extends ModelBase {
   schemaName: string;
   className: string;
@@ -9,7 +11,7 @@ class Schema extends ModelBase {
   }
 
   static create (name, options?) {
-    var sql = `CREATE SCHEMA "${name}";`;
+    var sql = `CREATE SCHEMA ${pgEscape.ident(name)};`;
 
     return this.q(sql).then(() => {
       return Promise.resolve(new Model.Schema(name));
@@ -49,7 +51,8 @@ class Schema extends ModelBase {
   }
 
   getTableNames () {
-    var sql = `SELECT * FROM information_schema.tables where table_schema = '${this.schemaName}';`;
+    var escapedSchema = pgEscape.literal(this.schemaName);
+    var sql = `SELECT * FROM information_schema.tables where table_schema = ${escapedSchema};`;
 
     return this.query(sql).then(rows => {
       var names = [];

@@ -4,35 +4,33 @@ class ModelBase {
   
   data: any
   connectionObj: Connection
+  static defaultConnection?: Connection
   
   constructor(data  ?: any ) {
     this.data = data;
   }
 
   q(query : string , ...values : any[] ) {
-    if (this.connectionObj) {
-      return this.connectionObj.q.apply(this.connectionObj, arguments);
-    } else if (App.currentTab.instance.connection) {
-      return Connection.prototype.q.apply(App.currentTab.instance.connection, arguments);
-    } else {
-      throw new Error("Current tab is not connected yet");
-    }
+    var conn = this.connection();
+    return conn.q.apply(conn, arguments);
   }
 
   query(query : string ) {
     return this.q.apply(this, arguments);
   }
 
-  connection() {
+  connection(): Connection {
     return this.connectionObj || ModelBase.connection();
   }
 
-  static connection() {
-    if (App.currentTab.instance.connection) {
-      return App.currentTab.instance.connection;
-    } else {
-      throw new Error("Current tab is not connected yet");
+  static connection(): Connection {
+    if (ModelBase.defaultConnection) {
+      return ModelBase.defaultConnection;
     }
+    if (typeof App !== 'undefined' && App?.currentTab?.instance?.connection) {
+      return App.currentTab.instance.connection;
+    }
+    throw new Error("No database connection available for Model execution");
   }
 
   static q(query : string , ...values : any[] ) {

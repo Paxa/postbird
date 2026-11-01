@@ -62,6 +62,7 @@ global.testConnection = async (logging) => {
   */
   await cleanupSchema();
 
+  ModelBase.defaultConnection = connection;
   App.tabs = [{ instance: { connection: connection} }];
   App.activeTab = 0;
 

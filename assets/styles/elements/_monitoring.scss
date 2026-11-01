@@ -1,0 +1,560 @@
+.monitoring-view {
+  height: 100%;
+  overflow-y: auto;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  background-color: #f7f7f8;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+
+  .monitor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dedede;
+
+    .toolbar-left {
+      .monitor-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1d1d1f;
+        margin: 0 0 2px 0;
+      }
+      .monitor-subtitle {
+        font-size: 11px;
+        color: #777;
+      }
+    }
+
+    .toolbar-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
+  .btn-toggle-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #8e8e93;
+      transition: background-color 0.2s ease;
+    }
+
+    &.active .live-pulse-dot {
+      background-color: #34c759;
+      box-shadow: 0 0 6px rgba(52, 199, 89, 0.8);
+      animation: live-pulse 1.8s infinite;
+    }
+  }
+
+  .btn-global-refresh {
+    cursor: pointer;
+  }
+
+  // Grouped foldable sections
+  .monitor-section {
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+
+    .monitor-section-header {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to bottom, #fbfbfb, #f0f0f0);
+      padding: 7px 12px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333333;
+
+      .disclosure-triangle {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid #666;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        margin-right: 8px;
+        transition: transform 0.15s ease-out;
+      }
+
+      .section-title {
+        font-weight: 600;
+      }
+
+      .section-badge {
+        font-size: 10px;
+        font-weight: 500;
+        padding: 1px 6px;
+        border-radius: 10px;
+        margin-left: 8px;
+
+        &.badge-realtime {
+          background-color: #e3f2fd;
+          color: #0288d1;
+        }
+
+        &.badge-snapshot {
+          background-color: #f0f0f0;
+          color: #616161;
+        }
+      }
+
+      .section-summary-text {
+        margin-left: 14px;
+        color: #777777;
+        font-weight: 400;
+        font-size: 11px;
+        flex: 1 1 auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .section-actions {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+
+        .btn-section-icon {
+          background: transparent;
+          border: 1px solid transparent;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 13px;
+          color: #666;
+          padding: 1px 6px;
+          line-height: 1;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: #111;
+          }
+        }
+      }
+    }
+
+    &.expanded {
+      .monitor-section-header {
+        border-bottom: 1px solid #e2e2e2;
+
+        .disclosure-triangle {
+          transform: rotate(90deg);
+        }
+
+        .section-summary-text {
+          display: none; // Auto-hides when open to keep header crisp
+        }
+      }
+
+      .monitor-section-body {
+        display: block;
+      }
+    }
+
+    .monitor-section-body {
+      display: none;
+      padding: 12px 14px;
+    }
+  }
+
+  // KPI Metrics Grid
+  .metric-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+
+    .metric-card {
+      background: #fafafc;
+      border: 1px solid #e5e5ea;
+      border-radius: 5px;
+      padding: 9px 11px;
+
+      .metric-title {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #6e6e73;
+        letter-spacing: 0.3px;
+      }
+
+      .metric-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1d1d1f;
+        margin: 3px 0;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .metric-progress-track {
+        height: 4px;
+        background: #e5e5ea;
+        border-radius: 2px;
+        overflow: hidden;
+        margin: 5px 0 4px 0;
+
+        .metric-progress-bar {
+          height: 100%;
+          background: #007aff;
+          transition: width 0.3s ease;
+        }
+      }
+
+      .metric-subtitle {
+        font-size: 11px;
+        color: #8e8e93;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  // Dual Charts Row
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+
+    .chart-box {
+      background: #fafafc;
+      border: 1px solid #e5e5ea;
+      border-radius: 5px;
+      padding: 8px 10px;
+
+      .chart-header {
+        font-size: 11px;
+        font-weight: 600;
+        color: #48484a;
+        margin-bottom: 4px;
+      }
+
+      .chart-container {
+        height: 64px;
+        width: 100%;
+      }
+    }
+  }
+
+  // Section Subheads
+  .section-subhead {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    margin: 12px 0 6px 0;
+  }
+
+  // Gauge card for Storage / Indexes
+  .storage-buffer-gauge-card {
+    background: #fafafc;
+    border: 1px solid #e5e5ea;
+    border-radius: 5px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+
+    .gauge-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .gauge-track {
+      height: 10px;
+      background: #e5e5ea;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 6px;
+
+      .gauge-fill {
+        height: 100%;
+        background: linear-gradient(to right, #34c759, #ff9500);
+        border-radius: 5px;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .gauge-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #6e6e73;
+    }
+  }
+
+  // Tables inside monitoring
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+
+    th {
+      text-align: left;
+      background: #f0f0f2;
+      border-bottom: 1px solid #d4d4d8;
+      padding: 5px 8px;
+      font-weight: 600;
+      color: #48484a;
+    }
+
+    td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #eeeeee;
+      vertical-align: middle;
+      color: #1d1d1f;
+
+      &.query-cell {
+        font-family: Menlo, Monaco, "Courier New", monospace;
+        max-width: 380px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &.actions-cell {
+        white-space: nowrap;
+      }
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafafb;
+    }
+  }
+
+  .state-pill {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &.state-active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    &.state-idle {
+      background-color: #f5f5f5;
+      color: #757575;
+    }
+  }
+
+  .duration-badge {
+    font-family: Menlo, Monaco, monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+
+    &.badge-normal {
+      background-color: #f2f2f7;
+      color: #1c1c1e;
+    }
+    &.badge-danger {
+      background-color: #ffebee;
+      color: #c62828;
+      font-weight: 600;
+    }
+  }
+
+  .wait-badge {
+    background-color: #fff3e0;
+    color: #e65100;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+
+  .btn-native-small {
+    background: linear-gradient(to bottom, #ffffff, #ececec);
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    cursor: pointer;
+    color: #333;
+
+    &:hover {
+      background: linear-gradient(to bottom, #f8f8f8, #e0e0e0);
+    }
+    &:active {
+      background: #dcdcdc;
+    }
+
+    &.btn-terminate-query {
+      color: #d32f2f;
+    }
+  }
+
+  .mac-callout-box {
+    background: #f8f9fa;
+    border: 1px dashed #ced4da;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+
+    p {
+      color: #6c757d;
+      font-size: 12px;
+      margin: 6px 0 12px 0;
+    }
+  }
+
+  .replication-slots-list {
+    margin-top: 6px;
+    font-size: 11px;
+
+    .replication-slot-item {
+      padding: 5px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+
+      &.slot-active {
+        background-color: #f1f8e9;
+      }
+      &.slot-inactive-warning {
+        background-color: #ffebee;
+        border: 1px solid #ffcdd2;
+      }
+    }
+  }
+
+  .active-vacuum-pill {
+    background-color: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(52, 199, 89, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+}
+
+// Dark Mode Support
+body.dark-mode {
+  .monitoring-view {
+    background-color: #1e1e1e;
+    color: #f2f2f7;
+
+    .monitor-toolbar {
+      border-color: #38383a;
+      .toolbar-left .monitor-title {
+        color: #f2f2f7;
+      }
+      .toolbar-left .monitor-subtitle {
+        color: #8e8e93;
+      }
+    }
+
+    .monitor-section {
+      background: #252526;
+      border-color: #38383a;
+
+      .monitor-section-header {
+        background: linear-gradient(to bottom, #2d2d2d, #252526);
+        color: #f2f2f7;
+
+        .disclosure-triangle {
+          border-left-color: #aaa;
+        }
+
+        .section-summary-text {
+          color: #999;
+        }
+
+        .section-badge.badge-realtime {
+          background-color: #0d47a1;
+          color: #90caf9;
+        }
+        .section-badge.badge-snapshot {
+          background-color: #3a3a3c;
+          color: #cccccc;
+        }
+      }
+
+      &.expanded .monitor-section-header {
+        border-bottom-color: #38383a;
+      }
+    }
+
+    .metric-cards-grid .metric-card,
+    .charts-grid .chart-box,
+    .storage-buffer-gauge-card {
+      background: #2d2d30;
+      border-color: #3e3e42;
+
+      .metric-title {
+        color: #9e9ea3;
+      }
+      .metric-value {
+        color: #ffffff;
+      }
+      .metric-subtitle {
+        color: #a0a0a5;
+      }
+      .metric-progress-track,
+      .gauge-track {
+        background: #3e3e42;
+      }
+      .chart-header {
+        color: #d1d1d6;
+      }
+    }
+
+    table {
+      th {
+        background: #2d2d30;
+        border-color: #3e3e42;
+        color: #d1d1d6;
+      }
+      td {
+        border-color: #333336;
+        color: #e0e0e0;
+      }
+      tr:nth-child(even) td {
+        background-color: #28282b;
+      }
+    }
+
+    .chart-baseline {
+      stroke: #3e3e42;
+    }
+
+    .btn-native-small {
+      background: linear-gradient(to bottom, #3c3c3e, #2c2c2e);
+      border-color: #48484a;
+      color: #e5e5ea;
+    }
+
+    .mac-callout-box {
+      background: #2a2a2c;
+      border-color: #48484a;
+    }
+  }
+}
