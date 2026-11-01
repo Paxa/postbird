@@ -45,6 +45,15 @@ const remote = {
     ApplicationStart: _startTime,
     MainFilename: "index.html",
     mainWindow: mainWindowInstance,
+    getPath: (name) => {
+      if (name === "userData") {
+        if (typeof process !== "undefined" && process.platform === "darwin") {
+          return "/Users/" + (process.env.USER || "user") + "/Library/Application Support/Postbird";
+        }
+        return ".";
+      }
+      return ".";
+    },
   },
   nativeTheme: {
     shouldUseDarkColors: !!_isDark,

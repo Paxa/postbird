@@ -40,6 +40,14 @@ type PostbirdRPC = {
         params: {};
         response: { width: number; height: number; x: number; y: number };
       };
+      loadSavedConnections: {
+        params: {};
+        response: { connections: Record<string, any>; source: string };
+      };
+      saveSavedConnections: {
+        params: { connections: Record<string, any> };
+        response: { success: boolean };
+      };
     };
     messages: {};
   }>;
@@ -214,6 +222,47 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
       getWindowState: async () => {
         return loadWindowState();
       },
+
+      loadSavedConnections: async () => {
+        const file = path.join(getUserDataDir(), "saved_connections.json");
+        try {
+          if (fs.existsSync(file)) {
+            const content = fs.readFileSync(file, "utf8");
+            const data = JSON.parse(content);
+            if (data && typeof data === "object") {
+              return { connections: data, source: "file" };
+            }
+          }
+        } catch (e) {
+          console.error("[Saved Connections] Failed reading JSON file:", e);
+        }
+
+        // Fallback: check old Electron LevelDB
+        const migrated = extractSavedConnectionsFromLevelDB();
+        if (migrated && Object.keys(migrated).length > 0) {
+          try {
+            const dir = getUserDataDir();
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(file, JSON.stringify(migrated, null, 2), "utf8");
+          } catch (e) {}
+          return { connections: migrated, source: "migrated" };
+        }
+
+        return { connections: {}, source: "none" };
+      },
+
+      saveSavedConnections: async ({ connections }) => {
+        try {
+          const dir = getUserDataDir();
+          if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+          const file = path.join(dir, "saved_connections.json");
+          fs.writeFileSync(file, JSON.stringify(connections || {}, null, 2), "utf8");
+          return { success: true };
+        } catch (e) {
+          console.error("[Saved Connections] Failed saving JSON file:", e);
+          return { success: false };
+        }
+      },
     },
     messages: {},
   },
@@ -243,6 +292,117 @@ function getUserDataDir(): string {
       ? path.join(process.env.XDG_CONFIG_HOME, "postbird")
       : path.join(os.homedir(), ".config", "postbird");
   }
+}
+
+function parseConnectionsFromBuffer(buf: Buffer): Record<string, any> | null {
+  let latestResult: Record<string, any> | null = null;
+
+  // 1. Scan UTF-8 key
+  const keyUtf8 = Buffer.from("savedConnections");
+  let idx = 0;
+  while ((idx = buf.indexOf(keyUtf8, idx)) !== -1) {
+    const searchSlice = buf.subarray(idx, Math.min(buf.length, idx + 100));
+    const braceIdx = searchSlice.indexOf(0x7b); // '{'
+    if (braceIdx !== -1) {
+      const start = idx + braceIdx;
+      let depth = 0, inString = false, escape = false, end = -1;
+      for (let i = start; i < buf.length; i++) {
+        const c = buf[i];
+        if (escape) { escape = false; continue; }
+        if (c === 0x5c) { escape = true; continue; }
+        if (c === 0x22) { inString = !inString; continue; }
+        if (!inString) {
+          if (c === 0x7b) depth++;
+          else if (c === 0x7d) {
+            depth--;
+            if (depth === 0) { end = i + 1; break; }
+          }
+        }
+      }
+      if (end !== -1) {
+        try {
+          const parsed = JSON.parse(buf.subarray(start, end).toString("utf8"));
+          if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+            latestResult = parsed;
+          }
+        } catch (e) {}
+      }
+    }
+    idx += keyUtf8.length;
+  }
+
+  // 2. Scan UTF-16LE key
+  const keyUtf16 = Buffer.from("savedConnections", "utf16le");
+  idx = 0;
+  while ((idx = buf.indexOf(keyUtf16, idx)) !== -1) {
+    const searchSlice = buf.subarray(idx, Math.min(buf.length, idx + 100));
+    for (let j = 0; j < searchSlice.length - 1; j++) {
+      if (searchSlice[j] === 0x7b && searchSlice[j + 1] === 0x00) {
+        const start = idx + j;
+        let depth = 0, inString = false, escape = false, end = -1;
+        for (let i = start; i < buf.length - 1; i += 2) {
+          const c0 = buf[i];
+          const c1 = buf[i + 1];
+          if (c1 !== 0x00) break;
+          if (escape) { escape = false; continue; }
+          if (c0 === 0x5c) { escape = true; continue; }
+          if (c0 === 0x22) { inString = !inString; continue; }
+          if (!inString) {
+            if (c0 === 0x7b) depth++;
+            else if (c0 === 0x7d) {
+              depth--;
+              if (depth === 0) { end = i + 2; break; }
+            }
+          }
+        }
+        if (end !== -1) {
+          try {
+            const parsed = JSON.parse(buf.subarray(start, end).toString("utf16le"));
+            if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+              latestResult = parsed;
+            }
+          } catch (e) {}
+        }
+        break;
+      }
+    }
+    idx += keyUtf16.length;
+  }
+
+  return latestResult;
+}
+
+function extractSavedConnectionsFromLevelDB(): Record<string, any> | null {
+  const possibleDirs = [
+    path.join(getUserDataDir(), "Local Storage", "leveldb"),
+    path.join(os.homedir(), "Library", "Application Support", "Postbird", "Local Storage", "leveldb"),
+    path.join(os.homedir(), ".config", "Postbird", "Local Storage", "leveldb"),
+    path.join(os.homedir(), ".config", "postbird", "Local Storage", "leveldb"),
+    process.env.APPDATA ? path.join(process.env.APPDATA, "Postbird", "Local Storage", "leveldb") : null,
+  ].filter(Boolean) as string[];
+
+  for (const dir of possibleDirs) {
+    try {
+      if (!fs.existsSync(dir)) continue;
+      const files = fs.readdirSync(dir);
+      const candidateFiles = files
+        .filter((f: string) => f.endsWith(".log") || f.endsWith(".ldb"))
+        .map((f: string) => ({ name: f, full: path.join(dir, f), mtime: fs.statSync(path.join(dir, f)).mtimeMs }))
+        .sort((a: any, b: any) => b.mtime - a.mtime);
+
+      for (const fileObj of candidateFiles) {
+        try {
+          const buf = fs.readFileSync(fileObj.full);
+          const extracted = parseConnectionsFromBuffer(buf);
+          if (extracted && Object.keys(extracted).length > 0) {
+            console.log(`[Migration] Successfully extracted ${Object.keys(extracted).length} saved connections from ${fileObj.name}`);
+            return extracted;
+          }
+        } catch (e) {}
+      }
+    } catch (e) {}
+  }
+  return null;
 }
 
 const windowStateFile = path.join(getUserDataDir(), "window-state.json");

@@ -28,6 +28,16 @@ class LoginScreen {
 
     this.fillSavedConnections();
 
+    Model.SavedConn.loadAndMigrate().then((updated: boolean) => {
+      if (updated) {
+        this.fillSavedConnections();
+        if (Object.keys(this.savedConnections).length > 0 && !this.connectionName) {
+          this.connectionName = Object.keys(this.savedConnections)[0];
+          this.connectionSelected(this.connectionName);
+        }
+      }
+    });
+
     if (Object.keys(this.savedConnections).length > 0) {
       this.connectionName = Object.keys(this.savedConnections)[0];
       this.connectionSelected(this.connectionName);

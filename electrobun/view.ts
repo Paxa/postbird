@@ -38,6 +38,14 @@ type PostbirdRPC = {
         params: {};
         response: { width: number; height: number; x: number; y: number };
       };
+      loadSavedConnections: {
+        params: {};
+        response: { connections: Record<string, any>; source: string };
+      };
+      saveSavedConnections: {
+        params: { connections: Record<string, any> };
+        response: { success: boolean };
+      };
     };
     messages: {};
   };
@@ -73,6 +81,12 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   getWindowState: async () => {
     return await electroview.rpc!.request.getWindowState({});
+  },
+  loadSavedConnections: async () => {
+    return await electroview.rpc!.request.loadSavedConnections({});
+  },
+  saveSavedConnections: async (params: { connections: Record<string, any> }) => {
+    return await electroview.rpc!.request.saveSavedConnections(params);
   },
 };
 
