@@ -33,6 +33,8 @@ class HelpScreen {
     }).catch(err => {
       this.content.find('.psql_version').text(err);
     });
+
+    this.activatePage('about-postbird');
   }
 
   activatePage (pageName) {

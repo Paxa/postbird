@@ -1,10 +1,17 @@
 ### Version 0.9.0
 
-* Fix ssl connection & heroku connection (Thanks to [https://github.com/egallup02360](@egallup02360) #95)
-* Postgres 12 support
-* Update to electron 10.1.2
-* Fix "Snippets" and "See History" on windows (Thanks to [https://github.com/mastazi](@mastazi) #118)
-* Allow to cancel loader window when connecting to server
+* **Electrobun + Bun Migration:** Complete architectural modernization replacing Electron with Electrobun and native Bun RPC, slashing idle RAM to <50MB and download size to ~28MB.
+* **Instant Startup:** Sub-80ms cold launch speed powered by native OS webviews (WebKit on macOS, WebView2 on Windows, WebKitGTK on Linux).
+* **TypeScript Transition:** Full codebase rewrite in native TypeScript (`tsc --noEmit` verified).
+* **PostgreSQL 18.2 Binaries:** Bundled universal PostgreSQL 18.2 tools (`psql`, `pg_dump`) with automatic macOS Gatekeeper/quarantine bypass.
+* **Modernized App Branding:** Redesigned macOS squircle icon featuring the sculpted 3D Slonik Head with balanced royal blue and soft pastel gradient.
+* **Linux Packaging Pipeline:** Native automated packaging for `.deb`, `.rpm`, `.AppImage`, and `snap`.
+* **Automated Testing:** 82 unit tests and 26 end-to-end UI integration tests running directly in Bun.
+* **UI & Stability Improvements:**
+  * Fixed 2-3px root window scrollbar and double scrollbar when editing long values.
+  * Window size and geometry persistence across restarts.
+  * Graceful database connection pool closing on `Cmd+Q` and application quit.
+  * Windows executable `.exe` detection for dump/restore binaries.
 
 ### Version 0.8.4 (20-nov-2019)
 

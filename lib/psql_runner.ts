@@ -30,7 +30,8 @@ class PsqlRunner {
     if (process.platform == 'linux') {
       this.psqlRelativePath = "psql";
     } else {
-      this.psqlRelativePath = App.vendorPath + "/psql";
+      const ext = process.platform === 'win32' ? '.exe' : '';
+      this.psqlRelativePath = App.vendorPath + "/psql" + ext;
     }
 
     this.env = {};

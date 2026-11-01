@@ -35,7 +35,7 @@ class Procedure extends ModelBase {
 
   static find (name) {
     var sql = `
-      SELECT pg_proc.oid, *, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
+      SELECT pg_proc.oid as poid, pg_proc.oid as proc_oid, proname as name, ns.nspname schema_name, pg_authid.rolname as author,
              pg_language.lanname as language, oidvectortypes(proargtypes) as arg_list,
              ret_type.typname as return_type, pg_get_functiondef(pg_proc.oid) as full_prosrc
       FROM pg_proc
@@ -49,7 +49,9 @@ class Procedure extends ModelBase {
 
     return this.q(sql).then(data => {
       if (data.rows[0]) {
-        var proc = new Model.Procedure('public', data.rows[0]);
+        var row = data.rows[0];
+        row.oid = row.poid;
+        var proc = new Model.Procedure('public', row);
         return Promise.resolve(proc);
       }
     });
@@ -123,9 +125,16 @@ class Procedure extends ModelBase {
   }
 
   getDefinition () {
+    if (this.data && this.data.full_prosrc) {
+      return Promise.resolve({
+        proname: this.name || (this.data && this.data.name),
+        source: this.data.full_prosrc
+      });
+    }
     var sql = "SELECT proname, pg_get_functiondef(oid) AS source FROM pg_proc WHERE oid = '%s'";
+    var targetOid = this.oid || (this.data && (this.data.poid || this.data.proc_oid || this.data.oid));
 
-    return this.q(sql, this.oid).then((result) => {
+    return this.q(sql, targetOid).then((result) => {
       return Promise.resolve(result.rows[0]);
     });
   }

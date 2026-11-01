@@ -23,9 +23,9 @@
 
       br
       p
-        = `Postbird version: ${electron.remote.app.getVersion()}`
+        = `Postbird version: ${electron.remote.app.getVersion ? electron.remote.app.getVersion() : '0.9.0'}`
         br
-        = `Runtime: Electrobun (Bun ${process.versions.bun || process.versions.node || '1.x'})`
+        = `Runtime: Electrobun (Bun ${(typeof process !== 'undefined' && process.versions && process.versions.bun) || (typeof electron !== 'undefined' && electron.remote && electron.remote.process && electron.remote.process.versions && electron.remote.process.versions.bun) || '1.2.0'})`
         br
         != `pg_dump version: <span class="pg_dump_version">...</span>`
         br

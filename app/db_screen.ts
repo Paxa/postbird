@@ -554,7 +554,7 @@ class DbScreen {
   }
 
   proceduresTabActivate () {
-    this.view.proceduresPane.renderTab(() => {
+    return this.view.proceduresPane.renderTab(() => {
       this.currentTab = 'procedures';
     });
   }

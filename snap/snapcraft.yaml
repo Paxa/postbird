@@ -1,6 +1,6 @@
 name: postbird
 base: core24
-version: '0.8.4'
+version: '0.9.0'
 summary: PostgreSQL GUI client
 description: |
   Postbird is a cross-platform PostgreSQL GUI client, written in TypeScript, powered by Electrobun.

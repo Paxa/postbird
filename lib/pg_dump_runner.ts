@@ -43,7 +43,8 @@ class PgDumpRunner {
     if (process.platform == 'linux') {
       this.pgDumpRelativePath = "pg_dump";
     } else {
-      this.pgDumpRelativePath = App.vendorPath + "/pg_dump";
+      const ext = process.platform === 'win32' ? '.exe' : '';
+      this.pgDumpRelativePath = App.vendorPath + "/pg_dump" + ext;
     }
   }
 

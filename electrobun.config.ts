@@ -4,7 +4,7 @@ export default {
 	app: {
 		name: "Postbird",
 		identifier: "org.paxa.postbird",
-		version: "0.8.4",
+		version: "0.9.0",
 	},
 	build: {
 		mainProcess: "bun",

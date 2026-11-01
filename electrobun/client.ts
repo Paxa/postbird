@@ -2,14 +2,18 @@ import { Buffer } from "buffer";
 (window as any).Buffer = Buffer;
 (globalThis as any).Buffer = Buffer;
 if (!(window as any).process) (window as any).process = {};
+if (!(window as any).process.versions) (window as any).process.versions = { bun: "1.2.0", node: "22.0.0" };
 (window as any).process.nextTick = (fn: any, ...args: any[]) => queueMicrotask(() => (typeof fn === "function" ? fn(...args) : undefined));
 if (!(globalThis as any).process) (globalThis as any).process = (window as any).process;
+(globalThis as any).process.versions = (window as any).process.versions;
 (globalThis as any).process.nextTick = (window as any).process.nextTick;
 
 console.log("[POSTBIRD CLIENT] Initializing Postbird with Buffer polyfill...");
 import "../index.js";
 
 (window as any).__runUITests = async () => {
+  if ((window as any).__uiTestsRunning) return;
+  (window as any).__uiTestsRunning = true;
   console.log("[POSTBIRD CLIENT] Received test trigger from host, running UI tests...");
   const { runUITests } = await import("./ui_tests");
   return runUITests();

@@ -413,16 +413,25 @@ console.log("Postbird Electrobun Main Process started!");
 
 if (process.env.POSTBIRD_TEST_UI === "true") {
   console.log("[Main Process] POSTBIRD_TEST_UI is active, waiting for webview to load before triggering tests...");
-  setTimeout(async () => {
+  let triggered = false;
+  const triggerTests = async (attempts = 0) => {
+    if (triggered) return;
     try {
       if (mainWindow && mainWindow.webview) {
+        triggered = true;
         await mainWindow.webview.executeJavascript(
           "window.__runUITests ? window.__runUITests() : null"
         );
+        console.log("[Main Process] __runUITests successfully triggered!");
+        return;
       }
     } catch (err) {
       console.error("[Main Process] Error triggering UI tests:", err);
     }
-  }, 1200);
+    if (attempts < 30) {
+      setTimeout(() => triggerTests(attempts + 1), 500);
+    }
+  };
+  setTimeout(() => triggerTests(), 1500);
 }
 

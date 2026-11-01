@@ -1,39 +1,23 @@
 // @ts-nocheck
+import { TestHarness } from "./tests/test_harness";
+import { runLoginConnectionsSuite } from "./tests/01_login_connections_suite";
+import { runPanesAdministrationSuite } from "./tests/02_panes_administration_suite";
+import { runDialogsAndToolsSuite } from "./tests/03_dialogs_and_tools_suite";
+import { runMultitabShortcutsSuite } from "./tests/04_multitab_shortcuts_suite";
 
 export async function runUITests() {
   console.log("\n=======================================================");
   console.log("       STARTING ELECTROBUN UI INTEGRATION TESTS        ");
   console.log("=======================================================\n");
 
-  const results = [];
+  const harness = new TestHarness();
+  const { assert, waitFor, test } = harness;
+  const results = harness.results;
 
-  function assert(condition, message) {
-    if (!condition) throw new Error(message);
-  }
-
-  async function waitFor(fn, timeout = 7000, interval = 50) {
-    const start = Date.now();
-    while (Date.now() - start < timeout) {
-      try {
-        const res = fn();
-        if (res) return res;
-      } catch (e) {}
-      await new Promise(r => setTimeout(r, interval));
-    }
-    throw new Error(`Timeout waiting for condition after ${timeout}ms`);
-  }
-
-  async function test(name, fn) {
-    try {
-      console.log(`[UI Test] Running: ${name}...`);
-      await fn();
-      console.log(`✓ [UI Test PASS]: ${name}`);
-      results.push({ name, passed: true });
-    } catch (err) {
-      console.error(`✗ [UI Test FAIL]: ${name}:`, err.message || err);
-      results.push({ name, passed: false, error: err.message || String(err) });
-    }
-  }
+  // =================================================================
+  // SUITE 1: LOGIN & CONNECTION WORKFLOWS
+  // =================================================================
+  await runLoginConnectionsSuite(harness);
 
   // =================================================================
   // 1. Initial window and login screen
@@ -77,6 +61,21 @@ export async function runUITests() {
     const options = dbScreen.view.databaseSelect.find("option");
     assert(options.length > 0, "Database select should have options");
   });
+
+  // =================================================================
+  // SUITE 2: ADMINISTRATION PANES (USERS, PROCEDURES & INFO)
+  // =================================================================
+  await runPanesAdministrationSuite(harness, dbScreen);
+
+  // =================================================================
+  // SUITE 3: MODAL DIALOGS, UTILITIES & HELP
+  // =================================================================
+  await runDialogsAndToolsSuite(harness, dbScreen);
+
+  // =================================================================
+  // SUITE 4: MULTI-TAB CONCURRENCY & SHORTCUTS
+  // =================================================================
+  await runMultitabShortcutsSuite(harness, dbScreen);
 
   // =================================================================
   // 4. QUERY SCREEN TESTS
@@ -136,7 +135,7 @@ export async function runUITests() {
     const queryTab = dbScreen.view.queryPane;
     await waitFor(() => queryTab && queryTab.editor, 3000);
 
-    await dbScreen.connection.query("DROP TABLE IF EXISTS test_sql_dml CASCADE;");
+    await dbScreen.connection.query("DROP TABLE IF EXISTS test_sql_dml CASCADE; DROP SEQUENCE IF EXISTS test_sql_dml_id_seq CASCADE;");
     await dbScreen.connection.query("CREATE TABLE test_sql_dml (id serial, val text);");
 
     // INSERT
@@ -250,10 +249,9 @@ export async function runUITests() {
 
     // Close dialog
     $("#alertify button.cancel, #alertify button.alertify-button-cancel").trigger("click");
-    if (window.alertify && window.alertify.close) {
-      window.alertify.close();
+    if (window.alertify && window.alertify.hide) {
+      window.alertify.hide();
     }
-    $("#alertify").removeClass("alertify-show").addClass("alertify-hidden").empty();
   });
 
   await test("content tab: in-place cell editor with long value prevents double scrolling", async () => {
@@ -267,7 +265,7 @@ export async function runUITests() {
       onSave: () => {}
     });
 
-    await waitFor(() => $("#alertify .edit-value").length > 0 && $("#alertify textarea").length > 0, 3000);
+    await harness.waitForDialog("edit-value", 4000);
     // Allow modal entrance transition to settle
     await new Promise(r => setTimeout(r, 400));
 
@@ -316,19 +314,12 @@ export async function runUITests() {
     assert(fkCell.length > 0, "Foreign key value cell should exist");
 
     // Open foreign record popup
-    $("#alertify").css("display", "");
     await dbScreen.view.contentPane.viewForeign("public", "test_fk_parent", "id", "1");
-    await waitFor(() => $("#alertify .related-records-dialog").length > 0 && $("#alertify").text().includes("Root Parent Entity"), 4000);
+    const relDialog = await harness.waitForDialog("related-records-dialog", 4000);
+    assert(relDialog, "Related records popup dialog should open");
+    assert(relDialog.textContent.includes("Root Parent Entity"), "Related records popup should display parent row data");
 
-    const relDialog = $("#alertify");
-    assert(relDialog.length > 0, "Related records popup dialog should open");
-    assert(relDialog.text().includes("Root Parent Entity"), "Related records popup should display parent row data");
-
-    $("#alertify button.cancel, #alertify button.alertify-button-cancel").trigger("click");
-    if (window.alertify && window.alertify.close) {
-      window.alertify.close();
-    }
-    $("#alertify").removeClass("alertify-show").addClass("alertify-hidden").empty();
+    await harness.closeCurrentDialog();
 
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_fk_child CASCADE;");
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_fk_parent CASCADE;");
@@ -526,11 +517,11 @@ export async function runUITests() {
     const alphaItem = dbScreen.view.tablesList.find('li[table-name="test_filter_alpha"]');
     const betaItem = dbScreen.view.tablesList.find('li[table-name="test_filter_beta"]');
 
-    assert(alphaItem.is(":visible"), "test_filter_alpha should remain visible");
-    assert(betaItem.is(":hidden"), "test_filter_beta should be hidden by filter");
+    assert(alphaItem.css("display") !== "none", "test_filter_alpha should remain visible");
+    assert(betaItem.css("display") === "none", "test_filter_beta should be hidden by filter");
 
     dbScreen.view.clearTablesFilter();
-    assert(betaItem.is(":visible"), "test_filter_beta should be visible again after clearing filter");
+    assert(betaItem.css("display") !== "none", "test_filter_beta should be visible again after clearing filter");
 
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_filter_alpha CASCADE;");
     await dbScreen.connection.query("DROP TABLE IF EXISTS test_filter_beta CASCADE;");

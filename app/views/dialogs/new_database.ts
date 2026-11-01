@@ -9,6 +9,7 @@ class NewDatabase extends DialogBase {
   
   constructor (handler) {
     super(handler, {
+      dialogClass: "new-database",
       title: "New database"
     });
 

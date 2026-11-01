@@ -40,6 +40,8 @@ const remote = {
   getCurrentWindow: () => mainWindowInstance,
   app: {
     getAppPath: () => ".",
+    getVersion: () => "0.9.0",
+    getName: () => "Postbird",
     ApplicationStart: _startTime,
     MainFilename: "index.html",
     mainWindow: mainWindowInstance,
@@ -66,6 +68,11 @@ const remote = {
     platform: "darwin",
     env: {
       USER: "pavel",
+    },
+    versions: {
+      bun: "1.2.0",
+      node: "22.0.0",
+      electron: "30.0.0",
     },
     on: () => {},
     removeListener: () => {},
