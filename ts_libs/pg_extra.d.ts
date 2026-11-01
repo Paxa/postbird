@@ -31,6 +31,9 @@ interface ConnectionOptions {
   ssh_pass?: string
   ssh_port?: string
   ssh_key?: string
+  ssl?: boolean | { rejectUnauthorized?: boolean; ca?: string; cert?: string; key?: string }
+  sslmode?: string
+  application_name?: string
 }
 
 interface HistoryRecord {

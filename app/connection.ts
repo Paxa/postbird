@@ -112,31 +112,84 @@ class Connection {
     return 'template1';
   }
 
+  static sanitizePostgresUrl(input: string): string {
+    if (!input || typeof input !== 'string') return input;
+    input = input.trim();
+    const schemeMatch = input.match(/^([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)(.*)$/);
+    if (!schemeMatch) return input;
+    const scheme = schemeMatch[1];
+    const rest = schemeMatch[2];
+
+    const lastAt = rest.lastIndexOf("@");
+    if (lastAt >= 0) {
+      const userInfo = rest.slice(0, lastAt);
+      const hostAndBeyond = rest.slice(lastAt + 1);
+
+      const colonIdx = userInfo.indexOf(":");
+      let user = colonIdx >= 0 ? userInfo.slice(0, colonIdx) : userInfo;
+      let pass = colonIdx >= 0 ? userInfo.slice(colonIdx + 1) : null;
+
+      const safeEncode = (str: string) => {
+        try {
+          str = decodeURIComponent(str);
+        } catch (e) {}
+        return encodeURIComponent(str);
+      };
+
+      const encodedUser = safeEncode(user);
+      const encodedPass = pass !== null ? ":" + safeEncode(pass) : "";
+      return `${scheme}${encodedUser}${encodedPass}@${hostAndBeyond}`;
+    }
+    return input;
+  }
+
   // Use ConnectionString lib to support parsing unix socket in connection string
   static parseConnectionString(postgresUrl : string ) : ConnectionOptions  {
-    var cs = new ConnectionString(postgresUrl, {
+    var sanitizedUrl = Connection.sanitizePostgresUrl(postgresUrl);
+    var cs = new ConnectionString(sanitizedUrl, {
       params: {
         application_name: 'Postbird.app'
       }
     });
-    var res = Object.assign({}, cs.params, {
+    var res: any = Object.assign({}, cs.params, {
       host: cs.hostname,
-      port: cs.port || cs.params.socketPort || 5432,
+      port: cs.port || (cs.params && cs.params.socketPort) || 5432,
       database: cs.path && cs.path[0],
       user: cs.user,
       password: cs.password,
     });
-    if ('ssl' in cs.params) {
-      res.ssl = Boolean(cs.params.ssl)
-    }
 
-    if ('rejectUnauthorized' in cs.params && res.ssl) {
-      res.ssl = {
-        rejectUnauthorized: cs.params.rejectUnauthorized == "false" ? false : Boolean(cs.params.rejectUnauthorized)
+    if (cs.params) {
+      if ('sslmode' in cs.params) {
+        var mode = String(cs.params.sslmode).toLowerCase();
+        if (mode === 'disable') {
+          res.ssl = false;
+        } else if (mode === 'verify-full' || mode === 'verify-ca') {
+          res.ssl = { rejectUnauthorized: true };
+        } else if (mode === 'require' || mode === 'prefer' || mode === 'no-verify') {
+          var rejectUnauth = 'rejectUnauthorized' in cs.params
+            ? (cs.params.rejectUnauthorized !== 'false' && cs.params.rejectUnauthorized !== false)
+            : false;
+          res.ssl = { rejectUnauthorized: rejectUnauth };
+        }
       }
-    }
 
-    delete res.socketPort;
+      if ('ssl' in cs.params) {
+        if (cs.params.ssl === 'false' || cs.params.ssl === '0' || cs.params.ssl === false) {
+          res.ssl = false;
+        } else {
+          res.ssl = Boolean(cs.params.ssl);
+        }
+      }
+
+      if ('rejectUnauthorized' in cs.params && res.ssl) {
+        res.ssl = {
+          rejectUnauthorized: cs.params.rejectUnauthorized == "false" ? false : Boolean(cs.params.rejectUnauthorized)
+        };
+      }
+
+      delete res.socketPort;
+    }
 
     return res;
   }
@@ -176,6 +229,9 @@ class Connection {
     }
     if (options.ssl) {
       cs.params.ssl = true;
+    }
+    if (options.sslmode) {
+      cs.params.sslmode = options.sslmode;
     }
     if ('rejectUnauthorized' in options) {
       cs.params.rejectUnauthorized = options.rejectUnauthorized;

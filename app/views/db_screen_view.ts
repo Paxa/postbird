@@ -22,6 +22,7 @@ class DbScreenView {
   structurePane: Pane.Structure
   proceduresPane: Pane.Procedures
   infoPane: Pane.Info
+  monitoringPane: Pane.Monitoring
   sidebarResizer: any;
   
 
@@ -117,7 +118,7 @@ class DbScreenView {
   }
 
   initializePanes () {
-    ['Users', 'Extensions', 'Query', 'Content', 'Structure', 'Procedures', 'Info'].forEach(paneName => {
+    ['Users', 'Extensions', 'Query', 'Content', 'Structure', 'Procedures', 'Info', 'Monitoring'].forEach(paneName => {
       this[paneName.toLowerCase() + "Pane"] = new Pane[paneName](this);
     });
   }

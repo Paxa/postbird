@@ -11,5 +11,6 @@ module.exports = {
   Table: require('./table'),
   Trigger: require('./trigger'),
   User: require('./user'),
+  Monitor: require('./monitor'),
   base: require('./base')
 };

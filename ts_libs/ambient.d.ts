@@ -17,6 +17,8 @@ declare global {
   var assert: any;
   var pg_proc: any;
   var node: any;
+  var Sparkline: any;
+  var Monitor__: any;
   var global: typeof globalThis & { [key: string]: any };
 }
 

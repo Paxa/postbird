@@ -8,4 +8,5 @@ module.exports = {
   Structure:  require('./structure'),
   Users:      require('./users'),
   Extensions: require('./extensions'),
+  Monitoring: require('./monitoring'),
 }

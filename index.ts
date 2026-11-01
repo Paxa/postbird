@@ -15,6 +15,7 @@ require('./lib/sql_exporter');
 require('./lib/pg_type_names');
 require('./lib/sql_snippets');
 require('./lib/resizable_columns');
+require('./lib/widgets/sparkline');
 
 require('./app');
 (global as any).Pane = require('./app/views/panes/all');

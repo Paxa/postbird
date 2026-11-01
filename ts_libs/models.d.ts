@@ -12,4 +12,5 @@ declare module Model {
   class Trigger extends Trigger__ {}
   class LastQuery extends LastQuery__ {}
   class Schema extends Schema__ {}
+  class Monitor extends Monitor__ {}
 }

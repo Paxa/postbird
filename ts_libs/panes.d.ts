@@ -11,4 +11,5 @@ declare module Pane {
   class Query { constructor(...args: any[]); [key: string]: any; }
   class Structure { constructor(...args: any[]); [key: string]: any; }
   class Users { constructor(...args: any[]); [key: string]: any; }
+  class Monitoring { constructor(...args: any[]); [key: string]: any; }
 }

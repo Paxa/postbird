@@ -52,6 +52,49 @@ describe('Connection', () => {
     });
   });
 
+  it("should parse azure url with special characters in password (#157)", () => {
+    var parsed = Connection.parseConnectionString("postgresql://dbuser:8wAx+xJBp}@recruit-db.azure.com:5432/database");
+    assert.equal(parsed.user, "dbuser");
+    assert.equal(parsed.password, "8wAx+xJBp}");
+    assert.equal(parsed.host, "recruit-db.azure.com");
+    assert.equal(parsed.port, 5432);
+    assert.equal(parsed.database, "database");
+  });
+
+  it("should parse special characters ?, #, @ in password (#113)", () => {
+    var parsed = Connection.parseConnectionString("postgresql://dbuser:pass?word#123@host:5432/db");
+    assert.equal(parsed.user, "dbuser");
+    assert.equal(parsed.password, "pass?word#123");
+    assert.equal(parsed.host, "host");
+    assert.equal(parsed.port, 5432);
+    assert.equal(parsed.database, "db");
+
+    var parsedAt = Connection.parseConnectionString("postgresql://dbuser:p@ssword@host:5432/db");
+    assert.equal(parsedAt.user, "dbuser");
+    assert.equal(parsedAt.password, "p@ssword");
+  });
+
+  it("should configure ssl options for sslmode=require and cloud providers (#150)", () => {
+    var parsedRequire = Connection.parseConnectionString("postgresql://user:pass@host:5432/db?sslmode=require");
+    assert.equal(parsedRequire.sslmode, "require");
+    assert.deepEqual(parsedRequire.ssl, { rejectUnauthorized: false });
+
+    var parsedDisable = Connection.parseConnectionString("postgresql://user:pass@host:5432/db?sslmode=disable");
+    assert.equal(parsedDisable.ssl, false);
+
+    var parsedVerifyFull = Connection.parseConnectionString("postgresql://user:pass@host:5432/db?sslmode=verify-full");
+    assert.deepEqual(parsedVerifyFull.ssl, { rejectUnauthorized: true });
+
+    var parsedRejectExplicit = Connection.parseConnectionString("postgresql://user:pass@host:5432/db?sslmode=require&rejectUnauthorized=true");
+    assert.deepEqual(parsedRejectExplicit.ssl, { rejectUnauthorized: true });
+  });
+
+  it("should trim surrounding whitespace from connection url", () => {
+    var parsed = Connection.parseConnectionString("  postgresql://user:pass@host:5432/db \n");
+    assert.equal(parsed.host, "host");
+    assert.equal(parsed.database, "db");
+  });
+
   it("should generate connection string", async () => {
     var connStr = "postgres://user:pass@host/db";
     var parsed = Connection.parseConnectionString(connStr);

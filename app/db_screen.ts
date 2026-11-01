@@ -110,7 +110,7 @@ class DbScreen {
       this.connection.switchDb(this.database, () => {
         this.fetchTablesAndSchemas();
         if (typeof callback == 'function') callback();
-        if (['extensions', 'procedures'].includes(this.view.currentTab)) {
+        if (['extensions', 'procedures', 'monitoring'].includes(this.view.currentTab)) {
           this.view.showTab(this.view.currentTab);
         }
       });
@@ -557,6 +557,11 @@ class DbScreen {
     return this.view.proceduresPane.renderTab(() => {
       this.currentTab = 'procedures';
     });
+  }
+
+  monitoringTabActivate () {
+    this.currentTab = 'monitoring';
+    return this.view.monitoringPane.renderTab();
   }
 
   async addColumn (data) {
