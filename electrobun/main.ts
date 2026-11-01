@@ -48,6 +48,14 @@ type PostbirdRPC = {
         params: { connections: Record<string, any> };
         response: { success: boolean };
       };
+      createSshTunnel: {
+        params: { options: any };
+        response: { tunnelId: string; host: string; port: number; error?: string };
+      };
+      closeSshTunnel: {
+        params: { tunnelId: string };
+        response: { success: boolean };
+      };
     };
     messages: {};
   }>;
@@ -58,6 +66,7 @@ type PostbirdRPC = {
 };
 
 const pools = new Map<string, Pool>();
+const activeTunnels = new Map<string, any>();
 
 function getPool(config: any): Pool {
   let key: string;
@@ -263,6 +272,76 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
           return { success: false };
         }
       },
+
+      createSshTunnel: async ({ options }) => {
+        const tunnelId = `tunnel_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        try {
+          const modName = ["node", "ssh", "forward"].join("-");
+          const { SSHConnection } = import.meta.require(modName);
+          let sshConfig: any = {};
+          const configPath = path.join(os.homedir(), ".ssh", "config");
+          if (fs.existsSync(configPath)) {
+            try {
+              const sshCfgMod = ["ssh", "config"].join("-");
+              const SshConfig = import.meta.require(sshCfgMod);
+              const parsed = SshConfig.parse(fs.readFileSync(configPath, "utf8"));
+              parsed.forEach((host: any) => {
+                if (host.param === "Host") {
+                  const key = Array.isArray(host.value) ? host.value[0] : host.value;
+                  sshConfig[key] = {};
+                  (host.config || []).forEach((param: any) => {
+                    if (param.param) sshConfig[key][param.param] = param.value;
+                  });
+                }
+              });
+            } catch (e) {}
+          }
+
+          const configFileValues = sshConfig[options.ssh_host] || {};
+          const sshOptions: any = {
+            endHost: configFileValues.HostName || options.ssh_host,
+            username: configFileValues.User || options.ssh_user,
+            password: options.ssh_pass,
+            privateKey: configFileValues.IdentityFile || options.ssh_key,
+            endPort: Number(configFileValues.Port || options.ssh_port || 22),
+            noReadline: true,
+            readyTimeout: 10000,
+          };
+
+          const conn = new SSHConnection(sshOptions);
+          const freePort = await new Promise<number>((res) => {
+            const s = net.createServer().listen(0, "127.0.0.1", () => {
+              const p = (s.address() as any).port;
+              s.close(() => res(p));
+            });
+          });
+
+          await conn.forward({
+            fromPort: freePort,
+            toPort: Number(options.port || 5432),
+            toHost: options.host || "127.0.0.1",
+          });
+
+          activeTunnels.set(tunnelId, conn);
+          console.log(`[SSH Tunnel] Created tunnel ${tunnelId} on local port ${freePort} -> ${options.ssh_host}`);
+          return { tunnelId, host: "127.0.0.1", port: freePort };
+        } catch (err: any) {
+          console.error("[SSH Tunnel Error]", err);
+          return { tunnelId: "", host: "", port: 0, error: err.message || String(err) };
+        }
+      },
+
+      closeSshTunnel: async ({ tunnelId }) => {
+        const conn = activeTunnels.get(tunnelId);
+        if (conn) {
+          try {
+            conn.shutdown();
+          } catch (e) {}
+          activeTunnels.delete(tunnelId);
+          console.log(`[SSH Tunnel] Closed tunnel ${tunnelId}`);
+        }
+        return { success: true };
+      },
     },
     messages: {},
   },
@@ -278,6 +357,14 @@ async function closeAllPools() {
     }
   }
   pools.clear();
+
+  for (const [id, tunnel] of activeTunnels.entries()) {
+    try {
+      console.log(`[Graceful Shutdown] Ending SSH tunnel: ${id}`);
+      tunnel.shutdown();
+    } catch (e) {}
+  }
+  activeTunnels.clear();
 }
 
 function getUserDataDir(): string {

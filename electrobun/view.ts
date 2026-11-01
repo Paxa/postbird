@@ -46,6 +46,14 @@ type PostbirdRPC = {
         params: { connections: Record<string, any> };
         response: { success: boolean };
       };
+      createSshTunnel: {
+        params: { options: any };
+        response: { tunnelId: string; host: string; port: number; error?: string };
+      };
+      closeSshTunnel: {
+        params: { tunnelId: string };
+        response: { success: boolean };
+      };
     };
     messages: {};
   };
@@ -87,6 +95,12 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   saveSavedConnections: async (params: { connections: Record<string, any> }) => {
     return await electroview.rpc!.request.saveSavedConnections(params);
+  },
+  createSshTunnel: async (params: { options: any }) => {
+    return await electroview.rpc!.request.createSshTunnel(params);
+  },
+  closeSshTunnel: async (params: { tunnelId: string }) => {
+    return await electroview.rpc!.request.closeSshTunnel(params);
   },
 };
 

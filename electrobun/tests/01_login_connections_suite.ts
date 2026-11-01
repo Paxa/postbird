@@ -153,4 +153,30 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     assert(cancelCalled, "Cancel callback should be invoked");
     assert(!window.App.loader, "Loader should be dismissed after cancellation");
   });
+
+  // =================================================================
+  // 5. SSH Tunnel Bridge & Persistent Profile Storage
+  // =================================================================
+  await test("login screen: verifies SSH tunnel RPC bridge and error handling", async () => {
+    assert(window.__postbirdRpc && typeof window.__postbirdRpc.createSshTunnel === "function", "createSshTunnel RPC should be exposed");
+    assert(window.__postbirdRpc && typeof window.__postbirdRpc.closeSshTunnel === "function", "closeSshTunnel RPC should be exposed");
+
+    // Attempt connecting through an unreachable SSH port to verify error response
+    const res = await window.__postbirdRpc.createSshTunnel({
+      options: {
+        ssh_host: "127.0.0.1",
+        ssh_port: 54398,
+        ssh_user: "nonexistent",
+        host: "localhost",
+        port: 5432,
+      }
+    });
+
+    assert(res.error, "Unreachable SSH host should return descriptive error");
+    assert(res.tunnelId === "", "Failed tunnel should return empty tunnelId");
+
+    // Test persistent saved connection sync via RPC
+    const profileSync = await window.__postbirdRpc.loadSavedConnections();
+    assert(profileSync && typeof profileSync.connections === "object", "loadSavedConnections should return connections object");
+  });
 }

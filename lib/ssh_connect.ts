@@ -8,9 +8,22 @@ var childProcess = require('child_process');
 class SshConnect_ {
   
     sshConnection?: typeof SSHConnection
+    tunnelId?: string
   
 
   async connectTo(connectOptions) {
+    if (typeof window !== "undefined" && (window as any).__postbirdRpc && (window as any).__postbirdRpc.createSshTunnel) {
+      const res = await (window as any).__postbirdRpc.createSshTunnel({ options: connectOptions });
+      if (res.error) {
+        throw new Error(res.error);
+      }
+      this.tunnelId = res.tunnelId;
+      return {
+        host: res.host,
+        port: res.port
+      };
+    }
+
     var freePort = await this.getFreePort();
 
     var sshConfig = await this.loadConfig();
@@ -69,6 +82,10 @@ class SshConnect_ {
 
   disconnect() {
     console.log("Stopping ssh process...");
+    if (this.tunnelId && typeof window !== "undefined" && (window as any).__postbirdRpc && (window as any).__postbirdRpc.closeSshTunnel) {
+      (window as any).__postbirdRpc.closeSshTunnel({ tunnelId: this.tunnelId });
+      this.tunnelId = undefined;
+    }
     if (this.sshConnection && this.sshConnection.shutdown) {
       this.sshConnection.shutdown();
     }
