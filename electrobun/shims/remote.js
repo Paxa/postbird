@@ -117,7 +117,12 @@ const remote = {
       });
       return new Menu(items);
     }
-    static setApplicationMenu() {}
+    static setApplicationMenu(menu) {
+      Menu._applicationMenu = menu;
+    }
+    static getApplicationMenu() {
+      return Menu._applicationMenu;
+    }
     popup(options = {}) {
       if (typeof document === 'undefined') return;
 

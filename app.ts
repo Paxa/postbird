@@ -371,8 +371,12 @@ global.App = {
   },
 
   
-  on(event, listener) { return this },
-  removeListener(event, listener) { return this },
+  on(event, listener) {
+    return events.EventEmitter.prototype.on.apply(this, arguments);
+  },
+  removeListener(event, listener) {
+    return events.EventEmitter.prototype.removeListener.apply(this, arguments);
+  },
   
 };
 

@@ -4,6 +4,7 @@ import { runLoginConnectionsSuite } from "./tests/01_login_connections_suite";
 import { runPanesAdministrationSuite } from "./tests/02_panes_administration_suite";
 import { runDialogsAndToolsSuite } from "./tests/03_dialogs_and_tools_suite";
 import { runMultitabShortcutsSuite } from "./tests/04_multitab_shortcuts_suite";
+import { runTopMenuSuite } from "./tests/05_top_menu_suite";
 
 export async function runUITests() {
   console.log("\n=======================================================");
@@ -76,6 +77,11 @@ export async function runUITests() {
   // SUITE 4: MULTI-TAB CONCURRENCY & SHORTCUTS
   // =================================================================
   await runMultitabShortcutsSuite(harness, dbScreen);
+
+  // =================================================================
+  // SUITE 5: TOP MENU NAVIGATION, ACTIONS & DYNAMIC STATE
+  // =================================================================
+  await runTopMenuSuite(harness, dbScreen);
 
   // =================================================================
   // 4. QUERY SCREEN TESTS

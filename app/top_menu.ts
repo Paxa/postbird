@@ -338,7 +338,8 @@ function disableItem(topLabel, itemLable) {
 
 
 var checkDbMenu = function () {
-  var db = global.App.currentTab.instance.database;
+  var inst = global.App.currentTab && global.App.currentTab.instance;
+  var db = inst && inst.database;
   var connected = !!db;
 
   if (connected) {
@@ -394,3 +395,5 @@ App.on('table.changed', (schema, table) => {
 App.on('dbtab.changed', (tab) => {
   checkTableMenu();
 });
+
+(global as any).topMenu = menu;
