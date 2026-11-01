@@ -14,6 +14,14 @@ describe('Connection', () => {
     assert(result.rows[0].now instanceof moment);
   });
 
+  it("should support query with % character when no params are provided (PR #151)", async () => {
+    var result = await connection.q("SELECT '100% test' AS val");
+    assert.equal(result.rows[0].val, '100% test');
+
+    var interpolated = await connection.q("SELECT '%s' AS val", "interpolated 100%");
+    assert.equal(interpolated.rows[0].val, 'interpolated 100%');
+  });
+
   it("should cancel query", async () => {
     const promise = connection.query("select pg_sleep(1000)");
     setTimeout(() => connection.stopRunningQuery(), 50);
