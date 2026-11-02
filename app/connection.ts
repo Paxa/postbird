@@ -276,7 +276,8 @@ class Connection {
       this.sshConnection = new SshConnect();
       this.sshConnection.connectTo(options).then(tunnel => {
         console.log('ssh tunnel', tunnel);
-        this.options.tab_name = this.options.host;
+        var isLocal = !this.options.host || this.options.host === 'localhost' || this.options.host === '127.0.0.1';
+        this.options.tab_name = this.options.tab_name || (isLocal ? options.ssh_host : this.options.host);
         const originalHost = this.options.host;
         const originalPort = this.options.port;
         this.options.host = tunnel.host;

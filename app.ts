@@ -322,6 +322,8 @@ global.App = {
       if (!connectionName) {
         if (options.tab_name && options.tab_name != "") {
           connectionName = options.tab_name;
+        } else if (options.ssh_host && (!options.host || options.host == 'localhost' || options.host == '127.0.0.1')) {
+          connectionName = options.ssh_host;
         } else {
           connectionName = options.host;
         }
@@ -332,7 +334,7 @@ global.App = {
     conn.connectToServer(options, (status, error) => {
       this.stopLoading();
       if (status) {
-        if (conn.options.tab_name) {
+        if (!connectionName && conn.options.tab_name) {
           connectionName = conn.options.tab_name;
         }
         var tab = this.addDbScreen(conn, connectionName, options);

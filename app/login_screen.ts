@@ -102,6 +102,9 @@ class LoginScreen {
 
     ObjectKit.forEach(this.savedConnections, (name, params) => {
       var line = $dom(['li', {'data-auto-connect': params.auto_connect, 'data-name': name}, name]);
+      if (name === this.connectionName) {
+        $u(line).addClass('selected');
+      }
 
       $u.contextMenu(line, {
         "Fill form with ...": () => { this.fillForm(params) },

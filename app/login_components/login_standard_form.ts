@@ -72,8 +72,15 @@ class LoginStandardForm {
     this.setButtonShown(false);
 
     var options = this.getFormData();
+    var connectionName = this.loginForm.connectionName;
+    var isLocal = !options.host || options.host === 'localhost' || options.host === '127.0.0.1';
+    if (!connectionName || connectionName === '**new**' || ((connectionName === '127.0.0.1' || connectionName === 'localhost') && options.ssh_host)) {
+      if (options.ssh_host && isLocal) {
+        connectionName = options.ssh_host;
+      }
+    }
 
-    this.loginForm.makeConnection(options, {}, (tab) => {
+    this.loginForm.makeConnection(options, { name: connectionName }, (tab) => {
       button.removeAttr('disabled').val(buttonText);
       this.formChanged();
       if (callback && tab) callback(tab);
@@ -139,17 +146,30 @@ class LoginStandardForm {
   }
 
   saveAndConnect (e  ?: any ) {
-    var name;
+    var formData = this.getFormData();
+    var sshHost = (formData.ssh_host || '').trim();
+    var host = (formData.host || '').trim();
 
-    if (!this.loginForm.connectionName) {
+    var isDefaultLocal = !host || host === 'localhost' || host === '127.0.0.1';
+    var preferredName = (sshHost && isDefaultLocal) ? sshHost : (host || sshHost || 'localhost');
+
+    var currentName = this.loginForm.connectionName;
+    var isGenericName = !currentName || currentName === '**new**' || currentName === '127.0.0.1' || currentName === 'localhost';
+
+    if (isGenericName || (sshHost && (currentName === '127.0.0.1' || currentName === 'localhost'))) {
       var data = Model.SavedConn.savedConnections();
-      var host = this.form.find('[name=host]').val();
-      name = host;
+      var baseName = preferredName;
+      var name = baseName;
       var i = 1;
-      while (data[name]) {
+      while (data[name] && name !== currentName) {
         i += 1;
-        name = host + ' #' + i;
+        name = baseName + ' #' + i;
       }
+
+      if (currentName && currentName !== name && (currentName === '**new**' || ((currentName === '127.0.0.1' || currentName === 'localhost') && sshHost))) {
+        Model.SavedConn.removeConnection(currentName);
+      }
+
       this.loginForm.connectionName = name;
     }
 
