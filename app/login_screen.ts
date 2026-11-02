@@ -171,8 +171,8 @@ class LoginScreen {
     this.connections.find('.selected').removeClass('selected');
     this.connectionName = "**new**";
     this.showStandardPane();
-    this.fillForm({host: "localhost", user: "", password: "", database: "", port: ""});
-    this.standardForm.form.find('[name=host]').focus();
+    this.fillForm({connection_name: "", host: "localhost", user: "", password: "", database: "", port: ""});
+    this.standardForm.form.find('[name=connection_name]').focus();
     this.standardForm.setButtonShown(true);
     this.urlForm.setButtonShown(true);
     var data = {

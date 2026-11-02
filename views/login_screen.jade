@@ -12,6 +12,9 @@
 
       form.middle-window-content.standard(autocapitalize="none", autocorrect="off", spellcheck="false", autocomplete="off")
         p
+          label(for="login_name") Name
+          input#login_name(name='connection_name', type='text', value='', placeholder='e.g. Local Dev, Staging', autocapitalize="none", autocorrect="off", spellcheck="false")
+        p
           label(for="login_host") Host
           input#login_host(name='host', type='text', value='localhost', placeholder='localhost', autocapitalize="none", autocorrect="off", spellcheck="false")
         p
@@ -70,6 +73,9 @@
             input.native-look(type="submit", value="Connect", autofocus=true)
 
       form.middle-window-content.postgres-url(autocapitalize="none", autocorrect="off", spellcheck="false", autocomplete="off")
+        p
+          label(for="login_url_name") Name
+          input#login_url_name(name='connection_name', type='text', value='', placeholder='e.g. Supabase Prod, Neon Dev', autocapitalize="none", autocorrect="off", spellcheck="false")
         textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}` autocapitalize="none" autocorrect="off" spellcheck="false")
           = `postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}`
 

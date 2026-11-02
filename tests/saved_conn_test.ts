@@ -78,4 +78,14 @@ describe('SavedConn', () => {
     assert.equal(syncedData["migrated_db"].host, "127.0.0.1");
   });
 
+  it("should support custom connection_name in options (#78)", () => {
+    var conn = { connection_name: "Staging Replica", host: "staging.db", port: 5432, user: "read" };
+    Model.SavedConn.saveConnection("Staging Replica", conn);
+
+    var saved = Model.SavedConn.savedConnection("Staging Replica");
+    assert.equal(saved.connection_name, "Staging Replica");
+    assert.equal(saved.host, "staging.db");
+    assert(Model.SavedConn.isEqualWithSaved("Staging Replica", conn));
+  });
+
 });

@@ -38,7 +38,8 @@ class LoginPostgresUrlForm {
   }
 
   fillForm (params) {
-    params = Object.assign({}, {url: "", auto_connect: false}, params);
+    var defaultName = (params && params.connection_name) ? params.connection_name : (this.loginForm.connectionName && this.loginForm.connectionName !== '**new**' ? this.loginForm.connectionName : '');
+    params = Object.assign({}, {connection_name: defaultName, url: "", auto_connect: false}, params);
     ObjectKit.forEach(params, (k, v) => {
       if (k == 'url') k = 'connect_url';
       var field = this.form.find('input[name=' + k + '], textarea[name=' + k + ']');
@@ -54,6 +55,7 @@ class LoginPostgresUrlForm {
   getFormData (): ConnectionOptions  {
     return {
       type: 'url',
+      connection_name: (this.form.find('[name=connection_name]').val() || '').toString(),
       url: this.form.find('[name=connect_url]').val().toString(),
       auto_connect: this.form.find('[name=auto_connect]').prop('checked')
     };
@@ -73,12 +75,12 @@ class LoginPostgresUrlForm {
     var options: any = this.getFormData();
 
     try {
-      options.name = URL.parse(options.url).host;
+      options.name = (options.connection_name || '').trim() || URL.parse(options.url).host;
     } catch (e) {
       console.error('can not parse connection url', e);
     }
 
-    this.loginForm.makeConnection(options, {name: options.name}, (tab) => {
+    this.loginForm.makeConnection(options, {name: options.name || this.loginForm.connectionName}, (tab) => {
       button.removeAttr('disabled').val(buttonText);
       this.formChanged();
       if (callback && tab) callback(tab);
@@ -117,7 +119,15 @@ class LoginPostgresUrlForm {
 
   async saveAndConnect (e  ?: any ) {
     var data = this.getFormData();
-    if (!this.loginForm.connectionName) {
+    var customName = (data.connection_name || '').trim();
+    var currentName = this.loginForm.connectionName;
+
+    if (customName) {
+      if (currentName === '**new**') {
+        Model.SavedConn.removeConnection('**new**');
+      }
+      this.loginForm.connectionName = customName;
+    } else if (!this.loginForm.connectionName || this.loginForm.connectionName === '**new**') {
       var existing = Model.SavedConn.savedConnections();
       var name = null;
       var suggested = null;
@@ -136,6 +146,9 @@ class LoginPostgresUrlForm {
           await $u.alert(`Connection with name "${name}" already exist`);
           name = null;
         }
+      }
+      if (currentName === '**new**') {
+        Model.SavedConn.removeConnection('**new**');
       }
       this.loginForm.connectionName = name;
     }

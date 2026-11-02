@@ -15,6 +15,7 @@ declare module pg {
 }
 
 interface ConnectionOptions {
+  connection_name?: string
   host?: string
   port?: string
   database?: string
