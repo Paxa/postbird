@@ -280,6 +280,25 @@
     margin: 12px 0 6px 0;
   }
 
+  .section-table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: #6e6e73;
+
+    .toolbar-stats-text {
+      font-weight: 500;
+    }
+  }
+
+  .table-name-badge {
+    color: #1d1d1f;
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    font-size: 11px;
+  }
+
   // Gauge card for Storage / Indexes
   .storage-buffer-gauge-card {
     background: #fafafc;
@@ -723,6 +742,14 @@ body.dark-mode {
     .mac-callout-box {
       background: #2a2a2c;
       border-color: #48484a;
+    }
+
+    .section-table-toolbar {
+      color: #98989d;
+    }
+
+    .table-name-badge {
+      color: #f5f5f7;
     }
   }
 }

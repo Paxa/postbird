@@ -157,7 +157,26 @@ class Monitoring extends PaneBase {
       if (pid) this.terminateQuery(pid);
     });
 
-    // 6. Install pg_stat_statements button
+    // 6. Slow query actions (View SQL modal & refresh)
+    this.content.on('click', '.btn-view-slow-query, .slow-queries-table .query-cell', (e: any) => {
+      e.preventDefault();
+      const tr = $u(e.currentTarget).closest('tr');
+      const idx = parseInt($u(e.currentTarget).attr('data-index') || tr.attr('data-index'), 10);
+      const queryObj = this.slowQueryData?.queries?.[idx];
+      if (queryObj && queryObj.query) {
+        const targetTable = queryObj.target_table || (global as any).ViewHelpers.extractTargetTable(queryObj.query);
+        const avgStr = queryObj.avg_time_pretty || (global as any).ViewHelpers.formatDurationMs(queryObj.avg_time_ms);
+        const title = `Slow Query (${targetTable !== '-' ? targetTable + ' • ' : ''}Avg: ${avgStr})`;
+        new (Dialog as any).ShowSql(title, queryObj.query);
+      }
+    });
+
+    this.content.on('click', '.btn-refresh-slow-queries', (e: any) => {
+      e.preventDefault();
+      this.fetchSlowQueries();
+    });
+
+    // 7. Install pg_stat_statements button
     this.content.on('click', '.btn-install-statements', async (e: any) => {
       e.preventDefault();
       try {
@@ -611,17 +630,34 @@ class Monitoring extends PaneBase {
 
         const tbody = sec.find('.slow-queries-table tbody');
         tbody.empty();
-        data.queries.forEach((q: any) => {
-          tbody.append(`
-            <tr>
-              <td><strong>${q.avg_time_ms} ms</strong></td>
-              <td>${q.max_time_ms} ms</td>
-              <td>${Number(q.calls).toLocaleString()}</td>
-              <td>${Number(q.rows).toLocaleString()}</td>
-              <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query || '')}"><code>${(global as any).ViewHelpers.escapeHTML((q.query || '').substring(0, 160))}</code></td>
-            </tr>
-          `);
-        });
+        if (data.queries.length === 0) {
+          tbody.html('<tr><td colspan="7" class="text-muted text-center" style="padding: 16px;">No query statistics recorded yet in pg_stat_statements.</td></tr>');
+        } else {
+          data.queries.forEach((q: any, idx: number) => {
+            const rawAvg = `${Number(q.avg_time_ms).toLocaleString()} ms`;
+            const rawMax = q.max_time_ms ? `${Number(q.max_time_ms).toLocaleString()} ms` : '-';
+            const prettyAvg = q.avg_time_pretty || (global as any).ViewHelpers.formatDurationMs(q.avg_time_ms);
+            const prettyMax = q.max_time_pretty || (global as any).ViewHelpers.formatDurationMs(q.max_time_ms);
+            const targetTable = q.target_table || (global as any).ViewHelpers.extractTargetTable(q.query || '');
+            const queryText = q.query || '';
+            const escapedQuery = (global as any).ViewHelpers.escapeHTML(queryText);
+            const previewText = (global as any).ViewHelpers.escapeHTML(queryText.substring(0, 140));
+
+            tbody.append(`
+              <tr data-index="${idx}">
+                <td title="Exact: ${rawAvg}"><strong>${prettyAvg}</strong></td>
+                <td title="Exact: ${rawMax}">${prettyMax}</td>
+                <td>${Number(q.calls).toLocaleString()}</td>
+                <td>${Number(q.rows).toLocaleString()}</td>
+                <td><strong class="table-name-badge">${(global as any).ViewHelpers.escapeHTML(targetTable)}</strong></td>
+                <td class="query-cell clickable-query-cell" data-index="${idx}" title="Click to view full SQL&#10;${escapedQuery}"><code>${previewText}</code></td>
+                <td class="actions-cell">
+                  <button class="btn-native-small btn-view-slow-query" data-index="${idx}" title="View Full SQL">View SQL</button>
+                </td>
+              </tr>
+            `);
+          });
+        }
       }
     } catch (e: any) {
       $u.alertError('Failed to fetch slow queries', { detail: e.toString() });

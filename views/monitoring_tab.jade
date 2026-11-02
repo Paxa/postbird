@@ -247,16 +247,25 @@ mixin refreshIcon(size)
             button.btn-native.btn-install-statements Enable Extension Now (CREATE EXTENSION)
 
         .slow-queries-installed
+          .section-table-toolbar
+            .toolbar-stats-text Showing top queries ranked by average execution time
+            button.btn-native.btn-native-small.btn-refresh-slow-queries(title="Refresh Slow Queries")
+              +refreshIcon(10)
+              span Refresh Slow Queries
           .rescol-wrapper.with-borders
             .rescol-content-wrapper
               table.slow-queries-table
                 thead
                   tr
-                    th(style="width: 95px;") Avg Time
-                    th(style="width: 95px;") Max Time
+                    th(style="width: 90px;") Avg Time
+                    th(style="width: 90px;") Max Time
                     th(style="width: 80px;") Calls
-                    th(style="width: 90px;") Rows
+                    th(style="width: 85px;") Rows
+                    th(style="width: 130px;") Target Table
                     th Query
+                    th(style="width: 90px;") Actions
                 tbody
                   tr
-                    td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load slow query insights.
+                    td(colspan="7", class="text-muted text-center", style="padding: 16px;")
+                      span No slow query data loaded yet. &nbsp;
+                      button.btn-native.btn-native-small.btn-refresh-slow-queries Load Slow Queries

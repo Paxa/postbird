@@ -35,6 +35,8 @@ declare global {
     relType: (type: string) => string
     tableGrantsDesc: (permissions: string) => string
     formatBytes: (size: number) => string
+    formatDurationMs: (rawMs: number | string) => string
+    extractTargetTable: (query: string) => string
   }
 }
 
@@ -208,6 +210,71 @@ var helpers = (global as any).ViewHelpers = {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  },
+
+  formatDurationMs: function (rawMs: number | string) {
+    if (rawMs === null || rawMs === undefined || rawMs === '') return '-';
+    const ms = Number(rawMs);
+    if (isNaN(ms)) return '-';
+    if (ms < 0) return '0 ms';
+
+    if (ms < 1000) {
+      return `${ms < 10 ? (Math.round(ms * 10) / 10) : Math.round(ms)} ms`;
+    }
+
+    const seconds = ms / 1000;
+    if (seconds < 60) {
+      return `${seconds.toFixed(1)} s`;
+    }
+
+    const minutes = seconds / 60;
+    if (minutes < 60) {
+      return `${minutes.toFixed(1)} min`;
+    }
+
+    const hours = minutes / 60;
+    if (hours < 24) {
+      return `${hours.toFixed(1)} hrs`;
+    }
+
+    const days = hours / 24;
+    return `${days.toFixed(1)} days`;
+  },
+
+  extractTargetTable: function (query: string): string {
+    if (!query) return '-';
+    const cleaned = query
+      .replace(/--.*$/gm, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .trim();
+
+    // 1. UPDATE [ONLY] table
+    let match = cleaned.match(/\bUPDATE\s+(?:ONLY\s+)?([a-zA-Z0-9_."]+)/i);
+    if (match) return match[1].replace(/["']/g, '').trim();
+
+    // 2. INSERT INTO table
+    match = cleaned.match(/\bINSERT\s+INTO\s+([a-zA-Z0-9_."]+)/i);
+    if (match) return match[1].replace(/["']/g, '').trim();
+
+    // 3. DELETE FROM [ONLY] table
+    match = cleaned.match(/\bDELETE\s+FROM\s+(?:ONLY\s+)?([a-zA-Z0-9_."]+)/i);
+    if (match) return match[1].replace(/["']/g, '').trim();
+
+    // 4. FROM [ONLY] table
+    match = cleaned.match(/\bFROM\s+(?:ONLY\s+)?([a-zA-Z0-9_."]+)(?!\s*\()/i);
+    if (match) {
+      const candidate = match[1].replace(/["']/g, '').trim();
+      const lower = candidate.toLowerCase();
+      if (!['select', 'lateral', 'jsonb_to_record', 'unnest', 'generate_series'].includes(lower)) {
+        return candidate;
+      }
+    }
+
+    // 5. TRUNCATE / LOCK TABLE
+    match = cleaned.match(/\b(?:TRUNCATE|LOCK\s+TABLE|TABLE)\s+([a-zA-Z0-9_."]+)/i);
+    if (match) return match[1].replace(/["']/g, '').trim();
+
+    return '-';
   }
 };
 

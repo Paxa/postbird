@@ -165,4 +165,26 @@ describe("Model.Monitor", () => {
     assert.equal(ViewHelpers.escapeHTML(null), "");
     assert.equal(ViewHelpers.escapeHTML(undefined), "");
   });
+
+  it("formatDurationMs properly formats small and large durations into readable units", () => {
+    const ViewHelpers = (global as any).ViewHelpers;
+    assert.equal(ViewHelpers.formatDurationMs(0.85), "0.9 ms");
+    assert.equal(ViewHelpers.formatDurationMs(12.4), "12 ms");
+    assert.equal(ViewHelpers.formatDurationMs(850), "850 ms");
+    assert.equal(ViewHelpers.formatDurationMs(4500), "4.5 s");
+    assert.equal(ViewHelpers.formatDurationMs(1315980.49), "21.9 min");
+    assert.equal(ViewHelpers.formatDurationMs(7200000), "2.0 hrs");
+    assert.equal(ViewHelpers.formatDurationMs(null), "-");
+  });
+
+  it("extractTargetTable extracts target table names from various SQL commands", () => {
+    const ViewHelpers = (global as any).ViewHelpers;
+    assert.equal(ViewHelpers.extractTargetTable("SELECT * FROM users WHERE id = $1"), "users");
+    assert.equal(ViewHelpers.extractTargetTable("SELECT * FROM \"public\".\"orders\" WHERE id = $1"), "public.orders");
+    assert.equal(ViewHelpers.extractTargetTable("UPDATE accounts SET balance = $1 WHERE id = $2"), "accounts");
+    assert.equal(ViewHelpers.extractTargetTable("INSERT INTO payments (amount) VALUES ($1)"), "payments");
+    assert.equal(ViewHelpers.extractTargetTable("DELETE FROM ONLY sessions WHERE id = $1"), "sessions");
+    assert.equal(ViewHelpers.extractTargetTable("SELECT 1"), "-");
+    assert.equal(ViewHelpers.extractTargetTable("SELECT * FROM (SELECT 1) sub"), "-");
+  });
 });

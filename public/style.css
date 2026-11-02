@@ -2119,6 +2119,22 @@ span.proc-arg-list {
   color: #333;
   margin: 12px 0 6px 0;
 }
+.monitoring-view .section-table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #6e6e73;
+}
+.monitoring-view .section-table-toolbar .toolbar-stats-text {
+  font-weight: 500;
+}
+.monitoring-view .table-name-badge {
+  color: #1d1d1f;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-size: 11px;
+}
 .monitoring-view .storage-buffer-gauge-card {
   background: #fafafc;
   border: 1px solid #e5e5ea;
@@ -2522,6 +2538,12 @@ body.dark-mode .monitoring-view .btn-native-small {
 body.dark-mode .monitoring-view .mac-callout-box {
   background: #2a2a2c;
   border-color: #48484a;
+}
+body.dark-mode .monitoring-view .section-table-toolbar {
+  color: #98989d;
+}
+body.dark-mode .monitoring-view .table-name-badge {
+  color: #f5f5f7;
 }
 
 body.new-window {
