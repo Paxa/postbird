@@ -2171,13 +2171,17 @@ span.proc-arg-list {
   background: rgba(52, 199, 89, 0.15);
   color: #1b7a33;
 }
+.monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-optimal {
+  background: rgba(0, 122, 255, 0.15);
+  color: #0062cc;
+}
 .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-warning {
   background: rgba(255, 149, 0, 0.15);
   color: #b25900;
 }
-.monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-danger {
-  background: rgba(255, 59, 48, 0.15);
-  color: #d70015;
+.monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-extended, .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-danger {
+  background: rgba(88, 86, 214, 0.15);
+  color: #4b48b8;
 }
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper {
   margin-bottom: 12px;
@@ -2204,11 +2208,14 @@ span.proc-arg-list {
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal {
   background: #34c759;
 }
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-optimal {
+  background: #007aff;
+}
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-warning {
   background: #ff9500;
 }
-.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger {
-  background: #ff3b30;
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-extended, .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger {
+  background: #5856d6;
 }
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text {
   position: relative;
@@ -2522,6 +2529,54 @@ body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .g
 body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .gauge-header-info .gauge-sub-title,
 body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .gauge-header-info .gauge-sub-title {
   color: #98989d;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .storage-fit-badge.badge-fit-normal,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .storage-fit-badge.badge-fit-normal,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-normal {
+  background: rgba(52, 199, 89, 0.25);
+  color: #62d67e;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .storage-fit-badge.badge-fit-optimal,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .storage-fit-badge.badge-fit-optimal,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-optimal {
+  background: rgba(10, 132, 255, 0.25);
+  color: #5ac8fa;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .storage-fit-badge.badge-fit-warning,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .storage-fit-badge.badge-fit-warning,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-warning {
+  background: rgba(255, 159, 10, 0.25);
+  color: #ffb340;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .storage-fit-badge.badge-fit-extended, body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-header .storage-fit-badge.badge-fit-danger,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .storage-fit-badge.badge-fit-extended,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-header .storage-fit-badge.badge-fit-danger,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-extended,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storage-fit-badge.badge-fit-danger {
+  background: rgba(94, 92, 230, 0.25);
+  color: #9d9bf6;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal {
+  background: #30d158;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-optimal,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-optimal,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-optimal {
+  background: #0a84ff;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-warning,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-warning,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-warning {
+  background: #ff9f0a;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-extended, body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-extended,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-extended,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger {
+  background: #5e5ce6;
 }
 body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text,
 body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text,

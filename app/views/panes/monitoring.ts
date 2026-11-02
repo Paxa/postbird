@@ -470,40 +470,49 @@ class Monitoring extends PaneBase {
       this.storageData = data;
 
       // Update Section Summary
-      this.sectionSummaries.storage = `DB: ${data.dbSizePretty} • Indexes: ${data.totalIndexesPretty} (${data.bufferFitPercent}% of shared_buffers)`;
+      const activeIdxText = data.activeIndexesPretty || data.totalIndexesPretty;
+      this.sectionSummaries.storage = `DB: ${data.dbSizePretty} • Active Indexes: ${activeIdxText} (${data.bufferFitPercent}% of shared_buffers)`;
       this.updateSectionSummary('storage', this.sectionSummaries.storage);
 
       const sec = this.content.find('.monitor-section[data-section="storage"]');
       if (!sec.length) return;
 
-      // Update Gauge Bar & Badges
+      // Update Gauge Bar & Badges (based on active indexes, non-alarmist coloring)
       const pct = Math.round(data.bufferFitPercent || 0);
       const fillPct = Math.min(100, Math.max(0, pct));
       const fill = sec.find('.storage-gauge-fill');
       const badge = sec.find('.storage-fit-badge');
 
       fill.css('width', `${fillPct}%`);
-      sec.find('.storage-gauge-text').text(
-        `${data.totalIndexesPretty} indexes / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`
-      );
+      const gaugeLabel = data.unusedIndexesBytes > 0
+        ? `${data.activeIndexesPretty} active (${data.totalIndexesPretty} total) / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`
+        : `${activeIdxText} active indexes / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`;
+      sec.find('.storage-gauge-text').text(gaugeLabel);
 
-      fill.removeClass('fill-normal fill-warning fill-danger');
-      badge.removeClass('badge-fit-normal badge-fit-warning badge-fit-danger');
+      fill.removeClass('fill-normal fill-optimal fill-warning fill-extended fill-danger');
+      badge.removeClass('badge-fit-normal badge-fit-optimal badge-fit-warning badge-fit-extended badge-fit-danger');
 
       if (pct > 100) {
-        fill.addClass('fill-danger');
-        badge.addClass('badge-fit-danger').text(`${pct}% • Exceeds shared_buffers`);
-      } else if (pct >= 80) {
-        fill.addClass('fill-warning');
-        badge.addClass('badge-fit-warning').text(`${pct}% • Near Buffer Limit`);
+        fill.addClass('fill-extended');
+        badge.addClass('badge-fit-extended').text(`${pct}% • Buffered via OS Page Cache`);
+      } else if (pct >= 75) {
+        fill.addClass('fill-optimal');
+        badge.addClass('badge-fit-optimal').text(`${pct}% • Balanced Buffer Usage`);
       } else {
         fill.addClass('fill-normal');
-        badge.addClass('badge-fit-normal').text(`${pct}% • Fits in Memory`);
+        badge.addClass('badge-fit-normal').text(`${pct}% • Fits in shared_buffers`);
       }
 
       // Update Metric Chips
       sec.find('.storage-db-size-val').text(data.dbSizePretty || '-');
+      sec.find('.storage-active-index-size-val').text(activeIdxText || '-');
       sec.find('.storage-index-size-val').text(data.totalIndexesPretty || '-');
+      if (data.unusedIndexesBytes > 0) {
+        sec.find('.chip-unused-indexes').show();
+        sec.find('.storage-unused-index-size-val').text(data.unusedIndexesPretty);
+      } else {
+        sec.find('.chip-unused-indexes').hide();
+      }
       sec.find('.storage-buffers-val').text(data.sharedBuffersPretty || '-');
       sec.find('.storage-cache-val').text(data.effectiveCachePretty || '-');
       sec.find('.storage-workmem-val').text(data.workMemPretty || '-');

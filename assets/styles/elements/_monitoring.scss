@@ -339,13 +339,18 @@
           background: rgba(52, 199, 89, 0.15);
           color: #1b7a33;
         }
+        &.badge-fit-optimal {
+          background: rgba(0, 122, 255, 0.15);
+          color: #0062cc;
+        }
         &.badge-fit-warning {
           background: rgba(255, 149, 0, 0.15);
           color: #b25900;
         }
+        &.badge-fit-extended,
         &.badge-fit-danger {
-          background: rgba(255, 59, 48, 0.15);
-          color: #d70015;
+          background: rgba(88, 86, 214, 0.15);
+          color: #4b48b8;
         }
       }
     }
@@ -375,11 +380,15 @@
           &.fill-normal {
             background: #34c759;
           }
+          &.fill-optimal {
+            background: #007aff;
+          }
           &.fill-warning {
             background: #ff9500;
           }
+          &.fill-extended,
           &.fill-danger {
-            background: #ff3b30;
+            background: #5856d6;
           }
         }
 
@@ -729,12 +738,48 @@ body.dark-mode {
             color: #98989d;
           }
         }
+        .storage-fit-badge {
+          &.badge-fit-normal {
+            background: rgba(52, 199, 89, 0.25);
+            color: #62d67e;
+          }
+          &.badge-fit-optimal {
+            background: rgba(10, 132, 255, 0.25);
+            color: #5ac8fa;
+          }
+          &.badge-fit-warning {
+            background: rgba(255, 159, 10, 0.25);
+            color: #ffb340;
+          }
+          &.badge-fit-extended,
+          &.badge-fit-danger {
+            background: rgba(94, 92, 230, 0.25);
+            color: #9d9bf6;
+          }
+        }
       }
 
       .gauge-bar-wrapper {
-        .gauge-bar-track .gauge-bar-text {
-          color: #ffffff;
-          text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+        .gauge-bar-track {
+          .gauge-bar-fill {
+            &.fill-normal {
+              background: #30d158;
+            }
+            &.fill-optimal {
+              background: #0a84ff;
+            }
+            &.fill-warning {
+              background: #ff9f0a;
+            }
+            &.fill-extended,
+            &.fill-danger {
+              background: #5e5ce6;
+            }
+          }
+          .gauge-bar-text {
+            color: #ffffff;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+          }
         }
         .gauge-bar-scale {
           color: #98989d;

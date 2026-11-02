@@ -62,6 +62,8 @@ describe("Model.Monitor", () => {
     assert.ok(stats.dbSizeBytes > 0);
     assert.equal(typeof stats.dbSizePretty, "string");
     assert.equal(typeof stats.totalIndexesBytes, "number");
+    assert.equal(typeof stats.activeIndexesBytes, "number");
+    assert.equal(typeof stats.unusedIndexesBytes, "number");
     assert.equal(typeof stats.sharedBuffersBytes, "number");
     assert.ok(typeof stats.bufferFitPercent, "number");
     assert.ok(Array.isArray(stats.topTables));

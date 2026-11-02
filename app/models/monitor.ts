@@ -213,13 +213,19 @@ class Monitor extends ModelBase {
       WHERE name IN ('shared_buffers', 'effective_cache_size', 'work_mem');
     `;
 
-    // 3. Sum of all user indexes
+    // 3. Sum of all user indexes (separated into active vs unused)
     const indexSumSql = `
       SELECT 
         COALESCE(SUM(pg_relation_size(c.oid)), 0)::bigint AS total_indexes_bytes,
-        pg_size_pretty(COALESCE(SUM(pg_relation_size(c.oid)), 0)::bigint) AS total_indexes_pretty
+        pg_size_pretty(COALESCE(SUM(pg_relation_size(c.oid)), 0)::bigint) AS total_indexes_pretty,
+        COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) > 0 OR i.indisunique OR i.indisprimary THEN pg_relation_size(c.oid) ELSE 0 END), 0)::bigint AS active_indexes_bytes,
+        pg_size_pretty(COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) > 0 OR i.indisunique OR i.indisprimary THEN pg_relation_size(c.oid) ELSE 0 END), 0)::bigint) AS active_indexes_pretty,
+        COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT COALESCE(i.indisunique, false) AND NOT COALESCE(i.indisprimary, false) THEN pg_relation_size(c.oid) ELSE 0 END), 0)::bigint AS unused_indexes_bytes,
+        pg_size_pretty(COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT COALESCE(i.indisunique, false) AND NOT COALESCE(i.indisprimary, false) THEN pg_relation_size(c.oid) ELSE 0 END), 0)::bigint) AS unused_indexes_pretty
       FROM pg_class c
       JOIN pg_namespace n ON n.oid = c.relnamespace
+      LEFT JOIN pg_index i ON i.indexrelid = c.oid
+      LEFT JOIN pg_stat_user_indexes s ON s.indexrelid = c.oid
       WHERE c.relkind = 'i' AND n.nspname NOT IN ('pg_catalog', 'information_schema');
     `;
 
@@ -256,19 +262,31 @@ class Monitor extends ModelBase {
     const workMem = settingsMap['work_mem'] || 0;
 
     const totalIndexesBytes = Number(indexSumRes.rows[0].total_indexes_bytes) || 0;
-    const bufferPct = sharedBuffers > 0 ? Math.round((totalIndexesBytes / sharedBuffers) * 100) : 0;
+    const activeIndexesBytes = Number(indexSumRes.rows[0].active_indexes_bytes) || 0;
+    const unusedIndexesBytes = Number(indexSumRes.rows[0].unused_indexes_bytes) || 0;
+
+    // Buffer fit calculation:
+    // Focus primarily on active indexes (scanned or enforcing primary/unique constraints),
+    // because unused indexes (idx_scan = 0) do not reside in shared_buffers.
+    const bufferPct = sharedBuffers > 0 ? Math.round((activeIndexesBytes / sharedBuffers) * 100) : 0;
+    const totalBufferPct = sharedBuffers > 0 ? Math.round((totalIndexesBytes / sharedBuffers) * 100) : 0;
 
     return {
       dbSizeBytes: Number(dbSizeRes.rows[0].db_size_bytes) || 0,
       dbSizePretty: dbSizeRes.rows[0].db_size_pretty || '0 Bytes',
       totalIndexesBytes: totalIndexesBytes,
       totalIndexesPretty: indexSumRes.rows[0].total_indexes_pretty || '0 Bytes',
+      activeIndexesBytes: activeIndexesBytes,
+      activeIndexesPretty: indexSumRes.rows[0].active_indexes_pretty || '0 Bytes',
+      unusedIndexesBytes: unusedIndexesBytes,
+      unusedIndexesPretty: indexSumRes.rows[0].unused_indexes_pretty || '0 Bytes',
       sharedBuffersBytes: sharedBuffers,
       sharedBuffersPretty: (global as any).ViewHelpers.formatBytes(sharedBuffers),
       effectiveCacheBytes: effectiveCache,
       effectiveCachePretty: (global as any).ViewHelpers.formatBytes(effectiveCache),
       workMemPretty: (global as any).ViewHelpers.formatBytes(workMem),
       bufferFitPercent: bufferPct,
+      totalBufferFitPercent: totalBufferPct,
       topTables: topTablesRes.rows || []
     };
   }

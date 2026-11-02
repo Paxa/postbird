@@ -116,7 +116,7 @@ mixin refreshIcon(size)
           .gauge-header
             .gauge-header-info
               .gauge-main-title Index Memory Cache Fit
-              .gauge-sub-title Total index footprint compared against PostgreSQL shared_buffers memory cache
+              .gauge-sub-title Active index footprint vs shared_buffers (L1) and OS page cache (L2)
             .gauge-header-badge
               span.storage-fit-badge.badge-fit-normal -
 
@@ -127,20 +127,27 @@ mixin refreshIcon(size)
             .gauge-bar-scale
               span 0%
               span 50%
-              span 100% (shared_buffers full)
+              span 100% (shared_buffers)
+              span &gt;100% (OS Page Cache)
 
           .storage-metrics-chips
             .storage-chip
               span.chip-label Total DB Size
               strong.chip-val.storage-db-size-val -
             .storage-chip
+              span.chip-label Active Indexes
+              strong.chip-val.storage-active-index-size-val -
+            .storage-chip.chip-unused-indexes(style="display: none;")
+              span.chip-label Unused Indexes
+              strong.chip-val.storage-unused-index-size-val -
+            .storage-chip
               span.chip-label Total Indexes
               strong.chip-val.storage-index-size-val -
             .storage-chip
-              span.chip-label shared_buffers
+              span.chip-label shared_buffers (L1)
               strong.chip-val.storage-buffers-val -
             .storage-chip
-              span.chip-label effective_cache_size
+              span.chip-label effective_cache_size (L2)
               strong.chip-val.storage-cache-val -
             .storage-chip
               span.chip-label work_mem
