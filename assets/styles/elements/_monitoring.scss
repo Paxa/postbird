@@ -15,12 +15,9 @@
     border-bottom: 1px solid #dedede;
 
     .toolbar-left {
-      .monitor-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #1d1d1f;
-        margin: 0 0 2px 0;
-      }
+      display: flex;
+      align-items: center;
+
       .monitor-subtitle {
         font-size: 11px;
         color: #777;
@@ -70,7 +67,7 @@
   .monitor-section {
     background: #ffffff;
     border: 1px solid #d4d4d4;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 10px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     overflow: hidden;
@@ -709,9 +706,6 @@ body.dark-mode {
 
     .monitor-toolbar {
       border-color: #38383a;
-      .toolbar-left .monitor-title {
-        color: #f2f2f7;
-      }
       .toolbar-left .monitor-subtitle {
         color: #8e8e93;
       }
