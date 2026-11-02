@@ -14,7 +14,7 @@ $mac-block-tabs-radius: 4px;
   .middle-window {
     @include native-panel-element;
     font-size: 13px;
-    width: 330px;
+    width: 350px;
     margin: 40px auto 0;
     margin-top: calc(50vh - 198px);
     padding: 16px 20px;
@@ -73,18 +73,39 @@ $mac-block-tabs-radius: 4px;
 
     p {
       margin: 12px 0;
+    }
 
-      &.buttons {
-        text-align: right;
-        margin-bottom: 1px;
-        padding: {
-          right: 23px;
-          top: 3px;
-        };
+    .buttons, p.buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      margin-bottom: 1px;
+      padding-top: 4px;
 
-        button {
-          display: none;
+      .buttons-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        > * + * {
+          margin-left: 8px;
         }
+      }
+
+      .buttons-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+
+        > * + * {
+          margin-left: 8px;
+        }
+      }
+
+      button {
+        display: none;
       }
     }
 

@@ -179,4 +179,21 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     const profileSync = await window.__postbirdRpc.loadSavedConnections();
     assert(profileSync && typeof profileSync.connections === "object", "loadSavedConnections should return connections object");
   });
+
+  await test("login screen: aligns button row with Test Connection on left and Save/Connect on right", async () => {
+    const login = window.App.loginScreen;
+    login.showStandardPane();
+    login.addNewConnection();
+
+    const buttonsContainer = login.standardForm.form.find(".buttons");
+    assert(buttonsContainer.length === 1, ".buttons container must exist");
+    assert(buttonsContainer.find(".buttons-left button[exec='std_testConnection']").length === 1, "Test Connection must be inside .buttons-left");
+    assert(buttonsContainer.find(".buttons-right button[exec='std_saveAndConnect']").length === 1, "Save & Connect must be inside .buttons-right");
+    assert(buttonsContainer.find(".buttons-right input[type='submit']").length === 1, "Connect submit button must be inside .buttons-right");
+
+    // Verify tunnel options text does not have typos
+    const tunnelLink = login.content.find(".open-extra-fields");
+    assert(tunnelLink.text().includes("Show tunnel options"), "Tunnel toggle text should read 'Show tunnel options'");
+    assert(!tunnelLink.text().includes("optiolds"), "No typos like 'optiolds'");
+  });
 }

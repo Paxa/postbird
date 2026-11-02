@@ -332,7 +332,7 @@ body {
   border: 1px solid #e3e3e3;
   border-top: 1px solid #dfdfdf;
   font-size: 13px;
-  width: 330px;
+  width: 350px;
   margin: 40px auto 0;
   margin-top: calc(50vh - 198px);
   padding: 16px 20px;
@@ -391,13 +391,32 @@ body {
 .login-screen .middle-window p {
   margin: 12px 0;
 }
-.login-screen .middle-window p.buttons {
-  text-align: right;
+.login-screen .middle-window .buttons, .login-screen .middle-window p.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
   margin-bottom: 1px;
-  padding-right: 23px;
-  padding-top: 3px;
+  padding-top: 4px;
 }
-.login-screen .middle-window p.buttons button {
+.login-screen .middle-window .buttons .buttons-left, .login-screen .middle-window p.buttons .buttons-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.login-screen .middle-window .buttons .buttons-left > * + *, .login-screen .middle-window p.buttons .buttons-left > * + * {
+  margin-left: 8px;
+}
+.login-screen .middle-window .buttons .buttons-right, .login-screen .middle-window p.buttons .buttons-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.login-screen .middle-window .buttons .buttons-right > * + *, .login-screen .middle-window p.buttons .buttons-right > * + * {
+  margin-left: 8px;
+}
+.login-screen .middle-window .buttons button, .login-screen .middle-window p.buttons button {
   display: none;
 }
 .login-screen .middle-window input[type=text], .login-screen .middle-window input[type=password], .login-screen .middle-window input[type=email], .login-screen .middle-window input[type=number], .login-screen .middle-window input[type=url] {
