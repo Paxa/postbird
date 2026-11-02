@@ -29,13 +29,28 @@ interface ViewCellHelpers {
 }
 
 
-var TRUNCATE_LONG_TEXT = 500;
+var DEFAULT_TRUNCATE_LIMIT = 10000;
 
+function getTruncateLimit(): number {
+  var envLimit = (typeof window !== 'undefined' && (window as any).POSTBIRD_MAX_TEXT_LENGTH)
+    || (typeof global !== 'undefined' && (global as any).POSTBIRD_MAX_TEXT_LENGTH);
+  if (envLimit) {
+    return Number(envLimit);
+  }
+  if (typeof window !== 'undefined' && window.localStorage && window.localStorage.maxCellTextLength) {
+    var parsed = parseInt(window.localStorage.maxCellTextLength, 10);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+  return DEFAULT_TRUNCATE_LIMIT;
+}
 
 var helpers = (global as any).ViewCellHelpers = {
 
   TIMESTAMPTZ_OID: 1184,
   TIMESTAMP_OID: 1114,
+  TRUNCATE_LONG_TEXT: DEFAULT_TRUNCATE_LIMIT,
+
+  getTruncateLimit: getTruncateLimit,
 
   formatCellFromSelect(value, field) {
     var format = field.udt_name || field.format;
@@ -59,22 +74,32 @@ var helpers = (global as any).ViewCellHelpers = {
 
     var wrapTextSpan = false;
     var htmlEscaped = false;
+    var isTruncated = false;
+    var originalLength = typeof value === 'string' ? value.length : 0;
+    var truncateLimit = getTruncateLimit();
 
     switch (format) {
       case 'hstore': case 'text': case 'tsvector':
-        var formated = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
-        wrapTextSpan = true
-        // formated = `<span class="text">${shorterValue}</span>`;
+        if (value.length > truncateLimit) {
+          formated = value.slice(0, truncateLimit) + '...';
+          isTruncated = true;
+        } else {
+          formated = value;
+        }
+        wrapTextSpan = true;
         break;
       case 'xml':
-        wrapTextSpan = true
-        // formated = '<span class="text">' + value + '</span>';
+        wrapTextSpan = true;
         break;
       case 'varchar':
         if (typeof value == 'string' && value.length > 20) {
-          var formated : any  = value.length > TRUNCATE_LONG_TEXT ? value.slice(0, TRUNCATE_LONG_TEXT) + '...' : value;
+          if (value.length > truncateLimit) {
+            formated = value.slice(0, truncateLimit) + '...';
+            isTruncated = true;
+          } else {
+            formated = value;
+          }
           wrapTextSpan = true;
-          // formated = `<span class="text">${shorterValue}</span>`;
         }
         break;
       case 'timestamp':
@@ -96,9 +121,11 @@ var helpers = (global as any).ViewCellHelpers = {
       case 'bytea':
         var str = value.toString('ascii', 0, 100);
         formated = str;
-        var formated = formated.length > TRUNCATE_LONG_TEXT ? formated.slice(0, TRUNCATE_LONG_TEXT) + '...' : formated;
+        if (formated.length > truncateLimit) {
+          formated = formated.slice(0, truncateLimit) + '...';
+          isTruncated = true;
+        }
         wrapTextSpan = true;
-        //formated = value.length > 100 ? value.substr(0, 100) : value;
         break;
       case 'interval':
         formated = `${value.toPostgres()}`
@@ -119,7 +146,8 @@ var helpers = (global as any).ViewCellHelpers = {
     }
 
     if (wrapTextSpan) {
-      formated = `<span class="text">${formated}</span>`;
+      var tooltip = isTruncated ? ` title="Truncated: ${originalLength} characters (full length available in editor)"` : '';
+      formated = `<span class="text${isTruncated ? ' truncated' : ''}"${tooltip}>${formated}</span>`;
     }
 
     return formated;

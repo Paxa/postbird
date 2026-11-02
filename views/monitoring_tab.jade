@@ -79,6 +79,7 @@ mixin refreshIcon(size)
             +refreshIcon(11)
 
       .monitor-section-body
+        .lock-conflicts-banner(style="display: none;")
         .rescol-wrapper.with-borders
           .rescol-content-wrapper
             table.active-queries-table
@@ -269,3 +270,52 @@ mixin refreshIcon(size)
                     td(colspan="7", class="text-muted text-center", style="padding: 16px;")
                       span No slow query data loaded yet. &nbsp;
                       button.btn-native.btn-native-small.btn-refresh-slow-queries Load Slow Queries
+
+    // -------------------------------------------------------------
+    // SECTION 6: INDEX OPTIMIZATION (UNUSED & DUPLICATE)
+    // -------------------------------------------------------------
+    .monitor-section(data-section="indexes", class=expandedSections.indexes ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Index Optimization (Unused & Duplicate)
+        span.section-badge.badge-snapshot Snapshot
+        span.section-summary-text= sectionSummaries.indexes || "Click to analyze unused & duplicate indexes"
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Index Analysis")
+            +refreshIcon(11)
+
+      .monitor-section-body
+        .section-table-toolbar
+          .toolbar-stats-text Unused Indexes (idx_scan = 0 &bull; consuming storage and write I/O)
+          button.btn-native.btn-native-small.btn-refresh-indexes(title="Refresh Index Analysis")
+            +refreshIcon(10)
+            span Refresh Indexes
+
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.unused-indexes-table
+              thead
+                tr
+                  th Table Name
+                  th Index Name
+                  th(style="width: 110px;") Index Size
+                  th(style="width: 90px;") Scans
+                  th(style="width: 140px;") Actions
+              tbody
+                tr
+                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") Click to analyze unused indexes.
+
+        .section-subhead(style="margin-top: 16px;") Duplicate & Redundant Indexes (Exact same columns & opclass)
+        .rescol-wrapper.with-borders
+          .rescol-content-wrapper
+            table.duplicate-indexes-table
+              thead
+                tr
+                  th Table Name
+                  th Duplicate Index
+                  th Redundant Of
+                  th(style="width: 110px;") Index Size
+                  th(style="width: 140px;") Actions
+              tbody
+                tr
+                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") Click to analyze duplicate indexes.

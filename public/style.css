@@ -2290,6 +2290,41 @@ span.proc-arg-list {
 .monitoring-view table tr:nth-child(even) td {
   background-color: #fafafb;
 }
+.monitoring-view table tr.row-blocker td {
+  background-color: #fff8e1 !important;
+}
+.monitoring-view table tr.row-blocked td {
+  background-color: #ffebee !important;
+}
+.monitoring-view .lock-conflicts-banner {
+  background-color: rgba(255, 149, 0, 0.12);
+  border: 1px solid #ff9500;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #995000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.monitoring-view .lock-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.monitoring-view .lock-badge.badge-blocked {
+  background-color: rgba(255, 59, 48, 0.15);
+  color: #c62828;
+}
+.monitoring-view .lock-badge.badge-blocker {
+  background-color: rgba(255, 149, 0, 0.18);
+  color: #e65100;
+}
 .monitoring-view .state-pill {
   display: inline-block;
   padding: 1px 6px;
@@ -2544,6 +2579,25 @@ body.dark-mode .monitoring-view .section-table-toolbar {
 }
 body.dark-mode .monitoring-view .table-name-badge {
   color: #f5f5f7;
+}
+body.dark-mode .monitoring-view .lock-conflicts-banner {
+  background-color: rgba(255, 149, 0, 0.2);
+  border-color: #ff9f0a;
+  color: #ffd60a;
+}
+body.dark-mode .monitoring-view .lock-badge.badge-blocked {
+  background-color: rgba(255, 69, 58, 0.3);
+  color: #ff453a;
+}
+body.dark-mode .monitoring-view .lock-badge.badge-blocker {
+  background-color: rgba(255, 159, 10, 0.3);
+  color: #ff9f0a;
+}
+body.dark-mode .monitoring-view table tr.row-blocker td {
+  background-color: rgba(255, 159, 10, 0.15) !important;
+}
+body.dark-mode .monitoring-view table tr.row-blocked td {
+  background-color: rgba(255, 69, 58, 0.15) !important;
 }
 
 body.new-window {
@@ -2851,19 +2905,77 @@ small.help-icon:hover:after {
   display: block;
 }
 
+.show-sql-dialog {
+  min-width: 680px;
+  max-width: 900px;
+}
 .show-sql-dialog code {
-  margin: 13px 0;
+  margin: 10px 0;
   padding: 5px;
   background: #f5f5f5;
   display: block;
   font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
   word-break: break-all;
   overflow: auto;
-  max-height: 400px;
+  max-height: 250px;
   box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
   text-align: left;
   white-space: pre-wrap;
   word-break: normal;
+}
+.show-sql-dialog .explain-plan-container {
+  margin: 12px 0 6px 0;
+  text-align: left;
+}
+.show-sql-dialog .explain-plan-container .explain-plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 11px;
+  color: #666;
+}
+.show-sql-dialog .explain-plan-container .explain-plan-header .explain-title {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+.show-sql-dialog .explain-plan-container .explain-plan-header .explain-status {
+  color: #007aff;
+  font-weight: 500;
+}
+.show-sql-dialog .explain-plan-container pre.explain-plan-output {
+  background: #1e1e24;
+  color: #4ade80;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 10px 12px;
+  border-radius: 4px;
+  overflow: auto;
+  max-height: 250px;
+  white-space: pre;
+  margin: 0;
+  user-select: text;
+}
+.show-sql-dialog p.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  align-items: center;
+}
+.show-sql-dialog p.buttons .btn-explain-plan,
+.show-sql-dialog p.buttons .btn-explain-analyze,
+.show-sql-dialog p.buttons .btn-open-query-tab {
+  margin-right: auto;
+}
+.show-sql-dialog p.buttons .btn-explain-plan {
+  margin-right: 0;
+}
+.show-sql-dialog p.buttons .btn-explain-analyze {
+  margin-right: 0;
+}
+.show-sql-dialog p.buttons .btn-open-query-tab {
+  margin-right: auto;
 }
 
 .new-snippet-dialog p.input {
@@ -2998,6 +3110,30 @@ small.help-icon:hover:after {
 
 .related-records-dialog {
   max-width: 75vw;
+}
+.related-records-dialog .related-record-target {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #4a5568;
+}
+.related-records-dialog .related-record-target .label {
+  font-weight: 600;
+  color: #718096;
+  margin-right: 4px;
+}
+.related-records-dialog .related-record-target code.target-ref {
+  font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  word-break: break-all;
+}
+.related-records-dialog .no-records {
+  padding: 16px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
 }
 .related-records-dialog table {
   width: 100%;

@@ -18,7 +18,8 @@ class Monitoring extends PaneBase {
     storage: false,
     vacuum: false,
     replication: false,
-    slow_queries: false
+    slow_queries: false,
+    indexes: false
   };
 
   sectionSummaries: { [key: string]: string } = {
@@ -27,7 +28,8 @@ class Monitoring extends PaneBase {
     storage: 'Click to load storage & index footprint',
     vacuum: 'Click to load vacuum & bloat health',
     replication: 'Click to load replication & WAL stats',
-    slow_queries: 'Click to load query execution insights'
+    slow_queries: 'Click to load query execution insights',
+    indexes: 'Click to analyze unused & duplicate indexes'
   };
 
   // Section data caches
@@ -37,6 +39,7 @@ class Monitoring extends PaneBase {
   vacuumData: any = null;
   replicationData: any = null;
   slowQueryData: any = null;
+  indexesData: any = null;
 
   private tabChangeListenerBound: boolean = false;
 
@@ -83,6 +86,7 @@ class Monitoring extends PaneBase {
       vacuumData: this.vacuumData,
       replicationData: this.replicationData,
       slowQueryData: this.slowQueryData,
+      indexesData: this.indexesData,
       qpsChartSvg: (Sparkline as any).renderSvg(this.qpsHistory, { strokeColor: '#007aff', unit: ' qps' }),
       latencyChartSvg: (Sparkline as any).renderSvg(this.latencyHistory, { strokeColor: '#ff9500', unit: ' ms' })
     });
@@ -100,6 +104,7 @@ class Monitoring extends PaneBase {
     if (this.expandedSections.storage && !this.storageData) this.fetchStorage();
     if (this.expandedSections.vacuum && !this.vacuumData) this.fetchVacuum();
     if (this.expandedSections.slow_queries && !this.slowQueryData) this.fetchSlowQueries();
+    if (this.expandedSections.indexes && !this.indexesData) this.fetchIndexes();
 
     if (this.isLive) {
       this.startPolling();
@@ -190,6 +195,27 @@ class Monitoring extends PaneBase {
         App.stopLoading();
       }
     });
+
+    // 8. Index optimization actions
+    this.content.on('click', '.btn-refresh-indexes', (e: any) => {
+      e.preventDefault();
+      this.fetchIndexes();
+    });
+
+    this.content.on('click', '.btn-copy-drop-index', (e: any) => {
+      e.preventDefault();
+      const sql = $u(e.currentTarget).attr('data-sql');
+      if (sql) {
+        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(sql);
+        } else if (electronRemote && electronRemote.clipboard) {
+          electronRemote.clipboard.writeText(sql);
+        }
+        const btn = $u(e.currentTarget);
+        btn.text('Copied!');
+        setTimeout(() => { btn.text('Copy DROP SQL'); }, 1500);
+      }
+    });
   }
 
   toggleLive() {
@@ -240,6 +266,7 @@ class Monitoring extends PaneBase {
       if (sectionKey === 'vacuum' && !this.vacuumData) this.fetchVacuum();
       if (sectionKey === 'replication' && !this.replicationData) this.fetchReplication();
       if (sectionKey === 'slow_queries' && !this.slowQueryData) this.fetchSlowQueries();
+      if (sectionKey === 'indexes' && !this.indexesData) this.fetchIndexes();
     } else {
       sectionEl.removeClass('expanded');
     }
@@ -259,6 +286,8 @@ class Monitoring extends PaneBase {
         return this.fetchReplication();
       case 'slow_queries':
         return this.fetchSlowQueries();
+      case 'indexes':
+        return this.fetchIndexes();
     }
   }
 
@@ -271,7 +300,8 @@ class Monitoring extends PaneBase {
         this.fetchStorage(),
         this.fetchVacuum(),
         this.fetchReplication(),
-        this.fetchSlowQueries()
+        this.fetchSlowQueries(),
+        this.fetchIndexes()
       ]);
     } finally {
       App.stopLoading();
@@ -370,6 +400,19 @@ class Monitoring extends PaneBase {
     const sec = this.content.find('.monitor-section[data-section="queries"]');
     if (!sec.length) return;
 
+    // Check lock contention & blocked queries
+    const blockedQueries = (queries || []).filter((q: any) => q.is_blocked);
+    const banner = sec.find('.lock-conflicts-banner');
+    if (blockedQueries.length > 0) {
+      const blockerPids = Array.from(new Set(blockedQueries.flatMap((q: any) => q.blocking_pids)));
+      banner.html(`
+        <strong>⚠️ Lock Contention Detected:</strong>
+        <span>${blockedQueries.length} query(ies) are currently waiting on locks held by PID: <strong>${blockerPids.join(', ')}</strong></span>
+      `).show();
+    } else {
+      banner.hide();
+    }
+
     const tbody = sec.find('.active-queries-table tbody');
     tbody.empty();
 
@@ -386,20 +429,34 @@ class Monitoring extends PaneBase {
       const clientAddr = q.client_addr ? (q.client_addr + (q.client_port ? ':' + q.client_port : '')) : 'local (unix)';
       const queryText = q.query || '';
 
+      let stateBadge = `<span class="state-pill state-${q.state}">${q.state}</span>`;
+      if (q.is_blocked) {
+        stateBadge += ` <span class="lock-badge badge-blocked" title="Blocked by PID ${q.blocking_pids.join(', ')}">⛔ Blocked (${q.blocking_pids.join(', ')})</span>`;
+      }
+      if (q.blocking_count > 0) {
+        stateBadge += ` <span class="lock-badge badge-blocker" title="Holding locks blocking ${q.blocking_count} query(ies)">⚠️ Blocker (${q.blocking_count})</span>`;
+      }
+
+      const rowClass = q.blocking_count > 0 ? 'row-blocker' : (q.is_blocked ? 'row-blocked' : '');
+
+      const killBtn = q.blocking_count > 0 
+        ? `<button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Kill Blocker Backend (pg_terminate_backend)" style="color: #d70015; font-weight: 600;">Kill Blocker</button>`
+        : `<button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Terminate Connection (pg_terminate_backend)">Kill</button>`;
+
       const row = `
-        <tr data-pid="${q.pid}">
+        <tr data-pid="${q.pid}" class="${rowClass}">
           <td><strong>${q.pid}</strong></td>
           <td>${q.usename || '-'}</td>
           <td title="${clientName}"><strong>${clientName}</strong></td>
           <td class="text-muted" title="${clientAddr}"><small>${clientAddr}</small></td>
-          <td><span class="state-pill state-${q.state}">${q.state}</span></td>
+          <td>${stateBadge}</td>
           <td>${waitBadge}</td>
           <td><span class="duration-badge ${durationClass}">${q.duration_seconds}s</span></td>
           <td class="query-cell" data-pid="${q.pid}" title="Click to view full SQL&#10;${(global as any).ViewHelpers.escapeHTML(queryText)}"><code>${(global as any).ViewHelpers.escapeHTML(queryText.substring(0, 100))}</code></td>
           <td class="actions-cell">
             <button class="btn-native-small btn-view-query" data-pid="${q.pid}" title="View Full SQL">View SQL</button>
             <button class="btn-native-small btn-cancel-query" data-pid="${q.pid}" title="Cancel Query (pg_cancel_backend)">Cancel</button>
-            <button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Terminate Connection (pg_terminate_backend)">Kill</button>
+            ${killBtn}
           </td>
         </tr>
       `;
@@ -661,6 +718,69 @@ class Monitoring extends PaneBase {
       }
     } catch (e: any) {
       $u.alertError('Failed to fetch slow queries', { detail: e.toString() });
+    }
+  }
+
+  async fetchIndexes(isSilent: boolean = false) {
+    try {
+      const data = await this.model.fetchIndexHealth();
+      this.indexesData = data;
+
+      const unusedCount = data.unused.length;
+      const dupCount = data.duplicates.length;
+      this.sectionSummaries.indexes = `${unusedCount} unused (${data.totalUnusedSizePretty}) • ${dupCount} duplicate`;
+      this.updateSectionSummary('indexes', this.sectionSummaries.indexes);
+
+      const sec = this.content.find('.monitor-section[data-section="indexes"]');
+      if (!sec.length) return;
+
+      // 1. Unused indexes table
+      const unusedTbody = sec.find('.unused-indexes-table tbody');
+      unusedTbody.empty();
+      if (data.unused.length === 0) {
+        unusedTbody.html('<tr><td colspan="5" class="text-muted text-center" style="padding: 14px;">🟢 No unused indexes detected. All user indexes are actively scanned!</td></tr>');
+      } else {
+        data.unused.forEach((idx: any) => {
+          const dropSql = `DROP INDEX CONCURRENTLY IF EXISTS "${idx.schemaname}"."${idx.index_name}";`;
+          unusedTbody.append(`
+            <tr>
+              <td><strong>${(global as any).ViewHelpers.escapeHTML(idx.table_name)}</strong></td>
+              <td><code>${(global as any).ViewHelpers.escapeHTML(idx.index_name)}</code></td>
+              <td><strong>${idx.index_size_pretty}</strong></td>
+              <td><span class="state-pill state-idle">0 scans</span></td>
+              <td class="actions-cell">
+                <button class="btn-native-small btn-copy-drop-index" data-sql="${(global as any).ViewHelpers.escapeHTML(dropSql)}" title="Copy DROP INDEX SQL">Copy DROP SQL</button>
+              </td>
+            </tr>
+          `);
+        });
+      }
+
+      // 2. Duplicate indexes table
+      const dupTbody = sec.find('.duplicate-indexes-table tbody');
+      dupTbody.empty();
+      if (data.duplicates.length === 0) {
+        dupTbody.html('<tr><td colspan="5" class="text-muted text-center" style="padding: 14px;">🟢 No duplicate or redundant indexes detected.</td></tr>');
+      } else {
+        data.duplicates.forEach((idx: any) => {
+          const dropSql = `DROP INDEX CONCURRENTLY IF EXISTS ${idx.index_name};`;
+          dupTbody.append(`
+            <tr>
+              <td><strong>${(global as any).ViewHelpers.escapeHTML(idx.table_name)}</strong></td>
+              <td><code>${(global as any).ViewHelpers.escapeHTML(idx.index_name)}</code></td>
+              <td><span class="text-muted">Redundant of</span> <code>${(global as any).ViewHelpers.escapeHTML(idx.duplicate_of)}</code></td>
+              <td><strong>${idx.index_size_pretty}</strong></td>
+              <td class="actions-cell">
+                <button class="btn-native-small btn-copy-drop-index" data-sql="${(global as any).ViewHelpers.escapeHTML(dropSql)}" title="Copy DROP INDEX SQL">Copy DROP SQL</button>
+              </td>
+            </tr>
+          `);
+        });
+      }
+    } catch (e: any) {
+      if (!isSilent) {
+        $u.alertError('Failed to analyze indexes', { detail: e.toString() });
+      }
     }
   }
 

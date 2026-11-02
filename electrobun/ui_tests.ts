@@ -330,6 +330,9 @@ export async function runUITests() {
     const relDialog = await harness.waitForDialog("related-records-dialog", 4000);
     assert(relDialog, "Related records popup dialog should open");
     assert(relDialog.textContent.includes("Root Parent Entity"), "Related records popup should display parent row data");
+    const refTarget = relDialog.querySelector(".related-record-target");
+    assert(refTarget, "Related records popup should have .related-record-target reference info");
+    assert(refTarget.textContent.includes("public.test_fk_parent (id = 1)"), "Related records popup should display target table and foreign key reference");
 
     await harness.closeCurrentDialog();
 

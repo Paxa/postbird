@@ -91,7 +91,8 @@ class Monitor extends ModelBase {
         COALESCE(wait_event, '') AS wait_event,
         ROUND(EXTRACT(EPOCH FROM (now() - query_start))::numeric, 2) AS duration_seconds,
         query,
-        query_start
+        query_start,
+        pg_blocking_pids(pid) AS blocking_pids
       FROM pg_stat_activity
       WHERE pid <> pg_backend_pid()
         AND state IS NOT NULL
@@ -101,7 +102,84 @@ class Monitor extends ModelBase {
     `;
 
     const res = await this.query(activeQueriesSql);
-    return res.rows || [];
+    const rows = res.rows || [];
+
+    const blockerCounts: Record<number, number> = {};
+    rows.forEach((r: any) => {
+      if (Array.isArray(r.blocking_pids)) {
+        r.blocking_pids.forEach((bPid: number) => {
+          blockerCounts[bPid] = (blockerCounts[bPid] || 0) + 1;
+        });
+      }
+    });
+
+    return rows.map((r: any) => ({
+      ...r,
+      blocking_pids: Array.isArray(r.blocking_pids) ? r.blocking_pids : [],
+      is_blocked: Array.isArray(r.blocking_pids) && r.blocking_pids.length > 0,
+      blocking_count: blockerCounts[r.pid] || 0
+    }));
+  }
+
+  async fetchIndexHealth() {
+    // 1. Unused indexes: idx_scan = 0, not unique/primary, > 8KB
+    const unusedSql = `
+      SELECT
+        schemaname,
+        relname AS table_name,
+        indexrelname AS index_name,
+        pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size_pretty,
+        pg_relation_size(i.indexrelid) AS index_bytes,
+        idx_scan,
+        idx_tup_read,
+        idx_tup_fetch
+      FROM pg_stat_user_indexes ui
+      JOIN pg_index i ON ui.indexrelid = i.indexrelid
+      WHERE NOT indisunique
+        AND NOT indisprimary
+        AND idx_scan = 0
+        AND pg_relation_size(i.indexrelid) > 8192
+        AND schemaname NOT IN ('pg_catalog', 'information_schema')
+      ORDER BY pg_relation_size(i.indexrelid) DESC
+      LIMIT 25;
+    `;
+
+    // 2. Duplicate / redundant indexes with identical column lists & opclasses
+    const duplicateSql = `
+      SELECT
+        i1.indrelid::regclass::text AS table_name,
+        i1.indexrelid::regclass::text AS index_name,
+        i2.indexrelid::regclass::text AS duplicate_of,
+        pg_size_pretty(pg_relation_size(i1.indexrelid)) AS index_size_pretty,
+        pg_relation_size(i1.indexrelid) AS index_bytes
+      FROM pg_index i1
+      JOIN pg_index i2 ON i1.indrelid = i2.indrelid
+        AND i1.indexrelid <> i2.indexrelid
+        AND i1.indkey = i2.indkey
+        AND i1.indclass = i2.indclass
+        AND i1.indexrelid > i2.indexrelid
+        AND NOT i1.indisprimary
+        AND NOT i2.indisprimary
+      WHERE i1.indrelid::regclass::text NOT LIKE 'pg_%'
+      ORDER BY pg_relation_size(i1.indexrelid) DESC
+      LIMIT 25;
+    `;
+
+    const [unusedRes, duplicateRes] = await Promise.all([
+      this.query(unusedSql),
+      this.query(duplicateSql)
+    ]);
+
+    const unused = unusedRes.rows || [];
+    const duplicates = duplicateRes.rows || [];
+    const totalUnusedBytes = unused.reduce((sum: number, idx: any) => sum + (Number(idx.index_bytes) || 0), 0);
+
+    return {
+      unused: unused,
+      duplicates: duplicates,
+      totalUnusedBytes: totalUnusedBytes,
+      totalUnusedSizePretty: (global as any).ViewHelpers.formatBytes(totalUnusedBytes)
+    };
   }
 
   async cancelQuery(pid: number) {

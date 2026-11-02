@@ -353,4 +353,11 @@ describe('Model.Column', () => {
 
     await table.drop()
   })
+
+  it('should provide fallback types when catalog query is empty or on CockroachDB (#149)', async () => {
+    assert(Model.Column.fallbackTypes.length >= 20);
+    assert(Model.Column.fallbackTypes.some(t => t.name === 'integer'));
+    assert(Model.Column.fallbackTypes.some(t => t.name === 'jsonb'));
+    assert(Model.Column.fallbackTypes.some(t => t.name === 'uuid'));
+  })
 })

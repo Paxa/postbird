@@ -1,6 +1,15 @@
-code.result.pgsql
-  = code
+.show-sql-container
+  code.result.pgsql= code
+
+  .explain-plan-container(style="display: none;")
+    .explain-plan-header
+      strong.explain-title Query Execution Plan
+      span.explain-status
+    pre.explain-plan-output
 
 p.buttons
+  button.btn-explain-plan(title="Run EXPLAIN (BUFFERS) without executing query") Explain
+  button.btn-explain-analyze(title="Run EXPLAIN (ANALYZE, BUFFERS) safely inside a transaction") Explain Analyze
+  button.btn-open-query-tab(title="Open and edit this query in Query tab") Open in Query Tab
   button.copy-sql Copy
-  button.cancel OK
+  button.cancel Close

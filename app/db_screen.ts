@@ -100,7 +100,11 @@ class DbScreen {
     App.emit('database.changed', this.database);
 
     this.currentTable = null;
-    this.currentSchema = null;
+    // Restore remembered schema for this database if available (#80)
+    var savedSchema = (typeof window !== 'undefined' && window.localStorage && this.database)
+      ? window.localStorage.getItem(`postbird:lastSchema:${this.database}`)
+      : null;
+    this.currentSchema = savedSchema || null;
 
     if (this.currentTab != 'query') {
       this.activateTab(this.currentTab, 'force');
@@ -172,6 +176,10 @@ class DbScreen {
     }
     this.currentSchema = schema;
     this.currentTable = tableName;
+
+    if (typeof window !== 'undefined' && window.localStorage && this.database && schema) {
+      window.localStorage.setItem(`postbird:lastSchema:${this.database}`, schema);
+    }
 
     App.emit('table.changed', this.currentSchema, this.currentTable);
 

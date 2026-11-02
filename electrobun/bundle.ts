@@ -31,6 +31,10 @@ const shimPlugin = {
 };
 
 import * as sass from "sass";
+import { compileAllViews } from "../scripts/compile_views";
+
+console.log("Compiling Pug/Jade views...");
+compileAllViews();
 
 console.log("Compiling styles (SASS)...");
 try {

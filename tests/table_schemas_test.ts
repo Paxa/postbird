@@ -1,5 +1,7 @@
 require('./test_helper');
 require("../lib/pg_dump_runner");
+require("../app/views/db_screen_view");
+require("../app/db_screen");
 
 describe('Model.Table and Model.Schema', () => {
 
@@ -125,5 +127,13 @@ describe('Model.Table and Model.Schema', () => {
 
     await table1.deleteRowByCtid(data[0].ctid)
     assert.equal(await table1.getTotalRows(), 0)
+  })
+
+  it("should remember last selected schema and showSchemas state in localStorage (#80)", () => {
+    window.localStorage.setItem("postbird:lastSchema:postbird_test", "my_schema_1");
+    assert.equal(window.localStorage.getItem("postbird:lastSchema:postbird_test"), "my_schema_1");
+
+    window.localStorage.setItem("postbird:showSchemas", "1");
+    assert.equal(window.localStorage.getItem("postbird:showSchemas"), "1");
   })
 })

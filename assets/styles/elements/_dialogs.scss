@@ -42,17 +42,82 @@
 }
 
 .show-sql-dialog {
+  min-width: 680px;
+  max-width: 900px;
+
   code {
-    margin: 13px 0;
+    margin: 10px 0;
 
     @include dialog-code;
 
     overflow: auto;
-    max-height: 400px;
+    max-height: 250px;
     box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
     text-align: left;
     white-space: pre-wrap;
     word-break: normal;
+  }
+
+  .explain-plan-container {
+    margin: 12px 0 6px 0;
+    text-align: left;
+
+    .explain-plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: 11px;
+      color: #666;
+
+      .explain-title {
+        color: #1d1d1f;
+        font-weight: 600;
+      }
+
+      .explain-status {
+        color: #007aff;
+        font-weight: 500;
+      }
+    }
+
+    pre.explain-plan-output {
+      background: #1e1e24;
+      color: #4ade80;
+      font-family: Menlo, Monaco, "Courier New", monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      padding: 10px 12px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: 250px;
+      white-space: pre;
+      margin: 0;
+      user-select: text;
+    }
+  }
+
+  p.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    align-items: center;
+
+    .btn-explain-plan,
+    .btn-explain-analyze,
+    .btn-open-query-tab {
+      margin-right: auto;
+    }
+
+    .btn-explain-plan {
+      margin-right: 0;
+    }
+    .btn-explain-analyze {
+      margin-right: 0;
+    }
+    .btn-open-query-tab {
+      margin-right: auto;
+    }
   }
 }
 
@@ -205,6 +270,35 @@
 
 .related-records-dialog {
   max-width: 75vw;
+
+  .related-record-target {
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #4a5568;
+
+    .label {
+      font-weight: 600;
+      color: #718096;
+      margin-right: 4px;
+    }
+
+    code.target-ref {
+      font-family: $code-font;
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid #e0e0e0;
+      word-break: break-all;
+    }
+  }
+
+  .no-records {
+    padding: 16px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;

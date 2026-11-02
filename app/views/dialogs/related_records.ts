@@ -12,10 +12,11 @@ class RelatedRecords extends DialogBase {
   data: any[]
   queryOptions: RelatedRecords_QueryOptions
   
-  constructor (handler, data, queryOptions) {
+  constructor (handler, data, queryOptions: RelatedRecords_QueryOptions) {
+    const targetRef = queryOptions ? `${queryOptions.schema ? queryOptions.schema + '.' : ''}${queryOptions.table}` : '';
     super(handler, {
       dialogClass: "related-records-dialog",
-      title: "Related Records",
+      title: targetRef ? `Related Records: ${targetRef}` : "Related Records",
       data: data,
       queryOptions: queryOptions
     });
@@ -24,7 +25,8 @@ class RelatedRecords extends DialogBase {
 
   showWindow () {
     var nodes = App.renderView('dialogs/related_records', {
-      data: this.data
+      data: this.data,
+      queryOptions: this.queryOptions
     });
     this.content = this.renderWindow(this.title, nodes);
     this.content.find('button.ok').bind('click', () => {

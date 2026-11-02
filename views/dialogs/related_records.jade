@@ -1,9 +1,18 @@
-each row in data.rows
-  table
-    each field in data.fields
-      tr
-        td= field.name
-        td!= formatCellFromSelect(row[field.name], field)
+if queryOptions
+  .related-record-target
+    span.label References:
+    = " "
+    code.target-ref= (queryOptions.schema ? queryOptions.schema + '.' : '') + queryOptions.table + ' (' + queryOptions.column + ' = ' + queryOptions.value + ')'
+
+if data && data.rows && data.rows.length
+  each row in data.rows
+    table
+      each field in data.fields
+        tr
+          td= field.name
+          td!= formatCellFromSelect(row[field.name], field)
+else
+  p.no-records No related records found
 
 p.buttons
   button.ok Apply Filters

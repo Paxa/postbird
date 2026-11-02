@@ -166,6 +166,37 @@ class Column extends ModelBase {
     }
   }
 
+  static get fallbackTypes() {
+    return [
+      { schema: 'pg_catalog', name: 'integer', udt_name: 'int4', description: 'signed four-byte integer' },
+      { schema: 'pg_catalog', name: 'bigint', udt_name: 'int8', description: 'signed eight-byte integer' },
+      { schema: 'pg_catalog', name: 'smallint', udt_name: 'int2', description: 'signed two-byte integer' },
+      { schema: 'pg_catalog', name: 'numeric', udt_name: 'numeric', description: 'exact numeric of selectable precision' },
+      { schema: 'pg_catalog', name: 'decimal', udt_name: 'numeric', description: 'exact numeric of selectable precision' },
+      { schema: 'pg_catalog', name: 'real', udt_name: 'float4', description: 'single precision floating-point number' },
+      { schema: 'pg_catalog', name: 'double precision', udt_name: 'float8', description: 'double precision floating-point number' },
+      { schema: 'pg_catalog', name: 'serial', udt_name: 'int4', description: 'autoincrementing four-byte integer' },
+      { schema: 'pg_catalog', name: 'bigserial', udt_name: 'int8', description: 'autoincrementing eight-byte integer' },
+      { schema: 'pg_catalog', name: 'text', udt_name: 'text', description: 'variable-length character string' },
+      { schema: 'pg_catalog', name: 'character varying', udt_name: 'varchar', description: 'variable-length character string' },
+      { schema: 'pg_catalog', name: 'character', udt_name: 'bpchar', description: 'fixed-length character string' },
+      { schema: 'pg_catalog', name: 'boolean', udt_name: 'bool', description: 'state of true or false' },
+      { schema: 'pg_catalog', name: 'timestamp without time zone', udt_name: 'timestamp', description: 'date and time (no time zone)' },
+      { schema: 'pg_catalog', name: 'timestamp with time zone', udt_name: 'timestamptz', description: 'date and time, including time zone' },
+      { schema: 'pg_catalog', name: 'date', udt_name: 'date', description: 'calendar date (year, month, day)' },
+      { schema: 'pg_catalog', name: 'time without time zone', udt_name: 'time', description: 'time of day (no time zone)' },
+      { schema: 'pg_catalog', name: 'time with time zone', udt_name: 'timetz', description: 'time of day, including time zone' },
+      { schema: 'pg_catalog', name: 'json', udt_name: 'json', description: 'textual JSON data' },
+      { schema: 'pg_catalog', name: 'jsonb', udt_name: 'jsonb', description: 'binary JSON data, decomposed' },
+      { schema: 'pg_catalog', name: 'uuid', udt_name: 'uuid', description: 'universally unique identifier' },
+      { schema: 'pg_catalog', name: 'bytea', udt_name: 'bytea', description: 'variable length binary string' },
+      { schema: 'pg_catalog', name: 'inet', udt_name: 'inet', description: 'IPv4 or IPv6 host address' },
+      { schema: 'pg_catalog', name: 'cidr', udt_name: 'cidr', description: 'IPv4 or IPv6 network address' },
+      { schema: 'pg_catalog', name: 'macaddr', udt_name: 'macaddr', description: 'MAC address' },
+      { schema: 'pg_catalog', name: 'interval', udt_name: 'interval', description: 'time interval' }
+    ];
+  }
+
   static availableTypes (callback?: any) {
     var sql = `
       SELECT n.nspname as "schema",
@@ -181,8 +212,13 @@ class Column extends ModelBase {
     `.trim();
 
     return this.q(sql).then(data => {
-      callback && callback(data.rows);
-      return Promise.resolve(data.rows);
+      var rows = (data && data.rows && data.rows.length) ? data.rows : Column.fallbackTypes;
+      callback && callback(rows);
+      return Promise.resolve(rows);
+    }).catch(err => {
+      console.warn("Could not load catalog types, using fallback SQL types (#149):", err);
+      callback && callback(Column.fallbackTypes);
+      return Promise.resolve(Column.fallbackTypes);
     });
   }
 }

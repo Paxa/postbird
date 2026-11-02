@@ -85,8 +85,19 @@ class DbScreenView {
     });
 
     var tablesBlock = this.content.find('.sidebar .tables');
-    this.content.find('.show-system-tables input').bind('change', (e) => {
+    var showSchemasCheckbox = this.content.find('.show-system-tables input');
+
+    // Restore "Show Schemas" checkbox state from localStorage (#80)
+    if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('postbird:showSchemas') === '1') {
+      showSchemasCheckbox.prop('checked', true);
+      tablesBlock.removeClass('without-system-tables');
+    }
+
+    showSchemasCheckbox.bind('change', (e) => {
       var checkbox = e.target  as HTMLInputElement ;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('postbird:showSchemas', checkbox.checked ? '1' : '0');
+      }
       if (checkbox.checked) {
         tablesBlock.removeClass('without-system-tables');
       } else {

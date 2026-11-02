@@ -34,6 +34,23 @@ describe("Model.Monitor", () => {
     const queries = await monitor.fetchActiveQueries();
 
     assert.ok(Array.isArray(queries));
+    if (queries.length > 0) {
+      assert.ok(Array.isArray(queries[0].blocking_pids));
+      assert.equal(typeof queries[0].is_blocked, "boolean");
+      assert.equal(typeof queries[0].blocking_count, "number");
+    }
+  });
+
+  it("fetchIndexHealth returns unused and duplicate index analysis", async () => {
+    const conn = getConnection();
+    const monitor = new Model.Monitor(conn);
+    const health = await monitor.fetchIndexHealth();
+
+    assert.ok(health);
+    assert.ok(Array.isArray(health.unused));
+    assert.ok(Array.isArray(health.duplicates));
+    assert.equal(typeof health.totalUnusedBytes, "number");
+    assert.equal(typeof health.totalUnusedSizePretty, "string");
   });
 
   it("fetchStorageStats returns db size, buffers config, and index summary", async () => {
