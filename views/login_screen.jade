@@ -5,7 +5,7 @@
     button.add-connection.native-look(exec="addNewConnection") Add
 
   .main-window
-    .middle-window
+    .middle-window(active-part="standard")
       .header-tabs
         != link_to("Standard", '#', {exec: 'showStandardPane', class: 'login-with-password selected'})
         != link_to("Connect URL", '#', {exec: 'showUrlPane', class: 'enter-postgres-url'})
@@ -32,8 +32,8 @@
           p
             label
             label
-              != link_to("Show tunnel options", '#', {exec: 'showExtraLogingFields', class: 'open-extra-fields'})
-              != link_to("Hide tunnel options", '#', {exec: 'showExtraLogingFields', class: 'close-extra-fields'})
+              != link_to("Connect via SSH Tunnel", '#', {exec: 'showExtraLogingFields', class: 'open-extra-fields'})
+              != link_to("Hide SSH Tunnel options", '#', {exec: 'showExtraLogingFields', class: 'close-extra-fields'})
           p.extra-field
             label(for="login_query") Start Query
             input#login_query(name='sql_query', type='text', value='')

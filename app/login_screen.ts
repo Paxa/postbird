@@ -42,6 +42,7 @@ class LoginScreen {
       this.connectionName = Object.keys(this.savedConnections)[0];
       this.connectionSelected(this.connectionName);
     } else {
+      this.showStandardPane();
       this.fillForm({user: process.env.USER || 'user'});
     }
 
@@ -151,6 +152,7 @@ class LoginScreen {
   addNewConnection () {
     this.connections.find('.selected').removeClass('selected');
     this.connectionName = "**new**";
+    this.showStandardPane();
     this.fillForm({host: "localhost", user: "", password: "", database: "", port: ""});
     this.standardForm.form.find('[name=host]').focus();
     this.standardForm.setButtonShown(true);

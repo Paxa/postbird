@@ -191,9 +191,19 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     assert(buttonsContainer.find(".buttons-right button[exec='std_saveAndConnect']").length === 1, "Save & Connect must be inside .buttons-right");
     assert(buttonsContainer.find(".buttons-right input[type='submit']").length === 1, "Connect submit button must be inside .buttons-right");
 
-    // Verify tunnel options text does not have typos
+    // Verify tunnel options text and toggle behavior
     const tunnelLink = login.content.find(".open-extra-fields");
-    assert(tunnelLink.text().includes("Show tunnel options"), "Tunnel toggle text should read 'Show tunnel options'");
-    assert(!tunnelLink.text().includes("optiolds"), "No typos like 'optiolds'");
+    assert(tunnelLink.text().includes("Connect via SSH Tunnel"), "Tunnel toggle text should read 'Connect via SSH Tunnel'");
+
+    // Test expanding and collapsing SSH tunnel options
+    assert(!login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Should start collapsed");
+    tunnelLink[0].click();
+    assert(login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Clicking should toggle extra-login-fields-open");
+    assert(login.content.find(".extra-field").first().is(":visible"), "SSH extra fields should be visible when opened");
+
+    const closeTunnelLink = login.content.find(".close-extra-fields");
+    assert(closeTunnelLink.text().includes("Hide SSH Tunnel options"), "Close toggle text should read 'Hide SSH Tunnel options'");
+    closeTunnelLink[0].click();
+    assert(!login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Clicking close should collapse extra fields");
   });
 }

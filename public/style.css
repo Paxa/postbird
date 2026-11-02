@@ -450,17 +450,21 @@ body {
 .login-screen .middle-window .extra-login-fields .close-extra-fields {
   display: none;
 }
-.login-screen .middle-window[active-part=standard].extra-login-fields-open {
+.login-screen .middle-window .extra-login-fields .open-extra-fields, .login-screen .middle-window .extra-login-fields .close-extra-fields {
+  cursor: pointer;
+  user-select: none;
+}
+.login-screen .middle-window.extra-login-fields-open, .login-screen .middle-window[active-part=standard].extra-login-fields-open {
   margin-top: calc(50vh - 275px);
 }
-.login-screen .middle-window[active-part=standard].extra-login-fields-open .close-extra-fields {
-  display: inline;
+.login-screen .middle-window.extra-login-fields-open .close-extra-fields, .login-screen .middle-window[active-part=standard].extra-login-fields-open .close-extra-fields {
+  display: inline !important;
 }
-.login-screen .middle-window[active-part=standard].extra-login-fields-open .open-extra-fields {
-  display: none;
+.login-screen .middle-window.extra-login-fields-open .open-extra-fields, .login-screen .middle-window[active-part=standard].extra-login-fields-open .open-extra-fields {
+  display: none !important;
 }
-.login-screen .middle-window[active-part=standard].extra-login-fields-open .extra-login-fields p.extra-field {
-  display: block;
+.login-screen .middle-window.extra-login-fields-open .extra-login-fields p.extra-field, .login-screen .middle-window[active-part=standard].extra-login-fields-open .extra-login-fields p.extra-field {
+  display: block !important;
 }
 .login-screen .middle-window-content {
   display: none;

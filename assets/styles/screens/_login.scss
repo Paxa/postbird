@@ -147,19 +147,24 @@ $mac-block-tabs-radius: 4px;
       .close-extra-fields {
         display: none;
       }
+      .open-extra-fields, .close-extra-fields {
+        cursor: pointer;
+        user-select: none;
+      }
     }
 
+    &.extra-login-fields-open,
     &[active-part="standard"].extra-login-fields-open {
       margin-top: calc(50vh - 275px);
       .close-extra-fields {
-        display: inline;
+        display: inline !important;
       }
       .open-extra-fields {
-        display: none;
+        display: none !important;
       }
       .extra-login-fields {
         p.extra-field {
-          display: block;
+          display: block !important;
         }
       }
     }
