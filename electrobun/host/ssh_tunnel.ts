@@ -43,22 +43,43 @@ export async function createSshTunnel(options: any): Promise<{ tunnelId: string;
     };
 
     const conn = new SSHConnection(sshOptions);
-    const freePort = await new Promise<number>((res) => {
-      const s = net.createServer().listen(0, "127.0.0.1", () => {
-        const p = (s.address() as any).port;
-        s.close(() => res(p));
+    const connection = await conn.establish();
+
+    const targetHost = options.host || "127.0.0.1";
+    const targetPort = Number(options.port || 5432);
+
+    let localPort = 0;
+    const server = net.createServer((socket) => {
+      socket.on("error", (err) => {
+        console.warn("[SSH Tunnel Socket Error]", err.message);
+      });
+
+      connection.forwardOut("127.0.0.1", localPort, targetHost, targetPort, (err: any, stream: any) => {
+        if (err) {
+          console.error(`[SSH Tunnel] Failed to forward to ${targetHost}:${targetPort}:`, err.message || err);
+          socket.destroy(new Error(`SSH forward to ${targetHost}:${targetPort} failed: ${err.message || err}`));
+          return;
+        }
+
+        stream.on("error", (streamErr: any) => {
+          console.warn("[SSH Tunnel Stream Error]", streamErr.message);
+          socket.destroy(streamErr);
+        });
+
+        socket.pipe(stream).pipe(socket);
       });
     });
 
-    await conn.forward({
-      fromPort: freePort,
-      toPort: Number(options.port || 5432),
-      toHost: options.host || "127.0.0.1",
+    await new Promise<void>((resolve, reject) => {
+      server.listen(0, "127.0.0.1", () => resolve());
+      server.on("error", reject);
     });
 
-    activeTunnels.set(tunnelId, conn);
-    console.log(`[SSH Tunnel] Created tunnel ${tunnelId} on local port ${freePort} -> ${options.ssh_host}`);
-    return { tunnelId, host: "127.0.0.1", port: freePort };
+    localPort = (server.address() as any).port;
+
+    activeTunnels.set(tunnelId, { conn, server });
+    console.log(`[SSH Tunnel] Created tunnel ${tunnelId} on 127.0.0.1:${localPort} -> ${options.ssh_host} -> ${targetHost}:${targetPort}`);
+    return { tunnelId, host: "127.0.0.1", port: localPort };
   } catch (err: any) {
     console.error("[SSH Tunnel Error]", err);
     return { tunnelId: "", host: "", port: 0, error: err.message || String(err) };
@@ -66,10 +87,11 @@ export async function createSshTunnel(options: any): Promise<{ tunnelId: string;
 }
 
 export async function closeSshTunnel(tunnelId: string): Promise<{ success: boolean }> {
-  const conn = activeTunnels.get(tunnelId);
-  if (conn) {
+  const tunnel = activeTunnels.get(tunnelId);
+  if (tunnel) {
     try {
-      conn.shutdown();
+      if (tunnel.server) tunnel.server.close();
+      if (tunnel.conn) tunnel.conn.shutdown();
     } catch (e) {
       console.warn(`[SSH Tunnel] Warning shutting down tunnel ${tunnelId}:`, e);
     }
@@ -83,7 +105,8 @@ export async function closeAllTunnels(): Promise<void> {
   for (const [id, tunnel] of activeTunnels.entries()) {
     try {
       console.log(`[Graceful Shutdown] Ending SSH tunnel: ${id}`);
-      tunnel.shutdown();
+      if (tunnel.server) tunnel.server.close();
+      if (tunnel.conn) tunnel.conn.shutdown();
     } catch (e) {
       console.warn(`[SSH Tunnel] Warning closing tunnel ${id}:`, e);
     }

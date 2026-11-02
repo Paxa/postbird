@@ -9,6 +9,7 @@ class SshConnect_ {
   
     sshConnection?: typeof SSHConnection
     tunnelId?: string
+    server?: any
   
 
   async connectTo(connectOptions) {
@@ -23,8 +24,6 @@ class SshConnect_ {
         port: res.port
       };
     }
-
-    var freePort = await this.getFreePort();
 
     var sshConfig = await this.loadConfig();
     var configFileValues = sshConfig[connectOptions.ssh_host] || {};
@@ -60,12 +59,29 @@ class SshConnect_ {
     console.log('SSH connect', sshOptions)
     this.sshConnection = new SSHConnection(Object.assign({}, sshOptions))
 
+    var allocatedPort = 0;
     try {
-      await this.sshConnection.forward({
-        fromPort: freePort,
-        toPort: connectOptions.port,
-        toHost: connectOptions.host
-      })
+      const connection = await this.sshConnection.establish();
+      const targetHost = connectOptions.host || '127.0.0.1';
+      const targetPort = Number(connectOptions.port || 5432);
+
+      this.server = net.createServer((socket) => {
+        socket.on('error', () => {});
+        connection.forwardOut('127.0.0.1', allocatedPort, targetHost, targetPort, (err, stream) => {
+          if (err) {
+            socket.destroy(err);
+            return;
+          }
+          stream.on('error', () => socket.destroy());
+          socket.pipe(stream).pipe(socket);
+        });
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        this.server.listen(0, '127.0.0.1', () => resolve());
+        this.server.on('error', reject);
+      });
+      allocatedPort = (this.server.address() as any).port;
     } catch (err) {
       console.error(err)
       delete sshOptions.noReadline;
@@ -76,7 +92,7 @@ class SshConnect_ {
 
     return {
       host: '127.0.0.1',
-      port: freePort
+      port: allocatedPort
     }
   }
 
@@ -85,6 +101,10 @@ class SshConnect_ {
     if (this.tunnelId && typeof window !== "undefined" && (window as any).__postbirdRpc && (window as any).__postbirdRpc.closeSshTunnel) {
       (window as any).__postbirdRpc.closeSshTunnel({ tunnelId: this.tunnelId });
       this.tunnelId = undefined;
+    }
+    if (this.server) {
+      try { this.server.close(); } catch (e) {}
+      this.server = undefined;
     }
     if (this.sshConnection && this.sshConnection.shutdown) {
       this.sshConnection.shutdown();

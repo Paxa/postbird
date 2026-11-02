@@ -105,7 +105,7 @@ class LoginPostgresUrlForm {
       } else {
         if (showConnectionError) {
           $u.alertError("Connection Error", {
-            detail: App.humanErrorMessage(error)
+            detail: App.humanErrorMessage(error, options)
           });
         } else {
           console.error(error)

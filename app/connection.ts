@@ -277,6 +277,8 @@ class Connection {
       this.sshConnection.connectTo(options).then(tunnel => {
         console.log('ssh tunnel', tunnel);
         this.options.tab_name = this.options.host;
+        const originalHost = this.options.host;
+        const originalPort = this.options.port;
         this.options.host = tunnel.host;
         this.options.port = tunnel.port;
 
@@ -285,17 +287,32 @@ class Connection {
         return this._startConnection(this.options, (success, error) => {
           if (!success) {
             this.sshConnection.disconnect();
+            if (error) {
+              (error as any).sshStatus = "OK";
+              (error as any).dbStatus = "Error";
+              (error as any).originalHost = originalHost;
+              (error as any).originalPort = originalPort;
+            }
           }
           callback(success, error)
         });
       }).catch(error => {
         console.error(error);
+        if (error) {
+          (error as any).sshStatus = "Error";
+          (error as any).dbStatus = "Not attempted";
+        }
         callback && callback(false, error);
         App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
       });
     } else {
       this.connection = this._initConnection(this.connectString);
-      return this._startConnection(options, callback);
+      return this._startConnection(options, (success, error) => {
+        if (!success && error) {
+          (error as any).dbStatus = "Error";
+        }
+        callback && callback(success, error);
+      });
     }
   }
 

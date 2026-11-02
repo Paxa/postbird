@@ -339,7 +339,7 @@ global.App = {
         tab.activate();
         if (callback && runCallback) callback(tab);
       } else {
-        var errorDetail = this.humanErrorMessage(error);
+        var errorDetail = this.humanErrorMessage(error, options);
         (window as any).__postbirdRpc?.logDevError?.({
           type: "CONNECTION_ERROR",
           message: error?.message || String(error),
@@ -360,24 +360,38 @@ global.App = {
     });
   },
 
-  humanErrorMessage: (error, options = {}) => {
+  humanErrorMessage: (error, options: any = {}) => {
     if (!error) return "Unknown error";
     var msg = error.message || String(error);
+    var details = msg;
+
     if (msg.includes("connect ECONNREFUSED")) {
-      return `Connection refused (${msg}).<br>Make sure PostgreSQL is running and accessible on the specified host and port.`;
+      var target = (error.originalHost && error.originalPort) ? `${error.originalHost}:${error.originalPort}` : "";
+      if (target) {
+        details = `Connection refused (${target}).\nMake sure PostgreSQL is running on the remote server and accessible on that port.`;
+      } else {
+        details = `Connection refused (${msg}).\nMake sure PostgreSQL is running and accessible on the specified host and port.`;
+      }
     } else if (msg.match(/getaddrinfo ENOTFOUND\s*(.+)?/)) {
       var host = msg.match(/getaddrinfo ENOTFOUND\s*(.+)?/);
-      return `Can not resolve host '${host && host[1] ? host[1] : ""}'`;
+      details = `Can not resolve host '${host && host[1] ? host[1] : ""}'`;
     } else if (msg.match(/connect ENOENT\s*(.+)?/)) {
       var socket = msg.match(/connect ENOENT\s*(.+)?/);
-      return `Unix socket not found at ${socket && socket[1] ? socket[1] : ""}`;
-    } else {
-      var message = msg;
-      if ((options as any).showQuery && error.query) {
-        message += `\n\nSQL:\n${error.query}`;
-      }
-      return message;
+      details = `Unix socket not found at ${socket && socket[1] ? socket[1] : ""}`;
     }
+
+    if (options.showQuery && error.query) {
+      details += `\n\nSQL:\n${error.query}`;
+    }
+
+    var hasSsh = Boolean(error.sshStatus || options.ssh_host);
+    if (hasSsh) {
+      var sshStatus = error.sshStatus || (error.dbStatus ? "OK" : "Error");
+      var dbStatus = error.dbStatus || (sshStatus === "OK" ? "Error" : "Not attempted");
+      return `SSH Tunnel: ${sshStatus}\nDB Connection: ${dbStatus}\n\n${details}`;
+    }
+
+    return `DB Connection: Error\n\n${details}`;
   },
 
   
