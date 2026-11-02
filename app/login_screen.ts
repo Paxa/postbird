@@ -62,6 +62,10 @@ class LoginScreen {
     });
   }
 
+  executeHandler (exec: string) {
+    return PaneBase.prototype.executeHandler.call(this, exec);
+  }
+
   showPart (name) {
     this.activeForm = name;
     this.content.find('.middle-window-content').hide();

@@ -55,7 +55,11 @@ class PaneBase {
         this.lastEvent = e;
         var exec = el.getAttribute('exec');
         if (exec) {
-          this.executeHandler(exec);
+          if (typeof this.executeHandler === 'function') {
+            this.executeHandler(exec);
+          } else {
+            PaneBase.prototype.executeHandler.call(this, exec);
+          }
         }
       });
     });

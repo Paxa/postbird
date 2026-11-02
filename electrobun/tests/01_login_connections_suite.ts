@@ -6,21 +6,26 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
 
   const { assert, waitFor, test, fillInput, clickElement } = h;
 
-  await test("login screen: renders standard and URL form panes", async () => {
+  await test("login screen: renders standard and URL form panes via tab clicks", async () => {
     assert(window.App.loginScreen, "App.loginScreen must exist");
     const login = window.App.loginScreen;
     const initialActiveTab = window.App.activeTab;
     window.App.activateLoginTab();
 
-    login.showStandardPane();
-    assert(login.activeForm === "standard", "Active form should be standard");
-    assert(login.content.find(".middle-window-content.standard").is(":visible"), "Standard form must be visible");
-
-    login.showUrlPane();
-    assert(login.activeForm === "postgres-url", "Active form should be postgres-url");
+    // Click 'Connect URL' tab link in DOM
+    const urlTabLink = login.content.find(".enter-postgres-url");
+    assert(urlTabLink.length === 1, "Connect URL tab link must exist");
+    await clickElement(urlTabLink[0]);
+    assert(login.activeForm === "postgres-url", "Active form should be postgres-url after clicking Connect URL tab");
     assert(login.content.find(".middle-window-content.postgres-url").is(":visible"), "URL form must be visible");
 
-    login.showStandardPane();
+    // Click 'Standard' tab link in DOM
+    const stdTabLink = login.content.find(".login-with-password");
+    assert(stdTabLink.length === 1, "Standard tab link must exist");
+    await clickElement(stdTabLink[0]);
+    assert(login.activeForm === "standard", "Active form should be standard after clicking Standard tab");
+    assert(login.content.find(".middle-window-content.standard").is(":visible"), "Standard form must be visible");
+
     if (initialActiveTab !== null && window.App.tabs[initialActiveTab]) {
       window.App.activateTab(initialActiveTab);
     }
@@ -197,13 +202,13 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
 
     // Test expanding and collapsing SSH tunnel options
     assert(!login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Should start collapsed");
-    tunnelLink[0].click();
+    await clickElement(tunnelLink[0]);
     assert(login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Clicking should toggle extra-login-fields-open");
     assert(login.content.find(".extra-field").first().is(":visible"), "SSH extra fields should be visible when opened");
 
     const closeTunnelLink = login.content.find(".close-extra-fields");
     assert(closeTunnelLink.text().includes("Hide SSH Tunnel options"), "Close toggle text should read 'Hide SSH Tunnel options'");
-    closeTunnelLink[0].click();
+    await clickElement(closeTunnelLink[0]);
     assert(!login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Clicking close should collapse extra fields");
   });
 }
