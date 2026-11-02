@@ -198,6 +198,16 @@ var helpers = (global as any).ViewHelpers = {
     } else {
       return (bytes / 1073741824).toFixed(3).replace(/\.?0+$/, '') + " GB";
     }
+  },
+
+  escapeHTML(unsafe: any) {
+    if (unsafe === null || unsafe === undefined) return "";
+    return String(unsafe)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 };
 

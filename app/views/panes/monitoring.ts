@@ -321,7 +321,7 @@ class Monitoring extends PaneBase {
             <td><span class="state-pill state-${q.state}">${q.state}</span></td>
             <td>${waitBadge}</td>
             <td><span class="duration-badge ${durationClass}">${q.duration_seconds}s</span></td>
-            <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query)}"><code>${(global as any).ViewHelpers.escapeHTML(q.query.substring(0, 120))}</code></td>
+            <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query || '')}"><code>${(global as any).ViewHelpers.escapeHTML((q.query || '').substring(0, 120))}</code></td>
             <td class="actions-cell">
               <button class="btn-native-small btn-cancel-query" data-pid="${q.pid}" title="Cancel Query (pg_cancel_backend)">Cancel</button>
               <button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Terminate Connection (pg_terminate_backend)">Kill</button>
@@ -526,7 +526,7 @@ class Monitoring extends PaneBase {
               <td>${q.max_time_ms} ms</td>
               <td>${Number(q.calls).toLocaleString()}</td>
               <td>${Number(q.rows).toLocaleString()}</td>
-              <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query)}"><code>${(global as any).ViewHelpers.escapeHTML(q.query.substring(0, 160))}</code></td>
+              <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query || '')}"><code>${(global as any).ViewHelpers.escapeHTML((q.query || '').substring(0, 160))}</code></td>
             </tr>
           `);
         });

@@ -147,4 +147,13 @@ describe("Model.Monitor", () => {
     assert.contain(svg, "</svg>");
     assert.contain(svg, 'Peak: 1');
   });
+
+  it("ViewHelpers.escapeHTML properly escapes HTML characters and handles falsy values", () => {
+    const ViewHelpers = (global as any).ViewHelpers;
+    assert(ViewHelpers && typeof ViewHelpers.escapeHTML === "function", "ViewHelpers.escapeHTML must exist");
+    assert.equal(ViewHelpers.escapeHTML("<script>alert('xss')</script>"), "&lt;script&gt;alert(&#039;xss&#039;)&lt;/script&gt;");
+    assert.equal(ViewHelpers.escapeHTML("SELECT * FROM foo WHERE a = '1' AND b = \"2\" & c < 5;"), "SELECT * FROM foo WHERE a = &#039;1&#039; AND b = &quot;2&quot; &amp; c &lt; 5;");
+    assert.equal(ViewHelpers.escapeHTML(null), "");
+    assert.equal(ViewHelpers.escapeHTML(undefined), "");
+  });
 });
