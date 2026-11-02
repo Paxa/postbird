@@ -92,11 +92,13 @@ class Monitoring extends PaneBase {
     // Fetch initial data
     await this.fetchOverview();
 
+    // Check replication to show or hide the section
+    this.fetchReplication(true);
+
     // If non-overview sections were saved as expanded, load them too
     if (this.expandedSections.queries && !this.queriesData) this.fetchQueries();
     if (this.expandedSections.storage && !this.storageData) this.fetchStorage();
     if (this.expandedSections.vacuum && !this.vacuumData) this.fetchVacuum();
-    if (this.expandedSections.replication && !this.replicationData) this.fetchReplication();
     if (this.expandedSections.slow_queries && !this.slowQueryData) this.fetchSlowQueries();
 
     if (this.isLive) {
@@ -308,7 +310,9 @@ class Monitoring extends PaneBase {
     sec.find('.metric-cache-sub').text(d.database.cacheHitRatio >= 99 ? '🟢 Optimal buffer cache' : '🟡 High disk read ratio');
 
     sec.find('.metric-qps-val').text(`${currentQps} tx/s`);
-    sec.find('.metric-qps-sub').text(`${d.database.xactCommit} commits, ${d.database.xactRollback} rollbacks`);
+    const commits = Number(d.database.xactCommit || 0).toLocaleString();
+    const rollbacks = Number(d.database.xactRollback || 0).toLocaleString();
+    sec.find('.metric-qps-sub').text(`${commits} commits, ${rollbacks} rollbacks`);
 
     sec.find('.metric-load-val').text(`${d.summedQueryTimeMs} ms`);
     sec.find('.metric-load-sub').text(`${d.activeQueries.length} running or waiting`);
@@ -502,19 +506,26 @@ class Monitoring extends PaneBase {
     }
   }
 
-  async fetchReplication() {
+  async fetchReplication(isSilent: boolean = false) {
     try {
       const data = await this.model.fetchReplicationStats();
       this.replicationData = data;
+
+      const sec = this.content.find('.monitor-section[data-section="replication"]');
+      if (!sec.length) return;
+
+      if (!data.isConfigured) {
+        sec.hide();
+        return;
+      }
+
+      sec.show();
 
       const role = data.isReplica ? 'Standby Node' : 'Primary Node';
       const standbySummary = data.standbys.length > 0 ? `${data.standbys.length} standbys connected` : 'Single node';
       const slotSummary = `${data.inactiveSlotsCount} inactive slots`;
       this.sectionSummaries.replication = `${role} • ${standbySummary} • ${slotSummary}`;
       this.updateSectionSummary('replication', this.sectionSummaries.replication);
-
-      const sec = this.content.find('.monitor-section[data-section="replication"]');
-      if (!sec.length) return;
 
       // Standby / Receiver Table
       const tbody = sec.find('.replication-nodes-table tbody');
@@ -569,7 +580,11 @@ class Monitoring extends PaneBase {
         });
       }
     } catch (e: any) {
-      $u.alertError('Failed to fetch replication stats', { detail: e.toString() });
+      const sec = this.content.find('.monitor-section[data-section="replication"]');
+      if (sec.length) sec.hide();
+      if (!isSilent) {
+        $u.alertError('Failed to fetch replication stats', { detail: e.toString() });
+      }
     }
   }
 

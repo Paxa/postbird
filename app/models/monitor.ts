@@ -323,8 +323,15 @@ class Monitor extends ModelBase {
     } catch (e) {}
 
     const inactiveSlotsCount = replicationSlots.filter((s: any) => !s.active).length;
+    const isConfigured = Boolean(
+      isReplica ||
+      standbys.length > 0 ||
+      replicationSlots.length > 0 ||
+      walReceiver
+    );
 
     return {
+      isConfigured: isConfigured,
       isReplica: isReplica,
       standbys: standbys,
       walReceiver: walReceiver,

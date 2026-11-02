@@ -196,7 +196,7 @@ mixin refreshIcon(size)
     // -------------------------------------------------------------
     // SECTION 4: STREAMING REPLICATION & WAL
     // -------------------------------------------------------------
-    .monitor-section(data-section="replication", class=expandedSections.replication ? 'expanded' : '')
+    .monitor-section(data-section="replication", class=expandedSections.replication ? 'expanded' : '', style=replicationData && replicationData.isConfigured ? '' : 'display: none;')
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Streaming Replication & WAL Slots

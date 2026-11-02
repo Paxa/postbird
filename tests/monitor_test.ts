@@ -76,6 +76,7 @@ describe("Model.Monitor", () => {
 
     assert.ok(stats);
     assert.equal(typeof stats.isReplica, "boolean");
+    assert.equal(typeof stats.isConfigured, "boolean");
     assert.ok(Array.isArray(stats.standbys));
     assert.ok(Array.isArray(stats.replicationSlots));
     assert.equal(typeof stats.inactiveSlotsCount, "number");
