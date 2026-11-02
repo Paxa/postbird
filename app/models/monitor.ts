@@ -229,19 +229,33 @@ class Monitor extends ModelBase {
       WHERE c.relkind = 'i' AND n.nspname NOT IN ('pg_catalog', 'information_schema');
     `;
 
-    // 4. Top 10 tables by combined size
+    // 4. Top 10 tables by combined size with scan activity & unused index health
     const topTablesSql = `
       SELECT 
-        schemaname || '.' || relname AS table_name,
-        pg_table_size(relid)::bigint AS table_size_bytes,
-        pg_size_pretty(pg_table_size(relid)) AS table_size_pretty,
-        pg_indexes_size(relid)::bigint AS index_size_bytes,
-        pg_size_pretty(pg_indexes_size(relid)) AS index_size_pretty,
-        pg_total_relation_size(relid)::bigint AS total_size_bytes,
-        pg_size_pretty(pg_total_relation_size(relid)) AS total_size_pretty,
-        n_live_tup AS live_rows
-      FROM pg_stat_user_tables
-      ORDER BY pg_total_relation_size(relid) DESC
+        t.schemaname || '.' || t.relname AS table_name,
+        pg_table_size(t.relid)::bigint AS table_size_bytes,
+        pg_size_pretty(pg_table_size(t.relid)) AS table_size_pretty,
+        pg_indexes_size(t.relid)::bigint AS index_size_bytes,
+        pg_size_pretty(pg_indexes_size(t.relid)) AS index_size_pretty,
+        pg_total_relation_size(t.relid)::bigint AS total_size_bytes,
+        pg_size_pretty(pg_total_relation_size(t.relid)) AS total_size_pretty,
+        t.n_live_tup AS live_rows,
+        COALESCE(t.seq_scan, 0)::bigint AS seq_scans,
+        COALESCE(t.idx_scan, 0)::bigint AS idx_scans,
+        CASE 
+          WHEN (COALESCE(t.seq_scan, 0) + COALESCE(t.idx_scan, 0)) = 0 THEN 100.0
+          ELSE ROUND((COALESCE(t.idx_scan, 0)::numeric / (COALESCE(t.seq_scan, 0) + COALESCE(t.idx_scan, 0))) * 100, 1)
+        END AS index_usage_pct,
+        COUNT(i.indexrelid)::int AS total_indexes_count,
+        COUNT(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT i.indisunique AND NOT i.indisprimary THEN 1 END)::int AS unused_indexes_count,
+        COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT i.indisunique AND NOT i.indisprimary THEN pg_relation_size(s.indexrelid) ELSE 0 END), 0)::bigint AS unused_indexes_bytes,
+        pg_size_pretty(COALESCE(SUM(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT i.indisunique AND NOT i.indisprimary THEN pg_relation_size(s.indexrelid) ELSE 0 END), 0)::bigint) AS unused_indexes_pretty,
+        COALESCE(string_agg(CASE WHEN COALESCE(s.idx_scan, 0) = 0 AND NOT i.indisunique AND NOT i.indisprimary THEN s.indexrelname END, ', '), '') AS unused_index_names
+      FROM pg_stat_user_tables t
+      LEFT JOIN pg_index i ON i.indrelid = t.relid
+      LEFT JOIN pg_stat_user_indexes s ON s.indexrelid = i.indexrelid
+      GROUP BY t.schemaname, t.relname, t.relid, t.n_live_tup, t.seq_scan, t.idx_scan
+      ORDER BY pg_total_relation_size(t.relid) DESC
       LIMIT 10;
     `;
 

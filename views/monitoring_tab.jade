@@ -121,9 +121,17 @@ mixin refreshIcon(size)
               span.storage-fit-badge.badge-fit-normal -
 
           .gauge-bar-wrapper
+            .gauge-bar-info
+              .info-active
+                span.info-label Active Indexes: 
+                strong.storage-gauge-active-val -
+                span.storage-gauge-unused-note.info-unused
+              .info-buffers
+                span.info-label shared_buffers: 
+                strong.storage-gauge-buffers-val -
+                span.storage-gauge-pct.info-pct
             .gauge-bar-track
               .gauge-bar-fill.storage-gauge-fill(style="width: 0%")
-              .gauge-bar-text.storage-gauge-text Loading index buffer fit...
             .gauge-bar-scale
               span 0%
               span 50%
@@ -160,13 +168,14 @@ mixin refreshIcon(size)
               thead
                 tr
                   th Table Name
-                  th(style="width: 110px;") Live Rows
-                  th(style="width: 110px;") Table Data
-                  th(style="width: 110px;") Indexes Size
-                  th(style="width: 120px;") Total Size
+                  th(style="width: 95px;") Live Rows
+                  th(style="width: 100px;") Table Data
+                  th(style="width: 100px;") Indexes Size
+                  th(style="width: 200px;") Index Usage & Scans
+                  th(style="width: 110px;") Total Size
               tbody
                 tr
-                  td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load storage details.
+                  td(colspan="6", class="text-muted text-center", style="padding: 14px;") Click to load storage details.
 
     // -------------------------------------------------------------
     // SECTION 3: VACUUM & BLOAT HEALTH

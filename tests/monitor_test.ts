@@ -67,6 +67,23 @@ describe("Model.Monitor", () => {
     assert.equal(typeof stats.sharedBuffersBytes, "number");
     assert.ok(typeof stats.bufferFitPercent, "number");
     assert.ok(Array.isArray(stats.topTables));
+
+    // Verify top tables scan stats and unused index detection
+    await conn.query("CREATE TABLE IF NOT EXISTS test_tbl_scans (id serial PRIMARY KEY, data text, unused_field text);");
+    await conn.query("CREATE INDEX IF NOT EXISTS idx_tbl_scans_unused ON test_tbl_scans(unused_field);");
+    await conn.query("INSERT INTO test_tbl_scans (data, unused_field) VALUES ('val1', 'u1');");
+
+    const statsWithTable = await monitor.fetchStorageStats();
+    assert.ok(statsWithTable.topTables.length > 0);
+    const sample = statsWithTable.topTables.find((t: any) => t.table_name.includes("test_tbl_scans"));
+    if (sample) {
+      assert.ok(typeof sample.seq_scans !== "undefined");
+      assert.ok(typeof sample.idx_scans !== "undefined");
+      assert.ok(typeof sample.index_usage_pct !== "undefined");
+      assert.ok(sample.total_indexes_count >= 2);
+      assert.ok(sample.unused_indexes_count >= 1);
+      assert.ok(sample.unused_index_names.includes("idx_tbl_scans_unused"));
+    }
   });
 
   it("fetchVacuumStats returns table bloat statistics and active vacuum array", async () => {

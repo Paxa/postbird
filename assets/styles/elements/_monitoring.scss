@@ -358,15 +358,51 @@
     .gauge-bar-wrapper {
       margin-bottom: 12px;
 
+      .gauge-bar-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 11px;
+        margin-bottom: 6px;
+        color: #3a3a3c;
+
+        .info-active {
+          .info-label {
+            color: #6e6e73;
+          }
+          strong {
+            color: #1d1d1f;
+            font-weight: 600;
+          }
+          .info-unused {
+            margin-left: 6px;
+            color: #8e8e93;
+            font-size: 11px;
+          }
+        }
+
+        .info-buffers {
+          .info-label {
+            color: #6e6e73;
+          }
+          strong {
+            color: #1d1d1f;
+            font-weight: 600;
+          }
+          .info-pct {
+            margin-left: 4px;
+            font-weight: 600;
+            color: #007aff;
+          }
+        }
+      }
+
       .gauge-bar-track {
         position: relative;
-        height: 22px;
+        height: 10px;
         background: #e8e8ed;
-        border-radius: 4px;
+        border-radius: 5px;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
 
         .gauge-bar-fill {
           position: absolute;
@@ -374,7 +410,7 @@
           top: 0;
           bottom: 0;
           height: 100%;
-          border-radius: 4px 0 0 4px;
+          border-radius: 5px;
           transition: width 0.3s ease;
 
           &.fill-normal {
@@ -391,16 +427,6 @@
             background: #5856d6;
           }
         }
-
-        .gauge-bar-text {
-          position: relative;
-          z-index: 2;
-          font-size: 11px;
-          font-weight: 600;
-          color: #1d1d1f;
-          text-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
-          pointer-events: none;
-        }
       }
 
       .gauge-bar-scale {
@@ -408,7 +434,7 @@
         justify-content: space-between;
         font-size: 10px;
         color: #8e8e93;
-        margin-top: 3px;
+        margin-top: 4px;
         padding: 0 2px;
       }
     }
@@ -441,6 +467,31 @@
         }
       }
     }
+  }
+
+  .table-unused-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    background: rgba(255, 149, 0, 0.12);
+    color: #b25900;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: default;
+  }
+  .table-used-badge {
+    font-size: 11px;
+    color: #6e6e73;
+  }
+  .scan-pct-pill {
+    display: inline-block;
+    padding: 1px 5px;
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 3px;
   }
 
   // Tables inside monitoring
@@ -760,7 +811,26 @@ body.dark-mode {
       }
 
       .gauge-bar-wrapper {
+        .gauge-bar-info {
+          color: #d1d1d6;
+          .info-active .info-label,
+          .info-buffers .info-label {
+            color: #98989d;
+          }
+          .info-active strong,
+          .info-buffers strong {
+            color: #f5f5f7;
+          }
+          .info-active .info-unused {
+            color: #98989d;
+          }
+          .info-buffers .info-pct {
+            color: #5ac8fa;
+          }
+        }
+
         .gauge-bar-track {
+          background: #3e3e42;
           .gauge-bar-fill {
             &.fill-normal {
               background: #30d158;
@@ -776,14 +846,22 @@ body.dark-mode {
               background: #5e5ce6;
             }
           }
-          .gauge-bar-text {
-            color: #ffffff;
-            text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
-          }
         }
         .gauge-bar-scale {
           color: #98989d;
         }
+      }
+
+      .table-unused-badge {
+        background: rgba(255, 159, 10, 0.22);
+        color: #ffb340;
+      }
+      .table-used-badge {
+        color: #98989d;
+      }
+      .scan-pct-pill {
+        background: rgba(99, 102, 241, 0.2);
+        color: #a5b4fc;
       }
 
       .storage-metrics-chips {

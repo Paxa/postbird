@@ -2186,15 +2186,44 @@ span.proc-arg-list {
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper {
   margin-bottom: 12px;
 }
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  margin-bottom: 6px;
+  color: #3a3a3c;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-label {
+  color: #6e6e73;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-unused {
+  margin-left: 6px;
+  color: #8e8e93;
+  font-size: 11px;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-label {
+  color: #6e6e73;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-pct {
+  margin-left: 4px;
+  font-weight: 600;
+  color: #007aff;
+}
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track {
   position: relative;
-  height: 22px;
+  height: 10px;
   background: #e8e8ed;
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill {
   position: absolute;
@@ -2202,7 +2231,7 @@ span.proc-arg-list {
   top: 0;
   bottom: 0;
   height: 100%;
-  border-radius: 4px 0 0 4px;
+  border-radius: 5px;
   transition: width 0.3s ease;
 }
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal {
@@ -2217,21 +2246,12 @@ span.proc-arg-list {
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-extended, .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger {
   background: #5856d6;
 }
-.monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text {
-  position: relative;
-  z-index: 2;
-  font-size: 11px;
-  font-weight: 600;
-  color: #1d1d1f;
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
-  pointer-events: none;
-}
 .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-scale {
   display: flex;
   justify-content: space-between;
   font-size: 10px;
   color: #8e8e93;
-  margin-top: 3px;
+  margin-top: 4px;
   padding: 0 2px;
 }
 .monitoring-view .storage-buffer-gauge-card .storage-metrics-chips {
@@ -2259,6 +2279,30 @@ span.proc-arg-list {
   font-size: 13px;
   font-weight: 600;
   color: #1d1d1f;
+}
+.monitoring-view .table-unused-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  background: rgba(255, 149, 0, 0.12);
+  color: #b25900;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: default;
+}
+.monitoring-view .table-used-badge {
+  font-size: 11px;
+  color: #6e6e73;
+}
+.monitoring-view .scan-pct-pill {
+  display: inline-block;
+  padding: 1px 5px;
+  background: #eef2ff;
+  color: #4f46e5;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-right: 3px;
 }
 .monitoring-view table {
   width: 100%;
@@ -2556,6 +2600,42 @@ body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-header .storag
   background: rgba(94, 92, 230, 0.25);
   color: #9d9bf6;
 }
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info {
+  color: #d1d1d6;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-label,
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-label,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-active .info-label,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-label,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-label,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-label {
+  color: #98989d;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-active strong,
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-buffers strong,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-active strong,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-buffers strong,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active strong,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers strong {
+  color: #f5f5f7;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-unused,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-active .info-unused,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-active .info-unused {
+  color: #98989d;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-pct,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-pct,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-info .info-buffers .info-pct {
+  color: #5ac8fa;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track,
+body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track {
+  background: #3e3e42;
+}
 body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal,
 body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal,
 body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-normal {
@@ -2578,16 +2658,27 @@ body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .g
 body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-fill.fill-danger {
   background: #5e5ce6;
 }
-body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text,
-body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text,
-body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-track .gauge-bar-text {
-  color: #ffffff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
-}
 body.dark-mode .monitoring-view .metric-cards-grid .metric-card .gauge-bar-wrapper .gauge-bar-scale,
 body.dark-mode .monitoring-view .charts-grid .chart-box .gauge-bar-wrapper .gauge-bar-scale,
 body.dark-mode .monitoring-view .storage-buffer-gauge-card .gauge-bar-wrapper .gauge-bar-scale {
   color: #98989d;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .table-unused-badge,
+body.dark-mode .monitoring-view .charts-grid .chart-box .table-unused-badge,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .table-unused-badge {
+  background: rgba(255, 159, 10, 0.22);
+  color: #ffb340;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .table-used-badge,
+body.dark-mode .monitoring-view .charts-grid .chart-box .table-used-badge,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .table-used-badge {
+  color: #98989d;
+}
+body.dark-mode .monitoring-view .metric-cards-grid .metric-card .scan-pct-pill,
+body.dark-mode .monitoring-view .charts-grid .chart-box .scan-pct-pill,
+body.dark-mode .monitoring-view .storage-buffer-gauge-card .scan-pct-pill {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
 }
 body.dark-mode .monitoring-view .metric-cards-grid .metric-card .storage-metrics-chips .storage-chip,
 body.dark-mode .monitoring-view .charts-grid .chart-box .storage-metrics-chips .storage-chip,

@@ -484,10 +484,16 @@ class Monitoring extends PaneBase {
       const badge = sec.find('.storage-fit-badge');
 
       fill.css('width', `${fillPct}%`);
-      const gaugeLabel = data.unusedIndexesBytes > 0
-        ? `${data.activeIndexesPretty} active (${data.totalIndexesPretty} total) / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`
-        : `${activeIdxText} active indexes / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`;
-      sec.find('.storage-gauge-text').text(gaugeLabel);
+
+      // Update separated text legend above gauge bar
+      sec.find('.storage-gauge-active-val').text(activeIdxText || '0 Bytes');
+      if (data.unusedIndexesBytes > 0) {
+        sec.find('.storage-gauge-unused-note').text(`(excl. ${data.unusedIndexesPretty} unused, ${data.totalIndexesPretty} total)`).show();
+      } else {
+        sec.find('.storage-gauge-unused-note').text(`(${data.totalIndexesPretty} total)`).show();
+      }
+      sec.find('.storage-gauge-buffers-val').text(data.sharedBuffersPretty || '-');
+      sec.find('.storage-gauge-pct').text(`(${pct}%)`);
 
       fill.removeClass('fill-normal fill-optimal fill-warning fill-extended fill-danger');
       badge.removeClass('badge-fit-normal badge-fit-optimal badge-fit-warning badge-fit-extended badge-fit-danger');
@@ -517,20 +523,54 @@ class Monitoring extends PaneBase {
       sec.find('.storage-cache-val').text(data.effectiveCachePretty || '-');
       sec.find('.storage-workmem-val').text(data.workMemPretty || '-');
 
-      // Update Tables List
+      // Update Tables List with Index Usage and Unused Stats
       const tbody = sec.find('.top-tables-table tbody');
       tbody.empty();
-      data.topTables.forEach((t: any) => {
+      if (!data.topTables || data.topTables.length === 0) {
         tbody.append(`
           <tr>
-            <td><strong>${t.table_name}</strong></td>
-            <td>${Number(t.live_rows).toLocaleString()}</td>
-            <td>${t.table_size_pretty}</td>
-            <td>${t.index_size_pretty}</td>
-            <td><strong>${t.total_size_pretty}</strong></td>
+            <td colspan="6" class="text-muted text-center" style="padding: 14px;">No user tables found in current database.</td>
           </tr>
         `);
-      });
+      } else {
+        data.topTables.forEach((t: any) => {
+          const totalScans = Number(t.idx_scans || 0) + Number(t.seq_scans || 0);
+          let usageHtml = '';
+          if (Number(t.total_indexes_count) === 0) {
+            usageHtml = '<span class="text-muted">No indexes</span>';
+          } else {
+            const idxScansStr = Number(t.idx_scans || 0).toLocaleString();
+            const seqScansStr = Number(t.seq_scans || 0).toLocaleString();
+            const pct = Math.round(Number(t.index_usage_pct || 0));
+
+            const scanParts: string[] = [];
+            if (totalScans > 0) {
+              scanParts.push(`<span class="scan-pct-pill" title="${idxScansStr} index scans, ${seqScansStr} seq scans">${pct}% idx</span>`);
+              scanParts.push(`<span class="table-used-badge">${idxScansStr} scans</span>`);
+            } else {
+              scanParts.push(`<span class="table-used-badge text-muted">0 scans</span>`);
+            }
+
+            if (Number(t.unused_indexes_count) > 0) {
+              const safeNames = (global as any).ViewHelpers.escapeHTML(t.unused_index_names || '');
+              const tooltip = `Unused index: ${safeNames} (${t.unused_indexes_pretty})`;
+              scanParts.push(`<span class="table-unused-badge" title="${tooltip}">⚠️ ${t.unused_indexes_count} unused (${t.unused_indexes_pretty})</span>`);
+            }
+            usageHtml = scanParts.join(' ');
+          }
+
+          tbody.append(`
+            <tr>
+              <td><strong>${(global as any).ViewHelpers.escapeHTML(t.table_name)}</strong></td>
+              <td>${Number(t.live_rows).toLocaleString()}</td>
+              <td>${t.table_size_pretty}</td>
+              <td>${t.index_size_pretty}</td>
+              <td>${usageHtml}</td>
+              <td><strong>${t.total_size_pretty}</strong></td>
+            </tr>
+          `);
+        });
+      }
     } catch (e: any) {
       $u.alertError('Failed to fetch storage stats', { detail: e.toString() });
     }
