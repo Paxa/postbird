@@ -142,6 +142,14 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     });
     assert(connectionFailed, "Connection to invalid port 54399 should return false");
 
+    // Verify alertify dialog was opened with error message and dismiss it
+    const alertifyEl = window.$u("#alertify");
+    assert(alertifyEl.length === 1, "#alertify modal element should exist in DOM");
+    assert(alertifyEl.find(".alertify-message").text().includes("Connection"), "Alertify should display connection error");
+    if (window.alertify && typeof window.alertify.hide === "function") {
+      window.alertify.hide();
+    }
+
     // 2. Cancelable loading modal
     let cancelCalled = false;
     window.App.startLoading("Testing cancellation...", 0, {

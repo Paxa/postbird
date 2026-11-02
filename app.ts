@@ -353,16 +353,18 @@ global.App = {
   },
 
   humanErrorMessage: (error, options = {}) => {
-    if (error.message == "connect ECONNREFUSED") {
-      return "Connection refused.<br>Make sure postgres is running";
-    } else if (error.message.match(/^getaddrinfo ENOTFOUND/)) {
-      var host = error.message.match(/^getaddrinfo ENOTFOUND\s+(.+)$/);
-      return `Can not resolve host '${host[1]}'`;
-    } else if (error.message.match(/^connect ENOENT /)) {
-      var socket = error.message.match(/^connect ENOENT\s+(.+)$/);
-      return `Unix socket not found at ${socket[1]}`;
+    if (!error) return "Unknown error";
+    var msg = error.message || String(error);
+    if (msg.includes("connect ECONNREFUSED")) {
+      return `Connection refused (${msg}).<br>Make sure PostgreSQL is running and accessible on the specified host and port.`;
+    } else if (msg.match(/getaddrinfo ENOTFOUND\s*(.+)?/)) {
+      var host = msg.match(/getaddrinfo ENOTFOUND\s*(.+)?/);
+      return `Can not resolve host '${host && host[1] ? host[1] : ""}'`;
+    } else if (msg.match(/connect ENOENT\s*(.+)?/)) {
+      var socket = msg.match(/connect ENOENT\s*(.+)?/);
+      return `Unix socket not found at ${socket && socket[1] ? socket[1] : ""}`;
     } else {
-      var message = error.message;
+      var message = msg;
       if ((options as any).showQuery && error.query) {
         message += `\n\nSQL:\n${error.query}`;
       }

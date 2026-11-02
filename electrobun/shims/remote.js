@@ -64,10 +64,91 @@ const remote = {
     isDarkMode: () => false,
   },
   dialog: {
-    showOpenDialog: (opts, cb) => cb && cb([]),
-    showSaveDialog: (opts, cb) => cb && cb(null),
-    showMessageBox: (opts, cb) => cb && cb(0),
-    showErrorBox: (title, content) => alert(title + "\n" + content),
+    showOpenDialog: (arg1, arg2, arg3) => {
+      const cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+      if (cb) cb([]);
+      return Promise.resolve({ canceled: true, filePaths: [] });
+    },
+    showSaveDialog: (arg1, arg2, arg3) => {
+      const cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+      if (cb) cb(null);
+      return Promise.resolve({ canceled: true, filePath: null });
+    },
+    showMessageBox: (arg1, arg2, arg3) => {
+      let options = {};
+      let callback = null;
+
+      if (arg1 && (arg1.message || arg1.buttons || arg1.type || arg1.detail)) {
+        options = arg1;
+        callback = typeof arg2 === "function" ? arg2 : null;
+      } else if (arg2 && (arg2.message || arg2.buttons || arg2.type || arg2.detail)) {
+        options = arg2;
+        callback = typeof arg3 === "function" ? arg3 : null;
+      } else {
+        options = arg1 || {};
+        callback = typeof arg2 === "function" ? arg2 : null;
+      }
+
+      let messageText = options.message || "";
+      if (options.detail) {
+        messageText = messageText ? `${messageText}\n\n${options.detail}` : options.detail;
+      }
+
+      return new Promise((resolve) => {
+        const isConfirm = Array.isArray(options.buttons) && options.buttons.length > 1;
+        const alertify = (typeof window !== "undefined" && window.alertify) || (typeof globalThis !== "undefined" && globalThis.alertify);
+
+        const finish = (responseIndex) => {
+          if (callback) callback(responseIndex);
+          resolve({ response: responseIndex, checkboxChecked: false });
+        };
+
+        if (alertify) {
+          const htmlMsg = messageText.replace(/\n/g, "<br>");
+          if (isConfirm) {
+            const originalOk = alertify.labels.ok;
+            const originalCancel = alertify.labels.cancel;
+            if (options.buttons && options.buttons[0]) alertify.labels.ok = options.buttons[0];
+            if (options.buttons && options.buttons[1]) alertify.labels.cancel = options.buttons[1];
+
+            alertify.confirm(htmlMsg, (confirmed) => {
+              alertify.labels.ok = originalOk;
+              alertify.labels.cancel = originalCancel;
+              finish(confirmed ? 0 : 1);
+            });
+          } else {
+            const originalOk = alertify.labels.ok;
+            if (options.buttons && options.buttons[0]) alertify.labels.ok = options.buttons[0];
+
+            alertify.alert(htmlMsg, () => {
+              alertify.labels.ok = originalOk;
+              finish(0);
+            });
+          }
+        } else {
+          if (isConfirm) {
+            const res = typeof globalThis.confirm === "function" ? globalThis.confirm(messageText) : true;
+            finish(res ? 0 : 1);
+          } else {
+            if (typeof globalThis.alert === "function") {
+              globalThis.alert(messageText);
+            } else {
+              console.log("[Dialog Message]", messageText);
+            }
+            finish(0);
+          }
+        }
+      });
+    },
+    showErrorBox: (title, content) => {
+      const alertify = (typeof window !== "undefined" && window.alertify) || (typeof globalThis !== "undefined" && globalThis.alertify);
+      const text = `${title}\n\n${content}`;
+      if (alertify) {
+        alertify.alert(text.replace(/\n/g, "<br>"));
+      } else if (typeof alert === "function") {
+        alert(text);
+      }
+    },
   },
   initialize: () => {},
   enable: () => {},
