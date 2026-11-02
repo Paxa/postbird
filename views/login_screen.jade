@@ -10,23 +10,23 @@
         != link_to("Standard", '#', {exec: 'showStandardPane', class: 'login-with-password selected'})
         != link_to("Connect URL", '#', {exec: 'showUrlPane', class: 'enter-postgres-url'})
 
-      form.middle-window-content.standard
+      form.middle-window-content.standard(autocapitalize="none", autocorrect="off", spellcheck="false", autocomplete="off")
         p
           label(for="login_host") Host
-          input#login_host(name='host', type='text', value='localhost', placeholder='localhost')
+          input#login_host(name='host', type='text', value='localhost', placeholder='localhost', autocapitalize="none", autocorrect="off", spellcheck="false")
         p
           label(for="login_port") Port
-          input#login_port(name='port', type='text', value='5432', placeholder='5432')
+          input#login_port(name='port', type='text', value='5432', placeholder='5432', autocapitalize="none", autocorrect="off", spellcheck="false")
         p
           label(for="login_username") Username
-          input#login_username(name='user', type='text', value='')
+          input#login_username(name='user', type='text', value='', autocapitalize="none", autocorrect="off", spellcheck="false")
         p
           label(for="login_password") Password
-          input#login_password(name='password', type='password', value='')
+          input#login_password(name='password', type='password', value='', autocapitalize="none", autocorrect="off", spellcheck="false")
 
         p
           label(for="login_database") Database
-          input#login_database(name='database', type='text', value='')
+          input#login_database(name='database', type='text', value='', autocapitalize="none", autocorrect="off", spellcheck="false")
 
         .extra-login-fields
           p
@@ -36,23 +36,23 @@
               != link_to("Hide SSH Tunnel options", '#', {exec: 'showExtraLogingFields', class: 'close-extra-fields'})
           p.extra-field
             label(for="login_query") Start Query
-            input#login_query(name='sql_query', type='text', value='')
+            input#login_query(name='sql_query', type='text', value='', autocapitalize="none", autocorrect="off", spellcheck="false")
             small.help-icon(data-tooltip="This query will run every time you connect to database.\nExample:\nSET timezone = '+02'") ?
           p.extra-field
             label(for="ssh_host") SSH Host
-            input#ssh_host(name='ssh_host', type='text', value='')
+            input#ssh_host(name='ssh_host', type='text', value='', autocapitalize="none", autocorrect="off", spellcheck="false")
           p.extra-field
             label(for="ssh_port") SSH Port
-            input#ssh_port(name='ssh_port', type='text', value='' placeholder='22')
+            input#ssh_port(name='ssh_port', type='text', value='', placeholder='22', autocapitalize="none", autocorrect="off", spellcheck="false")
           p.extra-field
             label(for="ssh_user") SSH User
-            input#ssh_user(name='ssh_user', type='text', value='' placeholder=`${process.env.USER || ''}`)
+            input#ssh_user(name='ssh_user', type='text', value='', placeholder=`${process.env.USER || ''}`, autocapitalize="none", autocorrect="off", spellcheck="false")
           p.extra-field
             label(for="ssh_pass") SSH Password
-            input#ssh_pass(name='ssh_pass', type='password', value='' placeholder=`***`)
+            input#ssh_pass(name='ssh_pass', type='password', value='', placeholder=`***`, autocapitalize="none", autocorrect="off", spellcheck="false")
           p.extra-field
             label(for="ssh_key") SSH Key
-            input#ssh_key(name='ssh_key', type='text', value='' placeholder='key.pem')
+            input#ssh_key(name='ssh_key', type='text', value='', placeholder='key.pem', autocapitalize="none", autocorrect="off", spellcheck="false")
 
         p
           label
@@ -69,8 +69,8 @@
             button.native-look(exec="std_saveAndConnect") Save & Connect
             input.native-look(type="submit", value="Connect", autofocus=true)
 
-      form.middle-window-content.postgres-url
-        textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}`)
+      form.middle-window-content.postgres-url(autocapitalize="none", autocorrect="off", spellcheck="false", autocomplete="off")
+        textarea.connection-url(name='connect_url' placeholder=`postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}` autocapitalize="none" autocorrect="off" spellcheck="false")
           = `postgres://${process.env.USER || 'user'}@localhost/${process.env.USER || 'dbname'}`
 
         .ssh-tunnel-info

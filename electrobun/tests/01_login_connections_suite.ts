@@ -210,5 +210,15 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     assert(closeTunnelLink.text().includes("Hide SSH Tunnel options"), "Close toggle text should read 'Hide SSH Tunnel options'");
     await clickElement(closeTunnelLink[0]);
     assert(!login.content.find(".middle-window").hasClass("extra-login-fields-open"), "Clicking close should collapse extra fields");
+
+    // Verify inputs have autocapitalize, autocorrect, and spellcheck disabled
+    const sshUserInput = login.content.find("#ssh_user");
+    assert(sshUserInput.attr("autocapitalize") === "none", "SSH User input should have autocapitalize='none'");
+    assert(sshUserInput.attr("autocorrect") === "off", "SSH User input should have autocorrect='off'");
+    assert(sshUserInput.attr("spellcheck") === "false", "SSH User input should have spellcheck='false'");
+
+    const hostInput = login.content.find("#login_host");
+    assert(hostInput.attr("autocapitalize") === "none", "Host input should have autocapitalize='none'");
+    assert(hostInput.attr("autocorrect") === "off", "Host input should have autocorrect='off'");
   });
 }

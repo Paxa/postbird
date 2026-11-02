@@ -56,6 +56,13 @@ class LoginScreen {
   initEvents() {
     PaneBase.prototype.initEvents.call(this, this.content);
 
+    this.content.find('input, textarea').attr({
+      autocapitalize: 'none',
+      autocorrect: 'off',
+      spellcheck: 'false',
+      autocomplete: 'off'
+    });
+
     this.content.find('a.go-to-help').bind('click', () => {
       var help = HelpScreen.open();
       help.activatePage("get-postgres");
