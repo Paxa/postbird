@@ -58,6 +58,10 @@ export type PostbirdRPC = {
         params: { tunnelId: string };
         response: { success: boolean };
       };
+      logDevError: {
+        params: { type: string; message: string; stack?: string; detail?: string; timestamp?: string };
+        response: { success: boolean };
+      };
     };
     messages: Record<string, never>;
   }>;

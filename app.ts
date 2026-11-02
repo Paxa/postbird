@@ -339,9 +339,17 @@ global.App = {
         tab.activate();
         if (callback && runCallback) callback(tab);
       } else {
+        var errorDetail = this.humanErrorMessage(error);
+        (window as any).__postbirdRpc?.logDevError?.({
+          type: "CONNECTION_ERROR",
+          message: error?.message || String(error),
+          detail: typeof errorDetail === "string" ? errorDetail.replace(/<br>/g, "\n") : undefined,
+          stack: error?.stack,
+        }).catch?.(() => {});
+
         if (showConnectionError) {
           $u.alertError("Connection error", {
-            detail: this.humanErrorMessage(error)
+            detail: errorDetail
           });
         } else {
           console.error(error)

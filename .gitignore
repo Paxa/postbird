@@ -9,3 +9,4 @@ artifacts/
 .cottontail-tmp/
 public/postbird-bundle.js
 .DS_Store
+.postbird-dev-errors.log

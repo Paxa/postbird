@@ -43,7 +43,35 @@ const electroview = new Electrobun.Electroview({ rpc });
   closeSshTunnel: async (params: { tunnelId: string }) => {
     return await electroview.rpc!.request.closeSshTunnel(params);
   },
+  logDevError: async (params: { type: string; message: string; stack?: string; detail?: string }) => {
+    try {
+      return await electroview.rpc!.request.logDevError({
+        timestamp: new Date().toISOString(),
+        ...params,
+      });
+    } catch {
+      return { success: false };
+    }
+  },
 };
+
+// Intercept console.error in webview to automatically record to dev error log
+if (typeof console !== "undefined" && typeof console.error === "function") {
+  const originalError = console.error;
+  console.error = function (...args: any[]) {
+    originalError.apply(console, args);
+    try {
+      const msg = args.map(a => (typeof a === "object" ? JSON.stringify(a, Object.getOwnPropertyNames(a)) : String(a))).join(" ");
+      if (typeof window !== "undefined" && (window as any).__postbirdRpc && (window as any).__postbirdRpc.logDevError) {
+        (window as any).__postbirdRpc.logDevError({
+          type: "CONSOLE_ERROR",
+          message: msg,
+          stack: new Error().stack,
+        }).catch(() => {});
+      }
+    } catch {}
+  };
+}
 
 // Polyfill window globals for legacy modules
 (window as any).global = window;

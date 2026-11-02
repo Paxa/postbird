@@ -14,7 +14,26 @@
     <script>
       window.onerror = function(msg, url, line, col, error) {
         console.error("[Postbird Error]", msg, "at line", line, error);
+        if (window.__postbirdRpc && window.__postbirdRpc.logDevError) {
+          window.__postbirdRpc.logDevError({
+            type: "WINDOW_ERROR",
+            message: String(msg) + (url ? " at " + url + ":" + line + ":" + col : ""),
+            stack: error ? error.stack : undefined,
+          }).catch(function() {});
+        }
       };
+
+      window.addEventListener("unhandledrejection", function(event) {
+        var reason = event.reason || "Unhandled Promise Rejection";
+        console.error("[Postbird Unhandled Rejection]", reason);
+        if (window.__postbirdRpc && window.__postbirdRpc.logDevError) {
+          window.__postbirdRpc.logDevError({
+            type: "UNHANDLED_PROMISE_REJECTION",
+            message: reason && reason.message ? reason.message : String(reason),
+            stack: reason && reason.stack ? reason.stack : undefined,
+          }).catch(function() {});
+        }
+      });
     </script>
 
     <div id="tabs"></div>

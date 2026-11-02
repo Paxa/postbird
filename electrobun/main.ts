@@ -2,6 +2,7 @@ import { BrowserView, BrowserWindow } from "electrobun/main";
 import type { PostbirdRPC } from "./host/types";
 import { executeQuery, disconnectPool, closeAllPools } from "./host/db_pool";
 import { createSshTunnel, closeSshTunnel, closeAllTunnels } from "./host/ssh_tunnel";
+import { writeDevErrorLog } from "./host/dev_logger";
 import {
   loadSavedConnections,
   saveSavedConnections,
@@ -66,6 +67,11 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
       closeSshTunnel: async ({ tunnelId }) => {
         return closeSshTunnel(tunnelId);
       },
+
+      logDevError: async (params) => {
+        writeDevErrorLog(params);
+        return { success: true };
+      },
     },
     messages: {},
   },
@@ -93,6 +99,24 @@ async function handleGracefulQuit() {
 
 process.on("SIGINT", () => handleGracefulQuit());
 process.on("SIGTERM", () => handleGracefulQuit());
+
+process.on("uncaughtException", (err) => {
+  console.error("[Host Uncaught Exception]", err);
+  writeDevErrorLog({
+    type: "HOST_UNCAUGHT_EXCEPTION",
+    message: err ? err.message : String(err),
+    stack: err ? err.stack : undefined,
+  });
+});
+
+process.on("unhandledRejection", (reason: any) => {
+  console.error("[Host Unhandled Rejection]", reason);
+  writeDevErrorLog({
+    type: "HOST_UNHANDLED_REJECTION",
+    message: reason && reason.message ? reason.message : String(reason),
+    stack: reason && reason.stack ? reason.stack : undefined,
+  });
+});
 
 setupApplicationMenu(handleGracefulQuit);
 
