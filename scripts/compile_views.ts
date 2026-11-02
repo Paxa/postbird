@@ -11,7 +11,7 @@ function getJadeFiles(dir: string, baseDir: string = dir): { relativeName: strin
     if (entry.isDirectory()) {
       files = files.concat(getJadeFiles(fullPath, baseDir));
     } else if (entry.isFile() && entry.name.endsWith(".jade")) {
-      const rel = path.relative(baseDir, fullPath).replace(/\.jade$/, "");
+      const rel = path.relative(baseDir, fullPath).replace(/\\/g, "/").replace(/\.jade$/, "");
       files.push({ relativeName: rel, fullPath });
     }
   }
@@ -25,7 +25,8 @@ export function compileAllViews() {
   const jadeFiles = getJadeFiles(viewsDir);
 
   const pugFn: Record<string, any> = {};
-  const convertedPath = (process.cwd() + "/").replace(/\//g, "\\\\u002F");
+  const cwd = process.cwd();
+  const cwdForward = cwd.replace(/\\/g, "/");
 
   for (const file of jadeFiles) {
     const content = fs.readFileSync(file.fullPath, "utf-8");
@@ -42,9 +43,12 @@ export function compileAllViews() {
   let result = "";
   for (const key of Object.keys(pugFn).sort()) {
     const fn = pugFn[key];
-    const fnStr = fn.toString().replace("locals", "pug, locals").replace(new RegExp(convertedPath, "g"), "");
-    result += `exports["${key}"] = ${fnStr};\n`;
-    result += `exports["${key}"].content = ${JSON.stringify(fn.content)};\n`;
+    let fnStr = fn.toString().replace("locals", "pug, locals");
+    if (cwd) {
+      fnStr = fnStr.split(cwd).join("").split(cwdForward).join("");
+    }
+    result += `exports[${JSON.stringify(key)}] = ${fnStr};\n`;
+    result += `exports[${JSON.stringify(key)}].content = ${JSON.stringify(fn.content)};\n`;
   }
 
   fs.writeFileSync(cacheFile, result, "utf8");
