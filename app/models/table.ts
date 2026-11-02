@@ -644,6 +644,7 @@ class Table extends ModelBase {
           logger.error(stderr);
         }
         stdout = stdout.toString();
+        stdout = stdout.replace(/^\\(?:restrict|unrestrict).*$/gim, "\n"); // remove \restrict and \unrestrict meta-commands
         stdout = stdout.replace(/\n*^SET .+$/gim, "\n"); // remove SET ...;
         stdout = stdout.replace(/(^|\n|\r)(--\r?\n--.+\r?\n--)/g, "\n"); // remove comments
         stdout = stdout.replace(/^-- Dumped from .+$/m, "\n"); // remove 'Dumped from ...'

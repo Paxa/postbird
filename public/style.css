@@ -1761,11 +1761,14 @@ body.sidebar-resizing * {
 }
 
 .window-content.info {
-  padding: 9px;
+  padding: 12px 14px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100%;
 }
 .window-content.info .summary {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .window-content.info h4 {
   font-weight: bold;
@@ -1779,6 +1782,9 @@ body.sidebar-resizing * {
 .window-content.info code.result {
   white-space: pre-wrap;
   font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
+  display: block;
+  margin-bottom: 30px;
+  user-select: text;
 }
 
 .window-content.query {

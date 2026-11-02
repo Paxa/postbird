@@ -1,9 +1,12 @@
 .window-content.info {
-  padding: 9px;
+  padding: 12px 14px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100%;
 
   .summary {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   h4 {
@@ -20,5 +23,8 @@
   code.result {
     white-space: pre-wrap;
     font-family: $code-font;
+    display: block;
+    margin-bottom: 30px;
+    user-select: text;
   }
 }

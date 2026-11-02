@@ -59,6 +59,8 @@ describe('Model.Table', () => {
 
     sql = sql.replace(/public\.test_table/g, 'test_table')
     assert.contain(sql, 'CREATE TABLE test_table');
+    assert(!sql.includes('\\restrict'), 'Should not contain \\restrict meta-command');
+    assert(!sql.includes('\\unrestrict'), 'Should not contain \\unrestrict meta-command');
 
     await table.drop();
   })
