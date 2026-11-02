@@ -523,40 +523,44 @@ class Monitoring extends PaneBase {
       sec.find('.storage-cache-val').text(data.effectiveCachePretty || '-');
       sec.find('.storage-workmem-val').text(data.workMemPretty || '-');
 
-      // Update Tables List with Index Usage and Unused Stats
+      // Update Tables List with dedicated Indexes (Count & Unused) and Index Scans columns
       const tbody = sec.find('.top-tables-table tbody');
       tbody.empty();
       if (!data.topTables || data.topTables.length === 0) {
         tbody.append(`
           <tr>
-            <td colspan="6" class="text-muted text-center" style="padding: 14px;">No user tables found in current database.</td>
+            <td colspan="7" class="text-muted text-center" style="padding: 14px;">No user tables found in current database.</td>
           </tr>
         `);
       } else {
         data.topTables.forEach((t: any) => {
+          const totalIdx = Number(t.total_indexes_count || 0);
+          const unusedIdx = Number(t.unused_indexes_count || 0);
           const totalScans = Number(t.idx_scans || 0) + Number(t.seq_scans || 0);
-          let usageHtml = '';
-          if (Number(t.total_indexes_count) === 0) {
-            usageHtml = '<span class="text-muted">No indexes</span>';
+
+          // Indexes column: total count + note about unused
+          let indexesHtml = '';
+          if (totalIdx === 0) {
+            indexesHtml = '<span class="text-muted">0</span>';
+          } else if (unusedIdx > 0) {
+            const safeNames = (global as any).ViewHelpers.escapeHTML(t.unused_index_names || '');
+            const tooltip = `Unused (${t.unused_indexes_pretty}): ${safeNames}`;
+            indexesHtml = `<strong>${totalIdx}</strong> <span class="table-unused-badge" title="${tooltip}">⚠️ ${unusedIdx} unused (${t.unused_indexes_pretty})</span>`;
           } else {
+            indexesHtml = `<strong>${totalIdx}</strong> <span class="table-used-badge text-muted">(all active)</span>`;
+          }
+
+          // Index Scans column: scan activity
+          let scansHtml = '';
+          if (totalIdx === 0) {
+            scansHtml = '<span class="table-used-badge text-muted">Seq scan only</span>';
+          } else if (totalScans > 0) {
             const idxScansStr = Number(t.idx_scans || 0).toLocaleString();
             const seqScansStr = Number(t.seq_scans || 0).toLocaleString();
             const pct = Math.round(Number(t.index_usage_pct || 0));
-
-            const scanParts: string[] = [];
-            if (totalScans > 0) {
-              scanParts.push(`<span class="scan-pct-pill" title="${idxScansStr} index scans, ${seqScansStr} seq scans">${pct}% idx</span>`);
-              scanParts.push(`<span class="table-used-badge">${idxScansStr} scans</span>`);
-            } else {
-              scanParts.push(`<span class="table-used-badge text-muted">0 scans</span>`);
-            }
-
-            if (Number(t.unused_indexes_count) > 0) {
-              const safeNames = (global as any).ViewHelpers.escapeHTML(t.unused_index_names || '');
-              const tooltip = `Unused index: ${safeNames} (${t.unused_indexes_pretty})`;
-              scanParts.push(`<span class="table-unused-badge" title="${tooltip}">⚠️ ${t.unused_indexes_count} unused (${t.unused_indexes_pretty})</span>`);
-            }
-            usageHtml = scanParts.join(' ');
+            scansHtml = `<span class="scan-pct-pill" title="${idxScansStr} index scans, ${seqScansStr} seq scans">${pct}% idx</span> <span class="table-used-badge">${idxScansStr} scans</span>`;
+          } else {
+            scansHtml = '<span class="table-used-badge text-muted">0 scans</span>';
           }
 
           tbody.append(`
@@ -564,8 +568,9 @@ class Monitoring extends PaneBase {
               <td><strong>${(global as any).ViewHelpers.escapeHTML(t.table_name)}</strong></td>
               <td>${Number(t.live_rows).toLocaleString()}</td>
               <td>${t.table_size_pretty}</td>
+              <td>${indexesHtml}</td>
               <td>${t.index_size_pretty}</td>
-              <td>${usageHtml}</td>
+              <td>${scansHtml}</td>
               <td><strong>${t.total_size_pretty}</strong></td>
             </tr>
           `);

@@ -1236,81 +1236,73 @@ body.sidebar-resizing * {
   border: 1px solid #d6d6d6;
 }
 
-.alertify, .alertify-show, .alertify-log {
-  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -moz-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -ms-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -o-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* easeOutBack */
+/**
+ * macOS Native-Styled Dialog Core Layout & Transitions
+ */
+.alertify,
+.alertify-show,
+.alertify-log {
+  transition: opacity 180ms cubic-bezier(0.2, 0.9, 0.3, 1), transform 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 .alertify-hide {
-  -webkit-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -moz-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -ms-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -o-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  /* easeInBack */
+  transition: opacity 130ms ease-in, transform 130ms ease-in;
 }
 
 .alertify-log-hide {
-  -webkit-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -moz-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -ms-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -o-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  /* easeInBack */
+  transition: opacity 200ms ease-in, transform 200ms ease-in;
 }
 
 .alertify-cover {
   position: fixed;
-  z-index: 99999;
+  z-index: 99998;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white;
-  filter: alpha(opacity=0);
-  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 1;
+  transition: opacity 150ms ease;
 }
 
 .alertify-cover-hidden {
   display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .alertify {
   position: fixed;
   z-index: 99999;
-  top: 50px;
+  top: 56px;
   left: 50%;
-  width: 550px;
-  margin-left: -275px;
+  transform: translateX(-50%) scale(1);
+  width: 340px;
+  margin-left: 0 !important;
   opacity: 1;
+  box-sizing: border-box;
 }
 
 .alertify-hidden {
-  -webkit-transform: translate(0, -150px);
-  -moz-transform: translate(0, -150px);
-  -ms-transform: translate(0, -150px);
-  -o-transform: translate(0, -150px);
-  transform: translate(0, -150px);
+  transform: translateX(-50%) translateY(-10px) scale(0.96);
   opacity: 0;
   display: none;
+  pointer-events: none;
 }
 
-/* overwrite display: none; for everything except IE6-8 */
 :root * > .alertify-hidden {
-  display: block;
+  display: none;
   visibility: hidden;
 }
 
 .alertify-logs {
   position: fixed;
-  z-index: 5000;
-  bottom: 10px;
-  right: 10px;
-  width: 300px;
+  z-index: 99999;
+  bottom: 16px;
+  right: 16px;
+  width: 320px;
 }
 
 .alertify-logs-hidden {
@@ -1319,28 +1311,25 @@ body.sidebar-resizing * {
 
 .alertify-log {
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
   position: relative;
-  right: -300px;
+  transform: translateX(40px);
   opacity: 0;
 }
 
 .alertify-log-show {
-  right: 0;
+  transform: translateX(0);
   opacity: 1;
 }
 
 .alertify-log-hide {
-  -webkit-transform: translate(300px, 0);
-  -moz-transform: translate(300px, 0);
-  -ms-transform: translate(300px, 0);
-  -o-transform: translate(300px, 0);
-  transform: translate(300px, 0);
+  transform: translateX(40px);
   opacity: 0;
 }
 
 .alertify-dialog {
-  padding: 25px;
+  padding: 20px 20px 16px;
+  box-sizing: border-box;
 }
 
 .alertify-resetFocus {
@@ -1358,25 +1347,36 @@ body.sidebar-resizing * {
   text-align: center;
 }
 
+.alertify-text-wrapper {
+  margin: 12px 0 4px;
+}
+
 .alertify-text {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 100%;
+  font-size: 13px;
+}
+
+.alertify-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .alertify-button, .custom-window p.buttons button {
   background: none;
   text-decoration: none;
   border: none;
-  /* line-height and font-size for input button */
-  line-height: 1.5;
-  font-size: 100%;
-  display: inline-block;
+  line-height: 1.4;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  margin-left: 5px;
+  margin: 0;
+  user-select: none;
 }
 .alertify-button:hover, .custom-window p.buttons button:hover, .alertify-button:active, .custom-window p.buttons button:active, .alertify-button:visited, .custom-window p.buttons button:visited {
   text-decoration: none;
@@ -1388,102 +1388,186 @@ body.sidebar-resizing * {
 }
 
 @media only screen and (max-width: 680px) {
-  .alertify, .alertify-logs {
+  .alertify,
+  .alertify-logs {
     width: 90%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-  }
-  .alertify {
-    left: 5%;
-    margin: 0;
   }
 }
 /**
- * Default Look and Feel */
+ * macOS Native Aqua / Sonoma / Sequoia Look and Feel
+ */
+.alertify,
+.alertify-log {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 .alertify {
-  background: #FFF;
-  border: 2px solid #333;
-  /* browsers that don't support rgba */
-  border: 1px solid #aaa;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  margin-left: -200px;
-  -webkit-background-clip: padding;
-  /* Safari 4? Chrome 6? */
-  -moz-background-clip: padding;
-  /* Firefox 3.6 */
+  background: rgba(246, 246, 248, 0.96);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), 0 4px 16px rgba(0, 0, 0, 0.12), inset 0 0.5px 0 rgba(255, 255, 255, 0.85);
+  width: 340px;
   background-clip: padding-box;
-  /* Firefox 4, Safari 5, Opera 10, IE 9 */
-  max-height: 86%;
+  max-height: 86vh;
   overflow-y: auto;
+  color: #1d1d1f;
 }
 
 .alertify-message {
-  margin-bottom: 10px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #1d1d1f;
+  font-weight: 600;
+  word-break: break-word;
+}
+.alertify-message .macos-alert-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.alertify-message .macos-alert-detail,
+.alertify-message small {
+  display: block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #515154;
+  line-height: 1.45;
 }
 
 .alertify-text {
-  border: 1px solid #CCC;
-  padding: 10px;
-  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: #ffffff;
+  color: #1d1d1f;
+  padding: 6px 9px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.alertify-text:focus {
+  outline: none;
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
 }
 
 .alertify-button, .custom-window p.buttons button {
-  border-radius: 8px;
-  color: #FFF;
-  padding: 3px 13px;
-  font-size: 14px;
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 5px 15px;
+  min-width: 78px;
+  min-height: 26px;
+  font-size: 13px;
+  font-weight: 500;
   text-decoration: none;
-  font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
-  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  letter-spacing: -0.08px;
+  box-sizing: border-box;
+  transition: filter 100ms ease, transform 60ms ease, box-shadow 120ms ease;
 }
 .alertify-button:hover, .custom-window p.buttons button:hover {
   outline: none;
+  filter: brightness(1.03);
 }
-.alertify-button:focus, .custom-window p.buttons button:focus {
+.alertify-button:focus-visible, .custom-window p.buttons button:focus-visible {
   outline: none;
-  box-shadow: 0 0 5px #2B72D5;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.4);
 }
 .alertify-button:active, .custom-window p.buttons button:active {
-  position: relative;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  filter: brightness(0.94);
 }
 
-.alertify-button-cancel, .custom-window p.buttons button.cancel {
-  background-color: #fff;
-  border: 1px solid #DDDDDD;
-  border-bottom-color: #C3C3C3;
-  border-top-color: #E6E6E6;
-  color: #262626;
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.1);
+.alertify-button-cancel, .custom-window p.buttons button.cancel, .custom-window p.buttons button {
+  background: linear-gradient(180deg, #ffffff 0%, #f3f3f5 100%);
+  border: 0.5px solid rgba(0, 0, 0, 0.18);
+  color: #1d1d1f;
+  box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08), inset 0 0.5px 0 rgba(255, 255, 255, 0.9);
 }
-.alertify-button-cancel:focus, .custom-window p.buttons button.cancel:focus {
-  box-shadow: 0 0 5px #2B72D5;
+.alertify-button-cancel:hover, .custom-window p.buttons button:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #ebebee 100%);
+}
+.alertify-button-cancel:active, .custom-window p.buttons button:active {
+  background: #e4e4e7;
 }
 
-.alertify-button-ok, .custom-window p.buttons button.ok {
-  color: #fff;
-  background: linear-gradient(180deg, #4492F7 0%, #2C7CF6 100%);
+.alertify-button-ok, .custom-window p.buttons button.ok,
+.custom-window p.buttons button.copy-sql {
+  color: #ffffff;
+  background: linear-gradient(180deg, #1E90FF 0%, #007AFF 100%);
+  border: 0.5px solid rgba(0, 81, 213, 0.55);
+  box-shadow: 0 0.5px 2px rgba(0, 122, 255, 0.35), inset 0 0.5px 0 rgba(255, 255, 255, 0.28);
 }
+.alertify-button-ok:active, .custom-window p.buttons button.ok:active,
+.custom-window p.buttons button.copy-sql:active {
+  background: linear-gradient(180deg, #006CE0 0%, #005BBF 100%);
+}
+
+.alertify-button-destructive {
+  background: linear-gradient(180deg, #FF554A 0%, #FF3B30 100%);
+  border: 0.5px solid rgba(190, 25, 18, 0.55);
+  box-shadow: 0 0.5px 2px rgba(255, 59, 48, 0.35), inset 0 0.5px 0 rgba(255, 255, 255, 0.28);
+}
+.alertify-button-destructive:active {
+  background: linear-gradient(180deg, #E03025 0%, #C7231A 100%);
+}
+
 .alertify-log {
-  background: #1F1F1F;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 15px;
-  border-radius: 4px;
-  color: #FFF;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+  background: rgba(40, 40, 43, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #f5f5f7;
+  font-size: 12.5px;
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .alertify-log-error {
-  background: #FE1A00;
-  background: rgba(254, 26, 0, 0.9);
+  background: rgba(215, 45, 35, 0.94);
 }
 
 .alertify-log-success {
-  background: #5CB811;
-  background: rgba(92, 184, 17, 0.9);
+  background: rgba(40, 167, 69, 0.94);
+}
+
+body.dark-mode .alertify {
+  background: rgba(42, 42, 46, 0.96);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f5f5f7;
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.55), 0 4px 18px rgba(0, 0, 0, 0.35), inset 0 0.5px 0 rgba(255, 255, 255, 0.14);
+}
+body.dark-mode .alertify-message {
+  color: #f5f5f7;
+}
+body.dark-mode .alertify-message .macos-alert-title {
+  color: #f5f5f7;
+}
+body.dark-mode .alertify-message .macos-alert-detail,
+body.dark-mode .alertify-message small {
+  color: #a1a1a6;
+}
+body.dark-mode .alertify-text {
+  background: rgba(28, 28, 30, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f5f5f7;
+}
+body.dark-mode .alertify-button-cancel, body.dark-mode .custom-window p.buttons button, .custom-window p.buttons body.dark-mode button {
+  background: linear-gradient(180deg, #545458 0%, #444448 100%);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #f5f5f7;
+  box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.3);
+}
+body.dark-mode .alertify-button-cancel:hover, body.dark-mode .custom-window p.buttons button:hover, .custom-window p.buttons body.dark-mode button:hover {
+  background: linear-gradient(180deg, #5e5e62 0%, #4e4e52 100%);
 }
 
 .window-content.structure {
@@ -2868,11 +2952,63 @@ body.new-window {
   font-family: Consolas, "Liberation Mono", Menlo, Monaco, Lucida Console, Courier New, monospace, serif;
 }
 
+.alertify.custom-window.history-dialog {
+  width: 760px;
+  max-width: 92vw;
+}
+.alertify.custom-window.history-dialog .history-window {
+  margin: -18px -20px -20px -20px;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+.alertify.custom-window.history-dialog .history-window header {
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.alertify.custom-window.history-dialog .history-window header .close-history-btn {
+  margin-left: auto;
+}
+.alertify.custom-window.history-dialog .history-window > ul {
+  height: 380px;
+  max-height: 62vh;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .history-window {
+    background: #1e1e1e;
+    color: #e5e5e7;
+  }
+  .history-window header {
+    background: #252528;
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+  .history-window > ul {
+    background: #1c1c1e;
+  }
+  .history-window > ul li {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    color: #e5e5e7;
+  }
+  .history-window > ul li:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .history-window > ul li time {
+    color: rgba(235, 235, 245, 0.55);
+  }
+  .history-window > ul li span.error {
+    color: #ff6961;
+  }
+}
 .clearfix {
   clear: both;
 }
 
-.grey-cancel-button button.alertify-button-cancel, .grey-cancel-button .custom-window p.buttons button.cancel, .custom-window p.buttons .grey-cancel-button button.cancel {
+.grey-cancel-button button.alertify-button-cancel, .grey-cancel-button .custom-window p.buttons button, .custom-window p.buttons .grey-cancel-button button {
   border-color: #ADA6A6;
   background-color: #B8B8B8;
 }
@@ -2975,48 +3111,80 @@ small.help-icon:hover:after {
   box-sizing: border-box;
 }
 .custom-window .alertify-dialog {
-  padding-top: 42px;
+  padding: 50px 20px 18px;
+}
+.custom-window .alertify-message {
+  font-weight: 400;
+  margin: 0;
 }
 .custom-window h3.window-title {
   position: absolute;
-  padding-top: 5px;
   top: 0;
   left: 0;
   right: 0;
-  height: 31px;
-  font-size: 18px;
-  background: #f5f7f9;
-  border-radius: 10px 10px 0 0;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d1d1f;
+  background: rgba(235, 235, 238, 0.85);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px 12px 0 0;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .custom-window p.buttons {
-  margin-top: 15px;
-  margin-bottom: -5px;
+  margin: 16px 0 -2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
-.custom-window input[type=text], .custom-window input[type=password] {
-  font-size: 12px;
-  height: 13px;
-  padding: 10px 6px;
+.custom-window input[type=text],
+.custom-window input[type=password],
+.custom-window input[type=number] {
+  font-size: 13px;
+  height: 26px;
+  padding: 4px 8px;
   outline: none;
-  border: 1px solid #d5d5d5;
-  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1d1d1f;
+  margin: 4px 5px;
   cursor: text;
   -webkit-app-region: no-drag;
   box-sizing: border-box;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
-.custom-window input[type=text]:focus, .custom-window input[type=password]:focus {
-  border-radius: 1px;
-  box-shadow: 0 0 0 3.5px rgba(116, 180, 255, 0.7);
-  animation: showFocus 0.3s;
-  border-color: #7aa7dd !important;
+.custom-window input[type=text]:focus,
+.custom-window input[type=password]:focus,
+.custom-window input[type=number]:focus {
+  border-radius: 6px;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  border-color: #007AFF !important;
 }
 .custom-window .alertify-buttons {
   display: none;
-  padding-top: 5px;
-  padding-bottom: 5px;
+}
+
+body.dark-mode .custom-window h3.window-title {
+  background: rgba(54, 54, 58, 0.9);
+  color: #f5f5f7;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+body.dark-mode .custom-window input[type=text],
+body.dark-mode .custom-window input[type=password],
+body.dark-mode .custom-window input[type=number],
+body.dark-mode .custom-window textarea {
+  background: rgba(28, 28, 30, 0.9);
+  color: #f5f5f7;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .import-file-dialog header, .export-file-dialog header {
