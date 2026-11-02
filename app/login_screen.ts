@@ -96,6 +96,10 @@ class LoginScreen {
     this.content.find('.middle-window').toggleClass('extra-login-fields-open');
   }
 
+  setExtraLoginFieldsOpen (open: boolean) {
+    this.content.find('.middle-window').toggleClass('extra-login-fields-open', open);
+  }
+
   fillSavedConnections () {
     this.connections.empty();
     this.savedConnections = Model.SavedConn.savedConnections();
@@ -181,12 +185,15 @@ class LoginScreen {
   }
 
   fillForm (params) {
-    if (params.type == "url") {
+    var hasSsh = Boolean(params && (params.ssh_host || params.ssh_user || params.ssh_key));
+    this.setExtraLoginFieldsOpen(hasSsh);
+
+    if (params && params.type == "url") {
       this.urlForm.fillForm(params);
       this.standardForm.fillForm({});
       this.activeForm = 'postgres-url';
     } else {
-      this.standardForm.fillForm(params);
+      this.standardForm.fillForm(params || {});
       this.urlForm.fillForm({});
       this.activeForm = 'standard';
     }
