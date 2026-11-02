@@ -2170,6 +2170,11 @@ span.proc-arg-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+}
+.monitoring-view table td.query-cell:hover {
+  color: #007aff;
+  text-decoration: underline;
 }
 .monitoring-view table td.actions-cell {
   white-space: nowrap;

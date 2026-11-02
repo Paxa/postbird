@@ -65,23 +65,37 @@ mixin refreshIcon(size)
               span.chart-title Summed Active Query Latency (ms)
             .chart-container.chart-container-latency!= latencyChartSvg
 
-        .section-subhead Active & Waiting Queries
+    // -------------------------------------------------------------
+    // SECTION 2: ACTIVE & WAITING QUERIES
+    // -------------------------------------------------------------
+    .monitor-section(data-section="queries", class=expandedSections.queries ? 'expanded' : '')
+      .monitor-section-header
+        span.disclosure-triangle
+        span.section-title Active & Waiting Queries
+        span.section-badge.badge-snapshot Snapshot
+        span.section-summary-text= sectionSummaries.queries || "Click to load active queries"
+        .section-actions
+          button.btn-section-icon.btn-section-refresh(title="Refresh Active Queries")
+            +refreshIcon(11)
+
+      .monitor-section-body
         .rescol-wrapper.with-borders
           .rescol-content-wrapper
             table.active-queries-table
               thead
                 tr
                   th(style="width: 70px;") PID
-                  th(style="width: 100px;") User
-                  th(style="width: 130px;") Client / App
+                  th(style="width: 90px;") User
+                  th(style="width: 140px;") Client Name
+                  th(style="width: 130px;") Client IP
                   th(style="width: 80px;") State
                   th(style="width: 110px;") Wait Event
                   th(style="width: 85px;") Duration
                   th Query
-                  th(style="width: 110px;") Actions
+                  th(style="width: 150px;") Actions
               tbody
                 tr
-                  td(colspan="8", class="text-muted text-center", style="padding: 16px;") Loading queries...
+                  td(colspan="9", class="text-muted text-center", style="padding: 16px;") Click to load active queries.
 
     // -------------------------------------------------------------
     // SECTION 2: STORAGE & INDEX MEMORY FIT

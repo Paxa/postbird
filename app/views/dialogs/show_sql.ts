@@ -22,6 +22,22 @@ class ShowSql extends DialogBase {
     if (codeBlock && window.hljs && typeof window.hljs.highlightBlock === 'function') {
       window.hljs.highlightBlock(codeBlock);
     }
+
+    this.content.find('button.copy-sql').bind('click', (e) => {
+      e && e.preventDefault();
+      try {
+        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(this.code);
+        } else if (electronRemote && electronRemote.clipboard) {
+          electronRemote.clipboard.writeText(this.code);
+        }
+        var btn = $u(e.currentTarget);
+        btn.text("Copied!");
+        setTimeout(() => { btn.text("Copy"); }, 1500);
+      } catch (err) {
+        console.error("Failed to copy SQL:", err);
+      }
+    });
   }
 }
 

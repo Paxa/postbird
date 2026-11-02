@@ -40,38 +40,16 @@ class Monitor extends ModelBase {
       WHERE datname = current_database();
     `;
 
-    // 4. Currently running queries (active sessions)
-    const activeQueriesSql = `
-      SELECT 
-        pid,
-        usename,
-        client_addr::text AS client_addr,
-        COALESCE(application_name, '') AS application_name,
-        state,
-        COALESCE(wait_event_type, '') AS wait_event_type,
-        COALESCE(wait_event, '') AS wait_event,
-        ROUND(EXTRACT(EPOCH FROM (now() - query_start))::numeric, 2) AS duration_seconds,
-        query,
-        query_start
-      FROM pg_stat_activity
-      WHERE pid <> pg_backend_pid()
-        AND state IS NOT NULL
-        AND state <> 'idle'
-      ORDER BY duration_seconds DESC
-      LIMIT 50;
-    `;
-
-    const [connRes, maxConnRes, dbStatRes, queriesRes] = await Promise.all([
+    const [connRes, maxConnRes, dbStatRes, activeQueries] = await Promise.all([
       this.query(connSql),
       this.query(maxConnSql),
       this.query(dbStatSql),
-      this.query(activeQueriesSql)
+      this.fetchActiveQueries()
     ]);
 
     const connData = connRes.rows[0] || {};
     const maxConn = (maxConnRes.rows[0] && maxConnRes.rows[0].max_connections) || 100;
     const dbStat = dbStatRes.rows[0] || {};
-    const activeQueries = queriesRes.rows || [];
 
     // Summed duration of currently active queries
     const summedQueryTimeMs = activeQueries
@@ -97,6 +75,33 @@ class Monitor extends ModelBase {
       summedQueryTimeMs: Math.round(summedQueryTimeMs),
       activeQueries: activeQueries
     };
+  }
+
+  async fetchActiveQueries() {
+    const activeQueriesSql = `
+      SELECT 
+        pid,
+        usename,
+        COALESCE(application_name, '') AS application_name,
+        COALESCE(client_hostname, '') AS client_hostname,
+        COALESCE(client_addr::text, '') AS client_addr,
+        client_port,
+        state,
+        COALESCE(wait_event_type, '') AS wait_event_type,
+        COALESCE(wait_event, '') AS wait_event,
+        ROUND(EXTRACT(EPOCH FROM (now() - query_start))::numeric, 2) AS duration_seconds,
+        query,
+        query_start
+      FROM pg_stat_activity
+      WHERE pid <> pg_backend_pid()
+        AND state IS NOT NULL
+        AND state <> 'idle'
+      ORDER BY duration_seconds DESC
+      LIMIT 100;
+    `;
+
+    const res = await this.query(activeQueriesSql);
+    return res.rows || [];
   }
 
   async cancelQuery(pid: number) {

@@ -28,6 +28,14 @@ describe("Model.Monitor", () => {
     assert.equal(typeof stats.summedQueryTimeMs, "number");
   });
 
+  it("fetchActiveQueries returns active sessions with client metadata", async () => {
+    const conn = getConnection();
+    const monitor = new Model.Monitor(conn);
+    const queries = await monitor.fetchActiveQueries();
+
+    assert.ok(Array.isArray(queries));
+  });
+
   it("fetchStorageStats returns db size, buffers config, and index summary", async () => {
     const conn = getConnection();
     const monitor = new Model.Monitor(conn);

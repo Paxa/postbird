@@ -14,6 +14,7 @@ class Monitoring extends PaneBase {
   // Section states
   expandedSections: { [key: string]: boolean } = {
     overview: true,
+    queries: false,
     storage: false,
     vacuum: false,
     replication: false,
@@ -22,6 +23,7 @@ class Monitoring extends PaneBase {
 
   sectionSummaries: { [key: string]: string } = {
     overview: '',
+    queries: 'Click to load active queries',
     storage: 'Click to load storage & index footprint',
     vacuum: 'Click to load vacuum & bloat health',
     replication: 'Click to load replication & WAL stats',
@@ -30,6 +32,7 @@ class Monitoring extends PaneBase {
 
   // Section data caches
   overviewData: any = null;
+  queriesData: any = null;
   storageData: any = null;
   vacuumData: any = null;
   replicationData: any = null;
@@ -90,6 +93,7 @@ class Monitoring extends PaneBase {
     await this.fetchOverview();
 
     // If non-overview sections were saved as expanded, load them too
+    if (this.expandedSections.queries && !this.queriesData) this.fetchQueries();
     if (this.expandedSections.storage && !this.storageData) this.fetchStorage();
     if (this.expandedSections.vacuum && !this.vacuumData) this.fetchVacuum();
     if (this.expandedSections.replication && !this.replicationData) this.fetchReplication();
@@ -129,7 +133,18 @@ class Monitoring extends PaneBase {
       if (section) this.refreshSection(section);
     });
 
-    // 5. Query action buttons (Cancel / Terminate)
+    // 5. Query action buttons (View SQL / Cancel / Terminate)
+    this.content.on('click', '.btn-view-query, .active-queries-table .query-cell', (e: any) => {
+      e.preventDefault();
+      const tr = $u(e.currentTarget).closest('tr');
+      const pid = parseInt($u(e.currentTarget).attr('data-pid') || tr.attr('data-pid'), 10);
+      const queryObj = (this.queriesData || []).find((q: any) => q.pid === pid);
+      if (queryObj && queryObj.query) {
+        const clientDesc = [queryObj.application_name, queryObj.client_addr].filter(Boolean).join(' • ') || 'Active Query';
+        new (Dialog as any).ShowSql(`Running Query (PID ${queryObj.pid} • ${clientDesc})`, queryObj.query);
+      }
+    });
+
     this.content.on('click', '.btn-cancel-query', (e: any) => {
       const pid = parseInt($u(e.currentTarget).attr('data-pid'), 10);
       if (pid) this.cancelQuery(pid);
@@ -199,6 +214,7 @@ class Monitoring extends PaneBase {
     if (isExpanded) {
       sectionEl.addClass('expanded');
       // Load data if empty
+      if (sectionKey === 'queries' && !this.queriesData) this.fetchQueries();
       if (sectionKey === 'storage' && !this.storageData) this.fetchStorage();
       if (sectionKey === 'vacuum' && !this.vacuumData) this.fetchVacuum();
       if (sectionKey === 'replication' && !this.replicationData) this.fetchReplication();
@@ -212,6 +228,8 @@ class Monitoring extends PaneBase {
     switch (sectionKey) {
       case 'overview':
         return this.fetchOverview();
+      case 'queries':
+        return this.fetchQueries();
       case 'storage':
         return this.fetchStorage();
       case 'vacuum':
@@ -228,6 +246,7 @@ class Monitoring extends PaneBase {
     try {
       await Promise.all([
         this.fetchOverview(),
+        this.fetchQueries(),
         this.fetchStorage(),
         this.fetchVacuum(),
         this.fetchReplication(),
@@ -300,37 +319,69 @@ class Monitoring extends PaneBase {
 
     const latSvg = (Sparkline as any).renderSvg(this.latencyHistory, { strokeColor: '#ff9500', unit: ' ms' });
     sec.find('.chart-container-latency').html(latSvg);
+  }
 
-    // 3. Active Queries Table
+  async fetchQueries(isSilent: boolean = false) {
+    try {
+      const queries = await this.model.fetchActiveQueries();
+      this.queriesData = queries;
+
+      // Update Section Summary
+      if (!queries || queries.length === 0) {
+        this.sectionSummaries.queries = 'No active client queries';
+      } else {
+        const longest = queries[0]?.duration_seconds || 0;
+        this.sectionSummaries.queries = `${queries.length} active or waiting queries (longest: ${longest}s)`;
+      }
+      this.updateSectionSummary('queries', this.sectionSummaries.queries);
+
+      this.updateQueriesDom(queries);
+    } catch (e: any) {
+      if (!isSilent) {
+        $u.alertError('Failed to fetch active queries', { detail: e.toString() });
+      }
+    }
+  }
+
+  updateQueriesDom(queries: any[]) {
+    const sec = this.content.find('.monitor-section[data-section="queries"]');
+    if (!sec.length) return;
+
     const tbody = sec.find('.active-queries-table tbody');
     tbody.empty();
 
-    if (d.activeQueries.length === 0) {
-      tbody.html('<tr><td colspan="8" class="text-muted text-center" style="padding: 16px;">No active client queries executing currently.</td></tr>');
-    } else {
-      d.activeQueries.forEach((q: any) => {
-        const isLong = parseFloat(q.duration_seconds) > 5;
-        const durationClass = isLong ? 'badge-danger' : 'badge-normal';
-        const waitBadge = q.wait_event ? `<span class="wait-badge" title="${q.wait_event_type}">${q.wait_event}</span>` : '<span class="text-muted">-</span>';
-
-        const row = `
-          <tr>
-            <td><strong>${q.pid}</strong></td>
-            <td>${q.usename || '-'}</td>
-            <td>${q.application_name || q.client_addr || '-'}</td>
-            <td><span class="state-pill state-${q.state}">${q.state}</span></td>
-            <td>${waitBadge}</td>
-            <td><span class="duration-badge ${durationClass}">${q.duration_seconds}s</span></td>
-            <td class="query-cell" title="${(global as any).ViewHelpers.escapeHTML(q.query || '')}"><code>${(global as any).ViewHelpers.escapeHTML((q.query || '').substring(0, 120))}</code></td>
-            <td class="actions-cell">
-              <button class="btn-native-small btn-cancel-query" data-pid="${q.pid}" title="Cancel Query (pg_cancel_backend)">Cancel</button>
-              <button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Terminate Connection (pg_terminate_backend)">Kill</button>
-            </td>
-          </tr>
-        `;
-        tbody.append(row);
-      });
+    if (!queries || queries.length === 0) {
+      tbody.html('<tr><td colspan="9" class="text-muted text-center" style="padding: 16px;">No active client queries executing currently.</td></tr>');
+      return;
     }
+
+    queries.forEach((q: any) => {
+      const isLong = parseFloat(q.duration_seconds) > 5;
+      const durationClass = isLong ? 'badge-danger' : 'badge-normal';
+      const waitBadge = q.wait_event ? `<span class="wait-badge" title="${q.wait_event_type}">${q.wait_event}</span>` : '<span class="text-muted">-</span>';
+      const clientName = q.application_name || q.client_hostname || '-';
+      const clientAddr = q.client_addr ? (q.client_addr + (q.client_port ? ':' + q.client_port : '')) : 'local (unix)';
+      const queryText = q.query || '';
+
+      const row = `
+        <tr data-pid="${q.pid}">
+          <td><strong>${q.pid}</strong></td>
+          <td>${q.usename || '-'}</td>
+          <td title="${clientName}"><strong>${clientName}</strong></td>
+          <td class="text-muted" title="${clientAddr}"><small>${clientAddr}</small></td>
+          <td><span class="state-pill state-${q.state}">${q.state}</span></td>
+          <td>${waitBadge}</td>
+          <td><span class="duration-badge ${durationClass}">${q.duration_seconds}s</span></td>
+          <td class="query-cell" data-pid="${q.pid}" title="Click to view full SQL&#10;${(global as any).ViewHelpers.escapeHTML(queryText)}"><code>${(global as any).ViewHelpers.escapeHTML(queryText.substring(0, 100))}</code></td>
+          <td class="actions-cell">
+            <button class="btn-native-small btn-view-query" data-pid="${q.pid}" title="View Full SQL">View SQL</button>
+            <button class="btn-native-small btn-cancel-query" data-pid="${q.pid}" title="Cancel Query (pg_cancel_backend)">Cancel</button>
+            <button class="btn-native-small btn-terminate-query" data-pid="${q.pid}" title="Terminate Connection (pg_terminate_backend)">Kill</button>
+          </td>
+        </tr>
+      `;
+      tbody.append(row);
+    });
   }
 
   async fetchStorage() {
@@ -548,6 +599,7 @@ class Monitoring extends PaneBase {
       if (success) {
         $u.alert(`Query PID ${pid} has been canceled.`, { info: 'info' });
         await this.fetchOverview();
+        await this.fetchQueries();
       } else {
         $u.alert(`Could not cancel query PID ${pid} (query may have already finished).`, { info: 'warn' });
       }
@@ -566,6 +618,7 @@ class Monitoring extends PaneBase {
       if (success) {
         $u.alert(`Connection PID ${pid} terminated.`, { info: 'info' });
         await this.fetchOverview();
+        await this.fetchQueries();
       } else {
         $u.alert(`Could not terminate session PID ${pid}.`, { info: 'warn' });
       }
