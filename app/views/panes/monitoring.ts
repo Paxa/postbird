@@ -396,11 +396,37 @@ class Monitoring extends PaneBase {
       const sec = this.content.find('.monitor-section[data-section="storage"]');
       if (!sec.length) return;
 
-      // Update Gauge Bar
-      sec.find('.storage-gauge-fill').css('width', `${Math.min(100, data.bufferFitPercent)}%`);
-      sec.find('.storage-gauge-label').text(`${data.totalIndexesPretty} indexes / ${data.sharedBuffersPretty} shared_buffers (${data.bufferFitPercent}%)`);
-      sec.find('.storage-db-size-label').text(`Total Database Size: ${data.dbSizePretty}`);
-      sec.find('.storage-cache-size-label').text(`effective_cache_size: ${data.effectiveCachePretty} • work_mem: ${data.workMemPretty}`);
+      // Update Gauge Bar & Badges
+      const pct = Math.round(data.bufferFitPercent || 0);
+      const fillPct = Math.min(100, Math.max(0, pct));
+      const fill = sec.find('.storage-gauge-fill');
+      const badge = sec.find('.storage-fit-badge');
+
+      fill.css('width', `${fillPct}%`);
+      sec.find('.storage-gauge-text').text(
+        `${data.totalIndexesPretty} indexes / ${data.sharedBuffersPretty} shared_buffers (${pct}%)`
+      );
+
+      fill.removeClass('fill-normal fill-warning fill-danger');
+      badge.removeClass('badge-fit-normal badge-fit-warning badge-fit-danger');
+
+      if (pct > 100) {
+        fill.addClass('fill-danger');
+        badge.addClass('badge-fit-danger').text(`${pct}% • Exceeds shared_buffers`);
+      } else if (pct >= 80) {
+        fill.addClass('fill-warning');
+        badge.addClass('badge-fit-warning').text(`${pct}% • Near Buffer Limit`);
+      } else {
+        fill.addClass('fill-normal');
+        badge.addClass('badge-fit-normal').text(`${pct}% • Fits in Memory`);
+      }
+
+      // Update Metric Chips
+      sec.find('.storage-db-size-val').text(data.dbSizePretty || '-');
+      sec.find('.storage-index-size-val').text(data.totalIndexesPretty || '-');
+      sec.find('.storage-buffers-val').text(data.sharedBuffersPretty || '-');
+      sec.find('.storage-cache-val').text(data.effectiveCachePretty || '-');
+      sec.find('.storage-workmem-val').text(data.workMemPretty || '-');
 
       // Update Tables List
       const tbody = sec.find('.top-tables-table tbody');

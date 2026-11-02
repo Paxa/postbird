@@ -284,37 +284,134 @@
   .storage-buffer-gauge-card {
     background: #fafafc;
     border: 1px solid #e5e5ea;
-    border-radius: 5px;
-    padding: 10px 14px;
+    border-radius: 6px;
+    padding: 12px 14px;
     margin-bottom: 12px;
 
     .gauge-header {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
+      align-items: center;
+      margin-bottom: 8px;
 
-    .gauge-track {
-      height: 10px;
-      background: #e5e5ea;
-      border-radius: 5px;
-      overflow: hidden;
-      margin-bottom: 6px;
+      .gauge-header-info {
+        .gauge-main-title {
+          font-size: 12px;
+          font-weight: 600;
+          color: #1d1d1f;
+        }
+        .gauge-sub-title {
+          font-size: 11px;
+          color: #6e6e73;
+          margin-top: 1px;
+        }
+      }
 
-      .gauge-fill {
-        height: 100%;
-        background: linear-gradient(to right, #34c759, #ff9500);
-        border-radius: 5px;
-        transition: width 0.3s ease;
+      .storage-fit-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+
+        &.badge-fit-normal {
+          background: rgba(52, 199, 89, 0.15);
+          color: #1b7a33;
+        }
+        &.badge-fit-warning {
+          background: rgba(255, 149, 0, 0.15);
+          color: #b25900;
+        }
+        &.badge-fit-danger {
+          background: rgba(255, 59, 48, 0.15);
+          color: #d70015;
+        }
       }
     }
 
-    .gauge-footer {
+    .gauge-bar-wrapper {
+      margin-bottom: 12px;
+
+      .gauge-bar-track {
+        position: relative;
+        height: 22px;
+        background: #e8e8ed;
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .gauge-bar-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          height: 100%;
+          border-radius: 4px 0 0 4px;
+          transition: width 0.3s ease;
+
+          &.fill-normal {
+            background: #34c759;
+          }
+          &.fill-warning {
+            background: #ff9500;
+          }
+          &.fill-danger {
+            background: #ff3b30;
+          }
+        }
+
+        .gauge-bar-text {
+          position: relative;
+          z-index: 2;
+          font-size: 11px;
+          font-weight: 600;
+          color: #1d1d1f;
+          text-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
+          pointer-events: none;
+        }
+      }
+
+      .gauge-bar-scale {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: #8e8e93;
+        margin-top: 3px;
+        padding: 0 2px;
+      }
+    }
+
+    .storage-metrics-chips {
       display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: #6e6e73;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .storage-chip {
+        flex: 1 1 120px;
+        background: #f0f0f4;
+        border: 1px solid #e0e0e6;
+        border-radius: 4px;
+        padding: 6px 10px;
+        display: flex;
+        flex-direction: column;
+
+        .chip-label {
+          font-size: 10px;
+          color: #6e6e73;
+          text-transform: uppercase;
+          letter-spacing: 0.3px;
+          margin-bottom: 2px;
+        }
+        .chip-val {
+          font-size: 13px;
+          font-weight: 600;
+          color: #1d1d1f;
+        }
+      }
     }
   }
 
@@ -555,11 +652,46 @@ body.dark-mode {
         color: #a0a0a5;
       }
       .metric-progress-track,
-      .gauge-track {
+      .gauge-track,
+      .gauge-bar-track {
         background: #3e3e42;
       }
       .chart-header {
         color: #d1d1d6;
+      }
+
+      .gauge-header {
+        .gauge-header-info {
+          .gauge-main-title {
+            color: #f5f5f7;
+          }
+          .gauge-sub-title {
+            color: #98989d;
+          }
+        }
+      }
+
+      .gauge-bar-wrapper {
+        .gauge-bar-track .gauge-bar-text {
+          color: #ffffff;
+          text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+        }
+        .gauge-bar-scale {
+          color: #98989d;
+        }
+      }
+
+      .storage-metrics-chips {
+        .storage-chip {
+          background: #232326;
+          border-color: #38383c;
+          .chip-label {
+            color: #98989d;
+          }
+          .chip-val {
+            color: #ffffff;
+          }
+        }
       }
     }
 
