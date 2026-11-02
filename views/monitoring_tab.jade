@@ -1,3 +1,8 @@
+mixin refreshIcon(size)
+  svg.icon-refresh-svg(viewBox="0 0 16 16", width=size, height=size, fill="currentColor", aria-hidden="true")
+    path(fill-rule="evenodd", d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z")
+    path(d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z")
+
 .monitoring-view
   .monitor-toolbar
     .toolbar-left
@@ -8,8 +13,8 @@
         span.live-pulse-dot
         span.live-status-text= isLive ? "Live Monitoring (3s)" : "Monitoring Paused"
       button.btn-native.btn-global-refresh(title="Refresh All Sections")
-        span.icon-refresh ⟳
-        |  Refresh All
+        +refreshIcon(12)
+        span.btn-text Refresh All
 
   .monitor-sections-container
     // -------------------------------------------------------------
@@ -22,7 +27,8 @@
         span.section-badge.badge-realtime Real-time (3s)
         span.section-summary-text= sectionSummaries.overview || "Loading real-time overview..."
         .section-actions
-          button.btn-section-icon.btn-section-refresh(title="Refresh Overview") ⟳
+          button.btn-section-icon.btn-section-refresh(title="Refresh Overview")
+            +refreshIcon(11)
 
       .monitor-section-body
         .metric-cards-grid
@@ -87,7 +93,8 @@
         span.section-badge.badge-snapshot Snapshot
         span.section-summary-text= sectionSummaries.storage
         .section-actions
-          button.btn-section-icon.btn-section-refresh(title="Refresh Storage Stats") ⟳
+          button.btn-section-icon.btn-section-refresh(title="Refresh Storage Stats")
+            +refreshIcon(11)
 
       .monitor-section-body
         .storage-buffer-gauge-card
@@ -125,7 +132,8 @@
         span.section-badge.badge-snapshot Snapshot
         span.section-summary-text= sectionSummaries.vacuum
         .section-actions
-          button.btn-section-icon.btn-section-refresh(title="Refresh Vacuum Stats") ⟳
+          button.btn-section-icon.btn-section-refresh(title="Refresh Vacuum Stats")
+            +refreshIcon(11)
 
       .monitor-section-body
         .vacuum-progress-block(style="display: none;")
@@ -157,7 +165,8 @@
         span.section-badge.badge-realtime Real-time
         span.section-summary-text= sectionSummaries.replication
         .section-actions
-          button.btn-section-icon.btn-section-refresh(title="Refresh Replication Stats") ⟳
+          button.btn-section-icon.btn-section-refresh(title="Refresh Replication Stats")
+            +refreshIcon(11)
 
       .monitor-section-body
         .section-subhead Standby Replicas & Sync Status
@@ -189,7 +198,8 @@
         span.section-badge.badge-snapshot Snapshot
         span.section-summary-text= sectionSummaries.slow_queries
         .section-actions
-          button.btn-section-icon.btn-section-refresh(title="Refresh Slow Queries") ⟳
+          button.btn-section-icon.btn-section-refresh(title="Refresh Slow Queries")
+            +refreshIcon(11)
 
       .monitor-section-body
         .slow-queries-not-installed(style="display: none;")

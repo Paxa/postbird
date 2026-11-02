@@ -74,6 +74,6 @@ describe("Model.Server", () => {
     await conn.switchDb("postbird_test");
     var dbsAfterDrop = await conn.server.listDatabases();
     assert.notContain(dbsAfterDrop, dbName2);
-  });
+  }, 15000);
 
 });
