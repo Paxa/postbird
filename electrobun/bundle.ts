@@ -36,6 +36,7 @@ console.log("Compiling styles (SASS)...");
 try {
   const compiledSass = sass.compile(resolve(root, "assets/styles/style.scss"), {
     loadPaths: [resolve(root, "assets/styles")],
+    silenceDeprecations: ["import", "mixed-decls"] as any,
   });
   await Bun.write(resolve(root, "public/style.css"), compiledSass.css);
   console.log("Styles compiled successfully to public/style.css!");

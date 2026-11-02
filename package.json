@@ -6,7 +6,7 @@
   "license": "MIT",
   "description": "Postbird is a cross-platform PostgreSQL GUI client, written in TypeScript, powered by Electrobun",
   "scripts": {
-    "sass": "sass assets/styles/style.scss public/style.css --watch",
+    "sass": "sass assets/styles/style.scss public/style.css --silence-deprecation=import --silence-deprecation=mixed-decls --watch",
     "test": "bun test tests/",
     "test:unit": "bun test tests/",
     "test:ui": "bun electrobun/bundle.ts && bunx electrobun build && POSTBIRD_TEST_UI=true bunx electrobun run",
