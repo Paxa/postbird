@@ -24,12 +24,12 @@ class Monitoring extends PaneBase {
 
   sectionSummaries: { [key: string]: string } = {
     overview: '',
-    queries: 'Click to load active queries',
-    storage: 'Click to load storage & index footprint',
-    vacuum: 'Click to load vacuum & bloat health',
-    replication: 'Click to load replication & WAL stats',
-    slow_queries: 'Click to load query execution insights',
-    indexes: 'Click to analyze unused & duplicate indexes'
+    queries: '',
+    storage: '',
+    vacuum: '',
+    replication: '',
+    slow_queries: '',
+    indexes: ''
   };
 
   // Section data caches
@@ -238,6 +238,10 @@ class Monitoring extends PaneBase {
     this.stopPolling();
     this.pollTimer = setInterval(() => {
       if (this.view.currentTab === 'monitoring') {
+        if (this.handler.connectionLostError || !this.handler.connection || (this.handler.connection as any).reconnectDialogVisible) {
+          this.stopPolling();
+          return;
+        }
         this.fetchOverview(true);
       }
     }, this.pollInterval);
@@ -338,6 +342,13 @@ class Monitoring extends PaneBase {
       // Render updated Overview Content DOM
       this.updateOverviewDom(qps);
     } catch (error) {
+      if (error && (error as any).message && (
+        (error as any).message.includes("Connection terminated") ||
+        (error as any).message.includes("server closed the connection") ||
+        (error as any).message.includes("Client has encountered a connection error")
+      )) {
+        this.stopPolling();
+      }
       if (!isSilent) {
         $u.alertError('Failed to fetch overview metrics', { detail: (error as any).toString() });
       }

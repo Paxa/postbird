@@ -71,8 +71,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Active & Waiting Queries
-        span.section-badge.badge-snapshot Snapshot
-        span.section-summary-text= sectionSummaries.queries || "Click to load active queries"
+        span.section-summary-text= sectionSummaries.queries || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Active Queries")
             +refreshIcon(11)
@@ -95,7 +94,7 @@ mixin refreshIcon(size)
                   th(style="width: 150px;") Actions
               tbody
                 tr
-                  td(colspan="9", class="text-muted text-center", style="padding: 16px;") Click to load active queries.
+                  td(colspan="9", class="text-muted text-center", style="padding: 16px;") No active queries loaded.
 
     // -------------------------------------------------------------
     // SECTION 2: STORAGE & INDEX MEMORY FIT
@@ -104,8 +103,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Storage & Memory Buffer Fit
-        span.section-badge.badge-snapshot Snapshot
-        span.section-summary-text= sectionSummaries.storage
+        span.section-summary-text= sectionSummaries.storage || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Storage Stats")
             +refreshIcon(11)
@@ -175,7 +173,7 @@ mixin refreshIcon(size)
                   th(style="width: 95px;") Total Size
               tbody
                 tr
-                  td(colspan="7", class="text-muted text-center", style="padding: 14px;") Click to load storage details.
+                  td(colspan="7", class="text-muted text-center", style="padding: 14px;") No storage details loaded.
 
     // -------------------------------------------------------------
     // SECTION 3: VACUUM & BLOAT HEALTH
@@ -184,8 +182,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Vacuum & Table Bloat Health
-        span.section-badge.badge-snapshot Snapshot
-        span.section-summary-text= sectionSummaries.vacuum
+        span.section-summary-text= sectionSummaries.vacuum || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Vacuum Stats")
             +refreshIcon(11)
@@ -208,7 +205,7 @@ mixin refreshIcon(size)
                   th(style="width: 120px;") Status
               tbody
                 tr
-                  td(colspan="7", class="text-muted text-center", style="padding: 14px;") Click to load vacuum statistics.
+                  td(colspan="7", class="text-muted text-center", style="padding: 14px;") No vacuum statistics loaded.
 
     // -------------------------------------------------------------
     // SECTION 4: STREAMING REPLICATION & WAL
@@ -217,8 +214,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Streaming Replication & WAL Slots
-        span.section-badge.badge-realtime Real-time
-        span.section-summary-text= sectionSummaries.replication
+        span.section-summary-text= sectionSummaries.replication || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Replication Stats")
             +refreshIcon(11)
@@ -237,7 +233,7 @@ mixin refreshIcon(size)
                   th Lag (Time)
               tbody
                 tr
-                  td(colspan="5", class="text-muted text-center", style="padding: 14px;") Click to load replication details.
+                  td(colspan="5", class="text-muted text-center", style="padding: 14px;") No replication details loaded.
 
         .section-subhead Replication Slots & Disk Retention
         .replication-slots-list
@@ -250,8 +246,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Top Slow Queries (pg_stat_statements)
-        span.section-badge.badge-snapshot Snapshot
-        span.section-summary-text= sectionSummaries.slow_queries
+        span.section-summary-text= sectionSummaries.slow_queries || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Slow Queries")
             +refreshIcon(11)
@@ -294,8 +289,7 @@ mixin refreshIcon(size)
       .monitor-section-header
         span.disclosure-triangle
         span.section-title Index Optimization (Unused & Duplicate)
-        span.section-badge.badge-snapshot Snapshot
-        span.section-summary-text= sectionSummaries.indexes || "Click to analyze unused & duplicate indexes"
+        span.section-summary-text= sectionSummaries.indexes || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Index Analysis")
             +refreshIcon(11)
@@ -319,7 +313,7 @@ mixin refreshIcon(size)
                   th(style="width: 140px;") Actions
               tbody
                 tr
-                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") Click to analyze unused indexes.
+                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") No unused indexes analyzed yet.
 
         .section-subhead(style="margin-top: 16px;") Duplicate & Redundant Indexes (Exact same columns & opclass)
         .rescol-wrapper.with-borders
@@ -334,4 +328,4 @@ mixin refreshIcon(size)
                   th(style="width: 140px;") Actions
               tbody
                 tr
-                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") Click to analyze duplicate indexes.
+                  td(colspan="5", class="text-muted text-center", style="padding: 16px;") No duplicate indexes analyzed yet.
