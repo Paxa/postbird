@@ -50,10 +50,10 @@ class SshConnect_ {
       sshOptions.privateKey = connectOptions.ssh_key
     }
     if (configFileValues.Port) {
-      sshOptions.endPort = configFileValues.Port
+      sshOptions.endPort = Number(configFileValues.Port);
     }
     if (connectOptions.ssh_port) {
-      sshOptions.endPort = connectOptions.ssh_port
+      sshOptions.endPort = Number(connectOptions.ssh_port);
     }
 
     console.log('SSH connect', sshOptions)

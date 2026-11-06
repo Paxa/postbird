@@ -7,6 +7,24 @@ class Monitor extends ModelBase {
     }
   }
 
+  static formatUptime(seconds: number): string {
+    if (!seconds || seconds < 0) return '0s';
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    if (days > 0) {
+      return `${days}d ${hours}h`;
+    }
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    }
+    if (minutes > 0) {
+      return `${minutes}m`;
+    }
+    return `${seconds}s`;
+  }
+
   async fetchRealtimeStats() {
     // 1. Connection states from pg_stat_activity
     const connSql = `
@@ -40,16 +58,46 @@ class Monitor extends ModelBase {
       WHERE datname = current_database();
     `;
 
-    const [connRes, maxConnRes, dbStatRes, activeQueries] = await Promise.all([
+    // 4. Server uptime
+    const uptimeSql = `
+      SELECT
+        pg_postmaster_start_time() AS start_time,
+        ROUND(EXTRACT(EPOCH FROM (now() - pg_postmaster_start_time())))::bigint AS uptime_seconds;
+    `;
+
+    // 5. Invalid / broken indexes
+    const invalidIndexesSql = `
+      SELECT
+        n.nspname AS schemaname,
+        c.relname AS table_name,
+        i.relname AS index_name,
+        pg_size_pretty(pg_relation_size(idx.indexrelid)) AS index_size_pretty,
+        pg_relation_size(idx.indexrelid) AS index_bytes
+      FROM pg_index idx
+      JOIN pg_class i ON i.oid = idx.indexrelid
+      JOIN pg_class c ON c.oid = idx.indrelid
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE NOT idx.indisvalid
+        AND n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast')
+      ORDER BY pg_relation_size(idx.indexrelid) DESC;
+    `;
+
+    const [connRes, maxConnRes, dbStatRes, activeQueries, uptimeRes, invalidIdxRes] = await Promise.all([
       this.query(connSql),
       this.query(maxConnSql),
       this.query(dbStatSql),
-      this.fetchActiveQueries()
+      this.fetchActiveQueries(),
+      this.query(uptimeSql).catch(() => ({ rows: [] })),
+      this.query(invalidIndexesSql).catch(() => ({ rows: [] }))
     ]);
 
     const connData = connRes.rows[0] || {};
     const maxConn = (maxConnRes.rows[0] && maxConnRes.rows[0].max_connections) || 100;
     const dbStat = dbStatRes.rows[0] || {};
+    const uptimeRow = (uptimeRes.rows && uptimeRes.rows[0]) || {};
+    const uptimeSeconds = uptimeRow.uptime_seconds !== null && uptimeRow.uptime_seconds !== undefined
+      ? Number(uptimeRow.uptime_seconds)
+      : 0;
 
     // Summed duration of currently active queries
     const summedQueryTimeMs = activeQueries
@@ -73,7 +121,19 @@ class Monitor extends ModelBase {
         cacheHitRatio: dbStat.cache_hit_ratio !== null ? parseFloat(dbStat.cache_hit_ratio) : 100
       },
       summedQueryTimeMs: Math.round(summedQueryTimeMs),
-      activeQueries: activeQueries
+      activeQueries: activeQueries,
+      uptime: {
+        startTime: uptimeRow.start_time || null,
+        uptimeSeconds: uptimeSeconds,
+        formatted: Monitor.formatUptime(uptimeSeconds)
+      },
+      invalidIndexes: (invalidIdxRes.rows || []) as Array<{
+        schemaname: string;
+        table_name: string;
+        index_name: string;
+        index_size_pretty: string;
+        index_bytes: number;
+      }>
     };
   }
 
@@ -165,16 +225,36 @@ class Monitor extends ModelBase {
       LIMIT 25;
     `;
 
-    const [unusedRes, duplicateRes] = await Promise.all([
+    // 3. Broken / invalid indexes: indisvalid = false
+    const invalidSql = `
+      SELECT
+        n.nspname AS schemaname,
+        c.relname AS table_name,
+        i.relname AS index_name,
+        pg_size_pretty(pg_relation_size(idx.indexrelid)) AS index_size_pretty,
+        pg_relation_size(idx.indexrelid) AS index_bytes
+      FROM pg_index idx
+      JOIN pg_class i ON i.oid = idx.indexrelid
+      JOIN pg_class c ON c.oid = idx.indrelid
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE NOT idx.indisvalid
+        AND n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast')
+      ORDER BY pg_relation_size(idx.indexrelid) DESC;
+    `;
+
+    const [unusedRes, duplicateRes, invalidRes] = await Promise.all([
       this.query(unusedSql),
-      this.query(duplicateSql)
+      this.query(duplicateSql),
+      this.query(invalidSql).catch(() => ({ rows: [] }))
     ]);
 
     const unused = unusedRes.rows || [];
     const duplicates = duplicateRes.rows || [];
+    const invalid = invalidRes.rows || [];
     const totalUnusedBytes = unused.reduce((sum: number, idx: any) => sum + (Number(idx.index_bytes) || 0), 0);
 
     return {
+      invalid: invalid,
       unused: unused,
       duplicates: duplicates,
       totalUnusedBytes: totalUnusedBytes,

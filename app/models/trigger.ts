@@ -33,26 +33,26 @@ class Trigger extends ModelBase {
     });
   }
 
-  static find (table, name, callback) {
+  static find (table, name, callback?: Function) {
     var sql = `
       select pg_class.relname as table_name, pg_proc.proname as proc_name, pg_trigger.*
       from pg_trigger, pg_proc, pg_class
       where
         pg_trigger.tgfoid = pg_proc.oid and
-        pg_trigger.tgrelid = pg_class.oid
-        pg_class.relname = "%s" and pg_trigger.tgname = "%s"
+        pg_trigger.tgrelid = pg_class.oid and
+        pg_class.relname = '%s' and pg_trigger.tgname = '%s'
     `;
 
-    this.q(sql, table, name, (data, error) => {
-      if (error) {
-        callback();
-        return;
-      }
-      if (data.rows[0]) {
-        callback(new Trigger('public', data.rows[0]));
-      } else {
-        callback();
-      }
+    return new Promise((resolve, reject) => {
+      this.q(sql, table, name, (data, error) => {
+        if (error) {
+          callback && callback(undefined, error);
+          return reject(error);
+        }
+        var trig = (data && data.rows && data.rows[0]) ? new Trigger('public', data.rows[0]) : undefined;
+        callback && callback(trig);
+        resolve(trig);
+      });
     });
   }
 

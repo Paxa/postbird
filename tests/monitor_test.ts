@@ -26,6 +26,15 @@ describe("Model.Monitor", () => {
     assert.ok(stats.database.cacheHitRatio >= 0 && stats.database.cacheHitRatio <= 100);
     assert.ok(Array.isArray(stats.activeQueries));
     assert.equal(typeof stats.summedQueryTimeMs, "number");
+
+    // Server Uptime
+    assert.ok(stats.uptime);
+    assert.equal(typeof stats.uptime.uptimeSeconds, "number");
+    assert.ok(stats.uptime.uptimeSeconds >= 0);
+    assert.equal(typeof stats.uptime.formatted, "string");
+
+    // Invalid indexes fast check
+    assert.ok(Array.isArray(stats.invalidIndexes));
   });
 
   it("fetchActiveQueries returns active sessions with client metadata", async () => {
@@ -41,7 +50,7 @@ describe("Model.Monitor", () => {
     }
   });
 
-  it("fetchIndexHealth returns unused and duplicate index analysis", async () => {
+  it("fetchIndexHealth returns unused, duplicate, and invalid index analysis", async () => {
     const conn = getConnection();
     const monitor = new Model.Monitor(conn);
     const health = await monitor.fetchIndexHealth();
@@ -49,8 +58,17 @@ describe("Model.Monitor", () => {
     assert.ok(health);
     assert.ok(Array.isArray(health.unused));
     assert.ok(Array.isArray(health.duplicates));
+    assert.ok(Array.isArray(health.invalid));
     assert.equal(typeof health.totalUnusedBytes, "number");
     assert.equal(typeof health.totalUnusedSizePretty, "string");
+  });
+
+  it("Monitor.formatUptime formats seconds into human-readable duration strings", () => {
+    assert.equal(Model.Monitor.formatUptime(0), "0s");
+    assert.equal(Model.Monitor.formatUptime(45), "45s");
+    assert.equal(Model.Monitor.formatUptime(120), "2m");
+    assert.equal(Model.Monitor.formatUptime(3665), "1h 1m");
+    assert.equal(Model.Monitor.formatUptime(86400 * 2 + 3600 * 5), "2d 5h");
   });
 
   it("fetchStorageStats returns db size, buffers config, and index summary", async () => {
@@ -191,6 +209,47 @@ describe("Model.Monitor", () => {
     assert.contain(svg, "<svg");
     assert.contain(svg, "</svg>");
     assert.contain(svg, 'Peak: 1');
+  });
+
+  it("Model.Monitor.cancelQuery and terminateQuery handle non-existent PID gracefully", async () => {
+    const conn = getConnection();
+    const monitor = new Model.Monitor(conn);
+    // Non-existent PID should return false/null without error
+    const cancelResult = await monitor.cancelQuery(99999999);
+    assert.equal(cancelResult, false, "Cancelling non-existent PID should return false");
+
+    const termResult = await monitor.terminateQuery(99999999);
+    assert.equal(termResult, false, "Terminating non-existent PID should return false");
+  });
+
+  it("Model.Monitor.formatDurationMs properly formats small and large durations into readable units", () => {
+    assert.equal(Model.Monitor.formatDurationMs(0.85), "0.9 ms");
+    assert.equal(Model.Monitor.formatDurationMs(12.4), "12 ms");
+    assert.equal(Model.Monitor.formatDurationMs(850), "850 ms");
+    assert.equal(Model.Monitor.formatDurationMs(4500), "4.5 s");
+    assert.equal(Model.Monitor.formatDurationMs(1315980.49), "21.9 min");
+    assert.equal(Model.Monitor.formatDurationMs(7200000), "2.0 hrs");
+    assert.equal(Model.Monitor.formatDurationMs(172800000), "2.0 days");
+    assert.equal(Model.Monitor.formatDurationMs(-50), "0 ms");
+    assert.equal(Model.Monitor.formatDurationMs(null), "-");
+    assert.equal(Model.Monitor.formatDurationMs(undefined), "-");
+    assert.equal(Model.Monitor.formatDurationMs("invalid"), "-");
+  });
+
+  it("Model.Monitor.extractTargetTable extracts target table names from various SQL commands", () => {
+    assert.equal(Model.Monitor.extractTargetTable("SELECT * FROM users WHERE id = $1"), "users");
+    assert.equal(Model.Monitor.extractTargetTable("SELECT * FROM \"public\".\"orders\" WHERE id = $1"), "public.orders");
+    assert.equal(Model.Monitor.extractTargetTable("UPDATE accounts SET balance = $1 WHERE id = $2"), "accounts");
+    assert.equal(Model.Monitor.extractTargetTable("UPDATE ONLY legacy_records SET x = 1"), "legacy_records");
+    assert.equal(Model.Monitor.extractTargetTable("INSERT INTO payments (amount) VALUES ($1)"), "payments");
+    assert.equal(Model.Monitor.extractTargetTable("DELETE FROM ONLY sessions WHERE id = $1"), "sessions");
+    assert.equal(Model.Monitor.extractTargetTable("TRUNCATE logs;"), "logs");
+    assert.equal(Model.Monitor.extractTargetTable("LOCK TABLE locks IN EXCLUSIVE MODE;"), "locks");
+    assert.equal(Model.Monitor.extractTargetTable("-- SQL Comment\nSELECT * FROM customers"), "customers");
+    assert.equal(Model.Monitor.extractTargetTable("/* Block Comment */ SELECT * FROM audits"), "audits");
+    assert.equal(Model.Monitor.extractTargetTable("SELECT 1"), "-");
+    assert.equal(Model.Monitor.extractTargetTable("SELECT * FROM (SELECT 1) sub"), "-");
+    assert.equal(Model.Monitor.extractTargetTable(null as any), "-");
   });
 
   it("ViewHelpers.escapeHTML properly escapes HTML characters and handles falsy values", () => {

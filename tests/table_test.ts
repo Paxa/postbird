@@ -266,4 +266,54 @@ describe('Model.Table', () => {
     await ModelBase.q("DROP SEQUENCE public.test_counter_seq;");
   })
 
+  it("should inspect materialized views and refresh them", async () => {
+    await ModelBase.q("CREATE MATERIALIZED VIEW public.test_matview AS SELECT 1 AS id, 'hello'::text AS msg;");
+    var mv = new Model.Table('public', 'test_matview', 'MATERIALIZED VIEW');
+
+    var isMv = await mv.isMatView();
+    assert.equal(isMv, true);
+
+    var structure = await mv.getStructure();
+    assert.ok(Array.isArray(structure));
+    assert.ok(structure.some(col => col.column_name == 'id'));
+    assert.ok(structure.some(col => col.column_name == 'msg'));
+
+    var types = await mv.getColumnTypes();
+    assert.ok(types.id);
+    assert.ok(types.msg);
+
+    // Refresh materialized view
+    await mv.refreshMatView();
+
+    await ModelBase.q("DROP MATERIALIZED VIEW public.test_matview;");
+  })
+
+  it("should inspect constraints, relations, and drop constraints", async () => {
+    await ModelBase.q("CREATE TABLE public.parent_tbl (id serial primary key, code text unique);");
+    await ModelBase.q("CREATE TABLE public.child_tbl (id serial primary key, parent_id integer references public.parent_tbl(id), val text);");
+
+    var child = new Model.Table('public', 'child_tbl');
+
+    var constraints = await child.getConstraints();
+    assert.ok(constraints && constraints.rows);
+    assert.ok(constraints.rows.some((c: any) => c.contype == 'f'), "Should detect foreign key constraint");
+
+    var relations = await child.getRelations();
+    assert.ok(relations && relations.hash);
+    assert.ok(relations.hash.parent_id, "Should index relation by foreign key column");
+    assert.equal(relations.hash.parent_id.foreign_table_name, 'parent_tbl');
+
+    // Drop constraint
+    const fkeyName = constraints.rows.find((c: any) => c.contype == 'f').conname;
+    await new Promise((resolve) => {
+      child.dropConstraint(fkeyName, resolve);
+    });
+
+    var updatedConstraints = await child.getConstraints();
+    assert.ok(!updatedConstraints.rows.some((c: any) => c.conname == fkeyName));
+
+    await ModelBase.q("DROP TABLE public.child_tbl;");
+    await ModelBase.q("DROP TABLE public.parent_tbl;");
+  })
+
 })

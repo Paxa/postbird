@@ -57,10 +57,20 @@ describe("Model.Trigger", () => {
     assert.ok(desc.includes("before"));
     assert.ok(desc.includes("insert"));
 
-    // 5. Drop trigger
+    // 5. Test Trigger.find
+    var foundTrigger: any = await Model.Trigger.find("items", "before_insert_item");
+    assert.ok(foundTrigger, "Trigger.find should locate existing trigger");
+    assert.equal(foundTrigger.name, "before_insert_item");
+    assert.equal(foundTrigger.table_name, "items");
+    assert.equal(foundTrigger.proc_name, "items_trigger_fn");
+
+    var missingTrigger: any = await Model.Trigger.find("items", "nonexistent_trigger");
+    assert.equal(missingTrigger, undefined, "Trigger.find should return undefined for missing trigger");
+
+    // 6. Drop trigger
     await myTrigger.drop();
 
-    // 6. Verify dropped
+    // 7. Verify dropped
     var triggersAfterDrop: any = await Model.Trigger.findAll();
     var found = triggersAfterDrop.find(t => t.name == "before_insert_item");
     assert.equal(found, undefined);

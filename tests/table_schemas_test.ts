@@ -136,4 +136,13 @@ describe('Model.Table and Model.Schema', () => {
     window.localStorage.setItem("postbird:showSchemas", "1");
     assert.equal(window.localStorage.getItem("postbird:showSchemas"), "1");
   })
+
+  it("Model.Schema.findAll lists available schemas", async () => {
+    await Model.Schema.create("my_schema_1");
+    var schemas: any = await Model.Schema.findAll();
+    assert.ok(Array.isArray(schemas), "Schema.findAll must return an array");
+    var schemaNames = schemas.map(s => s.schemaName);
+    assert.contain(schemaNames, "public");
+    assert.contain(schemaNames, "my_schema_1");
+  })
 })

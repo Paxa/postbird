@@ -87,4 +87,33 @@ describe('Model.Procedure', () => {
     assert.equal(procs2.length, 0)
   })
 
+  it("listLanguages returns available PostgreSQL procedural languages", async () => {
+    var languages = await Model.Procedure.listLanguages();
+    assert.ok(Array.isArray(languages));
+    var names = languages.map((l: any) => l.lanname);
+    assert.contain(names, 'plpgsql');
+    assert.contain(names, 'sql');
+  })
+
+  it("getDefinition returns procedure source code definition", async () => {
+    var sql = "CREATE OR REPLACE FUNCTION test_def_fn(x integer) RETURNS integer AS $$ " +
+              "BEGIN RETURN x * 2; END; $$ LANGUAGE plpgsql;";
+    await ModelBase.q(sql);
+
+    var proc: any = await Model.Procedure.find('test_def_fn');
+    assert.ok(proc);
+
+    var def: any = await proc.getDefinition();
+    assert.ok(def);
+    assert.equal(def.proname, 'test_def_fn');
+    assert.contain(def.source, 'RETURN x * 2');
+
+    await proc.drop();
+  })
+
+  it("findAllWithExtensions returns procedures including extension metadata", async () => {
+    var procsWithExt = await Model.Procedure.findAllWithExtensions();
+    assert.ok(Array.isArray(procsWithExt));
+  })
+
 })

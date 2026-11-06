@@ -1,4 +1,3 @@
-var semver = require('semver');
 
 class Server extends ModelBase {
 

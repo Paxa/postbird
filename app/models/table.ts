@@ -1,7 +1,6 @@
 var SqlExporter = require('../../lib/sql_exporter');
 var pgEscape = require('pg-escape');
-// @ts-ignore
-var pg = require('pg');
+var sqlClient = require('../../lib/sql_client');
 
 var TABLE_TYPES = {
   VIEW: 'VIEW',
@@ -52,7 +51,7 @@ interface Table_getRows_Options {
   sortDirection?: string
 }
 
-interface Table_getRows_Result extends pg.QueryResult {
+interface Table_getRows_Result extends QueryResult {
   relations: string[]
 }
 
@@ -482,16 +481,48 @@ class Table extends ModelBase {
 
     var sql = `SELECT ${selectColumns.join(', ')} FROM ${this.sqlTable()} ${condition} ${orderSql} LIMIT ${limit} OFFSET ${offset}`;
 
-    return this.q(sql).then(data => {
+    return this.q(sql).then(async data => {
       if (data) {
         data.limit = limit;
         data.offset = offset;
       }
+      if (data && (!data.fields || data.fields.length === 0)) {
+        try {
+          const colTypes = await this.getColumnTypes();
+          if (colTypes && Object.keys(colTypes).length > 0) {
+            const flds: any[] = [];
+            if (options.with_oid && colTypes.oid) {
+              flds.push({ name: 'oid', tableID: 0, columnID: 0, dataTypeID: 0, dataTypeSize: -1, dataTypeModifier: -1, format: 'text' });
+            }
+            if (!await this.isView() && this.connection().supportCtid()) {
+              flds.push({ name: 'ctid', tableID: 0, columnID: 0, dataTypeID: 0, dataTypeSize: -1, dataTypeModifier: -1, format: 'text' });
+            }
+            for (const colName of Object.keys(colTypes)) {
+              if (colName !== 'oid' && colName !== 'ctid') {
+                flds.push({
+                  name: colName,
+                  tableID: 0,
+                  columnID: flds.length,
+                  dataTypeID: 0,
+                  data_type: colTypes[colName].data_type,
+                  udt_name: colTypes[colName].udt_name,
+                  dataTypeSize: -1,
+                  dataTypeModifier: -1,
+                  format: 'text'
+                });
+              }
+            }
+            data.fields = flds;
+          }
+        } catch {
+          // ignore fallback error
+        }
+      }
       // remove columns if we selected extra columns
-      if (data && options.extraColumns) {
+      if (data && options.extraColumns && data.fields) {
         data.fields.splice(data.fields.length - options.extraColumns.length, options.extraColumns.length);
       }
-      return Promise.resolve(data);
+      return data;
     });
   }
 
