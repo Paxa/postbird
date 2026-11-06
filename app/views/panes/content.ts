@@ -1,4 +1,4 @@
-var Client = require('pg').Client;
+var Client = require('../../../lib/sql_client').Client;
 var pgEscape = require('pg-escape');
 var electronRemote = require('@electron/remote');
 
@@ -190,7 +190,7 @@ class Content extends PaneBase {
   currentTable: Array<string | Table>
   totalRows: number | string
   currentTableType: string
-  currentData: pg.QueryResult
+  currentData: QueryResult
 
   footer:        JQuery<HTMLElement>
   nextPageEl:    JQuery<HTMLElement>
@@ -246,14 +246,14 @@ class Content extends PaneBase {
 
   renderData (data) {
     if (this.error) {
-      var errorMsg = $dom(['div.error',
-        ['h4', "Can not load content"],
-        ['code',
-          ['pre', this.error.toString() + (this.error.hint ? "\n" + this.error.hint : "")],
-          ['pre', this.error.query ? `Query: ${this.error.query}` : ''],
-          ['pre', this.error.stack]
-        ]
-      ]);
+      var errorMsg = dom.div({ class: 'error' },
+        dom.h4("Can not load content"),
+        dom.code(
+          dom.pre(this.error.toString() + (this.error.hint ? "\n" + this.error.hint : "")),
+          this.error.query && dom.pre(`Query: ${this.error.query}`),
+          this.error.stack && dom.pre(this.error.stack)
+        )
+      );
 
       this.view.setTabContent('content', errorMsg);
       return;
@@ -441,7 +441,7 @@ class Content extends PaneBase {
     }
 
     // bind for delete button
-    if (this.currentTableType == 'BASE TABLE') {
+    if (this.currentTableType == 'BASE TABLE' && !this.isReadOnly()) {
       $u(table).on('generic-table-init', () => {
         var genericTable = GenericTable.getInstance(table);
         genericTable.bind('key.backspace', (event) => {
@@ -460,27 +460,30 @@ class Content extends PaneBase {
     });
 
     table.single_double_click_nowait(null, event => {
+      if (this.isReadOnly()) return;
       var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
       this.editField(el);
     });
 
-    var contextMenuActions = {
+    var contextMenuActions: Record<string, any> = {
       'Copy'() {
         window.document.execCommand("copy");
       }
     };
     if (this.currentTableType == 'BASE TABLE') {
-      contextMenuActions['Delete Row'] = (menuItem, bwin) => {
-        var event = table[0].contextmenu.clickEvent;
-        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
-        this.deleteRow(el);
-      };
+      if (!this.isReadOnly()) {
+        contextMenuActions['Delete Row'] = (menuItem, bwin) => {
+          var event = table[0].contextmenu.clickEvent;
+          var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+          this.deleteRow(el);
+        };
 
-      contextMenuActions['Edit Value'] = (menuItem, bwin) => {
-        var event = table[0].contextmenu.clickEvent;
-        var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
-        this.editField(el);
-      };
+        contextMenuActions['Edit Value'] = (menuItem, bwin) => {
+          var event = table[0].contextmenu.clickEvent;
+          var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
+          this.editField(el);
+        };
+      }
 
       contextMenuActions['Copy Row as SQL'] = (menuItem, bwin) => {
         var event = table[0].contextmenu.clickEvent;
@@ -488,9 +491,11 @@ class Content extends PaneBase {
         this.copyRowAsSql(el);
       };
 
-      contextMenuActions['Add New Row'] = (menuItem, bwin) => {
-        this.addRow();
-      };
+      if (!this.isReadOnly()) {
+        contextMenuActions['Add New Row'] = (menuItem, bwin) => {
+          this.addRow();
+        };
+      }
     }
     $u.contextMenu(table, contextMenuActions, {
       // if text is not selected - disable copy button
@@ -504,7 +509,13 @@ class Content extends PaneBase {
       }
     });
 
-    if (this.currentTableType == 'BASE TABLE') {
+    if (this.currentTableType == 'BASE TABLE' && !this.isReadOnly()) {
+      // Prevent table headers from bubbling to this.content's 'Add New Row'
+      this.content.find('.rescol-header-wrapper').on('contextmenu', (e: any) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
       // for empty area when table is empty
       $u.contextMenu(this.content, {
         'Add New Row': () => {
@@ -526,6 +537,10 @@ class Content extends PaneBase {
   }
 
   async deleteRow (row) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: deleting rows is disabled");
+      return;
+    }
     if (this.currentTableType != 'BASE TABLE') {
       $u.alert("Can't delete from " + this.currentTableType);
     }
@@ -599,6 +614,10 @@ class Content extends PaneBase {
   }
 
   async editField (field) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: editing values is disabled");
+      return;
+    }
     var position = $u(field).prevAll('td').length;
     var ctid = $u(field).closest('tr').attr('data-ctid');
 
@@ -668,6 +687,10 @@ class Content extends PaneBase {
   }
 
   addRow () {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: adding rows is disabled");
+      return;
+    }
     var container = this.content.find('table tbody');
     var sortedColumns = Object.values(this.columnTypes).sort((a, b) => {
       return (a.ordinal_position > b.ordinal_position) ? 1 : (a.ordinal_position < b.ordinal_position) ? -1 : 0;
@@ -679,7 +702,7 @@ class Content extends PaneBase {
       if (column.data_type == 'real' || column.data_type == 'smallint' || column.data_type == 'numeric') {
         inputType = 'number';
       }
-      var input = $dom(['input', {fieldname: column.column_name, type: inputType}]);
+      var input = dom.input({ fieldname: column.column_name, type: inputType });
       fields.append($u('<td>').append(input));
     });
 

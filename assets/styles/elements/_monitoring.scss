@@ -22,6 +22,36 @@
         font-size: 11px;
         color: #777;
       }
+
+      .uptime-chip {
+        margin-left: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #f0f0f2;
+        border: 1px solid #dcdce0;
+        border-radius: 12px;
+        padding: 2px 8px;
+        font-size: 11px;
+        cursor: default;
+
+        .uptime-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: #34c759;
+          box-shadow: 0 0 4px rgba(52, 199, 89, 0.4);
+        }
+
+        .uptime-label {
+          color: #777;
+        }
+
+        .uptime-value {
+          font-weight: 600;
+          color: #1d1d1f;
+        }
+      }
     }
 
     .toolbar-right {
@@ -266,6 +296,60 @@
         height: 64px;
         width: 100%;
       }
+    }
+  }
+
+  // Compact Invalid Indexes Banner (Below charts)
+  .invalid-indexes-banner {
+    background: #fff8f0;
+    border: 1px solid #ffd0a8;
+    border-left: 4px solid #ff9500;
+    border-radius: 6px;
+    padding: 7px 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    color: #8a3b00;
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+
+      .banner-icon {
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .banner-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        code {
+          background: rgba(255, 149, 0, 0.14);
+          padding: 1px 4px;
+          border-radius: 3px;
+          font-family: Menlo, monospace;
+          font-size: 11px;
+          color: #a33800;
+        }
+
+        strong {
+          font-weight: 600;
+          color: #7a3000;
+        }
+      }
+    }
+
+    .btn-banner-jump {
+      flex-shrink: 0;
+      cursor: pointer;
     }
   }
 

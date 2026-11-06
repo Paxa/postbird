@@ -52,7 +52,6 @@ class HelpScreen {
     }
 
     App.tabs.forEach((tab) => {
-      // @ts-ignore
       if (tab.instance === App.helpScreen) {
         tab.activate();
       }

@@ -1,7 +1,9 @@
 .main-screen
   .sidebar
     .databases
-      label Select database
+      label
+        = "Select database "
+        span.read-only-indicator(title="Read-only mode active: modifications are blocked") (read-only)
       span.connection-lost
       select
         option Select database...

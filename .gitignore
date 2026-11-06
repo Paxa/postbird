@@ -8,5 +8,7 @@ artifacts/
 .hutch/
 .cottontail-tmp/
 public/postbird-bundle.js
+public/postbird-bundle.js.map
 .DS_Store
 .postbird-dev-errors.log
+.postbird-ai.log

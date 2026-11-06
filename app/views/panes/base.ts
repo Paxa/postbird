@@ -12,6 +12,10 @@ class PaneBase {
     this.handler = view.handler;
   }
 
+  isReadOnly (): boolean {
+    return Boolean(this.handler?.connection?.options?.read_only);
+  }
+
   executeHandler (exec: string) {
     if (!exec) return;
     const match = exec.trim().match(/^([a-zA-Z0-9_$]+)(?:\((.*)\))?$/s);
@@ -73,15 +77,15 @@ class PaneBase {
     try {
       var node = App.renderView(view_file, options);
       this.view.setTabContent(pane, node);
-    } catch (error) {
+    } catch (error: any) {
       errorReporter(error, false);
-      var errorMsg = $dom(['div.error',
-        ['h4', "Can not render content"],
-        ['code',
-          ['pre', error.toString()],
-          ['pre', error.stack]
-        ]
-      ]);
+      var errorMsg = dom.div({ class: 'error' },
+        dom.h4("Can not render content"),
+        dom.code(
+          dom.pre(error.toString()),
+          error.stack && dom.pre(error.stack)
+        )
+      );
 
       this.view.setTabContent('content', errorMsg);
     }

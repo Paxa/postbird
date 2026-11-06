@@ -1,12 +1,11 @@
 var pug;
 var pugRuntime = require('pug-runtime');
-var slash = require('slash');
 var fs = require('fs');
 
 require('../view_helpers');
 require('../view_cell_helpers');
 
-var dirname = process.platform === "win32"? slash(__dirname): __dirname;
+var dirname = process.platform === "win32" ? __dirname.replace(/\\/g, '/') : __dirname;
 
 var RenderView = {
   root: dirname.replace(/\/app\/components/, ''),
@@ -74,28 +73,13 @@ var RenderView = {
   },
 
   triggerSaveCache: function() {
-    if (this.pugCacheTimeout) {
-      clearTimeout(this.pugCacheTimeout);
-    }
-    this.pugCacheTimeout = setTimeout(() => {
-      clearTimeout(this.pugCacheTimeout);
-      delete this.pugCacheTimeout;
-      this.pugCacheSave();
-    }, 1000);
+    // No-op: Views are statically compiled into views/cache.js by scripts/compile_views.ts.
+    // Dynamic runtime cache saves are disabled to prevent partially-loaded template sets
+    // from overwriting the complete precompiled views repository.
   },
 
   pugCacheSave: function () {
-    var result = "";
-    var convertedPath = (process.env.PWD + '/').replace(/\//g, '\\\\u002F');
-
-    Object.keys(this.pugFn).sort().forEach((key) => {
-      var fn = this.pugFn[key];
-      result += 'exports["' + key + '"] = ' + fn.toString().replace(new RegExp(convertedPath, 'g'), '') + ";\n";
-      result += 'exports["' + key + '"].content = ' + JSON.stringify(fn.content) + ";\n";
-    });
-
-    fs.writeFileSync(this.root + '/views/cache.js', result, 'utf8');
-    console.log("Pug cache saved!");
+    // No-op: Disabled to prevent truncating views/cache.js
   },
 
   pugCacheLoad: function() {
@@ -115,5 +99,7 @@ var RenderView = {
     }
   }
 };
+
+RenderView.pugCacheLoad();
 
 module.exports = RenderView;

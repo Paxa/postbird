@@ -33,6 +33,7 @@ class Structure extends PaneBase {
         indexes: indexes,
         constraints: neededConstraints,
         isMatView: extra.isMatView,
+        isReadOnly: this.isReadOnly(),
         indexesError: extra.indexesError,
         columnsError: extra.columnsError,
         constraintsError: extra.constraintsError
@@ -42,24 +43,41 @@ class Structure extends PaneBase {
   }
 
   addColumnForm () {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     new Dialog.NewColumn(this.handler);
   }
 
   addIndexForm () {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     new Dialog.NewIndex(this.handler);
   }
 
   editColumn (column_name) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     new Dialog.EditColumn(this.handler, column_name);
   }
 
   async deleteColumn (column_name) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     if (await $u.confirm(`Delete column "${column_name}"?`)) {
       this.doDeleteColumn(column_name);
     }
   }
 
   async doDeleteColumn (column_name) {
+    if (this.isReadOnly()) return;
     try {
       await this.handler.deleteColumn(column_name);
     } catch (error) {
@@ -68,6 +86,10 @@ class Structure extends PaneBase {
   }
 
   async deleteIndex (indexName) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     var msg = `Delete index "${indexName}"?`;
     if (await $u.confirm(msg)) {
       await this.doDeleteIndex(indexName);
@@ -75,6 +97,7 @@ class Structure extends PaneBase {
   }
 
   async doDeleteIndex (indexName) {
+    if (this.isReadOnly()) return;
     try {
       await this.handler.deleteIndex(indexName);
     } catch (error) {
@@ -83,6 +106,10 @@ class Structure extends PaneBase {
   }
 
   deleteConstraint (constraintName) {
+    if (this.isReadOnly()) {
+      $u.alert("Read-only mode active: schema modifications are disabled");
+      return;
+    }
     var msg = `Delete constraint <b>${constraintName}</b>?`;
     var constraint = this.constraints.find((c) => { return c.conname == constraintName; });
     if (constraint) msg = msg + `<br><code>${constraint.pretty_source}</code>`;

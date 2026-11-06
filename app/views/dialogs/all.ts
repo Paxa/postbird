@@ -19,4 +19,5 @@ module.exports = {
   ShowSql:          require('./show_sql'),
   UserGrants:       require('./user_grants'),
   ConnectionList:   require('./connection_list'),
+  AiSettings:       require('./ai_settings'),
 };

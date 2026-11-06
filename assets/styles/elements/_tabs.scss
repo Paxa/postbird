@@ -134,3 +134,13 @@ $tab-border-color: #acacac;
   padding: 20px;
 }
 
+.main-screen.read-only-mode {
+  .read-only-indicator {
+    display: inline-block;
+  }
+
+  .sidebar ul.extras li.add-table {
+    display: none !important;
+  }
+}
+

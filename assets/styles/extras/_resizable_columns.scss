@@ -1,6 +1,5 @@
 .rescol-wrapper {
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: hidden;
   height: 100%;
   position: relative;
 }
@@ -13,6 +12,10 @@
     left: 0;
     right: 0;
     z-index: 100;
+
+    &.has-vscroll {
+      right: 15px;
+    }
   }
 
   .rescol-content-wrapper {

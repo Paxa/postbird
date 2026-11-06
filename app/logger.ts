@@ -1,4 +1,3 @@
-var sprintf = require("sprintf-js").sprintf;
 var util = require('util');
 
 var LOG_LEVELS = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug'];
@@ -47,7 +46,7 @@ class Logger {
       }
       message = messages.join(' ');
 
-      var line = sprintf("%s %s\n", level.toUpperCase(), message);
+      var line = `${level.toUpperCase()} ${message}\n`;
       this.print(line);
     }
   }

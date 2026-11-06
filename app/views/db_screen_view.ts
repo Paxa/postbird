@@ -38,6 +38,10 @@ class DbScreenView {
     this.topTabs = this.content.find('.main > .window-tabs > .tab, .sidebar ul.extras li[tab]');
     this.tabContents = this.content.find('.main > .window-content');
 
+    if (this.handler.connection?.options?.read_only) {
+      this.content.addClass('read-only-mode');
+    }
+
     this.initializePanes();
     this.initEvents();
   }
@@ -105,10 +109,12 @@ class DbScreenView {
       }
     });
 
-    $u.contextMenu(this.tablesList, {
-      "Create Table": this.newTableDialog.bind(this),
-      "Refresh Tables": this.reloadStructure.bind(this)
-    });
+    const tablesMenu: Record<string, any> = {};
+    if (!this.handler.connection?.options?.read_only) {
+      tablesMenu["Create Table"] = this.newTableDialog.bind(this);
+    }
+    tablesMenu["Refresh Tables"] = this.reloadStructure.bind(this);
+    $u.contextMenu(this.tablesList, tablesMenu);
 
     this.sidebarResizer = new SidebarResize(this.content.find('.resize-handler'));
   }
@@ -139,21 +145,18 @@ class DbScreenView {
     this.databaseSelect.append($u('<option>'))
 
     databases.forEach((dbname) => {
-      this.databaseSelect.append($dom(
-        ['option', {value: dbname}, dbname]
-      ));
+      this.databaseSelect.append(buildOption(dbname, dbname));
     });
 
-    this.databaseSelect.append($dom(
-      ['option', {disabled: true}, '-----']
-    ));
+    const dividerOpt = document.createElement('option');
+    dividerOpt.disabled = true;
+    dividerOpt.textContent = '-----';
+    this.databaseSelect.append(dividerOpt);
 
-    this.databaseSelect.append($dom(
-      ['option', {value: '**create-db**'}, 'Create Database']
-    ));
-    this.databaseSelect.append($dom(
-      ['option', {value: '**refresh-list**'}, 'Refresh List']
-    ));
+    if (!this.handler.connection?.options?.read_only) {
+      this.databaseSelect.append(buildOption('Create Database', '**create-db**'));
+    }
+    this.databaseSelect.append(buildOption('Refresh List', '**refresh-list**'));
 
     if (this.handler.database) {
       this.databaseSelect.val(this.handler.database);
@@ -178,26 +181,30 @@ class DbScreenView {
       if (a < b) return -1;
       return 0;
     }).forEach((schema) => {
-      var schemaTree = DOMinate(['li', ['span', schema], {'schema-name': schema}, ['ul$list']]);
-      if (schema == 'public') $u(schemaTree[0]).addClass('open');
+      var schemaTree = dom.li({ "schema-name": schema },
+        dom.span(schema),
+        dom.ul()
+      );
+      var schemaList = schemaTree.querySelector('ul')!;
+      if (schema == 'public') $u(schemaTree).addClass('open');
 
-      $u(schemaTree[0]).find('span').bind('click', () => {
-        $u(schemaTree[0]).toggleClass('open');
+      $u(schemaTree).find('span').bind('click', () => {
+        $u(schemaTree).toggleClass('open');
       });
 
       // open if selected
       if (currentSchema == schema) {
-        $u(schemaTree[0]).addClass('open');
+        $u(schemaTree).addClass('open');
       }
 
       data[schema].forEach((table) => {
         var tableTitle = tableTypes[table.table_type] || table.table_type;
 
-        var tableNode = $dom(['li', table.table_name, {
+        var tableNode = dom.li({
           title: tableTitle,
           'table-name': table.table_name,
           'table-type': table.table_type
-        }]);
+        }, table.table_name);
 
         $u(tableNode).single_double_click((e) => {
           if (e.target.tagName == "INPUT") return;
@@ -224,14 +231,15 @@ class DbScreenView {
             this.handler.tableSelected(schema, table.table_name);
           }
         };
-        if (table.table_type != 'SEQUENCE') {
+        const isReadOnly = Boolean(this.handler.connection?.options?.read_only);
+        if (table.table_type != 'SEQUENCE' && !isReadOnly) {
           actions['separator1'] = 'separator';
           actions['Rename'] = () => {
             this.renameTable(tableNode, schema, table.table_name);
           }
         }
 
-        if (table.table_type == "BASE TABLE") {
+        if (table.table_type == "BASE TABLE" && !isReadOnly) {
           actions['Truncate Table'] = () => {
             this.truncateTable(schema, table.table_name);
           };
@@ -240,14 +248,14 @@ class DbScreenView {
         actions[`Show ${tableTitle} SQL`] = () => {
           this.showTableSql(schema, table.table_name, tableTitle);
         };
-        if (table.table_type == 'MATERIALIZED VIEW') {
+        if (table.table_type == 'MATERIALIZED VIEW' && !isReadOnly) {
           actions[`Refresh Mat. View`] = () => {
             this.handler.refreshMatView(schema, table.table_name).then(res => {
               $u.alert(`Refreshed materialized view ${table.table_name}`, {info: 'info'});
             });
           };
         }
-        if (table.table_type != 'SEQUENCE') {
+        if (table.table_type != 'SEQUENCE' && !isReadOnly) {
           actions[`separator2`] = 'separator';
           actions[`Drop ${tableTitle}`] = () => {
             this.handler.dropRelation(schema, table.table_name, (res, error) => {
@@ -270,7 +278,7 @@ class DbScreenView {
           this.handler.tableSelected(schema, table.table_name);
         });
 
-        $u(schemaTree.list).append(tableNode);
+        $u(schemaList).append(tableNode);
 
         if (currentSchema == schema && table.table_name == currentTable) {
           $u(tableNode).addClass('selected');
@@ -278,7 +286,7 @@ class DbScreenView {
         }
       });
 
-      this.tablesList.append(schemaTree[0]);
+      this.tablesList.append(schemaTree);
     });
   }
 
@@ -321,6 +329,10 @@ class DbScreenView {
   }
 
   renameTable (node, schema, tableName) {
+    if (this.handler.connection?.options?.read_only) {
+      $u.alert("Read-only mode active: renaming tables is disabled");
+      return;
+    }
     node = $u(node);
     node.html(`<input value="${tableName}" type="text" class="edit-table-field">`);
     var input = node.find('input');
@@ -379,6 +391,10 @@ class DbScreenView {
   }
 
   async truncateTable (schema, tableName) {
+    if (this.handler.connection?.options?.read_only) {
+      $u.alert("Read-only mode active: truncating tables is disabled");
+      return;
+    }
     var confirmRes = await dialog.showMessageBox({
       type: 'question',
       buttons: ['Truncate', 'Cancel'],
@@ -441,6 +457,10 @@ class DbScreenView {
   }
 
   newTableDialog () {
+    if (this.handler.connection?.options?.read_only) {
+      $u.alert("Read-only mode active: creating tables is disabled");
+      return;
+    }
     new Dialog.NewTable(this.handler);
   }
 
@@ -459,10 +479,10 @@ class DbScreenView {
   }
 
   showConnectionLostIcon () {
-    var lostIcon = $dom(['a', '', {title: "Server is disconnected"}]);
-    lostIcon.addEventListener('click', (e) => {
-      this.handler.showConnectionLostDialog();
-    })
+    var lostIcon = dom.a({
+      title: "Server is disconnected",
+      onClick: () => this.handler.showConnectionLostDialog()
+    });
     this.content.find('span.connection-lost').empty().append(lostIcon);
   }
 

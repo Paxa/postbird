@@ -24,7 +24,6 @@ class DbScreen {
     this.options = Object.assign({fetchDbList: true}, options)
 
     this.connection = connection;
-    // @ts-ignore
     this.view = new DbScreenView(this);
 
     this.connection.onDisconnect = (error) => {
@@ -360,6 +359,10 @@ class DbScreen {
   }
 
   async dropDatabaseDialog () {
+    if (this.connection.options?.read_only) {
+      $u.alert("Read-only mode active: dropping databases is disabled");
+      return;
+    }
     var msg = `Delete database ${this.database}?`;
     var result = await $u.confirm(msg, {
       detail: "It will delete all tables in it",
@@ -373,6 +376,10 @@ class DbScreen {
   }
 
   async dropDatabase () {
+    if (this.connection.options?.read_only) {
+      $u.alert("Read-only mode active: dropping databases is disabled");
+      return;
+    }
     App.startLoading("Deleting database...");
     try {
       await this.connection.server.dropDatabase(this.database);

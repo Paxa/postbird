@@ -202,6 +202,43 @@ class Monitoring extends PaneBase {
       this.fetchIndexes();
     });
 
+    this.content.on('click', '.btn-banner-jump', (e: any) => {
+      e.preventDefault();
+      const sec = this.content.find('.monitor-section[data-section="indexes"]');
+      if (sec.length) {
+        if (!sec.hasClass('expanded')) {
+          this.toggleSection('indexes');
+        } else if (!this.indexesData) {
+          this.fetchIndexes();
+        }
+        sec[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    this.content.on('click', '.btn-copy-reindex-index', (e: any) => {
+      e.preventDefault();
+      const sql = $u(e.currentTarget).attr('data-sql');
+      if (sql) {
+        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(sql);
+        } else if (electronRemote && electronRemote.clipboard) {
+          electronRemote.clipboard.writeText(sql);
+        }
+        const btn = $u(e.currentTarget);
+        btn.text('Copied!');
+        setTimeout(() => { btn.text('Copy REINDEX SQL'); }, 1500);
+      }
+    });
+
+    this.content.on('click', '.btn-open-index-table', (e: any) => {
+      e.preventDefault();
+      const schema = $u(e.currentTarget).attr('data-schema') || 'public';
+      const table = $u(e.currentTarget).attr('data-table');
+      if (table && this.handler && (this.handler as any).tableSelected) {
+        (this.handler as any).tableSelected(schema, table, 'structure');
+      }
+    });
+
     this.content.on('click', '.btn-copy-drop-index', (e: any) => {
       e.preventDefault();
       const sql = $u(e.currentTarget).attr('data-sql');
@@ -383,6 +420,35 @@ class Monitoring extends PaneBase {
 
     const latSvg = (Sparkline as any).renderSvg(this.latencyHistory, { strokeColor: '#ff9500', unit: ' ms' });
     sec.find('.chart-container-latency').html(latSvg);
+
+    // 3. Top Toolbar: Server Uptime
+    const uptimeChip = this.content.find('.uptime-chip');
+    if (d.uptime && d.uptime.uptimeSeconds > 0) {
+      uptimeChip.find('.uptime-value').text(d.uptime.formatted);
+      const startedStr = d.uptime.startTime ? new Date(d.uptime.startTime).toLocaleString() : 'N/A';
+      uptimeChip.attr('title', `PostgreSQL Server Uptime\nStarted: ${startedStr}`);
+      uptimeChip.show();
+    } else {
+      uptimeChip.hide();
+    }
+
+    // 4. Compact Invalid Indexes Banner below charts
+    const banner = sec.find('.invalid-indexes-banner');
+    if (d.invalidIndexes && d.invalidIndexes.length > 0) {
+      const count = d.invalidIndexes.length;
+      let text = '';
+      if (count === 1) {
+        const idx = d.invalidIndexes[0];
+        text = `<strong>1 invalid index detected:</strong> <code>${(global as any).ViewHelpers.escapeHTML(idx.index_name)}</code> on <code>${(global as any).ViewHelpers.escapeHTML(idx.table_name)}</code> (${idx.index_size_pretty}) &bull; Skipped by queries, consumes write I/O`;
+      } else {
+        const names = d.invalidIndexes.map((i: any) => `<code>${(global as any).ViewHelpers.escapeHTML(i.index_name)}</code>`).join(', ');
+        text = `<strong>${count} invalid indexes detected:</strong> ${names} &bull; Skipped by queries, consume write I/O`;
+      }
+      banner.find('.banner-text').html(text);
+      banner.show();
+    } else {
+      banner.hide();
+    }
   }
 
   async fetchQueries(isSilent: boolean = false) {
@@ -791,13 +857,47 @@ class Monitoring extends PaneBase {
       const data = await this.model.fetchIndexHealth();
       this.indexesData = data;
 
+      const invalidCount = (data.invalid || []).length;
       const unusedCount = data.unused.length;
       const dupCount = data.duplicates.length;
-      this.sectionSummaries.indexes = `${unusedCount} unused (${data.totalUnusedSizePretty}) • ${dupCount} duplicate`;
+      const summaryParts: string[] = [];
+      if (invalidCount > 0) {
+        summaryParts.push(`⚠️ ${invalidCount} invalid`);
+      }
+      summaryParts.push(`${unusedCount} unused (${data.totalUnusedSizePretty})`);
+      summaryParts.push(`${dupCount} duplicate`);
+      this.sectionSummaries.indexes = summaryParts.join(' • ');
       this.updateSectionSummary('indexes', this.sectionSummaries.indexes);
 
       const sec = this.content.find('.monitor-section[data-section="indexes"]');
       if (!sec.length) return;
+
+      // 0. Invalid indexes table
+      const invalidWrapper = sec.find('.invalid-indexes-wrapper');
+      const invalidTbody = sec.find('.invalid-indexes-table tbody');
+      invalidTbody.empty();
+      if (invalidCount > 0) {
+        invalidWrapper.show();
+        data.invalid.forEach((idx: any) => {
+          const reindexSql = `REINDEX INDEX CONCURRENTLY "${idx.schemaname}"."${idx.index_name}";`;
+          const dropSql = `DROP INDEX CONCURRENTLY IF EXISTS "${idx.schemaname}"."${idx.index_name}";`;
+          invalidTbody.append(`
+            <tr>
+              <td><strong>${(global as any).ViewHelpers.escapeHTML(idx.table_name)}</strong></td>
+              <td><code>${(global as any).ViewHelpers.escapeHTML(idx.index_name)}</code></td>
+              <td><strong>${idx.index_size_pretty}</strong></td>
+              <td><span class="tag error" title="Index build failed or was interrupted (indisvalid=false). Unused by queries, but updated on writes.">invalid</span></td>
+              <td class="actions-cell">
+                <button class="btn-native-small btn-copy-reindex-index" data-sql="${(global as any).ViewHelpers.escapeHTML(reindexSql)}" title="Copy REINDEX SQL">Copy REINDEX SQL</button>
+                <button class="btn-native-small btn-copy-drop-index" data-sql="${(global as any).ViewHelpers.escapeHTML(dropSql)}" title="Copy DROP INDEX SQL">Copy DROP SQL</button>
+                <button class="btn-native-small btn-open-index-table" data-schema="${(global as any).ViewHelpers.escapeHTML(idx.schemaname)}" data-table="${(global as any).ViewHelpers.escapeHTML(idx.table_name)}" title="Open Table Structure">Structure &rarr;</button>
+              </td>
+            </tr>
+          `);
+        });
+      } else {
+        invalidWrapper.hide();
+      }
 
       // 1. Unused indexes table
       const unusedTbody = sec.find('.unused-indexes-table tbody');

@@ -1,5 +1,4 @@
-// @ts-ignore
-var SqlExporter = require('../../lib/sql_exporter');
+SqlExporter = require('../../lib/sql_exporter');
 
 class ExportController {
   

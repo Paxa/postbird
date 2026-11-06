@@ -37,10 +37,12 @@ $mac-button-shadow: 0 1px 1px rgba(0,0,0,.06);
   border: 1px solid #9A9A9A;
   border-color: $mac-button-border-color;
   border-radius: 4px;
-  height: 21px;
-  line-height: 19px;
+  height: 22px;
+  line-height: 20px;
   font-size: 12px;
   color: #333;
+  white-space: nowrap;
+  flex-shrink: 0;
   background: {
     color: $mac-button-bg;
     image: $mac-button-bg-image;

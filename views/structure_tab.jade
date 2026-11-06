@@ -21,9 +21,10 @@
             td= column.is_primary_key ? 'yes' : ''
             td= column.is_nullable == 'YES' || column.is_nullable == true ? 'yes' : 'no'
             td
-              a(exec="editColumn('" + column.column_name + "')") Edit
-              != "&nbsp;"
-              a(exec="deleteColumn('" + column.column_name + "')") Delete
+              if !isReadOnly
+                a(exec="editColumn('" + column.column_name + "')") Edit
+                != "&nbsp;"
+                a(exec="deleteColumn('" + column.column_name + "')") Delete
         else
           if !columns
             tr
@@ -35,7 +36,7 @@
                     code= columnsError.message
 
 footer
-  if !isMatView
+  if !isMatView && !isReadOnly
     button.native-look(exec="addColumnForm") Add Column
 
 h4 Indexes
@@ -66,7 +67,8 @@ h4 Indexes
             td= getIndexType(index.pg_get_indexdef)
             td= index.index_size
             td
-              a(exec="deleteIndex('" + index.relname + "')") Delete
+              if !isReadOnly
+                a(exec="deleteIndex('" + index.relname + "')") Delete
         else
           if !indexes
             tr
@@ -78,7 +80,8 @@ h4 Indexes
                     code= indexesError.message
 
 footer
-  button.native-look(exec="addIndexForm") Add Index
+  if !isReadOnly
+    button.native-look(exec="addIndexForm") Add Index
 
 if constraints.length > 0
   h4 Constraints
@@ -97,4 +100,5 @@ if constraints.length > 0
               td= constraint.conname
               td= constraint.pretty_source
               td
-                a(exec="deleteConstraint('" + constraint.conname + "')") Delete
+                if !isReadOnly
+                  a(exec="deleteConstraint('" + constraint.conname + "')") Delete

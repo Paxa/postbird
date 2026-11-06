@@ -132,10 +132,13 @@ $mac-block-tabs-radius: 4px;
 
     label + label {
       width: auto;
+      white-space: nowrap;
+      cursor: pointer;
       input[type=checkbox] {
         margin-left: 0;
         position: relative;
-        top: 2px;
+        top: -1px;
+        vertical-align: middle;
       }
     }
 

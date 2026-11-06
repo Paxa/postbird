@@ -1,6 +1,6 @@
 var remote = require('@electron/remote');
-var semver = require('semver');
-var strftime = require('strftime');
+var semver = require('../../lib/semver').default || require('../../lib/semver');
+var strftime = require('../../lib/strftime').default || require('../../lib/strftime');
 
 
 interface UpdatesController_Options {

@@ -11,7 +11,7 @@
     "useDefineForClassFields": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["bun", "node", "mocha", "jquery"],
+    "types": ["bun", "node", "jquery"],
     "paths": {
       "*": ["./*", "./ts_libs/*"]
     }

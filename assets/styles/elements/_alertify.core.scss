@@ -1,82 +1,77 @@
-.alertify, .alertify-show, .alertify-log {
-  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -moz-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -ms-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -o-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/**
+ * macOS Native-Styled Dialog Core Layout & Transitions
+ */
 
-  /* easeOutBack */
+.alertify,
+.alertify-show,
+.alertify-log {
+  transition:
+    opacity 180ms cubic-bezier(0.2, 0.9, 0.3, 1),
+    transform 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 .alertify-hide {
-  -webkit-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -moz-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -ms-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -o-transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  transition: all 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-
-  /* easeInBack */
+  transition:
+    opacity 130ms ease-in,
+    transform 130ms ease-in;
 }
 
 .alertify-log-hide {
-  -webkit-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -moz-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -ms-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  -o-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
-
-  /* easeInBack */
+  transition:
+    opacity 200ms ease-in,
+    transform 200ms ease-in;
 }
 
 .alertify-cover {
   position: fixed;
-  z-index: 99999;
+  z-index: 99998;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white;
-  filter: alpha(opacity = 0);
-  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 1;
+  transition: opacity 150ms ease;
 }
 
 .alertify-cover-hidden {
   display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .alertify {
   position: fixed;
   z-index: 99999;
-  top: 50px;
+  top: 56px;
   left: 50%;
-  width: 550px;
-  margin-left: -275px;
+  transform: translateX(-50%) scale(1);
+  width: 340px;
+  margin-left: 0 !important;
   opacity: 1;
+  box-sizing: border-box;
 }
 
 .alertify-hidden {
-  -webkit-transform: translate(0, -150px);
-  -moz-transform: translate(0, -150px);
-  -ms-transform: translate(0, -150px);
-  -o-transform: translate(0, -150px);
-  transform: translate(0, -150px);
+  transform: translateX(-50%) translateY(-10px) scale(0.96);
   opacity: 0;
   display: none;
+  pointer-events: none;
 }
 
-/* overwrite display: none; for everything except IE6-8 */
-
 :root * > .alertify-hidden {
-  display: block;
+  display: none;
   visibility: hidden;
 }
 
 .alertify-logs {
   position: fixed;
-  z-index: 5000;
-  bottom: 10px;
-  right: 10px;
-  width: 300px;
+  z-index: 99999;
+  bottom: 16px;
+  right: 16px;
+  width: 320px;
 }
 
 .alertify-logs-hidden {
@@ -85,28 +80,25 @@
 
 .alertify-log {
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
   position: relative;
-  right: -300px;
+  transform: translateX(40px);
   opacity: 0;
 }
 
 .alertify-log-show {
-  right: 0;
+  transform: translateX(0);
   opacity: 1;
 }
 
 .alertify-log-hide {
-  -webkit-transform: translate(300px, 0);
-  -moz-transform: translate(300px, 0);
-  -ms-transform: translate(300px, 0);
-  -o-transform: translate(300px, 0);
-  transform: translate(300px, 0);
+  transform: translateX(40px);
   opacity: 0;
 }
 
 .alertify-dialog {
-  padding: 25px;
+  padding: 20px 20px 16px;
+  box-sizing: border-box;
 }
 
 .alertify-resetFocus {
@@ -124,28 +116,40 @@
   text-align: center;
 }
 
+.alertify-text-wrapper {
+  margin: 12px 0 4px;
+}
+
 .alertify-text {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 100%;
+  font-size: 13px;
+}
+
+.alertify-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .alertify-button {
   background: none;
   text-decoration: none;
   border: none;
-
-  /* line-height and font-size for input button */
-  line-height: 1.5;
-  font-size: 100%;
-  display: inline-block;
+  line-height: 1.4;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  margin-left: 5px;
+  margin: 0;
+  user-select: none;
 
-  &:hover, &:active, &:visited {
+  &:hover,
+  &:active,
+  &:visited {
     text-decoration: none;
     cursor: pointer;
   }
@@ -156,15 +160,9 @@
 }
 
 @media only screen and (max-width: 680px) {
-  .alertify, .alertify-logs {
+  .alertify,
+  .alertify-logs {
     width: 90%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-  }
-
-  .alertify {
-    left: 5%;
-    margin: 0;
   }
 }

@@ -2,7 +2,6 @@ console.log("[INDEX.JS TOP] Starting Postbird initialization...");
 global.errorReporter = require('./lib/error_reporter');
 require('./lib/object_extras');
 
-require('./lib/dominate');
 require('./lib/alertify');
 require('./lib/node_lib');
 require('./lib/sidebar_resize');
@@ -51,7 +50,6 @@ global.$ = function (selector) {
 };
 */
 
-global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
 
 require('./app/utils');
 
@@ -183,6 +181,9 @@ $(document).ready(function() {
   }
 
   if (electronRemote.systemPreferences && electronRemote.systemPreferences.subscribeNotification) {
+    if (typeof electronRemote.systemPreferences.isDarkMode === 'function' && electronRemote.systemPreferences.isDarkMode()) {
+      document.body.classList.add('dark-mode');
+    }
     electronRemote.systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => {
       if (electronRemote.systemPreferences.isDarkMode()) {
         document.body.classList.add('dark-mode');

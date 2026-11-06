@@ -105,7 +105,10 @@ class LoginScreen {
     this.savedConnections = Model.SavedConn.savedConnections();
 
     ObjectKit.forEach(this.savedConnections, (name, params) => {
-      var line = $dom(['li', {'data-auto-connect': params.auto_connect, 'data-name': name}, name]);
+      var line = dom.li({
+        'data-auto-connect': params.auto_connect,
+        'data-name': name
+      }, name);
       if (name === this.connectionName) {
         $u(line).addClass('selected');
       }

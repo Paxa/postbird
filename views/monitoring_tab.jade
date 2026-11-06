@@ -7,6 +7,10 @@ mixin refreshIcon(size)
   .monitor-toolbar
     .toolbar-left
       span.monitor-subtitle Real-time performance & server diagnostics
+      .uptime-chip(style="display: none;", title="PostgreSQL Server Uptime")
+        span.uptime-dot
+        span.uptime-label Uptime:
+        strong.uptime-value -
     .toolbar-right
       button.btn-native.btn-toggle-live(class=isLive ? 'active' : '', title=isLive ? "Pause Live Monitoring" : "Resume Live Monitoring")
         span.live-pulse-dot
@@ -63,6 +67,12 @@ mixin refreshIcon(size)
             .chart-header
               span.chart-title Summed Active Query Latency (ms)
             .chart-container.chart-container-latency!= latencyChartSvg
+
+        .invalid-indexes-banner(style="display: none;")
+          .banner-left
+            span.banner-icon ⚠️
+            span.banner-text
+          button.btn-native.btn-native-small.btn-banner-jump Jump to Indexes &darr;
 
     // -------------------------------------------------------------
     // SECTION 2: ACTIVE & WAITING QUERIES
@@ -283,18 +293,40 @@ mixin refreshIcon(size)
                       button.btn-native.btn-native-small.btn-refresh-slow-queries Load Slow Queries
 
     // -------------------------------------------------------------
-    // SECTION 6: INDEX OPTIMIZATION (UNUSED & DUPLICATE)
+    // SECTION 6: INDEX OPTIMIZATION (INVALID, UNUSED & DUPLICATE)
     // -------------------------------------------------------------
     .monitor-section(data-section="indexes", class=expandedSections.indexes ? 'expanded' : '')
       .monitor-section-header
         span.disclosure-triangle
-        span.section-title Index Optimization (Unused & Duplicate)
+        span.section-title Index Optimization & Health (Invalid, Unused & Duplicate)
         span.section-summary-text= sectionSummaries.indexes || ""
         .section-actions
           button.btn-section-icon.btn-section-refresh(title="Refresh Index Analysis")
             +refreshIcon(11)
 
       .monitor-section-body
+        .invalid-indexes-wrapper(style="display: none;")
+          .section-subhead(style="color: #c93400;") Broken / Invalid Indexes (indisvalid = false)
+          .section-table-toolbar
+            .toolbar-stats-text Failed concurrent builds &bull; skipped by queries but updated on every write
+            button.btn-native.btn-native-small.btn-refresh-indexes(title="Refresh Index Analysis")
+              +refreshIcon(10)
+              span Refresh Indexes
+          .rescol-wrapper.with-borders
+            .rescol-content-wrapper
+              table.invalid-indexes-table
+                thead
+                  tr
+                    th Table Name
+                    th Index Name
+                    th(style="width: 110px;") Index Size
+                    th(style="width: 90px;") Status
+                    th(style="width: 250px;") Actions
+                tbody
+                  tr
+                    td(colspan="5", class="text-muted text-center", style="padding: 16px;") No invalid indexes analyzed yet.
+
+        .section-subhead.unused-indexes-heading(style="margin-top: 16px;") Unused Indexes (idx_scan = 0 &bull; consuming storage and write I/O)
         .section-table-toolbar
           .toolbar-stats-text Unused Indexes (idx_scan = 0 &bull; consuming storage and write I/O)
           button.btn-native.btn-native-small.btn-refresh-indexes(title="Refresh Index Analysis")

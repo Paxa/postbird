@@ -1,4 +1,4 @@
-var strftime = require('strftime');
+var strftime = require('../lib/strftime').default || require('../lib/strftime');
 
 var moment = require('moment');
 

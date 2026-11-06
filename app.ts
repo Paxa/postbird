@@ -3,7 +3,7 @@ var events = require('events');
 var path = require('path');
 
 require('./lib/node_lib');
-(global as any).EventEmitter2 = require('eventemitter2').EventEmitter2;
+(global as any).EventEmitter2 = require('./lib/event_emitter').EventEmitter2;
 (global as any).logger = require('./app/logger').make('info');
 
 RenderView = require('./app/components/render_view');
@@ -108,24 +108,25 @@ global.App = {
   },
 
   addTab: function (name, contentHtml, instance) {
-    var tree = DOMinate([ 'div.tab', name, ['a$close.close', '']]);
-    $u(this.tabsContainer).prepend(tree[0]);
+    var closeA = dom.a({ class: 'close' });
+    var tab = dom.div({ class: 'tab' }, name, closeA);
+    $u(this.tabsContainer).prepend(tab);
 
-    var contentTree = DOMinate([ 'div.tabContent' ]);
+    var contentTree = dom.div({ class: 'tabContent' });
     if (typeof contentHtml == "string") {
-      contentTree[0].innerHTML = contentHtml;
+      contentTree.innerHTML = contentHtml;
     } else {
-      $u(contentTree[0]).append(contentHtml);
+      $u(contentTree).append(contentHtml);
     }
 
-    $u(contentTree[0]).hide();
-    $u(this.container).prepend(contentTree[0]);
+    $u(contentTree).hide();
+    $u(this.container).prepend(contentTree);
 
     var tabData = {
       instance: instance,
       name: name,
-      tabHandler: $u(tree[0]),
-      content: $u(contentTree[0]),
+      tabHandler: $u(tab),
+      content: $u(contentTree),
       is_active: false,
       activate: () => {
         if (App.tabs.indexOf(tabData) == -1) {
@@ -142,7 +143,7 @@ global.App = {
       tabData.activate();
     });
 
-    $u(tree.close).bind('click', (e) => {
+    $u(closeA).bind('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       App.closeTab(App.tabs.indexOf(tabData));
