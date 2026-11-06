@@ -1,6 +1,8 @@
 var Client = require('../../../lib/sql_client').Client;
 var pgEscape = require('pg-escape');
 var electronRemote = require('@electron/remote');
+var dom: typeof import('../../../lib/dom') = require('../../../lib/dom');
+var formatUtil: typeof import('../../../lib/format_util') = require('../../../lib/format_util');
 
 var typesWithoutQuotes = [
   'bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal',
@@ -477,40 +479,82 @@ class Content extends PaneBase {
         window.document.execCommand("copy");
       }
     };
-    if (this.currentTableType == 'BASE TABLE') {
-      if (!this.isReadOnly()) {
-        contextMenuActions['Delete Row'] = (menuItem, bwin) => {
-          var event = table[0].contextmenu.clickEvent;
-          var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
-          this.deleteRow(el);
-        };
 
-        contextMenuActions['Edit Value'] = (menuItem, bwin) => {
-          var event = table[0].contextmenu.clickEvent;
-          var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
-          this.editField(el);
-        };
-      }
+    if (this.currentTableType == 'BASE TABLE' && !this.isReadOnly()) {
+      contextMenuActions['sep_edit'] = 'separator';
 
-      contextMenuActions['Copy Row as SQL'] = (menuItem, bwin) => {
+      contextMenuActions['Edit Value'] = (menuItem, bwin) => {
         var event = table[0].contextmenu.clickEvent;
-        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
-        this.copyRowAsSql(el);
+        var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
+        this.editField(el);
       };
 
-      if (!this.isReadOnly()) {
-        contextMenuActions['Add New Row'] = (menuItem, bwin) => {
-          this.addRow();
-        };
-      }
+      contextMenuActions['Delete Row'] = (menuItem, bwin) => {
+        var event = table[0].contextmenu.clickEvent;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0];
+        this.deleteRow(el);
+      };
+
+      contextMenuActions['Add New Row'] = (menuItem, bwin) => {
+        this.addRow();
+      };
     }
+
+    contextMenuActions['sep_copy'] = 'separator';
+
+    contextMenuActions['Copy Row as JSON'] = (menuItem, bwin) => {
+      var event = table[0].contextmenu.clickEvent;
+      var el = (event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0]) as HTMLElement;
+      this.copyRowAsJson(el);
+    };
+
+    contextMenuActions['Copy Row as Markdown'] = (menuItem, bwin) => {
+      var event = table[0].contextmenu.clickEvent;
+      var el = (event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0]) as HTMLElement;
+      this.copyRowAsMarkdown(el);
+    };
+
+    if (this.currentTableType == 'BASE TABLE') {
+      contextMenuActions['Copy Row as SQL'] = (menuItem, bwin) => {
+        var event = table[0].contextmenu.clickEvent;
+        var el = (event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tr')[0]) as HTMLElement;
+        this.copyRowAsSql(el);
+      };
+    }
+
+    contextMenuActions['Copy Column as IN (...)'] = (menuItem, bwin) => {
+      var event = table[0].contextmenu.clickEvent;
+      var el = (event.target.tagName == 'TD' || event.target.tagName == 'TH' ? event.target : $u(event.target).closest('td, th')[0]) as HTMLElement;
+      this.copyColumnAsInClause(el);
+    };
+
+    contextMenuActions['sep_all'] = 'separator';
+
+    contextMenuActions['Copy All Loaded as JSON'] = () => {
+      this.copyAllLoadedAsJson();
+    };
+
+    contextMenuActions['Copy All Loaded as Markdown'] = () => {
+      this.copyAllLoadedAsMarkdown();
+    };
+
     $u.contextMenu(table, contextMenuActions, {
       // if text is not selected - disable copy button
       onShow: (event, contextmenu) => {
         var isTextSelected = window.getSelection().toString() != "";
+        var target = event.target as HTMLElement;
+        var isRow = Boolean(target && (target.tagName === 'TR' || $u(target).closest('tbody tr').length));
+        var isCell = Boolean(target && (target.tagName === 'TD' || target.tagName === 'TH' || $u(target).closest('td, th').length));
+
         contextmenu.items.forEach(item => {
           if (item.label == "Copy") {
             item.enabled = isTextSelected;
+          }
+          if (item.label && item.label.startsWith("Copy Row")) {
+            item.enabled = isRow;
+          }
+          if (item.label && item.label.startsWith("Copy Column")) {
+            item.enabled = isCell;
           }
         });
       }
@@ -584,7 +628,80 @@ class Content extends PaneBase {
     var joinedValues = escapedValues.join(", ");
     var sql = `INSERT INTO "${this.handler.currentSchema}"."${this.handler.currentTable}" (${joinedFields}) VALUES (${joinedValues})`;
     console.log("Insert SQL", sql);
-    electron.clipboard.writeText(sql);
+    formatUtil.copyToClipboard(sql);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success('Row copied as SQL INSERT');
+    }
+  }
+
+  copyRowAsJson (row: HTMLElement) {
+    if (!row || !this.currentData || !this.currentData.rows) return;
+    var ctid = (row.getAttribute && row.getAttribute('data-ctid')) || (row as any).dataset?.ctid || ($u(row).attr ? $u(row).attr('data-ctid') : null);
+    var selectedRow = this.currentData.rows.find((r: any) => r.ctid == ctid);
+    if (!selectedRow) return;
+
+    var json = formatUtil.rowToJson(this.currentData.fields, selectedRow);
+    formatUtil.copyToClipboard(json);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success('Row copied as JSON');
+    }
+  }
+
+  copyRowAsMarkdown (row: HTMLElement) {
+    if (!row || !this.currentData || !this.currentData.rows) return;
+    var ctid = (row.getAttribute && row.getAttribute('data-ctid')) || (row as any).dataset?.ctid || ($u(row).attr ? $u(row).attr('data-ctid') : null);
+    var selectedRow = this.currentData.rows.find((r: any) => r.ctid == ctid);
+    if (!selectedRow) return;
+
+    var md = formatUtil.rowsToMarkdown(this.currentData.fields, [selectedRow]);
+    formatUtil.copyToClipboard(md);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success('Row copied as Markdown');
+    }
+  }
+
+  copyColumnAsInClause (cell: HTMLElement) {
+    if (!cell || !this.currentData || !this.currentData.rows || !this.currentData.rows.length) return;
+    var position = typeof (dom as any).elementIndex === 'function' ? (dom as any).elementIndex(cell) : ($u(cell).prevAll ? $u(cell).prevAll('td, th').length : 0);
+    var cleanFields = this.currentData.fields.filter((f: any) => f.name != 'ctid');
+    var fieldDef = cleanFields[position];
+    if (!fieldDef) return;
+
+    var colName = fieldDef.name;
+    var values = this.currentData.rows.map((r: any) => r[colName]);
+    var inClause = formatUtil.columnToInClause(values);
+    formatUtil.copyToClipboard(inClause);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied column "${colName}" as IN (...) (${values.length} rows)`);
+    }
+  }
+
+  copyAllLoadedAsJson () {
+    if (!this.currentData || !this.currentData.rows || !this.currentData.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log('No rows loaded to copy');
+      }
+      return;
+    }
+    var json = formatUtil.rowsToJson(this.currentData.fields, this.currentData.rows);
+    formatUtil.copyToClipboard(json);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${this.currentData.rows.length} rows as JSON`);
+    }
+  }
+
+  copyAllLoadedAsMarkdown () {
+    if (!this.currentData || !this.currentData.rows || !this.currentData.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log('No rows loaded to copy');
+      }
+      return;
+    }
+    var md = formatUtil.rowsToMarkdown(this.currentData.fields, this.currentData.rows);
+    formatUtil.copyToClipboard(md);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${this.currentData.rows.length} rows as Markdown`);
+    }
   }
 
   valueToSqlInsert(value, colType, insideArray = false) {

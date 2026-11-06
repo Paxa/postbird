@@ -30,6 +30,20 @@ export function stopEvent(event?: Event | null): void {
 }
 
 /**
+ * Returns 0-based element index among preceding sibling elements.
+ */
+export function elementIndex(el?: Element | null): number {
+  if (!el) return 0;
+  let idx = 0;
+  let prev = el.previousElementSibling;
+  while (prev) {
+    idx++;
+    prev = prev.previousElementSibling;
+  }
+  return idx;
+}
+
+/**
  * Convert HTML string to a single native HTMLElement.
  */
 export function htmlToElement<T extends HTMLElement = HTMLElement>(html: string): T {

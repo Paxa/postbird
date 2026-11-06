@@ -1,7 +1,9 @@
 var fs = require('fs');
 var electronRemote = require('@electron/remote');
 var localAIConnector = require('../../../lib/local_ai');
-var { escapeCsv, toCsvRow } = require('../../../lib/csv_util');
+var { escapeCsv, toCsvRow, serializeToCsv } = require('../../../lib/csv_util');
+var formatUtil: typeof import('../../../lib/format_util') = require('../../../lib/format_util');
+var dom: typeof import('../../../lib/dom') = require('../../../lib/dom');
 var { marked } = require('marked');
 
 
@@ -24,6 +26,7 @@ class Query extends PaneBase {
     button: JQuery<HTMLElement>
     cleanButton: JQuery<HTMLElement>
     saveButton: JQuery<HTMLElement>
+    copyButton: JQuery<HTMLElement>
     mime: string
     textarea: JQuery<HTMLElement>
     editor: CodeMirror.EditorFromTextArea
@@ -48,6 +51,7 @@ class Query extends PaneBase {
     this.button = this.content.find('button[exec="runQuery"], button:first').first();
     this.cleanButton = this.content.find('button.cleanButton');
     this.saveButton = this.content.find('button.saveButton');
+    this.copyButton = this.content.find('button.copyButton');
 
     this.mime = 'text/x-pgsql';
     this.textarea = this.content.find('textarea.editor');
@@ -105,6 +109,8 @@ class Query extends PaneBase {
       var td = $u(e.target).closest('td')[0];
       this.openJsonViewerForCell(td);
     });
+
+    this.bindResultsContextMenu();
   }
 
   openJsonViewerForCell (td: HTMLElement) {
@@ -1445,11 +1451,14 @@ DELETE FROM ...;
   }
 
   toggleSaveButton () {
-    if (!this.saveButton) return;
-    if (this.content.find('.result table tr').length) {
-      this.saveButton.show();
-    } else {
-      this.saveButton.hide();
+    var hasRows = Boolean(this.content.find('.result table tr').length);
+    if (this.saveButton) {
+      if (hasRows) this.saveButton.show();
+      else this.saveButton.hide();
+    }
+    if (this.copyButton) {
+      if (hasRows) this.copyButton.show();
+      else this.copyButton.hide();
     }
   }
 
@@ -1631,6 +1640,189 @@ DELETE FROM ...;
       fileWriter.write(toCsvRow(row));
     });
     fileWriter.end();
+  }
+
+  bindResultsContextMenu () {
+    var resultContainer = this.content.find('.result');
+    if (!resultContainer.length) return;
+
+    var contextMenuActions: Record<string, any> = {
+      'Copy'() {
+        window.document.execCommand("copy");
+      },
+      'sep1': 'separator',
+      'Copy Row as JSON': (menuItem: any) => {
+        var event = (resultContainer[0] as any)?.contextmenu?.clickEvent;
+        if (!event) return;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tbody tr')[0];
+        this.copyResultRowAsJson(el);
+      },
+      'Copy Row as Markdown': (menuItem: any) => {
+        var event = (resultContainer[0] as any)?.contextmenu?.clickEvent;
+        if (!event) return;
+        var el = event.target.tagName == 'TR' ? event.target : $u(event.target).closest('tbody tr')[0];
+        this.copyResultRowAsMarkdown(el);
+      },
+      'sep2': 'separator',
+      'Copy Column as IN (...)': (menuItem: any) => {
+        var event = (resultContainer[0] as any)?.contextmenu?.clickEvent;
+        if (!event) return;
+        var cell = event.target.tagName == 'TD' || event.target.tagName == 'TH' ? event.target : $u(event.target).closest('td, th')[0];
+        this.copyResultColumnAsInClause(cell);
+      },
+      'sep3': 'separator',
+      'Copy All Results as JSON': () => {
+        this.copyAllResultsAsJson();
+      },
+      'Copy All Results as Markdown': () => {
+        this.copyAllResultsAsMarkdown();
+      },
+      'Copy All Results as CSV': () => {
+        this.copyAllResultsAsCsv();
+      }
+    };
+
+    $u.contextMenu(resultContainer, contextMenuActions, {
+      onShow: (event: any, contextmenu: any) => {
+        var isTextSelected = window.getSelection().toString() != "";
+        var target = event.target as HTMLElement;
+        var hasResult = Boolean(this.lastResult && this.lastResult.rows && this.lastResult.rows.length);
+        var isRow = Boolean(hasResult && target && (target.tagName === 'TR' || $u(target).closest('tbody tr').length));
+        var isCell = Boolean(hasResult && target && (target.tagName === 'TD' || target.tagName === 'TH' || $u(target).closest('td, th').length));
+
+        contextmenu.items.forEach((item: any) => {
+          if (item.label == "Copy") {
+            item.enabled = isTextSelected;
+          }
+          if (item.label && item.label.startsWith("Copy Row")) {
+            item.enabled = isRow;
+          }
+          if (item.label && item.label.startsWith("Copy Column")) {
+            item.enabled = isCell;
+          }
+          if (item.label && item.label.startsWith("Copy All")) {
+            item.enabled = hasResult;
+          }
+        });
+      }
+    });
+  }
+
+  copyResultsMenu () {
+    if (!this.copyButton || !this.copyButton.length) return;
+    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log('No query results to copy');
+      }
+      return;
+    }
+
+    var menuActions = {
+      'Copy as JSON': () => this.copyAllResultsAsJson(),
+      'Copy as Markdown': () => this.copyAllResultsAsMarkdown(),
+      'Copy as CSV': () => this.copyAllResultsAsCsv()
+    };
+
+    var btn = this.copyButton[0];
+    var rect = btn.getBoundingClientRect();
+    (btn as any).contextmenu = null;
+    $u.contextMenu(this.copyButton, menuActions);
+    btn.dispatchEvent(new MouseEvent('contextmenu', {
+      clientX: rect.left,
+      clientY: rect.bottom + 2,
+      bubbles: true
+    }));
+  }
+
+  copyResultRowAsJson (tr: HTMLElement) {
+    if (!tr || !this.lastResult || !this.lastResult.rows) return;
+    var rowIndex = dom.elementIndex(tr);
+    var row = this.lastResult.rows[rowIndex];
+    if (!row) return;
+
+    var json = formatUtil.rowToJson(this.lastResult.fields, row);
+    formatUtil.copyToClipboard(json);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success("Row copied as JSON");
+    }
+  }
+
+  copyResultRowAsMarkdown (tr: HTMLElement) {
+    if (!tr || !this.lastResult || !this.lastResult.rows) return;
+    var rowIndex = dom.elementIndex(tr);
+    var row = this.lastResult.rows[rowIndex];
+    if (!row) return;
+
+    var md = formatUtil.rowsToMarkdown(this.lastResult.fields, [row]);
+    formatUtil.copyToClipboard(md);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success("Row copied as Markdown");
+    }
+  }
+
+  copyResultColumnAsInClause (cell: HTMLElement) {
+    if (!cell || !this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) return;
+    var colIndex = dom.elementIndex(cell);
+    var cleanFields = formatUtil.cleanFieldNames(this.lastResult.fields || []);
+    var colName = cleanFields[colIndex] || `col_${colIndex + 1}`;
+    var rows = this.lastResult.completeRows || this.lastResult.rows;
+
+    var values = rows.map((r: any) => {
+      if (Array.isArray(r)) return r[colIndex];
+      return r[colName];
+    });
+
+    var inClause = formatUtil.columnToInClause(values);
+    formatUtil.copyToClipboard(inClause);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied column "${colName}" as IN (...) (${values.length} rows)`);
+    }
+  }
+
+  copyAllResultsAsJson () {
+    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log("No query results to copy");
+      }
+      return;
+    }
+    var rows = this.lastResult.completeRows || this.lastResult.rows;
+    var json = formatUtil.rowsToJson(this.lastResult.fields, rows);
+    formatUtil.copyToClipboard(json);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${rows.length} results as JSON`);
+    }
+  }
+
+  copyAllResultsAsMarkdown () {
+    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log("No query results to copy");
+      }
+      return;
+    }
+    var rows = this.lastResult.completeRows || this.lastResult.rows;
+    var md = formatUtil.rowsToMarkdown(this.lastResult.fields, rows);
+    formatUtil.copyToClipboard(md);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${rows.length} results as Markdown`);
+    }
+  }
+
+  copyAllResultsAsCsv () {
+    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
+      if (window.alertify && typeof window.alertify.log === 'function') {
+        window.alertify.log("No query results to copy");
+      }
+      return;
+    }
+    var rows = this.lastResult.completeRows || this.lastResult.rows;
+    var colNames = formatUtil.cleanFieldNames(this.lastResult.fields || []);
+    var csv = serializeToCsv(colNames, rows);
+    formatUtil.copyToClipboard(csv);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${rows.length} results as CSV`);
+    }
   }
 
 }
