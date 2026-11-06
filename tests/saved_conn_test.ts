@@ -88,4 +88,25 @@ describe('SavedConn', () => {
     assert(Model.SavedConn.isEqualWithSaved("Staging Replica", conn));
   });
 
+  it("should check existence, rename, and remove connection", () => {
+    var conn = { host: "temp.local", port: 5432 };
+    Model.SavedConn.saveConnection("initial_name", conn);
+
+    assert.equal(Model.SavedConn.hasConnection("initial_name"), true);
+    assert.equal(Model.SavedConn.hasConnection("non_existent"), false);
+
+    // Rename
+    var renameOk = Model.SavedConn.renameConnection("initial_name", "renamed_name");
+    assert.equal(renameOk, true);
+    assert.equal(Model.SavedConn.hasConnection("initial_name"), false);
+    assert.equal(Model.SavedConn.hasConnection("renamed_name"), true);
+    assert.deepEqual(Model.SavedConn.savedConnection("renamed_name"), conn);
+
+    // Remove
+    var removeOk = Model.SavedConn.removeConnection("renamed_name");
+    assert.equal(removeOk, true);
+    assert.equal(Model.SavedConn.hasConnection("renamed_name"), false);
+    assert.equal(Model.SavedConn.savedConnection("renamed_name"), undefined);
+  });
+
 });

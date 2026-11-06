@@ -1,53 +1,34 @@
-//process.env.PGSSLMODE = 'prefer';
-
-// @ts-ignore
-var pg = require('pg');
+var sqlClient = require('../lib/sql_client');
 var url = require('url');
-var semver = require('semver');
-var colors = require('colors/safe');
+var util = require('util');
+var semver = require('../lib/semver').default || require('../lib/semver');
+var colors = require('../lib/colors').safe;
 colors.enabled = true;
-var vsprintf = require("sprintf-js").vsprintf;
-var ConnectionString = require('connection-string').ConnectionString;
+var connectionStringLib = require('../lib/connection_string').default || require('../lib/connection_string');
 var SshConnect = require('../lib/ssh_connect');
 var electronRemote = require('@electron/remote');
 
 // Change postgres' type parser to use moment instance instead of js Date instance
 // because momentjs object has timezone information as in original string (js Date object always use local timezone)
-var types = require('pg').types;
-var moment = require('moment')
+var types = sqlClient.types;
+var moment = require('moment');
 
-var TIMESTAMPTZ_OID = 1184
-var TIMESTAMP_OID = 1114
-var customDateParser = (val) => {
+var TIMESTAMPTZ_OID = 1184;
+var TIMESTAMP_OID = 1114;
+var customDateParser = (val: any) => {
   if (val === null) {
     return null;
   } else {
-    var date = moment.parseZone(val)
-    date.origValueString = val
-    return date
+    var date = moment.parseZone(val);
+    date.origValueString = val;
+    return date;
   }
 };
 
-types.setTypeParser(TIMESTAMPTZ_OID, customDateParser)
-types.setTypeParser(TIMESTAMP_OID, customDateParser)
+types.setTypeParser(TIMESTAMPTZ_OID, customDateParser);
+types.setTypeParser(TIMESTAMP_OID, customDateParser);
 
-var usingNativeLib = false;
-// Disable loading pg-native until issue with openssl paths is solved
-/*
-try {
-  if (process.platform == "darwin" || process.platform == "linux") {
-    if (pg.native) {
-      // @ts-ignore
-      pg = pg.native;
-      usingNativeLib = true;
-    }
-  }
-} catch (error) {
-  console.log("can not load pg-native, using pg");
-  console.error(error);
-  //errorReporter(error);
-}
-*/
+var usingNativeLib = true;
 
 
 
@@ -80,7 +61,7 @@ class Connection {
     logging: boolean
     printTestingError: boolean
     server: Model.Server // Model.Server
-    connection: pg.ClientExt
+    connection: ClientExt
     notificationCallbacks: Function[]
     _serverVersionFull: string
     _serverVersion: string
@@ -90,6 +71,7 @@ class Connection {
     isCockroach: boolean
     onDisconnect?: Function
     sshConnection?: typeof SshConnect
+    reconnectDialogVisible?: boolean
 
     static PG: any
     public static instances: Connection[]
@@ -104,7 +86,7 @@ class Connection {
 
     //this.options = options;
     this.connection = null;
-    (Connection as any).instances.push(this);
+    Connection.instances.push(this);
     this.notificationCallbacks = [];
   }
 
@@ -113,133 +95,19 @@ class Connection {
   }
 
   static sanitizePostgresUrl(input: string): string {
-    if (!input || typeof input !== 'string') return input;
-    input = input.trim();
-    const schemeMatch = input.match(/^([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)(.*)$/);
-    if (!schemeMatch) return input;
-    const scheme = schemeMatch[1];
-    const rest = schemeMatch[2];
-
-    const lastAt = rest.lastIndexOf("@");
-    if (lastAt >= 0) {
-      const userInfo = rest.slice(0, lastAt);
-      const hostAndBeyond = rest.slice(lastAt + 1);
-
-      const colonIdx = userInfo.indexOf(":");
-      let user = colonIdx >= 0 ? userInfo.slice(0, colonIdx) : userInfo;
-      let pass = colonIdx >= 0 ? userInfo.slice(colonIdx + 1) : null;
-
-      const safeEncode = (str: string) => {
-        try {
-          str = decodeURIComponent(str);
-        } catch (e) {}
-        return encodeURIComponent(str);
-      };
-
-      const encodedUser = safeEncode(user);
-      const encodedPass = pass !== null ? ":" + safeEncode(pass) : "";
-      return `${scheme}${encodedUser}${encodedPass}@${hostAndBeyond}`;
-    }
-    return input;
+    return connectionStringLib.sanitizePostgresUrl(input);
   }
 
-  // Use ConnectionString lib to support parsing unix socket in connection string
   static parseConnectionString(postgresUrl : string ) : ConnectionOptions  {
-    var sanitizedUrl = Connection.sanitizePostgresUrl(postgresUrl);
-    var cs = new ConnectionString(sanitizedUrl, {
-      params: {
-        application_name: 'Postbird.app'
-      }
-    });
-    var res: any = Object.assign({}, cs.params, {
-      host: cs.hostname,
-      port: cs.port || (cs.params && cs.params.socketPort) || 5432,
-      database: cs.path && cs.path[0],
-      user: cs.user,
-      password: cs.password,
-    });
-
-    if (cs.params) {
-      if ('sslmode' in cs.params) {
-        var mode = String(cs.params.sslmode).toLowerCase();
-        if (mode === 'disable') {
-          res.ssl = false;
-        } else if (mode === 'verify-full' || mode === 'verify-ca') {
-          res.ssl = { rejectUnauthorized: true };
-        } else if (mode === 'require' || mode === 'prefer' || mode === 'no-verify') {
-          var rejectUnauth = 'rejectUnauthorized' in cs.params
-            ? (cs.params.rejectUnauthorized !== 'false' && cs.params.rejectUnauthorized !== false)
-            : false;
-          res.ssl = { rejectUnauthorized: rejectUnauth };
-        }
-      }
-
-      if ('ssl' in cs.params) {
-        if (cs.params.ssl === 'false' || cs.params.ssl === '0' || cs.params.ssl === false) {
-          res.ssl = false;
-        } else {
-          res.ssl = Boolean(cs.params.ssl);
-        }
-      }
-
-      if ('rejectUnauthorized' in cs.params && res.ssl) {
-        res.ssl = {
-          rejectUnauthorized: cs.params.rejectUnauthorized == "false" ? false : Boolean(cs.params.rejectUnauthorized)
-        };
-      }
-
-      delete res.socketPort;
-    }
-
-    return res;
+    return connectionStringLib.parseConnectionString(postgresUrl);
   }
 
-  // Use ConnectionString lib to support parsing unix socket in connection string
   static generateConnectionString(options) {
-    if (options.port == undefined) options.port = '5432';
-    if (options.host == undefined) options.host = 'localhost';
-    if (!options.database) options.database = Connection.defaultDatabaseName;
-
-    var socketPort = null;
-
-    var host = options.host
-    if (host.startsWith('/')) {
-      host = {
-        type: "socket",
-        name: host,
-        port: options.port
-      };
-      if (`${options.port}` != '5432') {
-        socketPort = options.port;
-      }
-    } else {
-      host = ConnectionString.parseHost(`${host}${options.port ? ':' + options.port : ''}`);
-    }
-
-    const cs = new ConnectionString('postgres://');
-    cs.setDefaults({
-      hosts: [host],
-      path: [options.database],
-      user: options.user,
-      password: options.password,
-    });
-    cs.params = {};
-    if (socketPort) {
-      cs.params.socketPort = socketPort
-    }
-    if (options.ssl) {
-      cs.params.ssl = true;
-    }
-    if (options.sslmode) {
-      cs.params.sslmode = options.sslmode;
-    }
-    if ('rejectUnauthorized' in options) {
-      cs.params.rejectUnauthorized = options.rejectUnauthorized;
-    }
-    return cs.toString();
+    return connectionStringLib.generateConnectionString(options);
   }
 
   connectToServer(options : string | ConnectionOptions , callback? : (success: boolean, error?: Error) => void ) {
+    let origOptionsObj: any = typeof options === 'object' ? options : null;
     if (typeof options == 'object' && options.url) {
       options = options.url;
     }
@@ -253,6 +121,10 @@ class Connection {
     } else if (typeof options == 'string') {
       this.connectString = options;
       options = Connection.parseConnectionString(this.connectString);
+      if (origOptionsObj) {
+        if (origOptionsObj.read_only !== undefined) options.read_only = Boolean(origOptionsObj.read_only);
+        if (origOptionsObj.connection_name) options.connection_name = origOptionsObj.connection_name;
+      }
     }
 
     if (usingNativeLib) {
@@ -264,7 +136,7 @@ class Connection {
     logger.info('Connecting to', this.connectString);
 
     if (this.connection) {
-      if (!(this.connection as any).ended) {
+      if (!this.connection.ended) {
         this.connection.end();
       }
       delete this.connection; // = null;
@@ -274,12 +146,16 @@ class Connection {
 
     if (options.ssh_host && !this.sshConnection) {
       this.sshConnection = new SshConnect();
-      this.sshConnection.connectTo(options).then(tunnel => {
+      return this.sshConnection.connectTo(options).then(tunnel => {
         console.log('ssh tunnel', tunnel);
         var isLocal = !this.options.host || this.options.host === 'localhost' || this.options.host === '127.0.0.1';
         this.options.tab_name = this.options.tab_name || (isLocal ? options.ssh_host : this.options.host);
-        const originalHost = this.options.host;
-        const originalPort = this.options.port;
+        if (!this.options._originalHost) {
+          this.options._originalHost = this.options.host;
+          this.options._originalPort = this.options.port;
+        }
+        const originalHost = this.options._originalHost;
+        const originalPort = this.options._originalPort;
         this.options.host = tunnel.host;
         this.options.port = tunnel.port;
 
@@ -289,28 +165,29 @@ class Connection {
           if (!success) {
             this.sshConnection.disconnect();
             if (error) {
-              (error as any).sshStatus = "OK";
-              (error as any).dbStatus = "Error";
-              (error as any).originalHost = originalHost;
-              (error as any).originalPort = originalPort;
+              error.sshStatus = "OK";
+              error.dbStatus = "Error";
+              error.originalHost = originalHost;
+              error.originalPort = originalPort;
             }
           }
-          callback(success, error)
+          callback && callback(success, error);
         });
       }).catch(error => {
         console.error(error);
         if (error) {
-          (error as any).sshStatus = "Error";
-          (error as any).dbStatus = "Not attempted";
+          error.sshStatus = "Error";
+          error.dbStatus = "Not attempted";
         }
         callback && callback(false, error);
         App.log("connect.error", this, JSON.parse(JSON.stringify(options)), error);
+        if (!callback) throw error;
       });
     } else {
       this.connection = this._initConnection(this.connectString);
       return this._startConnection(options, (success, error) => {
         if (!success && error) {
-          (error as any).dbStatus = "Error";
+          error.dbStatus = "Error";
         }
         callback && callback(success, error);
       });
@@ -320,7 +197,7 @@ class Connection {
   _startConnection(options, callback) {
     this.connection.on('error', (e) => { this.onConnectionLost(e) });
 
-    (this.connection as any).on('connect', client => {
+    this.connection.on('connect', client => {
       if (!client.postbirdEventsInit) {
         client.on('notification', (msg) => {
           this.notificationCallbacks.forEach((fn) => {
@@ -340,10 +217,19 @@ class Connection {
         console.log("Server version is", version);
       }
 
+      var initQueries: string[] = [];
+      if (this.options && (this.options.read_only || this.options.readOnly)) {
+        initQueries.push('SET default_transaction_read_only = on; SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY;');
+      }
       if (this.startQuery) {
-        this.query(this.startQuery, (res, error) => {
+        initQueries.push(this.startQuery);
+      }
+
+      if (initQueries.length > 0) {
+        var fullQuery = initQueries.join('\n');
+        this.query(fullQuery, (res, error) => {
           if (error) {
-            var formattedError = new Error(`Start query: ${this.startQuery}\n\nError: ${error.message}${error.hint ? "\n----\n" + error.hint : ''}`);
+            var formattedError = new Error(`Start query: ${fullQuery}\n\nError: ${error.message}${error.hint ? "\n----\n" + error.hint : ''}`);
             callback && callback(false, formattedError);
             Promise.reject(error);
           } else {
@@ -361,7 +247,7 @@ class Connection {
     });
   }
 
-  _initConnection(connectString) : pg.ClientExt  {
+  _initConnection(connectString) : ClientExt  {
     delete this._serverVersion;
     delete this._serverVersionFull;
 
@@ -375,7 +261,7 @@ class Connection {
     // }
 
     // clientConfig.log = (a, b, c) => { console.log('Pool:', a, b, c); }
-    var pool = new pg.Pool(clientConfig);
+    var pool = new sqlClient.Pool(clientConfig);
 
     return pool as any;
   }
@@ -399,7 +285,7 @@ class Connection {
     return this.queryWithOptions(sql, {}, callback);
   }
 
-  queryWithOptions(sql, options, callback : Function ) : Promise<QueryResult>  {
+  queryWithOptions(sql, options, callback ?: Function ) : Promise<QueryResult>  {
     options.text = sql;
     if (this.logging) logger.print("SQL: " + colors.green(sql) + "\n");
 
@@ -425,7 +311,6 @@ class Connection {
           historyRecord.error = error;
           historyRecord.state = 'failed';
           App.log("sql.failed", historyRecord);
-          // @ts-ignore
           error.query = sql;
           if (this.logging && !customTimeoutError) {
             console.error("SQL failed", sql);
@@ -440,7 +325,6 @@ class Connection {
         } else {
           historyRecord.state = 'success';
           App.log("sql.success", historyRecord);
-          // @ts-ignore
           result.time = historyRecord.time;
           //console.log(result);
           if (callback) callback(result);
@@ -458,7 +342,7 @@ class Connection {
       callback = params.pop();
     }
 
-    const query = params.length ? vsprintf(sql, params) : sql;
+    const query = params.length ? util.format(sql, ...params) : sql;
     return this.query(query, callback);
   }
 
@@ -468,7 +352,7 @@ class Connection {
       return Promise.resolve(this._serverVersion);
     }
 
-    var cockroachPort = parseInt(this.options.port) > 26000;
+    var cockroachPort = parseInt(String(this.options.port)) > 26000;
 
     if (this.connection.native && this.connection.native.pq.serverVersion && !cockroachPort) {
       var intVersion = this.connection.native.pq.serverVersion();
@@ -734,6 +618,12 @@ class Connection {
 
     if (this.sshConnection) {
       this.sshConnection.disconnect();
+      delete this.sshConnection;
+    }
+
+    if (this.options && (this.options as any)._originalHost) {
+      this.options.host = (this.options as any)._originalHost;
+      this.options.port = (this.options as any)._originalPort;
     }
 
     var index = (Connection as any).instances.indexOf(this);
@@ -774,17 +664,21 @@ class Connection {
       error.message.includes("Client has encountered a connection error and is not queryable") ||
       error.message.includes("Connection terminated")
     ) {
+      if (this.reconnectDialogVisible) {
+        return;
+      }
+      this.reconnectDialogVisible = true;
 
       console.error(error);
 
-      window.alertify.confirm("Seems like disconnected, reconnect?<br><small>" + error.message, (is_yes) => {
-        window.alertify.hide();
+      window.alertify.confirm("Seems like disconnected, reconnect?<br><small>" + error.message + "</small>", (is_yes) => {
+        this.reconnectDialogVisible = false;
         if (is_yes) {
           var tab = global.App.tabs.filter((tab) => {
-            return tab.instance.connection == this;
+            return tab.instance && tab.instance.connection == this;
           })[0];
 
-          if (tab) tab.instance.reconnect();
+          if (tab && tab.instance) tab.instance.reconnect();
         }
       });
     }
@@ -842,5 +736,5 @@ class Connection {
 
 (global as any).Connection = Connection;
 
-(Connection as any).PG = pg;
-(Connection as any).instances = [];
+Connection.PG = sqlClient;
+Connection.instances = [];

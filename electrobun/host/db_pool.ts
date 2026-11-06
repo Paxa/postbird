@@ -1,35 +1,52 @@
-import pg from "pg";
+import { Pool } from "../../lib/sql_client";
 import type { QueryResponse } from "./types";
 
-const Pool = (pg as any).Pool || require("pg").Pool;
-const pools = new Map<string, any>();
+const pools = new Map<string, Pool>();
 
-export function getPool(config: any): any {
-  let key: string;
+export function getPoolKey(config: any): string {
+  if (typeof config === "string") {
+    return config;
+  }
+  if (config && typeof config === "object") {
+    const user = config.user || config.username || "postgres";
+    const host = config.host || "localhost";
+    const port = Number(config.port) || 5432;
+    const database = config.database || "postgres";
+    const ssl = JSON.stringify(config.ssl || false);
+    const readOnly = Boolean(config.read_only || config.readOnly);
+    return `${user}@${host}:${port}/${database}?ssl=${ssl}&read_only=${readOnly}`;
+  }
+  return "default";
+}
+
+export function getActivePoolKeys(): string[] {
+  return Array.from(pools.keys());
+}
+
+export function getPool(config: any): Pool {
+  const key = getPoolKey(config);
   let poolConfig = config;
 
   if (typeof config === "string") {
-    key = config;
     poolConfig = { connectionString: config };
-  } else if (config) {
-    key = `${config.user}@${config.host}:${config.port}/${config.database}`;
+  } else if (config && typeof config === "object") {
     poolConfig = {
       host: config.host || "localhost",
       port: Number(config.port) || 5432,
-      user: config.user || "postgres",
-      password: config.password || "",
+      user: config.user || config.username || "postgres",
+      password: config.password !== undefined ? config.password : "",
       database: config.database || "postgres",
       ssl: config.ssl || false,
       idleTimeoutMillis: 600000,
       max: config.max || 5,
+      read_only: Boolean(config.read_only || config.readOnly),
     };
   } else {
-    key = "default";
     poolConfig = { host: "localhost", port: 5432, database: "postgres" };
   }
 
   if (!pools.has(key)) {
-    console.log(`[Bun] Creating PostgreSQL pool for: ${key}`);
+    console.log(`[Bun] Creating native SQL pool for: ${key}`);
     const pool = new Pool(poolConfig);
     pool.on("error", (err: any) => {
       console.error("[Bun PG Pool Error]", err);
@@ -71,8 +88,9 @@ export async function executeQuery(sql: string, config?: any, queryOptions?: any
 }
 
 export async function disconnectPool(config: any): Promise<{ success: boolean }> {
-  const key = typeof config === "string" ? config : JSON.stringify(config || {});
+  const key = getPoolKey(config);
   if (pools.has(key)) {
+    console.log(`[Bun] Disconnecting SQL pool for: ${key}`);
     try {
       await pools.get(key)!.end();
     } catch (e) {

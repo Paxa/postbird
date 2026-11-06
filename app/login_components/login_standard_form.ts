@@ -44,7 +44,8 @@ class LoginStandardForm {
       ssh_user: (this.form.find('[name=ssh_user]').val() || '').toString(),
       ssh_pass: (this.form.find('[name=ssh_pass]').val() || '').toString(),
       ssh_key: (this.form.find('[name=ssh_key]').val() || '').toString(),
-      auto_connect: this.form.find('[name=auto_connect]').prop('checked')
+      auto_connect: this.form.find('[name=auto_connect]').prop('checked'),
+      read_only: Boolean(this.form.find('[name=read_only]').prop('checked'))
     };
   }
 
@@ -103,7 +104,8 @@ class LoginStandardForm {
       ssh_user: "",
       ssh_pass: "",
       ssh_key: "",
-      auto_connect: false
+      auto_connect: false,
+      read_only: false
     }, params);
 
     ObjectKit.forEach(params, (k, v) => {

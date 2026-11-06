@@ -1,5 +1,4 @@
-// @ts-ignore
-var URL = require('url');
+var nodeUrl = require('url');
 
 class LoginPostgresUrlForm {
   
@@ -39,7 +38,7 @@ class LoginPostgresUrlForm {
 
   fillForm (params) {
     var defaultName = (params && params.connection_name) ? params.connection_name : (this.loginForm.connectionName && this.loginForm.connectionName !== '**new**' ? this.loginForm.connectionName : '');
-    params = Object.assign({}, {connection_name: defaultName, url: "", auto_connect: false}, params);
+    params = Object.assign({}, {connection_name: defaultName, url: "", auto_connect: false, read_only: false}, params);
     ObjectKit.forEach(params, (k, v) => {
       if (k == 'url') k = 'connect_url';
       var field = this.form.find('input[name=' + k + '], textarea[name=' + k + ']');
@@ -57,7 +56,8 @@ class LoginPostgresUrlForm {
       type: 'url',
       connection_name: (this.form.find('[name=connection_name]').val() || '').toString(),
       url: this.form.find('[name=connect_url]').val().toString(),
-      auto_connect: this.form.find('[name=auto_connect]').prop('checked')
+      auto_connect: this.form.find('[name=auto_connect]').prop('checked'),
+      read_only: Boolean(this.form.find('[name=read_only]').prop('checked'))
     };
   }
 
@@ -75,7 +75,7 @@ class LoginPostgresUrlForm {
     var options: any = this.getFormData();
 
     try {
-      options.name = (options.connection_name || '').trim() || URL.parse(options.url).host;
+      options.name = (options.connection_name || '').trim() || nodeUrl.parse(options.url).host;
     } catch (e) {
       console.error('can not parse connection url', e);
     }
@@ -132,7 +132,7 @@ class LoginPostgresUrlForm {
       var name = null;
       var suggested = null;
       try {
-        suggested = URL.parse(data.url).host;
+        suggested = nodeUrl.parse(data.url).host;
       } catch (e) {
         console.error(e);
       }

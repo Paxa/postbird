@@ -89,6 +89,52 @@ describe('Connection', () => {
     assert.deepEqual(parsedRejectExplicit.ssl, { rejectUnauthorized: true });
   });
 
+  it("should parse connection string with ssh_* parameters", () => {
+    var parsed = Connection.parseConnectionString(
+      "postgresql://dbuser:dbpass@remote-pg.internal:5432/my_database?ssh_host=bastion.example.com&ssh_port=2222&ssh_user=jumpuser&ssh_pass=secret&ssh_key=%2Fhome%2Fuser%2F.ssh%2Fid_rsa"
+    );
+
+    assert.equal(parsed.user, "dbuser");
+    assert.equal(parsed.password, "dbpass");
+    assert.equal(parsed.host, "remote-pg.internal");
+    assert.equal(parsed.port, 5432);
+    assert.equal(parsed.database, "my_database");
+    assert.equal(parsed.ssh_host, "bastion.example.com");
+    assert.equal(parsed.ssh_port, "2222");
+    assert.equal(parsed.ssh_user, "jumpuser");
+    assert.equal(parsed.ssh_pass, "secret");
+    assert.equal(parsed.ssh_key, "/home/user/.ssh/id_rsa");
+  });
+
+  it("should generate and roundtrip connection string with ssh_* parameters", () => {
+    var original = {
+      user: "dbuser",
+      password: "dbpass",
+      host: "remote-pg.internal",
+      port: 5432,
+      database: "my_database",
+      ssh_host: "bastion.example.com",
+      ssh_port: "2222",
+      ssh_user: "jumpuser",
+      ssh_pass: "secret",
+      ssh_key: "/home/user/.ssh/id_rsa"
+    };
+
+    var connStr = Connection.generateConnectionString(original);
+    assert(connStr.includes("ssh_host=bastion.example.com"), "Generated string must include ssh_host");
+    assert(connStr.includes("ssh_port=2222"), "Generated string must include ssh_port");
+    assert(connStr.includes("ssh_user=jumpuser"), "Generated string must include ssh_user");
+    assert(connStr.includes("ssh_pass=secret"), "Generated string must include ssh_pass");
+    assert(connStr.includes("ssh_key=%2Fhome%2Fuser%2F.ssh%2Fid_rsa"), "Generated string must include encoded ssh_key");
+
+    var parsed = Connection.parseConnectionString(connStr);
+    assert.equal(parsed.ssh_host, original.ssh_host);
+    assert.equal(parsed.ssh_port, original.ssh_port);
+    assert.equal(parsed.ssh_user, original.ssh_user);
+    assert.equal(parsed.ssh_pass, original.ssh_pass);
+    assert.equal(parsed.ssh_key, original.ssh_key);
+  });
+
   it("should trim surrounding whitespace from connection url", () => {
     var parsed = Connection.parseConnectionString("  postgresql://user:pass@host:5432/db \n");
     assert.equal(parsed.host, "host");
