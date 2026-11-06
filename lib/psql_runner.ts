@@ -84,6 +84,31 @@ class PsqlRunner {
       this.addArguments.apply(this, extraArgs);
     }
 
+    let tempCompatFile: string | null = null;
+    const fileArgIdx = this.cmd_args.findIndex((a) => a.startsWith("--file="));
+    if (fileArgIdx !== -1) {
+      const filePath = this.cmd_args[fileArgIdx].slice("--file=".length);
+      if (filePath && fs.existsSync(filePath)) {
+        try {
+          const raw = fs.readFileSync(filePath, "utf8");
+          if (/SET\s+transaction_timeout\s*=/i.test(raw)) {
+            const sanitized = raw.replace(
+              /^(SET\s+transaction_timeout\s*=\s*0\s*;?)/gim,
+              "-- $1 (skipped for cross-version compatibility)"
+            );
+            tempCompatFile = path.join(
+              process.env.TMPDIR || "/tmp",
+              `postbird-compat-${Date.now()}-${path.basename(filePath)}`
+            );
+            fs.writeFileSync(tempCompatFile, sanitized, "utf8");
+            this.cmd_args[fileArgIdx] = `--file=${tempCompatFile}`;
+          }
+        } catch (e) {
+          // ignore error and proceed with original file
+        }
+      }
+    }
+
     var commandStr = this.binaryPath() + " " + this.cmd_args.join(" ");
     App.log("exec.strt", {command: commandStr});
     if (this.options.debug) {
@@ -105,7 +130,17 @@ class PsqlRunner {
     });
 
     return new Promise((resolve, reject) => {
+      const cleanupTemp = () => {
+        if (tempCompatFile && fs.existsSync(tempCompatFile)) {
+          try {
+            fs.unlinkSync(tempCompatFile);
+          } catch (e) {}
+          tempCompatFile = null;
+        }
+      };
+
       this.process.on('error', (error) => {
+        cleanupTemp();
         if (process.platform == 'linux' && error.message == "spawn psql ENOENT") {
           console.error(error)
           error = new Error(
@@ -121,6 +156,7 @@ class PsqlRunner {
       });
 
       this.process.on('close', (exit_code) => {
+        cleanupTemp();
         App.log("exec.finish", {command: commandStr, time: Date.now() - startTime});
         if (callback) callback(exit_code == 0, process, stdout);
 

@@ -67,8 +67,8 @@ class ExportFile extends DialogBase {
   }
 
   showCloseButton () {
-    this.content.find("p.buttons").hide();
-    this.content.find("p.buttons.close-btn").show();
+    this.content.find("p.buttons.default-buttons").hide();
+    this.content.find("p.buttons.close-btn").css("display", "flex");
   }
 
   addMessage(message) {
