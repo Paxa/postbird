@@ -23,4 +23,5 @@ declare module Dialog {
   class ShowSql { constructor(...args: any[]); [key: string]: any; }
   class UserGrants { constructor(...args: any[]); [key: string]: any; }
   class AiSettings { constructor(...args: any[]); [key: string]: any; }
+  class JsonViewer { constructor(...args: any[]); [key: string]: any; }
 }

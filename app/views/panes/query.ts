@@ -98,6 +98,36 @@ class Query extends PaneBase {
         this.sendAiPrompt();
       }
     });
+
+    this.content.find('.result').on('click', '.cell-json-badge', (e: any) => {
+      e.preventDefault();
+      e.stopPropagation();
+      var td = $u(e.target).closest('td')[0];
+      this.openJsonViewerForCell(td);
+    });
+  }
+
+  openJsonViewerForCell (td: HTMLElement) {
+    if (!td) return;
+    var tdEl = $u(td);
+    var tr = tdEl.closest('tr');
+    var colIndex = tdEl.prevAll('td').length;
+    var rowIndex = tr.prevAll('tr').length;
+
+    var field = this.lastResult && this.lastResult.fields ? this.lastResult.fields[colIndex] : null;
+    var fieldName = field ? field.name : `Column ${colIndex + 1}`;
+    var row = this.lastResult && this.lastResult.rows ? this.lastResult.rows[rowIndex] : null;
+    var value = null;
+    if (row) {
+      value = Array.isArray(row) ? row[colIndex] : row[fieldName];
+    }
+
+    new (Dialog as any).JsonViewer(this.handler, {
+      fieldName: fieldName,
+      fieldType: field ? { data_type: (field as any).dataType || (field as any).format || 'json', udt_name: 'json' } : { data_type: 'json' },
+      value: value,
+      readOnly: true
+    });
   }
 
   initQueryBuffers () {

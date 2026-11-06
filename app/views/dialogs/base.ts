@@ -109,14 +109,14 @@ class DialogBase {
     var focusable = this.windowContent.find('[autofocus]');
     if (focusable.length) {
       setTimeout(() => {
-        focusable[0].focus();
+        if (focusable[0] && typeof focusable[0].focus === 'function') focusable[0].focus();
       }, 120);
-      focusable[0].focus();
+      if (focusable[0] && typeof focusable[0].focus === 'function') focusable[0].focus();
     } else {
       var firstInput = this.windowContent.find('input, select, textarea')[0];
-      if (firstInput) firstInput.focus();
+      if (firstInput && typeof firstInput.focus === 'function') firstInput.focus();
       setTimeout(() => {
-        if (firstInput) firstInput.focus();
+        if (firstInput && typeof firstInput.focus === 'function') firstInput.focus();
       }, 120);
     }
   }

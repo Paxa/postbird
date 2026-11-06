@@ -5215,6 +5215,445 @@ body.dark-mode .ai-settings-window .ai-detail-col .ai-actions-bar button.cancel:
   background: #333336;
 }
 
+/* Compact JSON Cell Badge */
+.cell-json-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.cell-json-wrapper .cell-json-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 600;
+  line-height: 15px;
+  border-radius: 4px;
+  background: rgba(10, 132, 255, 0.12);
+  color: #0066cc;
+  border: 1px solid rgba(10, 132, 255, 0.28);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.cell-json-wrapper .cell-json-badge:hover {
+  background: #007aff;
+  color: #ffffff;
+  border-color: #007aff;
+  box-shadow: 0 1px 3px rgba(0, 122, 255, 0.3);
+}
+.cell-json-wrapper .json-preview {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: #555555;
+  flex: 1;
+}
+
+body.dark-mode .cell-json-wrapper .cell-json-badge {
+  background: rgba(10, 132, 255, 0.2);
+  color: #64b5f6;
+  border-color: rgba(100, 181, 246, 0.35);
+}
+body.dark-mode .cell-json-wrapper .cell-json-badge:hover {
+  background: #1976d2;
+  color: #ffffff;
+  border-color: #42a5f5;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode .cell-json-wrapper .json-preview {
+  color: #aaaaaa;
+}
+
+/* JSON Viewer & Formatter Dialog */
+#alertify.json-viewer-dialog .alertify-dialog {
+  width: 780px;
+  max-width: 90vw;
+  height: 580px;
+  max-height: 85vh;
+  padding: 44px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
+}
+#alertify.json-viewer-dialog .alertify-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.json-viewer-dialog {
+  text-align: left;
+  /* Tree Node Styling */
+}
+.json-viewer-dialog .json-viewer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  text-align: left;
+}
+.json-viewer-dialog .json-viewer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+.json-viewer-dialog .json-viewer-toolbar .segmented-control {
+  display: inline-flex;
+  background: #e4e4e7;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+.json-viewer-dialog .json-viewer-toolbar .segmented-control .btn-mode {
+  background: transparent;
+  border: none;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #52525b;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+.json-viewer-dialog .json-viewer-toolbar .segmented-control .btn-mode .mode-icon {
+  font-size: 13px;
+}
+.json-viewer-dialog .json-viewer-toolbar .segmented-control .btn-mode.active {
+  background: #ffffff;
+  color: #18181b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .tree-actions, .json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .code-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .json-search-input {
+  width: 170px;
+  height: 26px;
+  padding: 2px 8px;
+  font-size: 11px;
+  border: 1px solid #d4d4d8;
+  border-radius: 5px;
+  outline: none;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .json-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .btn-small {
+  height: 26px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f4f4f5;
+  border: 1px solid #d4d4d8;
+  border-radius: 5px;
+  color: #3f3f46;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .btn-small:hover {
+  background: #e4e4e7;
+  border-color: #a1a1aa;
+}
+.json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .btn-small:active {
+  background: #d4d4d8;
+}
+.json-viewer-dialog .json-validation-error {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 12px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.json-viewer-dialog .json-viewer-body {
+  flex: 1;
+  overflow: hidden;
+  margin-top: 10px;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  background: #fafafa;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.json-viewer-dialog .json-viewer-body .json-tree-wrapper {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 10px 14px;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: left;
+}
+.json-viewer-dialog .json-viewer-body .json-code-wrapper {
+  height: 100%;
+  position: relative;
+  text-align: left;
+}
+.json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror {
+  height: 100%;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  background: #ffffff;
+  text-align: left;
+}
+.json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror pre, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-line, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-lines, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-code {
+  text-align: left;
+}
+.json-viewer-dialog .json-tree-node {
+  margin-left: 0;
+}
+.json-viewer-dialog .json-tree-node .json-node-children {
+  margin-left: 18px;
+  padding-left: 6px;
+  border-left: 1px dashed rgba(0, 0, 0, 0.12);
+}
+.json-viewer-dialog .json-tree-node .json-node-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.json-viewer-dialog .json-tree-node .json-node-header:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.json-viewer-dialog .json-tree-node .json-node-header:hover .json-node-copy-btn {
+  opacity: 1;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-toggle {
+  display: inline-block;
+  width: 14px;
+  text-align: center;
+  font-size: 9px;
+  color: #71717a;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-bullet {
+  display: inline-block;
+  width: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-key {
+  color: #8b5cf6;
+  font-weight: 600;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-summary {
+  color: #71717a;
+  font-size: 11px;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-val.val-string {
+  color: #15803d;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-val.val-number {
+  color: #0369a1;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-val.val-boolean {
+  color: #b45309;
+  font-weight: 600;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-val.val-null {
+  color: #9ca3af;
+  font-style: italic;
+}
+.json-viewer-dialog .json-tree-node .json-node-header mark {
+  background: #fde047;
+  color: #000000;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-copy-btn {
+  margin-left: auto;
+  opacity: 0;
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  border-radius: 4px;
+  font-size: 10px;
+  padding: 1px 6px;
+  color: #52525b;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.json-viewer-dialog .json-tree-node .json-node-header .json-node-copy-btn:hover {
+  background: #f4f4f5;
+  color: #18181b;
+}
+.json-viewer-dialog .json-empty-hint {
+  padding: 30px;
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+}
+.json-viewer-dialog .json-viewer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  flex-shrink: 0;
+}
+.json-viewer-dialog .json-viewer-footer .json-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.json-viewer-dialog .json-viewer-footer .json-footer-left .json-null-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #52525b;
+  cursor: pointer;
+}
+.json-viewer-dialog .json-viewer-footer .json-footer-left .json-path-breadcrumb {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: #71717a;
+  cursor: pointer;
+  padding: 2px 6px;
+  background: #f4f4f5;
+  border-radius: 4px;
+}
+.json-viewer-dialog .json-viewer-footer .json-footer-left .json-path-breadcrumb:hover {
+  color: #18181b;
+  background: #e4e4e7;
+}
+.json-viewer-dialog .json-viewer-footer .json-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Dark Mode Overrides for JSON Viewer */
+body.dark-mode #alertify.json-viewer-dialog .alertify-dialog {
+  background: #1f1f23;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .segmented-control {
+  background: #27272a;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .segmented-control .btn-mode {
+  color: #a1a1aa;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .segmented-control .btn-mode.active {
+  background: #3f3f46;
+  color: #fafafa;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .json-search-input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #fafafa;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .json-search-input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25);
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .btn-small {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #d4d4d8;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-toolbar .json-toolbar-actions .btn-small:hover {
+  background: #3f3f46;
+  color: #ffffff;
+}
+body.dark-mode .json-viewer-dialog .json-validation-error {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #f87171;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-body {
+  background: #18181b;
+  border-color: #27272a;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror {
+  background: #18181b;
+  color: #f4f4f5;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-children {
+  border-left-color: rgba(255, 255, 255, 0.1);
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-node-key {
+  color: #c084fc;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-node-summary {
+  color: #a1a1aa;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-val.val-string {
+  color: #4ade80;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-val.val-number {
+  color: #38bdf8;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-val.val-boolean {
+  color: #fbbf24;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-val.val-null {
+  color: #71717a;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header mark {
+  background: #ca8a04;
+  color: #ffffff;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-node-copy-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+body.dark-mode .json-viewer-dialog .json-tree-node .json-node-header .json-node-copy-btn:hover {
+  background: #3f3f46;
+  color: #ffffff;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-footer .json-footer-left .json-null-label {
+  color: #a1a1aa;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-footer .json-footer-left .json-path-breadcrumb {
+  background: #27272a;
+  color: #a1a1aa;
+}
+body.dark-mode .json-viewer-dialog .json-viewer-footer .json-footer-left .json-path-breadcrumb:hover {
+  background: #3f3f46;
+  color: #ffffff;
+}
+
 /*
  *Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
 .hljs {

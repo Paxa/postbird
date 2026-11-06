@@ -6,15 +6,17 @@
 /**
  * Query a single matching element.
  */
-export function $<T extends Element = HTMLElement>(selector: string, parent: ParentNode = document): T | null {
-  return parent.querySelector<T>(selector);
+export function $<T extends Element = HTMLElement>(selector: string, parent: any = document): T | null {
+  if (!parent || typeof parent.querySelector !== "function") return null;
+  return parent.querySelector(selector) as T | null;
 }
 
 /**
  * Query all matching elements as a native array.
  */
-export function $$<T extends Element = HTMLElement>(selector: string, parent: ParentNode = document): T[] {
-  return Array.from(parent.querySelectorAll<T>(selector));
+export function $$<T extends Element = HTMLElement>(selector: string, parent: any = document): T[] {
+  if (!parent || typeof parent.querySelectorAll !== "function") return [];
+  return Array.from(parent.querySelectorAll(selector)) as T[];
 }
 
 /**

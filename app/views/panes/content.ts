@@ -459,6 +459,13 @@ class Content extends PaneBase {
       genericTable.setSelectedRow(el);
     });
 
+    table.on('click', '.cell-json-badge', (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
+      var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
+      this.openJsonViewer(el);
+    });
+
     table.single_double_click_nowait(null, event => {
       if (this.isReadOnly()) return;
       var el = event.target.tagName == 'TD' ? event.target : $u(event.target).closest('td')[0];
@@ -626,6 +633,18 @@ class Content extends PaneBase {
 
     var fieldType = this.columnTypes[fieldName];
 
+    var isJson = fieldType && (
+      fieldType.data_type === 'json' ||
+      fieldType.data_type === 'jsonb' ||
+      fieldType.udt_name === 'json' ||
+      fieldType.udt_name === 'jsonb'
+    );
+
+    if (isJson) {
+      this.openJsonViewer(field, { editMode: true });
+      return;
+    }
+
     var value = null;
     this.currentData.rows.forEach((row, index) => {
       if (row.ctid == ctid) {
@@ -671,6 +690,51 @@ class Content extends PaneBase {
         }
         await this.reloadData();
         //this.content.find(`.rescol-content-wrapper table tbody:nth-child(${valueIndex + 1})`).click();
+      }
+    });
+  }
+
+  openJsonViewer (field: HTMLElement, options: { editMode?: boolean } = {}) {
+    var position = $u(field).prevAll('td').length;
+    var ctid = $u(field).closest('tr').attr('data-ctid');
+
+    var fieldDef = this.currentData.fields.filter(f => f.name != 'ctid')[position];
+    var fieldName = field && fieldDef ? fieldDef.name : '';
+    var fieldType = this.columnTypes[fieldName] || { data_type: 'json', udt_name: 'json' };
+
+    var value = null;
+    this.currentData.rows.forEach(row => {
+      if (row.ctid == ctid) {
+        value = row[fieldName];
+      }
+    });
+
+    var isReadOnly = this.isReadOnly() || options.editMode === false;
+
+    var dialog = new Dialog.JsonViewer(this.handler, {
+      fieldName: fieldName,
+      fieldType: fieldType,
+      value: value,
+      readOnly: isReadOnly,
+      onSave: async (newValue: string | null, isNull: boolean) => {
+        App.startLoading(`Updating JSON for ${fieldName}...`);
+        try {
+          var sanitizedValue = isNull ? null : (typeof newValue === 'string' ? newValue : JSON.stringify(newValue));
+          var result = await this.handler.table.updateValue(ctid, fieldName, sanitizedValue, isNull, fieldType.data_type);
+          dialog.close();
+          if (result.rowCount == 0) {
+            $u.alertError("No records updated, probably table content was changed since you started editing.",
+              { detail: "Try to refresh content and edit again" }
+            );
+          }
+        } catch (error) {
+          console.error(error);
+          $u.alertSqlError("Error while updating JSON value", error);
+          return;
+        } finally {
+          App.stopLoading();
+        }
+        await this.reloadData();
       }
     });
   }

@@ -1,0 +1,41 @@
+.json-viewer-container
+  .json-viewer-toolbar
+    .json-mode-switch.segmented-control
+      button.btn-mode.active(type="button" data-mode="tree")
+        span.mode-icon 🌲
+        span.mode-label Tree
+      button.btn-mode(type="button" data-mode="code")
+        span.mode-icon 📝
+        span.mode-label Code
+
+    .json-toolbar-actions
+      .tree-actions
+        input.json-search-input(type="search" placeholder="Filter keys / values...")
+        button.btn-small.btn-expand-all(type="button" title="Expand all nodes") Expand All
+        button.btn-small.btn-collapse-all(type="button" title="Collapse all nodes") Collapse All
+      .code-actions(style="display: none;")
+        button.btn-small.btn-prettify(type="button" title="Format JSON with 2 spaces") Prettify
+        button.btn-small.btn-minify(type="button" title="Minify JSON") Minify
+      button.btn-small.btn-copy-json(type="button" title="Copy JSON to clipboard") Copy JSON
+
+  .json-validation-error(style="display: none;")
+
+  .json-viewer-body
+    .json-tree-wrapper
+      .json-tree-content
+    .json-code-wrapper(style="display: none;")
+      textarea.json-code-textarea
+
+  .json-viewer-footer
+    .json-footer-left
+      if !readOnly && fieldType && fieldType.is_nullable
+        label.json-null-label
+          input.value-is-null(type="checkbox" name="value_is_null" value="true" checked=(value === null))
+          span Set NULL
+      span.json-path-breadcrumb(title="Click to copy path") Path: $
+    .json-footer-right
+      if !readOnly
+        button.ok(type="button") Save
+        button.cancel(type="button") Cancel
+      else
+        button.cancel(type="button") Close

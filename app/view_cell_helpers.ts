@@ -166,20 +166,49 @@ var helpers = (global as any).ViewCellHelpers = {
   },
 
   formatJson: function (value) {
-    var json;
+    if (value === null || value === undefined) {
+      return '<i class="null">NULL</i>';
+    }
+
+    var parsed = null;
     var wrongJson = false;
-    if (typeof value == 'string') {
-      //json = value;
-      if (value.startsWith('{') && value.endsWith('}') || value.startsWith('[') && value.endsWith(']')) {
+
+    if (typeof value === 'object') {
+      parsed = value;
+    } else if (typeof value === 'string') {
+      var trimmed = value.trim();
+      if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
         try {
-          value = JSON.parse(value);
+          parsed = JSON.parse(value);
           wrongJson = true;
         } catch (e) {}
       }
     }
-    json = JSON.stringify(value, null, 4);
-    json = this.escapeHTML(json);
-    return `<span class="text ${wrongJson ? 'wrong-json' : ''}" ${wrongJson ? 'title="JSON value saved as string"' : ''}>${json}</span>`;
+
+    var badgeText = '{ }';
+    var preview = '';
+
+    if (parsed !== null && typeof parsed === 'object') {
+      if (Array.isArray(parsed)) {
+        badgeText = parsed.length === 1 ? '[ 1 item ]' : `[ ${parsed.length} items ]`;
+        preview = JSON.stringify(parsed);
+      } else {
+        var keyCount = Object.keys(parsed).length;
+        badgeText = keyCount === 1 ? '{ 1 key }' : `{ ${keyCount} keys }`;
+        preview = JSON.stringify(parsed);
+      }
+    } else {
+      preview = typeof value === 'string' ? value : String(value);
+    }
+
+    var maxLen = 80;
+    var displayPreview = preview.length > maxLen ? preview.slice(0, maxLen) + '...' : preview;
+    var escapedPreview = this.escapeHTML(displayPreview);
+
+    return `<span class="cell-json-wrapper">` +
+      `<a class="cell-json-badge" title="Click to view/edit JSON">${this.escapeHTML(badgeText)}</a>` +
+      `<span class="text json-preview ${wrongJson ? 'wrong-json' : ''}" ${wrongJson ? 'title="JSON value saved as string"' : ''}>${escapedPreview}</span>` +
+      `</span>`;
   },
 
   formatJsonArray: function (value) {

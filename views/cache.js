@@ -1386,6 +1386,126 @@ pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u
         typeof columns !== 'undefined' ? columns : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/index_form"].content = "\nform\n  p\n    label(for=\"index_name_field\") Name\n    input#index_name_field(name=\"name\", placeholder=\"optional\" type=\"text\")\n\n  p\n    label Columns\n    ul.columns-names\n      each column in columns\n        li\n          label\n            input(type=\"checkbox\", name=\"columns[\" + column.column_name + \"]\", value= column.column_name)\n            = column.column_name\n  p\n    label(for=\"index_uniq_field\") Uniq\n    input#index_uniq_field(type=\"checkbox\", name=\"uniq\", value=\"1\")\n\n  p\n    label(for=\"index_method_field\") Index Type\n    select#index_method_field(name=\"method\")\n      option(value=\"btree\") btree\n      option(value=\"hash\") hash\n      option(value=\"gist\") gist\n      option(value=\"spgist\") spgist\n      option(value=\"gin\") gin\n      option(value=\"brin\") brin\n    br\n    a(href=\"https://www.citusdata.com/blog/2017/10/17/tour-of-postgres-index-types/\" class=\"external docs-link\") About Index Types\n\n  input.pseudo-hidden(type=\"submit\")\n  p.buttons\n    button.ok Add Index\n    button.cancel Cancel\n";
+exports["dialogs/json_viewer"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade":".json-viewer-container\n  .json-viewer-toolbar\n    .json-mode-switch.segmented-control\n      button.btn-mode.active(type=\"button\" data-mode=\"tree\")\n        span.mode-icon 🌲\n        span.mode-label Tree\n      button.btn-mode(type=\"button\" data-mode=\"code\")\n        span.mode-icon 📝\n        span.mode-label Code\n\n    .json-toolbar-actions\n      .tree-actions\n        input.json-search-input(type=\"search\" placeholder=\"Filter keys \u002F values...\")\n        button.btn-small.btn-expand-all(type=\"button\" title=\"Expand all nodes\") Expand All\n        button.btn-small.btn-collapse-all(type=\"button\" title=\"Collapse all nodes\") Collapse All\n      .code-actions(style=\"display: none;\")\n        button.btn-small.btn-prettify(type=\"button\" title=\"Format JSON with 2 spaces\") Prettify\n        button.btn-small.btn-minify(type=\"button\" title=\"Minify JSON\") Minify\n      button.btn-small.btn-copy-json(type=\"button\" title=\"Copy JSON to clipboard\") Copy JSON\n\n  .json-validation-error(style=\"display: none;\")\n\n  .json-viewer-body\n    .json-tree-wrapper\n      .json-tree-content\n    .json-code-wrapper(style=\"display: none;\")\n      textarea.json-code-textarea\n\n  .json-viewer-footer\n    .json-footer-left\n      if !readOnly && fieldType && fieldType.is_nullable\n        label.json-null-label\n          input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=(value === null))\n          span Set NULL\n      span.json-path-breadcrumb(title=\"Click to copy path\") Path: $\n    .json-footer-right\n      if !readOnly\n        button.ok(type=\"button\") Save\n        button.cancel(type=\"button\") Cancel\n      else\n        button.cancel(type=\"button\") Close\n"};
+;
+    var locals_for_with = (locals || {});
+    
+    (function (fieldType, readOnly, value) {
+      var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"json-viewer-container\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"json-viewer-toolbar\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-mode-switch segmented-control\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"btn-mode active\" type=\"button\" data-mode=\"tree\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan class=\"mode-icon\"\u003E";
+;pug_debug_line = 5;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "🌲\u003C\u002Fspan\u003E";
+;pug_debug_line = 6;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan class=\"mode-label\"\u003E";
+;pug_debug_line = 6;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Tree\u003C\u002Fspan\u003E\u003C\u002Fbutton\u003E";
+;pug_debug_line = 7;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"btn-mode\" type=\"button\" data-mode=\"code\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan class=\"mode-icon\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "📝\u003C\u002Fspan\u003E";
+;pug_debug_line = 9;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan class=\"mode-label\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Code\u003C\u002Fspan\u003E\u003C\u002Fbutton\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 11;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-toolbar-actions\"\u003E";
+;pug_debug_line = 12;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"tree-actions\"\u003E";
+;pug_debug_line = 13;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cinput class=\"json-search-input\" type=\"search\" placeholder=\"Filter keys \u002F values...\"\u002F\u003E";
+;pug_debug_line = 14;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"btn-small btn-expand-all\" type=\"button\" title=\"Expand all nodes\"\u003E";
+;pug_debug_line = 14;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Expand All\u003C\u002Fbutton\u003E";
+;pug_debug_line = 15;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"btn-small btn-collapse-all\" type=\"button\" title=\"Collapse all nodes\"\u003E";
+;pug_debug_line = 15;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Collapse All\u003C\u002Fbutton\u003E\n      \u003C\u002Fdiv\u003E";
+;pug_debug_line = 16;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"code-actions\" style=\"display: none;\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"btn-small btn-prettify\" type=\"button\" title=\"Format JSON with 2 spaces\"\u003E";
+;pug_debug_line = 17;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Prettify\u003C\u002Fbutton\u003E";
+;pug_debug_line = 18;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cbutton class=\"btn-small btn-minify\" type=\"button\" title=\"Minify JSON\"\u003E";
+;pug_debug_line = 18;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Minify\u003C\u002Fbutton\u003E\n      \u003C\u002Fdiv\u003E";
+;pug_debug_line = 19;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"btn-small btn-copy-json\" type=\"button\" title=\"Copy JSON to clipboard\"\u003E";
+;pug_debug_line = 19;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Copy JSON\u003C\u002Fbutton\u003E\n    \u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E";
+;pug_debug_line = 21;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"json-validation-error\" style=\"display: none;\"\u003E\u003C\u002Fdiv\u003E";
+;pug_debug_line = 23;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"json-viewer-body\"\u003E";
+;pug_debug_line = 24;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-tree-wrapper\"\u003E";
+;pug_debug_line = 25;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cdiv class=\"json-tree-content\"\u003E\u003C\u002Fdiv\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 26;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-code-wrapper\" style=\"display: none;\"\u003E";
+;pug_debug_line = 27;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Ctextarea class=\"json-code-textarea\"\u003E\u003C\u002Ftextarea\u003E\n    \u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E";
+;pug_debug_line = 29;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n  \u003Cdiv class=\"json-viewer-footer\"\u003E";
+;pug_debug_line = 30;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-footer-left\"\u003E";
+;pug_debug_line = 31;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+if (!readOnly && fieldType && fieldType.is_nullable) {
+;pug_debug_line = 32;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Clabel class=\"json-null-label\"\u003E";
+;pug_debug_line = 33;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n        \u003Cinput" + (" class=\"value-is-null\""+" type=\"checkbox\" name=\"value_is_null\" value=\"true\""+pug.attr("checked", (value === null), true, false)) + "\u002F\u003E";
+;pug_debug_line = 34;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan\u003E";
+;pug_debug_line = 34;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Set NULL\u003C\u002Fspan\u003E\n      \u003C\u002Flabel\u003E";
+}
+;pug_debug_line = 35;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\u003Cspan class=\"json-path-breadcrumb\" title=\"Click to copy path\"\u003E";
+;pug_debug_line = 35;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Path: $\u003C\u002Fspan\u003E\n    \u003C\u002Fdiv\u003E";
+;pug_debug_line = 36;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n    \u003Cdiv class=\"json-footer-right\"\u003E";
+;pug_debug_line = 37;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+if (!readOnly) {
+;pug_debug_line = 38;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"ok\" type=\"button\"\u003E";
+;pug_debug_line = 38;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Save\u003C\u002Fbutton\u003E";
+;pug_debug_line = 39;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"cancel\" type=\"button\"\u003E";
+;pug_debug_line = 39;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E";
+}
+else {
+;pug_debug_line = 41;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "\n      \u003Cbutton class=\"cancel\" type=\"button\"\u003E";
+;pug_debug_line = 41;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fjson_viewer.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E";
+}
+pug_html = pug_html + "\n    \u003C\u002Fdiv\u003E\n  \u003C\u002Fdiv\u003E\n\u003C\u002Fdiv\u003E";
+    }.call(this, "fieldType" in locals_for_with ?
+        locals_for_with.fieldType :
+        typeof fieldType !== 'undefined' ? fieldType : undefined, "readOnly" in locals_for_with ?
+        locals_for_with.readOnly :
+        typeof readOnly !== 'undefined' ? readOnly : undefined, "value" in locals_for_with ?
+        locals_for_with.value :
+        typeof value !== 'undefined' ? value : undefined));
+    ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/json_viewer"].content = ".json-viewer-container\n  .json-viewer-toolbar\n    .json-mode-switch.segmented-control\n      button.btn-mode.active(type=\"button\" data-mode=\"tree\")\n        span.mode-icon 🌲\n        span.mode-label Tree\n      button.btn-mode(type=\"button\" data-mode=\"code\")\n        span.mode-icon 📝\n        span.mode-label Code\n\n    .json-toolbar-actions\n      .tree-actions\n        input.json-search-input(type=\"search\" placeholder=\"Filter keys / values...\")\n        button.btn-small.btn-expand-all(type=\"button\" title=\"Expand all nodes\") Expand All\n        button.btn-small.btn-collapse-all(type=\"button\" title=\"Collapse all nodes\") Collapse All\n      .code-actions(style=\"display: none;\")\n        button.btn-small.btn-prettify(type=\"button\" title=\"Format JSON with 2 spaces\") Prettify\n        button.btn-small.btn-minify(type=\"button\" title=\"Minify JSON\") Minify\n      button.btn-small.btn-copy-json(type=\"button\" title=\"Copy JSON to clipboard\") Copy JSON\n\n  .json-validation-error(style=\"display: none;\")\n\n  .json-viewer-body\n    .json-tree-wrapper\n      .json-tree-content\n    .json-code-wrapper(style=\"display: none;\")\n      textarea.json-code-textarea\n\n  .json-viewer-footer\n    .json-footer-left\n      if !readOnly && fieldType && fieldType.is_nullable\n        label.json-null-label\n          input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=(value === null))\n          span Set NULL\n      span.json-path-breadcrumb(title=\"Click to copy path\") Path: $\n    .json-footer-right\n      if !readOnly\n        button.ok(type=\"button\") Save\n        button.cancel(type=\"button\") Cancel\n      else\n        button.cancel(type=\"button\") Close\n";
 exports["dialogs/list_languages"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Flist_languages.jade":".rescol-wrapper.with-borders\n  .rescol-header-wrapper\n  .rescol-content-wrapper\n    table\n      thead\n        tr\n          th name\n          th trusted\n      tbody\n        each lang in langs\n          tr\n            td= lang.lanname\n            td= lang.lanpltrusted ? \"Yes\" : \"No\"\n\np\n  = \"You can add and remove languages on extension tab\"\n\np.buttons\n  button.cancel Close\n\n"};
 ;
     var locals_for_with = (locals || {});

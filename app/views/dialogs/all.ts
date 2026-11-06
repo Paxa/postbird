@@ -20,4 +20,5 @@ module.exports = {
   UserGrants:       require('./user_grants'),
   ConnectionList:   require('./connection_list'),
   AiSettings:       require('./ai_settings'),
+  JsonViewer:       require('./json_viewer'),
 };
