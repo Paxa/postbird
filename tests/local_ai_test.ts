@@ -1,0 +1,140 @@
+require('./test_helper');
+
+const {
+  createAIConnector,
+  discoverProviders,
+  findBinary,
+  FmAdapter,
+  AgyAdapter,
+  ClaudeAdapter,
+  OpenAICompatibleAdapter
+} = require('../lib/local_ai');
+
+describe('Local AI Connector & Discovery Engine', () => {
+
+  it('locates local CLI binaries using candidate path scanner', () => {
+    // /usr/bin/fm should be found on this macOS machine
+    const fm = findBinary('fm');
+    assert(fm !== null, 'Should discover fm binary on macOS');
+  });
+
+  it('discovers installed local providers and custom endpoints', async () => {
+    const providers = await discoverProviders([
+      {
+        id: 'corp-gateway',
+        name: 'Corporate LiteLLM Gateway',
+        baseUrl: 'http://127.0.0.1:4000/v1',
+        model: 'qwen2.5-coder'
+      }
+    ]);
+
+    assert(Array.isArray(providers), 'discoverProviders must return an array');
+    assert(providers.length > 0, 'Should have discovered at least 1 provider');
+
+    const custom = providers.find((p: any) => p.id === 'corp-gateway');
+    assert(custom, 'Custom endpoint must be present in discovery list');
+    assert.equal(custom.status, 'ready');
+    assert.equal(custom.models[0], 'qwen2.5-coder');
+
+    const fm = providers.find((p: any) => p.id === 'fm');
+    if (fm) {
+      assert(fm.models.includes('system (Apple On-Device ~3B)'), 'FM model should be system');
+    }
+
+    const agy = providers.find((p: any) => p.id === 'agy');
+    if (agy) {
+      assert.equal(agy.status, 'ready');
+      assert.equal(agy.name, 'Antigravity CLI (agy)');
+      assert(agy.path.includes('agy'), 'agy path must be populated');
+    }
+  });
+
+  it('builds safe, sandboxed CLI arguments for Claude Code', () => {
+    const claude = new ClaudeAdapter();
+    const args = claude.buildArgs({
+      prompt: 'SELECT 1;',
+      system: 'Output SQL only',
+      model: 'sonnet'
+    });
+
+    assert(args.includes('--tools'), 'Claude must configure tools flag');
+    assert(args.includes(''), 'Claude tools must be empty string for pure LLM mode');
+    assert(args.includes('--disable-slash-commands'), 'Claude must disable slash commands');
+    assert(args.includes('--no-session-persistence'), 'Claude must disable session persistence');
+    assert(args.includes('--system-prompt'), 'Claude must include system prompt');
+    assert(args.some(a => a.includes('Output SQL only')), 'Claude must pass system instructions');
+  });
+
+  it('builds headless non-interactive CLI arguments for Antigravity (agy)', () => {
+    const agy = new AgyAdapter();
+    const args = agy.buildArgs({
+      prompt: 'Find active users',
+      system: 'PostgreSQL expert',
+      model: 'gemini-3.8-flash-medium',
+      jsonSchema: { type: 'object', properties: { sql: { type: 'string' } } }
+    });
+
+    assert(args.includes('-p'), 'agy must run in non-interactive print mode (-p)');
+    assert(args.includes('--disable-slash-commands'), 'agy must disable slash commands');
+    assert(args.includes('--sandbox'), 'agy must run with terminal sandbox restrictions');
+    assert(args.includes('--settings'), 'agy must pass security policy deny settings');
+    assert(!args.includes('--dangerously-skip-permissions'), 'agy must NOT skip permissions or auto-execute tools');
+    assert(args.includes('--output-format'), 'agy must specify output-format');
+    assert(args.includes('stream-json'), 'agy must request stream-json');
+    assert(args.includes('--model'), 'agy must specify model');
+    assert(args.includes('--json-schema'), 'agy must pass json-schema when provided');
+  });
+
+  it('builds CLI arguments for macOS Apple Foundation Model (fm)', () => {
+    const fm = new FmAdapter();
+    const args = fm.buildArgs({
+      prompt: 'Explain query plan',
+      system: 'Act as DBA',
+      jsonSchema: { type: 'object' }
+    }, true);
+
+    assert.equal(args[0], 'respond', 'fm command must start with respond');
+    assert(args.includes('-i'), 'fm must pass instructions (-i)');
+    assert(args.includes('Act as DBA'), 'fm must pass system instruction text');
+    assert(args.includes('--stream'), 'fm must include stream flag');
+    assert(args.includes('--schema'), 'fm must include schema flag');
+  });
+
+  it('OpenAI-compatible adapter correctly constructs headers and payload', () => {
+    const adapter = new OpenAICompatibleAdapter({
+      id: 'custom-ai',
+      name: 'Custom Server',
+      baseUrl: 'http://localhost:8000/v1',
+      apiKey: 'sk-test-token'
+    });
+
+    assert.equal(adapter.id, 'custom-ai');
+    assert.equal(adapter.baseUrl, 'http://localhost:8000/v1');
+
+    const headers = (adapter as any).buildHeaders();
+    assert.equal(headers['Authorization'], 'Bearer sk-test-token');
+    assert.equal(headers['Content-Type'], 'application/json');
+
+    const messages = (adapter as any).buildMessages({
+      prompt: 'Hello',
+      system: 'You are an assistant'
+    });
+    assert.equal(messages.length, 2);
+    assert.equal(messages[0].role, 'system');
+    assert.equal(messages[1].role, 'user');
+  });
+
+  it('createAIConnector initializes and exposes router methods', async () => {
+    const connector = createAIConnector();
+    assert(typeof connector.listProviders === 'function');
+    assert(typeof connector.generateText === 'function');
+    assert(typeof connector.streamText === 'function');
+    assert(typeof connector.generateObject === 'function');
+
+    const providers = await connector.listProviders();
+    assert(Array.isArray(providers));
+  });
+
+});
+
+export {};

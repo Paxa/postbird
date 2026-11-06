@@ -92,16 +92,38 @@ Allows users to route prompts through local terminal tools that use existing SSO
 * `ollama run qwen2.5-coder "{prompt}"` (Offline local models)
 * Custom internal corporate scripts (`corp-ai "{prompt}"`)
 
-### C. Direct Cloud APIs (BYOK)
+### C. Direct Cloud APIs & Free-Tier Cloud Endpoints (BYOK)
 Standard API key support for individual developers:
-* Anthropic, OpenAI, Google Gemini, Groq (for sub-second responses), Mistral.
+* **Google AI Studio (Gemini Free Tier)**:
+  * Built-in preset using Google's official OpenAI-compatible endpoint (`https://generativelanguage.googleapis.com/v1beta/openai`).
+  * Free API keys from [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (no billing required) provide access to `gemini-3.8-flash`, `gemini-3.8-flash-lite`, `gemini-3.8-pro`, and `gemini-3-flash`.
+  * **Zero-Config Env Detection**: If `GEMINI_API_KEY` or `GOOGLE_API_KEY` is exported in the user's environment, Postbird auto-detects and activates `Google AI Studio (Gemini Free Tier)` automatically.
+* **Groq Cloud (Fast LPU Inference)**: Built-in preset (`https://api.groq.com/openai/v1`) for sub-second responses.
+* **Custom OpenAI-Compatible Endpoints**: OpenAI, Anthropic (via proxy), OpenRouter, Mistral, or corporate gateways.
 
 ### D. Local HTTP / OpenAI-Compatible Endpoint
-Enables connecting to local servers or corporate gateways (LiteLLM, Ollama HTTP, vLLM, LocalAI) via `http://localhost:11434/v1`.
+Enables connecting to local servers or corporate gateways (LiteLLM, Ollama HTTP, vLLM, LocalAI, `apfel --serve`, `fm serve`) via `http://localhost:11434/v1`.
+
+### E. Apple Foundation Models (`fm` CLI in macOS 27 & `apfel`)
+macOS 27 includes `/usr/bin/fm` for Apple's on-device ~3B model (`system`). See [`lib/local_ai/README.md`](./lib/local_ai/README.md) for the full technical specification:
+* **Context Window**: **4,096 tokens** on M1/M2 Macs (and macOS 26), **8,192 tokens** on M3+ Macs with 12 GB+ RAM on macOS 27 (`AFM 3 Core Advanced`).
+* **Availability & Licensing**: Requires one-time `sudo fm license` acceptance (exits with code `69` otherwise) and model readiness verified via `fm available` (exits with code `1` / `modelNotReady` if Apple Intelligence weights are missing).
+* **Guardrails**: Uses `--guardrails permissive-content-transformations` to prevent false-positive refusals on financial/medical database column names.
+* **Tool Calling & MCP**: Native `/usr/bin/fm` only supports `--tool barcode` and `--tool ocr` (no MCP). Projects like [`Arthur-Ficial/apfel`](https://github.com/Arthur-Ficial/apfel) bridge `FoundationModels` to MCP by converting tool schemas into `DynamicGenerationSchema` / system-prompt instructions, parsing JSON tool calls post-hoc (`detectToolCall()`), and feeding tool outputs back as `role: "user"` turns.
 
 ---
 
-## 4. UI / UX Integration Points in Postbird
+## 4. On-Demand Schema & Data Inspection Protocol
+
+For databases with many tables or remote connections, fetching the entire schema upfront wastes thousands of input tokens and overflows small on-device context windows (`fm`'s 4k/8k limit). Postbird uses a **two-stage on-demand protocol** that works across every CLI and HTTP provider without requiring MCP:
+
+1. **Lightweight Initial Context**: Sends only the database name, active schema name, the **list of table names** in the current schema, and the **column structure of the currently selected table** (`this.handler.currentTable`).
+2. **On-Demand Structure Fetching (`sql:inspect_schema`)**: When the AI needs column types or foreign keys for other tables from the table list, it emits a ` ```sql:inspect_schema ` block with the table names. Postbird automatically queries `information_schema.columns` for those specific tables and feeds their structure back in the next turn.
+3. **On-Demand Read-Only SQL (`sql:execute`)**: Allows the AI to run read-only `SELECT` / `EXPLAIN` queries to inspect data distributions or verify hypotheses during complex analysis.
+
+---
+
+## 5. UI / UX Integration Points in Postbird
 
 1. **Query Tab**:
    * Floating `Cmd+K` prompt bar.

@@ -1,0 +1,45 @@
+.ai-settings-dialog
+  .ai-dialog-body
+    .ai-providers-col
+      .ai-section-header
+        span.title Detected on This System (Zero Setup)
+        span.count.ready-count
+      .ai-providers-list.detected-list
+
+      .ai-section-header
+        span.title Cloud & Custom Endpoints
+      .ai-providers-list.custom-list
+
+      .ai-section-header
+        span.title.muted Not Detected on System
+        span.count.muted Install to enable
+      .ai-providers-list.inactive-list
+
+    .ai-detail-col
+      .ai-detail-pane
+        h4.detail-title Select a provider
+        p.detail-desc
+        .detail-extra
+        .detail-config
+          .form-group.model-group
+            label Model Selection
+            select.model-select
+          .form-group.base-url-group.is-hidden
+            label Base URL (OpenAI-Compatible)
+            input.base-url-input(type="text" placeholder="https://api.openai.com/v1")
+          .form-group.api-key-group.is-hidden
+            label API Key
+            input.api-key-input(type="password" placeholder="sk-...")
+        .detail-status-box
+          .status-row
+            span.status-label Auth Status
+            span.status-val.auth-val ✓ Signed in via CLI
+          .status-row
+            span.status-label Privacy
+            span.status-val Schema & Errors Only
+        .detail-test-box
+          button.native-look.ai-test-btn(type="button") ⚡ Test Connection
+          .ai-test-result.is-hidden
+      .ai-actions-bar
+        button.ai-confirm-btn Confirm & Use This AI
+        button.cancel Close
