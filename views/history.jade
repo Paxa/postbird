@@ -2,6 +2,7 @@
   header
     button.native-look.reload-btn Reload
     button.native-look.clear-btn Clear
+    button.native-look.cancel.close-history-btn(style="float: right") Close
   ul
     each event in events
       if event.type == "sql.start" && event.args[0].state != 'running'

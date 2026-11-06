@@ -1,16 +1,64 @@
-.editing
-  textarea.editor
-.middlebar
-  .resizer
-  button.native-look(exec="runQuery" title="Cmd+R") Run Query
-  button.native-look(exec="showHistory") See History
-  button.native-look(exec="openSnippets") Snippets
-  button.native-look(exec="saveSnippet" title="Cmd+S") Save Snippet
-  button.native-look.is-hidden.cleanButton(exec="cleanButtonClick" title="Clear results bellow") Clear
-  button.native-look.is-hidden.saveButton(exec="saveQueryResult" title="Save Result as CSV file") Save as CSV
-.result
-  .rescol-wrapper
-    .rescol-header-wrapper
-    .rescol-content-wrapper
-      table
-  .status
+.query-workspace
+  .query-main-panel
+    .editing
+      .query-bubbles-container
+      textarea.editor
+    .middlebar
+      .resizer
+      .middlebar-content
+        .left-actions
+          button.native-look(exec="runQuery" title="Cmd+R") Run Query
+          button.native-look(exec="showHistory") See History
+          button.native-look.is-hidden.cleanButton(exec="cleanButtonClick" title="Clear results below") Clear
+          button.native-look.is-hidden.saveButton(exec="saveQueryResult" title="Save Result as CSV file") Save as CSV
+        .right-actions
+          .layout-switcher
+            button.native-look.layout-btn.layout-split.active(exec="setLayout('split')" title="Split View (Editor & Results)")
+              svg(width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5")
+                rect(x="2" y="2.5" width="12" height="11" rx="1.5")
+                line(x1="2" y1="8" x2="14" y2="8")
+            button.native-look.layout-btn.layout-editor(exec="setLayout('editor')" title="Full Editor (Toolbar at bottom)")
+              svg(width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5")
+                rect(x="2" y="2.5" width="12" height="11" rx="1.5")
+                line(x1="2" y1="10.5" x2="14" y2="10.5")
+            button.native-look.layout-btn.layout-results(exec="setLayout('results')" title="Full Results (Toolbar at top)")
+              svg(width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5")
+                rect(x="2" y="2.5" width="12" height="11" rx="1.5")
+                line(x1="2" y1="5.5" x2="14" y2="5.5")
+          button.native-look.ai-toggle-btn(exec="toggleAiPanel" title="Toggle AI Assistant (Cmd+K)")
+            svg(width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5")
+              rect(x="2" y="2.5" width="12" height="11" rx="1.5")
+              line(x1="10" y1="2.5" x2="10" y2="13.5")
+            span AI
+    .result
+      .rescol-wrapper
+        .rescol-header-wrapper
+        .rescol-content-wrapper
+          table
+      .status
+  .query-ai-panel.is-hidden
+    .ai-panel-resizer(title="Drag to resize AI panel")
+    .ai-panel-header
+      .ai-mode-switcher
+        button.ai-mode-btn.active(exec="setAiMode('sql')") SQL
+        button.ai-mode-btn(exec="setAiMode('agent')") Analyst
+      .ai-header-controls
+        button.ai-clear-btn(exec="clearAiChatHistory" title="Clear Chat History")
+          svg(width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5")
+            path(d="M3 4h10M6 4V2.5A1.5 1.5 0 0 1 7.5 1h1A1.5 1.5 0 0 1 10 2.5V4M5 4v9.5A1.5 1.5 0 0 0 6.5 15h3a1.5 1.5 0 0 0 1.5-1.5V4")
+        button.ai-provider-pill(exec="openAiSettings" title="Configure AI Provider & Model")
+          span.ai-provider-name AI
+          span.arrow-down ▾
+        button.ai-close-btn(exec="toggleAiPanel" title="Close AI Panel") ×
+    .ai-panel-body
+      .ai-body-content
+        .ai-empty-state
+          p.ai-hint Ask AI to write, optimize, or explain PostgreSQL queries, or run multi-step schema and data analysis.
+    .ai-panel-footer
+      .ai-footer-options
+        label.ai-auto-run-label
+          input.ai-auto-run-selects(type="checkbox" checked=true)
+          span Auto-run read-only SELECTs
+      .ai-input-bar
+        input.ai-prompt-input(type="text" placeholder="Ask AI or run analysis...")
+        button.ai-send-btn(exec="sendAiPrompt") Send

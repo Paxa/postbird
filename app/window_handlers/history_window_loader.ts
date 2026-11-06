@@ -1,5 +1,4 @@
 //var jQuery = require(__dirname + '/../lib/jquery.js');
-require(__dirname + '/../lib/dominate');
 require(__dirname + '/../lib/alertify');
 require(__dirname + '/../lib/node_lib');
 //require(__dirname + '/../public/mousetrap');
@@ -11,7 +10,7 @@ require(__dirname + '/../lib/object_extras');
 
 var remote = require('@electron/remote');
 
-(global as any).EventEmitter2 = require('eventemitter2').EventEmitter2;
+(global as any).EventEmitter2 = require(__dirname + '/../../lib/event_emitter').EventEmitter2;
 global.logger = global.log = require(__dirname + '/../app/logger').make('info');
 
 global.App = {
@@ -29,7 +28,6 @@ global.$ = function (selector) {
   return document.querySelector(selector);
 };
 
-global.$dom = function(tags) { return global.DOMinate(tags)[0]; };
 
 require(__dirname + '/../app/utils');
 

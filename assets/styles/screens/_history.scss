@@ -79,3 +79,66 @@ $history-time-width: 72px;
     font-family: $code-font;
   }
 }
+
+.alertify.custom-window.history-dialog {
+  width: 760px;
+  max-width: 92vw;
+
+  .history-window {
+    margin: -18px -20px -20px -20px;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+
+    header {
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .close-history-btn {
+        margin-left: auto;
+      }
+    }
+
+    > ul {
+      height: 380px;
+      max-height: 62vh;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .history-window {
+    background: #1e1e1e;
+    color: #e5e5e7;
+
+    header {
+      background: #252528;
+      border-bottom-color: rgba(255, 255, 255, 0.12);
+    }
+
+    > ul {
+      background: #1c1c1e;
+
+      li {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+        color: #e5e5e7;
+
+        &:nth-child(even) {
+          background: rgba(255, 255, 255, 0.03);
+        }
+
+        time {
+          color: rgba(235, 235, 245, 0.55);
+        }
+
+        span.error {
+          color: #ff6961;
+        }
+      }
+    }
+  }
+}
