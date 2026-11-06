@@ -60,11 +60,18 @@ class MockWriteStream {
       window.__lastWrittenFiles = window.__lastWrittenFiles || {};
       window.__lastWrittenFiles[this.path] = content;
     }
-    setTimeout(() => {
+    const finishStream = () => {
       this.emit("finish");
       this.emit("close");
       if (cb) cb();
-    }, 10);
+    };
+    if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.writeFile) {
+      window.__postbirdRpc.writeFile({ filePath: this.path, content })
+        .catch((err) => console.error("[FS Shim writeFile Error]", err))
+        .finally(() => setTimeout(finishStream, 10));
+    } else {
+      setTimeout(finishStream, 10);
+    }
     return this;
   }
 }
@@ -82,9 +89,15 @@ module.exports = {
     return "";
   },
   writeFileSync: (path, data) => {
+    const content = typeof data === "string" ? data : String(data ?? "");
     if (typeof window !== "undefined") {
       window.__lastWrittenFiles = window.__lastWrittenFiles || {};
-      window.__lastWrittenFiles[path] = data;
+      window.__lastWrittenFiles[path] = content;
+      if (window.__postbirdRpc && window.__postbirdRpc.writeFile) {
+        window.__postbirdRpc.writeFile({ filePath: path, content }).catch((err) => {
+          console.error("[FS Shim writeFileSync Error]", err);
+        });
+      }
     }
   },
   readdirSync: () => [],

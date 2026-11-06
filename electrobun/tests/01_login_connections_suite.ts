@@ -38,14 +38,21 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
     const initialTabsCount = window.App.tabs.length;
     const form = login.standardForm.form;
 
+    const testDb = window.process.env.POSTBIRD_TEST_DB || "postbird_test";
     form.find("[name=host]").val("localhost");
     form.find("[name=port]").val("5432");
     form.find("[name=user]").val(window.process.env.USER || "pavel");
-    form.find("[name=database]").val("postbird_test");
+    form.find("[name=database]").val(testDb);
+    form.find("[name=password]").val("");
+    form.find("[name=ssh_host]").val("");
+    form.find("[name=ssh_port]").val("");
+    form.find("[name=ssh_user]").val("");
+    form.find("[name=ssh_pass]").val("");
+    form.find("[name=ssh_key]").val("");
 
     let createdTab = null;
     await new Promise((resolve, reject) => {
-      window.App.openConnection(login.standardForm.getFormData(), "postbird_test", (tabOrSuccess, err) => {
+      window.App.openConnection(login.standardForm.getFormData(), testDb, (tabOrSuccess, err) => {
         if (!tabOrSuccess) return reject(err || new Error("Failed to connect via standard form"));
         createdTab = tabOrSuccess;
         resolve();
@@ -69,7 +76,8 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
 
     const initialTabsCount = window.App.tabs.length;
     const username = window.process.env.USER || "pavel";
-    const testUrl = `postgres://${username}@localhost:5432/postbird_test`;
+    const testDb = window.process.env.POSTBIRD_TEST_DB || "postbird_test";
+    const testUrl = `postgres://${username}@localhost:5432/${testDb}`;
 
     login.urlForm.form.find("[name=connect_url]").val(testUrl);
 
@@ -91,6 +99,37 @@ export async function runLoginConnectionsSuite(h: TestHarness) {
       const idx = window.App.tabs.indexOf(createdTab);
       if (idx !== -1) window.App.closeTab(idx);
     }
+  });
+
+  await test("login screen: handles connection URL with ssh_* params in URL form", async () => {
+    const login = window.App.loginScreen;
+    login.showUrlPane();
+
+    const username = window.process.env.USER || "pavel";
+    const testDb = window.process.env.POSTBIRD_TEST_DB || "postbird_test";
+    const sshUrl = `postgres://${username}@localhost:5432/${testDb}?ssh_host=127.0.0.1&ssh_port=54398&ssh_user=unreachable_tester`;
+
+    login.urlForm.form.find("[name=connect_url]").val(sshUrl);
+    const formData = login.urlForm.getFormData();
+    assert(formData.url === sshUrl, "URL form should hold the entered SSH connection URL");
+
+    const parsed = window.Connection.parseConnectionString(sshUrl);
+    assert.equal(parsed.ssh_host, "127.0.0.1", "Parsed options must contain ssh_host");
+    assert.equal(parsed.ssh_port, "54398", "Parsed options must contain ssh_port");
+    assert.equal(parsed.ssh_user, "unreachable_tester", "Parsed options must contain ssh_user");
+
+    // Attempting to connect through unreachable SSH port should gracefully report error via RPC/callback
+    let failed = false;
+    await new Promise((resolve) => {
+      window.App.openConnection(sshUrl, "ssh_test_url", (tabOrSuccess, err) => {
+        if (!tabOrSuccess) {
+          failed = true;
+          assert(err, "Error should be passed to connection callback");
+        }
+        resolve();
+      });
+    });
+    assert(failed, "Connection via unreachable SSH URL should fail gracefully");
   });
 
   await test("saved connections: full CRUD lifecycle and sidebar integration", async () => {

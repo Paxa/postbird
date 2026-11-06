@@ -56,23 +56,116 @@ const remote = {
     },
   },
   nativeTheme: {
-    shouldUseDarkColors: !!_isDark,
+    get shouldUseDarkColors() {
+      if (typeof window !== "undefined" && window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      return false;
+    },
   },
   systemPreferences: {
-    subscribeNotification: () => {},
+    subscribeNotification: (name, cb) => {
+      if (typeof window !== "undefined" && window.matchMedia && typeof cb === "function") {
+        const mql = window.matchMedia('(prefers-color-scheme: dark)');
+        mql.addEventListener('change', () => {
+          try { cb(); } catch (e) { console.error(e); }
+        });
+      }
+    },
     setAppLevelAppearance: () => {},
-    isDarkMode: () => false,
+    isDarkMode: () => {
+      if (typeof window !== "undefined" && window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      return false;
+    },
   },
   dialog: {
-    showOpenDialog: (arg1, arg2, arg3) => {
-      const cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+    showOpenDialog: async (arg1, arg2, arg3) => {
+      let options = {};
+      let cb = null;
+      if (arg1 && (arg1.properties || arg1.filters || arg1.defaultPath || arg1.title)) {
+        options = arg1;
+        cb = typeof arg2 === "function" ? arg2 : null;
+      } else if (arg2 && typeof arg2 === "object") {
+        options = arg2;
+        cb = typeof arg3 === "function" ? arg3 : null;
+      } else {
+        cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+      }
+
+      if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.openFileDialog) {
+        let allowedFileTypes = "*";
+        if (Array.isArray(options.filters) && options.filters.length > 0) {
+          const exts = [];
+          for (const f of options.filters) {
+            if (Array.isArray(f.extensions)) {
+              for (const ext of f.extensions) {
+                const cleanExt = String(ext).replace(/^\./, "");
+                if (cleanExt && cleanExt !== "*" && !exts.includes(cleanExt)) {
+                  exts.push(cleanExt);
+                }
+              }
+            }
+          }
+          if (exts.length > 0) {
+            allowedFileTypes = exts.join(",");
+          }
+        }
+        const props = Array.isArray(options.properties) ? options.properties : ["openFile"];
+        const canChooseFiles = props.includes("openFile") || !props.includes("openDirectory");
+        const canChooseDirectory = props.includes("openDirectory");
+        const allowsMultipleSelection = props.includes("multiSelections");
+
+        try {
+          const res = await window.__postbirdRpc.openFileDialog({
+            startingFolder: options.defaultPath,
+            allowedFileTypes,
+            canChooseFiles,
+            canChooseDirectory,
+            allowsMultipleSelection,
+          });
+          const filePaths = Array.isArray(res && res.filePaths) ? res.filePaths.filter(Boolean) : [];
+          if (cb) cb(filePaths);
+          return { canceled: filePaths.length === 0, filePaths };
+        } catch (err) {
+          console.error("[Dialog showOpenDialog Error]", err);
+        }
+      }
+
       if (cb) cb([]);
-      return Promise.resolve({ canceled: true, filePaths: [] });
+      return { canceled: true, filePaths: [] };
     },
-    showSaveDialog: (arg1, arg2, arg3) => {
-      const cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+    showSaveDialog: async (arg1, arg2, arg3) => {
+      let options = {};
+      let cb = null;
+      if (arg1 && (arg1.defaultPath || arg1.title || arg1.message || arg1.filters)) {
+        options = arg1;
+        cb = typeof arg2 === "function" ? arg2 : null;
+      } else if (arg2 && typeof arg2 === "object") {
+        options = arg2;
+        cb = typeof arg3 === "function" ? arg3 : null;
+      } else {
+        cb = typeof arg2 === "function" ? arg2 : (typeof arg3 === "function" ? arg3 : null);
+      }
+
+      if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.saveFileDialog) {
+        try {
+          const res = await window.__postbirdRpc.saveFileDialog({
+            title: options.title,
+            message: options.message,
+            defaultPath: options.defaultPath,
+          });
+          const filePath = (res && res.filePath) || null;
+          if (cb) cb(filePath);
+          return { canceled: !filePath, filePath };
+        } catch (err) {
+          console.error("[Dialog showSaveDialog Error]", err);
+        }
+      }
+
       if (cb) cb(null);
-      return Promise.resolve({ canceled: true, filePath: null });
+      return { canceled: true, filePath: null };
     },
     showMessageBox: (arg1, arg2, arg3) => {
       let options = {};
@@ -94,6 +187,15 @@ const remote = {
         messageText = messageText ? `${messageText}\n\n${options.detail}` : options.detail;
       }
 
+      const formatMacOSAlertHtml = (title, detail) => {
+        const t = (title || "").replace(/\n/g, "<br>");
+        const d = (detail || "").replace(/\n/g, "<br>");
+        if (t && d) {
+          return `<div class="macos-alert-title">${t}</div><div class="macos-alert-detail">${d}</div>`;
+        }
+        return `<div class="macos-alert-title">${t || d}</div>`;
+      };
+
       return new Promise((resolve) => {
         const isConfirm = Array.isArray(options.buttons) && options.buttons.length > 1;
         const alertify = (typeof window !== "undefined" && window.alertify) || (typeof globalThis !== "undefined" && globalThis.alertify);
@@ -104,7 +206,7 @@ const remote = {
         };
 
         if (alertify) {
-          const htmlMsg = messageText.replace(/\n/g, "<br>");
+          const htmlMsg = formatMacOSAlertHtml(options.message, options.detail);
           if (isConfirm) {
             const originalOk = alertify.labels.ok;
             const originalCancel = alertify.labels.cancel;
@@ -116,6 +218,8 @@ const remote = {
               alertify.labels.cancel = originalCancel;
               finish(confirmed ? 0 : 1);
             });
+            alertify.labels.ok = originalOk;
+            alertify.labels.cancel = originalCancel;
           } else {
             const originalOk = alertify.labels.ok;
             if (options.buttons && options.buttons[0]) alertify.labels.ok = options.buttons[0];
@@ -124,6 +228,7 @@ const remote = {
               alertify.labels.ok = originalOk;
               finish(0);
             });
+            alertify.labels.ok = originalOk;
           }
         } else {
           if (isConfirm) {
@@ -144,7 +249,8 @@ const remote = {
       const alertify = (typeof window !== "undefined" && window.alertify) || (typeof globalThis !== "undefined" && globalThis.alertify);
       const text = `${title}\n\n${content}`;
       if (alertify) {
-        alertify.alert(text.replace(/\n/g, "<br>"));
+        const htmlMsg = `<div class="macos-alert-title">${(title || "").replace(/\n/g, "<br>")}</div><div class="macos-alert-detail">${(content || "").replace(/\n/g, "<br>")}</div>`;
+        alertify.alert(htmlMsg);
       } else if (typeof alert === "function") {
         alert(text);
       }
@@ -223,6 +329,11 @@ const remote = {
       const x = e ? (e.clientX || e.pageX || 100) : 100;
       const y = e ? (e.clientY || e.pageY || 100) : 100;
 
+      const isDark = Boolean(
+        (typeof document !== 'undefined' && document.body && document.body.classList.contains('dark-mode')) ||
+        (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      );
+
       const menuEl = document.createElement('div');
       menuEl.id = 'postbird-context-menu-popup';
       menuEl.style.position = 'fixed';
@@ -230,22 +341,24 @@ const remote = {
       menuEl.style.top = `${y}px`;
       menuEl.style.zIndex = '999999';
       menuEl.style.minWidth = '160px';
-      menuEl.style.backgroundColor = '#2c2c2e';
-      menuEl.style.color = '#f2f2f7';
-      menuEl.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+      menuEl.style.backgroundColor = isDark ? 'rgba(44, 44, 46, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+      menuEl.style.color = isDark ? '#f2f2f7' : '#1c1c1e';
+      menuEl.style.border = isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)';
       menuEl.style.borderRadius = '8px';
-      menuEl.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+      menuEl.style.boxShadow = isDark ? '0 10px 30px rgba(0, 0, 0, 0.5)' : '0 8px 24px rgba(0, 0, 0, 0.15)';
       menuEl.style.padding = '4px 0';
       menuEl.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
       menuEl.style.fontSize = '13px';
       menuEl.style.userSelect = 'none';
+      menuEl.style.backdropFilter = 'blur(20px)';
+      menuEl.style.webkitBackdropFilter = 'blur(20px)';
 
       for (const item of this.items) {
         if (item.type === 'separator') {
           const sep = document.createElement('div');
           sep.style.height = '1px';
           sep.style.margin = '4px 0';
-          sep.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+          sep.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)';
           menuEl.appendChild(sep);
           continue;
         }
@@ -265,7 +378,7 @@ const remote = {
           });
           itemEl.addEventListener('mouseleave', () => {
             itemEl.style.backgroundColor = 'transparent';
-            itemEl.style.color = '#f2f2f7';
+            itemEl.style.color = isDark ? '#f2f2f7' : '#1c1c1e';
           });
           itemEl.addEventListener('click', (ev) => {
             ev.stopPropagation();
@@ -312,7 +425,12 @@ const remote = {
     constructor(opts) { Object.assign(this, opts); }
   },
   shell: {
-    openExternal: (url) => window.open(url, '_blank'),
+    openExternal: (url) => {
+      if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.openExternal) {
+        return window.__postbirdRpc.openExternal({ url });
+      }
+      return typeof window !== "undefined" && window.open ? window.open(url, "_blank") : null;
+    },
   },
   clipboard: {
     writeText: (text) => navigator.clipboard && navigator.clipboard.writeText(text),

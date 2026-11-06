@@ -1,8 +1,7 @@
 var remote = require('@electron/remote');
 var Menu = remote.Menu;
 
-// @ts-ignore
-var template : Electron.MenuItemConstructorOptions[]  = [
+var template: any[] = [
   {
     label: 'File',
     submenu: [
@@ -153,6 +152,19 @@ var template : Electron.MenuItemConstructorOptions[]  = [
         role: 'resetZoom',
         accelerator: 'CmdOrCtrl+0'
       },
+      { type: 'separator' },
+      {
+        label: 'Toggle AI Assistant',
+        accelerator: 'CmdOrCtrl+K',
+        click: () => {
+          if (global.App.currentTab && global.App.currentTab.instance) {
+            var view = global.App.currentTab.instance.view;
+            if (view && view.queryPane) {
+              view.queryPane.toggleAiPanel();
+            }
+          }
+        }
+      },
     ]
   },
   {
@@ -214,7 +226,6 @@ var template : Electron.MenuItemConstructorOptions[]  = [
 
 if (process.platform == 'darwin') {
   var selfName = "Postbird";
-  // @ts-ignore
   template.unshift({
     label: selfName,
     submenu: [
@@ -229,6 +240,18 @@ if (process.platform == 'darwin') {
         label: "Check For Updates...",
         click: () => {
           (new UpdatesController).checkUpdates({showLoading: true, showAlreadyLatest: true});
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: "AI Connection Settings...",
+        accelerator: 'Command+,',
+        click: () => {
+          if ((global as any).Dialog && (global as any).Dialog.AiSettings) {
+            new (global as any).Dialog.AiSettings();
+          }
         }
       },
       {
@@ -320,9 +343,8 @@ Menu.setApplicationMenu(menu);
 
 function enableItem(topLabel, itemLable, enabled = true) {
   for (let item of menu.items) {
-    if (item.label == topLabel) {
-      // @ts-ignore
-      for (let subItem of item.submenu.items) {
+    if (item.label == topLabel && item.submenu) {
+      for (let subItem of (item.submenu as any).items || []) {
         if (subItem.label == itemLable) {
           subItem.enabled = enabled;
           return;

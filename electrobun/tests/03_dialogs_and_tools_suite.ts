@@ -149,4 +149,87 @@ export async function runDialogsAndToolsSuite(h: TestHarness, dbScreen: any) {
     delete window.SqlSnippets[customKey];
     assert(!window.SqlSnippets[customKey], "Custom snippet should be deleted");
   });
+
+  // =================================================================
+  // 7. SQL Console & Event History In-App Modal (HistoryWindow)
+  // =================================================================
+  await test("history window: opens in-app macOS modal, renders events, and streams updates", async () => {
+    assert(window.HistoryWindow, "HistoryWindow class should be available globally");
+
+    new window.HistoryWindow();
+    const dlg = await waitForDialog("history-dialog", 3000);
+    assert(dlg, "History modal dialog should open");
+    assert(window.App.historyWin, "App.historyWin should be set while modal is open");
+
+    // Verify header controls
+    assert(dlg.querySelector(".reload-btn"), "Reload button should be present in history header");
+    assert(dlg.querySelector(".clear-btn"), "Clear button should be present in history header");
+    assert(dlg.querySelector(".close-history-btn"), "Close button should be present in history header");
+
+    // Emit a log message and verify live streaming
+    window.App.emit("log.message", {
+      type: "sql.success",
+      time: Date.now(),
+      args: [{ sql: "SELECT 777888 AS e2e_history_check;", time: 2 }],
+    });
+
+    await waitFor(() => {
+      const activeDlg = document.querySelector("#alertify.history-dialog");
+      return activeDlg && activeDlg.textContent.includes("777888");
+    }, 2000);
+
+    const updatedDlg = document.querySelector("#alertify.history-dialog");
+    assert(updatedDlg && updatedDlg.textContent.includes("777888"), "History modal should stream live SQL execution events");
+
+    // Close modal
+    if (window.App.historyWin) {
+      window.App.historyWin.close();
+    }
+    await waitFor(() => !document.querySelector("#alertify.history-dialog"), 2000);
+    assert(!window.App.historyWin, "App.historyWin should be cleared after close");
+  });
+
+  // =================================================================
+  // 8. Native Electrobun RPC File Pickers & Write Persistence
+  // =================================================================
+  await test("rpc: dialog shims and fs stream write route to native host bridge", async () => {
+    assert(window.__postbirdRpc, "Host RPC bridge (__postbirdRpc) must be initialized");
+    assert(typeof window.__postbirdRpc.openFileDialog === "function", "openFileDialog RPC method must exist");
+    assert(typeof window.__postbirdRpc.saveFileDialog === "function", "saveFileDialog RPC method must exist");
+    assert(typeof window.__postbirdRpc.writeFile === "function", "writeFile RPC method must exist");
+    assert(typeof window.__postbirdRpc.openExternal === "function", "openExternal RPC method must exist");
+
+    // Test remote.shell.openExternal routing
+    let extUrl = "";
+    const origOpenExternal = window.__postbirdRpc.openExternal;
+    window.__postbirdRpc.openExternal = async (params) => {
+      extUrl = params.url;
+      return { success: true };
+    };
+    const remote = require("@electron/remote");
+    remote.shell.openExternal("https://www.postgresql.org/docs/");
+    assert(extUrl === "https://www.postgresql.org/docs/", "remote.shell.openExternal should route to host RPC");
+    window.__postbirdRpc.openExternal = origOpenExternal;
+
+    // Test fs createWriteStream write persistence
+    const fs = require("fs");
+    let savedFilePath = "";
+    let savedFileContent = "";
+    const origWriteFile = window.__postbirdRpc.writeFile;
+    window.__postbirdRpc.writeFile = async (params) => {
+      savedFilePath = params.filePath;
+      savedFileContent = params.content;
+      return { success: true };
+    };
+
+    const stream = fs.createWriteStream("/tmp/e2e_query_export.csv");
+    stream.write("col_a,col_b\n");
+    await new Promise<void>((resolve) => {
+      stream.end("100,200\n", () => resolve());
+    });
+
+    assert(savedFilePath === "/tmp/e2e_query_export.csv", "fs stream write must persist target path to host");
+    assert(savedFileContent.includes("100,200"), "fs stream write must persist contents to host");
+    window.__postbirdRpc.writeFile = origWriteFile;
+  });
 }

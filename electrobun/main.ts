@@ -1,8 +1,12 @@
-import { BrowserView, BrowserWindow } from "electrobun/main";
+import { BrowserView, BrowserWindow, Utils } from "electrobun/main";
+import fs from "fs";
+import path from "path";
+import os from "os";
 import type { PostbirdRPC } from "./host/types";
 import { executeQuery, disconnectPool, closeAllPools } from "./host/db_pool";
 import { createSshTunnel, closeSshTunnel, closeAllTunnels } from "./host/ssh_tunnel";
 import { writeDevErrorLog } from "./host/dev_logger";
+import { writeAiLog } from "./host/ai_logger";
 import {
   loadSavedConnections,
   saveSavedConnections,
@@ -14,7 +18,7 @@ import { spawnProcess } from "./host/process_runner";
 import { setupApplicationMenu } from "./host/menu";
 
 const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
-  maxRequestTime: 30000,
+  maxRequestTime: 300000, // 5 minutes (prevents timeout on long AI prompts, queries, and dump/restore)
   handlers: {
     requests: {
       query: async ({ sql, config, queryOptions }) => {
@@ -27,6 +31,16 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
 
       spawnProcess: async ({ bin, args, options }) => {
         return spawnProcess({ bin, args, options });
+      },
+
+      discoverAiProviders: async ({ customEndpoints }) => {
+        const { discoverProviders } = await import("../lib/local_ai/discovery");
+        return await discoverProviders(customEndpoints || []);
+      },
+
+      verifyAiProvider: async (params) => {
+        const { verifyProvider } = await import("../lib/local_ai/discovery");
+        return await verifyProvider(params.providerId, params);
       },
 
       finishTests: async ({ total, failed }) => {
@@ -71,6 +85,117 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
       logDevError: async (params) => {
         writeDevErrorLog(params);
         return { success: true };
+      },
+
+      logAi: async (params) => {
+        writeAiLog(params);
+        return { success: true };
+      },
+
+      openFileDialog: async (params) => {
+        try {
+          if (process.platform === "darwin") {
+            const types = (params.allowedFileTypes && params.allowedFileTypes !== "*")
+              ? params.allowedFileTypes.split(",").map(t => `"${t.trim().replace(/^\./, "")}"`).join(", ")
+              : "";
+            const ofType = types ? ` of type {${types}}` : "";
+            const promptTitle = (params.title || "Open SQL File").replace(/"/g, '\\"');
+            const script = `POSIX path of (choose file with prompt "${promptTitle}"${ofType})`;
+            const res = await spawnProcess({ bin: "osascript", args: ["-e", script] });
+            const chosenPath = (res.stdout || "").trim();
+            if (res.code === 0 && chosenPath) {
+              return { canceled: false, filePaths: [chosenPath] };
+            }
+            if (res.code !== 0 && !res.stderr?.includes("error -128")) {
+              const paths = await Utils.openFileDialog({
+                startingFolder: params.startingFolder || "~/",
+                allowedFileTypes: params.allowedFileTypes || "*",
+                canChooseFiles: params.canChooseFiles ?? true,
+                canChooseDirectory: params.canChooseDirectory ?? false,
+                allowsMultipleSelection: params.allowsMultipleSelection ?? false,
+              });
+              return {
+                canceled: !paths || paths.length === 0,
+                filePaths: paths || [],
+              };
+            }
+            return { canceled: true, filePaths: [] };
+          } else {
+            const paths = await Utils.openFileDialog({
+              startingFolder: params.startingFolder || "~/",
+              allowedFileTypes: params.allowedFileTypes || "*",
+              canChooseFiles: params.canChooseFiles ?? true,
+              canChooseDirectory: params.canChooseDirectory ?? false,
+              allowsMultipleSelection: params.allowsMultipleSelection ?? false,
+            });
+            return {
+              canceled: !paths || paths.length === 0,
+              filePaths: paths || [],
+            };
+          }
+        } catch (err) {
+          console.error("[Host openFileDialog Error]", err);
+          return { canceled: true, filePaths: [] };
+        }
+      },
+
+      saveFileDialog: async (params) => {
+        const defaultName = path.basename(params.defaultPath || "export.sql");
+        const promptTitle = (params.message || params.title || "Save File").replace(/"/g, '\\"');
+        try {
+          if (process.platform === "darwin") {
+            const safeDefaultName = defaultName.replace(/"/g, '\\"');
+            const script = `POSIX path of (choose file name with prompt "${promptTitle}" default name "${safeDefaultName}")`;
+            const res = await spawnProcess({ bin: "osascript", args: ["-e", script] });
+            const chosenPath = (res.stdout || "").trim();
+            if (res.code === 0 && chosenPath) {
+              return { canceled: false, filePath: chosenPath };
+            }
+            return { canceled: true, filePath: null };
+          } else {
+            const dirs = await Utils.openFileDialog({
+              startingFolder: "~/",
+              allowedFileTypes: "*",
+              canChooseFiles: false,
+              canChooseDirectory: true,
+              allowsMultipleSelection: false,
+            });
+            if (dirs && dirs.length > 0) {
+              return { canceled: false, filePath: path.join(dirs[0], defaultName) };
+            }
+            return { canceled: true, filePath: null };
+          }
+        } catch (err) {
+          console.error("[Host saveFileDialog Error]", err);
+          return { canceled: true, filePath: null };
+        }
+      },
+
+      writeFile: async ({ filePath, content }) => {
+        try {
+          const resolved = filePath.startsWith("~/")
+            ? path.join(os.homedir(), filePath.slice(2))
+            : filePath;
+          fs.mkdirSync(path.dirname(resolved), { recursive: true });
+          fs.writeFileSync(resolved, content, "utf8");
+          return { success: true };
+        } catch (err: any) {
+          console.error("[Host writeFile Error]", err);
+          return { success: false, error: err?.message || String(err) };
+        }
+      },
+
+      openExternal: async ({ url }) => {
+        try {
+          if (url && /^https?:\/\//i.test(url)) {
+            Utils.openExternal(url);
+            return { success: true };
+          }
+          return { success: false };
+        } catch (err) {
+          console.error("[Host openExternal Error]", err);
+          return { success: false };
+        }
       },
     },
     messages: {},
@@ -118,10 +243,22 @@ process.on("unhandledRejection", (reason: any) => {
   });
 });
 
-setupApplicationMenu(handleGracefulQuit);
+let mainWindow: BrowserWindow;
+
+setupApplicationMenu(handleGracefulQuit, (action: string) => {
+  try {
+    if (mainWindow && mainWindow.webview) {
+      mainWindow.webview.executeJavascript(
+        `window.__postbirdMenuAction && window.__postbirdMenuAction(${JSON.stringify(action)})`
+      );
+    }
+  } catch (err) {
+    console.error("[Menu Action Forward Error]", err);
+  }
+});
 
 const savedFrame = loadWindowState();
-const mainWindow = new BrowserWindow({
+mainWindow = new BrowserWindow({
   title: "Postbird",
   url: "views://mainview/index.html",
   rpc: postbirdRPC,
@@ -141,23 +278,35 @@ console.log("Postbird Electrobun Main Process started!");
 if (process.env.POSTBIRD_TEST_UI === "true") {
   console.log("[Main Process] POSTBIRD_TEST_UI is active, waiting for webview to load before triggering tests...");
   let triggered = false;
+  const testDb = process.env.POSTBIRD_TEST_DB || "postbird_test";
   const triggerTests = async (attempts = 0) => {
     if (triggered) return;
     try {
       if (mainWindow && mainWindow.webview) {
-        triggered = true;
-        await mainWindow.webview.executeJavascript(
-          "window.__runUITests ? window.__runUITests() : null"
+        const res = await mainWindow.webview.executeJavascript(
+          `(() => {
+            window.process = window.process || {};
+            window.process.env = window.process.env || {};
+            window.process.env.POSTBIRD_TEST_DB = ${JSON.stringify(testDb)};
+            if (typeof window.__runUITests === "function") {
+              window.__runUITests();
+              return true;
+            }
+            return false;
+          })()`
         );
-        console.log("[Main Process] __runUITests successfully triggered!");
-        return;
+        if (res === true) {
+          triggered = true;
+          console.log(`[Main Process] __runUITests successfully triggered with database: "${testDb}"!`);
+          return;
+        }
       }
     } catch (err) {
       console.error("[Main Process] Error triggering UI tests:", err);
     }
-    if (attempts < 30) {
+    if (attempts < 60) {
       setTimeout(() => triggerTests(attempts + 1), 500);
     }
   };
-  setTimeout(() => triggerTests(), 1500);
+  setTimeout(() => triggerTests(), 1000);
 }

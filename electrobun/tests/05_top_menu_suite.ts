@@ -228,4 +228,31 @@ export async function runTopMenuSuite(h: TestHarness, dbScreen: any) {
       window.App.activateTab(dbTabIndex);
     }
   });
+
+  // =================================================================
+  // 9. Host Native Application Menu Action Bridge (__postbirdMenuAction)
+  // =================================================================
+  await test("top menu: host menu action dispatcher executes window.__postbirdMenuAction", async () => {
+    assert(typeof (window as any).__postbirdMenuAction === "function", "window.__postbirdMenuAction must be defined");
+
+    // Test 'open-console'
+    (window as any).__postbirdMenuAction("open-console");
+    const dlg = await waitForDialog("history-dialog", 3000);
+    assert(dlg, "History modal should open when 'open-console' menu action is dispatched");
+    if (window.App.historyWin) {
+      window.App.historyWin.close();
+    }
+    await waitFor(() => !document.querySelector("#alertify.history-dialog"), 2000);
+
+    // Test 'new-connection'
+    const origTab = window.App.activeTab;
+    (window as any).__postbirdMenuAction("new-connection");
+    await waitFor(() => window.App.currentTab.name === "Connection", 2000);
+    assert(window.App.currentTab.name === "Connection", "'new-connection' menu action must activate Connection tab");
+
+    // Restore DB tab
+    if (origTab !== null && window.App.tabs[origTab]) {
+      window.App.activateTab(origTab);
+    }
+  });
 }

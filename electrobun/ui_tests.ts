@@ -34,19 +34,35 @@ export async function runUITests() {
   // 2. Connect to database
   // =================================================================
   let dbScreen = null;
-  await test("connects to postbird_test database", async () => {
+  const testDb = window.process.env.POSTBIRD_TEST_DB || "postbird_test";
+  await test(`connects to ${testDb} test database`, async () => {
     await new Promise((resolve, reject) => {
       const conn = new window.Connection();
       conn.connectToServer({
         user: window.process.env.USER || "pavel",
         host: "localhost",
         port: 5432,
-        database: "postbird_test",
-      }, (success, err) => {
+        database: testDb,
+      }, async (success, err) => {
         if (!success) return reject(err || new Error("Connection failed"));
-        const tab = window.App.addDbScreen(conn, "postbird_test", {});
+        const tab = window.App.addDbScreen(conn, testDb, {});
         tab.activate();
         dbScreen = tab.instance;
+
+        // Initialize fixtures in the test database
+        try {
+          await conn.query(`
+            CREATE TABLE IF NOT EXISTS test_dump_tbl (id serial primary key, name text);
+            CREATE TABLE IF NOT EXISTS test_fk_parent (id serial primary key, title text);
+            CREATE TABLE IF NOT EXISTS test_fk_child (id serial primary key, parent_id integer references test_fk_parent(id), note text);
+            INSERT INTO test_fk_parent (title) SELECT 'Parent A' WHERE NOT EXISTS (SELECT 1 FROM test_fk_parent LIMIT 1);
+            INSERT INTO test_fk_child (parent_id, note) SELECT id, 'Child A' FROM test_fk_parent WHERE NOT EXISTS (SELECT 1 FROM test_fk_child LIMIT 1);
+            CREATE OR REPLACE FUNCTION test_add(a integer, b integer) RETURNS integer AS $$ BEGIN RETURN a + b; END; $$ LANGUAGE plpgsql;
+          `);
+        } catch (e) {
+          console.warn("[Test DB Fixtures Warning]", e);
+        }
+
         resolve();
       });
     });
@@ -240,12 +256,34 @@ export async function runUITests() {
     const contentPane = dbScreen.view.tabContent("content");
 
     await waitFor(() => contentPane.find(".rescol-content-wrapper table tbody tr").length >= 1, 4000);
+    const headers = contentPane.find(".rescol-content-wrapper table thead th").text();
     const rowText = contentPane.find(".rescol-content-wrapper table tbody tr").text();
+
+    assert(headers.includes("arr_col"), "Content headers should include arr_col");
+    assert(headers.includes("json_col"), "Content headers should include json_col");
+    assert(headers.includes("bool_col"), "Content headers should include bool_col");
+    assert(headers.includes("bin_col"), "Content headers should include bin_col");
 
     assert(rowText.includes("10") && rowText.includes("20") && rowText.includes("30"), "Row should render array values");
     assert(rowText.includes("test_key") && rowText.includes("test_val"), "Row should render jsonb values");
     assert(rowText.includes("true"), "Row should render boolean value");
     assert(rowText.includes("hello binary"), "Row should render binary value");
+  });
+
+  await test("content tab: empty table renders column headers with 0 rows", async () => {
+    await dbScreen.connection.query("DROP TABLE IF EXISTS test_empty_content CASCADE;");
+    await dbScreen.connection.query("CREATE TABLE test_empty_content (id serial primary key, name text, status varchar(50));");
+    await dbScreen.tableSelected("public", "test_empty_content", "content");
+    const contentPane = dbScreen.view.tabContent("content");
+
+    await waitFor(() => contentPane.find(".rescol-content-wrapper table thead th").length >= 2, 4000);
+    const headers = contentPane.find(".rescol-content-wrapper table thead th").text();
+    assert(headers.includes("name"), "Empty table headers should include name");
+    assert(headers.includes("status"), "Empty table headers should include status");
+    const rows = contentPane.find(".rescol-content-wrapper table tbody tr");
+    assert(rows.length === 0, "Empty table should have 0 tbody rows");
+
+    await dbScreen.connection.query("DROP TABLE IF EXISTS test_empty_content CASCADE;");
   });
 
   await test("content tab: in-place cell editor opens on request / double-click", async () => {

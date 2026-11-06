@@ -27,6 +27,10 @@ const shimPlugin = {
         return { path: shimPath };
       });
     }
+
+    buildConfig.onResolve({ filter: /.*lib\/sql_client(\.ts)?$/ }, () => {
+      return { path: resolve(root, "electrobun/shims/pg.js") };
+    });
   },
 };
 
@@ -57,6 +61,7 @@ const result = await build({
   naming: "postbird-bundle.js",
   target: "browser",
   format: "iife",
+  sourcemap: "linked",
   banner: 'console.log("[POSTBIRD BUNDLE] Loaded successfully! jQuery:", typeof window.jQuery);',
   plugins: [shimPlugin],
   define: {

@@ -150,8 +150,20 @@ class Pool extends SimpleEmitter {
 
   end(callback) {
     this.ended = true;
-    if (callback) callback();
-    return Promise.resolve();
+    const promise = (async () => {
+      if (window.__postbirdRpc && typeof window.__postbirdRpc.disconnect === 'function') {
+        try {
+          await window.__postbirdRpc.disconnect(this.config);
+        } catch (e) {
+          console.warn("[pg.Pool.end RPC disconnect error]", e);
+        }
+      }
+    })();
+
+    if (callback) {
+      promise.then(() => callback()).catch(() => callback());
+    }
+    return promise;
   }
 }
 

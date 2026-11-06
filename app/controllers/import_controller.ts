@@ -26,7 +26,12 @@ class ImportController {
   }
 
   showImportDialog () {
-    var shorterName = this.filename.replace(new RegExp("^" + process.env['HOME']), '~');
+    if (this.handler?.type !== "db_screen") {
+      $u.alert("Please connect to a database before importing SQL", {type: "warning"});
+      return;
+    }
+    var home = process.env['HOME'] || '';
+    var shorterName = home ? this.filename.replace(new RegExp("^" + home), '~') : this.filename;
     this.dialog = new Dialog.ImportFile(this.handler, shorterName, (data) => {
       this.setOrCreateDatabase(data);
     });

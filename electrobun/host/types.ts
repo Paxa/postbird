@@ -30,6 +30,14 @@ export type PostbirdRPC = {
         params: { bin: string; args: string[]; options?: any };
         response: { code: number; stdout: string; stderr: string };
       };
+      discoverAiProviders: {
+        params: { customEndpoints?: any[] };
+        response: any[];
+      };
+      verifyAiProvider: {
+        params: { providerId: string; model?: string; baseUrl?: string; apiKey?: string; path?: string };
+        response: { ok: boolean; message: string; models?: string[]; latencyMs?: number };
+      };
       finishTests: {
         params: { total: number; failed: number };
         response: { exitCode: number };
@@ -60,6 +68,36 @@ export type PostbirdRPC = {
       };
       logDevError: {
         params: { type: string; message: string; stack?: string; detail?: string; timestamp?: string };
+        response: { success: boolean };
+      };
+      logAi: {
+        params: { level: "info" | "warn" | "error" | "debug"; message: string; detail?: string; timestamp?: string };
+        response: { success: boolean };
+      };
+      openFileDialog: {
+        params: {
+          startingFolder?: string;
+          allowedFileTypes?: string;
+          canChooseFiles?: boolean;
+          canChooseDirectory?: boolean;
+          allowsMultipleSelection?: boolean;
+        };
+        response: { canceled: boolean; filePaths: string[] };
+      };
+      saveFileDialog: {
+        params: {
+          title?: string;
+          message?: string;
+          defaultPath?: string;
+        };
+        response: { canceled: boolean; filePath: string | null };
+      };
+      writeFile: {
+        params: { filePath: string; content: string };
+        response: { success: boolean; error?: string };
+      };
+      openExternal: {
+        params: { url: string };
         response: { success: boolean };
       };
     };

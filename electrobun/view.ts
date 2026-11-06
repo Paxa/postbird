@@ -5,7 +5,7 @@ import type { PostbirdRPC } from "./host/types";
 (window as any).Buffer = Buffer;
 
 const rpc = Electroview.defineRPC<PostbirdRPC>({
-  maxRequestTime: 30000,
+  maxRequestTime: 300000, // 5 minutes
   handlers: { requests: {}, messages: {} },
 });
 
@@ -21,6 +21,12 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   spawnProcess: async (params: { bin: string; args: string[]; options?: any }) => {
     return await electroview.rpc!.request.spawnProcess(params);
+  },
+  discoverAiProviders: async (params?: { customEndpoints?: any[] }) => {
+    return await electroview.rpc!.request.discoverAiProviders(params || {});
+  },
+  verifyAiProvider: async (params: { providerId: string; model?: string; baseUrl?: string; apiKey?: string; path?: string }) => {
+    return await electroview.rpc!.request.verifyAiProvider(params);
   },
   finishTests: async (params: { total: number; failed: number }) => {
     return await electroview.rpc!.request.finishTests(params);
@@ -43,9 +49,41 @@ const electroview = new Electrobun.Electroview({ rpc });
   closeSshTunnel: async (params: { tunnelId: string }) => {
     return await electroview.rpc!.request.closeSshTunnel(params);
   },
+  openFileDialog: async (params: {
+    startingFolder?: string;
+    allowedFileTypes?: string;
+    canChooseFiles?: boolean;
+    canChooseDirectory?: boolean;
+    allowsMultipleSelection?: boolean;
+  }) => {
+    return await electroview.rpc!.request.openFileDialog(params);
+  },
+  saveFileDialog: async (params: {
+    title?: string;
+    message?: string;
+    defaultPath?: string;
+  }) => {
+    return await electroview.rpc!.request.saveFileDialog(params);
+  },
+  writeFile: async (params: { filePath: string; content: string }) => {
+    return await electroview.rpc!.request.writeFile(params);
+  },
+  openExternal: async (params: { url: string }) => {
+    return await electroview.rpc!.request.openExternal(params);
+  },
   logDevError: async (params: { type: string; message: string; stack?: string; detail?: string }) => {
     try {
       return await electroview.rpc!.request.logDevError({
+        timestamp: new Date().toISOString(),
+        ...params,
+      });
+    } catch {
+      return { success: false };
+    }
+  },
+  logAi: async (params: { level: "info" | "warn" | "error" | "debug"; message: string; detail?: string }) => {
+    try {
+      return await electroview.rpc!.request.logAi({
         timestamp: new Date().toISOString(),
         ...params,
       });
