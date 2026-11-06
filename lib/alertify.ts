@@ -1,682 +1,505 @@
-// @ts-nocheck
 /**
- * alertify
- * An unobtrusive customizable JavaScript notification system
- *
- * @author Fabien Doiron <fabien.doiron@gmail.com>
- * @copyright Fabien Doiron 2013
- * @license MIT <http://opensource.org/licenses/mit-license.php>
- * @link http://fabien-d.github.com/alertify.js/
- * @module alertify
- * @version 0.3.10
+ * Postbird macOS Native-Styled Modal & Alert System
+ * Built on MicroModal's accessible modal lifecycle & focus-trap architecture,
+ * providing drop-in compatibility with Postbird's alertify & DialogBase APIs.
  */
 
-(function (global, undefined) {
-	"use strict";
+interface DialogQueueItem {
+  type: "alert" | "confirm" | "prompt";
+  message: string;
+  callback?: (ok: boolean, value?: string) => void;
+  placeholder?: string;
+  cssClass?: string;
+  okLabel: string;
+  cancelLabel: string;
+}
 
-	var document = window.document || global.document,
-	    Alertify;
+interface MicroModalConfig {
+  onShow?: (modal: HTMLElement | null, activeElement: Element | null, event?: Event) => void;
+  onClose?: (modal: HTMLElement | null, activeElement: Element | null, event?: Event) => void;
+  openTrigger?: string;
+  closeTrigger?: string;
+  openClass?: string;
+  disableScroll?: boolean;
+  disableFocus?: boolean;
+  awaitCloseAnimation?: boolean;
+  awaitOpenAnimation?: boolean;
+}
 
-	Alertify = function () {
+const FOCUSABLE_ELEMENTS = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled]):not([type="hidden"]):not([aria-hidden])',
+  'select:not([disabled]):not([aria-hidden])',
+  'textarea:not([disabled]):not([aria-hidden])',
+  'button:not([disabled]):not([aria-hidden])',
+  'iframe',
+  'object',
+  'embed',
+  '[contenteditable]',
+  '[tabindex]:not([tabindex^="-"])',
+].join(',');
 
-		var _alertify = {},
-		    dialogs   = {},
-		    isopen    = false,
-		    keys      = { ENTER: 13, ESC: 27, SPACE: 32 },
-		    queue     = [],
-		    $, btnCancel, btnOK, btnReset, btnResetBack, btnFocus, elCallee, elCover, elDialog, elLog, form, input, getTransitionEvent;
+const DESTRUCTIVE_LABELS = /^(delete|drop|remove|truncate|terminate|kill|clear|destroy)\b/i;
 
-		/**
-		 * Markup pieces
-		 * @type {Object}
-		 */
-		dialogs = {
-			buttons : {
-				holder : "<nav class=\"alertify-buttons\">{{buttons}}</nav>",
-				submit : "<button type=\"submit\" class=\"alertify-button alertify-button-ok\" id=\"alertify-ok\">{{ok}}</button>",
-				ok     : "<button class=\"alertify-button alertify-button-ok\" id=\"alertify-ok\">{{ok}}</button>",
-				cancel : "<button class=\"alertify-button alertify-button-cancel\" id=\"alertify-cancel\">{{cancel}}</button>"
-			},
-			input   : "<div class=\"alertify-text-wrapper\"><input type=\"text\" class=\"alertify-text\" id=\"alertify-text\"></div>",
-			message : "<p class=\"alertify-message\">{{message}}</p>",
-			log     : "<article class=\"alertify-log{{class}}\">{{message}}</article>"
-		};
+function getFocusableNodes(container: HTMLElement): HTMLElement[] {
+  const nodes = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS));
+  return nodes.filter((node) => node.offsetParent !== null && !node.classList.contains('alertify-resetFocus'));
+}
 
-		/**
-		 * Return the proper transitionend event
-		 * @return {String}    Transition type string
-		 */
-		getTransitionEvent = function () {
-			var t,
-			    type,
-			    supported   = false,
-			    el          = document.createElement("fakeelement"),
-			    transitions = {
-				    "WebkitTransition" : "webkitTransitionEnd",
-				    "MozTransition"    : "transitionend",
-				    "OTransition"      : "otransitionend",
-				    "transition"       : "transitionend"
-			    };
+function retainFocus(container: HTMLElement, event: KeyboardEvent) {
+  const focusableNodes = getFocusableNodes(container);
+  if (focusableNodes.length === 0) return;
 
-			for (t in transitions) {
-				if (el.style[t] !== undefined) {
-					type      = transitions[t];
-					supported = true;
-					break;
-				}
-			}
+  const focusedItemIndex = focusableNodes.indexOf(document.activeElement as HTMLElement);
 
-			return {
-				type      : type,
-				supported : supported
-			};
-		};
+  if (event.shiftKey && focusedItemIndex === 0) {
+    focusableNodes[focusableNodes.length - 1].focus();
+    event.preventDefault();
+  } else if (!event.shiftKey && focusableNodes.length > 0 && focusedItemIndex === focusableNodes.length - 1) {
+    focusableNodes[0].focus();
+    event.preventDefault();
+  }
+}
 
-		/**
-		 * Shorthand for document.getElementById()
-		 *
-		 * @param  {String} id    A specific element ID
-		 * @return {Object}       HTML element
-		 */
-		$ = function (id) {
-			return document.getElementById(id);
-		};
+class MacOSDialogController {
+  labels = {
+    ok: "OK",
+    cancel: "Cancel",
+  };
+  delay = 5000;
+  buttonReverse = false;
+  buttonFocus: "ok" | "cancel" | "none" = "ok";
 
-		/**
-		 * Alertify private object
-		 * @type {Object}
-		 */
-		_alertify = {
+  private queue: DialogQueueItem[] = [];
+  private isOpen = false;
+  private activeTriggerElement: HTMLElement | null = null;
+  private elCover: HTMLElement | null = null;
+  private elDialog: HTMLElement | null = null;
+  private elLog: HTMLElement | null = null;
+  private keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+  private keyupHandler: ((e: KeyboardEvent) => void) | null = null;
 
-			/**
-			 * Labels object
-			 * @type {Object}
-			 */
-			labels : {
-				ok     : "OK",
-				cancel : "Cancel"
-			},
+  init(): void {
+    const doc = window.document;
+    if (!doc || !doc.body) return;
 
-			/**
-			 * Delay number
-			 * @type {Number}
-			 */
-			delay : 5000,
+    this.elCover = doc.getElementById("alertify-cover");
+    if (!this.elCover) {
+      this.elCover = doc.createElement("div");
+      this.elCover.id = "alertify-cover";
+      this.elCover.className = "alertify-cover alertify-cover-hidden";
+      this.elCover.setAttribute("data-micromodal-close", "true");
+      doc.body.appendChild(this.elCover);
+    }
 
-			/**
-			 * Whether buttons are reversed (default is secondary/primary)
-			 * @type {Boolean}
-			 */
-			buttonReverse : false,
+    this.elDialog = doc.getElementById("alertify");
+    if (!this.elDialog) {
+      this.isOpen = false;
+      this.queue = [];
+      this.elDialog = doc.createElement("section");
+      this.elDialog.id = "alertify";
+      this.elDialog.className = "alertify alertify-hidden";
+      this.elDialog.setAttribute("role", "dialog");
+      this.elDialog.setAttribute("aria-modal", "true");
+      this.elDialog.setAttribute("aria-hidden", "true");
+      doc.body.appendChild(this.elDialog);
+    }
 
-			/**
-			 * Which button should be focused by default
-			 * @type {String}	"ok" (default), "cancel", or "none"
-			 */
-			buttonFocus : "ok",
+    this.elLog = doc.getElementById("alertify-logs");
+    if (!this.elLog) {
+      this.elLog = doc.createElement("section");
+      this.elLog.id = "alertify-logs";
+      this.elLog.className = "alertify-logs alertify-logs-hidden";
+      doc.body.appendChild(this.elLog);
+    }
+  }
 
-			/**
-			 * Set the transition event on load
-			 * @type {[type]}
-			 */
-			transition : undefined,
+  private buildMarkup(item: DialogQueueItem): string {
+    const isCustomWindow = !!(item.cssClass && item.cssClass.includes("custom-window"));
+    const isDestructive = DESTRUCTIVE_LABELS.test(item.okLabel.trim());
+    const okBtnClass = `alertify-button alertify-button-ok${isDestructive ? " alertify-button-destructive" : ""}`;
 
-			/**
-			 * Set the proper button click events
-			 *
-			 * @param {Function} fn    [Optional] Callback function
-			 *
-			 * @return {undefined}
-			 */
-			addListeners : function (fn) {
-				var hasOK     = (typeof btnOK !== "undefined"),
-				    hasCancel = (typeof btnCancel !== "undefined"),
-				    hasInput  = (typeof input !== "undefined"),
-				    val       = "",
-				    self      = this,
-				    ok, cancel, common, key, reset;
+    const btnCancelHtml = `<button type="button" class="alertify-button alertify-button-cancel" id="alertify-cancel" data-micromodal-close>${item.cancelLabel}</button>`;
+    const btnOkHtml = `<button type="${item.type === "prompt" ? "submit" : "button"}" class="${okBtnClass}" id="alertify-ok">${item.okLabel}</button>`;
 
-				// ok event handler
-				ok = function (event) {
-					if (typeof event.preventDefault !== "undefined") event.preventDefault();
-					common(event);
-					if (typeof input !== "undefined") val = input.value;
-					if (typeof fn === "function") {
-						if (typeof input !== "undefined") {
-							fn(true, val);
-						}
-						else fn(true);
-					}
-					return false;
-				};
+    const buttonsOrdered = this.buttonReverse
+      ? btnOkHtml + btnCancelHtml
+      : btnCancelHtml + btnOkHtml;
 
-				// cancel event handler
-				cancel = function (event) {
-					if (typeof event.preventDefault !== "undefined") event.preventDefault();
-					common(event);
-					if (typeof fn === "function") fn(false);
-					return false;
-				};
+    let buttonsSection = "";
+    if (!isCustomWindow) {
+      if (item.type === "confirm" || item.type === "prompt") {
+        buttonsSection = `<nav class="alertify-buttons">${buttonsOrdered}</nav>`;
+      } else if (item.type === "alert") {
+        buttonsSection = `<nav class="alertify-buttons">${btnOkHtml}</nav>`;
+      }
+    }
 
-				// common event handler (keyup, ok and cancel)
-				common = function (event) {
-					self.hide();
-					self.unbind(document.body, "keyup", key);
-					self.unbind(btnReset, "focus", reset);
-					if (hasOK) self.unbind(btnOK, "click", ok);
-					if (hasCancel) self.unbind(btnCancel, "click", cancel);
-				};
+    const inputSection = item.type === "prompt"
+      ? `<div class="alertify-text-wrapper"><input type="text" class="alertify-text" id="alertify-text" autocomplete="off" spellcheck="false" /></div>`
+      : "";
 
-				// keyup handler
-				key = function (event) {
-          var hasAnyInput = hasInput || !!elDialog.querySelector('input, select, textarea');
-					var keyCode = event.keyCode;
-					if ((keyCode === keys.SPACE && !hasAnyInput) || (hasAnyInput && keyCode === keys.ENTER)) ok(event);
-					if (keyCode === keys.ESC && hasCancel) cancel(event);
-          if (keyCode === keys.ESC) {
-            var cancelBtn = document.querySelector('.alertify-dialog button.cancel');
-            if (cancelBtn) cancelBtn.click();
+    const messageWrapperTag = isCustomWindow ? "div" : "div";
+
+    let html = `<div class="alertify-dialog">`;
+    if (item.type === "prompt") html += `<div id="alertify-form">`;
+    html += `<article class="alertify-inner">`;
+    html += `<${messageWrapperTag} class="alertify-message">${item.message}</${messageWrapperTag}>`;
+    html += inputSection;
+    html += buttonsSection;
+    html += `</article>`;
+    if (item.type === "prompt") html += `</div>`;
+    html += `</div>`;
+
+    if (this.elDialog) {
+      this.elDialog.className = `alertify alertify-${item.type}${item.cssClass ? " " + item.cssClass : ""}`;
+      this.elDialog.style.marginLeft = "";
+      this.elDialog.setAttribute("aria-hidden", "false");
+    }
+    if (this.elCover) {
+      this.elCover.className = "alertify-cover";
+    }
+
+    return html;
+  }
+
+  private detachListeners(): void {
+    if (this.keydownHandler) {
+      document.removeEventListener("keydown", this.keydownHandler, true);
+      this.keydownHandler = null;
+    }
+    if (this.keyupHandler) {
+      document.body.removeEventListener("keyup", this.keyupHandler, false);
+      this.keyupHandler = null;
+    }
+  }
+
+  private focusInitialElement(input?: HTMLInputElement | null, btnOK?: HTMLElement | null, btnCancel?: HTMLElement | null): void {
+    if (input) {
+      input.focus();
+      input.select();
+      return;
+    }
+    if (this.buttonFocus === "cancel" && btnCancel) {
+      btnCancel.focus();
+    } else if (this.buttonFocus === "ok" && btnOK) {
+      btnOK.focus();
+    } else if (this.elDialog) {
+      const focusable = getFocusableNodes(this.elDialog);
+      if (focusable.length > 0) focusable[0].focus();
+    }
+  }
+
+  private setupCurrentDialog(fromQueue = false): void {
+    const item = this.queue[0];
+    if (!item || !this.elDialog) return;
+
+    this.isOpen = true;
+    this.detachListeners();
+
+    this.elDialog.innerHTML = this.buildMarkup(item);
+
+    const btnOK = document.getElementById("alertify-ok") as HTMLButtonElement | null;
+    const btnCancel = document.getElementById("alertify-cancel") as HTMLButtonElement | null;
+    const input = document.getElementById("alertify-text") as HTMLInputElement | null;
+
+    if (input && typeof item.placeholder === "string" && item.placeholder !== "") {
+      input.value = item.placeholder;
+    }
+
+    const handleOk = (event?: Event) => {
+      if (event && typeof event.preventDefault === "function") event.preventDefault();
+      const val = input ? input.value : "";
+      const cb = item.callback;
+      this.hide();
+      if (typeof cb === "function") {
+        if (input) {
+          cb(true, val);
+        } else {
+          cb(true);
+        }
+      }
+    };
+
+    const handleCancel = (event?: Event) => {
+      if (event && typeof event.preventDefault === "function") event.preventDefault();
+      const cb = item.callback;
+      this.hide();
+      if (typeof cb === "function") {
+        cb(false);
+      }
+    };
+
+    if (btnOK) btnOK.addEventListener("click", handleOk);
+    if (btnCancel) btnCancel.addEventListener("click", handleCancel);
+
+    this.keydownHandler = (event: KeyboardEvent) => {
+      if (event.key === "Tab" && this.elDialog) {
+        retainFocus(this.elDialog, event);
+      }
+    };
+    document.addEventListener("keydown", this.keydownHandler, true);
+
+    this.keyupHandler = (event: KeyboardEvent) => {
+      if (!this.elDialog) return;
+      const hasAnyInput = !!input || !!this.elDialog.querySelector("input, select, textarea");
+      const keyCode = event.keyCode;
+      if ((keyCode === 13 && btnOK) || (keyCode === 32 && !hasAnyInput && btnOK)) {
+        handleOk(event);
+      } else if (keyCode === 27) {
+        if (btnCancel) {
+          handleCancel(event);
+        } else {
+          const customCancelBtn = this.elDialog.querySelector<HTMLElement>(".alertify-dialog button.cancel");
+          if (customCancelBtn) {
+            customCancelBtn.click();
+          } else if (btnOK && item.type === "alert" && !(item.cssClass && item.cssClass.includes("custom-window"))) {
+            handleOk(event);
           }
-				};
+        }
+      }
+    };
+    document.body.addEventListener("keyup", this.keyupHandler, false);
 
-				// reset focus to first item in the dialog
-				reset = function (event) {
-					if (hasInput) input.focus();
-					else if (!hasCancel || self.buttonReverse) btnOK.focus();
-					else btnCancel.focus();
-				};
+    if (fromQueue) {
+      this.focusInitialElement(input, btnOK, btnCancel);
+    } else {
+      requestAnimationFrame(() => {
+        this.focusInitialElement(input, btnOK, btnCancel);
+      });
+    }
+  }
 
-				// handle reset focus link
-				// this ensures that the keyboard focus does not
-				// ever leave the dialog box until an action has
-				// been taken
-				this.bind(btnReset, "focus", reset);
-				this.bind(btnResetBack, "focus", reset);
-				// handle OK click
-				if (hasOK) this.bind(btnOK, "click", ok);
-				// handle Cancel click
-				if (hasCancel) this.bind(btnCancel, "click", cancel);
-				// listen for keys, Cancel => ESC
-				this.bind(document.body, "keyup", key);
-				if (!this.transition.supported) {
-					this.setFocus();
-				}
-			},
+  enqueueDialog(
+    message: string,
+    type: "alert" | "confirm" | "prompt",
+    fn?: (ok: boolean, val?: string) => void,
+    placeholder?: string,
+    cssClass?: string
+  ): this {
+    if (typeof message !== "string") throw new Error("message must be a string");
+    if (typeof type !== "string") throw new Error("type must be a string");
+    if (typeof fn !== "undefined" && typeof fn !== "function") throw new Error("fn must be a function");
 
-			/**
-			 * Bind events to elements
-			 *
-			 * @param  {Object}   el       HTML Object
-			 * @param  {Event}    event    Event to attach to element
-			 * @param  {Function} fn       Callback function
-			 *
-			 * @return {undefined}
-			 */
-			bind : function (el, event, fn) {
-				if (typeof el.addEventListener === "function") {
-					el.addEventListener(event, fn, false);
-				} else if (el.attachEvent) {
-					el.attachEvent("on" + event, fn);
-				}
-			},
+    this.activeTriggerElement = document.activeElement as HTMLElement | null;
+    this.init();
 
-			/**
-			 * Use alertify as the global error handler (using window.onerror)
-			 *
-			 * @return {boolean} success
-			 */
-			handleErrors : function () {
-				if (typeof global.onerror !== "undefined") {
-					var self = this;
-					global.onerror = function (msg, url, line) {
-						self.error("[" + msg + " on line " + line + " of " + url + "]", 0);
-					};
-					return true;
-				} else {
-					return false;
-				}
-			},
+    // Prevent duplicate dialogs with the identical message and type from piling up in the queue
+    const isDuplicate = this.queue.some((q) => q.type === type && q.message === message);
+    if (isDuplicate) {
+      return this;
+    }
 
-			/**
-			 * Append button HTML strings
-			 *
-			 * @param {String} secondary    The secondary button HTML string
-			 * @param {String} primary      The primary button HTML string
-			 *
-			 * @return {String}             The appended button HTML strings
-			 */
-			appendButtons : function (secondary, primary) {
-				return this.buttonReverse ? primary + secondary : secondary + primary;
-			},
+    this.queue.push({
+      type,
+      message,
+      callback: fn,
+      placeholder,
+      cssClass,
+      okLabel: this.labels.ok || "OK",
+      cancelLabel: this.labels.cancel || "Cancel",
+    });
 
-			/**
-			 * Build the proper message box
-			 *
-			 * @param  {Object} item    Current object in the queue
-			 *
-			 * @return {String}         An HTML string of the message box
-			 */
-			build : function (item) {
-				var html    = "",
-				    type    = item.type,
-				    message = item.message,
-				    css     = item.cssClass || "";
+    if (!this.isOpen) {
+      this.setupCurrentDialog();
+    }
 
-				html += "<div class=\"alertify-dialog\">";
-				html += "<a id=\"alertify-resetFocusBack\" class=\"alertify-resetFocus\" href=\"#\">Reset Focus</a>";
+    return this;
+  }
 
-				if (_alertify.buttonFocus === "none") html += "<a href=\"#\" id=\"alertify-noneFocus\" class=\"alertify-hidden\"></a>";
+  hide(): void {
+    if (!this.isOpen && this.queue.length === 0) return;
+    this.detachListeners();
+    this.queue.splice(0, 1);
 
-				// doens't require an actual form
-				if (type === "prompt") html += "<div id=\"alertify-form\">";
+    if (this.queue.length > 0) {
+      this.setupCurrentDialog(true);
+      return;
+    }
 
-				html += "<article class=\"alertify-inner\">";
-				html += dialogs.message.replace("{{message}}", message);
+    this.isOpen = false;
+    if (this.elDialog) {
+      this.elDialog.className = "alertify alertify-hide alertify-hidden";
+      this.elDialog.setAttribute("aria-hidden", "true");
+    }
+    if (this.elCover) {
+      this.elCover.className = "alertify-cover alertify-cover-hidden";
+    }
+    if (this.activeTriggerElement && typeof this.activeTriggerElement.focus === "function") {
+      try {
+        this.activeTriggerElement.focus();
+      } catch (_) {}
+    }
+  }
 
-				if (type === "prompt") html += dialogs.input;
+  log(message: string, type?: string, wait?: number): this {
+    this.init();
+    if (!this.elLog) return this;
 
-				html += dialogs.buttons.holder;
-				html += "</article>";
+    this.elLog.className = "alertify-logs";
+    const elem = document.createElement("article");
+    elem.className = "alertify-log" + (typeof type === "string" && type !== "" ? " alertify-log-" + type : "");
+    elem.innerHTML = message;
+    this.elLog.appendChild(elem);
 
-				if (type === "prompt") html += "</div>";
+    setTimeout(() => {
+      elem.className += " alertify-log-show";
+    }, 20);
 
-				html += "<a id=\"alertify-resetFocus\" class=\"alertify-resetFocus\" href=\"#\">Reset Focus</a>";
-				html += "</div>";
-
-				switch (type) {
-				case "confirm":
-					html = html.replace("{{buttons}}", this.appendButtons(dialogs.buttons.cancel, dialogs.buttons.ok));
-					html = html.replace("{{ok}}", this.labels.ok).replace("{{cancel}}", this.labels.cancel);
-					break;
-				case "prompt":
-					html = html.replace("{{buttons}}", this.appendButtons(dialogs.buttons.cancel, dialogs.buttons.submit));
-					html = html.replace("{{ok}}", this.labels.ok).replace("{{cancel}}", this.labels.cancel);
-					break;
-				case "alert":
-					html = html.replace("{{buttons}}", dialogs.buttons.ok);
-					html = html.replace("{{ok}}", this.labels.ok);
-					break;
-				default:
-					break;
-				}
-
-				elDialog.className = "alertify alertify-" + type + " " + css;
-				elCover.className  = "alertify-cover";
-				return html;
-			},
-
-			/**
-			 * Close the log messages
-			 *
-			 * @param  {Object} elem    HTML Element of log message to close
-			 * @param  {Number} wait    [optional] Time (in ms) to wait before automatically hiding the message, if 0 never hide
-			 *
-			 * @return {undefined}
-			 */
-			close : function (elem, wait) {
-				// Unary Plus: +"2" === 2
-				var timer = (wait && !isNaN(wait)) ? +wait : this.delay,
-				    self  = this,
-				    hideElement, transitionDone;
-
-				// set click event on log messages
-				this.bind(elem, "click", function () {
-					hideElement(elem);
-				});
-				// Hide the dialog box after transition
-				// This ensure it doens't block any element from being clicked
-				transitionDone = function (event) {
-					event.stopPropagation();
-					// unbind event so function only gets called once
-					self.unbind(this, self.transition.type, transitionDone);
-					// remove log message
-					elLog.removeChild(this);
-					if (!elLog.hasChildNodes()) elLog.className += " alertify-logs-hidden";
-				};
-				// this sets the hide class to transition out
-				// or removes the child if css transitions aren't supported
-				hideElement = function (el) {
-					// ensure element exists
-					if (typeof el !== "undefined" && el.parentNode === elLog) {
-						// whether CSS transition exists
-						if (self.transition.supported) {
-							self.bind(el, self.transition.type, transitionDone);
-							el.className += " alertify-log-hide";
-						} else {
-							elLog.removeChild(el);
-							if (!elLog.hasChildNodes()) elLog.className += " alertify-logs-hidden";
-						}
-					}
-				};
-				// never close (until click) if wait is set to 0
-				if (wait === 0) return;
-				// set timeout to auto close the log message
-				setTimeout(function () { hideElement(elem); }, timer);
-			},
-
-			/**
-			 * Create a dialog box
-			 *
-			 * @param  {String}   message        The message passed from the callee
-			 * @param  {String}   type           Type of dialog to create
-			 * @param  {Function} fn             [Optional] Callback function
-			 * @param  {String}   placeholder    [Optional] Default value for prompt input field
-			 * @param  {String}   cssClass       [Optional] Class(es) to append to dialog box
-			 *
-			 * @return {Object}
-			 */
-			dialog : function (message, type, fn, placeholder, cssClass) {
-				// set the current active element
-				// this allows the keyboard focus to be resetted
-				// after the dialog box is closed
-				elCallee = document.activeElement;
-				// check to ensure the alertify dialog element
-				// has been successfully created
-				var check = function () {
-					if ((elLog && elLog.scrollTop !== null) && (elCover && elCover.scrollTop !== null)) return;
-					else check();
-				};
-				// error catching
-				if (typeof message !== "string") throw new Error("message must be a string");
-				if (typeof type !== "string") throw new Error("type must be a string");
-				if (typeof fn !== "undefined" && typeof fn !== "function") throw new Error("fn must be a function");
-				// initialize alertify if it hasn't already been done
-				this.init();
-				check();
-
-				queue.push({ type: type, message: message, callback: fn, placeholder: placeholder, cssClass: cssClass });
-				if (!isopen) this.setup();
-
-				return this;
-			},
-
-			/**
-			 * Extend the log method to create custom methods
-			 *
-			 * @param  {String} type    Custom method name
-			 *
-			 * @return {Function}
-			 */
-			extend : function (type) {
-				if (typeof type !== "string") throw new Error("extend method must have exactly one paramter");
-				return function (message, wait) {
-					this.log(message, type, wait);
-					return this;
-				};
-			},
-
-			/**
-			 * Hide the dialog and rest to defaults
-			 *
-			 * @return {undefined}
-			 */
-			hide : function () {
-				var transitionDone,
-				    self = this;
-				// remove reference from queue
-				queue.splice(0,1);
-				// if items remaining in the queue
-				if (queue.length > 0) this.setup(true);
-				else {
-					isopen = false;
-					// Hide the dialog box after transition
-					// This ensure it doens't block any element from being clicked
-					transitionDone = function (event) {
-						event.stopPropagation();
-						// unbind event so function only gets called once
-						self.unbind(elDialog, self.transition.type, transitionDone);
-					};
-					// whether CSS transition exists
-					if (this.transition.supported) {
-						this.bind(elDialog, this.transition.type, transitionDone);
-            elDialog.className += " alertify-hide alertify-hidden";
-            // remove custom className only after transition finish
-            setTimeout(function () {
-              if (elDialog.className.indexOf("alertify-hide") != -1) { // check if any new dialog is open already
-                elDialog.className = "alertify alertify-hide alertify-hidden";
-              }
-            }, 500);
-					} else {
-						elDialog.className = "alertify alertify-hide alertify-hidden alertify-isHidden";
-					}
-
-          elCover.className  = "alertify-cover alertify-cover-hidden";
-
-					// set focus to the last element or body
-					// after the dialog is closed
-					elCallee.focus();
-				}
-			},
-
-			/**
-			 * Initialize Alertify
-			 * Create the 2 main elements
-			 *
-			 * @return {undefined}
-			 */
-			init : function () {
-				// ensure legacy browsers support html5 tags
-				document.createElement("nav");
-				document.createElement("article");
-				document.createElement("section");
-				// cover
-				if ($("alertify-cover") == null) {
-					elCover = document.createElement("div");
-					elCover.setAttribute("id", "alertify-cover");
-					elCover.className = "alertify-cover alertify-cover-hidden";
-					document.body.appendChild(elCover);
-				}
-				// main element
-				if ($("alertify") == null) {
-					isopen = false;
-					queue = [];
-					elDialog = document.createElement("section");
-					elDialog.setAttribute("id", "alertify");
-					elDialog.className = "alertify alertify-hidden";
-					document.body.appendChild(elDialog);
-				}
-				// log element
-				if ($("alertify-logs") == null) {
-					elLog = document.createElement("section");
-					elLog.setAttribute("id", "alertify-logs");
-					elLog.className = "alertify-logs alertify-logs-hidden";
-					document.body.appendChild(elLog);
-				}
-				// set tabindex attribute on body element
-				// this allows script to give it focus
-				// after the dialog is closed
-				document.body.setAttribute("tabindex", "0");
-				// set transition type
-				this.transition = getTransitionEvent();
-			},
-
-			/**
-			 * Show a new log message box
-			 *
-			 * @param  {String} message    The message passed from the callee
-			 * @param  {String} type       [Optional] Optional type of log message
-			 * @param  {Number} wait       [Optional] Time (in ms) to wait before auto-hiding the log
-			 *
-			 * @return {Object}
-			 */
-			log : function (message, type, wait) {
-				// check to ensure the alertify dialog element
-				// has been successfully created
-				var check = function () {
-					if (elLog && elLog.scrollTop !== null) return;
-					else check();
-				};
-				// initialize alertify if it hasn't already been done
-				this.init();
-				check();
-
-				elLog.className = "alertify-logs";
-				this.notify(message, type, wait);
-				return this;
-			},
-
-			/**
-			 * Add new log message
-			 * If a type is passed, a class name "alertify-log-{type}" will get added.
-			 * This allows for custom look and feel for various types of notifications.
-			 *
-			 * @param  {String} message    The message passed from the callee
-			 * @param  {String} type       [Optional] Type of log message
-			 * @param  {Number} wait       [Optional] Time (in ms) to wait before auto-hiding
-			 *
-			 * @return {undefined}
-			 */
-			notify : function (message, type, wait) {
-				var log = document.createElement("article");
-				log.className = "alertify-log" + ((typeof type === "string" && type !== "") ? " alertify-log-" + type : "");
-				log.innerHTML = message;
-				// append child
-				elLog.appendChild(log);
-				// triggers the CSS animation
-				setTimeout(function() { log.className = log.className + " alertify-log-show"; }, 50);
-				this.close(log, wait);
-			},
-
-			/**
-			 * Set properties
-			 *
-			 * @param {Object} args     Passing parameters
-			 *
-			 * @return {undefined}
-			 */
-			set : function (args) {
-				var k;
-				// error catching
-				if (typeof args !== "object" && args instanceof Array) throw new Error("args must be an object");
-				// set parameters
-				for (k in args) {
-					if (args.hasOwnProperty(k)) {
-						this[k] = args[k];
-					}
-				}
-			},
-
-			/**
-			 * Common place to set focus to proper element
-			 *
-			 * @return {undefined}
-			 */
-			setFocus : function () {
-				if (input) {
-					input.focus();
-					input.select();
-				}
-				else btnFocus.focus();
-			},
-
-			/**
-			 * Initiate all the required pieces for the dialog box
-			 *
-			 * @return {undefined}
-			 */
-			setup : function (fromQueue) {
-				var item = queue[0],
-				    self = this,
-				    transitionDone;
-
-				// dialog is open
-				isopen = true;
-				// Set button focus after transition
-				transitionDone = function (event) {
-					event.stopPropagation();
-					self.setFocus();
-					// unbind event so function only gets called once
-					self.unbind(elDialog, self.transition.type, transitionDone);
-				};
-				// whether CSS transition exists
-				if (this.transition.supported && !fromQueue) {
-					this.bind(elDialog, this.transition.type, transitionDone);
-				}
-				// build the proper dialog HTML
-				elDialog.innerHTML = this.build(item);
-        elDialog.style.marginLeft = `${elDialog.clientWidth / -2}px`;
-        // in case out content takes few moments to render
+    const timer = wait !== undefined && !isNaN(wait) ? +wait : this.delay;
+    const hideElement = () => {
+      if (this.elLog && elem.parentNode === this.elLog) {
+        elem.className += " alertify-log-hide";
         setTimeout(() => {
-          elDialog.style.marginLeft = `${elDialog.clientWidth / -2}px`;
-        }, 20);
-				// assign all the common elements
-				btnReset  = $("alertify-resetFocus");
-				btnResetBack  = $("alertify-resetFocusBack");
-				btnOK     = $("alertify-ok")     || undefined;
-				btnCancel = $("alertify-cancel") || undefined;
-				btnFocus  = (_alertify.buttonFocus === "cancel") ? btnCancel : ((_alertify.buttonFocus === "none") ? $("alertify-noneFocus") : btnOK),
-				input     = $("alertify-text")   || undefined;
-				form      = $("alertify-form")   || undefined;
-				// add placeholder value to the input field
-				if (typeof item.placeholder === "string" && item.placeholder !== "") input.value = item.placeholder;
-				if (fromQueue) this.setFocus();
-				this.addListeners(item.callback);
-			},
+          if (this.elLog && elem.parentNode === this.elLog) {
+            this.elLog.removeChild(elem);
+            if (!this.elLog.hasChildNodes()) {
+              this.elLog.className = "alertify-logs alertify-logs-hidden";
+            }
+          }
+        }, 220);
+      }
+    };
 
-			/**
-			 * Unbind events to elements
-			 *
-			 * @param  {Object}   el       HTML Object
-			 * @param  {Event}    event    Event to detach to element
-			 * @param  {Function} fn       Callback function
-			 *
-			 * @return {undefined}
-			 */
-			unbind : function (el, event, fn) {
-        if (!el) return; // some strange bug
-				if (typeof el.removeEventListener === "function") {
-					el.removeEventListener(event, fn, false);
-				} else if (el.detachEvent) {
-					el.detachEvent("on" + event, fn);
-				}
-			}
-		};
+    elem.addEventListener("click", hideElement);
+    if (wait !== 0) {
+      setTimeout(hideElement, timer);
+    }
+    return this;
+  }
 
-		return {
-			alert   : function (message, fn, cssClass) { _alertify.dialog(message, "alert", fn, "", cssClass); return this; },
-			confirm : function (message, fn, cssClass) { _alertify.dialog(message, "confirm", fn, "", cssClass); return this; },
-			extend  : _alertify.extend,
-			init    : _alertify.init,
-			// My insertion. Pasha
-			hide    : function () { _alertify.hide() },
-			log     : function (message, type, wait) { _alertify.log(message, type, wait); return this; },
-			prompt  : function (message, fn, placeholder, cssClass) { _alertify.dialog(message, "prompt", fn, placeholder, cssClass); return this; },
-			success : function (message, wait) { _alertify.log(message, "success", wait); return this; },
-			error   : function (message, wait) { _alertify.log(message, "error", wait); return this; },
-			set     : function (args) { _alertify.set(args); },
-			labels  : _alertify.labels,
-			debug   : _alertify.handleErrors
-		};
-	};
+  extend(type: string) {
+    if (typeof type !== "string") throw new Error("extend method must have exactly one parameter");
+    return (message: string, wait?: number) => {
+      this.log(message, type, wait);
+      return this;
+    };
+  }
 
-	// AMD and window support
-	if (typeof define === "function") {
-		define([], function () { return new Alertify(); });
-	} else if (typeof global.alertify === "undefined") {
-		global.alertify = new Alertify();
-	}
+  set(args: Record<string, any>): void {
+    if (typeof args !== "object" || Array.isArray(args)) throw new Error("args must be an object");
+    for (const k of Object.keys(args)) {
+      (this as any)[k] = args[k];
+    }
+  }
+}
 
-  window.alertify = new Alertify();
-}(this));
+const controller = new MacOSDialogController();
 
-!function () {
-  window.alertify.origConfirm = window.alertify.confirm;
-  window.alertify.confirm = function (message, fn, cssClass) {
-    return new Promise((resolve, reject) => {
-      this.origConfirm(message, (res) => {
-        resolve(res);
-        fn && fn(res);
-      }, cssClass);
+const alertifyInstance: any = {
+  alert(message: string, fn?: (ok?: boolean) => void, cssClass?: string) {
+    controller.enqueueDialog(message, "alert", fn, "", cssClass);
+    return this;
+  },
+  origConfirm(message: string, fn?: (ok: boolean) => void, cssClass?: string) {
+    controller.enqueueDialog(message, "confirm", fn, "", cssClass);
+    return this;
+  },
+  confirm(message: string, fn?: (ok: boolean) => void, cssClass?: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      controller.enqueueDialog(
+        message,
+        "confirm",
+        (res) => {
+          resolve(res);
+          if (fn) fn(res);
+        },
+        "",
+        cssClass
+      );
     });
-  };
-
-  window.alertify.origPrompt = window.alertify.prompt;
-  window.alertify.prompt = function (message, fn, placeholder, cssClass) {
-    return new Promise((resolve, reject) => {
-      this.origPrompt(message, (res, value) => {
-        resolve(res ? value : false);
-        fn && fn(res, value);
-      }, placeholder, cssClass);
+  },
+  origPrompt(message: string, fn?: (ok: boolean, val?: string) => void, placeholder?: string, cssClass?: string) {
+    controller.enqueueDialog(message, "prompt", fn, placeholder, cssClass);
+    return this;
+  },
+  prompt(message: string, fn?: (ok: boolean, val: string) => void, placeholder?: string, cssClass?: string): Promise<string | false> {
+    return new Promise((resolve) => {
+      controller.enqueueDialog(
+        message,
+        "prompt",
+        (res, value = "") => {
+          resolve(res ? value : false);
+          if (fn) fn(res, value);
+        },
+        placeholder,
+        cssClass
+      );
     });
-  };
-}();
+  },
+  hide() {
+    controller.hide();
+  },
+  log(message: string, type?: string, wait?: number) {
+    controller.log(message, type, wait);
+    return this;
+  },
+  success(message: string, wait?: number) {
+    controller.log(message, "success", wait);
+    return this;
+  },
+  error(message: string, wait?: number) {
+    controller.log(message, "error", wait);
+    return this;
+  },
+  extend(type: string) {
+    return controller.extend(type);
+  },
+  init() {
+    controller.init();
+  },
+  set(args: Record<string, any>) {
+    controller.set(args);
+  },
+  labels: controller.labels,
+  get delay() {
+    return controller.delay;
+  },
+  set delay(val: number) {
+    controller.delay = val;
+  },
+};
+
+/**
+ * MicroModal-compatible controller API for declarative or programmatic modals
+ */
+const MicroModal = {
+  init(config: MicroModalConfig = {}) {
+    controller.init();
+    const openTrigger = config.openTrigger || "data-micromodal-trigger";
+    document.addEventListener("click", (e) => {
+      const target = (e.target as HTMLElement)?.closest?.(`[${openTrigger}]`) as HTMLElement | null;
+      if (target) {
+        const modalId = target.getAttribute(openTrigger);
+        if (modalId) MicroModal.show(modalId, config);
+      }
+    });
+  },
+  show(targetModal: string | HTMLElement, config: MicroModalConfig = {}) {
+    const modal = typeof targetModal === "string" ? document.getElementById(targetModal) : targetModal;
+    if (!modal) return;
+    const openClass = config.openClass || "is-open";
+    modal.classList.add(openClass);
+    modal.classList.remove("alertify-hidden", "alertify-hide");
+    modal.setAttribute("aria-hidden", "false");
+    if (config.onShow) config.onShow(modal, document.activeElement);
+  },
+  close(targetModal?: string | HTMLElement) {
+    if (!targetModal || targetModal === "alertify") {
+      controller.hide();
+      return;
+    }
+    const modal = typeof targetModal === "string" ? document.getElementById(targetModal) : targetModal;
+    if (!modal) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  },
+};
+
+(globalThis as any).alertify = alertifyInstance;
+(globalThis as any).MicroModal = MicroModal;
+if (typeof window !== "undefined") {
+  window.alertify = alertifyInstance;
+  (window as any).MicroModal = MicroModal;
+}

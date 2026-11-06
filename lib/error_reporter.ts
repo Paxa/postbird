@@ -1,4 +1,4 @@
-var colors = require('colors/safe');
+var colors = require('./colors').safe;
 var logger = require('../app/logger').make('info');
 
 var initSentry = function initSentry() {

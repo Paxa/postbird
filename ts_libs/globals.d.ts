@@ -71,8 +71,6 @@ declare module NodeJS {
     ExportController: typeof ExportController;
     ImportController: typeof ImportController;
     $u: JQueryStatic;
-    DOMinate (elements: any[]): DOMinateResult;
-    $dom (elements: any[]): HTMLElement;
     ResizableColumns: typeof ResizableColumns;
     GenericTable: typeof GenericTable;
     QueryTabResizer: typeof QueryTabResizer;
@@ -138,17 +136,7 @@ declare class ObjectKit {
   static forEach: (data: any, iterator: (k: any, v: any) => void) => void;
 }
 
-interface DOMinateResult {
-  [column: string] : HTMLElement
-}
-
-interface GlobalEventHandlers {
-  className: string
-}
-
 declare var logger: any;
-declare var DOMinate: (elements: any[], namespace?: any, returnObject?: any) => any;
-declare var $dom: (elements: any[]) => HTMLElement;
 declare var App: any;
 declare var PgTypeNames: any;
 declare var errorReporter: any;

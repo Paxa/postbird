@@ -1,52 +1,61 @@
-/// <reference path="./pg.d.ts" />
-
-// @ts-ignore
-declare module pg {
-  interface QueryArrayResult {
-    time: number
-  }
-
-  class ClientExt extends Client {
-    native: any
-    _activeQuery: Query
-    activeQuery: Query
-    processID: number
-  }
+interface ClientExt {
+  native?: any;
+  _activeQuery?: any;
+  activeQuery?: any;
+  processID?: number;
+  ended?: boolean;
+  on: (event: string, handler: Function) => this;
+  removeListener: (event: string, handler: Function) => this;
+  query: (options: any, callback?: Function) => any;
+  end: (callback?: Function) => any;
 }
 
 interface ConnectionOptions {
-  connection_name?: string
-  host?: string
-  port?: string
-  database?: string
-  user?: string
-  password?: string
-  query?: string
-  auto_connect?: boolean
-  url?: string
-  type?: string
-  sql_query?: string
-  tab_name?: string
-  ssh_host?: string
-  ssh_user?: string
-  ssh_pass?: string
-  ssh_port?: string
-  ssh_key?: string
-  ssl?: boolean | { rejectUnauthorized?: boolean; ca?: string; cert?: string; key?: string }
-  sslmode?: string
-  application_name?: string
+  connection_name?: string;
+  host?: string;
+  port?: string | number;
+  database?: string;
+  user?: string;
+  password?: string;
+  query?: string;
+  auto_connect?: boolean;
+  url?: string;
+  type?: string;
+  read_only?: boolean;
+  sql_query?: string;
+  tab_name?: string;
+  ssh_host?: string;
+  ssh_user?: string;
+  ssh_pass?: string;
+  ssh_port?: string | number;
+  ssh_key?: string;
+  ssl?: boolean | { rejectUnauthorized?: boolean; ca?: string; cert?: string; key?: string };
+  sslmode?: string;
+  application_name?: string;
+  _originalHost?: string;
+  _originalPort?: string | number;
+  [key: string]: any;
 }
 
 interface HistoryRecord {
-  sql: string
-  date: Date
-  state: string
-  time: number
-  error?: Error
+  sql: string;
+  date: Date;
+  state: string;
+  time: number;
+  error?: Error;
 }
 
 interface PgError extends Error {
-  hint: string
-  query: string
-  client?: pg.ClientExt | string
+  query?: string;
+  messageHint?: string;
+  detail?: string;
+  hint?: string;
+  code?: string;
+  position?: string;
+  schema?: string;
+  table?: string;
+  column?: string;
+  dataType?: string;
+  constraint?: string;
 }
+

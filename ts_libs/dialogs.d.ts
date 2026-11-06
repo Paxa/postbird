@@ -22,4 +22,5 @@ declare module Dialog {
   class RelatedRecords { constructor(...args: any[]); [key: string]: any; }
   class ShowSql { constructor(...args: any[]); [key: string]: any; }
   class UserGrants { constructor(...args: any[]); [key: string]: any; }
+  class AiSettings { constructor(...args: any[]); [key: string]: any; }
 }

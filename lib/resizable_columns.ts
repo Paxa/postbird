@@ -49,8 +49,47 @@ class ResizableColumns {
     this.measureTime('addDraggers', () => this.addDraggers());
     //this.addDraggers();
 
+    this.adjustHeaderRight();
+    setTimeout(() => this.adjustHeaderRight(), 50);
+
+    if (typeof ResizeObserver !== 'undefined' && this.contentWrapper[0]) {
+      try {
+        const ro = new ResizeObserver(() => {
+          this.adjustHeaderRight();
+        });
+        ro.observe(this.contentWrapper[0]);
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    $(window).on('resize', () => {
+      this.adjustHeaderRight();
+    });
+
+    this.wrapper.on('resizable-columns:recalculate', () => {
+      this.adjustHeaderRight();
+    });
+
     //console.log("Init sec", ((new Date()) - this.startTime) / 1000);
     this.wrapper.trigger('resizable-columns:init');
+  }
+
+  adjustHeaderRight() {
+    if (!this.contentWrapper || !this.contentWrapper[0] || !this.headerWrapper || !this.headerWrapper[0]) return;
+    const cw = this.contentWrapper[0];
+    if (cw.clientHeight === 0) return;
+
+    const hasVScroll = cw.scrollHeight > cw.clientHeight;
+    if (hasVScroll) {
+      const sbWidth = cw.offsetWidth - cw.clientWidth;
+      const offset = sbWidth > 0 ? sbWidth : 15;
+      this.headerWrapper[0].style.right = offset + 'px';
+      this.headerWrapper.addClass('has-vscroll');
+    } else {
+      this.headerWrapper[0].style.right = '0px';
+      this.headerWrapper.removeClass('has-vscroll');
+    }
   }
 
   measureTime(title, callback) {
@@ -118,6 +157,7 @@ class ResizableColumns {
     //window.addEventListener('scroll', function(e) {
     this.contentWrapper.scroll(() => {
       this.headerWrapper[0].scrollLeft = this.contentWrapper[0].scrollLeft;
+      this.adjustHeaderRight();
     });
   }
 
@@ -218,7 +258,8 @@ class ResizableColumns {
 
         $(document.body).off('mousemove', onMouseMove);
         //$(document.body).off('mouseup', onMouseUp);
-      };
+        this.adjustHeaderRight();
+      }.bind(this);
 
       resizer.on('mousedown', () => {
         dragging = true;
