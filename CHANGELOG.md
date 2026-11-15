@@ -1,17 +1,14 @@
-### Version 0.9.0
+### Version 0.9.0 (16-nov-2026)
 
-* **Electrobun + Bun Migration:** Complete architectural modernization replacing Electron with Electrobun and native Bun RPC, slashing idle RAM to <50MB and download size to ~28MB.
-* **Instant Startup:** Sub-80ms cold launch speed powered by native OS webviews (WebKit on macOS, WebView2 on Windows, WebKitGTK on Linux).
-* **TypeScript Transition:** Full codebase rewrite in native TypeScript (`tsc --noEmit` verified).
-* **PostgreSQL 18.2 Binaries:** Bundled universal PostgreSQL 18.2 tools (`psql`, `pg_dump`) with automatic macOS Gatekeeper/quarantine bypass.
-* **Modernized App Branding:** Redesigned macOS squircle icon featuring the sculpted 3D Slonik Head with balanced royal blue and soft pastel gradient.
-* **Linux Packaging Pipeline:** Native automated packaging for `.deb`, `.rpm`, `.AppImage`, and `snap`.
-* **Automated Testing:** 82 unit tests and 26 end-to-end UI integration tests running directly in Bun.
-* **UI & Stability Improvements:**
-  * Fixed 2-3px root window scrollbar and double scrollbar when editing long values.
-  * Window size and geometry persistence across restarts.
-  * Graceful database connection pool closing on `Cmd+Q` and application quit.
-  * Windows executable `.exe` detection for dump/restore binaries.
+* **Electrobun + Bun Migration:** Replaced Electron with Electrobun and native Bun RPC, slashing idle RAM (<50MB), download size (~28MB), and cold startup (<80ms) using native OS webviews.
+* **TypeScript & PostgreSQL 18.2:** Full codebase rewrite in TypeScript, modernized DOM utilities, and bundled PostgreSQL 18.2 binaries (`psql`, `pg_dump`) with macOS Gatekeeper bypass.
+* **Multi-Buffer Query Workspace:** Redesigned query tab with multiple SQL buffers, in-app query history modal, and 1-click copy as JSON, Markdown, or SQL `IN` clause.
+* **Local AI SQL Assistant:** Privacy-first local AI integration with provider auto-discovery (Claude Code, Antigravity, Apple Foundation Model, Ollama/OpenAI-compatible), SQL error fixes, usage tracking, and opt-in query results.
+* **Real-Time Monitoring Dashboard:** Live monitoring for active and slow queries, lock conflicts, index health, buffer fit gauge, and one-click `EXPLAIN` query plan viewer.
+* **Read-Only Mode & Connections:** Added read-only connection mode (`default_transaction_read_only`), SSH tunnel proxy via Bun RPC, `sslmode` support for cloud databases, and automatic migration of saved Electron connections.
+* **Interactive JSON/JSONB Viewer:** Compact JSON/JSONB badges and an interactive cell viewer in table and query results.
+* **Cross-Platform Packaging & Branding:** Redesigned 3D Slonik app icon and automated packaging for macOS (`.dmg`), Windows (`.zip`), and Linux (`.deb`, `.rpm`, `.AppImage`, `snap`).
+* **Fixes & Stability:** PG 17+ dump compatibility on older servers, graceful pool closing on quit, window geometry persistence, native file dialogs & context menus, and 325+ automated tests.
 
 ### Version 0.8.4 (20-nov-2019)
 
