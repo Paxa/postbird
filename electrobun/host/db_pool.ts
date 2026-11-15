@@ -3,6 +3,10 @@ import type { QueryResponse } from "./types";
 
 const pools = new Map<string, Pool>();
 
+function redactPoolKey(key: string): string {
+  return key.replace(/:\/\/([^:@/]+):([^@/]+)@/g, "://$1:***@");
+}
+
 export function getPoolKey(config: any): string {
   if (typeof config === "string") {
     return config;
@@ -46,7 +50,7 @@ export function getPool(config: any): Pool {
   }
 
   if (!pools.has(key)) {
-    console.log(`[Bun] Creating native SQL pool for: ${key}`);
+    console.log(`[Bun] Creating native SQL pool for: ${redactPoolKey(key)}`);
     const pool = new Pool(poolConfig);
     pool.on("error", (err: any) => {
       console.error("[Bun PG Pool Error]", err);
@@ -64,7 +68,8 @@ export async function executeQuery(sql: string, config?: any, queryOptions?: any
     const queryArg = (queryOptions && queryOptions.rowMode === "array")
       ? { text: sql, rowMode: "array" }
       : sql;
-    const res = await pool.query(queryArg);
+    const values = Array.isArray(queryOptions?.values) ? queryOptions.values : [];
+    const res = values.length > 0 ? await pool.query(queryArg, values) : await pool.query(queryArg);
     const time = Math.round((performance.now() - start) * 10) / 10;
     return {
       command: res.command || "SELECT",
@@ -83,14 +88,20 @@ export async function executeQuery(sql: string, config?: any, queryOptions?: any
     };
   } catch (err: any) {
     console.error(`[Bun SQL Error]: ${sql}\n`, err.message);
-    throw new Error(err.message || String(err));
+    const wrapped: any = new Error(err.message || String(err));
+    for (const prop of ["code", "detail", "hint", "position", "severity", "schema", "table", "column", "constraint"]) {
+      if (err && err[prop] !== undefined) {
+        wrapped[prop] = err[prop];
+      }
+    }
+    throw wrapped;
   }
 }
 
 export async function disconnectPool(config: any): Promise<{ success: boolean }> {
   const key = getPoolKey(config);
   if (pools.has(key)) {
-    console.log(`[Bun] Disconnecting SQL pool for: ${key}`);
+    console.log(`[Bun] Disconnecting SQL pool for: ${redactPoolKey(key)}`);
     try {
       await pools.get(key)!.end();
     } catch (e) {
@@ -104,7 +115,7 @@ export async function disconnectPool(config: any): Promise<{ success: boolean }>
 export async function closeAllPools(): Promise<void> {
   for (const [key, pool] of pools.entries()) {
     try {
-      console.log(`[Graceful Shutdown] Ending pool: ${key}`);
+      console.log(`[Graceful Shutdown] Ending pool: ${redactPoolKey(key)}`);
       await pool.end();
     } catch (e) {
       console.error(`[Pool End Error] ${key}:`, e);

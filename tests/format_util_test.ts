@@ -93,4 +93,27 @@ describe("Format Utilities Unit Tests", () => {
     const withoutParens = columnToInClause([10, 20], { withParentheses: false });
     expect(withoutParens).toBe("10, 20");
   });
+
+  it("copyWithFeedback copies text and temporarily updates element label", async () => {
+    const { copyWithFeedback } = require("../lib/format_util");
+    let copied = "";
+    const prevNavigator = (globalThis as any).navigator;
+    (globalThis as any).navigator = {
+      clipboard: {
+        writeText: async (t: string) => { copied = t; }
+      }
+    };
+
+    const btn = { textContent: "Copy" } as any;
+    try {
+      const ok = copyWithFeedback("SELECT 1;", btn, "Copied!", 20);
+      expect(ok).toBe(true);
+      expect(copied).toBe("SELECT 1;");
+      expect(btn.textContent).toBe("Copied!");
+      await new Promise((r) => setTimeout(r, 35));
+      expect(btn.textContent).toBe("Copy");
+    } finally {
+      (globalThis as any).navigator = prevNavigator;
+    }
+  });
 });

@@ -521,9 +521,12 @@ class JsonViewer extends DialogBase {
       return this.escapeHtml(str);
     }
     const query = this.searchQuery;
-    const escaped = this.escapeHtml(str);
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
-    return escaped.replace(regex, "<mark>$1</mark>");
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(${escapedQuery})`, "gi");
+    const parts = str.split(regex);
+    return parts
+      .map((part, idx) => (idx % 2 === 1 ? `<mark>${this.escapeHtml(part)}</mark>` : this.escapeHtml(part)))
+      .join("");
   }
 
   escapeHtml(str: string): string {
@@ -567,27 +570,7 @@ class JsonViewer extends DialogBase {
   }
 
   copyTextToClipboard(text: string, triggerElement?: HTMLElement, successText?: string) {
-    if (navigator && navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-      navigator.clipboard.writeText(text).catch(err => {
-        console.error("Clipboard copy error:", err);
-      });
-    } else {
-      // Fallback
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-    }
-
-    if (triggerElement && successText) {
-      const originalText = triggerElement.textContent;
-      triggerElement.textContent = successText;
-      setTimeout(() => {
-        triggerElement.textContent = originalText;
-      }, 1500);
-    }
+    require("../../../lib/format_util").copyWithFeedback(text, triggerElement, successText);
   }
 
   handleSave() {

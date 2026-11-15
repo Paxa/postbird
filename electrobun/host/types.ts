@@ -15,6 +15,17 @@ export type WindowFrameState = {
   y: number;
 };
 
+export type ContextMenuItemConfig = {
+  type?: "normal" | "separator" | "divider";
+  label?: string;
+  role?: string;
+  action?: string;
+  enabled?: boolean;
+  checked?: boolean;
+  hidden?: boolean;
+  submenu?: ContextMenuItemConfig[];
+};
+
 export type PostbirdRPC = {
   bun: RPCSchema<{
     requests: {
@@ -27,8 +38,12 @@ export type PostbirdRPC = {
         response: { success: boolean };
       };
       spawnProcess: {
-        params: { bin: string; args: string[]; options?: any };
-        response: { code: number; stdout: string; stderr: string };
+        params: { bin: string; args: string[]; options?: any; streamId?: string };
+        response: { code: number; stdout: string; stderr: string; streamed?: boolean };
+      };
+      killProcess: {
+        params: { streamId: string };
+        response: { success: boolean };
       };
       discoverAiProviders: {
         params: { customEndpoints?: any[] };
@@ -99,6 +114,10 @@ export type PostbirdRPC = {
       openExternal: {
         params: { url: string };
         response: { success: boolean };
+      };
+      showContextMenu: {
+        params: { items: ContextMenuItemConfig[] };
+        response: { success: boolean; fallback?: boolean };
       };
     };
     messages: Record<string, never>;

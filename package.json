@@ -33,6 +33,7 @@
     "electrobun": "2.0.6",
     "eslint": "^7.32.0",
     "happy-dom": "^21.0.4",
+    "pug": "3.0.2",
     "sass": "^1.49.9",
     "typescript": "^5.8.2"
   },
@@ -41,7 +42,6 @@
     "moment": "^2.29.1",
     "node-ssh-forward": "https://github.com/Paxa/node-ssh-forward.git#add-timeout",
     "pg-escape": "^0.2.0",
-    "pug": "3.0.2",
     "ssh-config": "^4.1.0"
   }
 }

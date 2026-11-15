@@ -60,6 +60,9 @@
         label.ai-auto-run-label
           input.ai-auto-run-selects(type="checkbox" checked=true)
           span Auto-run read-only SELECTs
+        label.ai-include-results-label(title="Share columns and up to 30 rows of the current query result grid with AI")
+          input.ai-include-results(type="checkbox")
+          span Include query results
       .ai-input-bar
         input.ai-prompt-input(type="text" placeholder="Ask AI or run analysis...")
         button.ai-send-btn(exec="sendAiPrompt") Send

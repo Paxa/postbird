@@ -9,6 +9,30 @@ import {
   verifyProvider,
 } from '../lib/local_ai/discovery';
 
+function withMockSpawn(
+  handler: (cmd: string, args: string[]) => { status: number; stdout: string; stderr: string } | null
+): () => void {
+  const origSpawn = cp.spawn;
+  const { EventEmitter } = require('events');
+  (cp as any).spawn = (cmd: string, args: string[], opts?: any) => {
+    const res = handler(cmd, args || []);
+    if (!res) return origSpawn(cmd, args, opts);
+    const child: any = new EventEmitter();
+    child.stdout = new EventEmitter();
+    child.stderr = new EventEmitter();
+    child.kill = () => {};
+    queueMicrotask(() => {
+      if (res.stdout) child.stdout.emit('data', Buffer.from(res.stdout));
+      if (res.stderr) child.stderr.emit('data', Buffer.from(res.stderr));
+      child.emit('close', res.status);
+    });
+    return child;
+  };
+  return () => {
+    (cp as any).spawn = origSpawn;
+  };
+}
+
 describe('Local AI Discovery Engine Unit Tests', () => {
 
   describe('getCandidateDirectories', () => {
@@ -183,18 +207,16 @@ describe('Local AI Discovery Engine Unit Tests', () => {
       const origRpc = (window as any).__postbirdRpc;
       (window as any).__postbirdRpc = undefined;
 
-      const origSpawnSync = cp.spawnSync;
-      // Mock spawnSync for fm license --status returning 'Not agreed'
-      (cp as any).spawnSync = (cmd: string, args: string[]) => {
-        if (args && args.includes('license')) {
+      const restoreSpawn = withMockSpawn((_cmd, args) => {
+        if (args.includes('license')) {
           return {
             status: 69,
             stdout: "Not agreed. Run 'sudo fm license' to review and agree.\n",
             stderr: '',
           };
         }
-        return origSpawnSync(cmd, args);
-      };
+        return null;
+      });
 
       try {
         const providers = await discoverProviders();
@@ -204,7 +226,7 @@ describe('Local AI Discovery Engine Unit Tests', () => {
           assert.equal(fm.commandHint, 'sudo fm license');
         }
       } finally {
-        (cp as any).spawnSync = origSpawnSync;
+        restoreSpawn();
         (window as any).__postbirdRpc = origRpc;
       }
     });
@@ -215,24 +237,23 @@ describe('Local AI Discovery Engine Unit Tests', () => {
       const origRpc = (window as any).__postbirdRpc;
       (window as any).__postbirdRpc = undefined;
 
-      const origSpawnSync = cp.spawnSync;
-      (cp as any).spawnSync = (cmd: string, args: string[]) => {
-        if (args && args.includes('license')) {
+      const restoreSpawn = withMockSpawn((_cmd, args) => {
+        if (args.includes('license')) {
           return {
             status: 0,
             stdout: 'Apple Foundation Models CLI license terms have been agreed to.\n',
             stderr: '',
           };
         }
-        if (args && args.includes('available')) {
+        if (args.includes('available')) {
           return {
             status: 0,
             stdout: 'System model available\n',
             stderr: '',
           };
         }
-        return origSpawnSync(cmd, args);
-      };
+        return null;
+      });
 
       try {
         const providers = await discoverProviders();
@@ -241,7 +262,7 @@ describe('Local AI Discovery Engine Unit Tests', () => {
           assert.equal(fm.status, 'ready', 'fm must be marked ready when license is agreed and model is available');
         }
       } finally {
-        (cp as any).spawnSync = origSpawnSync;
+        restoreSpawn();
         (window as any).__postbirdRpc = origRpc;
       }
     });
@@ -252,24 +273,23 @@ describe('Local AI Discovery Engine Unit Tests', () => {
       const origRpc = (window as any).__postbirdRpc;
       (window as any).__postbirdRpc = undefined;
 
-      const origSpawnSync = cp.spawnSync;
-      (cp as any).spawnSync = (cmd: string, args: string[]) => {
-        if (args && args.includes('license')) {
+      const restoreSpawn = withMockSpawn((_cmd, args) => {
+        if (args.includes('license')) {
           return {
             status: 0,
             stdout: 'Agreed to license FM1 version 1.0\n',
             stderr: '',
           };
         }
-        if (args && args.includes('available')) {
+        if (args.includes('available')) {
           return {
             status: 1,
             stdout: '',
             stderr: 'System model unavailable: modelNotReady\n',
           };
         }
-        return origSpawnSync(cmd, args);
-      };
+        return null;
+      });
 
       try {
         const providers = await discoverProviders();
@@ -279,7 +299,7 @@ describe('Local AI Discovery Engine Unit Tests', () => {
           assert.equal(fm.commandHint, 'fm available');
         }
       } finally {
-        (cp as any).spawnSync = origSpawnSync;
+        restoreSpawn();
         (window as any).__postbirdRpc = origRpc;
       }
     });
@@ -315,24 +335,23 @@ describe('Local AI Discovery Engine Unit Tests', () => {
       const origRpc = (window as any).__postbirdRpc;
       (window as any).__postbirdRpc = undefined;
 
-      const origSpawnSync = cp.spawnSync;
-      (cp as any).spawnSync = (cmd: string, args: string[]) => {
-        if (args && args.includes('auth') && args.includes('status')) {
+      const restoreSpawn = withMockSpawn((_cmd, args) => {
+        if (args.includes('auth') && args.includes('status')) {
           return {
             status: 1,
             stdout: '{"loggedIn":false,"authMethod":"none"}\n',
             stderr: '',
           };
         }
-        return origSpawnSync(cmd, args);
-      };
+        return null;
+      });
 
       try {
         const res = await verifyProvider('claude', { path: '/mock/bin/claude' });
         assert.equal(res.ok, false);
         assert(res.message.includes('OAuth session expired') || res.message.includes('claude auth login'));
       } finally {
-        (cp as any).spawnSync = origSpawnSync;
+        restoreSpawn();
         (window as any).__postbirdRpc = origRpc;
       }
     });

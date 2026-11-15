@@ -25,18 +25,8 @@ class ShowSql extends DialogBase {
 
     this.content.find('button.copy-sql').bind('click', (e) => {
       e && e.preventDefault();
-      try {
-        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(this.code);
-        } else if (electronRemote && electronRemote.clipboard) {
-          electronRemote.clipboard.writeText(this.code);
-        }
-        var btn = $u(e.currentTarget);
-        btn.text("Copied!");
-        setTimeout(() => { btn.text("Copy"); }, 1500);
-      } catch (err) {
-        console.error("Failed to copy SQL:", err);
-      }
+      const formatUtil = require('../../../lib/format_util');
+      formatUtil.copyWithFeedback(this.code, e?.currentTarget as HTMLElement, 'Copied!');
     });
 
     const runExplain = (analyze: boolean) => {

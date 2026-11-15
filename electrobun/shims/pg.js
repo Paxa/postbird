@@ -21,6 +21,64 @@ class SimpleEmitter {
   }
 }
 
+function rehydrateBuffers(rows) {
+  if (!Array.isArray(rows) || !window.Buffer) return;
+  for (let r = 0; r < rows.length; r++) {
+    const row = rows[r];
+    if (Array.isArray(row)) {
+      for (let c = 0; c < row.length; c++) {
+        if (row[c] && row[c].type === 'Buffer' && Array.isArray(row[c].data)) {
+          row[c] = window.Buffer.from(row[c].data);
+        }
+      }
+    } else if (row && typeof row === 'object') {
+      for (const k in row) {
+        if (row[k] && row[k].type === 'Buffer' && Array.isArray(row[k].data)) {
+          row[k] = window.Buffer.from(row[k].data);
+        }
+      }
+    }
+  }
+}
+
+function executeShimQuery(config, options, valuesOrCallback, callback, label) {
+  let values = valuesOrCallback;
+  let cb = callback;
+  if (typeof valuesOrCallback === 'function') {
+    cb = valuesOrCallback;
+    values = [];
+  }
+  if (!Array.isArray(values)) {
+    values = (options && Array.isArray(options.values)) ? options.values : [];
+  }
+
+  const sql = typeof options === 'string' ? options : (options && options.text ? options.text : options);
+  const queryOptions = {
+    ...(typeof options === 'object' && options?.rowMode ? { rowMode: options.rowMode } : {}),
+    ...(values.length > 0 ? { values } : {}),
+  };
+
+  const promise = (async () => {
+    if (window.__postbirdRpc && window.__postbirdRpc.query) {
+      const res = await window.__postbirdRpc.query(sql, config, queryOptions);
+      if (res && res.rows) {
+        rehydrateBuffers(res.rows);
+      }
+      return res;
+    }
+    console.warn(`[${label} fallback - RPC not ready]`, sql);
+    return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };
+  })();
+
+  if (typeof cb === 'function') {
+    promise
+      .then((res) => cb(null, res))
+      .catch((err) => cb(err));
+  }
+
+  return promise;
+}
+
 class Client extends SimpleEmitter {
   constructor(config) {
     super();
@@ -35,50 +93,8 @@ class Client extends SimpleEmitter {
     return "'" + (str || '').replace(/'/g, "''") + "'";
   }
 
-  query(options, callback) {
-    let sql = typeof options === 'string' ? options : (options && options.text ? options.text : options);
-    let values = options && options.values ? options.values : [];
-    if (typeof values === 'function') {
-      callback = values;
-      values = [];
-    }
-
-    const queryOptions = typeof options === 'object' ? { rowMode: options.rowMode } : {};
-
-    const promise = (async () => {
-      if (window.__postbirdRpc && window.__postbirdRpc.query) {
-        const res = await window.__postbirdRpc.query(sql, this.config, queryOptions);
-        if (res && res.rows && Array.isArray(res.rows) && window.Buffer) {
-          for (let r = 0; r < res.rows.length; r++) {
-            const row = res.rows[r];
-            if (Array.isArray(row)) {
-              for (let c = 0; c < row.length; c++) {
-                if (row[c] && row[c].type === 'Buffer' && Array.isArray(row[c].data)) {
-                  row[c] = window.Buffer.from(row[c].data);
-                }
-              }
-            } else if (row && typeof row === 'object') {
-              for (const k in row) {
-                if (row[k] && row[k].type === 'Buffer' && Array.isArray(row[k].data)) {
-                  row[k] = window.Buffer.from(row[k].data);
-                }
-              }
-            }
-          }
-        }
-        return res;
-      }
-      console.warn("[pg.query fallback - RPC not ready]", sql);
-      return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };
-    })();
-
-    if (callback) {
-      promise
-        .then((res) => callback(null, res))
-        .catch((err) => callback(err));
-    }
-
-    return promise;
+  query(options, values, callback) {
+    return executeShimQuery(this.config, options, values, callback, 'pg.query');
   }
 
   end(callback) {
@@ -95,48 +111,7 @@ class Pool extends SimpleEmitter {
   }
 
   query(options, values, callback) {
-    if (typeof values === 'function') {
-      callback = values;
-      values = [];
-    }
-
-    let sql = typeof options === 'string' ? options : (options && options.text ? options.text : options);
-    const queryOptions = typeof options === 'object' ? { rowMode: options.rowMode } : {};
-
-    const promise = (async () => {
-      if (window.__postbirdRpc && window.__postbirdRpc.query) {
-        const res = await window.__postbirdRpc.query(sql, this.config, queryOptions);
-        if (res && res.rows && Array.isArray(res.rows) && window.Buffer) {
-          for (let r = 0; r < res.rows.length; r++) {
-            const row = res.rows[r];
-            if (Array.isArray(row)) {
-              for (let c = 0; c < row.length; c++) {
-                if (row[c] && row[c].type === 'Buffer' && Array.isArray(row[c].data)) {
-                  row[c] = window.Buffer.from(row[c].data);
-                }
-              }
-            } else if (row && typeof row === 'object') {
-              for (const k in row) {
-                if (row[k] && row[k].type === 'Buffer' && Array.isArray(row[k].data)) {
-                  row[k] = window.Buffer.from(row[k].data);
-                }
-              }
-            }
-          }
-        }
-        return res;
-      }
-      console.warn("[pg.Pool.query fallback - RPC not ready]", sql);
-      return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };
-    })();
-
-    if (callback) {
-      promise
-        .then((res) => callback(null, res))
-        .catch((err) => callback(err));
-    }
-
-    return promise;
+    return executeShimQuery(this.config, options, values, callback, 'pg.Pool.query');
   }
 
   connect(callback) {

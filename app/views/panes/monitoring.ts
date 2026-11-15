@@ -219,14 +219,7 @@ class Monitoring extends PaneBase {
       e.preventDefault();
       const sql = $u(e.currentTarget).attr('data-sql');
       if (sql) {
-        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(sql);
-        } else if (electronRemote && electronRemote.clipboard) {
-          electronRemote.clipboard.writeText(sql);
-        }
-        const btn = $u(e.currentTarget);
-        btn.text('Copied!');
-        setTimeout(() => { btn.text('Copy REINDEX SQL'); }, 1500);
+        require('../../../lib/format_util').copyWithFeedback(sql, e.currentTarget as HTMLElement, 'Copied!');
       }
     });
 
@@ -243,14 +236,7 @@ class Monitoring extends PaneBase {
       e.preventDefault();
       const sql = $u(e.currentTarget).attr('data-sql');
       if (sql) {
-        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(sql);
-        } else if (electronRemote && electronRemote.clipboard) {
-          electronRemote.clipboard.writeText(sql);
-        }
-        const btn = $u(e.currentTarget);
-        btn.text('Copied!');
-        setTimeout(() => { btn.text('Copy DROP SQL'); }, 1500);
+        require('../../../lib/format_util').copyWithFeedback(sql, e.currentTarget as HTMLElement, 'Copied!');
       }
     });
   }

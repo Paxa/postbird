@@ -135,6 +135,66 @@ describe('Local AI Connector & Discovery Engine', () => {
     assert(Array.isArray(providers));
   });
 
+  it('usage_tracker tracks usage, extracts rate-limit headers, and ignores empty providers in summary', () => {
+    const {
+      extractRateLimitQuota,
+      recordAiUsage,
+      getAiUsageSummary,
+      saveProviderQuota,
+      getProviderQuota,
+    } = require('../lib/local_ai/usage_tracker');
+
+    const headers = new Headers({
+      'x-ratelimit-limit-requests': '100',
+      'x-ratelimit-remaining-requests': '95',
+      'x-ratelimit-limit-tokens': '50000',
+      'x-ratelimit-remaining-tokens': '48000',
+    });
+    const quota = extractRateLimitQuota(headers);
+    assert(quota);
+    assert.equal(quota.requestsLimit, 100);
+    assert.equal(quota.requestsRemaining, 95);
+    assert.equal(quota.source, 'api-headers');
+
+    const storage = (globalThis as any).window.localStorage;
+    const prevUsage = storage.getItem('postbird_ai_usage_log');
+    const prevQuotas = storage.getItem('postbird_ai_provider_quotas');
+
+    try {
+      const now = Date.now();
+      storage.setItem('postbird_ai_usage_log', JSON.stringify([
+        { timestamp: now - 1000, provider: '', tokens: 50 },
+        { timestamp: now - 500, provider: 'claude', tokens: 120 },
+      ]));
+      recordAiUsage({ timestamp: now, provider: 'agy', tokens: 80 });
+
+      const claudeSummary = getAiUsageSummary('claude', now);
+      assert.equal(claudeSummary.last5h.requests, 1);
+      assert.equal(claudeSummary.last5h.tokens, 120);
+      assert.equal(claudeSummary.totalLast5h.requests, 3);
+      assert.equal(claudeSummary.totalLast5h.tokens, 250);
+
+      saveProviderQuota('openai-1', quota);
+      const loaded = getProviderQuota('openai-1');
+      assert.equal(loaded?.tokensRemaining, 48000);
+    } finally {
+      if (prevUsage === null) storage.removeItem('postbird_ai_usage_log');
+      else storage.setItem('postbird_ai_usage_log', prevUsage);
+      if (prevQuotas === null) storage.removeItem('postbird_ai_provider_quotas');
+      else storage.setItem('postbird_ai_provider_quotas', prevQuotas);
+    }
+  });
+
+  it('spawnAsync runs commands asynchronously and enforces timeouts without blocking', async () => {
+    const { spawnAsync } = require('../lib/local_ai/discovery');
+    const okRes = await spawnAsync(process.execPath, ['-e', 'console.log("async-ok")'], 2000);
+    assert.equal(okRes.status, 0);
+    assert(okRes.stdout.includes('async-ok'));
+
+    const timeoutRes = await spawnAsync(process.execPath, ['-e', 'setTimeout(() => {}, 5000)'], 80);
+    assert.equal(timeoutRes.status, null);
+  });
+
 });
 
 export {};

@@ -604,6 +604,33 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
         (window as any).__postbirdRpc = origRpc;
       }
     });
+
+    it('streams incremental stdout chunks via __postbirdProcessChunk before RPC resolves', async () => {
+      const cpShim = require('../electrobun/shims/child_process');
+      const origRpc = (window as any).__postbirdRpc;
+
+      (window as any).__postbirdRpc = {
+        spawnProcess: async (params: any) => {
+          assert(typeof params.streamId === 'string' && params.streamId.startsWith('proc_'));
+          (window as any).__postbirdProcessChunk(params.streamId, 'stdout', 'chunk-1\n');
+          await new Promise((r) => setTimeout(r, 10));
+          (window as any).__postbirdProcessChunk(params.streamId, 'stdout', 'chunk-2\n');
+          return { code: 0, stdout: '', stderr: '', streamed: true };
+        },
+      };
+
+      try {
+        const proc = cpShim.spawn('claude', ['-p', 'stream']);
+        const chunks: string[] = [];
+        for await (const chunk of proc.stdout) {
+          chunks.push(chunk.toString());
+        }
+
+        assert.deepStrictEqual(chunks, ['chunk-1\n', 'chunk-2\n']);
+      } finally {
+        (window as any).__postbirdRpc = origRpc;
+      }
+    });
   });
 
   describe('ContextMenu event handling', () => {
@@ -647,7 +674,7 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       assert(stopped2, 'stopPropagation must be called on subsequent contextmenu events');
     });
 
-    it('allows native system menu when right-clicking on selected text', () => {
+    it('shows custom menu even when right-clicking on selected text', () => {
       const { attachContextMenu } = require('../lib/context_menu');
       const container = document.createElement('div');
       const textNode = document.createTextNode('Sample selected text');
@@ -675,12 +702,21 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
           type: string;
           bubbles: boolean;
           cancelable: boolean;
+          button: number;
           constructor(type: string, opts: any = {}) {
             this.type = type;
             this.bubbles = !!opts.bubbles;
             this.cancelable = !!opts.cancelable;
+            this.button = opts.button ?? 0;
           }
         };
+
+        let mousedownPrevented = false;
+        const mdEv = new MouseEventClass('mousedown', { bubbles: true, cancelable: true, button: 2 });
+        mdEv.preventDefault = () => { mousedownPrevented = true; };
+        Object.defineProperty(mdEv, 'target', { value: textNode });
+        container.dispatchEvent(mdEv);
+        assert.equal(mousedownPrevented, true, 'mousedown button 2 should call preventDefault to prevent WebKit word auto-selection');
 
         let prevented = false;
         let stopped = false;
@@ -691,10 +727,12 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
 
         container.dispatchEvent(ev);
 
-        assert.equal(prevented, false, 'preventDefault should not be called when text is selected');
-        assert.equal(stopped, false, 'stopPropagation should not be called when text is selected');
+        assert.equal(prevented, true, 'preventDefault should be called to show custom context menu');
+        assert.equal(stopped, true, 'stopPropagation should be called to show custom context menu');
       } finally {
         (window as any).getSelection = origGetSelection;
+        const popup = document.getElementById('postbird-context-menu-popup');
+        if (popup) popup.remove();
         container.remove();
       }
     });
@@ -726,6 +764,80 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       );
       darkPopup!.remove();
       document.body.classList.remove('dark-mode');
+    });
+
+    it('routes context menu to __postbirdRpc.showContextMenu and invokes clicked action', async () => {
+      const { attachContextMenu } = require('../lib/context_menu');
+      const el = document.createElement('div');
+      let rpcItems: any[] = [];
+      let clicked = false;
+
+      const prevRpc = (window as any).__postbirdRpc;
+      (window as any).__postbirdRpc = {
+        showContextMenu: async ({ items }: { items: any[] }) => {
+          rpcItems = items;
+          return { success: true };
+        },
+      };
+
+      try {
+        attachContextMenu(el, {
+          'Copy JSON': () => { clicked = true; },
+          sep1: 'separator',
+          'Disabled Item': () => {},
+        }, {
+          onShow: (_ev, menu) => {
+            menu.items[2].enabled = false;
+          },
+        });
+
+        const ev = new ((window as any).MouseEvent || Event)('contextmenu', { bubbles: true, cancelable: true });
+        el.dispatchEvent(ev);
+        await new Promise((r) => setTimeout(r, 0));
+
+        assert.equal(rpcItems.length, 3);
+        assert.equal(rpcItems[0].label, 'Copy JSON');
+        assert.equal(rpcItems[0].enabled, true);
+        assert.equal(rpcItems[1].type, 'separator');
+        assert.equal(rpcItems[2].enabled, false);
+        assert(typeof rpcItems[0].action === 'string' && rpcItems[0].action.startsWith('ctx_'));
+
+        (window as any).__postbirdContextMenuAction(rpcItems[0].action);
+        assert.equal(clicked, true);
+      } finally {
+        (window as any).__postbirdRpc = prevRpc;
+      }
+    });
+
+    it('falls back to DOM context menu when showContextMenu returns fallback: true and avoids stacking listeners', async () => {
+      const { attachContextMenu } = require('../lib/context_menu');
+      const el = document.createElement('div');
+      let rpcCallCount = 0;
+
+      const prevRpc = (window as any).__postbirdRpc;
+      (window as any).__postbirdRpc = {
+        showContextMenu: async () => {
+          rpcCallCount++;
+          return { success: false, fallback: true };
+        },
+      };
+
+      try {
+        // Attach twice to the same element
+        attachContextMenu(el, { 'Action 1': () => {} });
+        attachContextMenu(el, { 'Action 2': () => {} });
+
+        const ev = new ((window as any).MouseEvent || Event)('contextmenu', { bubbles: true, cancelable: true });
+        el.dispatchEvent(ev);
+        await new Promise((r) => setTimeout(r, 10));
+
+        assert.equal(rpcCallCount, 1, 'Re-attaching context menu should not stack listeners');
+        const popup = document.getElementById('postbird-context-menu-popup');
+        assert(popup, 'DOM fallback popup should render when fallback: true');
+        popup?.remove();
+      } finally {
+        (window as any).__postbirdRpc = prevRpc;
+      }
     });
   });
 
@@ -803,6 +915,56 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       // Clean up pool B
       await disconnectPool(configB);
       assert(!getActivePoolKeys().includes(keyB), 'Pool B should be removed after disconnectPool');
+    });
+
+    it('Client.query and Pool.query in electrobun/shims/pg.js forward parameterized values and 3-arg callbacks', async () => {
+      const pgShim = require('../electrobun/shims/pg');
+      const captured: any[] = [];
+      const prevRpc = (window as any).__postbirdRpc;
+      (window as any).__postbirdRpc = {
+        query: async (sql: string, _config: any, queryOptions: any) => {
+          captured.push({ sql, queryOptions });
+          return { rows: [], fields: [], rowCount: 0, command: 'SELECT' };
+        },
+      };
+
+      try {
+        const client = new pgShim.Client({ host: 'localhost' });
+        let clientCbCalled = false;
+        await client.query('SELECT $1::int', [42], () => { clientCbCalled = true; });
+        assert.strictEqual(clientCbCalled, true);
+
+        const pool = new pgShim.Pool({ host: 'localhost' });
+        await pool.query({ text: 'SELECT $1::text', rowMode: 'array' }, ['hello']);
+
+        assert.strictEqual(captured.length, 2);
+        assert.deepStrictEqual(captured[0].queryOptions.values, [42]);
+        assert.deepStrictEqual(captured[1].queryOptions.values, ['hello']);
+        assert.strictEqual(captured[1].queryOptions.rowMode, 'array');
+      } finally {
+        (window as any).__postbirdRpc = prevRpc;
+      }
+    });
+  });
+
+  describe('Security & Sanitization', () => {
+    it('Query.formatMarkdownText sanitizes XSS payloads while keeping safe markdown', () => {
+      const Query = require('../app/views/panes/query');
+      const proto = Query.prototype;
+      const dirty = 'Hello **world** <img src=x onerror="alert(1)"><script>evil()</script>[click](javascript:alert(2)) [docs](https://postgresql.org)';
+      const clean = proto.formatMarkdownText(dirty);
+
+      assert(!clean.includes('<script'), 'script tags must be stripped');
+      assert(!clean.includes('onerror'), 'inline event handlers must be stripped');
+      assert(!clean.includes('javascript:'), 'javascript: URLs must be stripped');
+      assert(clean.includes('<strong>world</strong>'), 'safe markdown formatting must be preserved');
+      assert(clean.includes('https://postgresql.org'), 'safe https links must be preserved');
+    });
+
+    it('Query pane has removed dead snippet methods', () => {
+      const Query = require('../app/views/panes/query');
+      assert.strictEqual(typeof Query.prototype.openSnippets, 'undefined');
+      assert.strictEqual(typeof Query.prototype.saveSnippet, 'undefined');
     });
   });
 });

@@ -115,7 +115,7 @@ class LoginScreen {
 
       $u.contextMenu(line, {
         "Fill form with ...": () => { this.fillForm(params) },
-        "Connect" () {
+        "Connect": () => {
           this.fillForm(params);
           this.submitCurrentForm();
         },

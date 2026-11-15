@@ -3,6 +3,7 @@ import { BaseAdapter } from './base';
 import { CompletionOptions } from '../types';
 import { findBinary } from '../discovery';
 import { AILogger } from '../logger';
+import { runCliStream } from './cli_stream';
 
 export class FmAdapter implements BaseAdapter {
   id = 'fm';
@@ -71,62 +72,13 @@ export class FmAdapter implements BaseAdapter {
   async *stream(options: CompletionOptions): AsyncIterable<string> {
     const fmBin = findBinary('fm') || '/usr/bin/fm';
     const args = this.buildArgs(options, true);
-    AILogger.logCli(this.id, fmBin, args);
-
-    const child = cp.spawn(fmBin, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-
-    let stderr = '';
-    let exitCode: number | null = null;
-    let spawnError: any = null;
-
-    if (child.stderr) {
-      child.stderr.on('data', (chunk: any) => {
-        stderr += chunk.toString();
-      });
-    }
-
-    child.on('error', (err: any) => {
-      spawnError = err;
-      AILogger.logError(this.id, err, 'spawn error');
+    yield* runCliStream({
+      id: this.id,
+      bin: fmBin,
+      args,
+      cliLabel: 'fm CLI',
+      model: options.model,
+      onToken: options.onToken,
     });
-
-    child.on('close', (code: number) => {
-      exitCode = code;
-    });
-
-    let totalYielded = 0;
-    const startTime = Date.now();
-    AILogger.logStreamStart(this.id, options.model);
-
-    try {
-      for await (const chunk of child.stdout) {
-        const text = chunk.toString();
-        totalYielded += text.length;
-        if (options.onToken) options.onToken(text);
-        yield text;
-      }
-
-      if (spawnError) {
-        throw spawnError;
-      }
-
-      if (totalYielded === 0) {
-        const errDetail = stderr.trim();
-        if (exitCode !== null && exitCode !== 0) {
-          const msg = errDetail || `fm CLI exited with code ${exitCode}`;
-          AILogger.logError(this.id, new Error(msg), `exitCode ${exitCode}`);
-          throw new Error(msg);
-        }
-        if (errDetail) {
-          AILogger.logError(this.id, new Error(errDetail), 'stderr output');
-          throw new Error(errDetail);
-        }
-      } else {
-        AILogger.logStreamEnd(this.id, totalYielded, Date.now() - startTime);
-      }
-    } catch (err: any) {
-      AILogger.logError(this.id, err, 'stream execution');
-      throw err;
-    }
   }
 }

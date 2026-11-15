@@ -10,6 +10,7 @@ export * from './adapters/agy';
 export * from './adapters/claude';
 export * from './adapters/openai_compatible';
 export * from './logger';
+export * from './usage_tracker';
 
 export function createAIConnector(config: AIConnectorConfig = {}) {
   return new AIRouter(config);

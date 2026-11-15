@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, Utils } from "electrobun/main";
+import { BrowserView, BrowserWindow, ContextMenu, Utils } from "electrobun/main";
 import fs from "fs";
 import path from "path";
 import os from "os";
@@ -14,7 +14,7 @@ import {
   saveWindowState,
   debounce,
 } from "./host/storage";
-import { spawnProcess } from "./host/process_runner";
+import { spawnProcess, killProcess } from "./host/process_runner";
 import { setupApplicationMenu } from "./host/menu";
 
 const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
@@ -29,8 +29,49 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
         return disconnectPool(config);
       },
 
-      spawnProcess: async ({ bin, args, options }) => {
-        return spawnProcess({ bin, args, options });
+      spawnProcess: async ({ bin, args, options, streamId }) => {
+        const ALLOWED_RPC_BINS = new Set([
+          "pg_dump",
+          "pg_restore",
+          "psql",
+          "claude",
+          "agy",
+          "fm",
+          "foundry",
+          "ollama",
+        ]);
+        const baseBin = path.basename(bin || "");
+        if (!ALLOWED_RPC_BINS.has(baseBin)) {
+          console.warn(`[Host Security] Blocked disallowed RPC spawnProcess binary: ${bin}`);
+          return { code: 1, stdout: "", stderr: `Disallowed binary: ${baseBin}` };
+        }
+        const pushChunk = streamId
+          ? (stream: "stdout" | "stderr", chunk: string) => {
+              try {
+                if (mainWindow && mainWindow.webview) {
+                  mainWindow.webview.executeJavascript(
+                    `window.__postbirdProcessChunk && window.__postbirdProcessChunk(${JSON.stringify(streamId)}, ${JSON.stringify(stream)}, ${JSON.stringify(chunk)})`
+                  );
+                }
+              } catch {}
+            }
+          : undefined;
+        return spawnProcess({
+          bin,
+          args,
+          options,
+          streamId,
+          ...(pushChunk
+            ? {
+                onStdoutChunk: (chunk) => pushChunk("stdout", chunk),
+                onStderrChunk: (chunk) => pushChunk("stderr", chunk),
+              }
+            : {}),
+        });
+      },
+
+      killProcess: async ({ streamId }) => {
+        return { success: killProcess(streamId) };
       },
 
       discoverAiProviders: async ({ customEndpoints }) => {
@@ -197,6 +238,23 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
           return { success: false };
         }
       },
+
+      showContextMenu: async ({ items }) => {
+        // Linux showContextMenu is unsupported in Electrobun, and UI tests need DOM-queryable menus
+        if (process.platform === "linux" || process.env.POSTBIRD_TEST_UI === "true") {
+          return { success: false, fallback: true };
+        }
+        try {
+          if (ContextMenu && typeof ContextMenu.showContextMenu === "function") {
+            ContextMenu.showContextMenu(items as any);
+            return { success: true };
+          }
+          return { success: false, fallback: true };
+        } catch (err) {
+          console.error("[Host showContextMenu Error]", err);
+          return { success: false, fallback: true };
+        }
+      },
     },
     messages: {},
   },
@@ -256,6 +314,22 @@ setupApplicationMenu(handleGracefulQuit, (action: string) => {
     console.error("[Menu Action Forward Error]", err);
   }
 });
+
+if (ContextMenu && typeof ContextMenu.on === "function") {
+  ContextMenu.on("context-menu-clicked", (e: any) => {
+    const action = e?.data?.action || e?.action;
+    if (!action) return;
+    try {
+      if (mainWindow && mainWindow.webview) {
+        mainWindow.webview.executeJavascript(
+          `window.__postbirdContextMenuAction && window.__postbirdContextMenuAction(${JSON.stringify(action)})`
+        );
+      }
+    } catch (err) {
+      console.error("[ContextMenu Action Forward Error]", err);
+    }
+  });
+}
 
 const savedFrame = loadWindowState();
 mainWindow = new BrowserWindow({

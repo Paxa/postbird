@@ -52,22 +52,22 @@ export function rowsToJson(fields: (string | FieldLike)[], rows: (any[] | Record
   return pretty ? JSON.stringify(arr, null, 2) : JSON.stringify(arr);
 }
 
-export function formatCellMarkdown(val: any): string {
+export function formatCellText(val: any): string {
   if (val === null || val === undefined) {
     return 'NULL';
   }
-  let str: string;
   if (typeof val === 'object') {
     if (val instanceof Date || typeof val.toISOString === 'function') {
-      str = val.toISOString();
-    } else {
-      str = JSON.stringify(val);
+      return val.toISOString();
     }
-  } else {
-    str = String(val);
+    return JSON.stringify(val);
   }
+  return String(val);
+}
+
+export function formatCellMarkdown(val: any): string {
   // Escape pipes and replace newlines so Markdown tables don't break
-  return str.replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+  return formatCellText(val).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 }
 
 export function rowsToMarkdown(fields: (string | FieldLike)[], rows: (any[] | Record<string, any>)[]): string {
@@ -175,15 +175,34 @@ export function copyToClipboard(text: string): boolean {
   return false;
 }
 
+export function copyWithFeedback(
+  text: string,
+  triggerElement?: HTMLElement | null,
+  successText = 'Copied!',
+  durationMs = 1500
+): boolean {
+  const ok = copyToClipboard(text);
+  if (ok && triggerElement && successText) {
+    const originalText = triggerElement.textContent;
+    triggerElement.textContent = successText;
+    setTimeout(() => {
+      triggerElement.textContent = originalText;
+    }, durationMs);
+  }
+  return ok;
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     cleanFieldNames,
     rowToObject,
     rowToJson,
     rowsToJson,
+    formatCellText,
     formatCellMarkdown,
     rowsToMarkdown,
     columnToInClause,
-    copyToClipboard
+    copyToClipboard,
+    copyWithFeedback
   };
 }

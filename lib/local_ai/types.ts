@@ -27,11 +27,23 @@ export interface DiscoveredProvider {
   apiKey?: string;
 }
 
+export interface ProviderQuotaInfo {
+  requestsLimit?: number;
+  requestsRemaining?: number;
+  requestsReset?: string;
+  tokensLimit?: number;
+  tokensRemaining?: number;
+  tokensReset?: string;
+  source: 'api-headers' | 'cli-unavailable' | 'local-only';
+  updatedAt: number;
+}
+
 export interface ProviderVerificationResult {
   ok: boolean;
   message: string;
   models?: string[];
   latencyMs?: number;
+  quota?: ProviderQuotaInfo;
 }
 
 export interface ChatMessage {

@@ -78,6 +78,10 @@ declare module "electrobun/main" {
     static setApplicationMenu(menu: any[]): void;
     static on(event: string, handler: (e: any) => void): void;
   }
+  export class ContextMenu {
+    static showContextMenu(menu: any[]): void;
+    static on(event: string, handler: (e: any) => void): void;
+  }
   export const Utils: {
     openFileDialog(options?: {
       startingFolder?: string;

@@ -26,7 +26,6 @@ require('./app/login_components/login_standard_form');
 require('./app/login_screen');
 require('./app/help_screen');
 require('./app/views/db_screen_view');
-require('./app/views/snippets');
 
 (global as any).Dialog = require('./app/views/dialogs/all');
 (global as any).Model = require('./app/models/all');

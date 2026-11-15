@@ -195,9 +195,7 @@ class Query extends PaneBase {
         },
         'Copy SQL': () => {
           var sqlText = (buf.id === this.activeBufferId && this.editor) ? this.editor.getValue() : (buf.sql || '');
-          if (navigator && navigator.clipboard) {
-            navigator.clipboard.writeText(sqlText);
-          }
+          formatUtil.copyToClipboard(sqlText);
         },
         'Clear SQL': () => {
           if (buf.id === this.activeBufferId && this.editor) {
@@ -409,9 +407,18 @@ class Query extends PaneBase {
       }
     };
 
+    var prevCleanup = (this as any)._aiPanelResizeCleanup;
+    if (typeof prevCleanup === 'function') {
+      prevCleanup();
+    }
+
     if (doc && typeof doc.addEventListener === 'function') {
       doc.addEventListener('mousemove', onMouseMove);
       doc.addEventListener('mouseup', onMouseUp);
+      (this as any)._aiPanelResizeCleanup = () => {
+        doc.removeEventListener('mousemove', onMouseMove);
+        doc.removeEventListener('mouseup', onMouseUp);
+      };
     }
 
     handle.on('mousedown', (e: any) => {
@@ -546,6 +553,7 @@ class Query extends PaneBase {
     timestamp?: number;
     title?: string;
     provider?: string;
+    model?: string;
     tokens?: number;
     durationMs?: number;
   }) {
@@ -558,6 +566,16 @@ class Query extends PaneBase {
       window.localStorage.setItem('postbird_ai_chat_history', JSON.stringify(this.aiChatHistory));
     } catch (e) {
       console.warn('Could not persist postbird_ai_chat_history', e);
+    }
+
+    if (msg.role === 'assistant' && typeof localAIConnector.recordAiUsage === 'function') {
+      localAIConnector.recordAiUsage({
+        timestamp: msg.timestamp,
+        provider: msg.provider || 'ai',
+        model: msg.model,
+        tokens: msg.tokens || Math.max(1, Math.round((msg.content || '').length / 4)),
+        durationMs: msg.durationMs
+      });
     }
   }
 
@@ -669,11 +687,66 @@ class Query extends PaneBase {
       .replace(/'/g, '&#039;');
   }
 
+  sanitizeHtml (html: string): string {
+    if (!html || typeof document === 'undefined') return html || '';
+    const allowedTags = new Set([
+      'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'CODE', 'PRE', 'BLOCKQUOTE',
+      'UL', 'OL', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+      'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD', 'HR', 'A', 'DIV', 'SPAN', 'DEL', 'S'
+    ]);
+    const allowedAttrs = new Set(['href', 'title', 'class', 'target', 'rel']);
+    const template = document.createElement('template');
+    template.innerHTML = html;
+
+    const sanitizeNode = (node: Node) => {
+      const children = Array.from(node.childNodes);
+      for (const child of children) {
+        if (child.nodeType === 1) { // Element
+          const el = child as HTMLElement;
+          if (!allowedTags.has(el.tagName)) {
+            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.tagName === 'IFRAME' || el.tagName === 'OBJECT' || el.tagName === 'EMBED') {
+              el.remove();
+            } else {
+              // Unwrap disallowed formatting/container tags while keeping safe text
+              sanitizeNode(el);
+              while (el.firstChild) {
+                node.insertBefore(el.firstChild, el);
+              }
+              el.remove();
+            }
+            continue;
+          }
+          for (const attr of Array.from(el.attributes)) {
+            const name = attr.name.toLowerCase();
+            if (!allowedAttrs.has(name) || name.startsWith('on')) {
+              el.removeAttribute(attr.name);
+            } else if (name === 'href') {
+              const val = attr.value.trim().toLowerCase();
+              if (val && !val.startsWith('http://') && !val.startsWith('https://') && !val.startsWith('mailto:') && !val.startsWith('#')) {
+                el.removeAttribute(attr.name);
+              }
+            }
+          }
+          if (el.tagName === 'A' && el.getAttribute('href')) {
+            el.setAttribute('rel', 'noopener noreferrer');
+          }
+          sanitizeNode(el);
+        } else if (child.nodeType === 8) { // Comment
+          child.remove();
+        }
+      }
+    };
+
+    sanitizeNode(template.content);
+    return template.innerHTML;
+  }
+
   formatMarkdownText (text: string): string {
     if (!text) return '';
     try {
       if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
-        return marked.parse(text, { async: false, breaks: true, gfm: true }) as string;
+        const rawHtml = marked.parse(text, { async: false, breaks: true, gfm: true }) as string;
+        return this.sanitizeHtml(rawHtml);
       }
     } catch (e) {
       console.warn('Failed to parse markdown with marked', e);
@@ -951,11 +1024,7 @@ class Query extends PaneBase {
           this.runSpecificSql(code);
         });
         codeBlock.find('.code-act-copy').on('click', (e: any) => {
-          if (navigator && navigator.clipboard) {
-            navigator.clipboard.writeText(code);
-            $u(e.target).text('Copied!');
-            setTimeout(() => { $u(e.target).text('Copy'); }, 1500);
-          }
+          formatUtil.copyWithFeedback(code, e.target as HTMLElement, 'Copied!');
         });
         container.append(codeBlock);
       }
@@ -969,7 +1038,7 @@ class Query extends PaneBase {
     }
   }
 
-  sendAiPrompt () {
+  sendAiPrompt (overridePrompt?: string) {
     var rawCfg = window.localStorage.getItem('postbird_ai_config');
     var isConfirmed = false;
     if (rawCfg) {
@@ -987,10 +1056,14 @@ class Query extends PaneBase {
     }
 
     var input = this.content.find('.ai-prompt-input');
-    var prompt = (input.val() || '').toString().trim();
+    var prompt = (typeof overridePrompt === 'string' && overridePrompt.trim())
+      ? overridePrompt.trim()
+      : (input.val() || '').toString().trim();
     if (!prompt) return;
 
-    input.val('');
+    if (typeof overridePrompt !== 'string') {
+      input.val('');
+    }
 
     // Remove empty state placeholder if present
     var emptyPlaceholder = this.content.find('.ai-panel-body .ai-empty-state');
@@ -1031,6 +1104,29 @@ class Query extends PaneBase {
     }
   }
 
+  getQueryResultsContext (): string {
+    if (!this.content || !this.lastResult) return '';
+    var includeElem = this.content.find('.ai-include-results');
+    var includeChecked = Boolean(includeElem[0] && (includeElem[0] as HTMLInputElement).checked);
+    if (!includeChecked) return '';
+
+    var fields = this.lastResult.fields || [];
+    var colNames = formatUtil && typeof formatUtil.cleanFieldNames === 'function'
+      ? formatUtil.cleanFieldNames(fields)
+      : fields.map((f: any) => f && f.name).filter(Boolean);
+    var allRows = this.lastResult.rows || [];
+    var totalRows = typeof this.lastResult.rowCount === 'number' ? this.lastResult.rowCount : allRows.length;
+    var sampleRows = allRows.slice(0, 30);
+
+    var ctx = `\nCurrent Query Results (user opt-in):\nColumns: [${colNames.join(', ')}]\nReturned Rows: ${allRows.length}${totalRows > allRows.length ? ` (total: ${totalRows})` : ''}\n`;
+    if (sampleRows.length > 0) {
+      ctx += `Sample Rows (first ${sampleRows.length}):\n${JSON.stringify(sampleRows)}\n`;
+    } else {
+      ctx += `Sample Rows: []\n`;
+    }
+    return ctx;
+  }
+
   async executeSqlMode (prompt: string, body: any) {
     var dbContext = await this.getDatabaseContext();
     var currentSql = this.editor ? (this.editor.getValue() || '').trim() : '';
@@ -1042,6 +1138,7 @@ class Query extends PaneBase {
     } else if (currentSql) {
       contextPrompt += `\nCurrent Editor SQL:\n\`\`\`sql\n${currentSql}\n\`\`\`\n`;
     }
+    contextPrompt += this.getQueryResultsContext();
 
     var systemInstructions = [
       'You are an expert PostgreSQL assistant embedded in the Postbird database manager.',
@@ -1148,6 +1245,7 @@ class Query extends PaneBase {
             mode: 'sql',
             title: title,
             provider: providerName,
+            model: cfg.model,
             tokens: totalTokens,
             durationMs: durationMs,
             timestamp: Date.now()
@@ -1195,9 +1293,10 @@ DELETE FROM ...;
 \`\`\`
 4. Conclude with a clear, concise findings summary explaining what was checked and what was found.`;
 
+    var resultsContext = this.getQueryResultsContext();
     var messages: any[] = [
       { role: 'system', content: systemPrompt },
-      { role: 'user', content: `Database Context:\n${dbContext}\n\nTask:\n${initialPrompt}` }
+      { role: 'user', content: `Database Context:\n${dbContext}\n${resultsContext}\nTask:\n${initialPrompt}` }
     ];
 
     var connector = this.getAiConnector();
@@ -1403,6 +1502,7 @@ DELETE FROM ...;
       mode: 'agent',
       title: analystTitle,
       provider: analystProvider,
+      model: cfg.model,
       tokens: analystTokens,
       durationMs: analystDurationMs,
       timestamp: Date.now()
@@ -1462,20 +1562,9 @@ DELETE FROM ...;
     }
   }
 
-  saveSnippet () {
-    this.editor.save();
-    this.statusLine.text('');
-
-    var selectedText = this.editor.getSelection();
-
-    var sql = selectedText || this.textarea.val();
-
-    new Dialog.NewSnippet(sql)
-  }
-
   runQuery () {
     this.editor.save();
-    this.statusLine.text('');
+    this.statusLine.removeClass('is-error').text('');
 
     // If currently viewing full editor, restore split view so user sees the results
     if (this.currentLayout === 'editor') {
@@ -1525,9 +1614,9 @@ DELETE FROM ...;
       App.stopLoading();
       if (error) {
         this.cleanResult();
-        var message = error.message;
+        var message = error.message || String(error);
         if (message == "invalid message format") message += ". It can be if too many records, try add 'limit'";
-        this.statusLine.text(message);
+        this.renderSqlError(sql, error, message);
       } else {
         this.lastResult = data;
         PgTypeNames.extendFields(data);
@@ -1575,8 +1664,49 @@ DELETE FROM ...;
 
   cleanResult () {
     this.content.find('.result .rescol-wrapper').html("").hide();
-    this.statusLine.text("");
+    this.statusLine.removeClass('is-error').text("");
     this.lastResult = null;
+  }
+
+  renderSqlError (sql: string, error: any, overrideMessage?: string) {
+    if (!this.statusLine || !this.statusLine.length) return;
+    var message = overrideMessage || (error && error.message) || String(error || 'SQL execution error');
+    var metaParts: string[] = [];
+    if (error && error.detail) metaParts.push(`Detail: ${error.detail}`);
+    if (error && error.hint) metaParts.push(`Hint: ${error.hint}`);
+    if (error && error.position) metaParts.push(`Position: ${error.position}`);
+
+    var metaHtml = metaParts.length > 0
+      ? `<div class="sql-error-meta">${this.escapeHtml(metaParts.join(' · '))}</div>`
+      : '';
+
+    this.statusLine.addClass('is-error').html(`
+      <div class="sql-error-banner">
+        <div class="sql-error-header">
+          <span class="sql-error-badge">✕ SQL Error</span>
+          <button class="native-look sql-fix-ai-btn" type="button">✨ Fix SQL error with AI</button>
+        </div>
+        <div class="sql-error-message">${this.escapeHtml(message)}</div>
+        ${metaHtml}
+      </div>
+    `);
+
+    this.statusLine.find('.sql-fix-ai-btn').on('click', (e: any) => {
+      e.preventDefault();
+      this.fixSqlErrorWithAi(sql, metaParts.length ? `${message}\n${metaParts.join('\n')}` : message);
+    });
+  }
+
+  fixSqlErrorWithAi (sql: string, errorMessage: string) {
+    if (!this.aiPanelOpen) {
+      this.toggleAiPanel();
+    }
+    if (this.aiMode !== 'sql') {
+      this.setAiMode('sql');
+    }
+
+    var promptText = `Fix this PostgreSQL SQL error:\n${errorMessage}`;
+    this.sendAiPrompt(promptText);
   }
 
   cleanButtonClick () {
@@ -1596,10 +1726,6 @@ DELETE FROM ...;
     this.editor.setValue(this.editor.getValue() + sql);
     this.editor.setCursor(lineNo + lineOffset, 0);
     this.editor.focus();
-  }
-
-  openSnippets () {
-    new SnippetsWindow();
   }
 
   showHistory () {
@@ -1647,8 +1773,18 @@ DELETE FROM ...;
     if (!resultContainer.length) return;
 
     var contextMenuActions: Record<string, any> = {
-      'Copy'() {
-        window.document.execCommand("copy");
+      'Copy': () => {
+        var selectedText = window.getSelection ? window.getSelection().toString() : '';
+        if (selectedText) {
+          formatUtil.copyToClipboard(selectedText);
+          return;
+        }
+        var event = (resultContainer[0] as any)?.contextmenu?.clickEvent;
+        if (!event) return;
+        var cell = (event.target.tagName == 'TD' || event.target.tagName == 'TH' ? event.target : $u(event.target).closest('td, th')[0]) as HTMLElement;
+        if (cell) {
+          this.copyResultCellValue(cell);
+        }
       },
       'sep1': 'separator',
       'Copy Row as JSON': (menuItem: any) => {
@@ -1692,7 +1828,7 @@ DELETE FROM ...;
 
         contextmenu.items.forEach((item: any) => {
           if (item.label == "Copy") {
-            item.enabled = isTextSelected;
+            item.enabled = isTextSelected || isCell;
           }
           if (item.label && item.label.startsWith("Copy Row")) {
             item.enabled = isRow;
@@ -1732,6 +1868,34 @@ DELETE FROM ...;
       clientY: rect.bottom + 2,
       bubbles: true
     }));
+  }
+
+  copyResultCellValue (cell: HTMLElement) {
+    if (!cell) return;
+    let text = '';
+    if (cell.tagName === 'TD' && this.lastResult && this.lastResult.rows) {
+      var tr = cell.closest ? cell.closest('tr') : $u(cell).closest('tr')[0];
+      var rowIndex = tr ? dom.elementIndex(tr) : -1;
+      var colIndex = dom.elementIndex(cell);
+      var row = rowIndex >= 0 ? this.lastResult.rows[rowIndex] : null;
+      if (row) {
+        if (Array.isArray(row)) {
+          text = formatUtil.formatCellText(row[colIndex]);
+        } else {
+          var cleanFields = formatUtil.cleanFieldNames(this.lastResult.fields || []);
+          var colName = cleanFields[colIndex];
+          text = colName !== undefined ? formatUtil.formatCellText(row[colName]) : (cell.textContent || '');
+        }
+      } else {
+        text = cell.textContent || '';
+      }
+    } else {
+      text = cell.textContent || '';
+    }
+    formatUtil.copyToClipboard(text);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success('Copied to clipboard');
+    }
   }
 
   copyResultRowAsJson (tr: HTMLElement) {
@@ -1779,7 +1943,7 @@ DELETE FROM ...;
     }
   }
 
-  copyAllResultsAsJson () {
+  copyAllResultsAs (format: 'json' | 'markdown' | 'csv') {
     if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
       if (window.alertify && typeof window.alertify.log === 'function') {
         window.alertify.log("No query results to copy");
@@ -1787,42 +1951,35 @@ DELETE FROM ...;
       return;
     }
     var rows = this.lastResult.completeRows || this.lastResult.rows;
-    var json = formatUtil.rowsToJson(this.lastResult.fields, rows);
-    formatUtil.copyToClipboard(json);
-    if (window.alertify && typeof window.alertify.success === 'function') {
-      window.alertify.success(`Copied ${rows.length} results as JSON`);
+    var text = '';
+    var label = '';
+    if (format === 'json') {
+      text = formatUtil.rowsToJson(this.lastResult.fields, rows);
+      label = 'JSON';
+    } else if (format === 'markdown') {
+      text = formatUtil.rowsToMarkdown(this.lastResult.fields, rows);
+      label = 'Markdown';
+    } else {
+      var colNames = formatUtil.cleanFieldNames(this.lastResult.fields || []);
+      text = serializeToCsv(colNames, rows);
+      label = 'CSV';
     }
+    formatUtil.copyToClipboard(text);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success(`Copied ${rows.length} results as ${label}`);
+    }
+  }
+
+  copyAllResultsAsJson () {
+    this.copyAllResultsAs('json');
   }
 
   copyAllResultsAsMarkdown () {
-    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
-      if (window.alertify && typeof window.alertify.log === 'function') {
-        window.alertify.log("No query results to copy");
-      }
-      return;
-    }
-    var rows = this.lastResult.completeRows || this.lastResult.rows;
-    var md = formatUtil.rowsToMarkdown(this.lastResult.fields, rows);
-    formatUtil.copyToClipboard(md);
-    if (window.alertify && typeof window.alertify.success === 'function') {
-      window.alertify.success(`Copied ${rows.length} results as Markdown`);
-    }
+    this.copyAllResultsAs('markdown');
   }
 
   copyAllResultsAsCsv () {
-    if (!this.lastResult || !this.lastResult.rows || !this.lastResult.rows.length) {
-      if (window.alertify && typeof window.alertify.log === 'function') {
-        window.alertify.log("No query results to copy");
-      }
-      return;
-    }
-    var rows = this.lastResult.completeRows || this.lastResult.rows;
-    var colNames = formatUtil.cleanFieldNames(this.lastResult.fields || []);
-    var csv = serializeToCsv(colNames, rows);
-    formatUtil.copyToClipboard(csv);
-    if (window.alertify && typeof window.alertify.success === 'function') {
-      window.alertify.success(`Copied ${rows.length} results as CSV`);
-    }
+    this.copyAllResultsAs('csv');
   }
 
 }

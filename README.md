@@ -2,16 +2,24 @@
 [![Build and Release](https://github.com/Paxa/postbird/actions/workflows/build.yml/badge.svg)](https://github.com/Paxa/postbird/actions/workflows/build.yml)
 [![Backers on Open Collective](https://opencollective.com/postbird/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/postbird/sponsors/badge.svg)](#sponsors)
 
-Postbird is an open-source, ultra-fast cross-platform PostgreSQL GUI client written in TypeScript and powered by **Electrobun & Bun**.
+Postbird is an open-source, ultra-fast cross-platform PostgreSQL GUI client—now rewritten in **TypeScript** and powered by **Electrobun & Bun**.
+
+<p>
+  <img src="https://github.com/user-attachments/assets/d45be643-cd45-463b-b19c-ee8b034aa27f" alt="Old Postbird Logo" width="72" valign="middle" />
+  &nbsp;&nbsp;→&nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/c688a035-8b95-412b-a767-2002be472665" alt="New Postbird Logo" width="72" valign="middle" />
+</p>
 
 * **Ultra-low RAM:** ~45MB idle memory footprint (compared to ~250MB on Electron).
 * **Instant Startup:** Sub-80ms cold boot via native OS WebKit/WebView2 webviews.
 * **Compact Downloads:** Standalone macOS DMG is only ~28MB.
 * **Modern PostgreSQL 18.2:** Bundled dump and restore binaries with automatic macOS Gatekeeper bypass.
+* **Built-in AI Assistant (`Cmd+K` / `Ctrl+K`):** Write, explain, and optimize SQL queries directly in the Query tab. Auto-discovers local CLIs and servers (`claude`, `agy`, Apple Foundation Models `fm`, Ollama) plus cloud presets (Google AI Studio, Groq, OpenAI-compatible). Privacy-first: only schema metadata is shared on demand, never row data unless explicitly enabled.
 
-<img src="https://user-images.githubusercontent.com/26019/41055418-dcc55700-69f3-11e8-8d3e-572cf5febedc.png" alt="Connection Screen" width=65%>
-<img src="https://user-images.githubusercontent.com/26019/41055416-dc5a5464-69f3-11e8-87b8-994e763da816.png" alt="Table Content" width=65%>
-<img src="https://user-images.githubusercontent.com/26019/41055417-dc8eb56a-69f3-11e8-8145-6f0d5eb147a6.png" alt="Table Structure" width=65%>
+<img src="https://github.com/user-attachments/assets/a5847290-0faa-4c2a-81dd-0891428d6361" alt="Connection Screen" width="65%">
+<img src="https://github.com/user-attachments/assets/eff845c3-292b-4fae-a817-05911ed44ee6" alt="Table Content" width="65%">
+<img src="https://github.com/user-attachments/assets/06e1a451-6c5e-47f5-9833-956e96587485" alt="Table Structure" width="65%">
+<img src="https://github.com/user-attachments/assets/624220fe-6521-405a-b51d-ceaba4cfb48b" alt="Query and AI Assistant" width="65%">
 
 ## Download
 
@@ -62,7 +70,7 @@ bun run dist
 ls -la artifacts/
 ```
 
-See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details
+See [AGENTS.md](/AGENTS.md) for architecture and contributor details.
 
 ## Help Project
 

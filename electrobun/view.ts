@@ -1,6 +1,6 @@
 import Electrobun, { Electroview } from "electrobun/view";
 import { Buffer } from "buffer";
-import type { PostbirdRPC } from "./host/types";
+import type { PostbirdRPC, ContextMenuItemConfig } from "./host/types";
 
 (window as any).Buffer = Buffer;
 
@@ -19,8 +19,11 @@ const electroview = new Electrobun.Electroview({ rpc });
   disconnect: async (config: any) => {
     return await electroview.rpc!.request.disconnect({ config });
   },
-  spawnProcess: async (params: { bin: string; args: string[]; options?: any }) => {
+  spawnProcess: async (params: { bin: string; args: string[]; options?: any; streamId?: string }) => {
     return await electroview.rpc!.request.spawnProcess(params);
+  },
+  killProcess: async (params: { streamId: string }) => {
+    return await electroview.rpc!.request.killProcess(params);
   },
   discoverAiProviders: async (params?: { customEndpoints?: any[] }) => {
     return await electroview.rpc!.request.discoverAiProviders(params || {});
@@ -70,6 +73,9 @@ const electroview = new Electrobun.Electroview({ rpc });
   },
   openExternal: async (params: { url: string }) => {
     return await electroview.rpc!.request.openExternal(params);
+  },
+  showContextMenu: async (params: { items: ContextMenuItemConfig[] }) => {
+    return await electroview.rpc!.request.showContextMenu(params);
   },
   logDevError: async (params: { type: string; message: string; stack?: string; detail?: string }) => {
     try {

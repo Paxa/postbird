@@ -1,8 +1,7 @@
-import cp from 'child_process';
 import { BaseAdapter } from './base';
 import { CompletionOptions } from '../types';
 import { findBinary } from '../discovery';
-import { AILogger } from '../logger';
+import { runCliStream } from './cli_stream';
 
 const getTempDir = () => (typeof process !== 'undefined' && (process.env?.TMPDIR || process.env?.TEMP || process.env?.TMP)) || '/tmp';
 
@@ -62,128 +61,39 @@ export class AgyAdapter implements BaseAdapter {
     return result;
   }
 
+  private parseNdjsonLine(line: string, totalYielded: number): string {
+    try {
+      const parsed = JSON.parse(line);
+      if (parsed.event === 'step_update' && typeof parsed.step_update?.text_delta === 'string') {
+        return parsed.step_update.text_delta;
+      }
+      if (parsed.event === 'result' && typeof parsed.result?.response === 'string') {
+        return totalYielded === 0 ? parsed.result.response : '';
+      }
+      if ((parsed.type === 'delta' || parsed.type === 'message') && typeof parsed.content === 'string') {
+        return parsed.content;
+      }
+      if (typeof parsed.text === 'string') return parsed.text;
+      if (typeof parsed.delta === 'string') return parsed.delta;
+      if (typeof parsed.content === 'string') return parsed.content;
+      return '';
+    } catch {
+      return line;
+    }
+  }
+
   async *stream(options: CompletionOptions): AsyncIterable<string> {
     const bin = findBinary('agy') || 'agy';
     const args = this.buildArgs(options);
-    AILogger.logCli(this.id, bin, args);
-
-    const child = cp.spawn(bin, args, {
-      cwd: getTempDir(),
-      stdio: ['ignore', 'pipe', 'pipe']
+    yield* runCliStream({
+      id: this.id,
+      bin,
+      args,
+      cliLabel: 'Antigravity CLI (agy)',
+      model: options.model,
+      spawnOptions: { cwd: getTempDir(), stdio: ['ignore', 'pipe', 'pipe'] },
+      onToken: options.onToken,
+      parseLine: (line, totalYielded) => this.parseNdjsonLine(line, totalYielded),
     });
-
-    let stderr = '';
-    let exitCode: number | null = null;
-    let spawnError: any = null;
-
-    if (child.stderr) {
-      child.stderr.on('data', (chunk: any) => {
-        stderr += chunk.toString();
-      });
-    }
-
-    child.on('error', (err: any) => {
-      spawnError = err;
-      AILogger.logError(this.id, err, 'spawn error');
-    });
-
-    child.on('close', (code: number) => {
-      exitCode = code;
-    });
-
-    let buffer = '';
-    let totalYielded = 0;
-    const startTime = Date.now();
-    AILogger.logStreamStart(this.id, options.model);
-
-    try {
-      for await (const chunk of child.stdout) {
-        buffer += chunk.toString();
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            const parsed = JSON.parse(line);
-            // Handle standard stream-json event deltas and agy NDJSON step events
-            let delta = '';
-            if (parsed.event === 'step_update' && typeof parsed.step_update?.text_delta === 'string') {
-              delta = parsed.step_update.text_delta;
-            } else if (parsed.event === 'result' && typeof parsed.result?.response === 'string') {
-              // Yield final result response if nothing has been yielded yet
-              if (totalYielded === 0) {
-                delta = parsed.result.response;
-              }
-            } else if (parsed.type === 'delta' && typeof parsed.content === 'string') {
-              delta = parsed.content;
-            } else if (parsed.type === 'message' && typeof parsed.content === 'string') {
-              delta = parsed.content;
-            } else if (typeof parsed.text === 'string') {
-              delta = parsed.text;
-            } else if (typeof parsed.delta === 'string') {
-              delta = parsed.delta;
-            }
-
-            if (delta) {
-              totalYielded += delta.length;
-              if (options.onToken) options.onToken(delta);
-              yield delta;
-            }
-          } catch (e) {
-            // If non-JSON text output arrived
-            if (options.onToken) options.onToken(line);
-            totalYielded += line.length;
-            yield line;
-          }
-        }
-      }
-
-      if (buffer.trim()) {
-        try {
-          const parsed = JSON.parse(buffer);
-          let delta = '';
-          if (parsed.event === 'step_update' && typeof parsed.step_update?.text_delta === 'string') {
-            delta = parsed.step_update.text_delta;
-          } else if (parsed.event === 'result' && typeof parsed.result?.response === 'string') {
-            if (totalYielded === 0) {
-              delta = parsed.result.response;
-            }
-          } else {
-            delta = parsed.content || parsed.text || parsed.delta || '';
-          }
-          if (delta) {
-            totalYielded += delta.length;
-            if (options.onToken) options.onToken(delta);
-            yield delta;
-          }
-        } catch (e) {
-          totalYielded += buffer.length;
-          yield buffer;
-        }
-      }
-
-      if (spawnError) {
-        throw spawnError;
-      }
-
-      if (totalYielded === 0) {
-        const errDetail = stderr.trim();
-        if (exitCode !== null && exitCode !== 0) {
-          const msg = errDetail || `Antigravity CLI (agy) exited with code ${exitCode}`;
-          AILogger.logError(this.id, new Error(msg), `exitCode ${exitCode}`);
-          throw new Error(msg);
-        }
-        if (errDetail) {
-          AILogger.logError(this.id, new Error(errDetail), 'stderr output');
-          throw new Error(errDetail);
-        }
-      } else {
-        AILogger.logStreamEnd(this.id, totalYielded, Date.now() - startTime);
-      }
-    } catch (err: any) {
-      AILogger.logError(this.id, err, 'stream execution');
-      throw err;
-    }
   }
 }

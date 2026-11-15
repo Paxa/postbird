@@ -28,8 +28,6 @@ var customDateParser = (val: any) => {
 types.setTypeParser(TIMESTAMPTZ_OID, customDateParser);
 types.setTypeParser(TIMESTAMP_OID, customDateParser);
 
-var usingNativeLib = true;
-
 
 
 interface FieldDef {
@@ -127,11 +125,7 @@ class Connection {
       }
     }
 
-    if (usingNativeLib) {
-      this.connectString = this.connectString.replace(/(\?|&)ssl=1/, '$1ssl=verify-full');
-    } else {
-      this.connectString = this.connectString.replace(/(\?|&)ssl=verify-full/, '$1ssl=1');
-    }
+    this.connectString = this.connectString.replace(/(\?|&)ssl=1/, '$1ssl=verify-full');
 
     logger.info('Connecting to', this.connectString);
 

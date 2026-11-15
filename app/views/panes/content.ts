@@ -475,8 +475,17 @@ class Content extends PaneBase {
     });
 
     var contextMenuActions: Record<string, any> = {
-      'Copy'() {
-        window.document.execCommand("copy");
+      'Copy': () => {
+        var selectedText = window.getSelection ? window.getSelection().toString() : '';
+        if (selectedText) {
+          formatUtil.copyToClipboard(selectedText);
+          return;
+        }
+        var event = table[0].contextmenu.clickEvent;
+        var el = event && (event.target.tagName == 'TD' || event.target.tagName == 'TH' ? event.target : $u(event.target).closest('td, th')[0]) as HTMLElement;
+        if (el) {
+          this.copyCellValue(el);
+        }
       }
     };
 
@@ -539,16 +548,15 @@ class Content extends PaneBase {
     };
 
     $u.contextMenu(table, contextMenuActions, {
-      // if text is not selected - disable copy button
       onShow: (event, contextmenu) => {
-        var isTextSelected = window.getSelection().toString() != "";
+        var isTextSelected = (window.getSelection ? window.getSelection().toString() : "") != "";
         var target = event.target as HTMLElement;
         var isRow = Boolean(target && (target.tagName === 'TR' || $u(target).closest('tbody tr').length));
         var isCell = Boolean(target && (target.tagName === 'TD' || target.tagName === 'TH' || $u(target).closest('td, th').length));
 
         contextmenu.items.forEach(item => {
           if (item.label == "Copy") {
-            item.enabled = isTextSelected;
+            item.enabled = isTextSelected || isCell;
           }
           if (item.label && item.label.startsWith("Copy Row")) {
             item.enabled = isRow;
@@ -594,6 +602,7 @@ class Content extends PaneBase {
     }
     if (this.currentTableType != 'BASE TABLE') {
       $u.alert("Can't delete from " + this.currentTableType);
+      return;
     }
     if (confirm("Are you sure want to delete this row?")) {
       var ctid = $u(row).attr('data-ctid');
@@ -603,6 +612,30 @@ class Content extends PaneBase {
       } catch (error) {
         $u.alert(error.message);
       }
+    }
+  }
+
+  copyCellValue (cell: HTMLElement) {
+    if (!cell) return;
+    let text = '';
+    if (cell.tagName === 'TD' && this.currentData && this.currentData.rows) {
+      var position = typeof (dom as any).elementIndex === 'function' ? (dom as any).elementIndex(cell) : $u(cell).prevAll('td').length;
+      var tr = cell.closest ? cell.closest('tr') : $u(cell).closest('tr')[0];
+      var ctid = tr ? ((tr.getAttribute && tr.getAttribute('data-ctid')) || (tr as any).dataset?.ctid) : null;
+      var cleanFields = (this.currentData.fields || []).filter((f: any) => f.name != 'ctid');
+      var fieldDef = cleanFields[position];
+      var selectedRow = ctid ? this.currentData.rows.find((r: any) => r.ctid == ctid) : null;
+      if (selectedRow && fieldDef) {
+        text = formatUtil.formatCellText(selectedRow[fieldDef.name]);
+      } else {
+        text = cell.textContent || '';
+      }
+    } else {
+      text = cell.textContent || '';
+    }
+    formatUtil.copyToClipboard(text);
+    if (window.alertify && typeof window.alertify.success === 'function') {
+      window.alertify.success('Copied to clipboard');
     }
   }
 

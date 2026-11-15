@@ -37,6 +37,20 @@
           .status-row
             span.status-label Privacy
             span.status-val Schema & Errors Only
+        .detail-quota-box
+          .quota-header
+            span.quota-title Usage & Quotas
+            button.native-look.ai-quota-refresh-btn(type="button" title="Refresh quota & usage") ↻ Refresh
+          .quota-rows
+            .status-row
+              span.status-label 5h Window
+              span.status-val.quota-5h-val —
+            .status-row
+              span.status-label Weekly (7d)
+              span.status-val.quota-7d-val —
+            .status-row.quota-api-row
+              span.status-label Provider Quota
+              span.status-val.quota-api-val —
         .detail-test-box
           button.native-look.ai-test-btn(type="button") ⚡ Test Connection
           .ai-test-result.is-hidden

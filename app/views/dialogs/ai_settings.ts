@@ -109,6 +109,19 @@ class AiSettings extends DialogBase {
       });
     }
 
+    // Restore cached model lists (e.g. live models from agy / OpenAI-compatible endpoints)
+    try {
+      var cachedModelsRaw = window.localStorage.getItem('postbird_ai_cached_models');
+      if (cachedModelsRaw) {
+        var cachedModelsMap = JSON.parse(cachedModelsRaw);
+        this.providers.forEach(p => {
+          if (cachedModelsMap && Array.isArray(cachedModelsMap[p.id]) && cachedModelsMap[p.id].length > 0) {
+            p.models = cachedModelsMap[p.id];
+          }
+        });
+      }
+    } catch (e) {}
+
     // Determine initial selection: prioritize local zero-setup CLI (agy, claude, etc.)
     if (this.confirmedConfig && this.confirmedConfig.providerId) {
       this.selectedProviderId = this.confirmedConfig.providerId;
@@ -124,6 +137,16 @@ class AiSettings extends DialogBase {
 
     this.renderProviderLists();
     this.renderDetailPane();
+
+    // Auto-fetch live models for agy if not cached yet
+    var agyProvider = this.providers.find(p => p.id === 'agy' && p.status === 'ready');
+    if (agyProvider && agyProvider.models && agyProvider.models.length <= 3) {
+      localAI.verifyProvider('agy', { path: agyProvider.path }).then((res: any) => {
+        if (res && res.ok && Array.isArray(res.models) && res.models.length > 0) {
+          this.updateModelsList(agyProvider, res.models);
+        }
+      }).catch(() => {});
+    }
   }
 
   renderProviderLists() {
@@ -240,9 +263,166 @@ class AiSettings extends DialogBase {
 
     this.content.find('.ai-test-result').addClass('is-hidden').removeClass('success error').empty();
     this.content.find('.ai-test-btn').prop('disabled', false).text('⚡ Test Connection');
+
+    this.renderQuotaBox(p);
+  }
+
+  updateModelsList(p: any, models?: string[]) {
+    if (!p || !Array.isArray(models) || models.length === 0) return;
+    p.models = models;
+
+    try {
+      var raw = window.localStorage.getItem('postbird_ai_cached_models');
+      var map = raw ? JSON.parse(raw) : {};
+      map[p.id] = models;
+      window.localStorage.setItem('postbird_ai_cached_models', JSON.stringify(map));
+    } catch (e) {}
+
+    if (this.content && p.id === this.selectedProviderId) {
+      var modelSelect = this.content.find('.model-select').empty();
+      models.forEach((m: string) => {
+        var opt = $u('<option></option>').attr('value', m).text(m);
+        if (m === this.selectedModel) opt.attr('selected', 'selected');
+        modelSelect.append(opt);
+      });
+      if (!models.includes(this.selectedModel)) {
+        this.selectedModel = models[0];
+        modelSelect.val(models[0]);
+      }
+    }
+  }
+
+  renderQuotaBox(p: any) {
+    if (!this.content || !p) return;
+
+    var activeModel = this.selectedModel || p.defaultModel || (p.models && p.models[0]);
+    var supportsModels = Array.isArray(p.models) && p.models.length > 0 && p.id !== 'fm';
+    var modelFilter = supportsModels && activeModel ? activeModel : undefined;
+
+    var summary = typeof localAI.getAiUsageSummary === 'function'
+      ? localAI.getAiUsageSummary(p.id, undefined, modelFilter)
+      : {
+          last5h: { requests: 0, tokens: 0 },
+          last7d: { requests: 0, tokens: 0 },
+          totalLast5h: { requests: 0, tokens: 0 },
+          totalLast7d: { requests: 0, tokens: 0 }
+        };
+
+    var fmtDur = (ms?: number) => {
+      if (ms === undefined) return '';
+      return typeof localAI.formatDurationRemaining === 'function'
+        ? localAI.formatDurationRemaining(ms)
+        : `${Math.max(1, Math.ceil(ms / 60000))}m`;
+    };
+
+    var fmtPct = (tokens: number, budget: number) => {
+      if (!tokens || budget <= 0) return '0%';
+      var pct = (tokens / budget) * 100;
+      if (pct < 0.1) return '<0.1%';
+      if (pct < 10) return `${pct.toFixed(1)}%`;
+      return `${Math.round(pct)}%`;
+    };
+
+    var BUDGET_5H = 500000;
+    var BUDGET_7D = 5000000;
+
+    var isUnlimitedLocal = p.id === 'fm';
+
+    var formatWindow = (
+      w: { requests: number; tokens: number; resetsInMs?: number },
+      budget: number
+    ) => {
+      if (isUnlimitedLocal) {
+        if (!w || w.requests === 0) return '0 reqs · 0 tok';
+        return `${w.requests} ${w.requests === 1 ? 'req' : 'reqs'} · ${w.tokens.toLocaleString()} tok`;
+      }
+      if (!w || w.requests === 0) {
+        return '0% · 0 reqs · 0 tok';
+      }
+      var resetStr = w.resetsInMs !== undefined ? ` · resets in ${fmtDur(w.resetsInMs)}` : '';
+      return `${fmtPct(w.tokens, budget)} (${w.tokens.toLocaleString()} tok)${resetStr}`;
+    };
+
+    this.content.find('.quota-5h-val').text(formatWindow(summary.last5h, BUDGET_5H));
+    this.content.find('.quota-7d-val').text(formatWindow(summary.last7d, BUDGET_7D));
+
+    var cachedQuota = typeof localAI.getProviderQuota === 'function'
+      ? localAI.getProviderQuota(p.id)
+      : undefined;
+
+    var apiRowEl = this.content.find('.quota-api-row');
+    var apiValEl = this.content.find('.quota-api-val');
+    apiValEl.removeClass('muted');
+
+    if (cachedQuota && cachedQuota.source === 'api-headers') {
+      var parts: string[] = [];
+      if (cachedQuota.requestsRemaining !== undefined) {
+        if (cachedQuota.requestsLimit !== undefined && cachedQuota.requestsLimit > 0) {
+          var reqPct = Math.round((cachedQuota.requestsRemaining / cachedQuota.requestsLimit) * 100);
+          parts.push(`${reqPct}% req left (${cachedQuota.requestsRemaining.toLocaleString()}/${cachedQuota.requestsLimit.toLocaleString()})`);
+        } else {
+          parts.push(`${cachedQuota.requestsRemaining.toLocaleString()} req left`);
+        }
+      }
+      if (cachedQuota.tokensRemaining !== undefined) {
+        if (cachedQuota.tokensLimit !== undefined && cachedQuota.tokensLimit > 0) {
+          var tokPct = Math.round((cachedQuota.tokensRemaining / cachedQuota.tokensLimit) * 100);
+          parts.push(`${tokPct}% tok left (${cachedQuota.tokensRemaining.toLocaleString()}/${cachedQuota.tokensLimit.toLocaleString()})`);
+        } else {
+          parts.push(`${cachedQuota.tokensRemaining.toLocaleString()} tok left`);
+        }
+      }
+      if (parts.length > 0) {
+        var text = parts.join(' · ');
+        var rawReset = cachedQuota.tokensReset || cachedQuota.requestsReset;
+        if (rawReset) {
+          var resetFormatted = typeof localAI.formatResetTime === 'function'
+            ? localAI.formatResetTime(rawReset)
+            : rawReset;
+          if (resetFormatted) text += ` · resets in ${resetFormatted}`;
+        }
+        apiValEl.text(text);
+        apiRowEl.show();
+        return;
+      }
+    }
+
+    apiRowEl.hide();
   }
 
   bindEvents() {
+    this.content.find('.ai-quota-refresh-btn').on('click', async () => {
+      var p = this.providers.find(x => x.id === this.selectedProviderId);
+      if (!p) return;
+
+      var refreshBtn = this.content.find('.ai-quota-refresh-btn');
+      refreshBtn.prop('disabled', true).text('↻ ...');
+
+      var baseUrl = this.content.find('.base-url-input').val();
+      var apiKey = this.content.find('.api-key-input').val();
+      var verifyOpts: any = {
+        model: this.selectedModel || p.defaultModel,
+        baseUrl: baseUrl ? String(baseUrl).trim() : p.baseUrl,
+        apiKey: apiKey ? String(apiKey).trim() : p.apiKey,
+        path: p.path
+      };
+
+      try {
+        var res = await localAI.verifyProvider(p.id, verifyOpts);
+        if (res && res.ok && Array.isArray(res.models) && res.models.length > 0) {
+          this.updateModelsList(p, res.models);
+        }
+        if (res && res.quota && typeof localAI.saveProviderQuota === 'function') {
+          localAI.saveProviderQuota(p.id, res.quota);
+        }
+      } catch (e) {
+        // Still refresh local usage counters even if remote check fails
+      } finally {
+        this.renderQuotaBox(p);
+        refreshBtn.prop('disabled', false).text('↻ Refresh');
+      }
+    });
+
     this.content.find('.ai-test-btn').on('click', async () => {
       var p = this.providers.find(x => x.id === this.selectedProviderId);
       if (!p) return;
@@ -277,21 +457,14 @@ class AiSettings extends DialogBase {
             p.source === 'cloud' || p.source === 'custom' ? '✓ API Key Verified' : '✓ Verified & Ready'
           );
 
-          // If models were discovered, update dropdown dynamically
-          if (Array.isArray(res.models) && res.models.length > 0) {
-            p.models = res.models;
-            var modelSelect = this.content.find('.model-select').empty();
-            res.models.forEach((m: string) => {
-              var opt = $u('<option></option>').attr('value', m).text(m);
-              if (m === this.selectedModel) opt.attr('selected', 'selected');
-              modelSelect.append(opt);
-            });
-            if (!res.models.includes(this.selectedModel)) {
-              this.selectedModel = res.models[0];
-              modelSelect.val(res.models[0]);
-            }
+          // If models were discovered, update dropdown & cache dynamically
+          this.updateModelsList(p, res.models);
+
+          if (res.quota && typeof localAI.saveProviderQuota === 'function') {
+            localAI.saveProviderQuota(p.id, res.quota);
           }
 
+          this.renderQuotaBox(p);
           this.renderProviderLists();
         } else {
           resultBox.addClass('error').text(`✕ ${res.message}`);
@@ -306,6 +479,8 @@ class AiSettings extends DialogBase {
 
     this.content.find('.model-select').on('change', (e: any) => {
       this.selectedModel = e.target.value;
+      var p = this.providers.find(x => x.id === this.selectedProviderId);
+      if (p) this.renderQuotaBox(p);
     });
 
     this.content.find('.ai-confirm-btn').on('click', () => {

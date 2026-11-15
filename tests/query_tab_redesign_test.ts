@@ -578,6 +578,61 @@ describe('Query Tab Redesign & Multi-Buffer UI', () => {
     assert.equal(userTitle, '20:33 5 nov 2026 - 42 tok');
   });
 
+  it('renders styled SQL error banner with Fix SQL error with AI button', () => {
+    const mockView: any = { handler: { connection: {} } };
+    const query = new QueryPane(mockView);
+    query.content = $u(App.renderView('query_tab'));
+    query.statusLine = query.content.find('.result .status');
+    query.editor = { refresh: () => {}, focus: () => {}, getValue: () => 'SELECT ROUND(1.5::double precision, 1);' } as any;
+
+    let sentPrompt = '';
+    query.sendAiPrompt = (overridePrompt?: string) => {
+      sentPrompt = overridePrompt || String(query.content.find('.ai-prompt-input').val() || '');
+    };
+
+    query.renderSqlError('SELECT ROUND(1.5::double precision, 1);', {
+      message: 'function round(double precision, integer) does not exist',
+      hint: 'No function matches the given name and argument types. You might need to add explicit type casts.'
+    });
+
+    assert(query.statusLine.hasClass('is-error'), 'Status line should have .is-error class');
+    const html = query.statusLine.html();
+    assert(html.includes('sql-error-banner'), 'Should render .sql-error-banner');
+    assert(html.includes('function round(double precision, integer) does not exist'), 'Should render error message');
+    assert(html.includes('Fix SQL error with AI'), 'Should render Fix SQL error with AI button');
+
+    assert(query.statusLine.find('.sql-fix-ai-btn').length > 0, 'Should have clickable .sql-fix-ai-btn element');
+    query.fixSqlErrorWithAi(
+      'SELECT ROUND(1.5::double precision, 1);',
+      'function round(double precision, integer) does not exist'
+    );
+    assert.equal(query.aiPanelOpen, true, 'Clicking Fix button should open AI panel');
+    assert(sentPrompt.includes('function round(double precision, integer) does not exist'), 'Prompt should include SQL error');
+  });
+
+  it('includes query results in AI context only when Include query results checkbox is checked', () => {
+    const mockView: any = { handler: { connection: {} } };
+    const query = new QueryPane(mockView);
+    query.content = $u(App.renderView('query_tab'));
+    query.lastResult = {
+      fields: [{ name: 'id' }, { name: 'email' }],
+      rows: Array.from({ length: 35 }, (_, i) => [i + 1, `user${i + 1}@example.com`]),
+      rowCount: 35
+    } as any;
+
+    const checkbox = query.content.find('.ai-include-results');
+    assert.equal(checkbox.length, 1, 'Should render .ai-include-results checkbox');
+    assert.equal(Boolean((checkbox[0] as HTMLInputElement).checked), false, 'Should default to unchecked for privacy');
+    assert.equal(query.getQueryResultsContext(), '', 'Should not share rows when unchecked');
+
+    (checkbox[0] as HTMLInputElement).checked = true;
+    const ctx = query.getQueryResultsContext();
+    assert(ctx.includes('Columns: [id, email]'), 'Should include column names');
+    assert(ctx.includes('Sample Rows (first 30):'), 'Should cap sample rows at 30');
+    assert(ctx.includes('user1@example.com'), 'Should include first row');
+    assert(!ctx.includes('user35@example.com'), 'Should not include rows beyond 30');
+  });
+
 });
 
 export {};

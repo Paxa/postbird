@@ -92,6 +92,21 @@ class SimpleEmitter {
   }
 }
 
+const activeStreams = new Map();
+let streamCounter = 0;
+
+if (typeof window !== "undefined") {
+  window.__postbirdProcessChunk = (streamId, stream, chunk) => {
+    const entry = activeStreams.get(streamId);
+    if (!entry) return;
+    if (stream === "stdout" && entry.stdout) {
+      entry.stdout.emit("data", chunk);
+    } else if (stream === "stderr" && entry.stderr) {
+      entry.stderr.emit("data", chunk);
+    }
+  };
+}
+
 class ChildProcessShim extends SimpleEmitter {
   constructor(bin, args, options) {
     super();
@@ -105,18 +120,29 @@ class ChildProcessShim extends SimpleEmitter {
     this.stderr = new SimpleEmitter();
     this.stderr.setEncoding = () => this.stderr;
 
-    this.kill = () => {};
+    const streamId = `proc_${++streamCounter}`;
+    activeStreams.set(streamId, { stdout: this.stdout, stderr: this.stderr });
+
+    this.kill = () => {
+      activeStreams.delete(streamId);
+      if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.killProcess) {
+        window.__postbirdRpc.killProcess({ streamId }).catch(() => {});
+      }
+    };
 
     // Execute via Electrobun RPC in next tick
     queueMicrotask(async () => {
       try {
         if (typeof window !== "undefined" && window.__postbirdRpc && window.__postbirdRpc.spawnProcess) {
-          const res = await window.__postbirdRpc.spawnProcess({ bin, args, options });
-          if (res.stdout) {
-            this.stdout.emit("data", res.stdout);
-          }
-          if (res.stderr) {
-            this.stderr.emit("data", res.stderr);
+          const res = await window.__postbirdRpc.spawnProcess({ bin, args, options, streamId });
+          activeStreams.delete(streamId);
+          if (!res.streamed) {
+            if (res.stdout) {
+              this.stdout.emit("data", res.stdout);
+            }
+            if (res.stderr) {
+              this.stderr.emit("data", res.stderr);
+            }
           }
           this.stdout.emit("end");
           this.stdout.emit("close");
@@ -124,6 +150,7 @@ class ChildProcessShim extends SimpleEmitter {
           this.stderr.emit("close");
           this.emit("close", res.code ?? 0);
         } else {
+          activeStreams.delete(streamId);
           console.warn("[child_process.spawn - RPC not ready, fallback close]", bin);
           this.stdout.emit("end");
           this.stdout.emit("close");
@@ -132,6 +159,7 @@ class ChildProcessShim extends SimpleEmitter {
           this.emit("close", 0);
         }
       } catch (err) {
+        activeStreams.delete(streamId);
         console.error("[child_process.spawn RPC Error]", err);
         this.stdout.emit("error", err);
         this.emit("error", err);

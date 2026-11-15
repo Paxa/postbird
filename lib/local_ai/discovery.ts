@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import cp from 'child_process';
 import { DiscoveredProvider, CustomEndpointConfig, ProviderVerificationResult } from './types';
+import { extractRateLimitQuota } from './usage_tracker';
 
 export function getCandidateDirectories(): string[] {
   const home = process.env.HOME || process.env.USERPROFILE || '';
@@ -74,6 +75,41 @@ export async function probeHttpEndpoint(url: string, timeoutMs: number = 250): P
   }
 }
 
+export async function spawnAsync(
+  bin: string,
+  args: string[],
+  timeoutMs: number = 2000
+): Promise<{ status: number | null; stdout: string; stderr: string }> {
+  return new Promise((resolve) => {
+    let stdout = '';
+    let stderr = '';
+    let settled = false;
+    let timer: any = null;
+
+    const finish = (status: number | null) => {
+      if (settled) return;
+      settled = true;
+      if (timer) clearTimeout(timer);
+      resolve({ status, stdout, stderr });
+    };
+
+    try {
+      const child = cp.spawn(bin, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+      timer = setTimeout(() => {
+        try { child.kill('SIGKILL'); } catch {}
+        finish(null);
+      }, timeoutMs);
+
+      child.stdout?.on('data', (d: any) => { stdout += d.toString(); });
+      child.stderr?.on('data', (d: any) => { stderr += d.toString(); });
+      child.on('error', () => finish(null));
+      child.on('close', (code: number | null) => finish(code));
+    } catch {
+      finish(null);
+    }
+  });
+}
+
 export async function discoverProviders(customEndpoints: CustomEndpointConfig[] = []): Promise<DiscoveredProvider[]> {
   // If running in Electrobun webview, forward discovery to Bun host via RPC for full host filesystem & PATH access
   if (typeof window !== 'undefined' && (window as any).__postbirdRpc && typeof (window as any).__postbirdRpc.discoverAiProviders === 'function') {
@@ -106,16 +142,14 @@ export async function discoverProviders(customEndpoints: CustomEndpointConfig[] 
 
   // 2. Claude Code CLI (claude)
   const claudePath = findBinary('claude');
-  if (claudePath) {
+  const checkClaude = async () => {
+    if (!claudePath) return;
     let claudeStatus: DiscoveredProvider['status'] = 'ready';
     let claudeHint: string | undefined;
     let claudeCommandHint: string | undefined;
 
     try {
-      const authRes = cp.spawnSync(claudePath, ['auth', 'status'], {
-        timeout: 1500,
-        encoding: 'utf8'
-      });
+      const authRes = await spawnAsync(claudePath, ['auth', 'status'], 1500);
       const authOut = `${authRes.stdout || ''}\n${authRes.stderr || ''}`.trim();
       if (authRes.status !== 0 || authOut.includes('"loggedIn":false')) {
         claudeStatus = 'needs_setup';
@@ -137,7 +171,7 @@ export async function discoverProviders(customEndpoints: CustomEndpointConfig[] 
       commandHint: claudeCommandHint,
       source: 'local-cli'
     });
-  }
+  };
 
   // 3. Cursor Agent CLI (cursor-agent / agent)
   const cursorPath = findBinary('cursor-agent') || findBinary('agent');
@@ -226,13 +260,14 @@ export async function discoverProviders(customEndpoints: CustomEndpointConfig[] 
   }
 
   // 7. Microsoft Foundry Local (Windows)
-  if (process.platform === 'win32') {
+  const checkFoundry = async () => {
+    if (process.platform !== 'win32') return;
     const foundryPath = findBinary('foundry');
     if (foundryPath) {
       let isServiceRunning = false;
       let servicePort = 5273;
       try {
-        const statusRun = cp.spawnSync(foundryPath, ['service', 'status'], { encoding: 'utf-8', timeout: 1000 });
+        const statusRun = await spawnAsync(foundryPath, ['service', 'status'], 1000);
         const out = (statusRun.stdout || '') + (statusRun.stderr || '');
         const portMatch = out.match(/http:\/\/127\.0\.0\.1:(\d+)/i) || out.match(/port\s+(\d+)/i);
         if (portMatch) {
@@ -254,20 +289,21 @@ export async function discoverProviders(customEndpoints: CustomEndpointConfig[] 
         source: 'windows-native'
       });
     }
-  }
+  };
 
   // 8. macOS Apple Foundation Models (/usr/bin/fm)
-  if (process.platform === 'darwin') {
+  const checkFm = async () => {
+    if (process.platform !== 'darwin') return;
     const fmPath = findBinary('fm') || (fs.existsSync('/usr/bin/fm') ? '/usr/bin/fm' : null);
     if (fmPath) {
       let isReady = false;
       let hint: string | undefined;
       let statusHintText = 'Terms not agreed yet or model files removed.';
       try {
-        const check = cp.spawnSync(fmPath, ['license', '--status'], { encoding: 'utf-8', timeout: 800 });
+        const check = await spawnAsync(fmPath, ['license', '--status'], 800);
         const stdout = ((check.stdout || '') + (check.stderr || '')).toLowerCase();
         if (check.status === 0 && !stdout.includes('not agreed') && (stdout.includes('agreed') || stdout.includes('accepted'))) {
-          const avail = cp.spawnSync(fmPath, ['available'], { encoding: 'utf-8', timeout: 800 });
+          const avail = await spawnAsync(fmPath, ['available'], 800);
           const availOut = ((avail.stdout || '') + (avail.stderr || '')).toLowerCase();
           if (avail.status === 0 && !availOut.includes('unavailable') && !availOut.includes('modelnotready')) {
             isReady = true;
@@ -295,7 +331,9 @@ export async function discoverProviders(customEndpoints: CustomEndpointConfig[] 
         source: 'macos-builtin'
       });
     }
-  }
+  };
+
+  await Promise.all([checkClaude(), checkFoundry(), checkFm()]);
 
   // 9. Google AI Studio (Gemini Free Tier) via GEMINI_API_KEY / GOOGLE_API_KEY env var
   const envGeminiKey = (typeof process !== 'undefined' && process.env)
@@ -354,12 +392,17 @@ export async function verifyProvider(
       return { ok: false, message: 'claude binary not found in PATH' };
     }
     try {
-      const authRes = cp.spawnSync(claudePath, ['auth', 'status'], { timeout: 3000, encoding: 'utf8' });
+      const authRes = await spawnAsync(claudePath, ['auth', 'status'], 3000);
       const out = `${authRes.stdout || ''}\n${authRes.stderr || ''}`.trim();
       if (authRes.status !== 0 || out.includes('"loggedIn":false')) {
         return { ok: false, message: 'OAuth session expired or not logged in. Run "claude auth login".' };
       }
-      return { ok: true, message: 'Claude Code CLI is authenticated and ready', latencyMs: Date.now() - startTime };
+      return {
+        ok: true,
+        message: 'Claude Code CLI is authenticated and ready',
+        latencyMs: Date.now() - startTime,
+        quota: { source: 'cli-unavailable', updatedAt: Date.now() }
+      };
     } catch (err: any) {
       return { ok: false, message: `Failed to check claude: ${err.message}` };
     }
@@ -373,7 +416,7 @@ export async function verifyProvider(
     }
     let fetchedModels: string[] | undefined;
     try {
-      const modelsRes = cp.spawnSync(agyPath, ['models'], { timeout: 20000, encoding: 'utf8' });
+      const modelsRes = await spawnAsync(agyPath, ['models'], 20000);
       if (modelsRes.status === 0 && modelsRes.stdout) {
         const lines = modelsRes.stdout.split('\n');
         const parsed: string[] = [];
@@ -391,7 +434,8 @@ export async function verifyProvider(
         ok: true,
         message: 'Antigravity CLI is ready',
         models: fetchedModels,
-        latencyMs: Date.now() - startTime
+        latencyMs: Date.now() - startTime,
+        quota: { source: 'cli-unavailable', updatedAt: Date.now() }
       };
     } catch (err: any) {
       return { ok: false, message: `Failed to check agy: ${err.message}` };
@@ -408,15 +452,20 @@ export async function verifyProvider(
       return { ok: false, message: '/usr/bin/fm not found' };
     }
     try {
-      const licRes = cp.spawnSync(fmPath, ['license', '--status'], { timeout: 2000, encoding: 'utf8' });
+      const licRes = await spawnAsync(fmPath, ['license', '--status'], 2000);
       if (licRes.status !== 0) {
         return { ok: false, message: "License not agreed. Run 'sudo fm license' to review and agree." };
       }
-      const availRes = cp.spawnSync(fmPath, ['available'], { timeout: 2000, encoding: 'utf8' });
+      const availRes = await spawnAsync(fmPath, ['available'], 2000);
       if (availRes.status !== 0) {
         return { ok: false, message: 'System model unavailable (modelNotReady). Apple Intelligence assets required.' };
       }
-      return { ok: true, message: 'Apple Foundation Model (~3B) is ready on-device', latencyMs: Date.now() - startTime };
+      return {
+        ok: true,
+        message: 'Apple Foundation Model (~3B) is ready on-device',
+        latencyMs: Date.now() - startTime,
+        quota: { source: 'cli-unavailable', updatedAt: Date.now() }
+      };
     } catch (err: any) {
       return { ok: false, message: `Failed to check fm: ${err.message}` };
     }
@@ -449,7 +498,7 @@ export async function verifyProvider(
       return { ok: false, message: `${providerId} binary not found in PATH` };
     }
     try {
-      const res = cp.spawnSync(bin, ['--version'], { timeout: 2000, encoding: 'utf8' });
+      const res = await spawnAsync(bin, ['--version'], 2000);
       if (res.status === 0 || (res.stdout && res.stdout.length > 0)) {
         return { ok: true, message: `${providerId} CLI is installed and executable`, latencyMs: Date.now() - startTime };
       }
@@ -519,11 +568,13 @@ export async function verifyProvider(
         }
 
         const latency = Date.now() - startTime;
+        const quota = extractRateLimitQuota(modelsRes.headers) || { source: 'local-only' as const, updatedAt: Date.now() };
         return {
           ok: true,
           message: `Connected successfully (${latency}ms) — API key verified`,
           models: models.length > 0 ? models : undefined,
-          latencyMs: latency
+          latencyMs: latency,
+          quota
         };
       }
 
@@ -552,7 +603,8 @@ export async function verifyProvider(
 
         if (pingRes.status === 200) {
           const latency = Date.now() - startTime;
-          return { ok: true, message: `Connected successfully (${latency}ms) — API key verified`, latencyMs: latency };
+          const quota = extractRateLimitQuota(pingRes.headers) || { source: 'local-only' as const, updatedAt: Date.now() };
+          return { ok: true, message: `Connected successfully (${latency}ms) — API key verified`, latencyMs: latency, quota };
         } else {
           let errText = `Endpoint returned HTTP ${pingRes.status}`;
           try {

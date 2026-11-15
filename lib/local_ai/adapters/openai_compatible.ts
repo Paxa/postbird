@@ -1,6 +1,7 @@
 import { BaseAdapter } from './base';
 import { CompletionOptions, ChatMessage } from '../types';
 import { AILogger } from '../logger';
+import { extractRateLimitQuota, saveProviderQuota } from '../usage_tracker';
 
 export interface OpenAICompatibleConfig {
   id: string;
@@ -111,6 +112,9 @@ export class OpenAICompatibleAdapter implements BaseAdapter {
         throw err;
       }
 
+      const quota = extractRateLimitQuota(res.headers);
+      if (quota) saveProviderQuota(this.id, quota);
+
       const data: any = await res.json();
       const content = data.choices?.[0]?.message?.content || '';
       if (options.onToken) {
@@ -162,6 +166,9 @@ export class OpenAICompatibleAdapter implements BaseAdapter {
         AILogger.logError(this.id, err, 'HTTP non-200 stream');
         throw err;
       }
+
+      const quota = extractRateLimitQuota(res.headers);
+      if (quota) saveProviderQuota(this.id, quota);
 
       if (!res.body) {
         const err = new Error(`[OpenAICompatible ${this.id}] Response body is null`);
