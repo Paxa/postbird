@@ -370,6 +370,26 @@ jobs:
         run: bun run dist
       - name: Package deb, rpm and AppImage
         run: bash scripts/package_linux.sh linux-${{ matrix.arch }}
+      - name: Stage .deb for the snap build
+        run: cp "artifacts/Postbird-linux-${{ matrix.arch }}.deb" postbird.deb
+      - name: Pre-install LXD and Snapcraft with retries
+        continue-on-error: true
+        run: |
+          for attempt in 1 2 3; do
+            if sudo snap install lxd && sudo snap install snapcraft --classic; then
+              exit 0
+            fi
+            echo "Snap Store install attempt $attempt failed; retrying in 15s..."
+            sleep 15
+          done
+          exit 1
+      - name: Build snap
+        id: snap
+        continue-on-error: true
+        uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
+      - name: Move snap into artifacts
+        if: steps.snap.outcome == 'success' && steps.snap.outputs.snap != ''
+        run: mv "${{ steps.snap.outputs.snap }}" "artifacts/Postbird-linux-${{ matrix.arch }}.snap"
       - name: Upload to the draft release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -388,5 +408,6 @@ jobs:
               exit 1
             fi
           done
+          snap_files=(artifacts/Postbird-linux-${{ matrix.arch }}.snap)
           updater_files=(artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch)
-          gh release upload "$TAG" "${files[@]}" "${updater_files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+          gh release upload "$TAG" "${files[@]}" "${snap_files[@]}" "${updater_files[@]}" --clobber --repo "$GITHUB_REPOSITORY"

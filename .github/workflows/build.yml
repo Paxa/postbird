@@ -77,6 +77,7 @@ jobs:
 
       - name: Pre-install LXD and Snapcraft with retries
         if: runner.os == 'Linux'
+        continue-on-error: true
         run: |
           for attempt in 1 2 3; do
             if sudo snap install lxd && sudo snap install snapcraft --classic; then
@@ -90,10 +91,11 @@ jobs:
       - name: Build snap
         if: runner.os == 'Linux'
         id: snap
+        continue-on-error: true
         uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
 
       - name: Move snap into artifacts
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && steps.snap.outcome == 'success' && steps.snap.outputs.snap != ''
         run: mv "${{ steps.snap.outputs.snap }}" "artifacts/Postbird-${{ matrix.target }}.snap"
 
       - name: Prepare distribution artifacts
