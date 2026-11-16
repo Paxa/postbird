@@ -26,6 +26,7 @@ Postbird is an open-source, ultra-fast cross-platform PostgreSQL GUI client—no
 **Latest Release (v0.9.0)**
 
 * **macOS (Apple Silicon M1/M2/M3/M4):** [Postbird-macos-arm64.dmg](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-macos-arm64.dmg)
+* **macOS (Homebrew):** `brew install --cask postbird` (works once the upstream cask is updated to the notarized releases)
 * **Windows (64-bit):** [Postbird-windows-x64.zip](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-windows-x64.zip)
 * **Linux (x86_64):**
   * [.deb (Debian, Ubuntu, Mint)](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-x64.deb)

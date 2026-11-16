@@ -34,6 +34,8 @@ bun run test:ui          # Run E2E UI tests (POSTBIRD_TEST_UI=true POSTBIRD_TEST
 bun run dist             # Build production distribution
 ```
 
+**Homebrew:** after a notarized release is published, run `scripts/homebrew_cask_sha.sh <version>` and paste the two `sha256` lines into `packaging/homebrew/postbird.rb`, then open the Homebrew/homebrew-cask PR from that file. The PR is needed only the first time; after that BrewTestBot autobumps through livecheck.
+
 ## Conventions & Quirks
 
 * **Adding Host Capabilities:** Define types in `PostbirdRPC` (`electrobun/host/types.ts`), implement handler in `electrobun/main.ts` (logic in `electrobun/host/`), call `window.__postbirdRpc.<method>()` from webview, and test in `tests/electrobun_rpc_test.ts`. Do **not** add new Node/Electron shims.
