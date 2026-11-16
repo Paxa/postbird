@@ -23,20 +23,20 @@ Postbird is an open-source, ultra-fast cross-platform PostgreSQL GUI client—no
 
 ## Download
 
-**Latest Release (v0.9.0)**
+**Latest Release (v0.9.1)**
 
-* **macOS (Apple Silicon M1/M2/M3/M4):** [Postbird-macos-arm64.dmg](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-macos-arm64.dmg)
-* **macOS (Intel):** [Postbird-macos-x64.dmg](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-macos-x64.dmg)
+* **macOS (Apple Silicon M1/M2/M3/M4):** [Postbird-macos-arm64.dmg](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-macos-arm64.dmg)
+* **macOS (Intel):** [Postbird-macos-x64.dmg](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-macos-x64.dmg)
 * **macOS (Homebrew):** `brew install --cask postbird` (works once the upstream cask is updated to the notarized releases)
-* **Windows (64-bit):** [Postbird-windows-x64.zip](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-windows-x64.zip)
+* **Windows (64-bit):** [Postbird-windows-x64.zip](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-windows-x64.zip)
 * **Linux (x86_64):**
-  * [.deb (Debian, Ubuntu, Mint)](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-x64.deb)
-  * [.rpm (Fedora, RHEL, openSUSE)](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-x64.rpm)
-  * [.AppImage (Universal)](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-x64.AppImage)
+  * [.deb (Debian, Ubuntu, Mint)](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-x64.deb)
+  * [.rpm (Fedora, RHEL, openSUSE)](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-x64.rpm)
+  * [.AppImage (Universal)](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-x64.AppImage)
 * **Linux (ARM64 / AArch64):**
-  * [.deb](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-arm64.deb)
-  * [.rpm](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-arm64.rpm)
-  * [.AppImage](https://github.com/Paxa/postbird/releases/download/v0.9.0/Postbird-linux-arm64.AppImage)
+  * [.deb](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-arm64.deb)
+  * [.rpm](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-arm64.rpm)
+  * [.AppImage](https://github.com/Paxa/postbird/releases/download/v0.9.1/Postbird-linux-arm64.AppImage)
 
 Via snap:
 ```sh

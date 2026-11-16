@@ -1,3 +1,9 @@
+### Version 0.9.1 (16-nov-2026)
+
+* macOS builds are signed with a Developer ID and notarized, so Gatekeeper opens them without a warning.
+* Intel Macs get their own DMG (`Postbird-macos-x64.dmg`) next to the Apple Silicon one.
+* Windows and Linux builds come from the same release workflow.
+
 ### Version 0.9.0 (16-nov-2026)
 
 * **Electrobun + Bun Migration:** Replaced Electron with Electrobun and native Bun RPC, slashing idle RAM (<50MB), download size (~28MB), and cold startup (<80ms) using native OS webviews.
