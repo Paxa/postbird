@@ -29,6 +29,12 @@ on:
     branches:
       - release/postbird-direct
   workflow_dispatch:
+    inputs:
+      platforms:
+        description: "Which builds to run. The others keep the assets already in the draft."
+        type: choice
+        options: [all, macos, windows, linux]
+        default: all
 
 # A second push queues behind the first instead of racing on the same draft.
 concurrency:
@@ -99,6 +105,8 @@ jobs:
   macos:
     name: Build (macos-${{ matrix.arch }})
     needs: prepare
+    # A push has no inputs, so it builds everything.
+    if: contains(fromJSON('["all", "macos"]'), inputs.platforms || 'all')
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     permissions:
@@ -231,6 +239,7 @@ jobs:
   windows:
     name: Build (windows-x64)
     needs: prepare
+    if: contains(fromJSON('["all", "windows"]'), inputs.platforms || 'all')
     runs-on: windows-latest
     timeout-minutes: 60
     permissions:
@@ -323,6 +332,7 @@ jobs:
   linux:
     name: Build (linux-${{ matrix.arch }})
     needs: prepare
+    if: contains(fromJSON('["all", "linux"]'), inputs.platforms || 'all')
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     permissions:
@@ -342,7 +352,7 @@ jobs:
       - name: Install Linux dependencies and packaging tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev ruby ruby-dev rubygems rpm file || sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev ruby ruby-dev rubygems rpm file
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev ruby ruby-dev rubygems rpm file zstd || sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev ruby ruby-dev rubygems rpm file zstd
           sudo gem install --no-document fpm || true
           curl -sL "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${{ matrix.appimage_arch }}.AppImage" -o /tmp/appimagetool || true
           chmod +x /tmp/appimagetool 2>/dev/null || true
