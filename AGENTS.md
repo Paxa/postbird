@@ -34,6 +34,8 @@ bun run test:ui          # Run E2E UI tests (POSTBIRD_TEST_UI=true POSTBIRD_TEST
 bun run dist             # Build production distribution
 ```
 
+**Release lane:** `.github/workflows/release-postbird-direct.yml` runs on pushes to `release/postbird-direct` (or manually). `prepare` creates one draft release `v<version>` (it fails if that tag is already published), then signed and notarized macOS (arm64, x64), Windows (SSL.com eSigner) and Linux (x64, arm64) jobs upload into it. A person installs the artifacts on clean machines and publishes the draft by hand. Secrets: `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_API_KEY`, `APPLE_API_ISSUER`, `APPLE_API_KEY_STRING`, `ES_USERNAME`, `ES_PASSWORD`, `ES_CREDENTIAL_ID`, `ES_TOTP_SECRET`. The versions in `electrobun.config.ts`, `package.json` and `snap/snapcraft.yaml` must match. `build.yml` is CI only and never publishes. Signing is driven by `ELECTROBUN_DEVELOPER_ID` / `ELECTROBUN_APPLEAPIKEY`, so local `bun run dist` stays unsigned.
+
 **Homebrew:** after a notarized release is published, run `scripts/homebrew_cask_sha.sh <version>` and paste the two `sha256` lines into `packaging/homebrew/postbird.rb`, then open the Homebrew/homebrew-cask PR from that file. The PR is needed only the first time; after that BrewTestBot autobumps through livecheck.
 
 ## Conventions & Quirks

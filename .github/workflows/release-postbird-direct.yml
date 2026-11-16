@@ -1,0 +1,371 @@
+# Direct-download release lane for Postbird (Electrobun).
+#
+# One draft release, owned by `prepare`; the macOS, Windows and Linux jobs
+# upload signed artifacts into it. Nothing is published automatically: a person
+# installs the files on clean machines, then publishes the draft by hand.
+#
+# Version source: `app.version` in electrobun.config.ts. The tag is v<version>.
+# package.json and snap/snapcraft.yaml must carry the same version.
+#
+# Secrets (repo settings):
+#   macOS:   APPLE_CERTIFICATE (base64 .p12), APPLE_CERTIFICATE_PASSWORD,
+#            APPLE_SIGNING_IDENTITY ("Developer ID Application: Name (TEAMID)"),
+#            APPLE_API_KEY (key id), APPLE_API_ISSUER, APPLE_API_KEY_STRING (.p8)
+#   Windows: ES_USERNAME, ES_PASSWORD, ES_CREDENTIAL_ID, ES_TOTP_SECRET
+#
+# Known gaps:
+#   - Windows: only the setup .exe is signed. The installed Postbird.exe inside
+#     the hidden payload stays unsigned. Signing it needs a Windows `postWrap`
+#     hook in electrobun.config.ts that calls CodeSignTool. Follow-up.
+#   - macOS: arm64 notarization was verified locally on 2026-11-16 (vendor/darwin/*
+#     passed). x64 is first exercised in CI.
+#   - Linux: built on ubuntu-22.04 for glibc compatibility. If Electrobun's
+#     Linux binary needs a newer glibc, switch to ubuntu-24.04 / ubuntu-24.04-arm.
+name: "Release Postbird Direct"
+
+on:
+  push:
+    branches:
+      - release/postbird-direct
+  workflow_dispatch:
+
+# A second push queues behind the first instead of racing on the same draft.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # Sole owner of the draft, so parallel jobs cannot each create one.
+  prepare:
+    name: Create the draft release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.draft.outputs.tag }}
+      release_id: ${{ steps.draft.outputs.release_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Check that the versions agree
+        run: |
+          cfg=$(bun -e 'import c from "./electrobun.config.ts"; console.log(c.app.version)')
+          pkg=$(jq -r .version package.json)
+          snap=$(sed -nE "s/^version:[[:space:]]*['\"]?([^'\"[:space:]]+)['\"]?.*/\1/p" snap/snapcraft.yaml | head -n1)
+          echo "electrobun.config.ts=$cfg package.json=$pkg snap/snapcraft.yaml=$snap"
+          if [ -z "$cfg" ] || [ "$cfg" != "$pkg" ] || [ "$cfg" != "$snap" ]; then
+            echo "::error::Versions disagree: electrobun.config.ts=$cfg, package.json=$pkg, snap/snapcraft.yaml=$snap"
+            exit 1
+          fi
+          echo "VERSION=$cfg" >> "$GITHUB_ENV"
+      - name: Create the draft if it does not exist
+        id: draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          tag="v$VERSION"
+          # Drafts have no tag yet, so look the release up in the list.
+          find_release() {
+            gh api "repos/$REPO/releases" --paginate \
+              --jq ".[] | select(.tag_name == \"$tag\") | [.id, .draft] | @tsv" | head -n1
+          }
+          found=$(find_release)
+          id=$(printf '%s' "$found" | cut -f1)
+          is_draft=$(printf '%s' "$found" | cut -f2)
+          if [ -n "$id" ] && [ "$is_draft" != "true" ]; then
+            echo "::error::Release $tag is already published. Bump the version in electrobun.config.ts, package.json and snap/snapcraft.yaml."
+            exit 1
+          fi
+          if [ -z "$id" ]; then
+            gh release create "$tag" --repo "$REPO" --draft \
+              --target "$GITHUB_SHA" \
+              --title "Postbird v$VERSION" \
+              --notes "See the assets to download this version and install."
+            found=$(find_release)
+            id=$(printf '%s' "$found" | cut -f1)
+          fi
+          if [ -z "$id" ]; then
+            echo "::error::Could not find or create the $tag release"
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "release_id=$id" >> "$GITHUB_OUTPUT"
+
+  macos:
+    name: Build (macos-${{ matrix.arch }})
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            os: macos-15
+          # Electrobun builds for the host arch only, so Intel needs a native runner.
+          - arch: x64
+            os: macos-15-intel
+    env:
+      APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+      APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+      APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+      APPLE_API_KEY_STRING: ${{ secrets.APPLE_API_KEY_STRING }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Check the signing secrets
+        run: |
+          missing=0
+          for name in APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY \
+                      APPLE_API_KEY APPLE_API_ISSUER APPLE_API_KEY_STRING; do
+            if [ -z "${!name}" ]; then
+              echo "::error::$name secret is empty."
+              missing=1
+            fi
+          done
+          exit $missing
+      - name: Import the signing certificate into a temporary keychain
+        run: |
+          keychain="$RUNNER_TEMP/postbird-signing.keychain-db"
+          keychain_password=$(uuidgen)
+          echo "::add-mask::$keychain_password"
+          # Remember the search list so cleanup can restore it.
+          security list-keychains -d user | tr -d '"' | sed 's/^[[:space:]]*//' > "$RUNNER_TEMP/keychains.orig"
+          echo "SIGNING_KEYCHAIN=$keychain" >> "$GITHUB_ENV"
+
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$RUNNER_TEMP/certificate.p12" -k "$keychain" \
+            -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s \
+            -k "$keychain_password" "$keychain"
+          rm -f "$RUNNER_TEMP/certificate.p12"
+          # shellcheck disable=SC2046
+          security list-keychains -d user -s "$keychain" $(cat "$RUNNER_TEMP/keychains.orig")
+
+          if ! security find-identity -v -p codesigning | grep -F -- "$APPLE_SIGNING_IDENTITY"; then
+            echo "::error::Identity '$APPLE_SIGNING_IDENTITY' not found in the imported certificate."
+            security find-identity -v -p codesigning
+            exit 1
+          fi
+      - name: Write the App Store Connect API key
+        run: |
+          keys="$RUNNER_TEMP/private_keys"
+          mkdir -p "$keys"
+          printf '%s\n' "$APPLE_API_KEY_STRING" > "$keys/AuthKey_${APPLE_API_KEY}.p8"
+          chmod 600 "$keys/AuthKey_${APPLE_API_KEY}.p8"
+          echo "APPLE_API_KEY_PATH=$keys/AuthKey_${APPLE_API_KEY}.p8" >> "$GITHUB_ENV"
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - name: Build, sign and notarize
+        env:
+          ELECTROBUN_DEVELOPER_ID: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          ELECTROBUN_APPLEAPIKEY: ${{ secrets.APPLE_API_KEY }}
+          ELECTROBUN_APPLEAPIISSUER: ${{ secrets.APPLE_API_ISSUER }}
+        run: |
+          # APPLE_API_KEY_PATH was written to GITHUB_ENV by the .p8 step.
+          export ELECTROBUN_APPLEAPIKEYPATH="$APPLE_API_KEY_PATH"
+          bun run dist
+      - name: Verify signature, notarization and staple
+        run: |
+          shopt -s nullglob
+          dmgs=(artifacts/*.dmg)
+          if [ "${#dmgs[@]}" -ne 1 ]; then
+            echo "::error::Expected exactly one DMG in artifacts/, found ${#dmgs[@]}"
+            ls -lah artifacts/
+            exit 1
+          fi
+          dmg="${dmgs[0]}"
+          mnt=$(mktemp -d)
+          hdiutil attach "$dmg" -nobrowse -readonly -mountpoint "$mnt"
+          apps=("$mnt"/*.app)
+          if [ "${#apps[@]}" -ne 1 ]; then
+            echo "::error::Expected one .app in the DMG, found ${#apps[@]}"
+            hdiutil detach "$mnt" || true
+            exit 1
+          fi
+          status=0
+          codesign --verify --deep --strict --verbose=2 "${apps[0]}" || status=1
+          hdiutil detach "$mnt" || true
+          spctl -a -vv -t install "$dmg" || status=1
+          xcrun stapler validate "$dmg" || status=1
+          exit $status
+      - name: Upload to the draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          shopt -s nullglob
+          # Updater artifacts are useless without release.baseUrl.
+          rm -f artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch
+          dmgs=(artifacts/*.dmg)
+          if [ "${#dmgs[@]}" -ne 1 ]; then
+            echo "::error::Expected exactly one DMG to upload, found ${#dmgs[@]}"
+            exit 1
+          fi
+          target="artifacts/Postbird-macos-${{ matrix.arch }}.dmg"
+          [ "${dmgs[0]}" = "$target" ] || mv "${dmgs[0]}" "$target"
+          gh release upload "$TAG" "$target" --clobber --repo "$GITHUB_REPOSITORY"
+      - name: Clean up signing material
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/keychains.orig" ]; then
+            # shellcheck disable=SC2046
+            security list-keychains -d user -s $(cat "$RUNNER_TEMP/keychains.orig") || true
+          fi
+          if [ -n "$SIGNING_KEYCHAIN" ]; then
+            security delete-keychain "$SIGNING_KEYCHAIN" || true
+          fi
+          rm -rf "$RUNNER_TEMP/private_keys" "$RUNNER_TEMP/certificate.p12"
+
+  windows:
+    name: Build (windows-x64)
+    needs: prepare
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Check the signing secrets
+        shell: pwsh
+        env:
+          ES_USERNAME: ${{ secrets.ES_USERNAME }}
+          ES_PASSWORD: ${{ secrets.ES_PASSWORD }}
+          ES_CREDENTIAL_ID: ${{ secrets.ES_CREDENTIAL_ID }}
+          ES_TOTP_SECRET: ${{ secrets.ES_TOTP_SECRET }}
+        run: |
+          $missing = $false
+          foreach ($name in "ES_USERNAME", "ES_PASSWORD", "ES_CREDENTIAL_ID", "ES_TOTP_SECRET") {
+            if (-not [Environment]::GetEnvironmentVariable($name)) {
+              Write-Host "::error::$name secret is empty."
+              $missing = $true
+            }
+          }
+          if ($missing) { exit 1 }
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - name: Build
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          # Downloads can flake, so retry once.
+          foreach ($attempt in 1..2) {
+            bun run dist
+            if ($LASTEXITCODE -eq 0) { break }
+            if ($attempt -eq 2) { throw "bun run dist failed after 2 attempts" }
+            Start-Sleep -Seconds 15
+          }
+      - name: Split the setup exe from its payload
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $zips = @(Get-ChildItem artifacts -Filter "*Setup*.zip")
+          if ($zips.Count -ne 1) { throw "Expected one *Setup*.zip in artifacts/, found $($zips.Count)." }
+          Remove-Item -Recurse -Force extracted, to-sign, signed -ErrorAction SilentlyContinue
+          Expand-Archive -Path $zips[0].FullName -DestinationPath extracted -Force
+          New-Item -ItemType Directory -Path to-sign, signed | Out-Null
+          $exes = @(Get-ChildItem extracted -Filter "*Setup*.exe" -File)
+          if ($exes.Count -ne 1) { throw "Expected one setup .exe at the top of the zip, found $($exes.Count)." }
+          Move-Item $exes[0].FullName to-sign\
+          Get-ChildItem extracted -Force | Format-Table Name, Attributes
+      - name: Sign with CodeSignTool
+        uses: sslcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
+        with:
+          command: batch_sign
+          username: ${{ secrets.ES_USERNAME }}
+          password: ${{ secrets.ES_PASSWORD }}
+          credential_id: ${{ secrets.ES_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ES_TOTP_SECRET }}
+          dir_path: ${{ github.workspace }}\to-sign
+          output_path: ${{ github.workspace }}\signed
+          malware_block: false
+          clean_logs: true
+          jvm_max_memory: 1024M
+          signing_method: v1
+      - name: Repack and upload to the draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $signed = @(Get-ChildItem signed -Filter *.exe -File)
+          if ($signed.Count -ne 1) { throw "Expected one signed .exe in signed/, found $($signed.Count)." }
+          $sig = Get-AuthenticodeSignature $signed[0].FullName
+          if ($sig.Status -ne "Valid") { throw "Signature on $($signed[0].Name) is $($sig.Status), expected Valid." }
+          Copy-Item $signed[0].FullName extracted\ -Force
+
+          # ZipFile includes hidden files, which Compress-Archive -Path dir\* skips.
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $out = Join-Path $PWD "artifacts\Postbird-windows-x64.zip"
+          Remove-Item $out -ErrorAction SilentlyContinue
+          [System.IO.Compression.ZipFile]::CreateFromDirectory((Join-Path $PWD "extracted"), $out, "Optimal", $false)
+
+          # Updater artifacts are useless without release.baseUrl.
+          Remove-Item artifacts\*.tar.zst, artifacts\*update.json, artifacts\*.patch -ErrorAction SilentlyContinue
+          $files = @(Get-ChildItem artifacts -Filter "Postbird-windows-x64.zip")
+          if ($files.Count -ne 1) { throw "Expected exactly one file to upload, found $($files.Count)." }
+          gh release upload $env:TAG $files[0].FullName --clobber --repo $env:GITHUB_REPOSITORY
+          if ($LASTEXITCODE -ne 0) { throw "gh release upload failed with exit code $LASTEXITCODE" }
+
+  linux:
+    name: Build (linux-${{ matrix.arch }})
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            os: ubuntu-22.04
+            appimage_arch: x86_64
+          - arch: arm64
+            os: ubuntu-22.04-arm
+            appimage_arch: aarch64
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Install Linux dependencies and packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev ruby ruby-dev rubygems rpm file || sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev ruby ruby-dev rubygems rpm file
+          sudo gem install --no-document fpm || true
+          curl -sL "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${{ matrix.appimage_arch }}.AppImage" -o /tmp/appimagetool || true
+          chmod +x /tmp/appimagetool 2>/dev/null || true
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - name: Build distribution package
+        run: bun run dist
+      - name: Package deb, rpm and AppImage
+        run: bash scripts/package_linux.sh linux-${{ matrix.arch }}
+      - name: Upload to the draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          shopt -s nullglob
+          # Updater artifacts and the raw Setup tarball are not release assets.
+          rm -f artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch artifacts/*Setup.tar.gz
+          files=(artifacts/Postbird-linux-${{ matrix.arch }}.deb \
+                 artifacts/Postbird-linux-${{ matrix.arch }}.rpm \
+                 artifacts/Postbird-linux-${{ matrix.arch }}.AppImage)
+          for f in "${files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Missing $f"
+              ls -lah artifacts/
+              exit 1
+            fi
+          done
+          gh release upload "$TAG" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"

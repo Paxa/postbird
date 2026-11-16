@@ -1,12 +1,10 @@
-name: Build and Release
+name: Build
 
 on:
   push:
     branches:
       - master
       - feature/*
-    tags:
-      - 'v*'
   pull_request:
 
 jobs:
@@ -14,7 +12,7 @@ jobs:
     name: Build (${{ matrix.target }})
     runs-on: ${{ matrix.os }}
     permissions:
-      contents: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -98,11 +96,3 @@ jobs:
         with:
           name: ${{ matrix.artifact-name }}
           path: artifacts/*
-
-      - name: Release to GitHub Releases
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: artifacts/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

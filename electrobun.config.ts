@@ -23,6 +23,10 @@ export default {
 		},
 		mac: {
 			bundleCEF: false,
+			// Signing is opt-in via env so local and CI builds stay unsigned.
+			// Only .github/workflows/release-postbird-direct.yml sets these.
+			codesign: Boolean(process.env.ELECTROBUN_DEVELOPER_ID),
+			notarize: Boolean(process.env.ELECTROBUN_APPLEAPIKEY),
 		},
 		linux: {
 			bundleCEF: false,
