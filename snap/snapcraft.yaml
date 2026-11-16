@@ -9,7 +9,7 @@ confinement: strict
 
 apps:
   postbird:
-    command: opt/postbird/Postbird
+    command: opt/postbird/bin/launcher
     desktop: usr/share/applications/postbird.desktop
     extensions: [gnome]
     plugs:
@@ -19,9 +19,7 @@ apps:
       - removable-media
 
 parts:
-  desktop-files:
+  postbird:
     plugin: dump
-    source: build_files
-    organize:
-      postbird.desktop: usr/share/applications/postbird.desktop
-      icon.png: usr/share/icons/hicolor/512x512/apps/postbird.png
+    source: postbird.deb
+    source-type: deb

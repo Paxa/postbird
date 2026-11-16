@@ -47,8 +47,13 @@ jobs:
           sudo gem install --no-document fpm || true
           ARCH_NAME="x86_64"
           if [ "${{ matrix.target }}" = "linux-arm64" ]; then ARCH_NAME="aarch64"; fi
-          curl -sL "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${ARCH_NAME}.AppImage" -o /tmp/appimagetool || true
-          chmod +x /tmp/appimagetool 2>/dev/null || true
+          case "${ARCH_NAME}" in
+            x86_64) APPIMAGETOOL_SHA256=ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0 ;;
+            aarch64) APPIMAGETOOL_SHA256=f0837e7448a0c1e4e650a93bb3e85802546e60654ef287576f46c71c126a9158 ;;
+          esac
+          curl -fsSL "https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-${ARCH_NAME}.AppImage" -o /tmp/appimagetool
+          echo "$APPIMAGETOOL_SHA256  /tmp/appimagetool" | sha256sum -c -
+          chmod +x /tmp/appimagetool
 
       - name: Install project dependencies
         run: bun install --frozen-lockfile
@@ -62,6 +67,19 @@ jobs:
       - name: Package Linux formats (deb, rpm, AppImage)
         if: runner.os == 'Linux'
         run: bash scripts/package_linux.sh ${{ matrix.target }}
+
+      - name: Stage .deb for the snap build
+        if: runner.os == 'Linux'
+        run: cp "artifacts/Postbird-${{ matrix.target }}.deb" postbird.deb
+
+      - name: Build snap
+        if: runner.os == 'Linux'
+        id: snap
+        uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
+
+      - name: Move snap into artifacts
+        if: runner.os == 'Linux'
+        run: mv "${{ steps.snap.outputs.snap }}" "artifacts/Postbird-${{ matrix.target }}.snap"
 
       - name: Prepare distribution artifacts
         shell: bash

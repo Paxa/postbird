@@ -30,9 +30,12 @@ export default {
 		},
 		linux: {
 			bundleCEF: false,
+			// Window and taskbar icon. Without it GNOME shows a generic one.
+			icon: "build_files/icon.png",
 		},
 		win: {
 			bundleCEF: false,
+			icon: "build_files/icon.ico",
 		},
 	},
 } satisfies ElectrobunConfig;
