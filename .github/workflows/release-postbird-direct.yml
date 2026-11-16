@@ -17,9 +17,10 @@
 #   - Windows: only the setup .exe is signed. The installed Postbird.exe inside
 #     the hidden payload stays unsigned. Signing it needs a Windows `postWrap`
 #     hook in electrobun.config.ts that calls CodeSignTool. Follow-up.
-#   - macOS: arm64 only. On the Intel runner, Electrobun 2.0.6's build tool
-#     stops with "could not resolve Hutch: ReleasePlatformMissing". Add the
-#     macos-15-intel entry back to the matrix once that works.
+#   - macOS: Electrobun builds for the host arch only, so x64 runs on the
+#     macos-15-intel runner. The Hutch/Electrobun pins in hutch.config.ts must
+#     be releases that publish a macos-x64 build (Hutch 0.28.1 and Electrobun
+#     2.0.4 do not, and fail with "ReleasePlatformMissing").
 #   - Linux: Electrobun's build toolchain needs glibc 2.38, so the jobs run on
 #     ubuntu-24.04 / ubuntu-24.04-arm (ubuntu-22.04 has 2.35).
 name: "Release Postbird Direct"
@@ -118,7 +119,9 @@ jobs:
           - arch: arm64
             os: macos-15
           # Electrobun builds for the host arch only, so Intel needs a native
-          # runner (macos-15-intel). Left out until Hutch resolves on it.
+          # runner.
+          - arch: x64
+            os: macos-15-intel
     env:
       APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
       APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
