@@ -32,6 +32,8 @@ class MockWindow {
 
 const mainWindowInstance = new MockWindow();
 
+const { version: _appVersion } = require("../../package.json");
+
 const _hasWindow = typeof window !== "undefined";
 const _startTime = _hasWindow ? (window.__appStartTime = window.__appStartTime || Date.now()) : Date.now();
 const _isDark = _hasWindow && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -40,7 +42,7 @@ const remote = {
   getCurrentWindow: () => mainWindowInstance,
   app: {
     getAppPath: () => ".",
-    getVersion: () => "0.9.0",
+    getVersion: () => _appVersion || "0.9.2",
     getName: () => "Postbird",
     ApplicationStart: _startTime,
     MainFilename: "index.html",

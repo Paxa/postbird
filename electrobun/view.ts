@@ -77,6 +77,12 @@ const electroview = new Electrobun.Electroview({ rpc });
   showContextMenu: async (params: { items: ContextMenuItemConfig[] }) => {
     return await electroview.rpc!.request.showContextMenu(params);
   },
+  checkForUpdates: async () => {
+    return await electroview.rpc!.request.checkForUpdates({});
+  },
+  installUpdate: async () => {
+    return await electroview.rpc!.request.installUpdate({});
+  },
   logDevError: async (params: { type: string; message: string; stack?: string; detail?: string }) => {
     try {
       return await electroview.rpc!.request.logDevError({

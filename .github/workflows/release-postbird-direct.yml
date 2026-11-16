@@ -214,8 +214,6 @@ jobs:
           TAG: ${{ needs.prepare.outputs.tag }}
         run: |
           shopt -s nullglob
-          # Updater artifacts are useless without release.baseUrl.
-          rm -f artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch
           dmgs=(artifacts/*.dmg)
           if [ "${#dmgs[@]}" -ne 1 ]; then
             echo "::error::Expected exactly one DMG to upload, found ${#dmgs[@]}"
@@ -223,7 +221,8 @@ jobs:
           fi
           target="artifacts/Postbird-macos-${{ matrix.arch }}.dmg"
           [ "${dmgs[0]}" = "$target" ] || mv "${dmgs[0]}" "$target"
-          gh release upload "$TAG" "$target" --clobber --repo "$GITHUB_REPOSITORY"
+          updater_files=(artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch)
+          gh release upload "$TAG" "$target" "${updater_files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
       - name: Clean up signing material
         if: always()
         run: |
@@ -322,11 +321,11 @@ jobs:
           Remove-Item $out -ErrorAction SilentlyContinue
           [System.IO.Compression.ZipFile]::CreateFromDirectory((Join-Path $PWD "extracted"), $out, "Optimal", $false)
 
-          # Updater artifacts are useless without release.baseUrl.
-          Remove-Item artifacts\*.tar.zst, artifacts\*update.json, artifacts\*.patch -ErrorAction SilentlyContinue
           $files = @(Get-ChildItem artifacts -Filter "Postbird-windows-x64.zip")
           if ($files.Count -ne 1) { throw "Expected exactly one file to upload, found $($files.Count)." }
-          gh release upload $env:TAG $files[0].FullName --clobber --repo $env:GITHUB_REPOSITORY
+          $updaterFiles = @(Get-ChildItem artifacts\* -Include *.tar.zst, *update.json, *.patch -File)
+          $uploadPaths = @($files[0].FullName) + ($updaterFiles | ForEach-Object { $_.FullName })
+          gh release upload $env:TAG @uploadPaths --clobber --repo $env:GITHUB_REPOSITORY
           if ($LASTEXITCODE -ne 0) { throw "gh release upload failed with exit code $LASTEXITCODE" }
 
   linux:
@@ -374,8 +373,8 @@ jobs:
           TAG: ${{ needs.prepare.outputs.tag }}
         run: |
           shopt -s nullglob
-          # Updater artifacts and the raw Setup tarball are not release assets.
-          rm -f artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch artifacts/*Setup.tar.gz
+          # The raw Setup tarball is not a release asset; keep Electrobun updater files (*.tar.zst, *update.json, *.patch).
+          rm -f artifacts/*Setup.tar.gz
           files=(artifacts/Postbird-linux-${{ matrix.arch }}.deb \
                  artifacts/Postbird-linux-${{ matrix.arch }}.rpm \
                  artifacts/Postbird-linux-${{ matrix.arch }}.AppImage)
@@ -386,4 +385,5 @@ jobs:
               exit 1
             fi
           done
-          gh release upload "$TAG" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+          updater_files=(artifacts/*.tar.zst artifacts/*update.json artifacts/*.patch)
+          gh release upload "$TAG" "${files[@]}" "${updater_files[@]}" --clobber --repo "$GITHUB_REPOSITORY"

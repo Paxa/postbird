@@ -966,6 +966,180 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       assert.strictEqual(typeof Query.prototype.openSnippets, 'undefined');
       assert.strictEqual(typeof Query.prototype.saveSnippet, 'undefined');
     });
+
+    it('remote.app.getVersion() matches package.json version for About Postbird and update checks', () => {
+      const pkg = require('../package.json');
+      assert.strictEqual(remote.app.getVersion(), pkg.version);
+    });
+  });
+
+  describe('Electrobun Auto-Updater & GitHub Releases Integration', () => {
+    it('checkForUpdates uses Electrobun native Updater on stable channel and enriches release info', async () => {
+      const { checkForUpdates } = require('../electrobun/host/updater');
+      const mockUpdater = {
+        getLocalInfo: async () => ({
+          version: '0.9.1',
+          hash: 'abc1234',
+          baseUrl: 'https://github.com/Paxa/postbird/releases/latest/download',
+          channel: 'stable',
+          name: 'Postbird',
+          identifier: 'org.paxa.postbird',
+        }),
+        checkForUpdate: async () => ({
+          version: '0.9.2',
+          hash: 'def5678',
+          updateAvailable: true,
+          updateReady: false,
+          error: '',
+        }),
+        downloadUpdate: async () => {},
+        applyUpdate: async () => {},
+        updateInfo: () => ({
+          version: '0.9.2',
+          hash: 'def5678',
+          updateAvailable: true,
+          updateReady: false,
+          error: '',
+        }),
+      };
+
+      const mockFetch: any = async () => ({
+        ok: true,
+        json: async () => [
+          {
+            tag_name: 'v0.9.2',
+            prerelease: false,
+            draft: false,
+            published_at: '2026-11-16T12:00:00Z',
+            html_url: 'https://github.com/Paxa/postbird/releases/tag/v0.9.2',
+          },
+        ],
+      });
+
+      const res = await checkForUpdates({ updater: mockUpdater, fetchFn: mockFetch });
+      assert.strictEqual(res.currentVersion, '0.9.1');
+      assert.strictEqual(res.latestVersion, '0.9.2');
+      assert.strictEqual(res.updateAvailable, true);
+      assert.strictEqual(res.canAutoUpdate, true);
+      assert.strictEqual(res.publishedAt, '2026-11-16T12:00:00Z');
+      assert.strictEqual(res.releasesPage, 'https://github.com/Paxa/postbird/releases/tag/v0.9.2');
+    });
+
+    it('checkForUpdates falls back to GitHub Releases API when in dev channel or update.json is unavailable', async () => {
+      const { checkForUpdates } = require('../electrobun/host/updater');
+      const mockFetch: any = async () => ({
+        ok: true,
+        json: async () => [
+          {
+            tag_name: 'v0.9.3',
+            prerelease: false,
+            draft: false,
+            published_at: '2026-11-17T10:00:00Z',
+            html_url: 'https://github.com/Paxa/postbird/releases/tag/v0.9.3',
+          },
+        ],
+      });
+
+      const res = await checkForUpdates({ currentVersion: '0.9.1', fetchFn: mockFetch });
+      assert.strictEqual(res.currentVersion, '0.9.1');
+      assert.strictEqual(res.latestVersion, 'v0.9.3');
+      assert.strictEqual(res.updateAvailable, true);
+      assert.strictEqual(res.canAutoUpdate, false);
+      assert.strictEqual(res.releasesPage, 'https://github.com/Paxa/postbird/releases/tag/v0.9.3');
+    });
+
+    it('installUpdate downloads update, runs onBeforeApply cleanup, and applies update', async () => {
+      const { installUpdate } = require('../electrobun/host/updater');
+      const steps: string[] = [];
+      let ready = false;
+
+      const mockUpdater = {
+        getLocalInfo: async () => ({
+          version: '0.9.1',
+          hash: 'abc1234',
+          baseUrl: 'https://github.com/Paxa/postbird/releases/latest/download',
+          channel: 'stable',
+          name: 'Postbird',
+          identifier: 'org.paxa.postbird',
+        }),
+        checkForUpdate: async () => ({
+          version: '0.9.2',
+          hash: 'def5678',
+          updateAvailable: true,
+          updateReady: false,
+          error: '',
+        }),
+        downloadUpdate: async () => {
+          steps.push('download');
+          ready = true;
+        },
+        applyUpdate: async () => {
+          steps.push('apply');
+        },
+        updateInfo: () => ({
+          version: '0.9.2',
+          hash: 'def5678',
+          updateAvailable: true,
+          updateReady: ready,
+          error: '',
+        }),
+      };
+
+      const res = await installUpdate({
+        updater: mockUpdater,
+        onBeforeApply: async () => {
+          steps.push('beforeApply');
+        },
+      });
+
+      assert.strictEqual(res.success, true);
+      assert.strictEqual(res.applied, true);
+      assert.deepStrictEqual(steps, ['download', 'beforeApply', 'apply']);
+    });
+
+    it('UpdatesController routes checkUpdates and installUpdate through window.__postbirdRpc', async () => {
+      const UpdatesController = require('../app/controllers/updates_controller');
+      let installCalled = false;
+      let confirmPrompt = '';
+
+      (window as any).__postbirdRpc = {
+        checkForUpdates: async () => ({
+          currentVersion: '0.9.1',
+          latestVersion: '0.9.2',
+          publishedAt: '2026-11-16T12:00:00Z',
+          updateAvailable: true,
+          updateReady: false,
+          canAutoUpdate: true,
+          releasesPage: 'https://github.com/Paxa/postbird/releases',
+        }),
+        installUpdate: async () => {
+          installCalled = true;
+          return { success: true, applied: true };
+        },
+      };
+
+      const prevAlertify = (window as any).alertify;
+      (window as any).alertify = {
+        labels: { ok: 'OK', cancel: 'Cancel' },
+        confirm: async (msg: string, cb: (ans: boolean) => any) => {
+          confirmPrompt = msg;
+          await cb(true);
+        },
+        alert: () => {},
+      };
+
+      try {
+        const controller = new UpdatesController();
+        await controller.checkUpdates({ showLoading: true, showAlreadyLatest: true });
+        assert(confirmPrompt.includes('macos-alert-title'), 'confirm dialog should use macOS alert title styling');
+        assert(confirmPrompt.includes('macos-alert-detail'), 'confirm dialog should use macOS alert detail styling');
+        assert(confirmPrompt.includes('0.9.2'), 'confirm dialog should include new version');
+        assert(confirmPrompt.includes('0.9.1'), 'confirm dialog should include current version');
+        assert.strictEqual(installCalled, true);
+      } finally {
+        (window as any).alertify = prevAlertify;
+      }
+    });
   });
 });
 

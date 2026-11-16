@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ContextMenu, Utils } from "electrobun/main";
+import { BrowserView, BrowserWindow, ContextMenu, Updater, Utils } from "electrobun/main";
 import fs from "fs";
 import path from "path";
 import os from "os";
@@ -16,6 +16,7 @@ import {
 } from "./host/storage";
 import { spawnProcess, killProcess } from "./host/process_runner";
 import { setupApplicationMenu } from "./host/menu";
+import { checkForUpdates, installUpdate } from "./host/updater";
 
 const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
   maxRequestTime: 300000, // 5 minutes (prevents timeout on long AI prompts, queries, and dump/restore)
@@ -254,6 +255,21 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
           console.error("[Host showContextMenu Error]", err);
           return { success: false, fallback: true };
         }
+      },
+
+      checkForUpdates: async () => {
+        return checkForUpdates({ updater: Updater });
+      },
+
+      installUpdate: async () => {
+        return installUpdate({
+          updater: Updater,
+          onBeforeApply: async () => {
+            saveWindowState(mainWindow);
+            await closeAllPools();
+            await closeAllTunnels();
+          },
+        });
       },
     },
     messages: {},

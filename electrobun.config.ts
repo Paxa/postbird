@@ -1,10 +1,14 @@
 import type { ElectrobunConfig } from "electrobun";
+import pkg from "./package.json";
 
 export default {
 	app: {
 		name: "Postbird",
 		identifier: "org.paxa.postbird",
-		version: "0.9.1",
+		version: pkg.version,
+	},
+	release: {
+		baseUrl: "https://github.com/Paxa/postbird/releases/latest/download",
 	},
 	build: {
 		mainProcess: "bun",

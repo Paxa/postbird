@@ -26,6 +26,24 @@ export type ContextMenuItemConfig = {
   submenu?: ContextMenuItemConfig[];
 };
 
+export type UpdateCheckResponse = {
+  currentVersion: string;
+  latestVersion: string;
+  publishedAt?: string;
+  updateAvailable: boolean;
+  updateReady: boolean;
+  canAutoUpdate: boolean;
+  releasesPage: string;
+  error?: string;
+};
+
+export type UpdateInstallResponse = {
+  success: boolean;
+  applied: boolean;
+  fallbackUrl?: string;
+  error?: string;
+};
+
 export type PostbirdRPC = {
   bun: RPCSchema<{
     requests: {
@@ -118,6 +136,14 @@ export type PostbirdRPC = {
       showContextMenu: {
         params: { items: ContextMenuItemConfig[] };
         response: { success: boolean; fallback?: boolean };
+      };
+      checkForUpdates: {
+        params: Record<string, never>;
+        response: UpdateCheckResponse;
+      };
+      installUpdate: {
+        params: Record<string, never>;
+        response: UpdateInstallResponse;
       };
     };
     messages: Record<string, never>;

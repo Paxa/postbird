@@ -1,3 +1,9 @@
+### Version 0.9.2 (16-nov-2026)
+
+* Added built-in Electrobun auto-updater backed by GitHub Releases (`Install & Restart` with delta patch/bundle support).
+* Fixed About Postbird and update check version reporting to read directly from `package.json`.
+* Updated the update notification dialog to match native macOS alert typography.
+
 ### Version 0.9.1 (16-nov-2026)
 
 * macOS builds are signed with a Developer ID and notarized, so Gatekeeper opens them without a warning.

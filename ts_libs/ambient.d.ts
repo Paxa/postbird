@@ -106,6 +106,34 @@ declare module "electrobun/main" {
     clipboardWriteText(text: string): void;
     paths: Record<string, string>;
   };
+  export const Updater: {
+    getLocalInfo(): Promise<{
+      version: string;
+      hash: string;
+      baseUrl: string;
+      channel: string;
+      name: string;
+      displayName?: string;
+      identifier: string;
+    }>;
+    checkForUpdate(): Promise<{
+      version: string;
+      hash: string;
+      updateAvailable: boolean;
+      updateReady: boolean;
+      error: string;
+    }>;
+    downloadUpdate(): Promise<void>;
+    applyUpdate(): Promise<void>;
+    updateInfo(): {
+      version: string;
+      hash: string;
+      updateAvailable: boolean;
+      updateReady: boolean;
+      error: string;
+    };
+    onStatusChange(callback: ((entry: any) => void) | null): void;
+  };
 }
 
 declare module "electrobun/view" {
