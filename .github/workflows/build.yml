@@ -68,6 +68,19 @@ jobs:
         if: runner.os == 'Linux'
         run: bash scripts/package_linux.sh ${{ matrix.target }}
 
+      - name: Stage .deb for the snap build
+        if: runner.os == 'Linux'
+        run: cp "artifacts/Postbird-${{ matrix.target }}.deb" postbird.deb
+
+      - name: Build snap
+        if: runner.os == 'Linux'
+        id: snap
+        uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
+
+      - name: Move snap into artifacts
+        if: runner.os == 'Linux'
+        run: mv "${{ steps.snap.outputs.snap }}" "artifacts/Postbird-${{ matrix.target }}.snap"
+
       - name: Prepare distribution artifacts
         shell: bash
         run: |
