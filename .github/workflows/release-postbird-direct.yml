@@ -78,12 +78,15 @@ jobs:
             exit 1
           fi
           if [ -z "$id" ]; then
-            gh release create "$tag" --repo "$REPO" --draft \
-              --target "$GITHUB_SHA" \
-              --title "Postbird v$VERSION" \
-              --notes "See the assets to download this version and install."
-            found=$(find_release)
-            id=$(printf '%s' "$found" | cut -f1)
+            # Take the id from the create response. The releases list lags
+            # behind writes, so reading it back right away can miss the draft.
+            id=$(gh api -X POST "repos/$REPO/releases" \
+              -f tag_name="$tag" \
+              -f target_commitish="$GITHUB_SHA" \
+              -f name="Postbird v$VERSION" \
+              -f body="See the assets to download this version and install." \
+              -F draft=true \
+              --jq .id)
           fi
           if [ -z "$id" ]; then
             echo "::error::Could not find or create the $tag release"
