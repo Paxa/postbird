@@ -103,6 +103,9 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 exec "${HERE}/usr/bin/Postbird" "$@"
 EOF
   chmod +x "$APP_DIR/AppRun"
+  # mktemp -d creates the dir as 0700, and current appimagetool refuses to
+  # build from anything under 0755.
+  chmod -R a+rX "$APP_DIR"
 
   ARCH="$ARCH" "$APPIMAGETOOL" --appimage-extract-and-run "$APP_DIR" "artifacts/Postbird-${TARGET}.AppImage" || \
   ARCH="$ARCH" "$APPIMAGETOOL" "$APP_DIR" "artifacts/Postbird-${TARGET}.AppImage" || true

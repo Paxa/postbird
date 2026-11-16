@@ -17,10 +17,11 @@
 #   - Windows: only the setup .exe is signed. The installed Postbird.exe inside
 #     the hidden payload stays unsigned. Signing it needs a Windows `postWrap`
 #     hook in electrobun.config.ts that calls CodeSignTool. Follow-up.
-#   - macOS: arm64 notarization was verified locally on 2026-11-16 (vendor/darwin/*
-#     passed). x64 is first exercised in CI.
-#   - Linux: built on ubuntu-22.04 for glibc compatibility. If Electrobun's
-#     Linux binary needs a newer glibc, switch to ubuntu-24.04 / ubuntu-24.04-arm.
+#   - macOS: arm64 only. On the Intel runner, Electrobun 2.0.6's build tool
+#     stops with "could not resolve Hutch: ReleasePlatformMissing". Add the
+#     macos-15-intel entry back to the matrix once that works.
+#   - Linux: Electrobun's build toolchain needs glibc 2.38, so the jobs run on
+#     ubuntu-24.04 / ubuntu-24.04-arm (ubuntu-22.04 has 2.35).
 name: "Release Postbird Direct"
 
 on:
@@ -108,9 +109,8 @@ jobs:
         include:
           - arch: arm64
             os: macos-15
-          # Electrobun builds for the host arch only, so Intel needs a native runner.
-          - arch: x64
-            os: macos-15-intel
+          # Electrobun builds for the host arch only, so Intel needs a native
+          # runner (macos-15-intel). Left out until Hutch resolves on it.
     env:
       APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
       APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -332,10 +332,10 @@ jobs:
       matrix:
         include:
           - arch: x64
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             appimage_arch: x86_64
           - arch: arm64
-            os: ubuntu-22.04-arm
+            os: ubuntu-24.04-arm
             appimage_arch: aarch64
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
