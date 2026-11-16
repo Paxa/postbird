@@ -1,7 +1,7 @@
 ### Version 0.9.1 (16-nov-2026)
 
 * macOS builds are signed with a Developer ID and notarized, so Gatekeeper opens them without a warning.
-* Intel Macs get their own DMG (`Postbird-macos-x64.dmg`) next to the Apple Silicon one.
+* macOS builds are Apple Silicon only for now. The Electrobun build tool does not run on Intel Macs yet.
 * Windows and Linux builds come from the same release workflow.
 
 ### Version 0.9.0 (16-nov-2026)

@@ -1,11 +1,8 @@
 cask "postbird" do
-  arch arm: "arm64", intel: "x64"
-
   version "0.9.1"
-  sha256 arm:   "REPLACE_WITH_ARM64_SHA256",
-         intel: "REPLACE_WITH_X64_SHA256"
+  sha256 "REPLACE_WITH_ARM64_SHA256"
 
-  url "https://github.com/Paxa/postbird/releases/download/v#{version}/Postbird-macos-#{arch}.dmg"
+  url "https://github.com/Paxa/postbird/releases/download/v#{version}/Postbird-macos-arm64.dmg"
   name "Postbird"
   desc "PostgreSQL GUI client"
   homepage "https://github.com/Paxa/postbird"
@@ -15,6 +12,7 @@ cask "postbird" do
     strategy :github_latest
   end
 
+  depends_on arch: :arm64
   depends_on macos: ">= :sonoma"
 
   app "Postbird.app"
