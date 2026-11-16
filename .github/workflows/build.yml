@@ -75,6 +75,18 @@ jobs:
         if: runner.os == 'Linux'
         run: cp "artifacts/Postbird-${{ matrix.target }}.deb" postbird.deb
 
+      - name: Pre-install LXD and Snapcraft with retries
+        if: runner.os == 'Linux'
+        run: |
+          for attempt in 1 2 3; do
+            if sudo snap install lxd && sudo snap install snapcraft --classic; then
+              exit 0
+            fi
+            echo "Snap Store install attempt $attempt failed; retrying in 15s..."
+            sleep 15
+          done
+          exit 1
+
       - name: Build snap
         if: runner.os == 'Linux'
         id: snap
