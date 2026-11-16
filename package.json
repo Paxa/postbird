@@ -1,7 +1,7 @@
 {
   "name": "postbird",
   "main": "electrobun/main.ts",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "repository": "https://github.com/Paxa/postbird",
   "license": "MIT",
   "description": "Postbird is a cross-platform PostgreSQL GUI client, written in TypeScript, powered by Electrobun",
