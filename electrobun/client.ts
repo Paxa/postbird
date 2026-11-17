@@ -20,6 +20,13 @@ window.__runUITests = async () => {
   return runUITests();
 };
 
+window.__runScreenshotTour = async () => {
+  if (window.__screenshotTourRunning) return;
+  window.__screenshotTourRunning = true;
+  const { runScreenshotTour } = await import("./screenshot_tour");
+  return runScreenshotTour();
+};
+
 let isShuttingDown = false;
 window.__postbirdGracefulQuit = async () => {
   if (isShuttingDown) return;

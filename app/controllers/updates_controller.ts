@@ -38,6 +38,13 @@ class UpdatesController {
         }
         if (!result) return;
 
+        if (result.managedByStore) {
+          if (options && options.showAlreadyLatest) {
+            this.showAlert("Updates for Postbird are managed by the App Store.");
+          }
+          return;
+        }
+
         const current = result.currentVersion || this.currentVersion();
         if (result.updateAvailable && result.latestVersion) {
           this.showInstallDialog(result.latestVersion, current, result.publishedAt, {

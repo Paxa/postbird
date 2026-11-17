@@ -209,6 +209,7 @@ export function loadWindowState(): WindowFrameState {
 }
 
 export function saveWindowState(win: any): void {
+  if (process.env.POSTBIRD_SCREENSHOT_TOUR === "true") return; // keep the tour frame out of the user's saved state
   try {
     if (!win) return;
     const frame = typeof win.getFrame === "function" ? win.getFrame() : win.frame;

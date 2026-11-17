@@ -5,6 +5,8 @@ import type { UpdateCheckResponse, UpdateInstallResponse } from "./types";
 export const RELEASES_API_URL = "https://api.github.com/repos/Paxa/postbird/releases";
 export const RELEASES_PAGE_URL = "https://github.com/Paxa/postbird/releases";
 
+export const APP_STORE_IDENTIFIER = "com.postbird.PostbirdApp";
+
 export interface ElectrobunUpdaterLike {
   getLocalInfo(): Promise<{
     version: string;
@@ -61,11 +63,19 @@ async function fetchLatestGithubRelease(fetchFn: typeof fetch = fetch): Promise<
   }
 }
 
+// The App Store build ships its own identifier and an empty baseUrl (see
+// scripts/build_appstore_macos.sh). Dev builds also have an empty baseUrl, so
+// that alone only counts outside the dev channel.
+export function isStoreManaged(identifier: string, channel: string, baseUrl: string): boolean {
+  return identifier === APP_STORE_IDENTIFIER || (channel !== "dev" && !baseUrl && Boolean(channel));
+}
+
 export async function checkForUpdates(deps: UpdaterDependencies = {}): Promise<UpdateCheckResponse> {
   const { updater, fetchFn = fetch } = deps;
   let localVersion = deps.currentVersion || pkg.version || "0.9.1";
   let localChannel = "dev";
   let localBaseUrl = "";
+  let localIdentifier = "";
 
   if (updater && typeof updater.getLocalInfo === "function") {
     try {
@@ -73,7 +83,22 @@ export async function checkForUpdates(deps: UpdaterDependencies = {}): Promise<U
       if (localInfo?.version) localVersion = localInfo.version;
       if (localInfo?.channel) localChannel = localInfo.channel;
       if (localInfo?.baseUrl) localBaseUrl = localInfo.baseUrl;
+      if (localInfo?.identifier) localIdentifier = localInfo.identifier;
     } catch {}
+  }
+
+  // Mac App Store builds update through the App Store (guideline 2.4.5(vii)).
+  // Return before touching the network or GitHub.
+  if (isStoreManaged(localIdentifier, localChannel, localBaseUrl)) {
+    return {
+      currentVersion: localVersion,
+      latestVersion: localVersion,
+      updateAvailable: false,
+      updateReady: false,
+      canAutoUpdate: false,
+      managedByStore: true,
+      releasesPage: RELEASES_PAGE_URL,
+    };
   }
 
   // Use Electrobun native Updater when running a packaged build with a configured baseUrl
@@ -136,6 +161,14 @@ export async function checkForUpdates(deps: UpdaterDependencies = {}): Promise<U
 
 export async function installUpdate(deps: UpdaterDependencies = {}): Promise<UpdateInstallResponse> {
   const { updater, onBeforeApply } = deps;
+  if (updater && typeof updater.getLocalInfo === "function") {
+    try {
+      const info = await updater.getLocalInfo();
+      if (isStoreManaged(info?.identifier || "", info?.channel || "dev", info?.baseUrl || "")) {
+        return { success: false, applied: false, error: "Updates are managed by the App Store" };
+      }
+    } catch {}
+  }
   if (!updater || typeof updater.downloadUpdate !== "function" || typeof updater.applyUpdate !== "function") {
     return {
       success: false,
