@@ -16,6 +16,7 @@
     "dist": "bun electrobun/bundle.ts && bunx electrobun build --env=stable",
     "bundle": "bun electrobun/bundle.ts",
     "compile:views": "bun scripts/compile_views.ts",
+    "appstore:mac": "bash scripts/build_appstore_macos.sh",
     "typecheck": "bun check",
     "lint": "eslint ."
   },

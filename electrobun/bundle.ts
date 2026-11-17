@@ -13,6 +13,8 @@ const shimPlugin = {
       "is-electron-renderer": resolve(root, "electrobun/shims/is_renderer.js"),
       "@sentry/electron": resolve(root, "electrobun/shims/sentry.js"),
       "@sentry/integrations": resolve(root, "electrobun/shims/sentry.js"),
+      // Bun picks moment's ESM build, whose CommonJS namespace lacks statics like parseZone.
+      "moment": resolve(root, "node_modules/moment/moment.js"),
       "pg": resolve(root, "electrobun/shims/pg.js"),
       "fs": resolve(root, "electrobun/shims/fs.js"),
       "child_process": resolve(root, "electrobun/shims/child_process.js"),

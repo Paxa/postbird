@@ -1025,6 +1025,53 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       assert.strictEqual(res.releasesPage, 'https://github.com/Paxa/postbird/releases/tag/v0.9.2');
     });
 
+    it('menu template hides Check For Updates only when asked to', () => {
+      const { buildMenuTemplate } = require('../electrobun/host/menu_template');
+      const actions = (tpl: any[]) => tpl[0].submenu.map((i: any) => i.action).filter(Boolean);
+      assert.ok(actions(buildMenuTemplate()).includes('check-updates'));
+      assert.ok(actions(buildMenuTemplate({ checkForUpdates: true })).includes('check-updates'));
+      const hidden = actions(buildMenuTemplate({ checkForUpdates: false }));
+      assert.ok(!hidden.includes('check-updates'));
+      assert.ok(hidden.includes('about-postbird') && hidden.includes('quit-app'));
+    });
+
+    it('checkForUpdates reports App Store management without touching the network', async () => {
+      const { checkForUpdates, installUpdate } = require('../electrobun/host/updater');
+      const makeUpdater = (info: any) => {
+        const calls: string[] = [];
+        return {
+          calls,
+          getLocalInfo: async () => ({ version: '0.9.2', hash: 'h', name: 'Postbird', ...info }),
+          checkForUpdate: async () => { calls.push('check'); return { version: '9.9.9', hash: 'x', updateAvailable: true, updateReady: false, error: '' }; },
+          downloadUpdate: async () => { calls.push('download'); },
+          applyUpdate: async () => { calls.push('apply'); },
+          updateInfo: () => ({ version: '', hash: '', updateAvailable: false, updateReady: false, error: '' }),
+        };
+      };
+      const failFetch: any = async () => { throw new Error('network must not be touched'); };
+
+      for (const info of [
+        { channel: 'stable', baseUrl: 'https://example.com', identifier: 'com.postbird.PostbirdApp' },
+        { channel: 'stable', baseUrl: '', identifier: 'org.paxa.postbird' },
+      ]) {
+        const updater = makeUpdater(info);
+        const res = await checkForUpdates({ updater, fetchFn: failFetch });
+        assert.strictEqual(res.managedByStore, true);
+        assert.strictEqual(res.updateAvailable, false);
+        assert.strictEqual(res.canAutoUpdate, false);
+        assert.strictEqual(res.currentVersion, '0.9.2');
+        const inst = await installUpdate({ updater });
+        assert.strictEqual(inst.success, false);
+        assert.deepStrictEqual(updater.calls, []);
+      }
+
+      // Dev builds have an empty baseUrl too; they must keep the GitHub fallback.
+      const dev = makeUpdater({ channel: 'dev', baseUrl: '', identifier: 'org.paxa.postbird' });
+      const okFetch: any = async () => ({ ok: true, json: async () => [] });
+      const devRes = await checkForUpdates({ updater: dev, fetchFn: okFetch });
+      assert.notStrictEqual(devRes.managedByStore, true);
+    });
+
     it('checkForUpdates falls back to GitHub Releases API when in dev channel or update.json is unavailable', async () => {
       const { checkForUpdates } = require('../electrobun/host/updater');
       const mockFetch: any = async () => ({
