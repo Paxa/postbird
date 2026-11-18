@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ContextMenu, Updater, Utils } from "electrobun/main";
+import { ApplicationMenu, BrowserView, BrowserWindow, ContextMenu, Updater, Utils } from "electrobun/main";
 import fs from "fs";
 import path from "path";
 import os from "os";
@@ -83,13 +83,6 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
       verifyAiProvider: async (params) => {
         const { verifyProvider } = await import("../lib/local_ai/discovery");
         return await verifyProvider(params.providerId, params);
-      },
-
-      screenshotEvent: async ({ event, slug }) => {
-        // Only meaningful under POSTBIRD_SCREENSHOT_TOUR; the capture script reads these lines.
-        if (process.env.POSTBIRD_SCREENSHOT_TOUR !== "true") return { ok: false };
-        console.log(event === "ready" ? `[screenshot] ready ${slug}` : event === "log" ? `[screenshot] log ${slug}` : `[screenshot] ${event}`);
-        return { ok: true };
       },
 
       finishTests: async ({ total, failed }) => {
@@ -326,11 +319,10 @@ process.on("unhandledRejection", (reason: any) => {
 
 let mainWindow: BrowserWindow;
 
-// The App Store build has no self-update path, so it gets no menu item for it.
 let storeManaged = false;
 try {
   const info = await Updater.getLocalInfo();
-  storeManaged = isStoreManaged(info?.identifier || "", info?.channel || "dev", info?.baseUrl || "");
+  storeManaged = isStoreManaged(info?.identifier);
 } catch (err) {
   console.error("[Menu] Could not read updater info; keeping Check For Updates", err);
 }
@@ -345,7 +337,7 @@ setupApplicationMenu(handleGracefulQuit, (action: string) => {
   } catch (err) {
     console.error("[Menu Action Forward Error]", err);
   }
-}, { checkForUpdates: !storeManaged });
+}, { checkForUpdates: !storeManaged, applicationMenu: ApplicationMenu, utils: Utils });
 
 if (ContextMenu && typeof ContextMenu.on === "function") {
   ContextMenu.on("context-menu-clicked", (e: any) => {
@@ -363,11 +355,7 @@ if (ContextMenu && typeof ContextMenu.on === "function") {
   });
 }
 
-// Screenshot tour (dev only): fixed 16:10 window so captures frame consistently.
-const savedFrame =
-  process.env.POSTBIRD_SCREENSHOT_TOUR === "true"
-    ? { width: 1440, height: 900, x: 60, y: 60 }
-    : loadWindowState();
+const savedFrame = loadWindowState();
 mainWindow = new BrowserWindow({
   title: "Postbird",
   url: "views://mainview/index.html",
@@ -422,35 +410,5 @@ if (process.env.POSTBIRD_TEST_UI === "true") {
 }
 
 if (process.env.POSTBIRD_SCREENSHOT_TOUR === "true") {
-  console.log("[Main Process] POSTBIRD_SCREENSHOT_TOUR is active, waiting for webview to load...");
-  let tourStarted = false;
-  const startTour = async (attempts = 0) => {
-    if (tourStarted) return;
-    try {
-      if (mainWindow && mainWindow.webview) {
-        const res = await mainWindow.webview.executeJavascript(
-          `(() => {
-            window.process = window.process || {};
-            window.process.env = window.process.env || {};
-            window.process.env.POSTBIRD_DEMO_DB = ${JSON.stringify(process.env.POSTBIRD_DEMO_DB || "postbird_demo")};
-            window.process.env.USER = ${JSON.stringify(process.env.POSTBIRD_DEMO_USER || process.env.USER || "postgres")};
-            if (typeof window.__runScreenshotTour === "function") {
-              window.__runScreenshotTour();
-              return true;
-            }
-            return false;
-          })()`
-        );
-        if (res === true) {
-          tourStarted = true;
-          console.log("[Main Process] Screenshot tour started");
-          return;
-        }
-      }
-    } catch (err) {
-      console.error("[Main Process] Error starting screenshot tour:", err);
-    }
-    if (attempts < 60) setTimeout(() => startTour(attempts + 1), 500);
-  };
-  setTimeout(() => startTour(), 1500);
+  import("../scripts/appstore/screenshot_tour").then(({ startScreenshotTour }) => startScreenshotTour(mainWindow));
 }

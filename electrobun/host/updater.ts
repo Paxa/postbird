@@ -63,11 +63,8 @@ async function fetchLatestGithubRelease(fetchFn: typeof fetch = fetch): Promise<
   }
 }
 
-// The App Store build ships its own identifier and an empty baseUrl (see
-// scripts/build_appstore_macos.sh). Dev builds also have an empty baseUrl, so
-// that alone only counts outside the dev channel.
-export function isStoreManaged(identifier: string, channel: string, baseUrl: string): boolean {
-  return identifier === APP_STORE_IDENTIFIER || (channel !== "dev" && !baseUrl && Boolean(channel));
+export function isStoreManaged(identifier?: string): boolean {
+  return identifier === APP_STORE_IDENTIFIER;
 }
 
 export async function checkForUpdates(deps: UpdaterDependencies = {}): Promise<UpdateCheckResponse> {
@@ -87,9 +84,7 @@ export async function checkForUpdates(deps: UpdaterDependencies = {}): Promise<U
     } catch {}
   }
 
-  // Mac App Store builds update through the App Store (guideline 2.4.5(vii)).
-  // Return before touching the network or GitHub.
-  if (isStoreManaged(localIdentifier, localChannel, localBaseUrl)) {
+  if (isStoreManaged(localIdentifier)) {
     return {
       currentVersion: localVersion,
       latestVersion: localVersion,
@@ -164,7 +159,7 @@ export async function installUpdate(deps: UpdaterDependencies = {}): Promise<Upd
   if (updater && typeof updater.getLocalInfo === "function") {
     try {
       const info = await updater.getLocalInfo();
-      if (isStoreManaged(info?.identifier || "", info?.channel || "dev", info?.baseUrl || "")) {
+      if (isStoreManaged(info?.identifier)) {
         return { success: false, applied: false, error: "Updates are managed by the App Store" };
       }
     } catch {}
