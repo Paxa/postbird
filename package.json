@@ -17,8 +17,7 @@
     "bundle": "bun electrobun/bundle.ts",
     "compile:views": "bun scripts/compile_views.ts",
     "appstore:mac": "bash scripts/build_appstore_macos.sh",
-    "typecheck": "bun check",
-    "lint": "eslint ."
+    "typecheck": "bun check"
   },
   "author": {
     "name": "Pavel Evstigneev",
@@ -26,23 +25,21 @@
     "url": "https://github.com/Paxa"
   },
   "devDependencies": {
-    "@types/alertify": "^0.3.30",
+    "@types/alertify": "^0.3.33",
     "@types/bun": "latest",
-    "@types/jquery": "^3.5.3",
-    "@types/mousetrap": "^1.6.4",
-    "@types/node": "^22.0.0",
+    "@types/jquery": "^3.5.34",
+    "@types/mousetrap": "^1.6.15",
+    "@types/node": "^22.20.5",
     "electrobun": "2.0.6",
-    "eslint": "^7.32.0",
     "happy-dom": "^21.0.4",
-    "pug": "3.0.2",
-    "sass": "^1.49.9",
-    "typescript": "^5.8.2"
+    "pug": "3.0.4",
+    "sass": "^1.108.2"
   },
   "dependencies": {
-    "marked": "^18.1.3",
-    "moment": "^2.29.1",
+    "marked": "^18.2.1",
+    "moment": "^2.31.0",
     "node-ssh-forward": "https://github.com/Paxa/node-ssh-forward.git#add-timeout",
     "pg-escape": "^0.2.0",
-    "ssh-config": "^4.1.0"
+    "ssh-config": "^4.4.4"
   }
 }

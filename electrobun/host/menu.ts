@@ -73,6 +73,8 @@ export function buildMenuTemplate(opts: MenuOptions = {}): any[] {
       label: "View",
       submenu: [
         { label: "Toggle AI Assistant", accelerator: "CmdOrCtrl+K", action: "toggle-ai" },
+        { type: "divider" },
+        { label: "Toggle Developer Tools", accelerator: "CmdOrCtrl+Alt+I", action: "toggle-devtools" },
       ],
     },
     {

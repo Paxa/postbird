@@ -155,15 +155,15 @@ input, textarea {
   top: -200px;
 }
 
+#tabs > * {
+  display: inline-block;
+  vertical-align: top;
+}
 #tabs {
   background-color: #e7e6e5;
   overflow: hidden;
   box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
   position: relative;
-}
-#tabs > * {
-  display: inline-block;
-  vertical-align: top;
 }
 #tabs:after {
   content: "";
@@ -1044,7 +1044,7 @@ body.sidebar-resizing * {
 }
 .main-screen > .sidebar > ul.extras li.active {
   background-color: rgba(0, 51, 136, 0.15);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="rgba(0, 51, 136, 0.15)", endColorstr="rgba(0, 85, 170, 0.15)");
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(0, 51, 136, 0.15)', endColorstr='rgba(0, 85, 170, 0.15)');
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(0, 51, 136, 0.15)', endColorstr='rgba(0, 85, 170, 0.15)')";
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 51, 136, 0.15)), to(rgba(0, 85, 170, 0.15)));
   background: -moz-linear-gradient(top, rgba(0, 51, 136, 0.15), rgba(0, 85, 170, 0.15));
@@ -1756,10 +1756,6 @@ body.dark-mode .alertify-button-cancel:hover, body.dark-mode .json-viewer-dialog
   overflow: hidden;
   white-space: nowrap;
 }
-.window-content.content table tr td {
-  min-width: 23px;
-  max-width: 250px;
-}
 .window-content.content table tr td:not(.expanded) {
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
@@ -1770,6 +1766,10 @@ body.dark-mode .alertify-button-cancel:hover, body.dark-mode .json-viewer-dialog
 .window-content.content table tr td.expanded {
   word-break: break-all;
   white-space: pre-wrap;
+}
+.window-content.content table tr td {
+  min-width: 23px;
+  max-width: 250px;
 }
 .window-content.content table tr td span.text {
   width: 100%;
@@ -4093,7 +4093,6 @@ body.snippets {
   top: 0;
   left: 0;
   vertical-align: top;
-  overflow-y: auto;
 }
 .snippets-window > ul > li {
   padding: 2px 8px 2px 8px;
@@ -4102,6 +4101,9 @@ body.snippets {
 .snippets-window > ul > li.selected {
   background: #2065d9;
   color: white;
+}
+.snippets-window > ul {
+  overflow-y: auto;
 }
 .snippets-window > ul > li {
   padding-left: 12px;
@@ -5491,7 +5493,6 @@ body.dark-mode .cell-json-wrapper .json-preview {
 
 .json-viewer-dialog {
   text-align: left;
-  /* Tree Node Styling */
 }
 .json-viewer-dialog .json-viewer-container {
   display: flex;
@@ -5633,6 +5634,9 @@ body.dark-mode .cell-json-wrapper .json-preview {
 }
 .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror pre, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-line, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-lines, .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror .CodeMirror-code {
   text-align: left;
+}
+.json-viewer-dialog {
+  /* Tree Node Styling */
 }
 .json-viewer-dialog .json-tree-node {
   margin-left: 0;

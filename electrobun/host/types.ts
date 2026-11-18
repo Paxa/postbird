@@ -146,6 +146,10 @@ export type PostbirdRPC = {
         params: Record<string, never>;
         response: UpdateInstallResponse;
       };
+      getSystemInfo: {
+        params: Record<string, never>;
+        response: { platform: string; arch: string; release: string; osVersion: string };
+      };
     };
     messages: Record<string, never>;
   }>;
