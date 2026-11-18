@@ -83,6 +83,9 @@ const electroview = new Electrobun.Electroview({ rpc });
   installUpdate: async () => {
     return await electroview.rpc!.request.installUpdate({});
   },
+  getSystemInfo: async () => {
+    return await electroview.rpc!.request.getSystemInfo({});
+  },
   logDevError: async (params: { type: string; message: string; stack?: string; detail?: string }) => {
     try {
       return await electroview.rpc!.request.logDevError({
@@ -141,3 +144,12 @@ if (typeof console !== "undefined" && typeof console.error === "function") {
 };
 
 console.log("Postbird Electrobun view bridge initialized!");
+
+(window as any).__postbirdRpc.getSystemInfo().then((info: any) => {
+  if (info && info.platform) {
+    (window as any).__postbirdSystemInfo = info;
+    if ((window as any).process) {
+      (window as any).process.platform = info.platform;
+    }
+  }
+}).catch(() => {});

@@ -1144,6 +1144,45 @@ pug_html = pug_html + "Cancel\u003C\u002Fbutton\u003E\n  \u003C\u002Fp\u003E\n\u
         typeof valueIsNull !== 'undefined' ? valueIsNull : undefined));
     ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
 exports["dialogs/edit_value"].content = "form\n  - valueIsNull = fieldType.is_nullable && value === null\n\n  p\n    - numericTypes = ['bigint', 'integer', 'real', 'smallint', 'double precision', 'numeric', 'decimal']\n    if fieldType.data_type == \"integer\" || numericTypes.includes(fieldType.udt_name) || numericTypes.includes(fieldType.data_type)\n      input.number-value(name=\"value\" type=\"number\" value=value disabled=valueIsNull)\n    else if fieldType.udt_name == \"timestamp\" || fieldType.udt_name == \"timestamptz\" || fieldType.udt_name == \"date\" || fieldType.udt_name == \"timetz\"\n      input.date-value(name=\"value\" type=\"text\" value=editDateFormat(value, fieldType.udt_name) disabled=valueIsNull)\n    else if fieldType.udt_name == \"bool\"\n      select(name=\"value\" disabled=valueIsNull)\n        option(value=\"true\"  selected=value) true\n        option(value=\"false\" selected=(value === false) ) false\n    else\n      if [\"json\", \"jsonb\"].includes(fieldType.udt_name) || (fieldType.data_type.includes(\"[]\") && Array.isArray(value))\n        - value = JSON.stringify(value, null, 2)\n      textarea(name=\"value\" placeholder=fieldType.column_default disabled=valueIsNull)= value\n\n  if fieldType.is_nullable\n    label\n      = \"Null\"\n      input.value-is-null(type=\"checkbox\" name=\"value_is_null\" value=\"true\" checked=valueIsNull )\n\n  p.buttons\n    button.ok Update\n    button.cancel Cancel\n";
+exports["dialogs/error_report"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade":".error-report-container\n  p(style=\"margin: 0 0 8px 0; text-align: left; font-size: 12px; color: #555;\")\n    | Postbird encountered an unexpected error. Nothing is sent automatically. You can review the sanitized details below and report it on GitHub or via email.\n  code.result= reportText\n\np.buttons\n  button.btn-report-github(type=\"button\") Report on GitHub\n  button.btn-report-email(type=\"button\") Send via Email\n  button.btn-copy-error(type=\"button\") Copy Details\n  button.cancel(type=\"button\") Close\n"};
+;
+    var locals_for_with = (locals || {});
+    
+    (function (reportText) {
+      var pug_indent = [];
+;pug_debug_line = 1;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n\u003Cdiv class=\"error-report-container\"\u003E";
+;pug_debug_line = 2;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n  \u003Cp style=\"margin: 0 0 8px 0; text-align: left; font-size: 12px; color: #555;\"\u003E";
+;pug_debug_line = 3;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "Postbird encountered an unexpected error. Nothing is sent automatically. You can review the sanitized details below and report it on GitHub or via email.\u003C\u002Fp\u003E";
+;pug_debug_line = 4;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\u003Ccode class=\"result\"\u003E";
+;pug_debug_line = 4;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + (pug.escape(null == (pug_interp = reportText) ? "" : pug_interp)) + "\u003C\u002Fcode\u003E\n\u003C\u002Fdiv\u003E";
+;pug_debug_line = 6;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n\u003Cp class=\"buttons\"\u003E";
+;pug_debug_line = 7;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"btn-report-github\" type=\"button\"\u003E";
+;pug_debug_line = 7;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "Report on GitHub\u003C\u002Fbutton\u003E";
+;pug_debug_line = 8;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"btn-report-email\" type=\"button\"\u003E";
+;pug_debug_line = 8;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "Send via Email\u003C\u002Fbutton\u003E";
+;pug_debug_line = 9;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"btn-copy-error\" type=\"button\"\u003E";
+;pug_debug_line = 9;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "Copy Details\u003C\u002Fbutton\u003E";
+;pug_debug_line = 10;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "\n  \u003Cbutton class=\"cancel\" type=\"button\"\u003E";
+;pug_debug_line = 10;pug_debug_filename = "\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Ferror_report.jade";
+pug_html = pug_html + "Close\u003C\u002Fbutton\u003E\n\u003C\u002Fp\u003E";
+    }.call(this, "reportText" in locals_for_with ?
+        locals_for_with.reportText :
+        typeof reportText !== 'undefined' ? reportText : undefined));
+    ;} catch (err) {pug.rethrow(err, pug_debug_filename, pug_debug_line, pug_debug_sources[pug_debug_filename]);};return pug_html;};
+exports["dialogs/error_report"].content = ".error-report-container\n  p(style=\"margin: 0 0 8px 0; text-align: left; font-size: 12px; color: #555;\")\n    | Postbird encountered an unexpected error. Nothing is sent automatically. You can review the sanitized details below and report it on GitHub or via email.\n  code.result= reportText\n\np.buttons\n  button.btn-report-github(type=\"button\") Report on GitHub\n  button.btn-report-email(type=\"button\") Send via Email\n  button.btn-copy-error(type=\"button\") Copy Details\n  button.cancel(type=\"button\") Close\n";
 exports["dialogs/export_file"] = function template(pug, locals) {var pug_html = "", pug_mixins = {}, pug_interp;var pug_debug_filename, pug_debug_line;try {var pug_debug_sources = {"\u002FUsers\u002Fpavel\u002FSites\u002Fpostbird\u002Fviews\u002Fdialogs\u002Fexport_file.jade":"header\n  = \"Exporting database '\"\n  b= database\n  = \"'\"\n\nform\n  p.save-to-file\n    = \"Save to file:\"\n    input(type=\"text\" name=\"export_to_file\" readonly placeholder=\"click to select file...\")\n  p\n    label\n      = \"Export structure\"\n      input(type=\"checkbox\" name=\"export_structure\" checked)\n  p\n    label\n      = \"Export data\"\n      input(type=\"checkbox\" name=\"export_data\" checked)\n\n  p\n    label\n      = \"Objects ownership\"\n      input(type=\"checkbox\" name=\"objects_ownership\")\n\n  code.result\n\n  p.buttons.default-buttons\n    button.ok Start\n    button.cancel Cancel\n  p.buttons.close-btn(style=\"display: none\")\n    button.cancel Close"};
 ;
     var locals_for_with = (locals || {});

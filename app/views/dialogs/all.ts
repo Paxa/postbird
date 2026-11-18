@@ -21,4 +21,5 @@ module.exports = {
   ConnectionList:   require('./connection_list'),
   AiSettings:       require('./ai_settings'),
   JsonViewer:       require('./json_viewer'),
+  ErrorReport:      require('./error_report'),
 };

@@ -229,7 +229,7 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
 
       openExternal: async ({ url }) => {
         try {
-          if (url && /^https?:\/\//i.test(url)) {
+          if (url && /^(https?:\/\/|mailto:)/i.test(url)) {
             Utils.openExternal(url);
             return { success: true };
           }
@@ -238,6 +238,21 @@ const postbirdRPC = BrowserView.defineRPC<PostbirdRPC>({
           console.error("[Host openExternal Error]", err);
           return { success: false };
         }
+      },
+
+      getSystemInfo: async () => {
+        const platform = os.platform();
+        const arch = os.arch();
+        const release = os.release();
+        let osVersion = release;
+        if (platform === "darwin") {
+          try {
+            const plist = fs.readFileSync("/System/Library/CoreServices/SystemVersion.plist", "utf8");
+            const match = plist.match(/<key>ProductVersion<\/key>\s*<string>([^<]+)<\/string>/);
+            if (match?.[1]) osVersion = match[1];
+          } catch {}
+        }
+        return { platform, arch, release, osVersion };
       },
 
       showContextMenu: async ({ items }) => {
@@ -328,6 +343,10 @@ try {
 }
 
 setupApplicationMenu(handleGracefulQuit, (action: string) => {
+  if (action === "toggle-devtools") {
+    mainWindow?.webview?.toggleDevTools?.();
+    return;
+  }
   try {
     if (mainWindow && mainWindow.webview) {
       mainWindow.webview.executeJavascript(
