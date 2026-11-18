@@ -1025,14 +1025,44 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       assert.strictEqual(res.releasesPage, 'https://github.com/Paxa/postbird/releases/tag/v0.9.2');
     });
 
-    it('menu template hides Check For Updates only when asked to', () => {
-      const { buildMenuTemplate } = require('../electrobun/host/menu_template');
+    it('menu template hides Check For Updates only when asked to and setupApplicationMenu dispatches actions', async () => {
+      const { buildMenuTemplate, setupApplicationMenu } = require('../electrobun/host/menu');
       const actions = (tpl: any[]) => tpl[0].submenu.map((i: any) => i.action).filter(Boolean);
       assert.ok(actions(buildMenuTemplate()).includes('check-updates'));
       assert.ok(actions(buildMenuTemplate({ checkForUpdates: true })).includes('check-updates'));
       const hidden = actions(buildMenuTemplate({ checkForUpdates: false }));
       assert.ok(!hidden.includes('check-updates'));
       assert.ok(hidden.includes('about-postbird') && hidden.includes('quit-app'));
+
+      let installedMenu: any[] = [];
+      let clickHandler: ((e: any) => Promise<void>) | null = null;
+      let quitCalled = false;
+      const openedUrls: string[] = [];
+      const forwardedActions: string[] = [];
+
+      setupApplicationMenu(
+        async () => { quitCalled = true; },
+        (action: string) => { forwardedActions.push(action); },
+        {
+          checkForUpdates: false,
+          applicationMenu: {
+            setApplicationMenu: (m: any[]) => { installedMenu = m; },
+            on: (_ev: string, h: any) => { clickHandler = h; },
+          },
+          utils: {
+            openExternal: (url: string) => { openedUrls.push(url); },
+          },
+        }
+      );
+
+      assert.ok(!actions(installedMenu).includes('check-updates'));
+      assert.ok(clickHandler !== null);
+      await clickHandler!({ data: { action: 'open-github' } });
+      await clickHandler!({ action: 'about-postbird' });
+      await clickHandler!({ action: 'quit-app' });
+      assert.deepStrictEqual(openedUrls, ['https://github.com/Paxa/postbird']);
+      assert.deepStrictEqual(forwardedActions, ['about-postbird']);
+      assert.strictEqual(quitCalled, true);
     });
 
     it('checkForUpdates reports App Store management without touching the network', async () => {
@@ -1050,22 +1080,16 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       };
       const failFetch: any = async () => { throw new Error('network must not be touched'); };
 
-      for (const info of [
-        { channel: 'stable', baseUrl: 'https://example.com', identifier: 'com.postbird.PostbirdApp' },
-        { channel: 'stable', baseUrl: '', identifier: 'org.paxa.postbird' },
-      ]) {
-        const updater = makeUpdater(info);
-        const res = await checkForUpdates({ updater, fetchFn: failFetch });
-        assert.strictEqual(res.managedByStore, true);
-        assert.strictEqual(res.updateAvailable, false);
-        assert.strictEqual(res.canAutoUpdate, false);
-        assert.strictEqual(res.currentVersion, '0.9.2');
-        const inst = await installUpdate({ updater });
-        assert.strictEqual(inst.success, false);
-        assert.deepStrictEqual(updater.calls, []);
-      }
+      const storeUpdater = makeUpdater({ channel: 'stable', baseUrl: '', identifier: 'com.postbird.PostbirdApp' });
+      const res = await checkForUpdates({ updater: storeUpdater, fetchFn: failFetch });
+      assert.strictEqual(res.managedByStore, true);
+      assert.strictEqual(res.updateAvailable, false);
+      assert.strictEqual(res.canAutoUpdate, false);
+      assert.strictEqual(res.currentVersion, '0.9.2');
+      const inst = await installUpdate({ updater: storeUpdater });
+      assert.strictEqual(inst.success, false);
+      assert.deepStrictEqual(storeUpdater.calls, []);
 
-      // Dev builds have an empty baseUrl too; they must keep the GitHub fallback.
       const dev = makeUpdater({ channel: 'dev', baseUrl: '', identifier: 'org.paxa.postbird' });
       const okFetch: any = async () => ({ ok: true, json: async () => [] });
       const devRes = await checkForUpdates({ updater: dev, fetchFn: okFetch });
@@ -1186,6 +1210,171 @@ describe('Electrobun RPC, Shims & Menu Actions', () => {
       } finally {
         (window as any).alertify = prevAlertify;
       }
+    });
+
+    it('UpdatesController shows App Store message only when showAlreadyLatest is true for managedByStore builds', async () => {
+      const UpdatesController = require('../app/controllers/updates_controller');
+      const alerts: string[] = [];
+
+      (window as any).__postbirdRpc = {
+        checkForUpdates: async () => ({
+          currentVersion: '0.9.2',
+          latestVersion: '0.9.2',
+          updateAvailable: false,
+          updateReady: false,
+          canAutoUpdate: false,
+          managedByStore: true,
+          releasesPage: 'https://github.com/Paxa/postbird/releases',
+        }),
+      };
+
+      const prevAlertify = (window as any).alertify;
+      (window as any).alertify = {
+        labels: { ok: 'OK', cancel: 'Cancel' },
+        confirm: async () => {},
+        alert: (msg: string) => { alerts.push(msg); },
+      };
+
+      try {
+        const controller = new UpdatesController();
+        await controller.checkUpdates({ showAlreadyLatest: false });
+        assert.strictEqual(alerts.length, 0);
+
+        await controller.checkUpdates({ showAlreadyLatest: true });
+        assert.strictEqual(alerts.length, 1);
+        assert.ok(alerts[0].includes('Updates for Postbird are managed by the App Store.'));
+      } finally {
+        (window as any).alertify = prevAlertify;
+      }
+    });
+  });
+
+  describe('Mac App Store Entitlements, Mach-O Patchers & Screenshot Tour', () => {
+    it('Postbird.entitlements enables sandbox and network.client without network.server', () => {
+      const nodeFs = require('fs');
+      const path = require('path');
+      const ent = nodeFs.readFileSync(
+        path.join(__dirname, '..', 'build_files', 'appstore', 'Postbird.entitlements'),
+        'utf8'
+      );
+      assert.ok(ent.includes('<key>com.apple.security.app-sandbox</key>'));
+      assert.ok(ent.includes('<key>com.apple.security.network.client</key>'));
+      assert.ok(!ent.includes('com.apple.security.network.server'), 'network.server entitlement must not be present');
+    });
+
+    it('addCocoaLoadCommand adds LC_LOAD_DYLIB for Cocoa.framework and is idempotent', () => {
+      const { addCocoaLoadCommand } = require('../scripts/appstore/add_cocoa_load_command');
+      const buf = Buffer.alloc(1024, 0);
+      const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+
+      const headerSize = 32;
+      const segCmdSize = 72 + 80; // LC_SEGMENT_64 + 1 section_64
+      view.setUint32(0, 0xfeedfacf, true); // MH_MAGIC_64
+      view.setUint32(4, 0x0100000c, true); // CPU_TYPE_ARM64
+      view.setUint32(16, 1, true); // ncmds = 1
+      view.setUint32(20, segCmdSize, true); // sizeofcmds
+
+      view.setUint32(headerSize, 0x19, true); // LC_SEGMENT_64
+      view.setUint32(headerSize + 4, segCmdSize, true);
+      view.setUint32(headerSize + 64, 1, true); // nsects = 1
+      view.setUint32(headerSize + 72 + 48, 512, true); // section offset = 512
+
+      const first = addCocoaLoadCommand(buf);
+      assert.strictEqual(first.added, true);
+      assert.ok(first.cmdsize > 0);
+      assert.strictEqual(view.getUint32(16, true), 2);
+      assert.strictEqual(view.getUint32(20, true), segCmdSize + first.cmdsize);
+      assert.ok(buf.toString('latin1').includes('/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa'));
+
+      const second = addCocoaLoadCommand(buf);
+      assert.strictEqual(second.added, false);
+      assert.strictEqual(view.getUint32(16, true), 2);
+    });
+
+    it('patchBunIcuBuffer renames ICU imports in-place across LC_SYMTAB and LC_DYLD_CHAINED_FIXUPS', () => {
+      const { patchBunIcuBuffer, OLD_DYLIB } = require('../scripts/appstore/patch_bun_icu');
+      const buf = Buffer.alloc(1024, 0);
+      const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+
+      const headerSize = 32;
+      const dylibNameBytes = Buffer.from(OLD_DYLIB + '\0', 'latin1');
+      const dylibCmdSize = Math.ceil((24 + dylibNameBytes.length) / 8) * 8;
+      const symtabCmdSize = 24;
+      const fixupsCmdSize = 16;
+      const sizeofcmds = dylibCmdSize + symtabCmdSize + fixupsCmdSize;
+
+      view.setUint32(0, 0xfeedfacf, true); // MH_MAGIC_64
+      view.setUint32(4, 0x0100000c, true); // CPU_TYPE_ARM64
+      view.setUint32(16, 3, true); // ncmds = 3
+      view.setUint32(20, sizeofcmds, true);
+
+      // 1) LC_LOAD_DYLIB (ordinal 1)
+      let off = headerSize;
+      view.setUint32(off, 0xc, true);
+      view.setUint32(off + 4, dylibCmdSize, true);
+      view.setUint32(off + 8, 24, true);
+      dylibNameBytes.copy(buf, off + 24);
+      off += dylibCmdSize;
+
+      // Layout regions for symtab and chained fixups
+      const symoff = 256;
+      const stroff = 320;
+      const fixupsOff = 512;
+
+      // Write symtab strings: "\0_ubrk_clone\0_ucal_clear\0"
+      const strTable = Buffer.from('\0_ubrk_clone\0_ucal_clear\0', 'latin1');
+      strTable.copy(buf, stroff);
+
+      // Write 2 nlist_64 entries (16 bytes each) bound to ordinal 1
+      for (const [idx, strx] of [[0, 1], [1, 13]] as const) {
+        const e = symoff + idx * 16;
+        view.setUint32(e, strx, true);
+        buf[e + 4] = 0x01; // N_EXT, undefined
+        view.setUint16(e + 6, 1 << 8, true); // library ordinal = 1
+      }
+
+      // 2) LC_SYMTAB
+      view.setUint32(off, 0x2, true);
+      view.setUint32(off + 4, symtabCmdSize, true);
+      view.setUint32(off + 8, symoff, true);
+      view.setUint32(off + 12, 2, true); // nsyms = 2
+      view.setUint32(off + 16, stroff, true);
+      view.setUint32(off + 20, strTable.length, true);
+      off += symtabCmdSize;
+
+      // Write chained fixups header + imports (format 1) + symbol pool
+      const importsOffset = 28;
+      const symbolsOffset = 40;
+      view.setUint32(fixupsOff + 8, importsOffset, true);
+      view.setUint32(fixupsOff + 12, symbolsOffset, true);
+      view.setUint32(fixupsOff + 16, 2, true); // importsCount = 2
+      view.setUint32(fixupsOff + 20, 1, true); // importsFormat = 1 (4-byte entries)
+      strTable.copy(buf, fixupsOff + symbolsOffset);
+      view.setUint32(fixupsOff + importsOffset, (1 << 9) | 1, true);
+      view.setUint32(fixupsOff + importsOffset + 4, (13 << 9) | 1, true);
+
+      // 3) LC_DYLD_CHAINED_FIXUPS
+      view.setUint32(off, 0x80000034, true);
+      view.setUint32(off + 4, fixupsCmdSize, true);
+      view.setUint32(off + 8, fixupsOff, true);
+      view.setUint32(off + 12, 128, true);
+
+      const res = patchBunIcuBuffer(buf);
+      assert.strictEqual(res.symbolCount, 2);
+      assert.strictEqual(res.occurrences, 4);
+      const patchedStr = res.buf.toString('latin1');
+      assert.ok(patchedStr.includes('_pbrk_clone'));
+      assert.ok(patchedStr.includes('_pcal_clear'));
+      assert.ok(!patchedStr.includes('_ubrk_clone'));
+      assert.ok(!patchedStr.includes('_ucal_clear'));
+    });
+
+    it('screenshot_tour module builds self-contained webview script', () => {
+      const { buildWebviewTourScript } = require('../scripts/appstore/screenshot_tour');
+      const script = buildWebviewTourScript({ demoDb: 'custom_demo', user: 'alice' });
+      assert.ok(script.includes('"custom_demo"'));
+      assert.ok(script.includes('"alice"'));
+      assert.ok(script.includes('[screenshot] ready '));
     });
   });
 });

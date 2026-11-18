@@ -1145,7 +1145,8 @@ body.dark-mode {
   .alertify-dialog {
     width: 780px;
     max-width: 90vw;
-    height: 580px;
+    height: auto;
+    min-height: 260px;
     max-height: 85vh;
     padding: 44px 18px 16px;
     display: flex;
@@ -1155,10 +1156,19 @@ body.dark-mode {
   }
 
   .alertify-inner {
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     text-align: left;
+  }
+
+  .alertify-message {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
   }
 }
 
@@ -1168,7 +1178,8 @@ body.dark-mode {
   .json-viewer-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     text-align: left;
   }
@@ -1279,6 +1290,7 @@ body.dark-mode {
 
   .json-viewer-body {
     flex: 1;
+    min-height: 120px;
     overflow: hidden;
     margin-top: 10px;
     border: 1px solid #e4e4e7;
@@ -1289,7 +1301,8 @@ body.dark-mode {
     flex-direction: column;
 
     .json-tree-wrapper {
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
       overflow-x: auto;
       padding: 10px 14px;
@@ -1300,12 +1313,15 @@ body.dark-mode {
     }
 
     .json-code-wrapper {
-      height: 100%;
+      flex: 1;
+      min-height: 180px;
       position: relative;
       text-align: left;
 
       .CodeMirror {
-        height: 100%;
+        height: auto;
+        min-height: 180px;
+        max-height: calc(85vh - 180px);
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         font-size: 12px;
         line-height: 1.5;
@@ -1464,6 +1480,21 @@ body.dark-mode {
       display: flex;
       align-items: center;
       gap: 8px;
+
+      button {
+        @extend .alertify-button;
+        @extend .alertify-button-cancel;
+        height: 28px;
+        line-height: 18px;
+      }
+
+      button.ok {
+        @extend .alertify-button-ok;
+      }
+
+      button.cancel {
+        @extend .alertify-button-cancel;
+      }
     }
   }
 }

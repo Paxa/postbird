@@ -188,6 +188,9 @@ export function saveSavedConnections(connections: Record<string, any>): { succes
 const windowStateFile = path.join(getUserDataDir(), "window-state.json");
 
 export function loadWindowState(): WindowFrameState {
+  if (process.env.POSTBIRD_SCREENSHOT_TOUR === "true") {
+    return { width: 1440, height: 900, x: 60, y: 60 };
+  }
   const defaultState: WindowFrameState = { width: 1100, height: 750, x: 100, y: 100 };
   try {
     if (fs.existsSync(windowStateFile)) {
@@ -209,7 +212,7 @@ export function loadWindowState(): WindowFrameState {
 }
 
 export function saveWindowState(win: any): void {
-  if (process.env.POSTBIRD_SCREENSHOT_TOUR === "true") return; // keep the tour frame out of the user's saved state
+  if (process.env.POSTBIRD_SCREENSHOT_TOUR === "true") return;
   try {
     if (!win) return;
     const frame = typeof win.getFrame === "function" ? win.getFrame() : win.frame;

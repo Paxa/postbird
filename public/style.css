@@ -1386,7 +1386,7 @@ body.sidebar-resizing * {
   margin-top: 16px;
 }
 
-.alertify-button, .custom-window p.buttons button {
+.alertify-button, .json-viewer-dialog .json-viewer-footer .json-footer-right button, .custom-window p.buttons button {
   background: none;
   text-decoration: none;
   border: none;
@@ -1399,7 +1399,7 @@ body.sidebar-resizing * {
   margin: 0;
   user-select: none;
 }
-.alertify-button:hover, .custom-window p.buttons button:hover, .alertify-button:active, .custom-window p.buttons button:active, .alertify-button:visited, .custom-window p.buttons button:visited {
+.alertify-button:hover, .json-viewer-dialog .json-viewer-footer .json-footer-right button:hover, .custom-window p.buttons button:hover, .alertify-button:active, .json-viewer-dialog .json-viewer-footer .json-footer-right button:active, .custom-window p.buttons button:active, .alertify-button:visited, .json-viewer-dialog .json-viewer-footer .json-footer-right button:visited, .custom-window p.buttons button:visited {
   text-decoration: none;
   cursor: pointer;
 }
@@ -1480,7 +1480,7 @@ body.sidebar-resizing * {
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
 }
 
-.alertify-button, .custom-window p.buttons button {
+.alertify-button, .json-viewer-dialog .json-viewer-footer .json-footer-right button, .custom-window p.buttons button {
   border-radius: 6px;
   color: #ffffff;
   padding: 4px 16px;
@@ -1500,41 +1500,41 @@ body.sidebar-resizing * {
   vertical-align: middle;
   transition: filter 100ms ease, transform 60ms ease, box-shadow 120ms ease;
 }
-.alertify-button:hover, .custom-window p.buttons button:hover {
+.alertify-button:hover, .json-viewer-dialog .json-viewer-footer .json-footer-right button:hover, .custom-window p.buttons button:hover {
   outline: none;
   filter: brightness(1.03);
 }
-.alertify-button:focus-visible, .custom-window p.buttons button:focus-visible {
+.alertify-button:focus-visible, .json-viewer-dialog .json-viewer-footer .json-footer-right button:focus-visible, .custom-window p.buttons button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.4);
 }
-.alertify-button:active, .custom-window p.buttons button:active {
+.alertify-button:active, .json-viewer-dialog .json-viewer-footer .json-footer-right button:active, .custom-window p.buttons button:active {
   filter: brightness(0.94);
 }
 
-.alertify-button-cancel, .custom-window p.buttons button.cancel, .custom-window p.buttons button {
+.alertify-button-cancel, .json-viewer-dialog .json-viewer-footer .json-footer-right button.cancel, .json-viewer-dialog .json-viewer-footer .json-footer-right button, .custom-window p.buttons button.cancel, .custom-window p.buttons button {
   background: linear-gradient(180deg, #ffffff 0%, #f4f4f6 100%);
   border: 1px solid rgba(0, 0, 0, 0.22);
   color: #1d1d1f;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), inset 0 0.5px 0 rgba(255, 255, 255, 0.95);
 }
-.alertify-button-cancel:hover, .custom-window p.buttons button:hover {
+.alertify-button-cancel:hover, .json-viewer-dialog .json-viewer-footer .json-footer-right button:hover, .custom-window p.buttons button:hover {
   background: linear-gradient(180deg, #ffffff 0%, #ececed 100%);
   border-color: rgba(0, 0, 0, 0.28);
 }
-.alertify-button-cancel:active, .custom-window p.buttons button:active {
+.alertify-button-cancel:active, .json-viewer-dialog .json-viewer-footer .json-footer-right button:active, .custom-window p.buttons button:active {
   background: #e4e4e7;
   border-color: rgba(0, 0, 0, 0.32);
 }
 
-.alertify-button-ok, .custom-window p.buttons button.ok,
+.alertify-button-ok, .json-viewer-dialog .json-viewer-footer .json-footer-right button.ok, .custom-window p.buttons button.ok,
 .custom-window p.buttons button.copy-sql {
   color: #ffffff;
   background: linear-gradient(180deg, #1E90FF 0%, #007AFF 100%);
   border: 1px solid rgba(0, 81, 213, 0.7);
   box-shadow: 0 1px 2px rgba(0, 122, 255, 0.24), inset 0 0.5px 0 rgba(255, 255, 255, 0.28);
 }
-.alertify-button-ok:active, .custom-window p.buttons button.ok:active,
+.alertify-button-ok:active, .json-viewer-dialog .json-viewer-footer .json-footer-right button.ok:active, .custom-window p.buttons button.ok:active,
 .custom-window p.buttons button.copy-sql:active {
   background: linear-gradient(180deg, #006CE0 0%, #005BBF 100%);
 }
@@ -1589,13 +1589,13 @@ body.dark-mode .alertify-text {
   border-color: rgba(255, 255, 255, 0.2);
   color: #f5f5f7;
 }
-body.dark-mode .alertify-button-cancel, body.dark-mode .custom-window p.buttons button, .custom-window p.buttons body.dark-mode button {
+body.dark-mode .alertify-button-cancel, body.dark-mode .json-viewer-dialog .json-viewer-footer .json-footer-right button, .json-viewer-dialog .json-viewer-footer .json-footer-right body.dark-mode button, body.dark-mode .custom-window p.buttons button, .custom-window p.buttons body.dark-mode button {
   background: linear-gradient(180deg, #505054 0%, #3e3e42 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #f5f5f7;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
-body.dark-mode .alertify-button-cancel:hover, body.dark-mode .custom-window p.buttons button:hover, .custom-window p.buttons body.dark-mode button:hover {
+body.dark-mode .alertify-button-cancel:hover, body.dark-mode .json-viewer-dialog .json-viewer-footer .json-footer-right button:hover, .json-viewer-dialog .json-viewer-footer .json-footer-right body.dark-mode button:hover, body.dark-mode .custom-window p.buttons button:hover, .custom-window p.buttons body.dark-mode button:hover {
   background: linear-gradient(180deg, #5c5c60 0%, #4a4a4e 100%);
   border-color: rgba(255, 255, 255, 0.26);
 }
@@ -4249,7 +4249,7 @@ body.new-window {
   clear: both;
 }
 
-.grey-cancel-button button.alertify-button-cancel, .grey-cancel-button .custom-window p.buttons button, .custom-window p.buttons .grey-cancel-button button {
+.grey-cancel-button button.alertify-button-cancel, .grey-cancel-button .json-viewer-dialog .json-viewer-footer .json-footer-right button, .json-viewer-dialog .json-viewer-footer .json-footer-right .grey-cancel-button button, .grey-cancel-button .custom-window p.buttons button, .custom-window p.buttons .grey-cancel-button button {
   border-color: #ADA6A6;
   background-color: #B8B8B8;
 }
@@ -5465,7 +5465,8 @@ body.dark-mode .cell-json-wrapper .json-preview {
 #alertify.json-viewer-dialog .alertify-dialog {
   width: 780px;
   max-width: 90vw;
-  height: 580px;
+  height: auto;
+  min-height: 260px;
   max-height: 85vh;
   padding: 44px 18px 16px;
   display: flex;
@@ -5474,10 +5475,18 @@ body.dark-mode .cell-json-wrapper .json-preview {
   text-align: left;
 }
 #alertify.json-viewer-dialog .alertify-inner {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   text-align: left;
+}
+#alertify.json-viewer-dialog .alertify-message {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .json-viewer-dialog {
@@ -5487,7 +5496,8 @@ body.dark-mode .cell-json-wrapper .json-preview {
 .json-viewer-dialog .json-viewer-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
   text-align: left;
 }
@@ -5584,6 +5594,7 @@ body.dark-mode .cell-json-wrapper .json-preview {
 }
 .json-viewer-dialog .json-viewer-body {
   flex: 1;
+  min-height: 120px;
   overflow: hidden;
   margin-top: 10px;
   border: 1px solid #e4e4e7;
@@ -5594,7 +5605,8 @@ body.dark-mode .cell-json-wrapper .json-preview {
   flex-direction: column;
 }
 .json-viewer-dialog .json-viewer-body .json-tree-wrapper {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: auto;
   padding: 10px 14px;
@@ -5604,12 +5616,15 @@ body.dark-mode .cell-json-wrapper .json-preview {
   text-align: left;
 }
 .json-viewer-dialog .json-viewer-body .json-code-wrapper {
-  height: 100%;
+  flex: 1;
+  min-height: 180px;
   position: relative;
   text-align: left;
 }
 .json-viewer-dialog .json-viewer-body .json-code-wrapper .CodeMirror {
-  height: 100%;
+  height: auto;
+  min-height: 180px;
+  max-height: calc(85vh - 180px);
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
   line-height: 1.5;
@@ -5744,7 +5759,10 @@ body.dark-mode .cell-json-wrapper .json-preview {
   align-items: center;
   gap: 8px;
 }
-
+.json-viewer-dialog .json-viewer-footer .json-footer-right button {
+  height: 28px;
+  line-height: 18px;
+}
 /* Dark Mode Overrides for JSON Viewer */
 body.dark-mode #alertify.json-viewer-dialog .alertify-dialog {
   background: #1f1f23;

@@ -31,9 +31,6 @@ const electroview = new Electrobun.Electroview({ rpc });
   verifyAiProvider: async (params: { providerId: string; model?: string; baseUrl?: string; apiKey?: string; path?: string }) => {
     return await electroview.rpc!.request.verifyAiProvider(params);
   },
-  screenshotEvent: async (params: { event: "ready" | "done" | "failed" | "log"; slug?: string }) => {
-    return await electroview.rpc!.request.screenshotEvent(params);
-  },
   finishTests: async (params: { total: number; failed: number }) => {
     return await electroview.rpc!.request.finishTests(params);
   },

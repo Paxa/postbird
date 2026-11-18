@@ -1,9 +1,5 @@
-// Drives the real Postbird app through the screenshot tour and captures each scene.
-//
-//   bun scripts/appstore/capture_screenshots.ts
-//
-// Needs a local PostgreSQL with the demo database (scripts/appstore/seed_demo_db.sql)
-// and Screen Recording permission for the terminal. Output: build/appstore/screenshots/captures/<slug>.png
+// Usage: bun scripts/appstore/capture_screenshots.ts
+// Requires local PostgreSQL seeded with scripts/appstore/seed_demo_db.sql and Screen Recording permission.
 import { mkdirSync } from "fs";
 import { join } from "path";
 
@@ -18,7 +14,6 @@ const sh = async (cmd: string[]) => {
   return { code: p.exitCode, out };
 };
 
-// All pids in the app's process tree (electrobun launcher, bun, webview helpers).
 async function descendants(pid: number): Promise<number[]> {
   const { out } = await sh(["pgrep", "-P", String(pid)]);
   const kids = out.split("\n").filter(Boolean).map(Number);
@@ -27,7 +22,6 @@ async function descendants(pid: number): Promise<number[]> {
 }
 
 async function windowId(rootPid: number): Promise<string | null> {
-  // The webview process can be owned by a helper outside the tree, so also match by name.
   const named = (await sh(["pgrep", "-f", "Postbird-dev\\.app"])).out.split("\n").filter(Boolean).map(Number);
   const pids = [...new Set([...(await descendants(rootPid)), ...named])];
   const { code, out } = await sh(["swift", join(root, "scripts", "appstore", "window_id.swift"), ...pids.map(String)]);

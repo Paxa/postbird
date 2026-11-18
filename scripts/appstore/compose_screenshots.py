@@ -3,13 +3,8 @@
 # requires-python = ">=3.10"
 # dependencies = ["Pillow>=10"]
 # ///
-"""Frame the raw captures into 2880x1800 Mac App Store screenshots.
-
-One warm off-white background, a caption above the window, the same margins on
-every frame, no device mockups. Reads build/appstore/screenshots/captures/<slug>.png,
-writes build/appstore/screenshots/mac/NN-slug.png and copies them to the
-Pictures folder used for the other apps.
-"""
+"""Frame raw captures into 2880x1800 Mac App Store screenshots."""
+import os
 import shutil
 from pathlib import Path
 
@@ -18,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 CAPTURES = ROOT / "build/appstore/screenshots/captures"
 OUT = ROOT / "build/appstore/screenshots/mac"
-COPY_TO = Path.home() / "Pictures/Splitfire AB/Postbird/AppStore/generated/macos"
+COPY_TO = os.environ.get("SCREENSHOTS_COPY_TO")
 
 W, H = 2880, 1800
 BG = (247, 243, 236)
@@ -77,10 +72,13 @@ def compose(slug: str, caption: str, index: int) -> Path:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    COPY_TO.mkdir(parents=True, exist_ok=True)
+    copy_dir = Path(COPY_TO).expanduser() if COPY_TO else None
+    if copy_dir:
+        copy_dir.mkdir(parents=True, exist_ok=True)
     for i, (slug, caption) in enumerate(SCENES, start=1):
         out = compose(slug, caption, i)
-        shutil.copy2(out, COPY_TO / out.name)
+        if copy_dir:
+            shutil.copy2(out, copy_dir / out.name)
         print(f"wrote {out.relative_to(ROOT)}")
 
 

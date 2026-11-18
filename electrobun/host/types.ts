@@ -33,7 +33,6 @@ export type UpdateCheckResponse = {
   updateAvailable: boolean;
   updateReady: boolean;
   canAutoUpdate: boolean;
-  /** True in the Mac App Store build, where the App Store handles updates. */
   managedByStore?: boolean;
   releasesPage: string;
   error?: string;
@@ -72,10 +71,6 @@ export type PostbirdRPC = {
       verifyAiProvider: {
         params: { providerId: string; model?: string; baseUrl?: string; apiKey?: string; path?: string };
         response: { ok: boolean; message: string; models?: string[]; latencyMs?: number };
-      };
-      screenshotEvent: {
-        params: { event: "ready" | "done" | "failed" | "log"; slug?: string };
-        response: { ok: boolean };
       };
       finishTests: {
         params: { total: number; failed: number };
