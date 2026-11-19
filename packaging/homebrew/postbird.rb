@@ -19,7 +19,8 @@ cask "postbird" do
 
   app "Postbird.app"
 
-  uninstall quit: "org.paxa.postbird"
+  uninstall launchctl: "application.org.paxa.postbird.*",
+            quit:      "org.paxa.postbird"
 
   zap trash: [
     "~/Library/Application Support/Postbird",
