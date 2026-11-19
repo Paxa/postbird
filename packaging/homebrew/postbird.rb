@@ -10,11 +10,7 @@ cask "postbird" do
   desc "PostgreSQL GUI client"
   homepage "https://github.com/Paxa/postbird"
 
-  livecheck do
-    url :url
-    strategy :github_latest
-  end
-
+  auto_updates true
   depends_on macos: :sonoma
 
   app "Postbird.app"
@@ -23,6 +19,7 @@ cask "postbird" do
             quit:      "org.paxa.postbird"
 
   zap trash: [
+    "~/Library/Application Support/org.paxa.postbird",
     "~/Library/Application Support/Postbird",
     "~/Library/Preferences/com.electron.postbird.plist",
     "~/Library/Preferences/org.paxa.postbird.plist",
